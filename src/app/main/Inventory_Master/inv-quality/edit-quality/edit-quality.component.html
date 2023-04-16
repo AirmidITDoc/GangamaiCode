@@ -1,0 +1,216 @@
+<div class="main-content">
+    <div class="form-section">
+        <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+            fxLayoutAlign="space-between">
+            <span style="font-size: 22px; font-weight: 500; color: #fff;">Update Quality Details</span>
+            <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+                close
+            </span>
+
+        </div>
+        <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+        Show
+      </button> -->
+        <div class="form-div">
+            <mat-card style="padding:20px;">
+            <form [formGroup]="_InvoiceListService.qualityform">
+                <div style="float:right;color: blue;font-weight: bold;">
+                    <h3>Todays Date :{{Today |date:'shortDate'}} </h3>
+                   
+                  </div>
+                <div style="padding: 7px;">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Party Name</mat-label>
+                            <input name="Partyname" [(ngModel)]="Partyname" formControlName="Partyname"
+                                placeholder="Party Name " matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Wastage per%</mat-label>
+                            <input name="Waste" [(ngModel)]="Waste" formControlName="Waste"
+                                placeholder="Waste" matInput>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker1" placeholder="Entry Date" [formControl]="date1">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                          </mat-form-field>
+              
+
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>QualityName</mat-label>
+                            <input name="QualityName" [(ngModel)]="QualityName" formControlName="QualityName"
+                                placeholder="QualityName" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Construction</mat-label>
+                            <input name="Construction" [(ngModel)]="Construction" formControlName="Construction"
+                                placeholder="Construction" matInput>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label> Width Inch</mat-label>
+                            <input name="WidthInch" [(ngModel)]="WidthInch" formControlName="WidthInch"
+                                placeholder="WidthInch" matInput>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label> Width Cms</mat-label>
+                            <input name="WidthCms" [(ngModel)]="WidthCms" formControlName="WidthCms" placeholder="WidthCms"
+                                matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>RS Inch </mat-label>
+                            <input name="RsInch" formControlName="RsInch" [(ngModel)]="RsInch" placeholder=" RsInch"
+                                matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>RS Cm </mat-label>
+                            <input name="RsCms" formControlName="RsCms" [(ngModel)]="RsCms" placeholder=" RsCms" matInput>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>REED Inch </mat-label>
+                            <input name="ReedInch" formControlName="ReedInch" [(ngModel)]="ReedInch"
+                                placeholder=" ReedInch" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>REED Cm </mat-label>
+                            <input name="ReedCms" formControlName="ReedCms" [(ngModel)]="ReedCms" placeholder=" ReedCms"
+                                matInput>
+                        </mat-form-field>
+
+
+                    </div>
+
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label> Pick Inch </mat-label>
+                            <input name="PickInch" formControlName="PickInch" [(ngModel)]="PickInch"
+                                placeholder=" PickInch" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Pick Cm </mat-label>
+                            <input name="PickCms" formControlName="PickCms" [(ngModel)]="PickCms" placeholder=" PickCms"
+                                matInput>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>Warp Sort1 </mat-label>
+                            <input name="WarpSort1" formControlName="WarpSort1" [(ngModel)]="WarpSort1"
+                                placeholder=" WeftSort1" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Weft Sort1</mat-label>
+                            <input name="WeftSort1" formControlName="WeftSort1" [(ngModel)]="WeftSort1"
+                                placeholder=" weftsort1" matInput>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>Warp Sort2</mat-label>
+                            <input name="WarpSort2" formControlName="WarpSort2" [(ngModel)]="WarpSort2"
+                                placeholder=" WarpSort2" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Weft Sort2</mat-label>
+                            <input name="WeftSort2" formControlName="WeftSort2" [(ngModel)]="WeftSort2"
+                                placeholder=" WarpSort2" matInput>
+                        </mat-form-field>
+
+
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <mat-form-field appearance="outline" style="width:49%;margin-right:20px;margin-left: 10px;">
+                            <mat-label>Warp Sort3</mat-label>
+                            <input name="WarpSort3" formControlName="WarpSort3" [(ngModel)]="WarpSort3"
+                                placeholder="WarpSort3" matInput>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Weft Sort3</mat-label>
+                            <input name="WeftSort3" formControlName="WeftSort3" [(ngModel)]="WeftSort3"
+                                placeholder=" WeftSort3" matInput>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+                        <!-- <mat-label style="margin-right: 15px;"> Type:</mat-label> -->
+                        <mat-radio-group name="type" formControlName="Type" value='2' fxLayoutAlign="center center"
+                            style="float:left;margin-left:10px" [(ngModel)]="Type">
+                            <mat-radio-button value='0' checked="checked">Bottom</mat-radio-button>
+                            <mat-radio-button value='1'>Shiting</mat-radio-button>
+
+                        </mat-radio-group>
+
+
+                        <mat-form-field appearance="outline" style="width: 70%;">
+                            <mat-label>Remark</mat-label>
+                            <input name="Remark" formControlName="Remark"  placeholder="remark"
+                                matInput>
+                        </mat-form-field>
+
+                        <input type="checkbox">IsDesign
+                    </div>
+
+
+                    <div style="float: right;margin-top: 30px;">
+                        <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Update</button>
+                        <button class="footer-btn" (click)="onClose()">Cancel</button>
+                    </div>
+                    
+                </div>
+            </form>
+        </mat-card>
+        </div>
+        <!-- </form> -->
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div style="width: 100%;">
+    <mat-table #table matSort [dataSource]="groupMasters" [@animateStagger]="{value:'50'}" style="overflow:auto">
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="checkbox">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <mat-checkbox [(ngModel)]="checkboxes[contact.id]" (ngModelChange)="onSelectedChange(contact.id)"
+                    (click)="$event.stopPropagation()">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Avatar Column -->
+        <!-- <ng-container matColumnDef="avatar">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <img class="avatar" *ngIf="contact.avatar" [alt]="contact.name"
+                     [src]="contact.avatar"/>
+            </mat-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="ProductTypeId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="70px">Id</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxFlex="70px">
+                {{contact.ProductTypeId}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ProductTypeName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Product Type Name</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                {{contact.ProductTypeName}}
+            </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="ServiceShortDesc">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Service Short Desc
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                {{contact.ServiceShortDesc}}
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- <ng-container matColumnDef="ServiceName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                {{contact.ServiceName}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="TariffName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Tariff Name
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                {{contact.TariffName}}
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- <ng-container matColumnDef="IsPathology">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsPathology</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs>
+                <mat-icon *ngIf="contact.IsPathology" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsPathology" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- <ng-container matColumnDef="IsRadiology">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsRadiology</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs>
+                <mat-icon *ngIf="contact.IsRadiology" class="active-icon green-600 s-16" fxLayoutAlign="center">
+                    check</mat-icon>
+                <mat-icon *ngIf="!contact.IsRadiology" class="active-icon red-500 s-16" fxLayoutAlign="center">
+                    close</mat-icon>
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- <ng-container matColumnDef="IsEditable">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsEditable</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs>
+                <mat-icon *ngIf="contact.IsEditable" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsEditable" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="IsDeleted">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs>
+                <mat-icon *ngIf="contact.IsDeleted" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsDeleted" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="buttons" stickyEnd>
+            <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <div fxFlex="row" fxLayoutAlign="center center">
+                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item aria-label="remove" (click)="deleteContact(contact)">
+                            <!-- <mat-icon>delete</mat-icon> -->
+                            <span>IsActive</span>
+                        </button>
+                        <button mat-menu-item aria-label="remove" (click)="editContact(contact)">
+                            <!-- <mat-icon>edit</mat-icon> -->
+                            <span>Edit</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+            [ngClass]="{'accent-50':checkboxes[contact.id]}" [@animate]="{value:'*',params:{y:'100%'}}">
+        </mat-row>
+    </mat-table>
+
+    <!-- <mat-paginator #paginator [length]="resultsLength" [pageIndex]="0" [pageSize]="10">
+    </mat-paginator> -->
+
+    <mat-paginator #paginator
+    [length]="resultsLength"
+    [pageIndex]="0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+
+
+</div>

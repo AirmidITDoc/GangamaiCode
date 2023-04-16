@@ -1,0 +1,316 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
+    <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size:20px; font-weight: 500; color: #fff;padding-top:10px;margin-top: 10px;">Email Notification </span>
+
+        <span class="material-icons" style="cursor: pointer;color: #fff;float: right;" (click)="onClose()">
+            close
+        </span>
+    </div>
+
+    <div style="padding:5px;">
+        <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+                <div fxFlex.gt-sm="100%" fxFlex>
+                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                        <!-- ================================ LABEL HEADER  -->
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                                <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Personal Information
+                                </h3>
+                            </div>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                                style="align-items: baseline;font-size:x-large;font-weight:bold;margin-left: 10px;margin-right: 10px;">
+
+                                <span class="label">Reg No :</span>
+                                <span class="data_input">{{RegNo}}</span>
+
+                                <span class="label">Admission No :</span>
+                                <span class="data_input">{{AdmissionID}}</span>
+
+                                <span class="label"> Patient Name : </span>
+                                <span class="data_input">{{PatientName}}</span>
+
+                                <span class="label">Admission ON : </span>
+                                <span class="data_input">{{AdmissionDate}}
+
+                                </span>
+
+
+                                <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()" style="border-radius: 16px;display: none;">
+                    Show
+                  </button> -->
+                            </div>
+                        </mat-card>
+                        <!-- ================================ LABEL HEADER  -->
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="template-container">
+            <form [formGroup]="templateFormGroup">
+                
+                <mat-tab-group mat-align-tabs="start" class="tabs-group" mat-stretch-tabs style="margin-right: 7px">
+                <mat-tab label="Email Send" style="margin-left: 7px;">
+                <mat-card>
+                    <app-common-date [screenFrom]="screenFromString" style="float: right;"
+                (dateTimeEventEmitter)="getDateTime($event)">
+                 </app-common-date>
+                    <div fxLayout="column" fxLayoutAlign="space-between none" style="margin-left:20px;margin-right:20px;">
+
+                        <div >
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>{{templateName == 'SMS' ? 'Mobile Number' : 'To..'}}</mat-label>
+                                <!-- <mat-label style="font-size:large;color: blue;font-weight: bold;">To..</mat-label> -->
+                                <input name="to" formControlName="toController" matInput required>
+                            </mat-form-field>
+                            <mat-error
+                                *ngIf="templateFormGroup.get('toController').invalid && templateFormGroup.get('toController').touched">
+                                This field is required</mat-error>
+                        </div>
+                        <div style="border-style: groove;">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>{{templateName == 'SMS' ? 'Mobile Number' : 'CC'}}</mat-label>
+                                <!-- <mat-label style="font-size: large;color: blue;font-weight: bold;">{{templateName == 'SMS' ? 'Mobile Number' : 'CC'}}</mat-label> -->
+                                <input name="cc" formControlName="toCCController" matInput required>
+                            </mat-form-field>
+                            <mat-error
+                                *ngIf="templateFormGroup.get('toCCController').invalid && templateFormGroup.get('toController').touched">
+                                This field is required</mat-error>
+                        </div>
+                        <div style="border-style: groove;">
+                            <!-- *ngIf="templateName == 'Email'" -->
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label style="font-size: large;color: blue;font-weight: bold;">Subject</mat-label>
+                                <input name="subject" formControlName="subjectController" matInput required>
+                                <mat-error
+                                    *ngIf="templateFormGroup.get('subjectController').invalid && templateFormGroup.get('subjectController').touched">
+                                    This field is required</mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div style="border-style: groove;"> 
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label style="font-size: large;color: blue;font-weight: bold;">{{templateName == 'SMS' ? 'Message Description' : 'Body'}}</mat-label>
+                                <textarea name="body" rows="5" formControlName="bodyController" matInput
+                                    required></textarea>
+                            </mat-form-field>
+                            <mat-error
+                                *ngIf="templateFormGroup.get('bodyController').invalid && templateFormGroup.get('bodyController').touched">
+                                This field is required
+                            </mat-error>
+                        </div>
+
+                        <div class="attachment-div" >
+                            <!-- *ngIf="templateName == 'Email'" -->
+                            <input id="attachment-id" type="file" (change)="onChange($event)" #fileInput
+                                (click)="fileInput.value = null" value="">
+                            <label for="attachment-id">
+                                <div style="color: #477bd6;">
+                                    <span class="material-icons" style="position: relative; top: 6px;font-weight: bolder;">
+                                        attachment
+                                    </span>
+                                    <span *ngIf="!attachedFile" style="color: #f14b4b;">
+                                        No file Selected
+                                    </span>
+                                    <span *ngIf="attachedFile">
+                                        {{attachedFile.name}}
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+
+
+                        <div class="footer-navigation-container" style=" float: right;margin-top:20px;">
+                            <div class="next-div">
+                                <!-- [disabled]="templateFormGroup.invalid" -->
+                                <button class="next-btn" (click)="onSend()" style="border-radius: 16px;"> Send </button>
+                                <button class="footer-btn" (click)="onClose()"
+                                    style="border-radius: 16px;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+                    </mat-tab>
+                <mat-tab label="SMS Send" style="margin-left: 7px;">
+                    <mat-card>
+                        <app-common-date [screenFrom]="screenFromString" style="float: right;"
+                    (dateTimeEventEmitter)="getDateTime($event)">
+                     </app-common-date>
+                        <div fxLayout="column" fxLayoutAlign="space-between none" style="margin-left:20px;margin-right:20px;">
+                            <h2>New Message</h2>
+                            <div >
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>{{templateName == 'SMS' ? 'Mobile Number' : 'To..'}}</mat-label>
+                                    <!-- <mat-label style="font-size:large;color: blue;font-weight: bold;">To..</mat-label> -->
+                                    <input name="to" formControlName="toController" matInput required>
+                                </mat-form-field>
+                                <mat-error
+                                    *ngIf="templateFormGroup.get('toController').invalid && templateFormGroup.get('toController').touched">
+                                    This field is required</mat-error>
+
+                                    
+                            </div>
+                          
+                            <div style="border-style: groove;">
+                                <!-- *ngIf="templateName == 'Email'" -->
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label style="font-size: large;color: blue;font-weight: bold;">Subject</mat-label>
+                                    <input name="subject" formControlName="subjectController" matInput required>
+                                    <mat-error
+                                        *ngIf="templateFormGroup.get('subjectController').invalid && templateFormGroup.get('subjectController').touched">
+                                        This field is required</mat-error>
+                                </mat-form-field>
+    
+                            </div>
+                            <div style="border-style: groove;"> 
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label style="font-size: large;color: blue;font-weight: bold;">{{templateName == 'SMS' ? 'Message Description' : 'Body'}}</mat-label>
+                                    <textarea name="body" rows="5" formControlName="bodyController" matInput 
+                                        required></textarea>
+                                </mat-form-field>
+                                <mat-error
+                                    *ngIf="templateFormGroup.get('bodyController').invalid && templateFormGroup.get('bodyController').touched">
+                                    This field is required
+                                </mat-error>
+                            </div>
+    
+                             
+                            <div class="footer-navigation-container" style=" float: right;margin-top:20px;">
+                                <div class="next-div">
+                                    <!-- [disabled]="templateFormGroup.invalid" -->
+                                    <button class="next-btn" (click)="onSendSMS()" style="border-radius: 16px;"> Send </button>
+                                    <button class="footer-btn" (click)="onClose()"
+                                        style="border-radius: 16px;">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+                </mat-tab-group>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div id="print-section" class="printed-div" style="padding: 20px;height: 550px;">
+    <div>
+        <div style="display: flex;">
+            <img src="assets/images/logos/Airmid_NewLogo.jpeg" width="90">
+            <div>
+                <div style="font-weight: bold;font-size: 16px;">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div>
+                <div style="color: #464343;">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217)
+                    2323001 / 02</div>
+                <div style="color: #464343;">www.yashodharahospital.org</div>
+            </div>
+        </div>
+        <div style="border: 1px solid grey;border-radius: 16px;text-align: center;padding: 8px;margin-top: 5px;">
+            <span style="font-weight: bold;">IP ADVANCE RECEIPT</span>
+        </div>
+    </div>
+    <hr style="border-color: #a0a0a0;">
+    <div>
+        <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex;">
+                <div style="width: 100px; font-weight: bold;">Advance No</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>6817</div>
+            </div>
+
+            <div style="display: flex;">
+                <div style="width: 60px; font-weight: bold;">Reg. No</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>117399</div>
+            </div>
+
+            <div style="display: flex;">
+                <div style="width: 60px; font-weight: bold;">Date</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div>
+            </div>
+        </div>
+        <div style="display: flex;margin: 8px 0;">
+            <div style="display: flex;width: 477px;">
+                <div style="width: 100px; font-weight: bold;">Patient Name</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>Mrs. Suglabai Dhulappa Waghmare</div>
+            </div>
+            <div style="display: flex;">
+                <div style="width: 60px; font-weight: bold;">IPD No</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>IP/53757/2019</div>
+            </div>
+        </div>
+
+        <div style="display: flex;margin: 8px 0;">
+            <div style="display: flex;">
+                <div style="width: 100px; font-weight: bold;">DOA</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>30/10/2019</div>
+            </div>
+        </div>
+
+        <div style="display: flex;">
+            <div style="display: flex;">
+                <div style="width: 100px; font-weight: bold;">Patient Type</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>Self</div>
+            </div>
+        </div>
+    </div>
+    <hr style="border-color: #a0a0a0;">
+    <div>
+        <div style="display: flex;">
+            <div style="display: flex;">
+                <div style="width: 150px; font-weight: bold;">Advacne Amount</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>4,000.00</div>
+            </div>
+        </div>
+        <div style="display: flex;margin: 8px 0;">
+            <div style="display: flex;">
+                <div style="width: 150px; font-weight: bold;">Amount in Words</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div>FOUR THOUSANDS RUPPEE ONLY</div>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div style="display: flex;">
+                <div style="width: 150px; font-weight: bold;">Reason of Advance</div>
+                <div style="width: 10px; font-weight: bold;">:</div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;top: 100px;text-align: right;">
+        <div style="font-weight: bold;font-size: 16px;">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div>
+        <div style="font-weight: bold;font-size: 16px;">Cashier</div>
+        <div>Paresh Manlor</div>
+    </div>
+</div> -->

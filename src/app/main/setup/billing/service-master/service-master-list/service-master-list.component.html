@@ -1,0 +1,154 @@
+<div style="width: 100%;">
+    <mat-table #table matSort [dataSource]="contacts" [@animateStagger]="{value:'50'}">
+        <!-- Checkbox Column -->
+        <!-- <ng-container matColumnDef="checkbox">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <mat-checkbox [(ngModel)]="checkboxes[contact.id]" (ngModelChange)="onSelectedChange(contact.id)"
+                    (click)="$event.stopPropagation()">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- Avatar Column -->
+        <!-- <ng-container matColumnDef="avatar">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <img class="avatar" *ngIf="contact.avatar" [alt]="contact.name"
+                     [src]="contact.avatar"/>
+            </mat-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="ServiceId"  >
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="70px" >Id</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxFlex="70px" >
+                <p class="text-truncate font-weight-600">{{contact.ServiceId}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="GroupName">
+            <mat-header-cell   *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Group Name</mat-header-cell>
+            <mat-cell  *matCellDef="let contact" fxHide fxShow.gt-sm>
+                <p class="email text-truncate">
+                    {{contact.GroupName}}
+                </p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ServiceShortDesc">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Service Short Desc</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                <p class="phone text-truncate">
+                    {{contact.ServiceShortDesc}}
+                </p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ServiceName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <p class="text-truncate font-weight-600">{{contact.ServiceName}}</p>
+            </mat-cell>
+        </ng-container>
+
+       
+
+        <ng-container matColumnDef="TariffName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md fxFlex="100px">Tariff Name</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md fxFlex="100px"> 
+                <p class="phone text-truncate">
+                    {{contact.TariffName}}
+                </p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="IsPathology">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs fxFlex="70px">IsPath</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs fxFlex="70px">
+                <mat-icon *ngIf="contact.IsPathology" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsPathology" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="IsRadiology">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs fxFlex="70px">IsRadi</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs fxFlex="70px" >
+                <mat-icon *ngIf="contact.IsRadiology" class="active-icon green-600 s-16" fxLayoutAlign="center" >check</mat-icon>
+                <mat-icon *ngIf="!contact.IsRadiology" class="active-icon red-500 s-16" fxLayoutAlign="center" >close</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="IsEditable">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs fxFlex="70px">IsEditable</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs fxFlex="70px">
+                <mat-icon *ngIf="contact.IsEditable" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsEditable" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="IsActive">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs fxFlex="50px">IsActive</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-xs fxFlex="50px" >
+                <mat-icon *ngIf="contact.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                <mat-icon *ngIf="!contact.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Job Title Column -->
+        <!-- <ng-container matColumnDef="jobTitle">
+            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Job title</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
+                <p class="job-title text-truncate">
+                    {{contact.jobTitle}}
+                </p>
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- Company Column -->
+        <!-- <ng-container matColumnDef="company">
+            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Company</mat-header-cell>
+            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
+                <p class="company text-truncate">
+                    {{contact.company}}
+                </p>
+            </mat-cell>
+        </ng-container> -->
+
+        <!-- Buttons Column -->
+        <ng-container matColumnDef="buttons">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                <div fxFlex="row" fxLayoutAlign="end center">
+                    <!-- <button mat-icon-button (click)="$event.stopPropagation();toggleStar(contact.id)"
+                        aria-label="Toggle star">
+                        <mat-icon class="amber-fg" *ngIf="user.starred.includes(contact.id)">star</mat-icon>
+                        <mat-icon class="secondary-text" *ngIf="!user.starred.includes(contact.id)">star_border</mat-icon>
+                    </button> -->
+
+                    
+
+                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item aria-label="remove" (click)="deleteContact(contact)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Remove</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" 
+        (click)="editContact(contact)"
+            [ngClass]="{'accent-50':checkboxes[contact.id]}" [@animate]="{value:'*',params:{y:'100%'}}">
+        </mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [length]="resultsLength" [pageIndex]="0" [pageSize]="10">
+    </mat-paginator>
+</div>

@@ -1,0 +1,89 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">New Item Details</span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+        Show
+      </button> -->
+      <div class="form-div">
+  
+  <br/>
+  
+        <form [formGroup]="_InvoiceListService.Itemform">
+          <div style="padding: 7px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Item Name</mat-label>
+                <input name="itemName" [(ngModel)]="itemName" formControlName="itemName" placeholder="Item Name "
+                  matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Invoice Date</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a InvoiceDate" name="InvoiceDate"
+                 >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+  
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Item Maker</mat-label>
+                <input name="itemMaker" [(ngModel)]="itemMaker" formControlName="itemMaker" placeholder="itemMaker" matInput>
+              </mat-form-field>
+  
+              
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Item Category</mat-label>
+                <input name="itemCategory" [(ngModel)]="itemCategory" formControlName="itemCategory" placeholder="itemCategory" matInput>
+              </mat-form-field>
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+            
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label> itemUnit</mat-label>
+                <input name="itemUnit" [(ngModel)]="itemUnit" formControlName="itemUnit" placeholder="itemUnit" matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label> itemPartNumber</mat-label>
+                <input name="itemPartNumber" [(ngModel)]="itemPartNumber" formControlName="itemPartNumber" placeholder="itemPartNumber" matInput>
+              </mat-form-field>
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" style="width: 50%;">
+                <mat-label>Item Rate</mat-label>
+                <input name="itemRate" formControlName="itemRate" [(ngModel)]="itemRate"
+                  placeholder=" itemRate" matInput>
+              </mat-form-field>
+  
+  
+            </div>
+  
+  
+            <br>
+            <div style="float: right;margin-top: 30px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Save</button>
+              <button class="footer-btn" (click)="onClose()">Cancel</button>
+            </div>
+            <br>
+          </div>
+        </form>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>

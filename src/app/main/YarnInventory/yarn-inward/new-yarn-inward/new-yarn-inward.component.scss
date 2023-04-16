@@ -1,0 +1,82 @@
+
+
+.mat-dialog-content{
+    //height: 100%;
+    max-height:900px !important;
+    display: block;
+   // margin: 0px 0px;
+}
+.dob{
+    width: 20px;
+}
+
+.mat-card {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.mat-h1, .mat-headline, .mat-typography h1 {
+    margin: 0 0 5px;
+}
+
+.mat-dialog-title{
+    margin-bottom: 2px;
+}
+
+.error{
+    color:red;
+}
+
+.main-content {
+    display: flex;
+   //width: auto;
+   // min-height: 100%;
+  max-height:650px !important;
+
+   
+   
+}
+
+.material-icons{
+    font-size: 25px;
+}
+
+.form-section {
+    width: 100%;
+    // padding: 20px;
+    // height: 500px;
+}
+
+
+
+.form-section .mat-form-field .mat-form-field-subscript-wrapper {
+    position: relative !important;
+}
+
+.register-container {
+    padding: 0 0 0 24px;
+    align-items: center;
+}
+
+.footer-navigation-container {
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+
+.header-container {
+    background-color: #165c7f !important;
+    height: 40px;
+    padding: 0 15px;
+    align-items: center !important;
+}
+
+
+.mat-form-field-appearance-outline.mat-focused
+.mat-form-field-outline-thick {
+color: rgb(151, 197, 232);
+box-shadow: 5px 5px 10px rgb(62, 175, 241) !important;
+}

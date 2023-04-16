@@ -1,0 +1,371 @@
+
+
+.mat-dialog-content{
+  //height: 100%;
+  max-height:900px !important;
+  display: block;
+ // margin: 0px 0px;
+}
+.dob{
+  width: 20px;
+}
+
+.mat-card {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.mat-h1, .mat-headline, .mat-typography h1 {
+  margin: 0 0 5px;
+}
+
+.mat-dialog-title{
+  margin-bottom: 2px;
+}
+
+.error{
+  color:red;
+}
+
+.main-content {
+  display: flex;
+ //width: auto;
+ // min-height: 100%;
+max-height:650px !important;
+
+ 
+ 
+}
+
+.material-icons{
+  font-size: 25px;
+}
+
+.form-section {
+  width: 100%;
+  // padding: 20px;
+  // height: 500px;
+}
+
+
+
+.form-section .mat-form-field .mat-form-field-subscript-wrapper {
+  position: relative !important;
+}
+
+.register-container {
+  padding: 0 0 0 24px;
+  align-items: center;
+}
+
+.footer-navigation-container {
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+.header-container {
+  background-color: #165c7f !important;
+  height: 40px;
+  padding: 0 15px;
+  align-items: center !important;
+}
+
+
+.mat-form-field-appearance-outline.mat-focused
+.mat-form-field-outline-thick {
+color: rgb(151, 197, 232);
+box-shadow: 5px 5px 10px rgb(62, 175, 241) !important;
+}
+
+
+.table1 {
+
+// height: 1800px !important;
+
+.mat-header-row {
+    background-color: #165c7f !important;
+    // font-family: 'Times New Roman', Times, serif;
+    font-size: xx-large;
+    width: 100%;
+    max-width: 2550px;
+    min-width: 2550px;
+    min-height: 30px;
+
+
+}
+
+.mat-row {
+    
+    width: 100%;
+    max-width: 2550px;
+    min-width: 2550px;
+    min-height: 30px;
+
+}
+
+
+
+
+.mat-column-Beamsrno {
+    width: 110px;
+    max-width: 11px;
+    min-width: 110px;
+    text-align: left;
+    
+
+}
+
+.mat-column-Sizesetno {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: center;
+    
+
+}
+
+.mat-column-SetBeamNo {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: center;
+    
+}
+
+.mat-column-Quality {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+
+
+}
+
+.mat-column-Design {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+    
+
+}
+
+.mat-column-FlagNo {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+    
+
+}
+.mat-column-Ends {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+    
+
+}
+
+
+
+.mat-column-RSpace {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: left;
+    
+
+
+}
+
+.mat-column-Reed {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+    
+}
+
+.mat-column-DesignPick {
+  width: 110px;
+  max-width: 110px;
+  min-width: 110px;
+  text-align: left;
+  
+
+
+}
+
+.mat-column-LoomPick {
+  width: 110px;
+  max-width: 110px;
+  min-width: 110px;
+  text-align: left;
+  
+}
+
+
+
+
+.mat-column-Lasa {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-YardMeter
+{
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+}
+
+.mat-column-Cuts {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-BMWt {
+width: 90x;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+}
+
+
+
+.mat-column-BMMeters {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-Shrink {
+width: 100px;
+max-width: 100px;
+min-width: 100px;
+text-align: left;
+
+}
+
+.mat-column-ProdMeters {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-ReqL {
+width: 100px;
+max-width: 100px;
+min-width: 100px;
+text-align: left;
+
+}
+.mat-column-Addless{
+width: 100px;
+max-width: 100px;
+min-width: 100px;
+text-align: left;
+
+}
+.mat-column-ReqFold {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-WeftCons {
+width: 100px;
+max-width: 100px;
+min-width: 100px;
+text-align: left;
+
+}
+.mat-column-JobPick {
+width: 90px;
+max-width: 90px;
+min-width: 90px;
+text-align: left;
+
+
+
+}
+
+.mat-column-Rate {
+width: 100px;
+max-width: 100px;
+min-width: 100px;
+text-align: left;
+
+}
+
+.mat-column-action {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: center;
+    
+
+}
+
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+
+.mat-column-button {
+    color: white !important;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: center;
+    justify-content: center;
+
+}
+
+.table-actions {
+    color: white !important;
+    width: 112px;
+    max-width: 112px;
+    min-width: 112px;
+    text-align: center;
+    justify-content: center;
+    // background:#039be5 !important; 
+}
+
+
+}

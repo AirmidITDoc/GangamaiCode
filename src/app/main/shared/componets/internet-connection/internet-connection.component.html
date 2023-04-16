@@ -1,0 +1,28 @@
+<div class='internet-check-container'>
+    <div *ngIf="isOffLine" class="offline">
+        <div class="innerOffline">
+            <div style="font-size:35px; color: #f30a0a;">
+                You are offline
+            </div>
+            <!-- <div class="detail" style="color: black;">
+                You are not connected to the internet
+                <div>
+                    Please check your connection
+                </div>
+            </div> -->
+        </div>
+
+        <div class="page-loader" style="margin-top: 12px;" *ngIf="isLoading">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>

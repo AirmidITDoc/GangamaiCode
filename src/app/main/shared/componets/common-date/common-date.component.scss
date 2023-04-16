@@ -1,0 +1,28 @@
+.date-time-container {
+    display: flex;
+}
+
+.padding-div {
+    padding: 7px 20px 0 0;
+}
+.date-field {
+    margin-right: 5px;
+}
+
+.dateField ::ng-deep .mat-form-field-flex {
+    height: 42px;
+    width: 119px;
+    align-items: center;
+}
+
+.timeField ::ng-deep .mat-form-field-flex {
+    height: 42px;
+    width: 119px;
+    align-items: center;
+}
+
+// app-common-date {
+::ng-deep.mat-dialog-container {
+    overflow: hidden;
+}
+// }

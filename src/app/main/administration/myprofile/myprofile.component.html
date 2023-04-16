@@ -1,0 +1,312 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="background-color: rgb(250, 245, 245);">
+
+    <!-- HEADER -->
+
+    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center " style="height: 30px;" >
+
+<!-- APP TITLE -->
+    <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
+        <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+        </mat-icon> -->
+        
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 83%; font-weight: 400;">
+            My Profile
+        </span>
+      
+        <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" >
+            <mat-icon>close</mat-icon>
+        </button> 
+    </div>
+
+</div>
+
+  
+  
+   
+   
+    <!-- / HEADER -->
+  
+    <!-- CONTENT -->
+    <div >
+  
+        <!-- CENTER -->
+        <div class="center " >
+  
+            <!-- CONTENT -->
+            <div >
+                <div class="container" style="background-color:white; "> 
+  
+  
+                 
+                 
+                    <form >
+                     
+                    <div fxLayout="row" >
+                    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%;margin-left: 15px;"  >
+  
+                       <br/>
+                       
+                       <div>
+  
+                         <div fxFlexFill fxLayout="column" style="margin-right: 20px;">
+                          <div style="display: inline;">
+  
+                           
+  
+  
+  
+                        <span class="label1"  >User Name   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          :</span>
+                    
+                        <span class="data_input1"style="margin-left:23px;" >{{Uname}}</span> 
+                        </div>
+                       &nbsp;
+                         
+                       <div>
+                        <span class="label1" style="display: inline;">Login Name 
+                          &nbsp;&nbsp;&nbsp; :</span>&nbsp;
+                        <span class="data_input1" style="margin-left:18px;">{{ULoginName}}</span>
+                      </div>
+                      &nbsp;
+  
+                      
+                      <div>
+                        <span class="label1" style="display: inline;"> Role Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           :</span>&nbsp;
+                     
+                        <span class="data_input1" style="margin-left: 19px;">{{rolename}}</span>
+                      </div>
+                      &nbsp;
+                     
+                      </div>
+  
+                      &nbsp; 
+                     
+                           <br/>
+                      
+                       </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%;"   >
+                      <br/>
+                      
+                      <div>
+  
+                      <div fxFlexFill fxLayout="column"    >
+                        <div>
+                          <span class="label1" style="display: inline;">Doctor Name : </span>&nbsp;
+                            <span class="data_input1" style="margin-left:18px;">{{docname}}</span> 
+                       </div> 
+                       &nbsp;
+                     <div>
+                       <span class="label1" style="display: inline;"> Store Name  
+                         &nbsp;&nbsp; :</span>&nbsp;
+                       <span class="data_input1"  style="margin-left:17px;">{{storename}}</span> 
+                     </div>
+                     &nbsp;
+                    
+                      <div>
+                        <span class="label1" style="display: inline;"> Is Active  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         &nbsp;&nbsp;   : </span>&nbsp;
+                         &nbsp;&nbsp; 
+                         <mat-icon *ngIf="active" class="active-icon green-600 s-16">check_circle</mat-icon>
+                         <mat-icon *ngIf="!active" class="active-icon red-500 s-16">close</mat-icon>  
+                       </div>
+                       &nbsp;
+                       
+                     </div>
+  
+                     &nbsp; 
+                    
+                      </div>
+                   </div>
+                    </div>
+                    <div fxLayout="row" >
+                  
+                    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%;border: 1px solid ;"  >
+                        <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                        fxLayoutAlign.gt-xs="space-between center " style="height: 20px;width: 100%;" >
+                 
+                        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
+                                     
+                          <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;font-weight: 400;">
+                            Inventory Setting
+                            </span>
+                        </div>
+                    
+                    </div>
+                    
+                    
+  
+                         <div fxFlexFill fxLayout="column" style="padding: 1em;">
+                          <div style="display: inline;">
+                        <span class="label1">Indent Verify  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp; :</span>
+                          &nbsp;&nbsp;&nbsp;
+                        <mat-icon Class="Profile-icons" *ngIf="isindentVerify" class="active-icon green-600 s-16">check_circle</mat-icon>
+                        <mat-icon Class="Profile-icons" *ngIf="!isindentVerify" class="active-icon red-500 s-16">close</mat-icon>  
+                        
+                        </div>
+                       &nbsp;
+                         
+                       <div>
+                        <span class="label1" style="display: inline;">GRN Verify &nbsp;&nbsp; 
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>&nbsp;
+                           &nbsp;
+                           <mat-icon Class="Profile-icons" *ngIf="isGRNVerify" class="active-icon green-600 s-16">check_circle</mat-icon>
+                           <mat-icon Class="Profile-icons" *ngIf="!isGRNVerify" class="active-icon red-500 s-16">close</mat-icon>  
+                     </div> 
+                      &nbsp;
+  
+                      
+                      <div>
+                        <span class="label1" style="display: inline;"> PO Verify &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :</span>&nbsp;
+                          &nbsp;&nbsp;
+                          <mat-icon Class="Profile-icons" *ngIf="isPOVerify" class="active-icon green-600 s-16">check_circle</mat-icon>
+                          <mat-icon Class="Profile-icons" *ngIf="!isPOVerify" class="active-icon red-500 s-16">close</mat-icon>  
+                      </div>
+                      &nbsp;
+  
+                      <div>
+                        <span class="label1" style="display: inline;">Purchase Requestion Verify
+                          &nbsp;&nbsp; :</span>&nbsp;
+                          &nbsp;&nbsp;
+                          <mat-icon  Class="Profile-icons" *ngIf="isPurchaseRequestionVerify" class="active-icon green-600 s-16">check_circle</mat-icon>
+                          <mat-icon  Class="Profile-icons" *ngIf="!isPurchaseRequestionVerify" class="active-icon red-500 s-16">close</mat-icon>  
+                      </div>
+                      
+                     &nbsp;
+                   <div>
+                     <span class="label1" style="display: inline;"> Path Authorization Verify 
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;:</span>&nbsp;
+                       &nbsp;&nbsp;
+                       <mat-icon Class="Profile-icons" *ngIf="isPathAuthorizationVerify" class="active-icon green-600 s-16">check_circle</mat-icon>
+                       <mat-icon Class="Profile-icons" *ngIf="!isPathAuthorizationVerify" class="active-icon red-500 s-16">close</mat-icon>  
+                   </div>
+               
+                         </div>
+  
+                    
+                     
+                           <br/>
+                      
+                       
+                   
+                    </div>
+  
+  
+                  
+                    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%;border: 1px solid ; "   >
+
+                        <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                        fxLayoutAlign.gt-xs="space-between center " style="height: 20px;width: 100%;" >
+                 
+                        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
+                                     
+                          <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;font-weight: 400;">
+                            Icon Info 
+                            </span>
+                        </div>
+                    
+                     </div>
+                      
+                     
+                   
+                       <div fxFlexFill fxLayout="column" style="padding: 1em;">
+                          <div style="display: inline;">
+                        <span class="label1"  >Is Credit Bill Scroll  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;:</span>
+                          &nbsp;&nbsp;
+                          <mat-icon Class="Profile-icons" *ngIf="isCreditBillScroll" class="active-icon green-600 s-16">check_circle</mat-icon>
+                          <mat-icon Class="Profile-icons" *ngIf="!isCreditBillScroll" class="active-icon red-500 s-16">close</mat-icon>  
+                        </div>
+                       &nbsp;
+                         
+                       <div>
+                        <span class="label1" style="display: inline;">Collection Information &nbsp;: </span>
+                        &nbsp;&nbsp;
+                        <mat-icon Class="Profile-icons" *ngIf="isCollectionInformation" class="active-icon green-600 s-16">check_circle</mat-icon>
+                        <mat-icon Class="Profile-icons" *ngIf="!isCollectionInformation" class="active-icon red-500 s-16">close</mat-icon>  
+                     </div> 
+                      &nbsp;
+  
+                      
+                      <div>
+                        <span class="label1" style="display: inline;"> Bed Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp; :</span>&nbsp;
+                          &nbsp;
+                          <mat-icon Class="Profile-icons" *ngIf="isBedStatus" class="active-icon green-600 s-16">check_circle</mat-icon>
+                          <mat-icon Class="Profile-icons" *ngIf="!isBedStatus" class="active-icon red-500 s-16">close</mat-icon>  
+                     
+                      </div>
+                      &nbsp;
+  
+                      <div>
+                        <span class="label1" style="display: inline;">Current Stock
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>&nbsp;
+                          &nbsp;
+                          <mat-icon Class="Profile-icons" *ngIf="isCurrentStk" class="active-icon green-600 s-16">check_circle</mat-icon>
+                          <mat-icon Class="Profile-icons" *ngIf="!isCurrentStk" class="active-icon red-500 s-16">close</mat-icon>  
+                      </div>
+                      
+                     &nbsp;
+                   <div>
+                     <span class="label1" style="display: inline;"> Patient Information
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</span>&nbsp;
+                     &nbsp;
+                     <mat-icon Class="Profile-icons" *ngIf="isPatientInfo" class="active-icon green-600 s-16">check_circle</mat-icon>
+                     <mat-icon Class="Profile-icons" *ngIf="!isPatientInfo" class="active-icon red-500 s-16">close</mat-icon>  
+                   </div>
+                   &nbsp;
+                     
+                   <div>
+                    <span class="label1" style="display: inline;"> View Browse Bill(Days)
+                      &nbsp;:</span>&nbsp;
+                      &nbsp;
+                    <mat-icon Class="Profile-icons" *ngIf="isViewBrowseBill" class="active-icon green-600 s-16">check_circle</mat-icon>
+                    <mat-icon Class="Profile-icons" *ngIf="!isViewBrowseBill" class="active-icon red-500 s-16">close</mat-icon>  
+                  </div>
+                  &nbsp;
+                  <div>
+                    <span class="label1" style="display: inline;"> Is Add Charge Delete
+                      &nbsp;&nbsp;&nbsp; &nbsp; :</span>&nbsp;
+                      &nbsp; 
+                    <mat-icon Class="Profile-icons" *ngIf="addChargeIsDelete" class="active-icon green-600 s-16">check_circle</mat-icon>
+                    <mat-icon  Class="Profile-icons"*ngIf="!addChargeIsDelete" class="active-icon red-500 s-16">close</mat-icon>  
+                  </div>
+               
+                         </div>
+  
+                 
+                    
+                   </div>
+                    </div>
+  
+                    </form>
+                
+               
+              </div>
+            </div>
+            <!-- / CONTENT -->
+  
+        </div>
+        <!-- / CENTER -->
+  
+    </div>
+    <!-- / CONTENT-->
+  
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

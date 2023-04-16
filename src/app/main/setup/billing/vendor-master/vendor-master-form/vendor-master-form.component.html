@@ -1,0 +1,87 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <div md-card class="mr-20" fxLayout="column" fxFlex="1 0 auto">
+            <form >
+
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Vendor Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Mobile No</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Email ID</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Account No</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>IFSC Code</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Bank Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Category Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input name="name"  matInput required>
+                    </mat-form-field>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <!-- <button *ngIf="action === 'edit'" mat-button class="mr-8" 
+            aria-label="Delete" matTooltip="Delete">
+            DELETE
+        </button> -->
+
+        <button *ngIf="action !== 'edit'" mat-button class="save-button" 
+            [disabled]="contactForm.invalid" aria-label="SAVE">
+            ADD
+        </button>
+
+        <button *ngIf="action === 'edit'" mat-button class="save-button"
+            [disabled]="contactForm.invalid" aria-label="SAVE">
+            SAVE
+        </button>
+
+    </div>
+</div>

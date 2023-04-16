@@ -1,0 +1,37 @@
+<form [formGroup]="dateForm">
+    <div [ngClass]="screenFromString == 'payment-form' ? 'date-time-container padding-div' : 'date-time-container'">
+        <div class="date-field">
+            <mat-form-field appearance="outline" class="dateField">
+                <mat-label>{{dateLabel}}</mat-label>
+                <!-- <input name="currentDate" matInput [(ngModel)]="currentDate" readonly> -->
+                <input matInput [matDatepicker]="picker1" formControlName="dateController" readonly
+                (dateChange)="onChangeDate($event.value)">
+                <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="time-field">
+            <!-- <mat-form-field appearance="outline" class="timeField">
+                <mat-label>{{timeLabel}}</mat-label>
+                <input name="admissionTime" matInput formControlName="timeController" [(ngModel)]="currentTime"
+                    readonly>
+            </mat-form-field> -->
+            <mat-form-field appearance="outline" class="timeField">
+                <mat-label>{{timeLabel}}</mat-label>
+
+                <!-- The timepicker input -->
+                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="timeController" [readonly]="true"
+                (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                <!-- #t="matTimepicker"
+                    [strict]="false" id="timepicker-example" mode="24h" [(ngModel)]="currentTime"
+                    placeholder="Please select time..." name="time" formControlName="timeController"
+                    (timeChange)="timeChangeHandler($event)" (invalidInput)="invalidInputHandler()"> -->
+
+                <!-- An icon for the timepicker input that will open the timepicker dialog when clicked -->
+                <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''" style="cursor: pointer;color: #989898;">
+                    access_time
+                </span>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,72 @@
+<div class="sidebar-content">
+
+    <div class="card">
+
+        <!-- SIDEBAR HEADER -->
+        <div class="header p-16" fxLayout="row" fxLayoutAlign="start center">
+            <!-- USER -->
+            <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
+            <span class="h5">Search Facility</span>
+            <!-- / USER -->
+        </div>
+        <!-- / SIDEBAR HEADER -->
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content py-16 pl-10 p-20" fusePerfectScrollbar>
+            <div class="nav material2">
+                <form [formGroup]="filterForm">
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Traiff Name</mat-label>
+                            <mat-select formControlName="traiff">
+                                <mat-option *ngFor="let traiff of traiffs" [value]="traiff.tariffId">
+                                    {{traiff.tariffName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Group Name</mat-label>
+                            <mat-select formControlName="group">
+                                <mat-option *ngFor="let group of groups" [value]="group.groupId">
+                                    {{group.groupName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Class Name</mat-label>
+                            <mat-select formControlName="class">
+                                <mat-option *ngFor="let food of [{viewValue:'test', value:'text'}]"
+                                    [value]="food.value">
+                                    {{food.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Service Id</mat-label>
+                            <!-- <mat-icon matSuffix class="secondary-text">email</mat-icon> -->
+                            <input name="serviceId" formControlName="serviceId" matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Service Name</mat-label>
+                            <!-- <mat-icon matSuffix class="secondary-text">email</mat-icon> -->
+                            <input name="serviceName" formControlName="serviceName" matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>New Traiff Name</mat-label>
+                            <mat-select formControlName="newTraiff">
+                                <mat-option *ngFor="let food of [{viewValue:'test', value:'text'}]"
+                                    [value]="food.value">
+                                    {{food.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button class="mb-16" mat-raised-button color="primary">Process</button>
+                        <button mat-raised-button>Show</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / SIDEBAR CONTENT -->

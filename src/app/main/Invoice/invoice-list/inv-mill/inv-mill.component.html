@@ -1,0 +1,206 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+
+    <div class="header">
+        <div>
+            <span style="font-size: xx-large;color: aliceblue;padding: 5px;"> Mill Master Search </span>
+        </div>
+      
+      
+
+        <div class="close" style="margin-left:1200px;">
+
+            <button mat-raised-button (click)="NewMillmaster()">
+                <mat-icon color="warn" title="New Mill">how_to_reg</mat-icon>
+            </button>
+
+           
+            &nbsp;&nbsp;&nbsp;
+            <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+                close
+            </span>
+        </div>
+    </div>
+
+
+
+    <div class="search-body">
+        <div fxlayout="row" style="background-color: white; padding: 15px;">
+            <form [formGroup]="_InvoiceListService.mySearchform">
+                <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center">
+
+                    <mat-form-field appearance="outline" style="margin-left:30px;">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate formControlName="start" placeholder="Start date"  (dateChange)="getMillMasterDatewiseList($event.value)">
+                            <input matEndDate formControlName="end" placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                    &nbsp;
+
+                    <mat-form-field appearance="outline" style="padding-right: 10px;">
+                        <mat-label>Search Mill Data</mat-label>
+                        <input name="millCode" formControlName="millCode" matInput (keyup)="getMillMasterList()">
+                        <!-- <span class="error"
+                          *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">First Name is
+                          required Enter only Alphabets</span> -->
+                    </mat-form-field>
+
+
+
+                    <button  mat-raised-button class="searchButton"  (click)="getMillMasterList()"  matTooltip="search" >
+                        <mat-icon  class="searchiconbutton" >search</mat-icon>
+                    </button>
+                    <button class="footer-btn" (click)="onClear()" style="padding: 10px;margin-left: 10px;">clear</button>&nbsp;&nbsp;
+
+
+                    <button style="float: right;margin-left:50%" mat-raised-button color="accent"
+                        (click)="onExport('Excel')" matTooltip="Export To Excel">
+                        <mat-icon>save_alt</mat-icon>
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <button style="float:right;margin-right: 1%" mat-raised-button color="accent"
+                        (click)="onExport('Pdf')" matTooltip="Export To Pdf">
+                        <mat-icon>picture_as_pdf</mat-icon>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+
+        <!-- <div class="no-content" *ngIf="isLoading=='no-data'" style="width: fit-content; margin: auto;">
+            <mat-spinner [diameter]='30'></mat-spinner>
+        </div> -->
+    </div>
+
+    <div fxlayout="row" fusePerfectScrollbar>
+        <!-- style="width: 100%;" -->
+        <div fxFlex.gt-sm="100%" fxFlex>
+            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                <div class="spinner-border text-danger"></div>
+
+            </div>
+            <mat-table class="table1" matSort [dataSource]="dataSource"
+            [@animateStagger]="{value:'50'}">
+
+            <ng-container matColumnDef="millID">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                  millID
+                </mat-header-cell>
+                <mat-cell *matCellDef="let contact"  fxShow.gt-sm>
+                    {{contact.millID}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="millCode">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>millCode
+                </mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                    {{contact.millCode}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="millName" fxLayoutAlign="start center">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                    style=" margin-top: 8px; ">
+                    millName</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                    {{contact.millName}}
+                </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="createdBy">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                    CreatedBy
+                </mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                    {{contact.createdBy}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="createdOn">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                    CreatedOn
+                </mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                    {{contact.createdOn | date:'shortDate'}}
+                </mat-cell>
+            </ng-container>
+
+          
+
+
+            <ng-container matColumnDef="isActive" sticky>
+                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                    style="color: white;">ISActive/Not
+                </mat-header-cell>
+                <mat-cell *matCellDef="let contact">
+                    <mat-icon
+                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                        *ngIf="contact.isActive=='1' " matTooltip="IsActive"
+                        class="green-600 s-16 ">circle</mat-icon>
+                    <mat-icon
+                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                        *ngIf="contact.isActive=='0' " matTooltip="NotAvtive"
+                        class="orange-600 s-16 ">circle</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="action" stickyEnd>
+                <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-icon-button (click)="onEdit(row)">
+                        <mat-icon title="Edit Menu">launch</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="ondelete(row)">
+                        <mat-icon title="Edit Menu">delete</mat-icon>
+                    </button>
+
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                </mat-header-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                    no data found...
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+            </mat-header-row>
+            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']"
+                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+            </mat-footer-row>
+        </mat-table>
+
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <div class="content" style="display: none;">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

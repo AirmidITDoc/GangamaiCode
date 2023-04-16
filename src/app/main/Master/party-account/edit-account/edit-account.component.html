@@ -1,0 +1,197 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">Update Party Account Details</span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+          Show
+        </button> -->
+      <div class="form-div">
+  
+        <br />
+  
+        <form [formGroup]="_MasterService.accountmaster">
+  
+          <div style="float:right;color: blue;font-weight: bold;">
+            <h3>Todays Date :{{Today | date :'shortDate'}} </h3>
+  
+          </div>
+          <br>
+          <div style="padding: 7px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <select name="demo" id="#" formControlName="AccountType" style="font-size:18px;color: rgb(59, 59, 64);width: fit-content;font-weight: bold;border-radius: 16px;align-items: center;" value="1" 
+              aria-placeholder="Account Type" (change)="submit()">
+               
+                <option value="" selected disabled hidden>Account Type</option>
+                <option selected="selected" value="Party">Party</option>
+                <option value="Broker">Broker</option>
+                <option value="Sizing">Sizing</option>
+              </select>
+  
+             
+            
+              <!-- <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Account Type</mat-label>
+                <mat-select formControlName="StateId" name="StateId">
+                  (selectionChange)="onChangeCountryList($event.value)">
+                  <mat-option></mat-option>
+                  <mat-option *ngFor="let m of stateList" [value]="m">
+                    {{m.StateName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>PartyName</mat-label>
+                <input name="PartyName" [(ngModel)]="Name" formControlName="PartyName" placeholder="Party Name "
+                  matInput>
+              </mat-form-field>
+  
+              <!-- <select name="demo" id="#" formControlName="CreatedOn" style="width: 200px;">
+                <label>Cr./Dr.</label>
+                <option selected="selected" value="one">Credit</option>
+                <option value="two">Debit</option>
+  
+              </select> -->
+  
+              <select name="demo" id="#" formControlName="CreditDebit" style="font-size:18px;color: rgb(59, 59, 64);width: fit-content;border-radius: 16px;" value="1" 
+              aria-placeholder="Credit Type">
+               
+                <option value="" selected disabled hidden>Cr./Dr</option>
+                <option selected="selected" value="Cr">Credit</option>
+                <option value="Dr">Debit</option>
+                
+              </select>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Opening Balance</mat-label>
+                <input name="OpeningBalance" [(ngModel)]="OpeningBalance" formControlName="OpeningBalance" placeholder="Opening Balance"
+                  matInput>
+              </mat-form-field>
+  
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker1" placeholder="From Date" [formControl]="date1">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+  
+  
+            </div>
+  
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Contactperson</mat-label>
+                <input name="ContactPerson" [(ngModel)]="ContactPerson" formControlName="ContactPerson"
+                  placeholder="Contactperson Name " matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Mobile</mat-label>
+                <input name="Mobile" formControlName="Mobile" [(ngModel)]="Mobile" placeholder=" Mobile Number" matInput>
+              </mat-form-field>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>EMail </mat-label>
+                <input name="EMail" formControlName="EMail" [(ngModel)]="EMail" placeholder=" EMail Address" matInput>
+              </mat-form-field>
+  
+  
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Website</mat-label>
+                <input name="Website" formControlName="Website" [(ngModel)]="Website" placeholder=" Website" matInput>
+              </mat-form-field>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>BAddress </mat-label>
+                <input name="BAddress" formControlName="BAddress" [(ngModel)]="BAddress" placeholder=" Business Address" matInput>
+              </mat-form-field>
+  
+              <!-- <mat-form-field appearance="outline" fxFlex>
+                <mat-label>AadharCardNo </mat-label>
+                <input name="AadharCardNo" formControlName="AadharCardNo" [(ngModel)]="AadharCardNo"
+                  placeholder=" AadharCardNo" matInput>
+              </mat-form-field> -->
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>City</mat-label>
+                <input name="City" [(ngModel)]="City" formControlName="City" placeholder="City Name" matInput>
+              </mat-form-field>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>State</mat-label>
+                <input name="State" [(ngModel)]="State" formControlName="State" placeholder="State Name" matInput>
+              </mat-form-field>
+  
+          
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>District</mat-label>
+                <input name="District" [(ngModel)]="District" formControlName="District" placeholder="District Name" 
+                  matInput>
+              </mat-form-field>
+  
+             
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>pin</mat-label>
+                <input name="pin" [(ngModel)]="pin" formControlName="pin" placeholder="Pincode Number" matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Country</mat-label>
+                <input name="Country" [(ngModel)]="Country" formControlName="Country" placeholder="Country Name" matInput>
+              </mat-form-field>
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>GSTno</mat-label>
+                <input name="GSTno" formControlName="GSTno" [(ngModel)]="GSTno" placeholder=" GST Number" matInput>
+              </mat-form-field>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>PanNo </mat-label>
+                <input name="PanNo" formControlName="PanNo" [(ngModel)]="PanNo" placeholder=" Pan Number" matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>CINNo </mat-label>
+                <input name="CINNo" formControlName="CINNo" [(ngModel)]="CINNo" placeholder=" CIN Number" matInput>
+              </mat-form-field>
+            </div>
+            
+            <div style="float: right;margin-top: 30px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Update</button>
+              <button class="footer-btn" (click)="onClose()">Cancel</button>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>

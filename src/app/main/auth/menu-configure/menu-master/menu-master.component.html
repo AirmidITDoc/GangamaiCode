@@ -1,0 +1,130 @@
+<!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+    <mat-card>
+        <span>Sub Menu Master List</span>
+    </mat-card>
+</div> -->
+<div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+    <div fxFlex.gt-sm="65%" fxFlex >
+        <div style="width: 100%;">
+            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto">
+                <ng-container matColumnDef="menu_master_id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.menu_master_id}} </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="menu_master_link_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Menu Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.menu_master_link_name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="menu_master_icon">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Icon </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.menu_master_icon}} </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="menu_master_action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-sm> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let element"  fxHide fxShow.gt-sm> {{element.menu_master_action}} </mat-cell>
+                </ng-container>
+            
+                <!-- <ng-container matColumnDef="MenuDisplaySrno">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Display No </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.menu_master_display_sr_no}} </mat-cell>
+                </ng-container> -->
+            
+                <ng-container matColumnDef="menu_master_block">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsBlock </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.menu_master_block}} </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="action" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-icon-button (click)="onEditMenu(row)">
+                            <mat-icon title="Edit Menu">launch</mat-icon>
+                        </button>
+                        <button mat-icon-button [routerLink]="['/auth/menu-main/menu-master',row.menu_master_id]">
+                            <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                        loading data...
+                    </mat-footer-cell>
+                </ng-container>
+            
+                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="12" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+        <div class="dialog-content-wrapper">
+            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                <form [formGroup]="_MenuService.myformMenu">
+                    <h3>New Menu Master</h3>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Number </mat-label>
+                            <!-- <mat-icon matSuffix class="secondary-text">account_circle</mat-icon> -->
+                            <input name="menu_master_id" formControlName="menu_master_id" matInput required>
+                            <mat-error>Please enter Menu Number</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Menu Name</mat-label>
+                            <!-- <mat-icon matSuffix class="secondary-text">account_circle</mat-icon> -->
+                            <input name="menu_master_link_name" formControlName="menu_master_link_name" matInput required>
+                            <mat-error>Please enter Menu Name </mat-error>
+                        </mat-form-field>
+                    </div>        
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <mat-form-field  appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Icon</mat-label>
+                            <input name="menu_master_icon" formControlName="menu_master_icon" matInput required>
+                            <mat-error>Please enter Icon </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <mat-form-field  appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>action</mat-label>
+                            <input name="menu_master_action" formControlName="menu_master_action" matInput required>
+                            <mat-error>Please enter action </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Display No</mat-label>
+                            <input name="menu_master_display_sr_no" formControlName="menu_master_display_sr_no" matInput required>
+                            <mat-error>Please enter menu display sr no </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-select placeholder="Please Select IsBlock" name="menu_master_block"
+                                formControlName="menu_master_block" required>
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                            </mat-select>
+                            <mat-error>Please Select IsBlock</mat-error>
+                        </mat-form-field>
+                    </div>                        
+                 </form>
+            </div>
+            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                        [disabled]="_MenuService.myformMenu.invalid">Save</button>
+                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
