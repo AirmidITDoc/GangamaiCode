@@ -1,28 +1,26 @@
 <div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
     <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
-        <div  [@animate]="{ value: '*', params: { scale: '0.2' } }">
-            <img src="assets/images/weaver.webp" style="width: 95%;" />
+        <div class="logo" [@animate]="{ value: '*', params: { scale: '0.2' } }">
+            <img src="assets/images/logos/Airmid_NewLogo.jpeg" />
         </div>
 
         <div
             class="title"
             [@animate]="{ value: '*', params: { delay: '50ms', y: '25px' } }"
         >
-            <!-- Welcome to the Anther !!!! -->
+        Welcome to the AirMid Technologies
         </div>
 
         <div class="description" [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }">
-            <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            ullamcorper nisl erat, vel convallis elit fermentum pellentesque.
-            Sed mollis velit facilisis facilisis viverra. -->
+           We care healthcare ....
         </div>
     </div>
-
     <div id="login-form-wrapper" fusePerfectScrollbar
         [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }">
         <div id="login-form">
             <div class="logo" fxHide.gt-xs>
-                <!-- <img src="assets/images/logos/logo_final.png" /> -->
+                <div class="title"> AirMid </div>
+                <img src="assets/images/logos/Airmid_NewLogo.jpeg" />
             </div>
 
             <div class="title">LOGIN TO YOUR ACCOUNT</div>

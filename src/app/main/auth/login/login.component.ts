@@ -72,8 +72,9 @@ export class LoginComponent implements OnInit {
         });
 
         // get return url from route parameters or default to '/'
-        // this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboards";
-        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/Invoice/invoicelist";
+        //this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboards";
+        debugger;
+        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/opd/registration";
 
         // this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/menu-configure/menu-master";
     }
@@ -106,14 +107,11 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-debugger;
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
-debugger;
         this.loading = true;
-        
         this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
                 (data) => {
                     // console.log(data);

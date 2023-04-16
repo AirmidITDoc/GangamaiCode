@@ -28,9 +28,6 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { JwtInterceptor } from "./core/jwt.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
-import { BeamInwardComponent } from './main/Beam_Inventory/beam-inward/beam-inward.component';
-
-
 
 const appRoutes: Routes = [
     {
@@ -38,80 +35,82 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/auth/auth.module").then((m) => m.AuthModule),
     },
-   
-    {
-        path: 'dashboards/analytics',
-        loadChildren: () => import('./main/dashboards/analytics/analytics.module').then(m => m.AnalyticsDashboardModule)
-    },
-    {
-        path: 'dashboards/project',
-        loadChildren: () => import('./main/dashboards/project/project.module').then(m => m.ProjectDashboardModule)
-    },
     {
         path: "setup",
         loadChildren: () =>
             import("./main/setup/setup.module").then((m) => m.SetupModule),
     },
-
     {
-        path: "Account Master",
+        path: "dashboard",
         loadChildren: () =>
-            import("./main/Master/master.module").then((m) => m.MasterModule),
+            import("./main/dashboard/dashboard.module").then((m) => m.DashboardModule),
     },
     {
-        path: "Invoice",
+        path: "opd",
         loadChildren: () =>
-            // import("./main/Invoice/invoice.module").then((m) => m.InvoiceModule),
-
-            import("./main/dashboards/analytics/analytics.module").then((m) => m.AnalyticsDashboardModule),
-    },
-    
-
-    {
-        path: "InventoryMaster",
-        loadChildren: () =>
-            //  import("./main/Invoice/invoice-list/invoice-list.module").then((m) => m.InvoiceListModule),
-             import("./main/Inventory_Master/inventory-master.module").then((m) => m.InventoryMasterModule),
+            import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
     {
-        path:"Beam Inventory",
+        path: "ipd",
         loadChildren: () =>
-        import("./main/Beam_Inventory/beam-invemtoryall.module").then((m) => m.BeamInvemtoryallModule),
+            import("./main/ipd/ipd.module").then((m) => m.IpdModule),
     },
     {
-        path:"Contract Booking",
+        path: "pathology",
         loadChildren: () =>
-        import("./main/ContractBooking/contractbooking.module").then((m) => m.ContractbookingModule),
-
-    },
-
-    {
-        path:"Daily Production",
-        loadChildren: () =>
-        import("./main/DailyProduction/dailyproduction.module").then((m) => m.DailyproductionModule),
-    },
-
-    {
-        path:"Other Info Master",
-        loadChildren: () =>
-        import("./main/Other_info_master/otherinfo-master.module").then((m) => m.OtherinfoMasterModule),
-
+            import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
     },
     {
-        path:"Yarn Inventory",
+        path: "radiology",
         loadChildren: () =>
-        import("./main/YarnInventory/yarn-mater.module").then((m) => m.YarnMaterModule),
-
+            import("./main/radiology/radiology.module").then((m) => m.RadiologyModule),
     },
-
-   
+  
+    {
+        path: "nursingstation",
+        loadChildren: () =>
+            import("./main/nursingstation/nursingstation.module").then((m) => m.NursingstationModule),
+    },
+    {
+        path: "otmanagement",
+        loadChildren: () =>
+            import("./main/otmanagement/otmanagement.module").then((m) => m.OtmanagementModule),
+    },
+    // {
+    //     path: "mrd",
+    //     loadChildren: () =>
+    //         import("./main/mrd/mrd.module").then((m) => m.MrdModule),
+    // },
+    {
+        path: "inventory",
+        loadChildren: () =>
+            import("./main/inventory/inventory.module").then((m) => m.InventoryModule),
+    },
+    {
+        path: "purchase",
+        loadChildren: () =>
+            import("./main/purchase/purchase.module").then((m) => m.PurchaseModule),
+    },
+    {
+        path: "pharmacy",
+        loadChildren: () =>
+            import("./main/pharmacy/pharmacy.module").then((m) => m.PharmacyModule),
+    },
+    {
+        path: "reports",
+        loadChildren: () =>
+            import("./main/reports/reports.module").then((m) => m.ReportsModule),
+    },
+    {
+        path: "administration",
+        loadChildren: () =>
+            import("./main/administration/administration.module").then((m) => m.AdministrationModule),
+    },
     {
         path: '**',
         redirectTo: 'auth/login'
     }
 ];
-
-
 
 export const PICK_FORMATS = {
     parse: {dateInput: {month: 'short', year: 'numeric', day: 'numeric'}},
