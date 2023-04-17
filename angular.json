@@ -31,7 +31,6 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "showCircularDependencies": false,
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -148,7 +147,6 @@
       }
     }
   },
-  "defaultProject": "fuse",
   "cli": {
     "analytics": false
   }
