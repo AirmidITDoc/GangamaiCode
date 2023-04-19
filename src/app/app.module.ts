@@ -48,7 +48,7 @@ const appRoutes: Routes = [
             import("./main/setup/setup.module").then((m) => m.SetupModule),
     },
     {
-        path: "Opd",
+        path: "opd",
         loadChildren: () =>
             import("./main/opd/opd.module").then((m) => m.OPDModule),
     },

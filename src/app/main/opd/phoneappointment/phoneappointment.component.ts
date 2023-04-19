@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PhoneappointmentComponent implements OnInit {
 
-  constructor() { }
+  dialogRef: any;
+  hasSelectedContacts: boolean;
+  searchInput: FormControl;
+  
+  constructor(
+    private _fuseSidebarService: FuseSidebarService
+  ) { }
 
   ngOnInit(): void {
   }

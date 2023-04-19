@@ -73,9 +73,7 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         // this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboards";
-        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/Invoice/invoicelist";
-
-        // this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/menu-configure/menu-master";
+        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/opd/registration";
     }
 
     // convenience getter for easy access to form fields

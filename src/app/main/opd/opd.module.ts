@@ -10,8 +10,6 @@ const appRoutes: Routes = [
   {
       path: "phone-appointment",
      loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
-     
-      // loadChildren: () => import("./phone-appointment/phone-appointment.module").then((m) => m.phoneappointment),
   },
   {
       path: "appointment",
