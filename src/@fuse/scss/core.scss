@@ -1,5 +1,4 @@
 // This file meant to be imported only once! Use fuse.scss to access
-@use '@angular/material' as mat;
 // to the core Fuse and Angular Material mixins
 
 // ngx-datatable
@@ -15,7 +14,7 @@
 @import "theme";
 
 // Include core Angular Material styles
-@include mat.core();
+@include mat-core();
 
 // Partials
 @import "partials/normalize";

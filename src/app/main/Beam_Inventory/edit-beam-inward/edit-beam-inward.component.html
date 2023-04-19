@@ -1,0 +1,580 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">Edit Beam Inward Details</span>
+        <span style="color: aqua;padding-left:850px;">Todays Date :{{Today | date :'shortDate'}} </span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+          Show
+        </button> -->
+      <div class="form-div">
+  
+        <br />
+        <mat-card style="padding: 10px;">
+          <form [formGroup]="_BeaminventoryService.beaminventoryform">
+  
+            <div style="padding: 7px;">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15px">
+  
+  
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker1" placeholder="Inward Time" [formControl]="Inwarddate"
+                    formControlName="Inwarddate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+  
+                <!-- <mat-form-field>
+                              <input matInput [matDatepicker]="picker2" placeholder="Inward Time" [formControl]="time" formControlName="Inwardtime">
+                              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
+                          </mat-form-field> -->
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Current Time</mat-label>
+                  <input name="Inwardtime" [(ngModel)]="time" formControlName="Inwardtime" placeholder="Inwardtime"
+                    matInput>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>GP/Chal No.</mat-label>
+                  <input name="Gpchalno" [(ngModel)]="Gpchalno" formControlName="Gpchalno" placeholder="Gpchalno"
+                    matInput>
+                </mat-form-field>
+  
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker3" placeholder="Challan Date" [formControl]="Chaldate"
+                    formControlName="Chaldate">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+  
+  
+                <!-- <mat-form-field appearance="outline" style="margin-left: 10px;">
+                              <mat-label> Partyname</mat-label>
+                              <input name="Partyname" [(ngModel)]="Partyname" formControlName="Partyname" placeholder="Partyname"
+                                  matInput>
+                          </mat-form-field>
+  
+                          
+                          <mat-form-field appearance="outline" fxFlex>
+                              <mat-label> Sizingname</mat-label>
+                              <input name="Sizingname" [(ngModel)]="Sizingname" formControlName="Sizingname" placeholder="Sizingname"
+                                  matInput>
+                          </mat-form-field>
+  
+                          <mat-form-field appearance="outline" fxFlex>
+                              <mat-label> Partysetno</mat-label>
+                              <input name="Partysetno" [(ngModel)]="Partysetno" formControlName="Partysetno" placeholder="Partysetno" matInput>
+                          </mat-form-field> -->
+              </div>
+  
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Party Name</mat-label>
+                  <mat-select formControlName="PartyID" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="partyFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredParty | async" [value]="element">
+                      {{element.PartyName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Sizing Name</mat-label>
+                  <mat-select formControlName="SizingID" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="sizingFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredSizing | async" [value]="element">
+                      {{element.SizingName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label> Party Set No.</mat-label>
+                  <input name="Partysetno" [(ngModel)]="Partysetno" formControlName="Partysetno" placeholder="Partysetno"
+                    matInput>
+                </mat-form-field>
+  
+              </div>
+  
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Contractno</mat-label>
+                  <mat-select formControlName="Contractno" (selectionChange)="getSelectedContract($event.value)">
+                    <mat-option></mat-option>
+                    <mat-option *ngFor="let g of ContractList" [value]="g">
+                      Booking Id: {{g.ContractBookingID}},Party Id:{{g.PartyID}}, Total Meters:{{g.TotalMeter}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker4" placeholder="Contract Date" [formControl]="Contactdate"
+                    formControlName="Contactdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label> Cont.Meters</mat-label>
+                  <input name="Contmeters" [(ngModel)]="Contmeters" formControlName="Contmeters" placeholder="Contmeters"
+                    matInput type="number">
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label> Curr.Rec.Meters</mat-label>
+                  <input name="Currrecmtrs" [(ngModel)]="Currrecmtrs" formControlName="Currrecmtrs"
+                    placeholder="Currrecmtrs" matInput type="number" (keyup)="getContractMeters()">
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" style="margin-left: 10px;">
+                  <mat-label> Pre. Rec.Meters</mat-label>
+                  <input name="Prerecmtrs" [(ngModel)]="Prerecmtrs" formControlName="Prerecmtrs" placeholder="Prerecmtrs"
+                    matInput type="number" (keyup)="getMeterSum()">
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" style="margin-left: 10px;">
+                  <mat-label> Balance Meters</mat-label>
+                  <input name="BalanceMeters" [(ngModel)]="BalanceMeters" formControlName="BalanceMeters"
+                    placeholder="BalanceMeters" matInput type="number">
+                </mat-form-field>
+  
+              </div>
+              <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                <mat-form-field appearance="outline" style="margin-left: 10px;">
+                  <mat-label> Pre. Rec.Meters</mat-label>
+                  <input name="Prerecmtrs" [(ngModel)]="Prerecmtrs" formControlName="Prerecmtrs" placeholder="Prerecmtrs"
+                    matInput type="number"  (keyup)="getMeterSum()">
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" style="margin-left: 10px;">
+                  <mat-label> Balance Meters</mat-label>
+                  <input name="BalanceMeters" [(ngModel)]="BalanceMeters" formControlName="BalanceMeters"
+                    placeholder="BalanceMeters" matInput type="number">
+                </mat-form-field>
+              </div> -->
+              
+              <div fxLayout="row" style="width:100%;padding-top: 5px;">
+  
+                <mat-table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                  style="overflow:auto; width:100%;height:200px !important;border-color:rgb(177, 184, 184);border-style:outset;">
+  
+                  <ng-container matColumnDef="BeamSrNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header sticky>Beam Sr.No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 90%;">
+                        <input matInput [(ngModel)]="element.BeamSrNo" [ngModelOptions]="{standalone: true}"
+                          name="BeamSrNo">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="SizeSetNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header sticky>Size Set No.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 90%;">
+                        <input matInput [(ngModel)]="element.SizeSetNo" [ngModelOptions]="{standalone: true}"
+                          name="SizeSetNo">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+  
+                  <ng-container matColumnDef="SetBeamNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Set.Beam No.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.SetBeamNo" [ngModelOptions]="{standalone: true}" name="Count"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="QualityId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header sticky>QualityId
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 90%;">
+                        <input matInput [(ngModel)]="element.QualityId" [ngModelOptions]="{standalone: true}" name="QualityId"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <!-- (keyup)="getEndper(element)" -->
+  
+                  <ng-container matColumnDef="DesignId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> DesignId
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.DesignId" [ngModelOptions]="{standalone: true}" name="DesignId"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="FlangeNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header sticky> Flange No.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 90%;">
+                        <input matInput [(ngModel)]="element.FlangeNo" [ngModelOptions]="{standalone: true}" name="FlangeNo">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+  
+                  <ng-container matColumnDef="Ends">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Ends
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Ends" [ngModelOptions]="{standalone: true}" name="Ends"
+                         >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="RSpace">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header sticky> R.Space
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 90%;">
+                        <input matInput [(ngModel)]="element.RSpace" [ngModelOptions]="{standalone: true}" name="RSpace"
+                         >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Reed">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Reed(Inch)
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Reed" [ngModelOptions]="{standalone: true}" name="Reed"
+                         >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="DesignPick">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> DesignId Pick
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.DesignPick" [ngModelOptions]="{standalone: true}"
+                          name="DesignPick" type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="LoomPick">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Loom Pick
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.LoomPick" [ngModelOptions]="{standalone: true}"
+                          name="LoomPick" type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="Lasa">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Lasa
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Lasa" [ngModelOptions]="{standalone: true}" name="Lasa"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="YardMeter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Y/M
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.YardMeter" [ngModelOptions]="{standalone: true}" name="YardMeter"
+                          >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Cuts">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Cuts
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Cuts" [ngModelOptions]="{standalone: true}" name="Cuts"
+                          type="number" (keyup)="getCutsSum(dataSource.data)">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="BeamWt">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> BM.Wt
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.BeamWt" [ngModelOptions]="{standalone: true}" name="BeamWt"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="BeamMeter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> BM. Meters
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width:92%;">
+                        <input matInput [(ngModel)]="element.BeamMeter" [ngModelOptions]="{standalone: true}"
+                          name="BeamMeter" type="number" (keyup)="getTotalMeterSum(dataSource.data)">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Shrink">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Shrink%
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Shrink" [ngModelOptions]="{standalone: true}" name="Shrink"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="ProdMeter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Prod.Meters
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.ProdMeter" [ngModelOptions]="{standalone: true}"
+                          name="ProdMeter" type="number"  (keyup)="getProductionSum(dataSource.data)">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <!-- keyup()="getProductionSum(element)" -->
+                  <ng-container matColumnDef="ReqMeter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Req L-L Mtr.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.ReqMeter" [ngModelOptions]="{standalone: true}" name="ReqMeter"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="Addless">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> + / -
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.Addless" [ngModelOptions]="{standalone: true}" name="Addless"
+                        >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="ReqFolds">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> ReqFold
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.ReqFolds" [ngModelOptions]="{standalone: true}" name="ReqFolds"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="WeftCons">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Weft Cons.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.WeftCons" [ngModelOptions]="{standalone: true}"
+                          name="WeftCons" type="number" (keyup)="geWeftconSum(dataSource.data)">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+  
+                  <ng-container matColumnDef="JobPick">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Job Pick
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.JobPick" [ngModelOptions]="{standalone: true}" name="JobPick"
+                         >
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="RatePerMeter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Rate/Mtrs
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="outline" style="width: 92%;">
+                        <input matInput [(ngModel)]="element.RatePerMeter" [ngModelOptions]="{standalone: true}" name="RatePerMeter"
+                          type="number">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="action" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef style="color: white;">
+                      Action
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm style="width: 60%;">
+                      <span *ngIf="element.isLocallyAdded" class="material-icons" style="cursor: pointer;"
+                        (click)="onDelete(element)">
+                        delete
+                      </span>
+  
+                      <!-- <button mat-icon-button (click)="getPrint(element)" matTooltip="print" ><mat-icon>print</mat-icon></button> -->
+                      <button mat-stroked-button *ngIf="!element.isLocallyAdded" (click)="addEmptyRow(element)"
+                        style="height:30px; cursor: pointer;margin-bottom: 5px;">
+                        <span class="material-icons" style="margin-bottom: 5px ;">
+                          add
+                        </span>
+                      </button>
+                      <!-- <span *ngIf="!element.isLocallyAdded" class="material-icons" style="cursor: pointer;"
+                                          (click)="addEmptyRow(element)">
+                                          add
+                                      </span> -->
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      loading data...
+                    </mat-footer-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      <!-- <mat-spinner *ngIf="isLoading=='no-data'" [diameter]='30'></mat-spinner> -->
+                      No Data found
+                    </mat-footer-cell>
+                  </ng-container>
+  
+                  <mat-header-row class="accent" *matHeaderRowDef="displayColumns1; sticky: true">
+                  </mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayColumns1;" class="element"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                  </mat-row>
+                  <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
+                  </mat-footer-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                  </mat-footer-row>
+                </mat-table>
+  
+              </div>
+  
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" style="padding-top: 10px;">
+  
+                <mat-form-field appearance="outline" style="margin-left: 10px;">
+                  <mat-label>Total Cuts</mat-label>
+                  <input name="Totalcuts" formControlName="Totalcuts" [(ngModel)]="Totalcuts" placeholder="Totalcuts"
+                    matInput>
+                </mat-form-field>
+  
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Total Beam mtrs. </mat-label>
+                  <input name="Totalbeammtrs" formControlName="Totalbeammtrs" [(ngModel)]="Totalbeammtrs"
+                    placeholder="Totalbeammtrs" matInput>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Total Production</mat-label>
+                  <input name="Totalproduction" formControlName="Totalproduction" [(ngModel)]="Totalproduction"
+                    placeholder=" Totalproduction" matInput>
+                </mat-form-field>
+  
+  
+  
+              </div>
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Total Weft.Cons</mat-label>
+                  <input name="Totalweftcons" formControlName="Totalweftcons" [(ngModel)]="Totalweftcons"
+                    placeholder=" Totalweftcons" matInput>
+                </mat-form-field>
+  
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Transport Name</mat-label>
+                  <mat-select formControlName="TransportID" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="transportFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredTransport | async" [value]="element">
+                      {{element.TransportName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Vechicle No</mat-label>
+                  <input name="Vechicleno" formControlName="Vechicleno" [(ngModel)]="Vechicleno" placeholder=" Vechicleno"
+                    matInput>
+                </mat-form-field>
+              </div>
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Remark</mat-label>
+                  <input name="Remark" formControlName="Remark" [(ngModel)]="Remark" placeholder=" Remark" matInput>
+                </mat-form-field>
+              </div>
+  
+              <div style="float: right;margin-top: 50px;">
+                <button class="next-btn" (click)="onSave()" style="border-radius: 16px;">Update</button>
+                <button class="footer-btn" (click)="onClose()">Cancel</button>
+              </div>
+          
+            </div>
+          </form>
+        </mat-card>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>

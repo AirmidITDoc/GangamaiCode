@@ -1,4 +1,3 @@
-@use '@angular/material' as mat;
 @import "src/@fuse/scss/fuse";
 
 register {
@@ -41,7 +40,7 @@ register {
             overflow: auto;
             -webkit-overflow-scrolling: touch;
 
-            @include mat.elevation(16);
+            @include mat-elevation(16);
 
             @include media-breakpoint('sm') {
                 width: 360px;

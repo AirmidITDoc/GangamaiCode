@@ -1,0 +1,67 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">New Mill Details</span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+        Show
+      </button> -->
+      <div class="form-div">
+  
+  <br/>
+  
+        <form [formGroup]="_InvoiceListService.Millform">
+          <div style="float:right;color: blue;font-weight: bold;">
+            <h3>Todays Date :{{Today | date:'shortDate'}} </h3>
+           
+
+        </div>
+          <div style="padding: 7px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Mill ID</mat-label>
+                <input name="millID" [(ngModel)]="millID" formControlName="millID" placeholder="millID"
+                  matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Invoice Date</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a InvoiceDate" name="InvoiceDate"
+                 >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+  
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>millName</mat-label>
+                <input name="millName" [(ngModel)]="millName" formControlName="millName" placeholder="millName" matInput>
+              </mat-form-field>
+  
+           
+  
+            </div>
+             
+  
+            <br>
+            <div style="float: right;margin-top: 30px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Save</button>
+              <button class="footer-btn" (click)="onClose()">Cancel</button>
+            </div>
+            <br>
+          </div>
+        </form>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>

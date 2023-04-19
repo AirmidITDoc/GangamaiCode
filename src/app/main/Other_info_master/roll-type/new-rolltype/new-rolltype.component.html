@@ -1,0 +1,56 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">New RollType Details</span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+        Show
+      </button> -->
+      <div class="form-div">
+  
+        <mat-card style="padding: 10px;">  
+        <form [formGroup]="_OtherinfoMasterService.otherallform">
+          <div style="float:right;color: blue;font-weight: bold;">
+            <h3>Todays Date :{{Today | date:'shortDate'}} </h3>
+           
+        </div>
+          <div style="padding: 7px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+             
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker1" placeholder="Entry Date" [formControl]="date1">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+  
+  
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+           
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>RollType</mat-label>
+                <input name="RollType" [(ngModel)]="RollType" formControlName="RollType" placeholder="RollType" matInput>
+              </mat-form-field>
+  
+            </div>
+             
+              <div style="float: right;margin-top: 30px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Save</button>
+              <button class="footer-btn" (click)="onClose()">Cancel</button>
+            </div>
+            
+          </div>
+        </form>
+        </mat-card>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>

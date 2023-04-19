@@ -1,4 +1,3 @@
-@use '@angular/material' as mat;
 @import "src/@fuse/scss/fuse";
 
 #contacts {
@@ -10,7 +9,7 @@
             max-width: 480px;
             border-radius: 28px;
             overflow: hidden;
-            @include mat.elevation(1);
+            @include mat-elevation(1);
 
             .search {
                 width: 90%;

@@ -1,4 +1,3 @@
-@use '@angular/material' as mat;
 @mixin register-theme($theme) {
 
     $background: map-get($theme, background);
@@ -16,7 +15,7 @@
 
             #register-form-wrapper {
                 @if ($is-dark) {
-                    background: mat.get-color-from-palette($fuse-navy, 600);
+                    background: mat-color($fuse-navy, 600);
                 } @else {
                     background: map-get($background, card);
                 }

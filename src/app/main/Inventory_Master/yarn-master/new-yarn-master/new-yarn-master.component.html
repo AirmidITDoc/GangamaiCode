@@ -1,0 +1,99 @@
+<div class="main-content">
+    <div class="form-section">
+      <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">New Yarn Details</span>
+        <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;">
+          close
+        </span>
+  
+      </div>
+      <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display: none;">
+        Show
+      </button> -->
+      <div class="form-div">
+  
+  <br/>
+  <mat-card style="padding: 10px;">
+        <form [formGroup]="_InvoiceListService.invyarnform">
+
+          <div style="float:right;color: blue;font-weight: bold;">
+            <h3>Todays Date :{{Today | date:'shortDate'}} </h3>
+           
+          </div>
+          <div style="padding: 7px;">
+            
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Yarn Name</mat-label>
+                <input name="YarnName" [(ngModel)]="YarnName" formControlName="YarnName" placeholder="Yarn Name "
+                  matInput>
+              </mat-form-field>
+  
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker1" placeholder="Entry Date" [formControl]="date1">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+  
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>count</mat-label>
+                <input name="count" [(ngModel)]="count" formControlName="count" placeholder="Yarn Count" matInput type="number">
+              </mat-form-field>
+  
+              
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>ply</mat-label>
+                <input name="ply" [(ngModel)]="ply" formControlName="ply" placeholder="Yarn Ply" matInput>
+              </mat-form-field>
+  
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+            
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label> Type</mat-label>
+                <input name="type" [(ngModel)]="type" formControlName="type" placeholder="Yarn Type" matInput>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label> blend</mat-label>
+                <input name="blend" [(ngModel)]="blend" formControlName="blend" placeholder="Yarn Blend" matInput>
+              </mat-form-field>
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Actual count</mat-label>
+                <input name="Actualcnt" formControlName="Actualcnt" [(ngModel)]="Actualcnt"
+                  placeholder=" Actual Count" matInput type="number">
+              </mat-form-field>
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>deniercnt </mat-label>
+                <input name="deniercnt" formControlName="deniercnt" [(ngModel)]="deniercnt"
+                  placeholder=" deniercnt" matInput>
+              </mat-form-field>
+  
+  
+            </div>
+          
+            <div style="float: right;margin-top: 30px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">Save</button>
+              <button class="footer-btn" (click)="onClose()">Cancel</button>
+            </div>
+            
+          </div>
+        </form>
+      </mat-card>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
