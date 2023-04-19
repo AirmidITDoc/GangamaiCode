@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import "src/@fuse/scss/fuse";
 
 :host {
@@ -23,7 +24,7 @@
             border-radius: 8px;
 
             @include media-breakpoint(gt-sm) {
-                @include mat-elevation(1);
+                @include mat.elevation(1);
             }
 
             > .header {
