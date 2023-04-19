@@ -24,13 +24,9 @@ import { fuseConfig } from 'app/fuse-config';
 import { FakeDbService } from "app/fake-db/fake-db.service";
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-
 import { JwtInterceptor } from "./core/jwt.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
-import { BeamInwardComponent } from './main/Beam_Inventory/beam-inward/beam-inward.component';
-
-
 
 const appRoutes: Routes = [
     {
@@ -38,7 +34,6 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/auth/auth.module").then((m) => m.AuthModule),
     },
-   
     {
         path: 'dashboards/analytics',
         loadChildren: () => import('./main/dashboards/analytics/analytics.module').then(m => m.AnalyticsDashboardModule)
@@ -52,59 +47,11 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/setup/setup.module").then((m) => m.SetupModule),
     },
-
     {
-        path: "Account Master",
+        path: "Opd",
         loadChildren: () =>
-            import("./main/Master/master.module").then((m) => m.MasterModule),
+            import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
-    {
-        path: "Invoice",
-        loadChildren: () =>
-            // import("./main/Invoice/invoice.module").then((m) => m.InvoiceModule),
-
-            import("./main/dashboards/analytics/analytics.module").then((m) => m.AnalyticsDashboardModule),
-    },
-    
-
-    {
-        path: "InventoryMaster",
-        loadChildren: () =>
-            //  import("./main/Invoice/invoice-list/invoice-list.module").then((m) => m.InvoiceListModule),
-             import("./main/Inventory_Master/inventory-master.module").then((m) => m.InventoryMasterModule),
-    },
-    {
-        path:"Beam Inventory",
-        loadChildren: () =>
-        import("./main/Beam_Inventory/beam-invemtoryall.module").then((m) => m.BeamInvemtoryallModule),
-    },
-    {
-        path:"Contract Booking",
-        loadChildren: () =>
-        import("./main/ContractBooking/contractbooking.module").then((m) => m.ContractbookingModule),
-
-    },
-
-    {
-        path:"Daily Production",
-        loadChildren: () =>
-        import("./main/DailyProduction/dailyproduction.module").then((m) => m.DailyproductionModule),
-    },
-
-    {
-        path:"Other Info Master",
-        loadChildren: () =>
-        import("./main/Other_info_master/otherinfo-master.module").then((m) => m.OtherinfoMasterModule),
-
-    },
-    {
-        path:"Yarn Inventory",
-        loadChildren: () =>
-        import("./main/YarnInventory/yarn-mater.module").then((m) => m.YarnMaterModule),
-
-    },
-
-   
     {
         path: '**',
         redirectTo: 'auth/login'
