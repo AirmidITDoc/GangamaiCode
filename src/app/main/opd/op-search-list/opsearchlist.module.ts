@@ -1,30 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { OpSearchListComponent } from './op-search-list.component';
-
+import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
 
 const routes: Routes = [
     {
         path: '**',
-        component: OpSearchListComponent,
+        component: OpdSearchListComponent,
     },
 ];
 @NgModule({
     declarations: [
-        OpSearchListComponent,
+        OpdSearchListComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
     ],
     providers: [
-        // RegistrationService,
-        // NotificationServiceService ,
         DatePipe
     ],
     entryComponents: [
-        OpSearchListComponent,
-        // NotificationServiceService
+        OpdSearchListComponent,
     ]
 })
 export class opseachlistModule {
