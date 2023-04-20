@@ -18,8 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { PhoneAppointmentListComponent } from './phone-appointment-list/phone-appointment-list.component';
-
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 const routes: Routes = [
     {
@@ -30,7 +29,6 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         PhoneappointmentComponent,
-        PhoneAppointmentListComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -50,16 +48,14 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxMatSelectSearchModule
     ],
     providers: [
-        // RegistrationService,
-        // NotificationServiceService ,
         DatePipe
     ],
     entryComponents: [
         PhoneappointmentComponent,
-        // NotificationServiceService
     ]
 })
 export class phoneappointmentModule {
