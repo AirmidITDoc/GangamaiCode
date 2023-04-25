@@ -1,0 +1,389 @@
+@import "src/@fuse/scss/fuse";
+app-browse-op-list{
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100%;
+    width: 100%;
+    
+    .mat-form-field {
+        margin-right: 12px;
+      } 
+
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background-color: white;    
+            
+        @include media-breakpoint(gt-sm) {
+            //prasad
+            // padding: 24px 4px 24px 24px;
+            padding: 12px 0 12px 12px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding: 0;
+            border-radius: 8px;
+
+            @include media-breakpoint(gt-sm) {
+                @include mat-elevation(1);
+            }
+
+            > .header {
+                flex: 0 1 auto;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            > .content {
+                flex: 0 1 auto;
+            }
+
+            .example-chip-list {
+                width: 100%;
+                font-size: small;
+                display:inline
+               }
+
+            // .mat-form-field-wrapper {
+            //     padding-bottom: 0.34375em;
+            // }
+        }
+    }
+
+}
+
+
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+
+:host {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    
+    .mat-table {
+        //height: 400px !important;
+      // height: 100%;
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+
+        .mat-column-checkbox {
+            flex: 0 1 64px;
+            padding-left: 18px;
+        }
+
+        .mat-column-avatar {
+            flex: 0 1 64px;
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+           
+            .mat-cell {
+                
+
+               min-width:0px;
+                white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                overflow: hidden !important;
+                display: inline-block;
+               
+                
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+.active-icon {
+    border-radius: 50%;
+}
+
+}
+
+app-browse-op-list{
+.mat-header-row {
+   
+  //  max-width: 100%; 
+     min-width: 1240px; 
+     min-height: 20px;  
+     width: 100%; 
+    
+}
+
+.mat-row {
+   //  max-width: 100%;
+    min-height: 25px;  
+    width: 100%; 
+    min-width: 1240px; 
+    display: flex;      
+}
+
+.mat-column-BillDate {
+    width:120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: center;
+}
+.mat-column-PBillNo {
+     width:100px;
+     max-width:100px;
+     min-width:100px;
+    text-align: right;
+    justify-content:left; 
+}
+
+.mat-column-RegNo {
+    width:100px;
+    max-width:100px;
+    min-width:100px;
+   text-align: right;
+   justify-content:left; 
+}
+.mat-column-PatientName {
+   
+    width: 200px;
+    max-width:200px;
+    min-width:200px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 10px;   
+    justify-content:left; 
+}
+
+.mat-column-TotalAmt {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: right;
+    //justify-content:right;
+     justify-content:right;
+  
+   
+    
+}
+.mat-column-NEFTPayAmount{
+    width: 110px;
+    max-width:110px;
+    min-width:110px;
+    justify-content:right;
+    text-align: right;
+}
+.mat-column-PayTMAmount{
+    width: 110px;
+    max-width:110px;
+    min-width:110px;
+    justify-content:right;
+    text-align: right;
+}
+.mat-column-ConcessionAmt {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align:right;
+    justify-content:right;
+}
+.mat-column-NetPayableAmt{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: right;
+    justify-content:right;
+}
+.mat-column-PaidAmount{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: right;
+    justify-content:right;
+    // justify-content:flex-start;
+}
+.mat-column-BalanceAmt{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: right;
+    justify-content:right;
+    margin-right: 15px;
+    // justify-content:flex-start;
+}
+.mat-column-action{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+   // color: white;
+    text-align: center;
+     justify-content:center;
+}
+
+.mat-icon-button {
+    padding: 2px 2px 2px 2px;
+    min-width: 0;
+    width: 30px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+
+
+
+    // border-radius: 50%;
+}
+
+.clearbutton{
+    padding-right: 5px;
+    padding-left: 5px;
+    float:right;
+    color: blue;
+    width: 27%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin: 5px;  
+    font-size:17px;  
+    border:1px solid #808080; 
+    height: 40px;
+
+}
+
+
+.cleariconbutton{
+    font-size: 40px; 
+    text-align: center;
+    margin-bottom: 35px;
+    margin-right: 13px;
+   
+    color:blue;
+}
+
+.searchButton{
+    padding-right: 5px;
+    padding-left: 5px; 
+    float:right; 
+     color: blue;
+    width: 27%; 
+    margin-top: 20px; 
+    margin-bottom: 20px;
+     margin: 5px;   
+     font-size:17px;  
+      border:1px solid #808080;  
+       height: 40px; 
+}
+
+.searchiconbutton{
+    font-size: 40px; 
+    text-align: center;
+    margin-bottom: 35px;
+    margin-right: 10px;
+    color:blue;
+   
+}
+.red-color {
+    color:red;
+}
+
+.green-color {
+    color:green;
+}
+   
+
+}
+.mat-menu-item {
+    line-height: 20px;
+    height: 20px;
+    padding: 0px 5px;
+    text-align: center;
+    justify-content:center;
+}
+
+.table-actions{
+    color: white !important;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: right;
+    justify-content:right; 
+    // background:#039be5 !important; 
+}
+
+.mat-header-cell{
+  // background-color:#039be5 !important ;
+    width: 100%;
+    height: 100%;
+   
+ 
+} 
+
+
+
+@media screen and (max-width: 50%) {
+    .mat-table {
+     border: 0;
+       vertical-align: middle;
+      
+     }
+  
+  }
+
+.active-icon {
+    border-radius: 50%;
+}
+
+
+
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+
+.logo {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.navbar{
+    justify-content: space-between;
+}
+.icon{
+    padding-right: 1rem;
+}
+
+.left-icon{
+    color:white;
+}
+
+.heading{
+   font-family: Roboto, "Helvetica Neue", sans-serif !important;;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+h1, .h1 {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+
