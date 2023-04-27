@@ -5,12 +5,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Router } from '@angular/router';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdmissionPersonlModel } from 'app/main/ipd/admission/admission.model';
-import { AdmissionService } from 'app/main/ipd/admission/admission.service';
-import { AdvanceDataStored } from 'app/main/ipd/ip-search-list/advance';
+// import { AdmissionPersonlModel } from 'app/main/ipd/admission/admission.model';
+// import { AdmissionService } from 'app/main/ipd/admission/admission.service';
+// import { AdvanceDataStored } from 'app/main/ipd/ip-search-list/advance';
 import Swal from 'sweetalert2';
-import 'app/shared/email.js';
-import { OpSearchListService } from 'app/main/opd/op-search-list/op-search-list.service';
+// import 'app/shared/email.js';
+// import { OpSearchListService } from 'app/main/opd/op-search-list/op-search-list.service';
 declare var Email :any;
 //import { BrowseOPDBillsService } from '../../../../../browse-opd-bills/browse-opd-bills.service';
 
@@ -27,7 +27,7 @@ export class SmsEmailTemplateComponent implements OnInit {
   attachedFile: any;
   dateTimeObj: any;
   isCompanySelected: boolean = false;
-  registerObj = new AdmissionPersonlModel({});
+  // registerObj = new AdmissionPersonlModel({});
   RegNo:any;
   AdmissionID:any;
   PatientName:any;
@@ -39,7 +39,7 @@ export class SmsEmailTemplateComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) templateFor: any,
     private formBuilder: FormBuilder,
-    public _BrowseOPDBillsService: OpSearchListService,
+    // public _BrowseOPDBillsService: OpSearchListService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
     public notification: NotificationServiceService,
@@ -47,7 +47,7 @@ export class SmsEmailTemplateComponent implements OnInit {
     public _matDialog: MatDialog,
     // public dialogRef: MatDialogRef<ListComponent>,
     private router: Router,
-    private advanceDataStored: AdvanceDataStored,
+    // private advanceDataStored: AdvanceDataStored,
     private matDialogRef: MatDialogRef<SmsEmailTemplateComponent>
   ) {
     this.templateName = templateFor;
@@ -66,7 +66,7 @@ export class SmsEmailTemplateComponent implements OnInit {
       this.DoctorId = this.data.DoctorId;
       this.AdmittedDoc1 = this.data.AdmittedDoctor1ID;
 
-      console.log(this.registerObj);
+      // console.log(this.registerObj);
 
     if (this.templateName == 'SMS') {
       this.toPattern = '^[6789]{1,1}[0-9]{9,9}$';

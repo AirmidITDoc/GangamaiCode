@@ -9,6 +9,9 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe, Time } from '@angular/common';
 import { RegistrationService } from './registration.service';
 import { fuseAnimations } from '@fuse/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { NewRegistrationComponent } from './new-registration/new-registration.component';
+
 
 @Component({
   selector: 'app-registration',
@@ -22,7 +25,7 @@ export class RegistrationComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   isRateLimitReached = false;
-
+  D_data1:any;
   hasSelectedContacts: boolean;
   doctorNameCmbList: any = [];
 
@@ -54,11 +57,32 @@ export class RegistrationComponent implements OnInit {
     public _registrationService: RegistrationService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    public _matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     // get Registration list on page load
-    this.getregistrationList();
+    // this.getregistrationList();
+    this.sIsLoading = 'loading';
+    var D_data= {
+     
+      "F_Name":this._registrationService.myFilterform.get("FirstName").value +'%' || '%',
+      "L_Name":this._registrationService.myFilterform.get("LastName").value +'%' || '%',
+      "Reg_No":this._registrationService.myFilterform.get("RegNo").value || 0,
+      "From_Dt" :this.datePipe.transform(this._registrationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "To_Dt" :  this.datePipe.transform(this._registrationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "MobileNo":this._registrationService.myFilterform.get("MobileNo").value || '%',
+    } 
+     console.log(D_data);
+     this.D_data1=D_data;
+    this._registrationService.getregisterList(D_data).subscribe(reg=> {
+        this.dataArray = reg;
+        // console.log( this.dataArray);
+        this.sIsLoading = '';
+      },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
   // toggle sidebar
@@ -103,6 +127,82 @@ export class RegistrationComponent implements OnInit {
           this.sIsLoading = '';
         });
     }, 500);
+  }
+
+  newRegistration() {
+    debugger;
+    const dialogRef = this._matDialog.open(NewRegistrationComponent,
+      {
+        maxWidth: "85vw",
+          height: '550px',
+          width: '100%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this._registrationService.getregisterList(this.D_data1).subscribe(reg=> {
+          this.dataArray = reg;
+          // console.log( this.dataArray);
+          this.getregistrationList();
+          this.sIsLoading = '';
+        },
+        error => {
+          this.sIsLoading = '';
+        });
+    });
+  }
+
+  
+onEdit(row){
+  console.log(row);
+    var m_data = {
+      "RegNo":row.RegNo,
+      "RegId":row.RegId,
+      "PrefixID":row.PrefixID,
+      "PrefixName":row.PrefixName,
+      "FirstName":row.FirstName.trim(),
+      "MiddleName":row.MiddleName.trim(),
+      "LastName":row.LastName.trim(),
+      "PatientName":row.PatientName.trim(),
+      "DateofBirth":row.DateofBirth,
+      "MaritalStatusId":row.MaritalStatusId,
+      "AadharCardNo":row.AadharCardNo,
+      "Age":row.Age,
+      "AgeDay":row.AgeDay.trim(),
+      "AgeMonth":row.AgeMonth.trim(),
+      "AgeYear":row.AgeYear.trim(),
+      "Address":row.Address.trim(),
+      "AreaId":row.AreaId,
+      "City":row.City.trim(),
+      "CityId":row.CityId,
+      "StateId":row.StateId,
+      "CountryId":row.CountryId,
+      "PhoneNo":row.PhoneNo.trim(),
+      "MobileNo":row.MobileNo.trim(),
+      "GenderId":row.GenderId,
+      "GenderName":row.GenderName,
+      "ReligionId":row.ReligionId,
+      "IsCharity":0,
+      "PinNo":row.PinNo,
+      "RegDate":row.RegDate,
+      "RegNoWithPrefix":row.RegNoWithPrefix,
+      "RegTime":row.RegTime.trim()
+    }
+  
+    console.log(m_data);
+    this._registrationService.populateFormpersonal(m_data);
+    
+    const dialogRef = this._matDialog.open(NewRegistrationComponent, 
+      {   maxWidth: "85vw",
+          height: '550px',
+          width: '100%',
+           data : {
+          registerObj : m_data,
+        }
+    });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+    });
   }
 
 }

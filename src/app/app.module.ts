@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -25,7 +25,7 @@ import { FakeDbService } from "app/fake-db/fake-db.service";
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { JwtInterceptor } from "./core/jwt.interceptor";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
+// import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
 
 const appRoutes: Routes = [

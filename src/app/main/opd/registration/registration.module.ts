@@ -19,6 +19,21 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NewRegistrationComponent } from './new-registration/new-registration.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
     {
@@ -29,9 +44,12 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         RegistrationComponent,
+        NewRegistrationComponent,
+        
     ],
     imports: [
         RouterModule.forChild(routes),
+    //  MatTableExporterModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -45,11 +63,29 @@ const routes: Routes = [
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,  
+        MatProgressSpinnerModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        ReactiveFormsModule,
-        NgxMatSelectSearchModule
+        MatDialogModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule ,
+        MatDividerModule,
+        MatDialogModule,
+      
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatTooltipModule,
+        MatExpansionModule
     ],
     providers: [
         DatePipe

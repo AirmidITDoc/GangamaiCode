@@ -8,6 +8,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -52,6 +54,7 @@ export class PhoneappointmentComponent implements OnInit {
   constructor(
     public _phoneAppointService: PhoneAppointListService,
     private _fuseSidebarService: FuseSidebarService,
+    public _matDialog: MatDialog,
     public datePipe: DatePipe,
   ) { }
 
@@ -125,7 +128,54 @@ export class PhoneappointmentComponent implements OnInit {
   }
 
 
+  
+// getRecord(contact, m):void{
+//   // debugger;
+//   console.log(contact,m);
+//   console.log(m);
+
+//   if (m == "Bill"){
+//      console.log( m);
+//      const dialogRef = this._matDialog.open(PhoneAppointListComponent, 
+//        {  maxWidth: "90vw",
+//        maxHeight: "90vh", width: '100%', height: "100%"
+//      });
+//      dialogRef.afterClosed().subscribe(result => {
+//        console.log('The dialog was closed - Insert Action', result);
+//       //  this.getRadiologytemplateMasterList();
+//      });
+//   }
+//   else if (m == "Refund of Bill"){
+//     console.log(" This is for refund of Bill pop : "+ m);
+//   }
+//   else if (m == "Case Paper"){
+//     console.log("Case Paper : " + m);
+//   }
+// //   const act?ionType: string = response[0];
+// //   this.selectedID =  contact.VisitId
+// //   this._ActRoute.navigate(['opd/appointment/op_bill'])
+// //   this._ActRoute.navigate(['opd/appointment/op_bill'], {queryParams:{id:this.selectedID}})
+
+// }
+
+newappointment(){
+  const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+    {
+      maxWidth: "95vw",
+      height: '600px',
+      width: '100%',
+      
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    // console.log('The dialog was closed - Insert Action', result);
+    // this.getVisitList();
+  });
 }
+
+
+}
+
+
 
 
 export class PhoneAppointmentlist {
@@ -159,3 +209,36 @@ export class PhoneAppointmentlist {
     }
   }
 }
+
+
+export class PhoneApplistMaster {
+  PhoneAppId: number;
+  PatientName: string;
+  AppDate: Date;
+  Address:string;
+  PhAppDate: Date;
+  MobileNo :string;
+  DepartmentName :string;
+  DoctorName :string;
+  IsCancelled : boolean;
+  
+  /**
+   * Constructor
+   *
+   * @param contact
+   */
+  constructor(PhoneApplistMaster) {
+      {
+          this.PhoneAppId = PhoneApplistMaster.PhoneAppId || '';
+          this.PatientName = PhoneApplistMaster.PatientName || '';
+          this.AppDate = PhoneApplistMaster.AppDate || '';
+          this.Address = PhoneApplistMaster.Address || '';
+          this.PhAppDate = PhoneApplistMaster.PhAppDate || '';
+          this.MobileNo = PhoneApplistMaster.MobileNo || '';
+          this.DepartmentName= PhoneApplistMaster.DepartmentName ||'';
+          this.DoctorName= PhoneApplistMaster.DoctorName ||'';
+          this.IsCancelled = PhoneApplistMaster.IsCancelled ||'';
+          
+      }
+  }
+  }

@@ -1,23 +1,23 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
-                style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Registration List
-            </span>
-        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" >
+        <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
+      </mat-icon>
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
+        Registration
+      </span>
 
-        <!-- <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
-            <button mat-raised-button>
-                <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon>
-            </button>
-        </div> -->
+      <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1300px;">
+        <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
+    </button>
+    </div> 
+
+           
+    
+
     </mat-toolbar>
 
     <!-- / HEADER -->
@@ -108,7 +108,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;margin-top: 2px;">
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;margin-top: 2px;">
                                     <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg No</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -201,7 +201,7 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>

@@ -13,7 +13,7 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
-            <button mat-raised-button >
+            <button mat-raised-button (click)="newappointment()">
                 <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon>
             </button>
         </div>
@@ -116,7 +116,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                     style="overflow:auto;">
                                     <ng-container matColumnDef="PhoneAppId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -234,7 +234,7 @@
                                     </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>

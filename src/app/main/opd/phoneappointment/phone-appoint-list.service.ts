@@ -57,8 +57,44 @@ export class PhoneAppointListService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PhoneAppList",employee)
   }
 
-  public getAdmittedDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+ 
+  
+
+public getOTReservationlist(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OTBookingList",employee)
+  }
+    
+    public getPhoenapplist(employee) {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PhoneAppList",employee)
+    }
+  
+      
+    public getPhoenappschdulelist() {
+      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp",{})
+    }
+    public getAdmittedDoctorCombo() {
+      return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    }
+     //Deartment Combobox List
+    public getDepartmentCombo() {
+      return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+    }
+   
+  public PhoneAppointInsert(employee)
+  {
+    return this._httpClient.post("OutPatient/PhoneAppointmentInsert", employee);
   }
   
+  public PhoneAppointCancle(employee)
+  {
+    return this._httpClient.post("OutPatient/PhoneAppointmentCancle", employee);
+  }
+    //Doctor Master Combobox List
+    public getDoctorMasterCombo(Id) {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
+    }
+  //Hospital Combobox List
+  public getHospitalCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
+  }
 }

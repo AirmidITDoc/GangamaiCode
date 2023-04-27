@@ -56,6 +56,11 @@ app-registration{
 }
   
 app-registration {
+
+  
+  .table1{
+    height: 600px !important;
+}
   .mat-header-row {
     width: 100%;
     //max-width: 1600px;
@@ -87,7 +92,7 @@ app-registration {
     max-width:250px;
     min-width:250px;
     text-align: left;
-     display: inline-block; 
+    //  display: inline-block; 
     white-space: nowrap; 
     // overflow: hidden;
     // text-overflow: ellipsis; 
@@ -105,7 +110,7 @@ app-registration {
     margin-right: 20px;
     overflow: hidden; 
      overflow: hidden !important;
-     display: inline-block; 
+    //  display: inline-block; 
         
   }
 
@@ -125,7 +130,7 @@ app-registration {
     margin-right: 20px;
     overflow: hidden; 
      overflow: hidden !important;
-     display: inline-block; 
+    //  display: inline-block; 
   
   }
   
@@ -146,7 +151,7 @@ app-registration {
     margin-right: 20px;
     overflow: hidden; 
      overflow: hidden !important;
-     display: inline-block; 
+    //  display: inline-block; 
    
   }
   .mat-column-IsCancelled {
