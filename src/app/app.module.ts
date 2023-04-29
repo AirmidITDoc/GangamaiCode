@@ -58,6 +58,11 @@ const appRoutes: Routes = [
             import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
     {
+        path: "ipd",
+        loadChildren: () =>
+            import("./main/ipd/ipd.module").then((m) => m.IpdModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
     }
