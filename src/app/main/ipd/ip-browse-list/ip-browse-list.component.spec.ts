@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OpdSearchListComponent } from './opd-search-list.component';
+import { IpBrowseListComponent } from './ip-browse-list.component';
 
-describe('OpdSearchListComponent', () => {
-  let component: OpdSearchListComponent;
-  let fixture: ComponentFixture<OpdSearchListComponent>;
+describe('IpBrowseListComponent', () => {
+  let component: IpBrowseListComponent;
+  let fixture: ComponentFixture<IpBrowseListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OpdSearchListComponent ]
+      declarations: [ IpBrowseListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OpdSearchListComponent);
+    fixture = TestBed.createComponent(IpBrowseListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

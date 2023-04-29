@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
+import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,8 @@ const routes: Routes = [
     component: DailyDashboardComponent
   },
   {
-    path: 'Inventory-dashboard',
-    component: PathologyDashboardComponent
+    path: 'radiology-dashboard',
+    component: RadiologyDashboardComponent
   },
   {
     path: 'Pathology-dashboard',

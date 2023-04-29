@@ -30,7 +30,6 @@ const appRoutes: Routes = [
   {
       path: "bill",
       loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
-      // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
   },
   {
       path: "refund",
