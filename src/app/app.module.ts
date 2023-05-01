@@ -39,14 +39,6 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/dashboard/dashboard.module").then((m) => m.DashboardModule),
     },
-    // {
-    //     path: 'dashboards/analytics',
-    //     loadChildren: () => import('./main/dashboards/analytics/analytics.module').then(m => m.AnalyticsDashboardModule)
-    // },
-    // {
-    //     path: 'dashboards/project',
-    //     loadChildren: () => import('./main/dashboards/project/project.module').then(m => m.ProjectDashboardModule)
-    // },
     {
         path: "setup",
         loadChildren: () =>

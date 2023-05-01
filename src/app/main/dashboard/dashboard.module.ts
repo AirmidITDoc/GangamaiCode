@@ -1,8 +1,5 @@
 
 
-import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
-import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
-import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';

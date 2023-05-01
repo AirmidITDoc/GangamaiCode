@@ -35,8 +35,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
-import { EditRefraneDoctorComponent } from './edit-refrane-doctor/edit-refrane-doctor.component';
-// import { SharedModule } from 'app/main/shared/shared.module';
+import { EditRefDoctorComponent } from './edit-reference-doctor/edit-ref-doctor.component';
 
 const routes: Routes = [
     {
@@ -49,8 +48,7 @@ const routes: Routes = [
         AppointmentComponent,
         NewAppointmentComponent,
         EditConsultantDoctorComponent,
-        EditRefraneDoctorComponent,
-        // EditAppointmentComponent,
+        EditRefDoctorComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

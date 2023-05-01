@@ -12,13 +12,13 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-edit-refrane-doctor',
-  templateUrl: './edit-refrane-doctor.component.html',
-  styleUrls: ['./edit-refrane-doctor.component.scss'],
+  selector: 'app-edit-ref-doctor',
+  templateUrl: './edit-ref-doctor.component.html',
+  styleUrls: ['./edit-ref-doctor.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class EditRefraneDoctorComponent implements OnInit {
+export class EditRefDoctorComponent implements OnInit {
 
   dateTimeObj: any;
   // registerObj = new AdmissionPersonlModel({});
