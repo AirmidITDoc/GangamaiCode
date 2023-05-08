@@ -16,7 +16,7 @@
        <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
           <h3>Registration </h3>
-          <button mat-icon-button (click)="closeDialog()" tabIndex="-1" aria-label="Close dialog" >
+          <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" >
             <mat-icon>close</mat-icon>
           </button>
         </mat-toolbar-row>
@@ -148,8 +148,6 @@
       </div>
   
       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-       
-  
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Birth date</mat-label>
           <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
@@ -242,7 +240,6 @@
           </mat-select>
       </mat-form-field>
   
-  
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Religion Name</mat-label>
           <mat-select formControlName="ReligionId" placeholder="Bank" #singleSelect>
@@ -274,7 +271,6 @@
             <mat-option>
               <ngx-mat-select-search [formControl]="areaFilterCtrl"  [placeholderLabel]="'Search'"
               [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-             
             </mat-option>
             <mat-option *ngFor="let element of filteredArea | async" [value]="element">
               {{element.AreaName}}
@@ -298,9 +294,6 @@
           <mat-error *ngIf="personalFormGroup.get('CityId').invalid && personalFormGroup.get('CityId').touched">
             City Name is required</mat-error>
         </mat-form-field>
-  
-  
-       
       </div>
   
       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
@@ -348,31 +341,11 @@
       </div>
   
       <div class="footer-navigation-container" fxLayout.gt-xs="row"  >
-        <!-- <mat-dialog-actions style="margin-bottom: 10px;" >
-          <section class="example-section"  >
-            <mat-slide-toggle class="example-margin" name="IsCharity" (change)="onChange()" formControlName="IsCharity">
-              IsCharity
-            </mat-slide-toggle>
-          </section>&nbsp;
-          
-        </mat-dialog-actions> -->
-  
-        <mat-slide-toggle name="IsCharity"
-        (change)="onChangeIsactive($event)"
-        checked
-        formControlName="IsCharity" > IsCharity</mat-slide-toggle>
-  
-  
+        <mat-slide-toggle name="IsCharity"(change)="onChangeIsactive($event)"checked formControlName="IsCharity" > IsCharity</mat-slide-toggle>
             <div style="float: right;margin-top: 20px;" >
-  
               <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()" [disabled]="personalFormGroup.invalid && IsSave">Save</button>
-
-             
-              <button class="footer-btn" id="btncancel" (click)="closeDialog()" >Cancel</button>
-         
+              <button class="footer-btn" id="btncancel" (click)="onClose()" >Cancel</button>
         </div>
-        <!-- </div> -->
-  
       </div>
     </form>
   </div>

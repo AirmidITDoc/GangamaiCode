@@ -43,7 +43,7 @@ export class OpdSearchListComponent implements OnInit {
   displayedColumns = [
     // 'checkbox',
     'PatientOldNew',
-    // 'MPbillNo',
+    'MPbillNo',
     'RegNoWithPrefix',
     'PatientName',
     'DVisitDate',

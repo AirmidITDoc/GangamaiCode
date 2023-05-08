@@ -35,8 +35,8 @@ export class RegistrationComponent implements OnInit {
   @Input() dataArray: any;
 
   displayedColumns = [
-    'RegNo',
     'RegDate',
+    'RegNo',
     'PatientName',
     'AgeYear',
     'GenderName',
@@ -63,27 +63,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     // get Registration list on page load
-    // this.getregistrationList();
-    this.sIsLoading = 'loading';
-    var D_data= {
-     
-      "F_Name":this._registrationService.myFilterform.get("FirstName").value +'%' || '%',
-      "L_Name":this._registrationService.myFilterform.get("LastName").value +'%' || '%',
-      "Reg_No":this._registrationService.myFilterform.get("RegNo").value || 0,
-      "From_Dt" :this.datePipe.transform(this._registrationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt" :  this.datePipe.transform(this._registrationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "MobileNo":this._registrationService.myFilterform.get("MobileNo").value || '%',
-    } 
-     console.log(D_data);
-     this.D_data1=D_data;
-    this._registrationService.getregisterList(D_data).subscribe(reg=> {
-        this.dataArray = reg;
-        // console.log( this.dataArray);
-        this.sIsLoading = '';
-      },
-      error => {
-        this.sIsLoading = '';
-      });
+     this.getregistrationList();
   }
 
   // toggle sidebar
@@ -105,7 +85,6 @@ export class RegistrationComponent implements OnInit {
   }
   // get Registration list on Button click
   getregistrationList() {
-    debugger;
     this.sIsLoading = 'loading';
     var D_data = {
       "F_Name": (this._registrationService.myFilterform.get("FirstName").value).trim() || '%',
@@ -115,7 +94,7 @@ export class RegistrationComponent implements OnInit {
       "To_Dt": this.datePipe.transform(this._registrationService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "MobileNo": this._registrationService.myFilterform.get("MobileNo").value || '%',
     }
-    console.log(D_data);
+    // console.log(D_data);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._registrationService.getRegistrationList(D_data).subscribe(data => {
@@ -131,7 +110,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   newRegistration() {
-    debugger;
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
@@ -204,7 +182,6 @@ onEdit(row){
       console.log('The dialog was closed - Insert Action', result);
       this._registrationService.getregisterList(this.D_data1).subscribe(reg=> {
         this.dataArray = reg;
-        // console.log( this.dataArray);
         this.getregistrationList();
         this.sIsLoading = '';
       },

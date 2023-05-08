@@ -16,7 +16,7 @@
     <mat-toolbar matDialogTitle class="mat-accent m-0">
       <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
         <h3>Edit Registration </h3>
-        <button mat-icon-button (click)="closeDialog()" tabIndex="-1" aria-label="Close dialog">
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
           <mat-icon>close</mat-icon>
         </button>
       </mat-toolbar-row>
@@ -357,7 +357,7 @@
               <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()"
                >Update</button>
 
-              <button class="footer-btn" id="btncancel" (click)="closeDialog()">Cancel</button>
+              <button class="footer-btn" id="btncancel" (click)="onClose()">Cancel</button>
 
             </div>
             <!-- </div> -->
