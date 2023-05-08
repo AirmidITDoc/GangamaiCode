@@ -327,10 +327,10 @@
                     <mat-label>Phone Number</mat-label>
                     <input name="PhoneNo" formControlName="PhoneNo"  placeholder="Phone Number" matInput
                       [(ngModel)]="registerObj.PhoneNo"   minlength="10" maxlength="10" type="number"  value="9876658688">
-                    <mat-error class="error"
+                    <!-- <mat-error class="error"
                       *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
                       number is required
-                    </mat-error>
+                    </mat-error> -->
                   </mat-form-field>
   
                   <mat-form-field appearance="outline" fxFlex>
@@ -465,7 +465,7 @@
   
                     <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                       <mat-label>Ref Doctor Name</mat-label>
-                      <mat-select formControlName="DoctorIdOne" placeholder="Bank" #singleSelect
+                      <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
                         (selectionChange)="onDoctorOneChange($event.value)">
                         <mat-option>
                           <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"

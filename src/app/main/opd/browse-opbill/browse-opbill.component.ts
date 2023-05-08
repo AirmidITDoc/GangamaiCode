@@ -79,9 +79,34 @@ export class BrowseOPBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // // this.showClicked.emit(this._BrowseOPDBillsService.myFilterform)
-    this.getBrowseOPDBillsList();
-    // this.numberInWords = this.ngxNumToWordsService.inWords(this.selectedAdvanceObj.TotalBillAmount);
+
+    debugger;
+    var D_data = {
+      "F_Name":  "%",
+      "L_Name":  "%",
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
+      "Reg_No":  0,
+      "PBillNo": 0,
+    }
+    console.log(D_data);
+
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
+        this.dataSource.data = Visit as BrowseOPDBill[];
+        this.dataSource.sort = this.sort;
+        console.log(this.dataSource.data);
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
+        this.click = false;
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 1000);
+
+    this.onClear();
   }
 
 
@@ -112,10 +137,10 @@ export class BrowseOPBillComponent implements OnInit {
 
   onClear() {
 
-    this._BrowseOPDBillsService.myFilterform.get('FirstName').reset();
-    this._BrowseOPDBillsService.myFilterform.get('LastName').reset();
-    this._BrowseOPDBillsService.myFilterform.get('RegNo').reset();
-    this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset();
+    this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
+    this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
+    this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
+    this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset('');
   }
 
 
@@ -344,7 +369,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
   // GET DATA FROM DATABASE 
   getPrint(el) {
-
+debugger;
     var D_data = {
       "BillNo": el.BillNo,
       // "BillNo":111,

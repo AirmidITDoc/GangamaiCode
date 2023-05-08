@@ -9,7 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -170,7 +170,7 @@ export class OPBillingComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-    // private dialogRef: MatDialogRef<OpBillingComponent>,
+    private dialogRef: MatDialogRef<OPBillingComponent>,
     public _httpClient: HttpClient,
     private formBuilder: FormBuilder) { }
 
@@ -1157,7 +1157,7 @@ debugger;
   }
 
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
 }

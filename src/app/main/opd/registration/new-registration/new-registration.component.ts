@@ -516,6 +516,8 @@ export class NewRegistrationComponent implements OnInit {
     });
   }
 
+    
+
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';

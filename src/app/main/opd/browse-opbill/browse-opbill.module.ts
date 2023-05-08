@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DatePipe } from '@angular/common';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -23,7 +22,6 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { BrowseOPBillComponent } from './browse-opbill.component';
 import { ViewOPBillComponent } from './view-opbill/view-opbill.component';
 import { BrowseOPBillService } from './browse-opbill.service';
@@ -39,7 +37,6 @@ const routes: Routes = [
     declarations: [
       BrowseOPBillComponent,
       ViewOPBillComponent,
-        
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -71,6 +68,7 @@ const routes: Routes = [
         DatePipe
     ],
     entryComponents: [
-      BrowseOPBillComponent    ]
+      BrowseOPBillComponent,
+    ]
 })
 export class BrowseOPBillModule { }
