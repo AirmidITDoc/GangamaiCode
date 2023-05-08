@@ -150,8 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
-debugger;
-        this.http.post(`Generic/GetByProc?procName=SS_Rtrv_MenuInfo_Login_2`, {})
+             this.http.post(`Generic/GetByProc?procName=SS_Rtrv_MenuInfo_Login_2`, {})
             .subscribe((data: any[]) => {
 
                 var fn: FuseNavigation[] = [
