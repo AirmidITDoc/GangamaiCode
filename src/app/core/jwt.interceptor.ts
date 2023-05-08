@@ -22,8 +22,6 @@ export class JwtInterceptor implements HttpInterceptor {
         //  request = request.clone({ url: `http://localhost:63750/swagger/index.html/${request.url}` });
         // request = request.clone({ url: `http://103.117.208.130:6064/api/${request.url}` });
         //  request = request.clone({ url: `http://103.113.29.249:56/api/${request.url}` });
-       
-        // request = request.clone({ url: `http://localhost:63750` });
 
        
         

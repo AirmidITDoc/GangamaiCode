@@ -24,7 +24,6 @@ export class CommonDateComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
 
-    debugger;
     // this.currentDate = this.now.getMonth() + '/' + this.now.getDate() + '/' + this.now.getFullYear();
     setInterval(() => {
       this.now = new Date();
@@ -35,7 +34,6 @@ export class CommonDateComponent implements OnInit {
       // this.currentTime = this.dateTimeString[1];
       if(!this.isTimeChanged) {
         this.dateForm.get('timeController').setValue(this.now);
-
         // this.dateForm.get('timeController').setValue(this.now);
       }
     }, 1);
