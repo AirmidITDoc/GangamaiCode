@@ -23,6 +23,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ViewOPBrowsePaymentListComponent } from './view-opbrowse-payment-list/view-opbrowse-payment-list.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         BrowsePaymentListComponent,
+        ViewOPBrowsePaymentListComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

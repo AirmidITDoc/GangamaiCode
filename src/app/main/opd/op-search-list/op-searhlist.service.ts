@@ -1,0 +1,446 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class OPSearhlistService {
+
+  success(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  myFilterform: FormGroup;
+  casepaperform: FormGroup;
+  prescrtionform: FormGroup;
+  myRefundBillForm: FormGroup;
+  myShowAdvanceForm: FormGroup;
+   paymentForm: FormGroup;
+
+
+  constructor(public _httpClient: HttpClient,
+    private _formBuilder: FormBuilder
+  ) {
+    this.myFilterform = this.filterForm();
+    this.myShowAdvanceForm = this.showAdvanceForm();
+    this.paymentForm =this.showPaymentForm();
+        
+    // this.mySaveForm=this.saveForm();
+     this.casepaperform=this.createCasepaperForm();
+    //this.prescrtionform=this.createPrescriptionForm();
+  }
+
+  filterForm(): FormGroup {
+    return this._formBuilder.group({
+      RegNo: '',
+      FirstName:['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      MiddleName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
+      // DepartmentId: '',
+      // DepartmentName: '',
+      DoctorId: '',
+      DoctorName: '',
+      IsMark:'',
+
+      AdmDisFlag: 0,
+      OP_IP_Type: 1,
+      PatientType:1,
+      patientstatus:0,
+      IPDNo:'',
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+    });
+  }
+
+  createCasepaperForm(): FormGroup{
+    return this._formBuilder.group({
+
+
+  BP:'',
+  ConsultantDocName: '',
+  BSL: '',
+  CasePaperID: '0',
+  Complaint: '',
+  Diagnosis: '',
+  DocName: '',
+  Finding: '',
+  Height: '',
+  Investigations: '',
+  PastHistory: '',
+  PatientName: '',
+  PersonalDetails: '',
+  Pluse: '',
+  PresentHistory: '',
+  RegID: '0',
+  SecondDocRef: '0',
+  SpO2: '',
+  Temp:'',
+  VisitDate: '',
+  VisitId: '0',
+  VisitTime: '',
+  Weight: '',
+  DrugName:'',
+  TotalQty:'',
+  HospitalName:'',
+  HospitalAddress:'',
+  Phone:'',
+  IPPreId:'',
+  DoseName:'',
+  GenderName:'',
+  PrecriptionId:'',
+  Days:'0',
+  Instruction:'',
+  TotalDayes:'0',
+  AgeYear:'0',
+  OPDNo:'',
+  _matDialog: '',
+    RegNo: '0',
+
+    //   Date: [(new Date()).toISOString()],
+       
+    //     cashAmt: '',
+    //     AdvanceAmount: ['', Validators.pattern("^[0-9]*$")],
+    //     AdvanceUsedAmount: ['', Validators.pattern("^[0-9]*$")],
+    //     BalanceAmount: ['', Validators.pattern("^[0-9]*$")],
+    //     Amount: ['', Validators.required],
+      
+    });
+  }
+
+  showAdvanceForm(): FormGroup {
+    return this._formBuilder.group({
+      AdmissionID: '',
+      AdvanceId: '',
+      RegNo: '',
+      IPDNo: '',
+      FirstName: '',
+      PatientName: '',
+      // DOT: '', 
+      DOA: '',
+      AdmDateTime: '',
+      BedId: '',
+      BedName: '',
+      AdmittedDoctor1: '',
+      DOT: '',
+      BedNo: '',
+      DoctorId: '0',
+      DoctorName: '',
+      WardId: '0',
+      RoomName: '',
+      TariffId: '',
+      TariffName: '',
+      Date: [(new Date()).toISOString()],
+      ClassId: '',
+      ClassName: '',
+      currentDate: '',
+
+      cashAmt: '',
+      AdvanceAmount: ['', Validators.pattern("^[0-9]*$")],
+      AdvanceUsedAmount: ['', Validators.pattern("^[0-9]*$")],
+      BalanceAmount: ['', Validators.pattern("^[0-9]*$")],
+      Amount: ['', Validators.required],
+      Remark: '',
+      PaymentId: '0',
+      BillNo: '0',
+      ReceiptNo: '',
+      PaymentDate: '',
+      PaymentTime: '',
+      CashPayAmount: '0',
+      ChequePayAmount: '0',
+      ChequeNo: '',
+      BankName: '',
+      ChequeDate: '',
+      CardPayAmount: '0',
+      CardNo: '',
+      CardBankName: '',
+      CardDate: '',
+      //AdvanceUsedAmount :	'0',
+      // AdvanceId :	'0',
+      RefundId: '0',
+      TransactionType: '0',
+      //Remark : '',
+      AddBy: '0',
+      IsCancelled: ['false'],
+      IsCancelledBy: '0',
+      IsCancelledDate: '',
+      CashCounterId: '0',
+      IsSelfORCompany: '0',
+      CompanyId: '0',
+      NEFTPayAmount: '0',
+      NEFTNo: '',
+      NEFTBankMaster: '',
+      NEFTDate: '',
+      PayTMAmount: '0',
+      PayTMTranNo: '',
+      PayTMDate: '',
+  });
+  }
+  
+  showPaymentForm(): FormGroup{
+    return this._formBuilder.group({
+      PaymentId : '0',
+      BillNo : '0',
+      ReceiptNo : '',
+      PaymentDate	: '',
+      PaymentTime : '',
+      CashPayAmount :	'0',
+      ChequePayAmount : '0',
+      ChequeNo : '',
+      BankName : '',
+      ChequeDate : '',
+      CardPayAmount :	'0',
+      CardNo : '',
+      CardBankName : '',
+      CardDate : '',
+      AdvanceUsedAmount :	'0',
+      AdvanceId :	'0',
+      RefundId :	'0',
+      TransactionType :	'0',
+      Remark : '',
+      AddBy:	'0',
+      IsCancelled	: ['false'],
+      IsCancelledBy : '0',
+      IsCancelledDate	: '',
+      CashCounterId :	'0',
+      IsSelfORCompany	: '0',
+      CompanyId : '0',
+      NEFTPayAmount :	'0',
+      NEFTNo : '',
+      NEFTBankMaster : '',
+      NEFTDate	:'',
+      PayTMAmount	: '0',
+      PayTMTranNo : '',
+      PayTMDate : '',
+    })
+  }
+
+  public getAppointmentList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveVisitDetailsList_1", employee)
+  }
+
+  // Doctor Master Combobox List
+  public getDoctorMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  }
+
+  // Department Master Combobox List
+  public getDepartmentMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_DepartmentMasterForCombo", {})
+  }
+
+  public getchargesList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
+  }
+
+  // Get billing Service List 
+  public getBillingServiceList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveServices", employee)
+  }
+
+  public getIpPatientBillInfo(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtv_IPPatientBillInformation", employee)
+  }
+
+  public getPreviousBillInfo(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_IPPreviousBill_info", employee)
+  }
+  public CasepaperPrescriptionInsert(employee) {
+    return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", employee);
+  }
+
+  public InsertIPAddCharges(employee) {
+    return this._httpClient.post("InPatient/IPAddChargesInsert", employee);
+  }
+
+  public InsertOPAddCharges(employee) {
+    return this._httpClient.post("OutPatient/OPDAddCharges", employee);
+  }
+  public EmailInsert(employee) {
+    return this._httpClient.post("OutPatient/EmailNotificationInsert", employee);
+  }
+
+  public getClassList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_BillingClassName_1", employee)
+  }
+
+  
+  public getClassCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName", {})
+  }
+public getConcessionCombo()
+{
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
+}
+  public deleteCharges(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges", employee)
+  }
+
+  // Admitted Doctor Master Combobox List
+  public getAdmittedDoctorCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  }
+
+  public getserviceCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
+  }
+
+  public InsertOPBilling(employee) : Observable<any> {
+    return this._httpClient.post("OutPatient/OPBilling", employee)
+  }
+
+  public InsertOPBillingCredit(employee) : Observable<any> {
+    return this._httpClient.post("OutPatient/OPBillingCredit", employee)
+  }
+  
+  public InsertOPRefundBilling(employee) {
+    return this._httpClient.post("OutPatient/OPRefundBill", employee)
+  }
+
+  public getRefundBrowsePrint(RefundId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPRefundofBillPrint", RefundId)
+  } 
+
+  public getVisitedList(employee) {
+  //  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_OpVisitDetailsList",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails",employee)
+  }
+
+  // OP REFUND SECTIOn 
+  public getOPBillListForRefund(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
+  }
+
+// AllBills
+  public getOpRefundOfBilldetList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPBill_For_Refund", {employee})
+  }
+// All Refund 
+  public getRefundofBillList()
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_IPRefundofBill",{})
+  }
+
+  public getPrescriptionVisitWiseDetails(VisitId){
+    return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",VisitId);
+  }
+
+  public getRefundofBill(emp)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPBill_For_Refund",emp)
+  }
+  
+  public getDrugCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_M_DrugMaster_Cmb", {})
+  }
+
+  populateForm(employee) {
+    this.myShowAdvanceForm.patchValue(employee);
+    // this.mySaveForm.patchValue(employee);
+  }
+
+  public OPInsertAdvanceHeader(employee)
+  {
+    return this._httpClient.post("OutPatient/OPAdvance",employee)
+  }
+  public getAdvanceList(employee)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_T_AdvanceList",employee)
+  }
+
+
+  public getHistoryList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{})
+  }
+
+  public getDiagnosisList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ComplaintMasterForCombo",{})
+  }
+
+  public getDoseList() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList",{})
+  }
+  
+  public getDrugList(drugValue) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_RtvrDrugName",{"ItemName": drugValue})
+  }
+  
+  public getBillPrint(BillNo) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillPrint", BillNo)
+  } 
+
+  public getPaymentPrint (paymentid){
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", paymentid)
+  }
+
+  public InsertSettlementPayment (employee){
+    // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
+     return this._httpClient.post("OutPatient/OpSettlement", employee)
+  }
+
+  public getTemplate(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  } 
+  public getPaidBillList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
+
+  public getCreditBillList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
+  public getPaymentBillPrint(BillNo){
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillPrint", BillNo)
+  }
+
+  // All reports
+  public getRegistrationList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptListofRegistration", employee)
+  }
+
+  public getrptAppointmentList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPAppointmentListReport", employee)
+  }
+
+  public getrptOPDeptList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPDepartSumry", employee)
+  }
+
+
+  public getOPIPPatientList(employee) {
+
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList", employee)
+  }
+
+
+  // Casepaper
+  //new
+  public getcasepaperVisitDetails(visitId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails",{"VisitId": visitId});
+  }
+  public getOPDPrecriptionPrint(PrecriptionId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
+  }
+public prescriptionDetails(visistId) {
+    return this._httpClient.post("Generic/GetByProc?procName=Get_PrescriptionDetailsVisitWise",{"VisitId": visistId});
+  }
+
+  public getComplaintList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ComplaintMasterForCombo",{});
+  }
+
+  public getExaminationList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_ExaminationMasterForCombo",{});
+  }
+
+  public onSaveCasepaper(param) {
+    return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", param);
+  }
+
+}

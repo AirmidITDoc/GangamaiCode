@@ -1,0 +1,26 @@
+.header-container {
+    height: 40px;
+    padding: 0 15px;
+    align-items: center !important;
+}
+.mat-dialog-content {
+    display: block;
+    margin: 0px 0px;
+    // padding: 0px 5px;
+    max-height: 95vh;
+    overflow: auto;
+    padding: 0;
+}
+
+mat-card {
+    padding: 15px;
+    border-radius: 4px;
+}
+
+#c1{
+    width: 20%;
+    height: calc(20% - 20px);
+    color: red;
+    background-color: #039be5;
+    position: absolute;
+}

@@ -39,21 +39,37 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/dashboard/dashboard.module").then((m) => m.DashboardModule),
     },
+    // {
+    //     path: 'dashboards/analytics',
+    //     loadChildren: () => import('./main/dashboards/analytics/analytics.module').then(m => m.AnalyticsDashboardModule)
+    // },
+    // {
+    //     path: 'dashboards/project',
+    //     loadChildren: () => import('./main/dashboards/project/project.module').then(m => m.ProjectDashboardModule)
+    // },
     {
         path: "setup",
         loadChildren: () =>
             import("./main/setup/setup.module").then((m) => m.SetupModule),
+    },
+
+    {
+        path: "ipd",
+        loadChildren: () =>
+            import("./main/ipd/ip-routing.module").then((m) => m.IPRoutingModule),
     },
     {
         path: "opd",
         loadChildren: () =>
             import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
-    {
-        path: "ipd",
-        loadChildren: () =>
-            import("./main/ipd/ipd.module").then((m) => m.IpdModule),
-    },
+
+    // {
+    //     path: "pathology",
+    //     loadChildren: () =>
+    //         import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
+    // },
+
     {
         path: '**',
         redirectTo: 'auth/login'

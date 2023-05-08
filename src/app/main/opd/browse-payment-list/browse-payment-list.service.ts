@@ -32,21 +32,21 @@ export class BrowsePaymentListService {
   public getBrowseOpdPaymentReceiptList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOPDPaymentReceipt", employee)
   }  
-  // public getTemplate(query) {
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-  // }  
+  public getTemplate(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }  
 
-  // public getAdvanceBrowsePrint(AdvanceDetailID) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=rptIPDAdvancePrint", AdvanceDetailID)
-  // }  
+  public getAdvanceBrowsePrint(AdvanceDetailID) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDAdvancePrint", AdvanceDetailID)
+  }  
 
 
-  // public getTemplates(query) {
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-  // }
-  // public getBrowseOpdPaymentReceiptPrint(PaymentId) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint", PaymentId)
-  // }    
+  public getTemplates(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
+  public getBrowseOpdPaymentReceiptPrint(PaymentId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint", PaymentId)
+  }    
 
 
 }

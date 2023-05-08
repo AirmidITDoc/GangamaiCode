@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 
 @Component({
   selector: 'app-new-registration',
@@ -61,6 +62,12 @@ export class NewRegistrationComponent implements OnInit {
   isLinear = true;
   isLoading: string = '';
   Prefix :any;
+
+
+  IsSaveupdate:any;
+  IsSave:any;
+
+
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -86,24 +93,17 @@ export class NewRegistrationComponent implements OnInit {
 
   options = [];
 
-  // @Input() panelWidth: string | number;
-  // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
-
-
   isCompanySelected: boolean = false;
   filteredOptions: any;
   noOptionFound: boolean = false;
   screenFromString = 'registration';
   selectedPrefixId: any;
 
-  // @Input() childName: string[];
-  // @Output() parentFunction: EventEmitter<any> = new EventEmitter();
   matDialogRef: any;
 
   constructor(public _registerService: RegistrationService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     // public dialogRef: MatDialogRef<NewRegistrationComponent>,
@@ -114,6 +114,8 @@ export class NewRegistrationComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.IsSaveupdate="true";
   console.log(this.data)
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
@@ -162,7 +164,8 @@ export class NewRegistrationComponent implements OnInit {
     
     
       if(this.data){
-      
+        // this.IsSave="false";
+        // this.IsSaveupdate='false';
         this.registerObj=this.data.registerObj;
       
         console.log( this.registerObj);
@@ -177,22 +180,6 @@ export class NewRegistrationComponent implements OnInit {
           this.setDropdownObjs1();
       }
 
-    //   setTimeout(function(){
-       
-    //     let element:HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
-    //     element.click();
-       
-    //   },1000);
-
-    // this.getGendorMasterList();
-
-    //   if(this.data){
-    //    let element:HTMLElement = document.getElementById('btncancel') as HTMLElement;
-    //     element.click();
-    //   }else
-    //   {
-    //     let element:HTMLElement = document.getElementById('btncancel') as HTMLElement;
-    //   }
       
   }
 
@@ -365,38 +352,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   addEmptyRow() { }
-  //  addEmptyRow(element?: PrescriptionTable) {
-  //     if(this.caseFormGroup.invalid) {
-  //       this.caseFormGroup.markAllAsTouched();
-  //       this._snackBar.open('Please fill mandetory fields', 'Ok', {
-  //         horizontalPosition: 'end',
-  //         verticalPosition: 'bottom',
-  //         duration: 3000
-  //       });
-  //       return;
-  //     }
-  //     if (element) {
-  //       this.isRowAdded = true;
-  //       this.prescriptionData && this.prescriptionData.length > 0 ? this.prescriptionData.splice(this.prescriptionData.indexOf(element), 1) : '';
-  //     }
-  //     let addingRow = {
-  //       drugName: element && element.drugName ? element.drugName : this.lookupsObj,
-  //       doseName: element && element.doseName ? element.doseName : '',
-  //       days1: element && element.days1 ? element.days1 : '',
-  //       instruction: element && element.instruction ? element.instruction : '',
-  //       doseNameOptional: element && element.doseNameOptional ? element.doseNameOptional : '',
-  //       days2: element && element.days2 ? element.days2 : '',
-  //       doseNameOptional3: element && element.doseNameOptional3 ? element.doseNameOptional3 : '',
-  //       days3: element && element.days3 ? element.days3 : '',
-  //       isLocallyAdded: element ? true : false
-  //     }
-  //     this.prescriptionData.push(addingRow);
-  //     this.dataSource.data = this.prescriptionData;
-
-  //     element ? this.addRow() : '';
-  //     this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new FormControl());
-  //     this.caseFormGroup.get(`drugController${this.prescriptionData.length - 1}`).setValidators(Validators.required);
-  //   }
+ 
   
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -410,12 +366,11 @@ export class NewRegistrationComponent implements OnInit {
 
 
   getPrefixList() {
-    //  debugger
+    
       this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       this.filteredPrefix.next(this.PrefixList.slice());
-    //  console.log( this.PrefixList);
-    if(this.data){
+        if(this.data){
       const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
       this.personalFormGroup.get('PrefixID').setValue(ddValue);  
     }
@@ -461,7 +416,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   getReligionList() {
-    // this._registerService.getReligionCombo().subscribe(data => { this.ReligionList = data; })
+   
     this._registerService.getReligionCombo().subscribe(data => {
       this.ReligionList = data;
       this.filteredReligion.next(this.ReligionList.slice());
@@ -509,7 +464,6 @@ export class NewRegistrationComponent implements OnInit {
         this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
         this.selectedStateID = this.stateList[0].StateId;
-        // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
         this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
         this.onChangeCountryList(this.selectedStateID);
       });
@@ -537,40 +491,30 @@ export class NewRegistrationComponent implements OnInit {
       this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
         this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-        // this.selectedGender = this.GenderList[0];
+        
         this.selectedGenderID = this.GenderList[0].GenderId;
       });
     }
   }
 
-  onChangeGenderList1(prefixObj) {
 
-    this._registerService.getGenderCombo(prefixObj).subscribe(data => {
-      this.GenderList = data;
-      this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-      // this.selectedGender = this.GenderList[0];
-      this.selectedGenderID = this.GenderList[0].GenderId;
-    });
+  searchRegList() {
 
-  }
-
-  // searchRegList() {
-
-  //   const dialogRef = this._matDialog.open(EditRegistrationComponent,
-  //     {
-  //       maxWidth: "80vw",
-  //       maxHeight: "85vh", width: '100%', height: "100%"
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //     if (result) {
+    const dialogRef = this._matDialog.open(SearchPageComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: "85vh", width: '100%', height: "100%"
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      if (result) {
         
-  //       this.registerObj = result as RegInsert;
-  //       this.setDropdownObjs();
-  //     }
-  //     //this.getRegistrationList();
-  //   });
-  // }
+        this.registerObj = result as RegInsert;
+        this.setDropdownObjs1();
+      }
+      //this.getRegistrationList();
+    });
+  }
 
   getOptionText(option) {
     if (!option) return '';
@@ -629,34 +573,6 @@ export class NewRegistrationComponent implements OnInit {
     
   }
 
-  setDropdownObjs() {
-    debugger;
-    const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-    this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-    const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-    this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-    const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-    const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-    this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-    const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-    // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-
-    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-    console.log(this.personalFormGroup.get('PrefixID').value);
-    this.onChangeCityList(this.registerObj.CityId);
-    console.log(this.registerObj.CityId);
-    this.personalFormGroup.updateValueAndValidity();
-    // this.dialogRef.close();
-  }
 
   OnChangeDoctorList(departmentObj) {
     this._registerService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(data => { this.DoctorList = data; })
@@ -678,7 +594,7 @@ export class NewRegistrationComponent implements OnInit {
     if (!reg) {
       var m_data = {
         "opdRegistrationSave": {
-          "RegId": 0,// this._registerService.mySaveForm.get("RegId").value || "0",
+          "RegId": 0,
           "RegDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
           "RegTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
@@ -706,8 +622,8 @@ export class NewRegistrationComponent implements OnInit {
           "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           "isSeniorCitizen":0,
-          "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
-          "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
+          // "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
+          // "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
         }
       }
       console.log(m_data);
@@ -731,7 +647,7 @@ export class NewRegistrationComponent implements OnInit {
       var m_data1 = {
 
         "opdRegistrationUpdate": {
-          "RegID": this.registerObj.RegId,// this._registerService.mySaveForm.get("RegId").value || 0,
+          "RegID": this.registerObj.RegId,
            "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
           "MiddleName": this.registerObj.MiddleName || "",
@@ -774,6 +690,9 @@ export class NewRegistrationComponent implements OnInit {
 
       });
     }
+
+
+    // console.log(this.personalFormGroup.invalid && this.IsSave);
   }
 
 
@@ -801,6 +720,8 @@ export class NewRegistrationComponent implements OnInit {
     }
 
   }
+
+  // Change Registered or New Registration
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
