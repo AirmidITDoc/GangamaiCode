@@ -11,6 +11,7 @@ import { RegistrationService } from './registration.service';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
+import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
 
 
 @Component({
@@ -190,7 +191,7 @@ onEdit(row){
     console.log(m_data);
     this._registrationService.populateFormpersonal(m_data);
     
-    const dialogRef = this._matDialog.open(NewRegistrationComponent, 
+    const dialogRef = this._matDialog.open(EditRegistrationComponent, 
       {   maxWidth: "85vw",
           height: '550px',
           width: '100%',
@@ -201,7 +202,15 @@ onEdit(row){
     
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      
+      this._registrationService.getregisterList(this.D_data1).subscribe(reg=> {
+        this.dataArray = reg;
+        // console.log( this.dataArray);
+        this.getregistrationList();
+        this.sIsLoading = '';
+      },
+      error => {
+        this.sIsLoading = '';
+      });
     });
   }
 

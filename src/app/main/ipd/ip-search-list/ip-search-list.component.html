@@ -1,1 +1,294 @@
-<p>ip-search-list works!</p>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center" >
+        <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
+      </mat-icon>
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
+        IP Search List
+      </span>
+
+      <!-- <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1300px;">
+        <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
+    </button> -->
+    </div> 
+
+           
+    
+
+    </mat-toolbar>
+
+    <!-- / HEADER -->
+    <!-- SELECTED BAR -->
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
+    <!-- / SELECTED BAR -->
+    <!-- CONTENT -->
+    <div class="content">
+        <!-- SIDEBAR -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+        margin-left:12px; background-color: white;height:90%;">
+            <div>
+                <!-- SIDEBAR HEADER -->
+                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                    <span class="h5" style="font-size: 17px;">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div>
+                    <div class="nav material2">
+                        <form [formGroup]="_IpSearchListService.myFilterform" style="padding: 6px 6px 5px 5px;"
+                            fusePerfectScrollbar>
+                            <div fxLayout="column" fxLayoutAlign="start none">
+                                <br />
+                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
+                                        required Enter only Alphabets</span>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
+                                        required Enter only Alphabets</span>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number">
+                                    <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
+                                        required Enter only Digits</span>
+                                </mat-form-field>
+
+                                <div style="margin-top: 10px;">
+                                    <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>&nbsp;
+                                    <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()" matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
+        <!-- CENTER -->
+        <!-- CENTER -->
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+                                </div>
+                                <!-- sppinner -->
+                                <mat-table #table  class ="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                style="width: 100%;" >
+            
+                              
+                                <!-- <ng-container matColumnDef="IsBillGenerated">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> IsBillGenerated</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" >
+                                         {{contact.IsBillGenerated}} 
+                                           <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.IsBillGenerated=='1'" matTooltip="Bill Generated" class=" red-600 s-16">circle</mat-icon>
+                                        <!-- <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.IsBillGenerated=='0' "  matTooltip="Bill Not Generated" class=" orange-600 s-16">circle</mat-icon>   -->
+                                            
+                                    <!-- </mat-cell>
+                                </ng-container> --> 
+            
+            
+                                 <ng-container matColumnDef="RegNo" sticky> 
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.RegNo}}
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="PatientName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                        {{contact.PatientName}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <!-- <ng-container matColumnDef="PatientName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm [ngClass]="{'make-gold': contact.PatientType=='Company'}">
+                                        {{contact.PatientName}}
+                                    </mat-cell>
+                                </ng-container> -->
+            
+                                <ng-container matColumnDef="PatientOldNew">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">PatientOldNew</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" >
+                                         <!-- {{contact.PatientOldNew}}  -->
+                                           <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
+                                        <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='0' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
+                                            
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm></mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" >
+                                        
+                                          <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientType=='Company' || contact.PatientType=='Company'" matTooltip="PatientType" class=" red-600 s-16">circle</mat-icon>
+                                        <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientType=='Self' "  matTooltip="PatientType" class=" black-600 s-16">circle</mat-icon>  
+                                   
+                                      </mat-cell>
+                                </ng-container>
+            
+            
+                                
+                                
+                                <ng-container matColumnDef="DOA">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.DOA}}
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="DOT">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Time</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.DOT}}
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="IPDNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>IPDNo
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-md>
+                                        {{contact.IPDNo}}
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="Doctorname">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-md > {{contact.Doctorname}} </mat-cell>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-md> {{contact.DoctorName}} </mat-cell>
+                                </ng-container> -->
+            
+                                <ng-container matColumnDef="RefDocName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Ref Doc Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
+                                        {{contact.RefDocName}}
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="PatientType">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PatientType
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
+                                        {{contact.PatientType}}
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- [ngClass]="row.PatientType=='Company' ? 'make-green' : ''"  -->
+                                    
+                                <ng-container matColumnDef="CompanyName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>CompanyName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.CompanyName}}
+                                    </mat-cell>
+                                </ng-container>
+            
+            
+                                <!-- <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button [routerLink]="['/auth/menu-main/menu-master',row.menu_master_id]">
+                                            <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container> -->
+            
+                                <ng-container matColumnDef="buttons" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        <div fxFlex="row" fxLayoutAlign="center center">
+                                            <button mat-icon-button (click)="SubMenu(contact)">
+                                                <mat-icon title="Add SubMenu" style="color: blue;">add_circle_outline</mat-icon>
+                                            </button>
+                                            <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                (click)="$event.stopPropagation();">
+                                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                                            </button>
+                                            <mat-menu #moreMenu="matMenu">
+                                                <ng-container *ngFor="let m of menuActions, let i=index">
+                                                    <!-- <button mat-icon-button (click)="onEdit(row)"><mat-icon title="Edit Menu">launch</mat-icon></button> -->
+                                                    <button mat-menu-item aria-label="remove" (click)="getRecord(contact,m)">
+                                                        <span>{{m}}</span>
+                                                    </button>
+                                                </ng-container>
+                                            </mat-menu>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container> 
+            
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+            
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            
+                            </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER -->
+    </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
+    <!-- / CONTENT-->
+</div>

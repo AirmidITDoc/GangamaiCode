@@ -1,0 +1,185 @@
+<div>
+    <div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/HIMS_LOGO.JPG" width="90">
+        <div style="margin-top: 12px;">
+            <div style="font-weight:700;font-size:18px;text-align:center;margin-left:18%;width:500px;">YASHODHRA
+                SUPAR SPECIALITY
+                HOSPITAL PVT.LTD</div>
+            <!-- <div style="font-weight:700;font-size:16px;text-align:center;width:800px;">{{HospitalName}}</div> -->
+            <!-- <div></div> -->
+            <!-- <div style="color:#464343;text-align:center;width:800px;">{{HospitalAddress}}</div> -->
+            <div style="color:#464343;text-align:center;margin-left: 18%;width:700px;">6158 ,Siddeshshwar Nagar
+                ,Zilla
+                Parishad,Solapur-3 PhoneNo-(0217)2323001</div>
+            <!-- <div style="color:#464343;text-align:center;width:800px;">{{Phone}}</div> -->
+            <div style="color:#464343;text-align:center;margin-left:18%;width:500px;">www.yashodharahospital.org
+            </div>
+        </div>
+    </div>
+    <div style="display:flex;margin-left:750px;;">
+        <div style="width:90px;font-weight:700">PrintDate</div>
+        <div style="width:10px;font-weight:700">:</div>
+        <!-- <div>{{Today | date:'dd/MM/yyyy, h:mm a'}}</div> -->
+        <div>{{Today}}</div>
+    </div>
+    <div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span
+            style="font-weight:700">CasePaper</span></div>
+</div>
+<hr>
+<div id="print-section" class="printed-div" style="padding:10px; height: 550px">
+   
+    <div style="display:flex;justify-content:space-between">
+        <div style="display:flex;">
+            <div style="width:140px;font-weight:700">Reg.No</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{ reportPrintObj.RegNo}}</div> <!-- <div>Ip/9807</div> -->
+        </div>
+        <div style="display:flex;width:28%;float: right;">
+            <div style="width:120px;font-weight:700;">OPD No</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.OPDNo}}</div> <!-- <div>1234</div> -->
+        </div>
+
+
+    </div>
+    <div style="display:flex;justify-content:space-between">
+        <div style="display:flex;width:500px">
+            <div style="width:140px;font-weight:700">Patient Name</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.PatientName}}</div>
+        </div>
+        <div style="display:flex;width:30%;float:right;">
+            <div style="width:120px;font-weight:700;margin-left: 20px;">Visit Date</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.VisitDate}}</div>
+            <!-- <div>08/12/2021 1.37PM</div> -->
+        </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:space-between">
+        <div style="display:flex;width:500px">
+            <div style="width:140px;font-weight:700">Patient Name</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{selectedAdvanceObj.PatientName}}</div>
+        </div>
+        <div style="display:flex;width:28%;float: right;">
+            <div style="width:120px;font-weight:700;">Age/Gender</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.AgeYear}} / {{reportPrintObj.GenderName}}</div> 
+        </div>
+    </div>
+    <div style="display:flex;justify-content:space-between">
+        <div style="display:flex;width:370px">
+            <div style="width:140px;font-weight:700">Consultant Dr.</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.ConsultantDocName}}</div>
+        </div>
+
+        <div style="display:flex;width:28%;float: right;">
+            <div style="width:120px;font-weight:700;">DepartmentName</div>
+            <div style="width:10px;font-weight:700">:</div>
+            <div>{{reportPrintObj.DepartmentName}}</div> 
+        </div>
+    </div>
+
+
+
+    <hr />
+    <div>
+        <div style="display: flex; margin-left: 10px; font-weight: bolder">
+            Complaint : {{ reportPrintObj.Complaint }}
+        </div>
+        <div style="display: flex; margin-left: 10px; font-weight: bolder">
+            Dignosis : {{ reportPrintObj.Diagnosis }}
+        </div>
+        <div style="display: flex; margin-left: 10px; font-weight: bolder">
+            Weight :{{ reportPrintObj.Weight }} -- Pulse:{{
+            reportPrintObj.Pluse
+            }} --
+            BP :{{ reportPrintObj.BP }} -- BSL :{{ reportPrintObj.BSL }}
+        </div>
+        <hr />
+        <div style="display: flex; font-size: x-large">RX :</div>
+        <div style="display: flex; margin-top: 10px">
+            <div style="display: flex; margin-right: 30px">
+                <div style="width: 150px; font-weight: 700">TAB</div>
+            </div>
+        </div>
+        <div>
+            <div style="display: flex">
+                <div style="display: flex; margin-left: 20px">
+                    <div style="width: 180px; font-weight: 700">SR.NO.</div>
+                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+                </div>
+                <div style="
+                            display: flex;
+                            margin-right: 20px;
+                            margin-left: 10px;
+                        ">
+                    <div style="
+                                width: 450px;
+                                font-weight: 700;
+                                justify-content: center;
+                            ">
+                        Tablet Name
+                    </div>
+                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+                </div>
+
+                <div style="
+                            display: flex;
+                            margin-right: 20px;
+                            margin-left: 10px;
+                        ">
+                    <div style="
+                                width: 250px;
+                                font-weight: 700;
+                                justify-content: center;
+                            ">
+                        Dose
+                    </div>
+                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+                </div>
+
+                <div style="display: flex; margin-right: 30px">
+                    <div style="width: 170px; font-weight: 700">Days</div>
+                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+                </div>
+            </div>
+            <hr style="border-color: white" />
+            <div style="display: flex; margin: 8px 0">
+                <div style="display: flex; width: 180px; margin-left: 30px">
+                    <div>1</div>
+                </div>
+                <div style="
+                            display: flex;
+                            width: 450px;
+                            margin-right: 20px;
+                            justify-content: left;
+                        ">
+                    <div>{{ reportPrintObj.DrugName }}</div>
+                </div>
+                <div style="
+                            display: flex;
+                            width: 250px;
+                            margin-right: 20px;
+                            justify-content: left;
+                        ">
+                    <div>{{ reportPrintObj.DoseName }}</div>
+                </div>
+
+                <div style="
+                            display: flex;
+                            width: 70px;
+                            margin-right: 5px;
+                            justify-content: center;
+                        ">
+                    <div>{{ reportPrintObj.TotalDayes }}</div>
+                </div>
+            </div>
+            <hr style="border-color: white" />
+        </div>
+    </div>
+    <hr />
+</div>
+

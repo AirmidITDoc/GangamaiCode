@@ -1,0 +1,209 @@
+<div id="print-section" class="printed-div" style="padding: 20px">
+    <div>
+        <div style="display: flex">
+            <img class="logo-print" src="../../../../assets/images/logos/Airmid_NewLogo.jpeg" width="90" />
+            <div>
+                <div style="
+                        font-weight: 700;
+                        font-size: 32px;
+                        text-align: left;
+                        width: 1100px;
+                        margin-left: 60px;
+                    ">
+                    YASHODHARA SUPER SPECIALITY HOSPITAL PVT.LTD
+                </div>
+                <div style="
+                        color: #464343;
+                        text-align: left;
+                        font-size: 18px;
+                        width: 1000px;
+                        margin-left: 150px;
+                    ">
+                    6158 ,Siddeshshwar Nagar ,Zilla Parishad,Solapur-3
+                    PhoneNo-(0217)2323001
+                </div>
+                <div style="
+                        color: #464343;
+                        text-align: left;
+                        margin-left: 170px;
+                    ">
+                    www.yashodharahospital.org
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left:1000px">
+            <div style="width: 90px; font-weight: 700">PrintDate</div>
+            <div style="width: 10px; font-weight: 700">:</div>
+            <div>{{Today | date:'dd/MM/yyyy, h:mm a'}}</div>
+        </div>
+        <div style="
+                border: 1px solid grey;
+                border-radius: 16px;
+                text-align: center;
+                padding: 8px;
+                margin-top: 5px;
+            ">
+            <span style="font-weight: 700">OPD PAYMENT RECEIPT</span>
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; width: 300px; margin-left: 40px">
+                <div style="width: 140px; font-weight: 700">UHID No.</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.RegId}}</div>
+            </div>
+            <div style="display: flex; margin-right: 50px; width: 300px">
+                <div style="width: 140px; font-weight: 700">Bill No.</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.BillNo}}</div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; width: 300px; margin-left: 40px">
+                <div style="width: 140px; font-weight: 700">Receipt No</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.ReceiptNo}}</div>
+            </div>
+            <div style="display: flex; margin-right: 50px; width: 300px">
+                <div style="width: 140px; font-weight: 700">Bill Date</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.BillDate}}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; width: 500px; margin-left: 40px">
+                <div style="width: 140px; font-weight: 700">
+                    Patient Name
+                </div>
+                <div style="width: 10px; font-weight:500">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.PatientName}}</div>
+            </div>
+            <!-- <div style="display: flex; justify-content: space-between"> -->
+                <div style="display: flex; margin-right: 50px; width: 300px">
+                    <div style="width: 140px; font-weight: 700">Age/Gender</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.Age}}/{{reportPrintObj.GenderName}}</div>
+            </div>
+           
+            <!-- </div> -->
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; width: 400px; margin-left: 40px">
+                <div style="width: 140px; font-weight: 700">
+                    Consultant Doctor
+                </div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.ConsultantDr}}</div>
+            </div>
+            <div style="display: flex; margin-right: 50px; width: 300px">
+                <div style="width: 140px; font-weight: 700">PaymentDate</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.PaymentDate}}</div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; margin-left: 40px; width: 300px">
+                <div style="width: 140px; font-weight: 700">Ref Doc</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px">{{reportPrintObj.ReferDr}}</div>
+            </div>
+        </div>
+
+    </div>
+    <hr />
+    <div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 400px">
+                <div style="width: 140px; font-weight: 700">Cash Pay</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px">{{reportPrintObj.CashPayAmount}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px;justify-content: space-between;">
+            <div style="display: flex; width: 300px;">
+                <div style="width: 140px; font-weight: 700">Card Pay</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px;">{{reportPrintObj.CardPayAmount}}</div>
+            </div>
+
+            <div style="display:flex; width:300px;">
+                <div style="width: 140px; font-weight: 700">Card No</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px;">{{reportPrintObj.CardNo}}</div>
+            </div>
+            <div style="display: flex; width: 300px; margin-right: 50px;">
+                <div style="width: 140px; font-weight: 700">Card Bank Name</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px;">{{reportPrintObj.CardBankName}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px;justify-content:space-between">
+            <div style="display: flex; width: 300px;">
+                <div style="width: 140px; font-weight: 700">Cheque Pay</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px;">{{reportPrintObj.ChequePayAmount}}</div>
+            </div>
+           
+            <div style="display:flex; width:300px;margin-right:540px;">
+                <div style="width: 140px; font-weight: 700">Cheque No</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 10px;">{{reportPrintObj.ChequeNo}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 400px">
+                <div style="width: 140px; font-weight: 700">NEFT Pay</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px;">{{reportPrintObj.RegId}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 400px">
+                <div style="width: 140px; font-weight: 700">UPI Pay</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px;">{{reportPrintObj.PayTMAmount}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 300px">
+                <div style="width: 140px; font-weight: 700">
+                    Paid Amount
+                </div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px">{{reportPrintObj.PaidAmount}}</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 500px">
+                <div style="width: 140px; font-weight: 700">
+                    Amount in Words
+                </div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px">StrPaidAmountInWords</div>
+            </div>
+        </div>
+        <div style="display: flex; margin-left: 40px">
+            <div style="display: flex; width: 400px">
+                <div style="width: 140px; font-weight: 700">Remarks</div>
+                <div style="width: 10px; font-weight: 700">:</div>
+                <div style="margin-left: 5px">{{reportPrintObj.Remark}}</div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div style="display:flex;justify-content:space-between;margin-left:1000px;">
+        <div style="position:relative;top:125px;text-align:center">
+        <div style="font-weight: 700; font-size: 16px">{{reportPrintObj.UserName}}</div>
+        <div style="font-weight: 700; font-size: 16px">Cashier</div>
+    </div>
+    </div>
+</div>
+<!-- </div> -->
+
+<!-- rptOPDPaymentReceiptPrint -->
+

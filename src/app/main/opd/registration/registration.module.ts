@@ -34,6 +34,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
 
 const routes: Routes = [
     {
@@ -45,6 +46,7 @@ const routes: Routes = [
     declarations: [
         RegistrationComponent,
         NewRegistrationComponent,
+        EditRegistrationComponent,
         
     ],
     imports: [

@@ -2,43 +2,47 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
-    
+
   {
-      path: "registration",
-      loadChildren: () => import("./registration/registration.module").then((m) => m.RegistrationModule),
+    path: "registration",
+    loadChildren: () => import("./registration/registration.module").then((m) => m.RegistrationModule),
   },
   {
-      path: "phone-appointment",
-     loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
+    path: "phone-appointment",
+    loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
   },
   {
-      path: "appointment",
-      loadChildren: () => import("./appointment/appointment.module").then((m) => m.appointmentModule),
+    path: "appointment",
+    loadChildren: () => import("./appointment/appointment.module").then((m) => m.appointmentModule),
   },
   {
-      path: "browse-opd-bills",
-      loadChildren: () => import("./browse-op-list/browseopbill.module").then((m) => m.browseoplistModule),
+    path: "browse-opd-bills",
+    loadChildren: () => import("./browse-opbill/browse-opbill.module").then((m) => m.BrowseOPBillModule),
+
+    // loadChildren: () => import("./all-browse-list-page/all-browse-list.module").then((m) => m.AllBrowseListModule),
+
   },
   {
-      path: "browse-opd-payment-receipt",
-      loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
+    path: "browse-opd-payment-receipt",
+    loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
   },
   {
-      path: "medicalrecords",
-      loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+    path: "medicalrecords",
+    loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
   },
   {
-      path: "bill",
-      loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+    path: "bill",
+    loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+    // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
   },
+  //   {
+  //       path: "refund",
+  //       loadChildren: () =>
+  //       import("./op-refund-bill/oprefundbill.module").then((m) => m.oprefundbillModule),
+  //   },
   {
-      path: "refund",
-      loadChildren: () =>
-      import("./op-refund-bill/oprefundbill.module").then((m) => m.oprefundbillModule),
-  },
-  {
-      path: "brows-opd-refund",
-      loadChildren: () =>
+    path: "brows-opd-refund",
+    loadChildren: () =>
       import("./browse-refund-list/browserefund.module").then((m) => m.browserefundModule),
   },
   // {

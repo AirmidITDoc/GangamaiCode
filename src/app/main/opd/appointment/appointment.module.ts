@@ -2,7 +2,6 @@ import { AppointmentComponent } from './appointment.component';
 import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -35,7 +34,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
-import { EditRefDoctorComponent } from './edit-reference-doctor/edit-ref-doctor.component';
+import { EditRefraneDoctorComponent } from './edit-refrane-doctor/edit-refrane-doctor.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+// import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
     {
@@ -48,7 +49,8 @@ const routes: Routes = [
         AppointmentComponent,
         NewAppointmentComponent,
         EditConsultantDoctorComponent,
-        EditRefDoctorComponent,
+        EditRefraneDoctorComponent,
+        // EditAppointmentComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

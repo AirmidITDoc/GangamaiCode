@@ -1,0 +1,245 @@
+<div fusePerfectScrollbar>
+    <div class="dialog-content-wrapper">
+        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center " style="height: 40px;">
+    
+        <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
+                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon> -->
+                
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 70%; font-weight: 400;">
+                    OP Refund Of BILL
+                </span>
+              
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                        style="border-color: red;"></app-common-date>
+                    <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose()">
+                        close
+                    </span>
+                   </div>
+            </div>
+    
+    </div>
+
+
+
+        <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                <form [formGroup]="myRefundBillForm" style="width: 100%;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
+                                    </h3>
+                                </div>
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                                    style="align-items: baseline;">
+
+                                    <span class="label">Reg No :</span>
+                                    <span class="data_input">{{selectedAdvanceObj.RegNo}}</span>
+
+                                    <span class="label"> Patient Name : </span>
+                                    <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
+
+                                    <span class="label">Doctor Name : </span>
+                                    <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
+
+                                    <span class="label">Age(Y) :</span>
+                                    <span class="data_input">{{selectedAdvanceObj.AgeYear}}
+                                    </span>
+
+                                    <span class="label">Tariff Name : </span>
+                                    <span class="data_input">{{selectedAdvanceObj.TariffName}}
+                                   </span>
+
+                                    
+                                </div>
+                            </mat-card>
+                            <!-- ================================ LABEL HEADER  -->
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Middle Data-->
+    <div class="content">
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="10px">
+
+                        <div fxlayout="row">
+
+                            <div fxFlex.gt-sm="48%" fxFlex fxLayoutGap="20px"
+                                style="background-color: white; padding: 5px 10px 5px 10px;">
+                               <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;margin-right: 30px;">
+                                    <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+
+                                        <ng-container matColumnDef="BillNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                BillNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.BillNo}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="BillDate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                BillDate </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <!-- {{todayDate | date:'shortDate'}} -->
+                                                {{element.BillDate | date:'shortDate'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="TotalAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                TotalAmt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.TotalAmt | currency:'INR'}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="RefundAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                RefundAmount </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.RefundAmount | currency:'INR'}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button mat-icon-button (click)="onEdit(row)">
+                                                    <mat-icon title="Edit Menu">launch</mat-icon>
+                                                </button>
+
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <!-- no data found... -->
+                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                </mat-spinner>
+                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                        </mat-footer-row>
+                                    </mat-table>
+
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                        showFirstLastButtons></mat-paginator>
+                                </mat-card>
+                            </div>
+
+
+                            <!-- <br> -->
+                            <div fxFlex.gt-sm="50%" fxFlex fxLayoutGap="15px"
+                                style="background-color: white; padding: 3px 3px 3px 3px;border: rgb(247, 218, 218) 1px solid; padding:1em;"  >
+                                <!-- <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;"> -->
+                                <div class="bill-amts" fxFlexFill fxLayout="column" >
+                                    <form [formGroup]="RefundOfBillFormGroup" style="width:100%;">
+                                        <br>
+                                        <div fxLayout="row" fxLayoutGap="4px">
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Bill No</mat-label>
+                                                <input matInput display="block" [(ngModel)]="BillNo"
+                                                    formControlName="BillNo" name="BillNo" readonly>
+                                            </mat-form-field>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Bill Date</mat-label>
+                                                <input matInput display="block" [(ngModel)]="BillDate"
+                                                    formControlName="BillDate" name="BillDate" readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutGap="5px">
+                                            <mat-form-field appearance="outline" fxFlex="31.40%">
+                                                <mat-label>Net Amount</mat-label>
+                                                <input matInput [(ngModel)]="NetBillAmount"
+                                                    formControlName="NetBillAmount" name="NetBillAmount" readonly>
+                                                <mat-error class="error"
+                                                    *ngIf="RefundOfBillFormGroup.get('NetBillAmount').invalid && RefundOfBillFormGroup.get('NetBillAmount').touched">
+                                                    Net Bill Amount is required</mat-error>
+                                            </mat-form-field>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <mat-form-field appearance="outline" fxFlex="31.40%">
+                                                <mat-label>Total Refund Amount</mat-label>
+                                                <input matInput [(ngModel)]="TotalRefundAmount"
+                                                    formControlName="TotalRefundAmount" name="TotalRefundAmount"
+                                                    (keyup)="calculateTotalRefund()">
+                                                    <mat-error class="error"
+                                                      *ngIf="RefundOfBillFormGroup.get('TotalRefundAmount').invalid && RefundOfBillFormGroup.get('TotalRefundAmount').touched">
+                                                      Total Refund Amount is   required</mat-error>
+                  
+                                                </mat-form-field>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <mat-form-field appearance="outline" fxFlex="31.40%">
+                                                <mat-label>Refund Bal Amount</mat-label>
+                                                <input matInput [(ngModel)]="RefundBalAmount"
+                                                    formControlName="RefundBalAmount" name="RefundBalAmount" required>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutGap="4px">
+                                       
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Remark</mat-label>
+                                                <input matInput [(ngModel)]="Remark" formControlName="Remark"
+                                                    name="Remark">
+                                            </mat-form-field>
+                                        </div>
+                                        <br>
+
+                                    </form>
+                                </div>
+
+                                <!-- </mat-card> -->
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+            <br>
+            <div fxLayout="row" fxLayoutGap="15px" style="float: right;margin-right: 20px;">
+                <button class="next-btn" [disabled]="RefundOfBillFormGroup.invalid" (click)="onSave()" style="border-radius: 16px;">Save</button>
+                <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
+       
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!--End of Middle Data-->
+
+
+</div>

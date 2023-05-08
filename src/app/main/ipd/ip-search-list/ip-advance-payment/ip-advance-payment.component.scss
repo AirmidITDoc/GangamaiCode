@@ -1,0 +1,141 @@
+
+app-ip-advance-payment{
+
+    .first-part, .second-part {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .patient-div .mat-form-field {
+        width: 500px !important;
+    }
+    
+    .bill-div .mat-form-field {
+        width: 300px !important;
+    }
+    
+    .patient-div, .bill-div, .concession, .net-pay, .balance-amt {
+        display: flex;
+        align-items: center;
+    }
+    
+    .concession .mat-form-field, .net-pay .mat-form-field, .balance-amt .mat-form-field {
+        width: 200px !important;
+    }
+    
+    .chips-name {
+        font-size: 15px;
+        font-weight: 400;
+    }
+    
+    .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
+        background-color: #3f51b5 !important;
+    }
+    
+    ::ng-deep.mat-form-field-subscript-wrapper {
+        position: relative !important;
+    }
+    
+    .top-header-div {
+        background-color: #e8e9ef !important;
+        padding-left: 20px;
+    }
+    
+    .payment-container {
+        padding: 7px 7px 7px 7px;
+        // height: 400px !important;
+        // overflow: auto !important;
+    }
+    
+    // .next-btn {
+    //     width: 100px;
+    //     font-size: 14px;
+    //     padding: 10px;
+    //     border-radius: 2px;
+    //     background-color: #48a348;
+    //     border: 1px solid #48a348;
+    //     color: white;
+    //     cursor: pointer;
+    // }
+    
+    // button:disabled {
+    //     color: #FFFFFF !important;
+    //     background-color: #CCCCCC !important;
+    //     border-radius: 2px;
+    //     border: 1px solid #CCCCCC;
+    // }
+    
+    
+    
+    // .footer-btn {
+    //     width: 80px;
+    //     font-size: 16px;
+    //     font-weight: 700px;
+    //     padding: 10px;
+    //     color:  rgb(247, 97, 97);
+    //     border-radius: 16px;
+    //     background-color:white;
+    //     border-color: rgb(247, 97, 97);
+    //     cursor: pointer;
+    // }
+    // .footer-btn:hover{
+    //     background-color: rgb(247, 97, 97);
+    //     color: white;
+       
+    // }
+    
+    // .next-btn {
+    //     width: 80px;
+    //     font-size: 16px;
+    //     font-weight: 700px;
+    //     padding: 10px;
+    //     margin-right: 5px;
+    //     color: #039be5 ;
+    //     border-radius: 16px;
+    //      border: 1px solid #039be5 ;
+    //       background-color: white;
+    //     cursor: pointer;
+    //     border-radius: 20%;
+    // }
+    // .next-btn:hover{
+    //     background-color: #039be5 ;
+    //     color:  white;
+       
+    // }
+    
+    // button:disabled {
+    //     color: white;
+    //    background-color: #7bd3ff  !important;
+    //     border-radius: 2px;
+    //    border: 1px solid  #b7e6fd ;
+    // }
+    
+    
+    
+    .save-payment {
+        //@function: 100%;
+        text-align: right;
+        margin-left: 130px;
+    }
+    
+    .payment-container .mat-form-field .mat-form-field-subscript-wrapper {
+        position: relative !important;
+    }
+    
+    .close-button {
+        width: 100px;
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 2px;
+        background-color: #ebeae2;
+        color: white;
+        border: 1px solid #7c7b71;
+        cursor: pointer;
+    }
+    
+    .close-button:hover{
+        background-color: coral;
+    }
+    
+    }

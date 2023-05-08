@@ -304,4 +304,8 @@ export class AppointmentSreviceService {
   populateForm(employee) {
     this.mySaveForm.patchValue(employee);
   }
+
+  getregisterListByRegId(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
+  }
 }

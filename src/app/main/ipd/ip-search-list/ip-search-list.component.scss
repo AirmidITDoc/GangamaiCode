@@ -1,0 +1,288 @@
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+@import "src/@fuse/scss/fuse";
+
+.mat-row, .mat-footer-row {
+    min-height: 28px;
+    height: 35px;
+}
+
+:host {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+  
+    
+    .table1 {
+       height: 600px !important;
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+
+        .mat-column-checkbox {
+            flex: 0 1 64px;
+            padding-left: 18px;
+        }
+
+        .mat-column-avatar {
+            flex: 0 1 64px;
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+       
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+           
+            .mat-cell {
+                min-width: 0;
+                white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                overflow: hidden !important;
+                display: inline-block;
+                min-height: 40px;
+                
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+           
+        }
+    }
+}
+.active-icon {
+    border-radius: 50%;
+}
+
+// app-list {
+//     display: flex;
+//     flex: 1 1 auto;
+//     width: 100%;
+    
+//     .mat-table {
+//         height: 400px !important;
+//         width: 100%;
+//         background: transparent;
+//         box-shadow: none;
+
+//         .mat-column-checkbox {
+//             flex: 0 1 64px;
+//             padding-left: 18px;
+//         }
+
+//         .mat-column-avatar {
+//             flex: 0 1 64px;
+//         }
+
+//         .mat-column-buttons {
+//             flex: 0 1 80px;
+//         }
+
+//         .mat-row {
+//             position: relative;
+//             cursor: pointer;
+           
+//             .mat-cell {
+//                 min-width: 0;
+//                 white-space: nowrap; 
+//                 overflow: hidden;
+//                 text-overflow: ellipsis; 
+                
+//                 &.mat-column-detail-button {
+//                     flex: 0 1 auto;
+
+//                     @include media-breakpoint('gt-md') {
+//                         display: none;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+.active-icon {
+    border-radius: 50%;
+}
+
+app-ip-search-list{
+    .table1{
+        height: 600px !important;
+    }
+.mat-header-row {
+    width: 1300px;
+    max-width: 1300px;
+    min-width: 1300px;  
+    min-height: 35px;     
+}
+
+.mat-row {
+    width: 1300px;
+    max-width: 1300px;
+    min-width: 1300px;
+    min-height: 35px;              
+}
+
+.mat-column-checkbox {
+    width:60px;
+    max-width: 60px;
+    min-width: 60px;
+}
+
+.mat-column-IsBillGenerated {
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
+    text-align:left;
+}
+.mat-column-RegNo {
+    width: 80px;
+    max-width:80px;
+    min-width: 80px;
+    text-align:left;
+}
+
+.mat-column-PatientName {
+    width:200px;
+    max-width: 200px;
+    min-width: 200px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 20px;   
+    justify-content:left; 
+}
+
+
+
+.mat-column-DOA {
+    width:80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: center;
+}
+.mat-column-DOT {
+    width:80px;
+    max-width:80px;
+    min-width:80px;
+    text-align: center;
+}
+
+.mat-column-IPDNo {
+    width:70px;
+    max-width:70px;
+    min-width:70px;
+    text-align: center;
+}
+.mat-column-PatientType {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: center;
+}
+.mat-column-IPDNo {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: center;
+}
+.mat-column-Doctorname {
+    width:170px;
+    max-width:170px;
+    min-width:170px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 20px;   
+    justify-content:left; 
+}
+.mat-column-RefDocName {
+    width: 170px;
+    max-width:170px;
+    min-width: 170px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 20px;   
+    justify-content:left; 
+}
+.mat-column-CompanyName {
+    width:170px;
+    max-width:170px;
+    min-width:170px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 20px;   
+    justify-content:left; 
+}
+
+
+.menu-btn .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 28px;
+    height: 21px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+
+.mat-column-buttons {
+    color: white !important;
+    width:70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align:left;
+    justify-content:left;
+}
+
+.mat-column-action {
+    // color: white !important;
+    width:50px;
+    max-width: 50px;
+    min-width: 50px;
+    min-height: 25px;     
+    text-align:left;
+    justify-content:left;
+}
+.make-gold {
+    background-color:violet;
+    
+}
+
+
+}

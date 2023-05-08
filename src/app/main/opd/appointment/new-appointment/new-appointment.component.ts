@@ -15,6 +15,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { RegistrationService } from '../../registration/registration.service';
+import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 
 
 @Component({
@@ -24,7 +25,8 @@ import { RegistrationService } from '../../registration/registration.service';
 })
 export class NewAppointmentComponent implements OnInit {
 
- 
+  registerObj = new RegInsert({});
+  registerObj1 = new OPIPPatientModel({});
   name = new FormControl('');
   FirstName = new FormControl('');
   AreaId = new FormControl('');
@@ -84,6 +86,24 @@ export class NewAppointmentComponent implements OnInit {
   dataArray = {};
   HospitalList1: any = [];
   Patientnewold:any  = 1;
+
+  
+  IsPathRad: any;
+  PatientName: any = '';
+  OPIP: any = '';
+  Bedname: any = '';
+  wardname: any = '';
+  classname: any = '';
+  tariffname: any = '';
+    ipno: any = '';
+  patienttype: any = '';
+  Adm_Vit_ID: any = 0;
+
+  OTTableID:any;
+  AnestheticsDr:any;
+  OTTableName :any;
+
+
 
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
@@ -147,7 +167,7 @@ export class NewAppointmentComponent implements OnInit {
   isLoading: string = '';
   screenFromString = 'admission-form';
   dataSource = new MatTableDataSource<VisitMaster>();
-  registerObj = new RegInsert({});
+  
   visitObj = new VisitMaster({});
 
   
@@ -448,7 +468,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   getcityList() {
-    // let cData = this._opappointmentService.getCityList().subscribe(data => {
+    
     this._opappointmentService.getCityList().subscribe(data => {
       this.cityList = data;
       this.filteredCity.next(this.cityList.slice());
@@ -497,10 +517,10 @@ export class NewAppointmentComponent implements OnInit {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
       const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
+      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+      // this.registerObj.DateofBirth = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
     }
 
@@ -761,7 +781,7 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
 
-
+    // RegId of Patient Searching 
   getSearchList() {
     var m_data = {
       "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
@@ -773,8 +793,7 @@ export class NewAppointmentComponent implements OnInit {
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
-        this.filteredOptions = resData;
+                this.filteredOptions = resData;
 
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -788,30 +807,60 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   searchRegList() {
-    //debugger;
-    // const dialogRef = this._matDialog.open(RegistrationListComponent,
-    //   {
-    //     maxWidth: "85vw",
-    //     maxHeight: "540px", width: '100%'
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     let a,b,c ;
+    debugger;
+    const dialogRef = this._matDialog.open(SearchPageComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: "540px", width: '100%'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      if (result) {
+        let a,b,c ;
 
-    //     a =result.AgeDay.trim();;
-    //     b =result.AgeMonth.trim();
-    //     c =result.AgeYear.trim();
-    //     // console.log(a,b,c);
-    //     result.AgeDay=a;
-    //     result.AgeMonth=b;
-    //     result.AgeYear=c;
-    //     this.registerObj = result as RegInsert;
-    //     this.setDropdownObjs();
-    //   }
-    //   //this.getRegistrationList();
-    // });
+        a =result.AgeDay.trim();;
+        b =result.AgeMonth.trim();
+        c =result.AgeYear.trim();
+        
+        result.AgeDay=a;
+        result.AgeMonth=b;
+        result.AgeYear=c;
+        this.registerObj = result as RegInsert;
+        this.setDropdownObjs();
+      }
+      //this.getRegistrationList();
+    });
   }
+
+  
+  searchPatientList() {
+    debugger;
+    const dialogRef = this._matDialog.open(SearchPageComponent,
+      {
+        maxWidth: "90%",
+        height: "530px !important ", width: '100%',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result) {
+        this.registerObj1 = result as OPIPPatientModel;
+        if (result) {
+          this.PatientName = this.registerObj1.PatientName;
+          this.OPIP = this.registerObj1.IP_OP_Number;
+          this.AgeYear = this.registerObj1.AgeYear;
+          this.classname = this.registerObj1.ClassName;
+          this.tariffname = this.registerObj1.TariffName;
+          this.ipno = this.registerObj1.IPNumber;
+          this.Bedname = this.registerObj1.Bedname;
+          this.wardname = this.registerObj1.WardId;
+          this.Adm_Vit_ID = this.registerObj1.Adm_Vit_ID;
+        }
+      }
+      // console.log(this.registerObj);
+    });
+  }
+
 
   getOptionText(option) {
     if (!option) return '';
@@ -878,15 +927,11 @@ export class NewAppointmentComponent implements OnInit {
     this.personalFormGroup.updateValueAndValidity();
   }
 
-//   Appointment 
-// -------------- New Patient 
-// 1. insert_Registration_1_1
-// 2. insert_VisitDetails_New_1
-// 3. Insert_TokenNumberWithDoctorWise
+
   submitAppointForm() {
-  //  debugger;
+
     if (this.searchFormGroup.get('regRadio').value == "registration") {
-      //Api
+
       this.isLoading = 'submit';
       let submissionObj = {};
       let registrationSave = {};
@@ -980,13 +1025,7 @@ export class NewAppointmentComponent implements OnInit {
       });
     }
     else {
-      //registrationUpdate
-
-      // update_RegForAppointment_1
-      // insert_VisitDetails_New_1
-      // Insert_TokenNumberWithDoctorWise
-
-
+     
       this.isLoading = 'submit';
       let submissionObj = {};
       let registrationUpdate = {};

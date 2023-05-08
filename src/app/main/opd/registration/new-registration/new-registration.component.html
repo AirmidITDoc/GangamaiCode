@@ -24,14 +24,14 @@
      
     <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
     <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
-      <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"  >
-      </app-common-date >
+      <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"  >
+      </app-common-date > -->
   
       <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display:none;">
         Show
       </button> -->
      
-      <!-- <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+       <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
         <div class="register-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" >
           <div class="redio-container">
             <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
@@ -72,7 +72,7 @@
           </app-common-date>
         
         </div>
-      </form> -->
+      </form> 
     
   
     <br>
@@ -365,7 +365,9 @@
   
             <div style="float: right;margin-top: 20px;" >
   
-              <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
+              <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()" [disabled]="personalFormGroup.invalid && IsSave">Save</button>
+
+             
               <button class="footer-btn" id="btncancel" (click)="closeDialog()" >Cancel</button>
          
         </div>
