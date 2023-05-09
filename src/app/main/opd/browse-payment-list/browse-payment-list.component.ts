@@ -60,7 +60,7 @@ export class BrowsePaymentListComponent implements OnInit {
     public _BrowseOpdPaymentReceiptService:BrowsePaymentListService,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    public _matDialog: MatDialog,) { }
+    public _matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getBrowseOpdPaymentReceiptList();
@@ -242,7 +242,7 @@ onExport(exprtType){
     //  return converter.toWords(e);
        }
 getTemplate() {
-  let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8 ';
+  let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);
     this.printTemplate = resData[0].TempDesign;
@@ -259,8 +259,8 @@ getTemplate() {
       this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrCardPayAmount','₹' + (this.reportPrintObj.CardPayAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrChequePayAmount','₹' + (this.reportPrintObj.ChequePayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount','₹' + (this.reportPrintObj.NEFTPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPayTMAmount','₹' + (this.reportPrintObj.PayTMAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount','₹' + (this.reportPrintObj.NEFTPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrPayTMAmount','₹' + (this.reportPrintObj.PayTMAmount.toFixed(2)));
       this.printTemplate =  this.printTemplate.replace('StrRemark', (this.reportPrintObj.Remark));
       this.printTemplate =  this.printTemplate.replace('StrUserName', (this.reportPrintObj.UserName));
 

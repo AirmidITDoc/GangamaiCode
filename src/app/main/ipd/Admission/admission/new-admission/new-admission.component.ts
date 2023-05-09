@@ -1239,16 +1239,7 @@ export class NewAdmissionComponent implements OnInit {
 
     }
     else {
-      //AdmissionInsert
-
-
-      // Old Admission
-      // 1. insert_Admission_1
-      // 2. Insert_IPSMSTemplete_1  ===IP Admission Msg For Patient
-      // 4. Insert_IPSMSTemplete_1 === 'IP Admission Msg For Doctor
-      // 5. Insert_IPSMSTemplete_1 === '  IP Admission Msg For RefDoctor
-      // 6. UpdateQuery = "Update BedMaster set IsAvailible=0 where Bedid=" + txtBedID.Text.Trim + ""
-
+    
       this.isLoading = 'submit';
       let submissionObj = {};
       let admissionInsert = {};
@@ -1330,7 +1321,7 @@ export class NewAdmissionComponent implements OnInit {
     this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
 
-      let keysArray = ['HospitalName', 'HospAddress', 'FirstName', 'MiddleName', 'LastName',
+      let keysArray = ['HospitalName', 'HospAddress','Phone', 'FirstName', 'MiddleName', 'LastName',
         'AdmissionId', 'RegNo', 'PatientName', 'AgeDay','AgeMonth','Age', 'GenderName', 'MaritalStatusName', 'Address',
         'MobileNo', 'IsMLC', 'PhoneNo', 'AdmissionTime', 'IPDNo', 'CompanyName',
         'DepartmentName', 'AdmittedDoctorName', 'AdmittedDoctor1', 'BedName', 'AdmittedDoctor2',

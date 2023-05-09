@@ -195,7 +195,7 @@
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
-                                                    formControlName="discAmount" type="number">
+                                                    formControlName="discAmount" type="number" (keyup)="calculatePersc()" >
                                             </mat-form-field>
 
                                             <!-- </div>
@@ -523,7 +523,7 @@
                                                     <mat-label>Disc Amt</mat-label>
                                                     <input matInput [(ngModel)]="concessionAmtOfNetAmt"
                                                         name="concessionAmtOfNetAmt" formControlName="concessionAmt"
-                                                        placeholder="0" style="height: 35px;" type="number">
+                                                        placeholder="0" style="height: 35px;" type="number" (keyup)="calculatePersc1()">
                                                 </mat-form-field>
                                             </div>
 
@@ -585,7 +585,7 @@
 
 
                                 <button class="next-btn" (click)="onInsertAddCharges()"
-                                    style="border-radius: 16px;">Save</button>
+                                    style="border-radius: 16px;" [disabled]="click">Save</button>
 
                                 <!-- [disabled]="registeredForm.invalid" -->
                                 <button class="footer-btn" (click)="onClose()"
