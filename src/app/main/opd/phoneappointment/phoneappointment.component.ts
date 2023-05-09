@@ -64,23 +64,7 @@ export class PhoneappointmentComponent implements OnInit {
     this.getDoctorNameCombobox();
 
     // get phone appointment list on page load
-    var D_data = {
-      "F_Name": this._phoneAppointService.mysearchform.get("FirstNameSearch").value + '%' || '%',
-      "L_Name": this._phoneAppointService.mysearchform.get("LastNameSearch").value + '%' || '%',
-      "Doctor_Id": this._phoneAppointService.mysearchform.get("DoctorId").value.DoctorID || 0,
-      "From_Dt": this.datePipe.transform(this._phoneAppointService.mysearchform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._phoneAppointService.mysearchform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    }
-      this._phoneAppointService.getPhoneAppointmentlist(D_data).subscribe(Visit => {
-      this.dataSource.data = Visit as PhoneAppointmentlist[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      console.log(this.dataSource.data);
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    this.getPhoneAppointList();
   }
   
   // toggle sidebar
@@ -127,48 +111,16 @@ export class PhoneappointmentComponent implements OnInit {
       });
   }
 
-
-  
-// getRecord(contact, m):void{
-//   // debugger;
-//   console.log(contact,m);
-//   console.log(m);
-
-//   if (m == "Bill"){
-//      console.log( m);
-//      const dialogRef = this._matDialog.open(PhoneAppointListComponent, 
-//        {  maxWidth: "90vw",
-//        maxHeight: "90vh", width: '100%', height: "100%"
-//      });
-//      dialogRef.afterClosed().subscribe(result => {
-//        console.log('The dialog was closed - Insert Action', result);
-//       //  this.getRadiologytemplateMasterList();
-//      });
-//   }
-//   else if (m == "Refund of Bill"){
-//     console.log(" This is for refund of Bill pop : "+ m);
-//   }
-//   else if (m == "Case Paper"){
-//     console.log("Case Paper : " + m);
-//   }
-// //   const act?ionType: string = response[0];
-// //   this.selectedID =  contact.VisitId
-// //   this._ActRoute.navigate(['opd/appointment/op_bill'])
-// //   this._ActRoute.navigate(['opd/appointment/op_bill'], {queryParams:{id:this.selectedID}})
-
-// }
-
-newappointment(){
+newPhoneAppointment(){
   const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
     {
       maxWidth: "95vw",
-      height: '600px',
+      height: '80vw',
       width: '100%',
-      
     });
   dialogRef.afterClosed().subscribe(result => {
-    // console.log('The dialog was closed - Insert Action', result);
-    // this.getVisitList();
+     console.log('The dialog was closed - Insert Action', result);
+     this.getPhoneAppointList();
   });
 }
 

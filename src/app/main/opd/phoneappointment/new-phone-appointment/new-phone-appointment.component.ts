@@ -62,14 +62,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
   noOptionFound: boolean = false;
   selectedHName: any;
   selectedPrefixId: any;
-  buttonColor:any;
+  buttonColor: any;
   isCompanySelected: boolean = false;
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
   submitted = false;
   sIsLoading: string = '';
-  minDate:Date;
+  minDate: Date;
 
   displayedColumns = [
 
@@ -89,41 +89,39 @@ export class NewPhoneAppointmentComponent implements OnInit {
     public formBuilder: FormBuilder,
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
-    // public dialogRef: MatDialogRef<PhoneAppointListComponent>,
+    public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
-      // dialogRef.disableClose = true;
-     }
+  }
 
 
   doctorNameCmbList: any = [];
-  
+
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-    //department filter
-    public departmentFilterCtrl: FormControl = new FormControl();
-    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-  private _onDestroy = new Subject<void>();
 
+  //department filter
+  public departmentFilterCtrl: FormControl = new FormControl();
+  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+  private _onDestroy = new Subject<void>();
 
   ngOnInit(): void {
     this.personalFormGroup = this.createPesonalForm();
     this.getDepartmentList();
     this.minDate = new Date();
-    
+
     this.doctorFilterCtrl.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterDoctor();
-        });
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterDoctor();
+      });
 
     this.departmentFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterDepartment();
       });
-      this.getPhoneschduleList();
+    this.getPhoneschduleList();
   }
 
 
@@ -132,50 +130,48 @@ export class NewPhoneAppointmentComponent implements OnInit {
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
- 
+
 
   createPesonalForm() {
     return this.formBuilder.group({
-      AppointmentDate:[(new Date()).toISOString()],
-      phoneAppId:'',
+      AppointmentDate: [(new Date()).toISOString()],
+      phoneAppId: '',
       AppDate: '',
       AppTime: '',
       seqNo: '',
-      FirstName:['', [
+      FirstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      MiddleName:['', [
-       
+      MiddleName: ['', [
+
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      LastName:['', [
+      LastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      Address:['',Validators.required],
+      Address: ['', Validators.required],
       PhAppDate: '',
       PhAppTime: '',
       DepartmentId: '',
       Departmentid: '',
       MobileNo: ['', [Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10), 
-        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]] , 
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
       DoctorId: '',
       DoctorID: '',
       AddedBy: '',
       UpdatedBy: '',
       PhoneAppId: '',
-      isCancelled:'',
-      isCancelledBy:'',
-      isCancelledDate:'',
-      regNo:'',
+      isCancelled: '',
+      isCancelledBy: '',
+      isCancelledDate: '',
+      regNo: '',
     });
   }
-
-  
 
   private filterDepartment() {
     // debugger;
@@ -216,98 +212,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.filteredDoctor.next(
       this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
     );
-}
-
-
-  
-  // OnSubmit() {
-  //       var m_data = {
-  //       "phoneAppointmentInsert": {
-  //         "phoneAppId": 0,
-  //         "appDate": this.personalFormGroup.get('AppDate').value || "2021-03-31",
-  //         "appTime": this.personalFormGroup.get('AppTime').value || "2021-03-31",
-  //         "seqNo":this.personalFormGroup.get('seqNo').value || '',
-  //         "firstName": this.personalFormGroup.get('FirstName').value || '',
-  //         "middleName":this.personalFormGroup.get('MiddleName').value || '',
-  //         "lastName": this.personalFormGroup.get('LastName').value || '',
-  //         "address": this.personalFormGroup.get('Address').value || '',
-  //         "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
-  //         "phAppDate":this.personalFormGroup.get('PhAppDate').value  || "2021-03-31",
-  //         "phAppTime":this.personalFormGroup.get('PhAppTime').value || "2021-03-31",
-  //         "departmentId":this.personalFormGroup.get('DepartmentId').value.DepartmentId  || 0,
-  //         "doctorId":this.personalFormGroup.get('DoctorId').value  || 0,
-  //         "addedBy": 0,
-  //         "isCancelled": true,
-  //         "isCancelledBy": 0,
-  //         "isCancelledDate": this.personalFormGroup.get('isCancelledDate').value  || "2021-03-31",
-  //          "regNo":11,//this.personalFormGroup.get('regNo').value.regNo || 0,
-  //       }
-      
-  //      }
-  //     console.log(m_data);
-  //     this._phoneAppointListService.PhoneAppointInsert(m_data).subscribe(response => {
-  //       if (response) {
-  //         Swal.fire('Congratulations !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
-  //           if (result.isConfirmed) {
-  //             this._matDialog.closeAll();
-  //           }
-  //         });
-  //       } else {
-  //         Swal.fire('Error !', 'Register Data  not saved', 'error');
-  //       }
-  //       // this.isLoading = '';
-  //     }
-
-
-  //  filterDepartment() {
-  //   // debugger;
-  //   if (!this.DepartmentList) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.departmentFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredDepartment.next(this.DepartmentList.slice());
-  //     return;
-  //   }
-  //   else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter
-  //   this.filteredDepartment.next(
-  //     this.DepartmentList.filter(bank => bank.DepartmentName.toLowerCase().indexOf(search) > -1)
-  //   );
-  // }
-
-
-  // filter for DoctorName in Sidebar
-  // private filterDoctor() {
-
-  //   if (!this.doctorNameCmbList) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.doctorFilterCtrl.value;
-  //   if (!search) {
-  //     this.filtereddoctor.next(this.doctorNameCmbList.slice());
-  //     return;
-  //   }
-  //   else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter
-  //   this.filteredDoctor.next(
-  //     this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-  //   );
-  // }
-
-  OnChangeDoctorList(departmentObj) {
-    console.log(departmentObj);
-    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
- console.log(this.DoctorList);
   }
 
-  
+  OnChangeDoctorList(departmentObj) {
+    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+  }
+
   getDepartmentList() {
     this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
@@ -315,92 +225,53 @@ export class NewPhoneAppointmentComponent implements OnInit {
     });
   }
 
-
   OnSubmit() {
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
-      debugger;
-        var m_data = {
-        "phoneAppointmentInsert": {
-          "phoneAppId": 0,
-          "appDate":  this.dateTimeObj.date,// this.personalFormGroup.get('AppointmentDate').date.value || "2021-03-31",
-          "appTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
-          "firstName": this.personalFormGroup.get('FirstName').value || '',
-          "middleName":this.personalFormGroup.get('MiddleName').value || '',
-          "lastName": this.personalFormGroup.get('LastName').value || '',
-          "address": this.personalFormGroup.get('Address').value || '',
-          "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
-          "phAppDate":this.datePipe.transform (this.personalFormGroup.get('AppointmentDate').value,"yyyy-MM-dd 00:00:00.000"), 
-          "phAppTime":this.datePipe.transform (this.personalFormGroup.get('AppointmentDate').value,"yyyy-MM-dd 00:00:00.000"), 
-        
-          // "phAppDate":this.datePipe.transform (this.personalFormGroup.get('AppointmentDate').value,"yyyy-MM-dd 00:00:00.000"), 
-          // "phAppTime":this.datePipe.transform (this.personalFormGroup.get('AppointmentDate').value,"yyyy-MM-dd 00:00:00.000"), 
-        
-          "departmentId":this.personalFormGroup.get('Departmentid').value.Departmentid  || 0,
-          "doctorId":this.personalFormGroup.get('DoctorId').value.DoctorId  || 0,
-          "addedBy":this.accountService.currentUserValue.user.id,
-          "UpdatedBy":this.accountService.currentUserValue.user.id,
-        }
-       
-       }
-      console.log(m_data);
-      this._phoneAppointListService.PhoneAppointInsert(m_data).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-              
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
-        }
-        // this.isLoading = '';
-
-      });
-
+    var m_data = {
+      "phoneAppointmentInsert": {
+        "phoneAppId": 0,
+        "appDate": this.dateTimeObj.date,// this.personalFormGroup.get('AppointmentDate').date.value || "2021-03-31",
+        "appTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
+        "firstName": this.personalFormGroup.get('FirstName').value || '',
+        "middleName": this.personalFormGroup.get('MiddleName').value || '',
+        "lastName": this.personalFormGroup.get('LastName').value || '',
+        "address": this.personalFormGroup.get('Address').value || '',
+        "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
+        "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "departmentId": this.personalFormGroup.get('Departmentid').value.Departmentid || 0,
+        "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
+        "addedBy": this.accountService.currentUserValue.user.id,
+        "UpdatedBy": this.accountService.currentUserValue.user.id,
       }
-  
-
-      OnCancle() {
-        var m_data = {
-        "phoneAppointmentCancle": {
-          "PhoneAppId": 0,
-         
-        }
-       
-       }
-      console.log(m_data);
-      this._phoneAppointListService.PhoneAppointCancle(m_data).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Phone Appointment Cancle Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
-        }
-        // this.isLoading = '';
-
-      });
-
-      }
-
-
-    onClose() {
-      this.personalFormGroup.reset();
-      // this.dialogRef.close();
     }
+    console.log(m_data);
+    this._phoneAppointListService.PhoneAppointInsert(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Record Save !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Register Data  not saved', 'error');
+      }
+      // this.isLoading = '';
+    });
+  }
 
-  
+  onClose() {
+    this.personalFormGroup.reset();
+    this.dialogRef.close();
+  }
+
+
   getPhoneschduleList() {
     this.sIsLoading = 'loading-data';
-
     this._phoneAppointListService.getPhoenappschdulelist().subscribe(Visit => {
       this.dataSource.data = Visit as PhoneschlistMaster[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-
       this.sIsLoading = '';
     },
       error => {
@@ -408,23 +279,17 @@ export class NewPhoneAppointmentComponent implements OnInit {
       });
   }
 
-
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
+    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
- 
-  changec()
-  { 
-
-this.buttonColor='red';
-// this.buttonColor: ThemePalette = 'primary';
+  changec() {
+    this.buttonColor = 'red';
+    // this.buttonColor: ThemePalette = 'primary';
   }
 }
-
-
 
 export class PhoneschlistMaster {
   AppDate: Date;

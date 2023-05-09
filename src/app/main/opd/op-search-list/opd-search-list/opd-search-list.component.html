@@ -135,24 +135,20 @@
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="height:600px !important;">
                                 <ng-container matColumnDef="PatientOldNew">
-                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Patient</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"></mat-header-cell>
                                     <mat-cell *matCellDef="let contact" >
-                                         <!-- {{contact.PatientOldNew}}  -->
-                                           <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
-                                        <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='0' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
-                                            
+                                        <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='2' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
+                                        <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='1' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
                                     </mat-cell>
                                 </ng-container>
                                 &nbsp;&nbsp;
-                                <!-- <ng-container matColumnDef="MPbillNo">
-                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> Bill</mat-header-cell>
+                                <ng-container matColumnDef="MPbillNo">
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"></mat-header-cell>
                                     <mat-cell *matCellDef="let contact" >
-                                         
-                                          <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' " matTooltip="Bill Generated" class=" red-600 s-16">circle</mat-icon>
+                                        <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' " matTooltip="Bill Generated" class=" red-600 s-16">circle</mat-icon>
                                         <mat-icon  style="font-size: 70px;width: 25px !important; border: black 1px solid; height:25px !important;border-radius:100% ;" *ngIf="contact.MPbillNo=='0' "  matTooltip="Did not Generated Bill"  class=" white-600 s-16">circle</mat-icon>   
-                                            
                                     </mat-cell>
-                                </ng-container> -->
+                                </ng-container>
                                 <ng-container matColumnDef="RegNoWithPrefix">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg No</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>

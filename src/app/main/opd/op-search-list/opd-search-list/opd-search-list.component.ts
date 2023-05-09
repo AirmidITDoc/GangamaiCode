@@ -43,7 +43,7 @@ export class OpdSearchListComponent implements OnInit {
   displayedColumns = [
     // 'checkbox',
     'PatientOldNew',
-    // 'MPbillNo',
+    'MPbillNo',
     'RegNoWithPrefix',
     'PatientName',
     'DVisitDate',
@@ -92,7 +92,7 @@ export class OpdSearchListComponent implements OnInit {
       this.menuActions.push('Case Paper');
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
-      this.menuActions.push('OP_REPORTS');
+      // this.menuActions.push('OP_REPORTS');
 
     }
     else if (this._ActRoute.url == '/opd/bill') {

@@ -106,7 +106,7 @@ export class NewRegistrationComponent implements OnInit {
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<NewRegistrationComponent>,
+    public dialogRef: MatDialogRef<NewRegistrationComponent>,
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
     private router: Router)  
@@ -429,7 +429,6 @@ export class NewRegistrationComponent implements OnInit {
 
 
   getGendorMasterList() {
-    
     this._registerService.getGenderMasterCombo().subscribe(data => {
       this.GenderList = data;
      const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
@@ -575,7 +574,6 @@ export class NewRegistrationComponent implements OnInit {
     
   }
 
-
   OnChangeDoctorList(departmentObj) {
     this._registerService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(data => { this.DoctorList = data; })
   }
@@ -586,13 +584,9 @@ export class NewRegistrationComponent implements OnInit {
   getDoctor2List() {
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
-
-
   onSubmit() {
-    debugger;
     let reg = this.registerObj.RegId;
     this.isLoading = 'submit';
-
     if (!reg) {
       var m_data = {
         "opdRegistrationSave": {
@@ -634,20 +628,16 @@ export class NewRegistrationComponent implements OnInit {
           Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-               this.addEmptyRow();
-               
+              this.addEmptyRow();
             }
           });
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
-
       });
     }
     else {
-      debugger;
       var m_data1 = {
-
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
            "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
@@ -678,7 +668,6 @@ export class NewRegistrationComponent implements OnInit {
           // "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
         }
       }
-      console.log(m_data1);
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Updated Successfully !', 'success').then((result) => {
@@ -692,16 +681,11 @@ export class NewRegistrationComponent implements OnInit {
 
       });
     }
-
-
-    // console.log(this.personalFormGroup.invalid && this.IsSave);
   }
 
-
-  // onClose() {
-   
-  //    this.dialogRef.close();
-  // }
+  onClose() {
+    this.dialogRef.close();
+  }
 
   createSearchForm() {
     return this.formBuilder.group({
@@ -749,15 +733,12 @@ export class NewRegistrationComponent implements OnInit {
     console.log(m_data);
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._registerService.getRegistrationList(m_data).subscribe(resData => {
-
         this.filteredOptions = resData;
-
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
-
       });
     }
 

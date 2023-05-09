@@ -111,7 +111,7 @@ export class EditRegistrationComponent implements OnInit {
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<NewRegistrationComponent>,
+    public dialogRef: MatDialogRef<EditRegistrationComponent>,
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
     private router: Router)  
@@ -701,10 +701,9 @@ export class EditRegistrationComponent implements OnInit {
   }
 
 
-  // onClose() {
-   
-  //    this.dialogRef.close();
-  // }
+ onClose() {
+      this.dialogRef.close();
+  }
 
   createSearchForm() {
     return this.formBuilder.group({

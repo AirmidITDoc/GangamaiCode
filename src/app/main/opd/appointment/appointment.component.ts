@@ -44,9 +44,8 @@ export class AppointmentComponent implements OnInit {
   @Input() dataArray: any;
 
   displayedColumns = [
-
-    // "PatientOldNew",
-    // "MPbillNo",
+    'PatientOldNew',
+    'MPbillNo',
     'RegNoWithPrefix',
     'PatientName',
     'DVisitDate',
@@ -63,10 +62,11 @@ export class AppointmentComponent implements OnInit {
   menuActions: Array<string> = [];
   //datePipe: any;
 
-  constructor( public _AppointmentSreviceService: AppointmentSreviceService,
-        private _ActRoute: Router,
-        private _fuseSidebarService: FuseSidebarService,
-        public _registrationService: RegistrationService,
+  constructor( 
+    public _AppointmentSreviceService: AppointmentSreviceService,
+    private _ActRoute: Router,
+    private _fuseSidebarService: FuseSidebarService,
+    public _registrationService: RegistrationService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     // private advanceDataStored: AdvanceDataStored
@@ -108,7 +108,6 @@ export class AppointmentComponent implements OnInit {
     }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-      console.log(D_data);
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as VisitMaster[];
         console.log(this.dataSource.data);
@@ -173,20 +172,12 @@ export class AppointmentComponent implements OnInit {
   //   }
     if (m == "Update Registration") {
       console.log(contact);
-debugger;
       var D_data= {
-     
         "RegId": contact.RegId,
       } 
-       console.log(D_data);
-       
       this._AppointmentSreviceService.getregisterListByRegId(D_data).subscribe(reg=> {
-          this.dataArray = reg;
-          console.log( this.dataArray);
-          
-       
-
-
+      this.dataArray = reg;
+      console.log( this.dataArray);
       var m_data = {
         "RegNo":this.dataArray[0].RegNo,
         "RegId":this.dataArray[0].RegId,
@@ -220,11 +211,7 @@ debugger;
         "RegNoWithPrefix":this.dataArray[0].RegNoWithPrefix,
         "RegTime":this.dataArray[0].RegTime
       }
-
-
-      console.log(m_data);
       this._registrationService.populateFormpersonal(m_data);
-
       const dialogRef = this._matDialog.open(EditRegistrationComponent,
         {
           maxWidth: "85vw",
@@ -238,8 +225,6 @@ debugger;
         console.log('The dialog was closed - Insert Action', result);
         this. getVisitList();
       });
-
-
     },
     error => {
       this.sIsLoading = '';
@@ -248,7 +233,6 @@ debugger;
     else if (m == "Update Consultant Doctor") {
       // console.log(contact);
       var m_data2 = {
-
         "RegId": contact.RegId,
         "PatientName": contact.PatientName,
         "VisitId": contact.VisitId,
@@ -268,13 +252,11 @@ debugger;
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-
       });
     }
     else if (m == "Update Referred Doctor") {
       console.log(contact);
       var m_data3 = {
-
         "RegId": contact.RegId,
         "PatientName": contact.PatientName,
         "VisitId": contact.VisitId,
@@ -314,7 +296,7 @@ debugger;
   newappointment() {
     const dialogRef = this._matDialog.open(NewAppointmentComponent,
       {
-        maxWidth: "85vw",
+        maxWidth: "95vw",
         height: '660px',
         width: '100%',
         // height: "100%"
@@ -422,21 +404,12 @@ debugger;
     // }
   }
 
-  
   // field validation 
   get f() { return this._AppointmentSreviceService.myFilterform.controls; }
-
-
-
   selectRow(row) {
     this.selectRow = row;
   }
-
-
-
-
 }
-
 
 export class VisitMaster {
   VisitId: Number;

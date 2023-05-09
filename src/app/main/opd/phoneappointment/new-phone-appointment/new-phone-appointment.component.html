@@ -1,8 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
     <!-- HEADER -->
-  
-  
     <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
     fxLayoutAlign.gt-xs="space-between center ">
   
@@ -10,7 +7,6 @@
     <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;"> 
         <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
         </mat-icon> -->
-        
         <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 82%; font-weight: 400;">
           Schduled Phone Appointment
         </span>
@@ -28,63 +24,7 @@
   
     <!-- CONTENT -->
     <div class="content" style="border: blue;">
-  
-      <div class="profile" fxLayoutAlign="center center" style="height: 100%;">
-        <div fxlayout="row">
-          <div style="width:95%;" fxLayout="column" fxFlex="100">
-  
-            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto;margin-top: 7px;margin-left: 5px;height: 260px !important;">
-  
-              <ng-container matColumnDef="AppDate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Appointment Date
-                </mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                  {{contact.AppDate}}
-                </mat-cell>
-              </ng-container>
-  
-              <ng-container matColumnDef="Cnt">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Count
-                </mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                  {{contact.Cnt}}
-                </mat-cell>
-              </ng-container>
-  
-  
-              <ng-container matColumnDef="loading">
-                <mat-footer-cell *matFooterCellDef colspan="6">
-                  <!-- loading data... -->
-                  <mat-spinner [color]="blue" [diameter]="20"></mat-spinner>
-                </mat-footer-cell>
-              </ng-container>
-  
-              <ng-container matColumnDef="noData">
-                <mat-footer-cell *matFooterCellDef colspan="6">
-                  no data found...
-                </mat-footer-cell>
-              </ng-container>
-  
-              <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-              </mat-header-row>
-              <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-              </mat-footer-row>
-              <mat-footer-row *matFooterRowDef="['noData']"
-                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-              </mat-footer-row>
-            </mat-table>
-  
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons style=" float: left;">
-            </mat-paginator>
-          </div>
-        </div>
-      </div>
-  
-      &nbsp;  &nbsp;
       <div class="center " style="background-color:#ffffff;">
-  
         <form [formGroup]="personalFormGroup">
           <div layout="row" layout-xs="column" fxLayout="column" fxFlex="100"
           style="margin-top: 7px; ">
@@ -101,20 +41,8 @@
                   </app-common-date>
                  
                 </div>
-              
-                  <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxFlexEnd>
-  
-                  </div> -->
                   <br/>
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-  
-                    <!-- <mat-form-field appearance="outline" fxFlex="28%">
-                      <mat-label>Appointment date</mat-label>
-                      <input name="AppointmentDate" matInput  [min]="minDate"  [matDatepicker]="picker" formControllName="AppointmentDate">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                   </mat-form-field>   -->
-  
                    <mat-form-field appearance="outline" fxFlex="29%">
                     <input matInput [matDatepicker]="picker" [min]="minDate"  placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="AppointmentDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -149,7 +77,6 @@
                     <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
                       <mat-label>Address</mat-label>
                       <input name="Address" formControlName="Address" placeholder="Address" matInput>
-                      <!-- <mat-error>Please enter Address </mat-error> -->
                     </mat-form-field>
   
                     <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }">
@@ -160,12 +87,9 @@
                       digits Mobile number is
                       required</mat-error>
                     </mat-form-field>
-  
-  
                   </div>
   
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-  
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Department</mat-label>
                       <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
@@ -197,30 +121,15 @@
                 </div>
                 <br/><br/>
               </div>
-  
               <br/>
               <div style="float: right;" >
-              
                 <button class="next-btn"  (click)="OnSubmit()" [disabled]="personalFormGroup.invalid"  style=" padding: 10px;border-radius:16px; ">Save
                 </button>&nbsp;
-  
-  
                 <button class="footer-btn" (click)="onClose()" style="font-size: 14px;padding: 10px; border-radius: 16px;" >Cancel</button> 
-                            
-  
-              </div><br />
-           
-            
+              </div>
             </div>
-         
-  
           </div>
-         
         </form>
-  
       </div>
-  
     </div>
-    
-  
   </div>
