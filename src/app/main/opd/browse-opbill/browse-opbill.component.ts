@@ -82,11 +82,11 @@ export class BrowseOPBillComponent implements OnInit {
 
     debugger;
     var D_data = {
-      "F_Name":  "%",
-      "L_Name":  "%",
+      "F_Name": "%",
+      "L_Name": "%",
       "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No":  0,
+      "Reg_No": 0,
       "PBillNo": 0,
     }
     console.log(D_data);
@@ -178,7 +178,7 @@ export class BrowseOPBillComponent implements OnInit {
 
 
 
-  onExport(exprtType){
+  onExport(exprtType) {
     // let columnList=[];
     // if(this.dataSource.data.length == 0){
     //   // this.toastr.error("No Data Found");
@@ -246,7 +246,7 @@ export class BrowseOPBillComponent implements OnInit {
     //       });
     //       rows.push(arr);
     //     });
-      
+
     //     doc.autoTable(col, rows,{
     //       margin:{left:5,right:5,top:5},
     //       theme:"grid",
@@ -259,7 +259,7 @@ export class BrowseOPBillComponent implements OnInit {
     //   }
     // }
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
     // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
@@ -276,7 +276,7 @@ export class BrowseOPBillComponent implements OnInit {
     this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospAddress', 'Phone', 'PhoneNo', 'RegNo', 'BillNo','Age','AgeDay','AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -301,19 +301,19 @@ export class BrowseOPBillComponent implements OnInit {
         <div style="display:flex;width:60px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
-        <div style="display:flex;width:420px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
             <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
-        <div style="display:flex;width:420px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
         <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:right;">
+        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
             <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:right;">
+        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
             <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
         </div>
-        <div style="display:flex;width:140px;margin-left:25px;text-align:left;">
+        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
             <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
         </div>`;
@@ -368,8 +368,10 @@ export class BrowseOPBillComponent implements OnInit {
     // return converter.toWords(e);
   }
   // GET DATA FROM DATABASE 
+
+
   getPrint(el) {
-debugger;
+    debugger;
     var D_data = {
       "BillNo": el.BillNo,
       // "BillNo":111,

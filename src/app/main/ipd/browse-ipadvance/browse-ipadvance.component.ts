@@ -243,7 +243,7 @@ export class IpdAdvanceBrowseModel {
   RefundAmount:number;
   PrevAdvAmt:number;
   AdvanceId:number;
-
+  IPDNo:any;
   AdvanceDetailID:number;
   /**
 * Constructor
@@ -268,6 +268,7 @@ export class IpdAdvanceBrowseModel {
           this.PrevAdvAmt=IpdAdvanceBrowseModel.PrevAdvAmt || '';
           this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
           this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
+          this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
       }
   }
 }

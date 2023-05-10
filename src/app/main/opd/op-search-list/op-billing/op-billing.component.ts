@@ -17,6 +17,7 @@ import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvancePaymentComponent } from '../advance-payment/advance-payment.component';
+import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -41,7 +42,10 @@ export class OPBillingComponent implements OnInit {
   flagSubmit: boolean;
   balanceamt: number;
   msg: any;
-
+  reportPrintObj: BrowseOPDBill;
+  subscriptionArr: Subscription[] = [];
+  printTemplate: any;
+  reportPrintObjList: BrowseOPDBill[] = [];
   chargeslist: any = [];
   screenFromString = 'OP-billing';
   displayedColumns = [
@@ -151,11 +155,6 @@ export class OPBillingComponent implements OnInit {
 
   private _onDestroy = new Subject<void>();
 
-  //Print Bill
-  // reportPrintObj: BrowseOPDBill;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  // reportPrintObjList: BrowseOPDBill[] = [];
   resBillId: Post;
 
   constructor(
@@ -1015,8 +1014,8 @@ let amt=parseInt(this.b_disAmount);
   //   );
   // }
   getTemplate() {
-    // let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
-    // this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
+    this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
       let keysArray = ['HospitalName', 'HospitalAddress','Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
@@ -1030,24 +1029,12 @@ let amt=parseInt(this.b_disAmount);
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
         var objreportPrint = this.reportPrintObjList[i - 1];
-    //   this.printTemplate = resData[0].TempDesign;
-    //   let keysArray = ['HospitalName', 'HospitalAddress', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
-    //   debugger;
-    //   for (let i = 0; i < keysArray.length; i++) {
-    //     let reString = "{{" + keysArray[i] + "}}";
-    //     let re = new RegExp(reString, "g");
-    //     this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-    //   }
-    //   var strrowslist = "";
-    //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-    //     console.log(this.reportPrintObjList);
-    //     var objreportPrint = this.reportPrintObjList[i - 1];
 
-    //     let docname;
-    //     if (objreportPrint.ChargesDoctorName)
-    //       docname = objreportPrint.ChargesDoctorName;
-    //     else
-    //       docname = '';
+        let docname;
+        if (objreportPrint.ChargesDoctorName)
+          docname = objreportPrint.ChargesDoctorName;
+        else
+          docname = '';
 
         //   var strabc = `<hr style="border-color:white" >
         //   <div style="display:flex;margin:8px 0">
@@ -1074,55 +1061,55 @@ let amt=parseInt(this.b_disAmount);
         // }
 
 
-//         var strabc = ` 
-// <div style="display:flex;margin:8px 0">
-//     <div style="display:flex;width:80px;margin-left:10px;">
-//         <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-//     </div>
-//     <div style="display:flex;width:400px;margin-right:10px;">
-//         <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-//     </div>
-//     <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
-//     <div>`+ docname + `</div> <!-- <div>450</div> -->
-//     </div>
-//     <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
-//     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-//     </div>
-//     <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
-//         <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-//     </div>
-//     <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
-//         <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-//     </div>
-// </div>`;
-//         strrowslist += strabc;
-//       }
-//       var objPrintWordInfo = this.reportPrintObjList[0];
-      //  let concessinamt;
-      //  if(objPrintWordInfo.ConcessionAmt >0 ){
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      //  }
-      //  else{
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      //  }
+        var strabc = ` 
+<div style="display:flex;margin:8px 0">
+    <div style="display:flex;width:80px;margin-left:10px;">
+        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+    </div>
+    <div style="display:flex;width:400px;margin-right:10px;">
+        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+    </div>
+    <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
+    <div>`+ docname + `</div> <!-- <div>450</div> -->
+    </div>
+    <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
+    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+    </div>
+    <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
+        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+    </div>
+    <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
+        <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
+    </div>
+</div>`;
+        strrowslist += strabc;
+      }
+      var objPrintWordInfo = this.reportPrintObjList[0];
+       let concessinamt;
+       if(objPrintWordInfo.ConcessionAmt >0 ){
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+       }
+       else{
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+       }
 
-    //   this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-    //   this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-    //   this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
-    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+      this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
 
-    //   this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-    //   setTimeout(() => {
-    //     this.print();
-    //   }, 1000);
-    // });
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      setTimeout(() => {
+        this.print();
+      }, 1000);
+    });
   }
 
   convertToWord(e) {

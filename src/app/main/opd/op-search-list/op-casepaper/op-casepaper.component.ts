@@ -1033,52 +1033,57 @@ if(this.prescriptionData.length == 0){
 
   getTemplate() {
     debugger;
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=11';
+
+    
+    
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12';
    console.log(query);
     this._opSearchListService.getTemplate(query).subscribe((resData: any) => {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
       console.log(this.printTemplate);
-      let keysArray = ['RegNo','PrecriptionId','PatientName','OPDNo','Diagnosis','PatientName','Weight' ,'Pluse','BP','BSL','DoseName','Days','GenderName','AgeYear','DrugName','ConsultantDocName', ]; // resData[0].TempKeys;
+      let keysArray = ['RegNo','PrecriptionId','PatientName','OPDNo','Diagnosis','PatientName','Weight' ,'Pluse','BP','BSL','DoseName','Days','GenderName','AgeYear','DrugName','ConsultantDocName','SecondRefDoctorName','MobileNo' ,'Address','VisitDate']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(objreportPrint.VisitDate));
+
+      
+      this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
        this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDocName));
-       this.printTemplate =  this.printTemplate.replace('StrRegNo', (this.reportPrintObj.RegNo));
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        var strabc = `
-    <div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:100px;margin-left:30px;">
-        <div>`+ i + `</div> 
-    </div>
-    <div style="display:flex;width:100px;margin-left:10px;">
-    <span >TAB</span>
-    </div>
+       this.printTemplate =  this.printTemplate.replace('StrOPDDate', this.transform1(this.reportPrintObj.VisitDate));
+    //   var strrowslist = "";
+    //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+    //     var objreportPrint = this.reportPrintObjList[i - 1];
+    //     var strabc = `
+    // <div style="display:flex;margin:8px 0">
+    // <div style="display:flex;width:100px;margin-left:30px;">
+    //     <div>`+ i + `</div> 
+    // </div>
+    // <div style="display:flex;width:100px;margin-left:10px;">
+    // <span >TAB</span>
+    // </div>
 
-    <div style="display:flex;width:200px;margin-left:15px;">
-    <div style="font-weight:700;">`+ objreportPrint.  DrugName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:150px;margin-left:15px;">
-        <div>`+ objreportPrint.DoseName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
+    // <div style="display:flex;width:200px;margin-left:15px;">
+    // <div style="font-weight:700;">`+ objreportPrint.  DrugName + `</div> <!-- <div>BLOOD UREA</div> -->
+    // </div>
+    // <div style="display:flex;width:150px;margin-left:15px;">
+    //     <div>`+ objreportPrint.DoseName + `</div> <!-- <div>BLOOD UREA</div> -->
+    // </div>
 
-    <div style="display:flex;width:100px;margin-left:30px;">
-        <div>`+ objreportPrint.TotalDayes + `</div> <!-- <div>450</div> -->
-    </div>
+    // <div style="display:flex;width:100px;margin-left:30px;">
+    //     <div>`+ objreportPrint.TotalDayes + `</div> <!-- <div>450</div> -->
+    // </div>
   
-    </div>`;
-        strrowslist += strabc;
-      }
+    // </div>`;
+    //     strrowslist += strabc;
+    //   }
      
-      //console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+    //   //console.log(this.printTemplate);
+    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
      
       //console.log(this.printTemplate);
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -1103,7 +1108,7 @@ if(this.prescriptionData.length == 0){
   getPrint() {
 // debugger;
     var D_data = {
-      "VisitId": this.selectedAdvanceObj.AdmissionID || 0,
+      "VisitId": 82973,//this.selectedAdvanceObj.AdmissionID || 0,
       "PatientType": 0,//this.selectedAdvanceObj.PatientType || 0
      
     }
@@ -1479,6 +1484,9 @@ export class CasepaperVisitDetails {
     RegNo: any;
   Temp:any;
   DepartmentName:any;
+  Address:any;
+  SecondRefDoctorName:any;
+  VistDateTime:any;
 
   constructor(casePaperDetails) {
     this.BP = casePaperDetails.BP || '';
@@ -1519,6 +1527,9 @@ export class CasepaperVisitDetails {
     this.RegNo=casePaperDetails.RegNo || 0;
     this.Temp = casePaperDetails.Temp || 0;
     this.DepartmentName =casePaperDetails.DepartmentName ||'';
+    this.Address =casePaperDetails.Address ||'';
+    this.SecondRefDoctorName=casePaperDetails.SecondRefDoctorName||'';
+    this.VistDateTime=casePaperDetails.VistDateTime||''
   }
 
 

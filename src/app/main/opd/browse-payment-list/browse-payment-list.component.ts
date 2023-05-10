@@ -246,8 +246,7 @@ getTemplate() {
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);
     this.printTemplate = resData[0].TempDesign;
-    // let keysArray = ['HospitalName','HospitalAddress','PaymentId','ReceiptNo','RegId','PaymentDate','PatientName','CashPayAmount','Remark',' AddBy']; // resData[0].TempKeys;
-   // let keysArray = ['ReceiptNo','RegId','PaymentDate','PatientName','CashPayAmount','Remark','UserName']; // resData[0].
+    
    let keysArray = ['HospitalName','HospitalAddress','Phone','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
     for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -266,12 +265,12 @@ getTemplate() {
 
       this.printTemplate =  this.printTemplate.replace('StrReceiptNo', (this.reportPrintObj.ReceiptNo));
       this.printTemplate =  this.printTemplate.replace('StrBillNo', (this.reportPrintObj.BillNo));
-      this.printTemplate =  this.printTemplate.replace('StrPatientName', (this.reportPrintObj.PatientName));
-      this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDr));
-      this.printTemplate =  this.printTemplate.replace('StrReferDr', (this.reportPrintObj.ReferDr));
-      this.printTemplate =  this.printTemplate.replace('StrRegId', (this.reportPrintObj.RegId));
-      this.printTemplate =  this.printTemplate.replace('StrGenderName', (this.reportPrintObj.GenderName));
-      this.printTemplate =  this.printTemplate.replace('StrAge', (this.reportPrintObj.Age)+ 'yrs');
+      this.printTemplate =  this.printTemplate.replace('StrCardPayAmount', (this.reportPrintObj.CardPayAmount));
+      this.printTemplate =  this.printTemplate.replace('StrCardNo', (this.reportPrintObj.CardNo));
+      this.printTemplate =  this.printTemplate.replace('StrCardBankName', (this.reportPrintObj.CardBankName));
+      this.printTemplate =  this.printTemplate.replace('StrNEFTPayAmount', (this.reportPrintObj.NEFTPayAmount));
+      this.printTemplate =  this.printTemplate.replace('StrPayTMAmount', (this.reportPrintObj.PayTMAmount));
+      this.printTemplate =  this.printTemplate.replace('StrPaidAmount', (this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
