@@ -2,15 +2,16 @@
 @import "@fuse/scss/core";
 
 // Import app.theme.scss
-@import "app/app.theme";
-
+//@import "app/app.theme";
 
 //added by prasad
-.mat-cell, .mat-footer-cell {
+.mat-cell,
+.mat-footer-cell {
     font-size: 12px !important;
-} 
+}
 //added by prasad
-.mat-row, .mat-footer-row {
+.mat-row,
+.mat-footer-row {
     min-height: 0;
 }
 
@@ -42,15 +43,16 @@
 // .mat-dialog-container {
 //     padding: 0 !important;
 // }
-  
 
 //new css
 
-.mat-cell, .mat-footer-cell {
+.mat-cell,
+.mat-footer-cell {
     font-size: 14px !important;
-} 
+}
 //added by prasad
-.mat-row, .mat-footer-row {
+.mat-row,
+.mat-footer-row {
     min-height: 28px;
     height: 35px;
 }
@@ -68,10 +70,9 @@
 
     .mat-header-row {
         min-height: 30px;
-       
     }
     .mat-sort-header-content {
-        color: white; 
+        color: white;
     }
     .mat-header-cell {
         .mat-sort-header-button {
@@ -79,7 +80,7 @@
         }
 
         .mat-sort-header-arrow {
-            color:white;
+            color: white;
         }
     }
 }
@@ -87,7 +88,7 @@
 .mat-header-cell {
     color: white;
 }
-.mat-card{
+.mat-card {
     width: 100%;
     padding: 2px;
 }
@@ -99,7 +100,7 @@
     padding: 15px !important;
 }
 
-.button-row button{
+.button-row button {
     margin: 5px;
 }
 
@@ -107,8 +108,8 @@
     padding-bottom: 0.34375em;
 }
 
-// Table Footer Label CSS 
-.hide{
+// Table Footer Label CSS
+.hide {
     display: none;
 }
 
@@ -150,29 +151,35 @@ snack-bar-container success {
 // .example-action-buttons {
 //     padding-bottom: 20px;
 //   }
-  
+
 //   .example-headers-align .mat-expansion-panel-header-title,
 //   .example-headers-align .mat-expansion-panel-header-description {
 //     flex-basis: 0;
 //   }
-  
+
 //   .example-headers-align .mat-expansion-panel-header-description {
 //     justify-content: space-between;
 //     align-items: center;
 //   }
-  
+
 //   .example-headers-align .mat-form-field + .mat-form-field {
 
 //     margin-left: 8px;
-    
-.hide 
-{
+
+.hide {
     display: none !important;
 }
 
-html, body { height: 100% !important; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; zoom: 0.9; zoom: 90%;}
-
+html,
+body {
+    height: 100% !important;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif !important;
+    zoom: 0.9;
+    zoom: 90%;
+}
 
 // Spinner Css
 .example-loading-shade {
@@ -181,25 +188,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; 
     left: 0;
     bottom: 56px;
     right: 0;
-background: rgba(240, 239, 239, 0.15);
-   // background:brown;
+    background: rgba(240, 239, 239, 0.15);
+    // background:brown;
     z-index: 1;
     display: flex;
     align-items: center;
     max-width: 80%;
     justify-content: center;
     color: yellow;
-  }
-  
-  .example-rate-limit-reached {
+}
+
+.example-rate-limit-reached {
     color: #980000;
     max-width: 360px;
     text-align: center;
-  }
-
+}
 
 //  ===================== Save and Close Button CSS
-  .save-button {
+.save-button {
     width: 90px;
     font-size: 14px;
     padding: 7px;
@@ -220,100 +226,104 @@ background: rgba(240, 239, 239, 0.15);
     cursor: pointer;
 }
 
-
-.label{
-    padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: 600; font-size: 17px;
+.label {
+    padding: 15px 2px 5px 2px;
+    font-variant-caps: all-petite-caps;
+    font-weight: 600;
+    font-size: 17px;
 }
-.data_input{
-    padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: bolder;font-size: 17px;
+.data_input {
+    padding: 15px 2px 5px 2px;
+    font-variant-caps: all-petite-caps;
+    font-weight: bolder;
+    font-size: 17px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 //new css
 
-.clearbutton{
+.clearbutton {
     padding-right: 5px;
     padding-left: 5px;
-    float:right;
+    float: right;
     color: blue;
     width: 24%;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin: 5px;  
-    font-size:17px;  
-    border:1px solid #808080; 
+    margin: 5px;
+    font-size: 17px;
+    border: 1px solid #808080;
     height: 40px;
-
 }
 
-
-.cleariconbutton{
-    font-size: 32px; 
+.cleariconbutton {
+    font-size: 32px;
     text-align: center;
     margin-bottom: 10px;
     margin-right: 6px;
-   
-    color:blue;
+
+    color: blue;
 }
 
-.searchButton{
+.searchButton {
     padding-right: 5px;
-    padding-left: 5px; 
-    float:right; 
-     color: blue;
-    width: 24%; 
-    margin-top: 20px; 
+    padding-left: 5px;
+    float: right;
+    color: blue;
+    width: 24%;
+    margin-top: 20px;
     margin-bottom: 20px;
-     margin: 5px;   
-     font-size:17px;  
-      border:1px solid #808080;  
-       height: 40px; 
-   
+    margin: 5px;
+    font-size: 17px;
+    border: 1px solid #808080;
+    height: 40px;
 }
 
-.searchiconbutton{
-    font-size: 32px; 
+.searchiconbutton {
+    font-size: 32px;
     text-align: center;
-   // margin-top: 5px;
+    // margin-top: 5px;
     margin-bottom: 10px;
     margin-right: 6px;
-    color:blue;
-   
+    color: blue;
 }
 
 //spinner start
-   
-.backgroundBlur{
+
+.backgroundBlur {
     text-align: center;
     background-color: #818181;
     position: absolute;
     z-index: 1000;
     height: 460px;
     opacity: 0.5;
-     width: 100%;  
+    width: 100%;
 }
 
 .spinner-border {
     display: inline-block;
     width: 2rem;
     height: 2rem;
-    vertical-align: -.125em;
-    border: .25em solid currentColor;
+    vertical-align: -0.125em;
+    border: 0.25em solid currentColor;
     border-right-color: transparent;
     border-radius: 50%;
-    -webkit-animation: .75s linear infinite spinner-border;
-    animation: .75s linear infinite spinner-border;
+    -webkit-animation: 0.75s linear infinite spinner-border;
+    animation: 0.75s linear infinite spinner-border;
 
-
-//spinner width
-    color:blue;
-    border-width:10px; 
-    margin: auto; 
+    //spinner width
+    color: blue;
+    border-width: 10px;
+    margin: auto;
     width: 80px;
-    height: 80px; 
+    height: 80px;
     margin-top: 140px;
     text-align: center;
     margin-right: 280px;
@@ -322,32 +332,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .spinner-border-sm {
     width: 1rem;
     height: 1rem;
-    border-width: .2em
+    border-width: 0.2em;
 }
 
 @-webkit-keyframes spinner-grow {
     0% {
         -webkit-transform: scale(0);
-        transform: scale(0)
+        transform: scale(0);
     }
 
     50% {
         opacity: 1;
         -webkit-transform: none;
-        transform: none
+        transform: none;
     }
 }
 
 @keyframes spinner-grow {
     0% {
         -webkit-transform: scale(0);
-        transform: scale(0)
+        transform: scale(0);
     }
 
     50% {
         opacity: 1;
         -webkit-transform: none;
-        transform: none
+        transform: none;
     }
 }
 
@@ -355,58 +365,55 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: inline-block;
     width: 2rem;
     height: 2rem;
-    vertical-align: -.125em;
+    vertical-align: -0.125em;
     background-color: currentColor;
     border-radius: 50%;
     opacity: 0;
-    -webkit-animation: .75s linear infinite spinner-grow;
-    animation: .75s linear infinite spinner-grow
+    -webkit-animation: 0.75s linear infinite spinner-grow;
+    animation: 0.75s linear infinite spinner-grow;
 }
 
 .spinner-grow-sm {
     width: 1rem;
-    height: 1rem
+    height: 1rem;
 }
 
-@media (prefers-reduced-motion:reduce) {
-    .spinner-border, .spinner-grow {
+@media (prefers-reduced-motion: reduce) {
+    .spinner-border,
+    .spinner-grow {
         -webkit-animation-duration: 1.5s;
-        animation-duration: 1.5s
+        animation-duration: 1.5s;
     }
 }
-
-
 
 @-webkit-keyframes spinner-border {
     to {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg)
+        transform: rotate(360deg);
     }
 }
 
 @keyframes spinner-border {
     to {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg)
+        transform: rotate(360deg);
     }
 }
-
 
 .footer-btn {
     width: 80px;
     font-size: 16px;
     font-weight: 700px;
     padding: 10px;
-    color:  rgb(247, 97, 97);
+    color: rgb(247, 97, 97);
     border-radius: 16px;
-    background-color:white;
+    background-color: white;
     border-color: rgb(247, 97, 97);
     cursor: pointer;
 }
-.footer-btn:hover{
+.footer-btn:hover {
     background-color: rgb(247, 97, 97);
     color: white;
-   
 }
 
 .next-btn {
@@ -415,35 +422,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-weight: 700px;
     padding: 10px;
     margin-right: 5px;
-    color: #039be5 ;
+    color: #039be5;
     border-radius: 16px;
-     border: 1px solid #039be5 ;
-      background-color: white;
-   // background-color: hsl(204, 92%, 38%);
+    border: 1px solid #039be5;
+    background-color: white;
+    // background-color: hsl(204, 92%, 38%);
     //border:2px solid #0430c2;
-   
+
     cursor: pointer;
-  
 }
-.next-btn:hover{
-    background-color: #039be5 ;
-   // border: 1px solid rgb(247, 97, 97);
-    color:  white;
-   
+.next-btn:hover {
+    background-color: #039be5;
+    // border: 1px solid rgb(247, 97, 97);
+    color: white;
 }
 
 .next-btn:disabled {
     color: white;
-   background-color: #7bd3ff  !important;
-   //background-color: #b7e6fd ;
+    background-color: #7bd3ff !important;
+    //background-color: #b7e6fd ;
     border-radius: 2px;
-   // border: 1px solid #CCCCCC;
-   border: 1px solid  #b7e6fd ;
+    // border: 1px solid #CCCCCC;
+    border: 1px solid #b7e6fd;
 }
 .mat-option-text:hover {
     background: rgb(142, 142, 143);
     // color:black;
-  }
+}
 
 // end spinner
-

@@ -51,13 +51,7 @@ const appRoutes: Routes = [
                 (m) => m.ReligionMasterModule
             ),
     },
-    {
-        path: "bank-master",
-        loadChildren: () =>
-            import("./bank-master/bank-master.module").then(
-                (m) => m.BankMasterModule
-            ),
-    },
+
     {
         path: "country-master",
         loadChildren: () =>
