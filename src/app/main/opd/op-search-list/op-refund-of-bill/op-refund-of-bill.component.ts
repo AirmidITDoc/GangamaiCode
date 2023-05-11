@@ -29,7 +29,7 @@ export class OPRefundOfBillComponent implements OnInit {
 
   reportPrintObj: RefundMaster;
 
-  
+      click:boolean=false;
    subscriptionArr: Subscription[] = [];
    printTemplate: any;
    reportPrintObjList: RefundMaster[] = [];
@@ -243,6 +243,8 @@ export class OPRefundOfBillComponent implements OnInit {
 
   onSave() {
     //  debugger;
+
+    this.click=true;
     this.isLoading = 'submit';
 
     let InsertRefundObj = {};

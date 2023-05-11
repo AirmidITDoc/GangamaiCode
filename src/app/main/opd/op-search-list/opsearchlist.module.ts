@@ -45,8 +45,6 @@ import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
 import { PrescriptionComponent } from './prescription/prescription.component';
-// import { IPAdvancePaymentComponent } from './ip-advance-payment/ip-advance-payment.component';
-
 
 
 
@@ -70,6 +68,7 @@ const routes: Routes = [
         OPCasepaperComponent,
         ViewCasepaperComponent,
         PrescriptionComponent
+        
               
     ],
     imports: [

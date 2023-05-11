@@ -25,6 +25,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { BrowseIPAdvanceService } from './browse-ipadvance.service';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance.component';
+import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
       BrowseIPAdvanceComponent,
+      ViewIPAdvanceComponent
        
     ],
     imports: [

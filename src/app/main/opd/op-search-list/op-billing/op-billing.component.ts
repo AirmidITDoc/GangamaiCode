@@ -17,6 +17,7 @@ import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvancePaymentComponent } from '../advance-payment/advance-payment.component';
+import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -35,13 +36,16 @@ export class ILookup {
   animations: fuseAnimations
 })
 export class OPBillingComponent implements OnInit {
-
+  click: boolean = false;
   hasSelectedContacts: boolean;
   paidamt: number;
   flagSubmit: boolean;
   balanceamt: number;
   msg: any;
-
+  reportPrintObj: BrowseOPDBill;
+  subscriptionArr: Subscription[] = [];
+  printTemplate: any;
+  reportPrintObjList: BrowseOPDBill[] = [];
   chargeslist: any = [];
   screenFromString = 'OP-billing';
   displayedColumns = [
@@ -151,11 +155,6 @@ export class OPBillingComponent implements OnInit {
 
   private _onDestroy = new Subject<void>();
 
-  //Print Bill
-  // reportPrintObj: BrowseOPDBill;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  // reportPrintObjList: BrowseOPDBill[] = [];
   resBillId: Post;
 
   constructor(
@@ -199,7 +198,7 @@ export class OPBillingComponent implements OnInit {
         this.filterDoctor();
       });
 
-debugger;
+    debugger;
 
   }
 
@@ -234,7 +233,7 @@ debugger;
       totalAmount: [Validators.required],
       DoctorId: [''],
       doctorId: [''],
-      DoctorID: [Validators.required,''],
+      DoctorID: [Validators.required, ''],
       discPer: [Validators.pattern("^[0-9]*$")],
       discAmount: [Validators.pattern("^[0-9]*$")],
       netAmount: ['', Validators.pattern("^[0-9]*$")],
@@ -474,7 +473,7 @@ debugger;
   onInsertAddCharges() {
     this.isLoading = 'save';
     let InsertAdddetArr = [];
-    
+
     if (this.SrvcName && (Math.round(parseInt(this.b_price)) != 0) && this.b_qty) {
       // console.log(this.dataSource.data.length);
       this.dataSource.data.forEach((element) => {
@@ -572,9 +571,9 @@ debugger;
   //Save Billing 
 
   onSaveOPBill() {
-
+    this.click = true;
     debugger;
-    if (this.concessionDiscPer > 0) {
+    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
       this.FinalAmt = this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;
       this.netPaybleAmt1 = this.netPaybleAmt;
     }
@@ -583,7 +582,7 @@ debugger;
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
     this.isLoading = 'submit';
-    
+
     let Pathreporthsarr = [];
     this.dataSource.data.forEach((element) => {
       if (element['IsPathology']) {
@@ -592,9 +591,9 @@ debugger;
         PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
         PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
         PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-        PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
+          PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
         PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
+          PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
         PathologyReportHeaderObj['IsCompleted'] = 0;
         PathologyReportHeaderObj['IsPrinted'] = 0;
         PathologyReportHeaderObj['IsSampleCollection'] = 0;
@@ -611,9 +610,9 @@ debugger;
         RadiologyReportHeaderObj['RadTime'] = this.dateTimeObj.time;
         RadiologyReportHeaderObj['OPD_IPD_Type'] = 0;
         RadiologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-        RadiologyReportHeaderObj['RadTestID'] = element.ServiceId;
+          RadiologyReportHeaderObj['RadTestID'] = element.ServiceId;
         RadiologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        RadiologyReportHeaderObj['ChargeID'] = element.ChargesId;
+          RadiologyReportHeaderObj['ChargeID'] = element.ChargesId;
         RadiologyReportHeaderObj['IsCompleted'] = 0;
         RadiologyReportHeaderObj['IsPrinted'] = 0;
         RadiologyReportHeaderObj['TestType'] = 0;
@@ -635,7 +634,7 @@ debugger;
       Billdetsarr.push(BillDetailsInsertObj);
     });
 
- 
+
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
@@ -664,20 +663,20 @@ debugger;
       this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
       this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
 
-   debugger;
+      debugger;
       this.flagSubmit = result.IsSubmitFlag
 
-      console.log( this.paidamt,this.balanceamt);
+      console.log(this.paidamt, this.balanceamt);
       //
       let InsertBillUpdateBillNoObj = {};
 
       if (this.concessionDiscPer > 0) {
         this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-       
+
       } else {
         this.FinalAmt = this.TotalnetPaybleAmt;
       }
-  
+
       // if(!this.flagSubmit){
       //   this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
       //   // if (this.concessionDiscPer > 0) {
@@ -695,8 +694,8 @@ debugger;
       InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-      InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+        InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -710,7 +709,7 @@ debugger;
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
       // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0; //1000;//this.taxAmt;
-      InsertBillUpdateBillNoObj['CashCounterId'] = 0; 
+      InsertBillUpdateBillNoObj['CashCounterId'] = 0;
       InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
       //
       if (this.flagSubmit == true) {
@@ -744,12 +743,12 @@ debugger;
         debugger;
         console.log("Procced with Credit bill");
         console.log(this.paidamt, this.balanceamt);
-        
-          // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
 
-          if (this.concessionDiscPer > 0) {
-            this.balanceamt = this.FinalAmt;
-          }
+        // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+
+        if (this.concessionDiscPer > 0) {
+          this.balanceamt = this.FinalAmt;
+        }
 
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
@@ -770,6 +769,7 @@ debugger;
                 let m = response;
                 // this.getPrint(m);
                 this._matDialog.closeAll();
+
               }
             });
           } else {
@@ -873,6 +873,8 @@ debugger;
   }
 
   calculatePersc() {
+debugger;
+let amt=parseInt(this.b_disAmount);
 
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
     if (this.formDiscPersc) {
@@ -881,9 +883,14 @@ debugger;
       this.b_netAmount = Math.round(netAmt - discAmt).toString();
       this.TotalnetPaybleAmt = this.b_netAmount;
 
+    }else if(amt>0){
+      this.b_netAmount = Math.round(netAmt - amt).toString();
+      this.TotalnetPaybleAmt=this.b_netAmount;
     }
 
   }
+
+  
 
   calculatePersc1() {
     debugger;
@@ -914,30 +921,31 @@ debugger;
 
     this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
 
-    this.netPaybleAmt1 = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;;
+    this.netPaybleAmt1 = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+    this.TotalnetPaybleAmt =this.netPaybleAmt;
     console.log(this.netPaybleAmt);
     console.log(this.netPaybleAmt1);
+    this.registeredForm.get('FinalAmt').setValue(this.netPaybleAmt);
+    console.log(this.TotalnetPaybleAmt);
+
+    // debugger;
+    // if (parseInt(this.concessionAmtOfNetAmt) > 0) {
+    //   let tot = 0;
+    //   // this.b_netAmount = tot.toString();
+    //   if (this.TotalnetPaybleAmt > 0) {
+    //     tot = parseInt(this.TotalnetPaybleAmt) - parseInt(this.concessionAmtOfNetAmt);
+    //     this.TotalnetPaybleAmt = tot;
+    //   }
+    //   else
+    //     this.TotalnetPaybleAmt = this.concessionAmtOfNetAmt;
+    // }
+
+  
   }
 
-  // onEdit(row) {
 
-  //   console.log(row);
-  //   // if(row) this.dialogRef.close(row);
-  // }\
   deleteTableRow(element) {
-    // debugger;
-    //  console.log(element.ChargesId);
-    //  var m_data= {
-    //    "G_ChargesId":element.ChargesId,
-    //    "G_UserId": this.accountService.currentUserValue.user.id
-    //  }
-    //  console.log(m_data);
-    //  this._opappointmentService.deleteCharges(m_data).subscribe(data =>{ 
-    //    this.msg=data;
-    //   this.getChargesList();
-    // });
-
-    // Delete row in datatable level
+   
     // debugger;
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -957,17 +965,10 @@ debugger;
     // this._location.back();
   }
 
-  // getAdmittedDoctorCombo() {
-  //   this._opappointmentService.getAdmittedDoctorCombo().subscribe(data => {
-  //     this.doctorNameCmbList = data
-  //     // console.log(this.doctorNameCmbList);
-  //   });
-  // }
+ 
 
   getAdmittedDoctorCombo() {
-    //   this._opappointmentService.getAdmittedDoctorCombo().subscribe(data => { this.doctorNameCmbList = data; 
-    //  this.filteredDoctor.next(this.doctorNameCmbList.slice());
-
+ 
     this._opappointmentService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
       console.log(this.doctorNameCmbList);
@@ -1013,27 +1014,27 @@ debugger;
   //   );
   // }
   getTemplate() {
-    // let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
-    // this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
+    this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
-    //   this.printTemplate = resData[0].TempDesign;
-    //   let keysArray = ['HospitalName', 'HospitalAddress', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
-    //   debugger;
-    //   for (let i = 0; i < keysArray.length; i++) {
-    //     let reString = "{{" + keysArray[i] + "}}";
-    //     let re = new RegExp(reString, "g");
-    //     this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-    //   }
-    //   var strrowslist = "";
-    //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-    //     console.log(this.reportPrintObjList);
-    //     var objreportPrint = this.reportPrintObjList[i - 1];
+      this.printTemplate = resData[0].TempDesign;
+      let keysArray = ['HospitalName', 'HospitalAddress','Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      debugger;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
+      var strrowslist = "";
+      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+        console.log(this.reportPrintObjList);
+        var objreportPrint = this.reportPrintObjList[i - 1];
 
-    //     let docname;
-    //     if (objreportPrint.ChargesDoctorName)
-    //       docname = objreportPrint.ChargesDoctorName;
-    //     else
-    //       docname = '';
+        let docname;
+        if (objreportPrint.ChargesDoctorName)
+          docname = objreportPrint.ChargesDoctorName;
+        else
+          docname = '';
 
         //   var strabc = `<hr style="border-color:white" >
         //   <div style="display:flex;margin:8px 0">
@@ -1060,55 +1061,55 @@ debugger;
         // }
 
 
-//         var strabc = ` 
-// <div style="display:flex;margin:8px 0">
-//     <div style="display:flex;width:80px;margin-left:10px;">
-//         <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-//     </div>
-//     <div style="display:flex;width:400px;margin-right:10px;">
-//         <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-//     </div>
-//     <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
-//     <div>`+ docname + `</div> <!-- <div>450</div> -->
-//     </div>
-//     <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
-//     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-//     </div>
-//     <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
-//         <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-//     </div>
-//     <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
-//         <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-//     </div>
-// </div>`;
-//         strrowslist += strabc;
-//       }
-//       var objPrintWordInfo = this.reportPrintObjList[0];
-      //  let concessinamt;
-      //  if(objPrintWordInfo.ConcessionAmt >0 ){
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      //  }
-      //  else{
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      //  }
+        var strabc = ` 
+<div style="display:flex;margin:8px 0">
+    <div style="display:flex;width:80px;margin-left:10px;">
+        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+    </div>
+    <div style="display:flex;width:400px;margin-right:10px;">
+        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+    </div>
+    <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
+    <div>`+ docname + `</div> <!-- <div>450</div> -->
+    </div>
+    <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
+    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+    </div>
+    <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
+        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+    </div>
+    <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
+        <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
+    </div>
+</div>`;
+        strrowslist += strabc;
+      }
+      var objPrintWordInfo = this.reportPrintObjList[0];
+       let concessinamt;
+       if(objPrintWordInfo.ConcessionAmt >0 ){
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+       }
+       else{
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+       }
 
-    //   this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-    //   this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-    //   this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-    //   this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
-    //   this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+      this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
 
-    //   this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-    //   setTimeout(() => {
-    //     this.print();
-    //   }, 1000);
-    // });
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      setTimeout(() => {
+        this.print();
+      }, 1000);
+    });
   }
 
   convertToWord(e) {
@@ -1186,7 +1187,7 @@ export class Bill {
   TaxPer: any;
   TaxAmount: any;
   DiscComments: String;
-  CashCounterId:any;
+  CashCounterId: any;
 
   constructor(InsertBillUpdateBillNoObj) {
     {
