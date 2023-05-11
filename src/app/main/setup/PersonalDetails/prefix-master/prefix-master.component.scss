@@ -1,31 +1,58 @@
-section {
-    display: table;
-}
+app-prefix-master {
+    .mat-header-row {
+        width: 800px;
+        max-width: 800px;
+        min-width: 800px;
+        font-weight: bold;
+    }
 
-.example-label {
-    display: table-cell;
-    font-size: 14px;
-    margin-left: 8px;
-    min-width: 120px;
-}
+    .mat-row {
+        width: 800px;
+        max-width: 800px;
+        min-width: 800px;
+    }
 
-.example-button-row {
-    display: table-cell;
-    max-width: 600px;
-}
+    .mat-column-PrefixID {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
 
-.example-button-row .mat-mdc-button-base {
-    margin: 8px 8px 8px 0;
-}
+    .mat-column-PrefixName {
+        width: 450px;
+        max-width: 450px;
+        min-width: 450px;
+    }
 
-.example-flex-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
+    .mat-column-GenderName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
 
-.example-button-container {
-    display: flex;
-    justify-content: center;
-    width: 120px;
+    .mat-column-IsDeleted {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
 }

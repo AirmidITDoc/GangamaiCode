@@ -9,11 +9,11 @@ const appRoutes: Routes = [
                 (m) => m.PersonaldetailModule
             ),
     },
-    // {
-    //     path: "billing",
-    //     loadChildren: () =>
-    //         import("./billing/billing.module").then((m) => m.BillingModule),
-    // },
+    {
+        path: "billing",
+        loadChildren: () =>
+            import("./billing/billing.module").then((m) => m.BillingModule),
+    },
     {
         path: "department",
         loadChildren: () =>
