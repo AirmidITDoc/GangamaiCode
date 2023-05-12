@@ -128,7 +128,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getReturndetails() {
     var m_data = {
-    "OPIPID": this.selectedAdvanceObj.AdmissionID
+    "OPIPID":32,// this.selectedAdvanceObj.AdmissionID
     }
     debugger;
     // this.dataSource1.data = [];
@@ -145,7 +145,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getRefundofAdvanceList() {
     var m_data = {
-      "RefundId": 10032//xthis._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
+      "RefundId": 97317//xthis._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
     }
     this.isLoadingStr = 'loading';
     this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(Visit => {
@@ -176,13 +176,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   onEdit(row){
-
+debugger;
     console.log(row);
     debugger;
     this.BalanceAdvance=0;
     this.RefundAmount=0;
     this.NewRefundAmount=0;
      console.log(row);
+
     if(row.BalanceAmount==0)
     {
       this.icon_disable=true;
@@ -202,6 +203,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
   this.RefundAmount=row.RefundAmount;
   
     // this.populateForm2(m_data);
+
+    if(this.UsedAmount!=0)
+    {
+      this.BalanceAdvance = parseInt(row.RefundAmount) - parseInt(row.UsedAmount);
+    }
     
   }
   onSave() {

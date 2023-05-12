@@ -90,8 +90,8 @@
                             <div fxFlex.gt-sm="80%" fxFlex fxLayoutGap="10px"
                                 style="background-color: white; padding: 5px 5px 5px 5px;">
                                 <mat-card>
-                                    <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                        style="overflow: auto;">
+                                    <mat-table matSort class="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                        style="overflow: auto;height:300px;max-height:300px;">
 
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -176,7 +176,7 @@
                                 style="background-color: white; padding: 5px 10px 5px 10px;">
 
                                 <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;">
+                                    style="overflow: auto;height:300px;max-height:300px;">
 
                                     <ng-container matColumnDef="RefundDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date

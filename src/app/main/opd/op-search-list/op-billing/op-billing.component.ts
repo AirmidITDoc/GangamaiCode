@@ -874,6 +874,8 @@ export class OPBillingComponent implements OnInit {
 
   calculatePersc() {
 debugger;
+
+
 let amt=parseInt(this.b_disAmount);
 
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
@@ -894,6 +896,11 @@ let amt=parseInt(this.b_disAmount);
 
   calculatePersc1() {
     debugger;
+    this.concessionAmtOfNetAmt=0;
+
+    // if()
+
+
     let netAmt = this.totalAmtOfNetAmt;
 
     if (this.concessionDiscPer) {
@@ -903,6 +910,7 @@ let amt=parseInt(this.b_disAmount);
       // console.log(this.TotalnetPaybleAmt);
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
       this.TotalnetPaybleAmt = parseInt(this.TotalnetPaybleAmt);
+      this.Consession = false;
     }
     if (this.concessionDiscPer > 0) {
       this.registeredForm.get('ConcessionId').reset();
@@ -916,7 +924,7 @@ let amt=parseInt(this.b_disAmount);
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').disable;
-      this.Consession = true;
+      this.Consession = false;
     }
 
     this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;

@@ -71,6 +71,12 @@ const appRoutes: Routes = [
     // },
 
     {
+        path: "radiology",
+        loadChildren: () =>
+            import("./main/radiology/radiology.module").then((m) => m.RadiologyModule),
+    },
+
+    {
         path: '**',
         redirectTo: 'auth/login'
     }

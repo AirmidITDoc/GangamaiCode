@@ -19,7 +19,7 @@ export class AppointmentSreviceService {
     private _formBuilder: FormBuilder
   ) {
     this.myFilterform = this.filterForm();
-    this.mySaveForm = this.saveForm();
+    // this.mySaveForm = this.saveForm();
   }
 
   filterForm(): FormGroup {
@@ -41,110 +41,110 @@ export class AppointmentSreviceService {
   }
 
   //---Regi starrt-------
-  saveForm(): FormGroup {
-    return this._formBuilder.group({
+  // saveForm(): FormGroup {
+  //   return this._formBuilder.group({
 
-      RegId: '',
-      RegDate: '',
-      RegTime: '',
-      PrefixId: '',
-      PrefixID: '',
-      FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      MiddleName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      Address: '',
-      City: '',
-      PinNo: ['', [Validators.minLength(6), Validators.maxLength(6)]],
-      DateofBirth:  [(new Date()).toISOString()],
-      Age: '',
-      GenderId: '',
-      GenderName: '',
-      PhoneNo: ['', [
+  //     RegId: '',
+  //     RegDate: '',
+  //     RegTime: '',
+  //     PrefixId: '',
+  //     PrefixID: '',
+  //     FirstName: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+  //     ]],
+  //     MiddleName: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+  //     ]],
+  //     LastName: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+  //     ]],
+  //     Address: '',
+  //     City: '',
+  //     PinNo: ['', [Validators.minLength(6), Validators.maxLength(6)]],
+  //     DateofBirth:  [(new Date()).toISOString()],
+  //     Age: '',
+  //     GenderId: '',
+  //     GenderName: '',
+  //     PhoneNo: ['', [
        
-        Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(15),
-      ]],
-      MobileNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]],
-      AddedBy: '',
-      RegNo: '',
-      AgeYear: ['', Validators.pattern("[0-9]+")],
-      AgeMonth: ['', Validators.pattern("[0-9]+")],
-      AgeDay: ['', Validators.pattern("[0-9]+")],
-      CountryId: '',
-      StateId: '',
-      CityId: '',
-      CityName: '',
-      MaritalStatusId: '',
-      IsCharity: '',
-      ReligionId: '',
-      AreaId: '',
-      VillageId: '',
-      TalukaId: '',
-      PatientWeight: '',
-      AreaName: '',
-      AadharCardNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),
-      ]],
-      PanCardNo: '',
-      VisitId: '',
-      RegID: '',
-      VisitDate: [(new Date()).toISOString()],
-      VisitTime: [(new Date()).toISOString()],
-      UnitId: '',
-      PatientTypeID: '',
-      PatientType: '',
-      ConsultantDocId: '',
-      RefDocId: '',
-      DoctorId: '',
-      DoctorName: '',
-      OPDNo: '',
-      TariffId: '',
-      CompanyId: '',
-      CompanyName: '',
-      //AddedBy :'',
-      IsCancelledBy: '',
-      IsCancelled: '',
-      IsCancelledDate: '',
-      ClassId: '',
-      ClassName: '',
-      DepartmentId: '',
-      DepartmentName: '',
-      PatientOldNew: '',
-      FirstFollowupVisit: '',
-      AppPurposeId: '',
-      FollowupDate: '',
-      IsMark: '',
-      IsXray: '',
-      HospitalID: '',
+  //       Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+  //       Validators.minLength(10),
+  //       Validators.maxLength(10),
+  //     ]],
+  //     MobileNo: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[0-9]*$"),
+  //       Validators.minLength(10),
+  //       Validators.maxLength(10),
+  //     ]],
+  //     AddedBy: '',
+  //     RegNo: '',
+  //     AgeYear: ['', Validators.pattern("[0-9]+")],
+  //     AgeMonth: ['', Validators.pattern("[0-9]+")],
+  //     AgeDay: ['', Validators.pattern("[0-9]+")],
+  //     CountryId: '',
+  //     StateId: '',
+  //     CityId: '',
+  //     CityName: '',
+  //     MaritalStatusId: '',
+  //     IsCharity: '',
+  //     ReligionId: '',
+  //     AreaId: '',
+  //     VillageId: '',
+  //     TalukaId: '',
+  //     PatientWeight: '',
+  //     AreaName: '',
+  //     AadharCardNo: ['', [
+  //       Validators.required,
+  //       Validators.pattern("^[0-9]*$"),
+  //       Validators.minLength(12),
+  //       Validators.maxLength(12),
+  //     ]],
+  //     PanCardNo: '',
+  //     VisitId: '',
+  //     RegID: '',
+  //     VisitDate: [(new Date()).toISOString()],
+  //     VisitTime: [(new Date()).toISOString()],
+  //     UnitId: '',
+  //     PatientTypeID: '',
+  //     PatientType: '',
+  //     ConsultantDocId: '',
+  //     RefDocId: '',
+  //     DoctorId: '',
+  //     DoctorName: '',
+  //     OPDNo: '',
+  //     TariffId: '',
+  //     CompanyId: '',
+  //     CompanyName: '',
+  //     //AddedBy :'',
+  //     IsCancelledBy: '',
+  //     IsCancelled: '',
+  //     IsCancelledDate: '',
+  //     ClassId: '',
+  //     ClassName: '',
+  //     DepartmentId: '',
+  //     DepartmentName: '',
+  //     PatientOldNew: '',
+  //     FirstFollowupVisit: '',
+  //     AppPurposeId: '',
+  //     FollowupDate: '',
+  //     IsMark: '',
+  //     IsXray: '',
+  //     HospitalID: '',
   
-      ServiceID: '',
-      TotalAmt: '',
-      ConcessionAmt: '',
-      NetPayableAmt: '',
+  //     ServiceID: '',
+  //     TotalAmt: '',
+  //     ConcessionAmt: '',
+  //     NetPayableAmt: '',
 
-    });
-  }
+  //   });
+  // }
 
   initializeFormGroup() {
-    this.saveForm();
+    // this.saveForm();
   }
 
   // Add new registration

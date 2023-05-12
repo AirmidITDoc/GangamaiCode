@@ -25,7 +25,7 @@ export class SearchPageComponent implements OnInit {
   setStep(index: number) {
     this.step = index;
   }
-  Range: boolean = true;
+  Range: boolean = false;
   OP_IP_Type:any;
   PatientType: any = 1;
   Fromdate: any;
@@ -115,19 +115,7 @@ export class SearchPageComponent implements OnInit {
         this.sIsLoading = '';
       });
     
-    // if (this.PatientType) {
-    //   this._SearchdialogService.myFilterform.get('start').value.enable();
-    //   this._SearchdialogService.myFilterform.get('end').value.enable();
-    //   this.Range = false;
-
-    // } else {
-
-    //   this._SearchdialogService.myFilterform.get('start').value.updateValueAndValidity();
-    //   this._SearchdialogService.myFilterform.get('end').value.updateValueAndValidity();
-    //   this._SearchdialogService.myFilterform.get('PatientType').value.disable();
-    //   this.Range = true;
-
-    // }
+  
   }
 
   getOPIPPatientList() {
@@ -138,11 +126,11 @@ export class SearchPageComponent implements OnInit {
     console.log(this.PatientType);
 
     if (this.PatientType !="0") {
-      this.Fromdate = '01/01/1900';
-      this.Todate = '01/01/1900';
+      this.Fromdate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");//'01/01/1900';
+      this.Todate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
       this._SearchdialogService.myFilterform.get('start').value.disable;
       this._SearchdialogService.myFilterform.get('end').value.disable;
-      this.Range = true;
+      // this.Range = true;
       this.OP_IP_Type=1;
     }
     else {
@@ -151,7 +139,7 @@ export class SearchPageComponent implements OnInit {
     
       this._SearchdialogService.myFilterform.get('start').value.enable;
       this._SearchdialogService.myFilterform.get('end').value.enable;
-      this.Range = false;
+      // this.Range = false;
       this.OP_IP_Type=0;
     }
 
@@ -190,13 +178,6 @@ export class SearchPageComponent implements OnInit {
     this._SearchdialogService.myFilterform.get('RegNo').reset();
     this._SearchdialogService.myFilterform.get('IPDNo').reset();
 
-
-    // this._SearchdialogService.myFilterform.reset(
-    //   {
-    //     start: [],
-    //     end: []
-    //   }
-    // );
   }
 
   dateTimeObj: any;

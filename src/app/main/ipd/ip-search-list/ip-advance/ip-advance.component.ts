@@ -184,7 +184,7 @@ debugger;
     AdvanceDetObj['IsCancelledBy'] = 0;
     AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
     AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
-
+    AdvanceDetObj['CashCounterId'] = 0;//
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
