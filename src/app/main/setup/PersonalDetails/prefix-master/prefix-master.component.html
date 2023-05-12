@@ -140,12 +140,12 @@
                                             params: { y: '100%' }
                                         }"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{ hide: dataSource != null }">
+                                        [ngClass]="{ hide: dsPrefixMasterList != null }">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{
                                             hide: !(
-                                                dataSource != null &&
-                                                dataSource.data.length == 0
+                                                dsPrefixMasterList != null &&
+                                                dsPrefixMasterList.data.length == 0
                                             )
                                         }"></mat-footer-row>
                                 </mat-table>
