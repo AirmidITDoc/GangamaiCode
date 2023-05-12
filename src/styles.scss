@@ -3,60 +3,20 @@
 
 // Import app.theme.scss
 @import "app/app.theme";
-
+// @import '~font-awesome/css/font-awesome.min.css';
 
 //added by prasad
-.mat-cell, .mat-footer-cell {
-    font-size: 12px !important;
-} 
-//added by prasad
-.mat-row, .mat-footer-row {
-    min-height: 0;
-}
-
-// .mat-table {
-//     height: 370px !important;
-//     .mat-row {
-//         &:hover {
-//             background: #e1f5fe;
-//         }
-//         // &:active {
-//         //     background:#e1f5fe;
-//         // }
-//     }
-
-//     .mat-header-row {
-//         min-height: 40px;
-//     }
-//     .mat-header-cell {
-//         .mat-sort-header-button {
-//             color: white;
-//         }
-
-//         .mat-sort-header-arrow {
-//             color: white;
-//         }
-//     }
-// }
-
-// .mat-dialog-container {
-//     padding: 0 !important;
-// }
-  
-
-//new css
-
 .mat-cell, .mat-footer-cell {
     font-size: 14px !important;
 } 
 //added by prasad
 .mat-row, .mat-footer-row {
-    min-height: 28px;
-    height: 35px;
+    min-height: 20px;
+    height: 30px;
 }
 
 .mat-table {
-    height: 380px !important;
+    height: 480px !important;
     .mat-row {
         &:hover {
             background: #e1f5fe;
@@ -170,8 +130,8 @@ snack-bar-container success {
     display: none !important;
 }
 
-html, body { height: 100% !important; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; zoom: 0.9; zoom: 90%;}
+html, body { height: 80% !important; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important;zoom: 0.8; zoom: 80%; }
 
 
 // Spinner Css
@@ -233,7 +193,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 //new css
+.search-btn{
+    text-align: center; 
+    color:white ;
+    border-radius: 16px;
+    border: 1px solid #039be5 ;
+    background-color: blue;
+  }
 
+ .search-btn:disabled {
+   color: white;
+   background-color: #c5c5e3 !important;
+   border-radius: 2px;
+   border: 1px solid  #b7e6fd ;
+  }
+
+
+  .search-btn:hover{
+   background-color:#039be5 ;
+   color: white;
+   }
+   
 .clearbutton{
     padding-right: 5px;
     padding-left: 5px;
@@ -291,7 +271,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #818181;
     position: absolute;
     z-index: 1000;
-    height: 460px;
+    height: 470px;
     opacity: 0.5;
      width: 100%;  
 }
@@ -304,9 +284,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border: .25em solid currentColor;
     border-right-color: transparent;
     border-radius: 50%;
-    -webkit-animation: .75s linear infinite spinner-border;
-    animation: .75s linear infinite spinner-border;
+     -webkit-animation: .75s linear infinite spinner-border;
+     animation: .75s linear infinite spinner-border;
 
+  
 
 //spinner width
     color:blue;
@@ -359,8 +340,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: currentColor;
     border-radius: 50%;
     opacity: 0;
-    -webkit-animation: .75s linear infinite spinner-grow;
-    animation: .75s linear infinite spinner-grow
+   // -webkit-animation: .75s linear infinite spinner-grow;
+    //animation: .75s linear infinite spinner-grow
+    -webkit-animation: 0.5s linear infinite spinner-grow;
+    animation: loading 0.5s linear infinite;
 }
 
 .spinner-grow-sm {
@@ -370,8 +353,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (prefers-reduced-motion:reduce) {
     .spinner-border, .spinner-grow {
-        -webkit-animation-duration: 1.5s;
-        animation-duration: 1.5s
+        -webkit-animation-duration: 0.2s;
+        //animation-duration: 1.5s
+        animation-duration: 0.2s;
     }
 }
 
@@ -393,14 +377,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .footer-btn {
-    width: 80px;
+    width: 70px;
     font-size: 16px;
     font-weight: 700px;
     padding: 10px;
     color:  rgb(247, 97, 97);
     border-radius: 16px;
     background-color:white;
-    border-color: rgb(247, 97, 97);
+    border: 1px solid  rgb(247, 97, 97);
     cursor: pointer;
 }
 .footer-btn:hover{
@@ -410,7 +394,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .next-btn {
-    width: 80px;
+    width: 70px;
     font-size: 16px;
     font-weight: 700px;
     padding: 10px;
@@ -447,3 +431,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // end spinner
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

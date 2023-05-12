@@ -92,7 +92,7 @@ $typography: mat-typography-config(
 @import "src/app/main/auth/login/login.theme";
 @import "src/app/main/auth/register/register.theme";
 @import "src/app/main/dashboards/project/project.theme";
-@import "src/app/main/setup/billing/service-master/service-master.theme";
+// @import "src/app/main/setup/billing/service-master/service-master.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -103,7 +103,7 @@ $typography: mat-typography-config(
     @include login-theme($theme);
     @include register-theme($theme);
     @include dashboards-project-theme($theme);
-    @include service-master-theme($theme);
+    // @include service-master-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------
