@@ -47,11 +47,11 @@ const appRoutes: Routes = [
     //     path: 'dashboards/project',
     //     loadChildren: () => import('./main/dashboards/project/project.module').then(m => m.ProjectDashboardModule)
     // },
-    {
-        path: "setup",
-        loadChildren: () =>
-            import("./main/setup/setup.module").then((m) => m.SetupModule),
-    },
+    // {
+    //     path: "setup",
+    //     loadChildren: () =>
+    //         import("./main/setup/setup.module").then((m) => m.SetupModule),
+    // },
 
     {
         path: "ipd",
@@ -88,7 +88,7 @@ export const PICK_FORMATS = {
     }
   };
   
-  class PickDateAdapter extends NativeDateAdapter {
+class PickDateAdapter extends NativeDateAdapter {
     format(date: Date, displayFormat: Object): string {
         if (displayFormat === 'input') {
             return formatDate(date,'dd-MMM-yyyy',this.locale);;
