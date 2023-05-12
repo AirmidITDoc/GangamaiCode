@@ -11,7 +11,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent],
+    declarations: [],
     imports: [RouterModule.forChild(routes)],
     entryComponents: [ServiceMasterComponent],
 })

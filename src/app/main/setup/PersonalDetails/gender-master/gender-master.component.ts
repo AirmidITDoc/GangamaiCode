@@ -33,7 +33,7 @@ export class GenderMasterComponent implements OnInit {
     constructor(
         public _GenderService: GenderMasterService,
         public notification: NotificationServiceService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getGenderMasterList();

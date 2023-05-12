@@ -21,6 +21,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
+import { PasswordChangeComponent } from "app/main/administration/password-change/password-change.component";
 
 
 @Component({
@@ -135,22 +136,22 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     logout() {
         this.accountService.logout();
     }
-    navigateToDash() {
+    navigateToDailyDashboard() {
         this.router.navigate(['/dashboard']);
     }
 
-    navigateToDialyDash() {
-        this.router.navigate(['/dashboard/daily-dashboard']);
-    }
+    // navigateToDialyDash() {
+    //     this.router.navigate(['/dashboard/daily-dashboard']);
+    // }
 
-    navigateToFinancDash() {
-        // this.accountService.logout();
-        this.router.navigate(['/dashboard/Inventory-dashboard']);
-    }
-
-    navigateToPathDash() {
+    navigateToPathologyDashboard() {
         // this.accountService.logout();
         this.router.navigate(['/dashboard/Pathology-dashboard']);
+    }
+
+    navigateToRadiologyDashboard() {
+        // this.accountService.logout();
+        this.router.navigate(['/dashboard/Radiology-dashboard']);
     }
 
     navigateToCashlessDashboard() {
@@ -219,7 +220,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       }
 
       addchangePassword() {
-        const dialogRef = this._matDialog.open(ChangePasswordComponent,
+        const dialogRef = this._matDialog.open(PasswordChangeComponent,
           {
             maxWidth: "50vw",
             maxHeight: "60vh", 

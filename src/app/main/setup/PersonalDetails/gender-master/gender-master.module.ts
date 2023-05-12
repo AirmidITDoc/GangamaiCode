@@ -17,8 +17,6 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { GenderMasterComponent } from "./gender-master.component";
 import { GenderMasterService } from "./gender-master.service";
-import { NotificationServiceService } from "app/core/notification-service.service";
-// import { PrefixMasterService } from "./prefix-master.service";
 
 const routes: Routes = [
     {
@@ -48,7 +46,7 @@ const routes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
     ],
-    providers: [GenderMasterService, NotificationServiceService],
+    providers: [GenderMasterService],
     entryComponents: [GenderMasterComponent],
 })
 export class GenderMasterModule {}
