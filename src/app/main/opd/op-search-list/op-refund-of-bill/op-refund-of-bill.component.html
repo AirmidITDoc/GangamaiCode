@@ -233,7 +233,7 @@
             <!-- / CONTENT -->
             <br>
             <div fxLayout="row" fxLayoutGap="15px" style="float: right;margin-right: 20px;">
-                <button class="next-btn" [disabled]="RefundOfBillFormGroup.invalid" (click)="onSave()" style="border-radius: 16px;">Save</button>
+                <button class="next-btn" [disabled]="RefundOfBillFormGroup.invalid || this.click" (click)="onSave()" style="border-radius: 16px;">Save</button>
                 <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
        
         </div>

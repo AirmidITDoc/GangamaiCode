@@ -7,6 +7,9 @@ import { BrowseIPAdvanceService } from './browse-ipadvance.service';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
+import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AdvanceDataStored } from '../advance';
 
 @Component({
   selector: 'app-browse-ipadvance',
@@ -45,11 +48,13 @@ export class BrowseIPAdvanceComponent implements OnInit {
   reportPrintObj: ReportPrintObj;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
+  // advanceDataStored: any;
 
 
   constructor(public _advanceService:BrowseIPAdvanceService,
     private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe) { }
+    public datePipe: DatePipe,public _matDialog: MatDialog,
+    private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
    
@@ -69,7 +74,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
        // let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','TariffName','CompanyName','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby']; // resData[0].TempKeys;
-       let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
+       let keysArray = ['HospitalName','HospAddress','Phone','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
        'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
@@ -96,7 +101,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
       "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
-      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || "%",
+      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
     }
     // this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
     //     this.dataSource.data = Visit as IpdAdvanceBrowseModel[];
@@ -149,6 +154,58 @@ export class BrowseIPAdvanceComponent implements OnInit {
     popupWin.document.close();
   }
 
+  getViewAdvance(contact)
+{
+  console.log(contact);
+    let xx = {
+      PaymentId:contact.PaymentId,
+      HospitalName:contact.HospitalName,
+      HospitalAddress:contact.HospitalAddress,
+      Phone:contact.Phone,
+      BillNo:contact.BillNo,
+      RegNo:contact.RegNo,
+      RegId: contact.RegId,
+      PatientName: contact.PatientName,
+      FirstName: contact.FirstName,
+      MiddleName: contact.MiddleName, 
+      LastName:contact.LastName,
+      TotalAmt:contact.TotalAmt,
+      BalanceAmt: contact.BalanceAmt,
+      Remark: contact.Remark,
+      PaymentDate: contact.PaymentDate,
+      CashPayAmount : contact.CashPayAmount,
+      ChequePayAmount :contact.ChequePayAmount,
+      CardPayAmount :contact.CardPayAmount,
+      AdvanceUsedAmount: contact.AdvanceUsedAmount,
+      AdvanceId:contact.AdvanceId,
+      RefundId: contact.RefundId,
+      IsCancelled: contact.IsCancelled,
+      AddBy: contact.AddBy,
+      UserName:contact.UserName,
+      PBillNo: contact.PBillNo,
+      ReceiptNo: contact.ReceiptNo,
+      TransactionType:contact.TransactionType,
+      PayDate:contact.PayDate,
+      PaidAmount: contact.PaidAmount,
+      NEFTPayAmount:contact.NEFTPayAmount,
+      PayTMAmount:contact.PayTMAmount,
+
+          
+    };
+
+    this.advanceDataStored.storage = new IpdAdvanceBrowseModel(xx);
+   
+      const dialogRef = this._matDialog.open(ViewIPAdvanceComponent, 
+       {  maxWidth: "95vw",
+          maxHeight: "130vh", width: '100%', height: "100%"
+     });
+     dialogRef.afterClosed().subscribe(result => {
+      //  console.log('The dialog was closed - Insert Action', result);
+      //  this.getRadiologytemplateMasterList();
+     });
+  }
+
+
 
   onClear(){}
 
@@ -186,7 +243,7 @@ export class IpdAdvanceBrowseModel {
   RefundAmount:number;
   PrevAdvAmt:number;
   AdvanceId:number;
-
+  IPDNo:any;
   AdvanceDetailID:number;
   /**
 * Constructor
@@ -211,6 +268,7 @@ export class IpdAdvanceBrowseModel {
           this.PrevAdvAmt=IpdAdvanceBrowseModel.PrevAdvAmt || '';
           this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
           this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
+          this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
       }
   }
 }

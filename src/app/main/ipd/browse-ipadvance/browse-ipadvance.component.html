@@ -7,7 +7,7 @@
       <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
       </mat-icon>
       <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
-        IP Search List
+        IP Advance List
       </span>
 
       <!-- <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1300px;">
@@ -108,7 +108,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                <mat-table #table matSort [dataSource]="dataArray" [@animateStagger]="{value:'50'}">
                                     <!-- Checkbox Column -->
                                     <!-- <ng-container matColumnDef="checkbox">
                                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -204,9 +204,15 @@
                                         <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <span style="color: #827a7a;" class="material-icons" (click)="getPrint(contact)">
-                                                print
-                                            </span>
+
+                                            <button mat-icon-button (click)="getViewAdvance(contact)" matTooltip="how_to_reg">
+                                                <mat-icon>how_to_reg</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="getPrint(contact)" matTooltip="how_to_reg">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                         
                                            
                                         </mat-cell>
                                     </ng-container>
