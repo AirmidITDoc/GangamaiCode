@@ -7,12 +7,13 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class RelationshipMasterService {
     myform: FormGroup;
-
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createRelationshipForm();
+        this.myformSearch = this.createSearchForm();
     }
 
     createRelationshipForm(): FormGroup {
@@ -25,32 +26,36 @@ export class RelationshipMasterService {
         });
     }
 
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            RelationshipNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
+
     initializeFormGroup() {
         this.createRelationshipForm();
     }
 
-    public getrelationshipMasterList() {
+    public getrelationshipMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_RelationshipMaster_by_Name",
-            { RelationshipName: "%" }
+            "Generic/GetByProc?procName=Rtrv_RelativeNameList_by_Name",
+            e
         );
     }
 
-    public relationshipMasterInsert(employee) {
-        return this._httpClient.post(
-            "PersonalDetails/RelationshipSave",
-            employee
-        );
+    public relationshipMasterInsert(param) {
+        return this._httpClient.post("PersonalDetails/RelationshipSave", param);
     }
 
-    public relationshipMasterUpdate(employee) {
+    public relationshipMasterUpdate(param) {
         return this._httpClient.post(
             "PersonalDetails/RelationshipUpdate",
-            employee
+            param
         );
     }
 
-    populateForm(employee) {
-        this.myform.patchValue(employee);
+    populateForm(param) {
+        this.myform.patchValue(param);
     }
 }

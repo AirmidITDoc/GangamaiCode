@@ -5,56 +5,52 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class MaritalstatusMasterService {
+export class ReligionMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-
     constructor(
-        private _httpClient: HttpClient,
+        public _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createMaritalForm();
+        this.myform = this.CreateReligionForm();
         this.myformSearch = this.createSearchForm();
     }
-
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            MaritalStatusNameSearch: [""],
+            ReligionNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
-    createMaritalForm(): FormGroup {
+    CreateReligionForm(): FormGroup {
         return this._formBuilder.group({
-            MaritalStatusId: [""],
-            MaritalStatusName: [""],
+            ReligionId: [""],
+            ReligionName: [""],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            AddedBy: [""],
+            UpdatedBy: [""],
         });
     }
-
     initializeFormGroup() {
-        this.createMaritalForm();
+        this.CreateReligionForm();
     }
 
-    public getmaritalstatusMasterList(e) {
+    public getReligionMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_MaritalStatusNameNameList_by_Name",
+            "Generic/GetByProc?procName=Rtrv_ReligionName_by_Name",
             e
         );
     }
 
-    public insertMaritalStatusMaster(param) {
+    public religionMasterInsert(param) {
         return this._httpClient.post(
-            "PersonalDetails/MaritalStatusSave",
+            "PersonalDetails/ReligionMasterSave",
             param
         );
     }
 
-    public updateMaritalStatusMaster(param) {
+    public religionMasterUpdate(param) {
         return this._httpClient.post(
-            "PersonalDetails/MaritalStatusUpdate",
+            "PersonalDetails/ReligionMasterUpdate",
             param
         );
     }

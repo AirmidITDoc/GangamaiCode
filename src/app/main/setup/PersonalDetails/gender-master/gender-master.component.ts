@@ -26,33 +26,45 @@ export class GenderMasterComponent implements OnInit {
         "action",
     ];
 
-    dataSource = new MatTableDataSource<GenderMaster>();
+    DSGenderMasterList = new MatTableDataSource<GenderMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
-        public _GenderService: GenderMasterService,
-        public notification: NotificationServiceService
-    ) { }
+        public _GenderService: GenderMasterService // public notification: NotificationServiceService
+    ) {}
 
     ngOnInit(): void {
         this.getGenderMasterList();
     }
 
+    onSearch() {
+        this.getGenderMasterList();
+    }
+
+    onSearchClear() {
+        this._GenderService.myformSearch.reset({
+            GenderNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
+    //
     getGenderMasterList() {
         this._GenderService.getGenderMasterList().subscribe((Menu) => {
-            this.dataSource.data = Menu as GenderMaster[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            console.log(this.dataSource.data);
+            this.DSGenderMasterList.data = Menu as GenderMaster[];
+            this.DSGenderMasterList.sort = this.sort;
+            this.DSGenderMasterList.paginator = this.paginator;
+            console.log(this.DSGenderMasterList.data);
         });
     }
 
+    //
     onClear() {
         this._GenderService.myform.reset({ IsDeleted: "false" });
         this._GenderService.initializeFormGroup();
     }
 
+    //
     onSubmit() {
         if (this._GenderService.myform.valid) {
             if (!this._GenderService.myform.get("GenderId").value) {
@@ -77,7 +89,7 @@ export class GenderMasterComponent implements OnInit {
                         this.msg = data;
                         this.getGenderMasterList();
                     });
-                this.notification.success("Record added successfully");
+                ////  this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     genderMasterUpdate: {
@@ -95,7 +107,7 @@ export class GenderMasterComponent implements OnInit {
                         //  UpdatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
-                console.log(m_dataUpdate);
+                //  console.log(m_dataUpdate);
                 this._GenderService
                     .genderMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
@@ -109,7 +121,7 @@ export class GenderMasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        console.log(row);
+        //console.log(row);
         var m_data = {
             GenderId: row.GenderId,
             GenderName: row.GenderName.trim(),

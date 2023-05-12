@@ -29,48 +29,83 @@
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
-                        <div style="width: 100%;">
-                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto">
 
-                                <ng-container matColumnDef="GenderId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderId}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="GenderName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderName}} </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                        <button mat-icon-button (click)="onEdit(row)">
-                                            <mat-icon title="Edit Menu">launch</mat-icon>
+                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_GenderService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Gender Name" autocomplete="off"
+                                            name="GenderNameSearch" formControlName="GenderNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
                                         </button>
-                                        <button mat-icon-button (click)="onDeactive(row.GenderId)" color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </mat-cell>
-                                </ng-container>
+                                    </mat-form-field>
 
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
 
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
-                                </mat-footer-row>
-                            </mat-table>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                showFirstLastButtons></mat-paginator>
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <mat-table #table matSort [dataSource]="DSGenderMasterList" [@animateStagger]="{value:'50'}"
+                                    style="overflow:auto">
+
+                                    <ng-container matColumnDef="GenderId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderId}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="GenderName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Gender Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="onEdit(row)">
+                                                <mat-icon title="Edit Menu">launch</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDeactive(row.GenderId)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dataSource!=null}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons></mat-paginator>
+                            </div>
                         </div>
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">

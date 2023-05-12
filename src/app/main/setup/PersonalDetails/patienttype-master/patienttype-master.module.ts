@@ -4,14 +4,11 @@ import { PatienttypeMasterComponent } from "./patienttype-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
-import { MatRippleModule } from "@angular/material/core";
-import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
@@ -37,16 +34,13 @@ const routes: Routes = [
 
         MatButtonModule,
         MatCheckboxModule,
-        // MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        // MatRippleModule,
         MatTableModule,
-        // MatToolbarModule,
         MatPaginatorModule,
-        // MatSortModule,
+        MatSortModule,
         MatSelectModule,
         MatRadioModule,
         MatSnackBarModule,

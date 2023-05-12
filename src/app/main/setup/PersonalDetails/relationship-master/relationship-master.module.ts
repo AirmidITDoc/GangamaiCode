@@ -15,6 +15,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { RelationshipMasterService } from "./relationship-master.service";
 
 const routes: Routes = [
     {
@@ -45,10 +46,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
     ],
-    providers: [
-        //PrefixMasterService,
-        NotificationServiceService,
-    ],
+    providers: [RelationshipMasterService, NotificationServiceService],
 
     entryComponents: [RelationshipMasterComponent],
 })

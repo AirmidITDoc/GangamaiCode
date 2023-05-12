@@ -26,7 +26,7 @@ export class MaritalstatusMasterComponent implements OnInit {
         "action",
     ];
 
-    dataSource = new MatTableDataSource<MaritalStatusMaster>();
+    DSMaritalStatusMasterList = new MatTableDataSource<MaritalStatusMaster>();
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -41,12 +41,28 @@ export class MaritalstatusMasterComponent implements OnInit {
         this.getmaritalstatusMasterList();
     }
 
-    getmaritalstatusMasterList() {
-        this._maritalService.getmaritalstatusMasterList().subscribe((Menu) => {
-            this.dataSource.data = Menu as MaritalStatusMaster[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
+    onSearchClear() {
+        this._maritalService.myformSearch.reset({
+            MaritalStatusNameSearch: "",
+            IsDeletedSearch: "2",
         });
+    }
+    onSearch() {
+        this.getmaritalstatusMasterList();
+    }
+
+    getmaritalstatusMasterList() {
+        var m_data = {
+            MaritalStatusName: "%",
+        };
+        this._maritalService
+            .getmaritalstatusMasterList(m_data)
+            .subscribe((Menu) => {
+                this.DSMaritalStatusMasterList.data =
+                    Menu as MaritalStatusMaster[];
+                this.DSMaritalStatusMasterList.sort = this.sort;
+                this.DSMaritalStatusMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {
@@ -97,7 +113,7 @@ export class MaritalstatusMasterComponent implements OnInit {
                         UpdatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
-                console.log(m_dataUpdate);
+
                 this._maritalService
                     .updateMaritalStatusMaster(m_dataUpdate)
                     .subscribe((data) => {
@@ -111,7 +127,6 @@ export class MaritalstatusMasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        console.log(row);
         var m_data = {
             MaritalStatusId: row.MaritalStatusId,
             MaritalStatusName: row.MaritalStatusName.trim(),

@@ -7,12 +7,19 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class PatienttypeMasterService {
     myForm: FormGroup;
-
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
         this.myForm = this.createPatientTypeForm();
+        this.myformSearch = this.createSearchForm();
+    }
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            PatientTypeSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
     }
 
     createPatientTypeForm(): FormGroup {

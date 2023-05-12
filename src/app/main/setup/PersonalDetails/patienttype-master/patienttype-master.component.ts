@@ -15,7 +15,6 @@ import { PatienttypeMasterService } from "./patienttype-master.service";
     animations: fuseAnimations,
 })
 export class PatienttypeMasterComponent implements OnInit {
-    PatientTypeMasterList: any;
     msg: any;
 
     displayedColumns: string[] = [
@@ -26,7 +25,7 @@ export class PatienttypeMasterComponent implements OnInit {
         "action",
     ];
 
-    dataSource = new MatTableDataSource<PatientTypeMaster>();
+    DSPatientTypeMasterList = new MatTableDataSource<PatientTypeMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -35,7 +34,16 @@ export class PatienttypeMasterComponent implements OnInit {
         private accountService: AuthenticationService,
         public notification: NotificationServiceService
     ) {}
+    onSearch() {
+        this.getPatientTypeMasterList();
+    }
 
+    onSearchClear() {
+        this._PatientTypeService.myformSearch.reset({
+            PatientTypeSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
     ngOnInit(): void {
         this.getPatientTypeMasterList();
     }
@@ -43,7 +51,9 @@ export class PatienttypeMasterComponent implements OnInit {
         this._PatientTypeService
             .getPatientTypeMasterList()
             .subscribe(
-                (Menu) => (this.dataSource.data = Menu as PatientTypeMaster[])
+                (Menu) =>
+                    (this.DSPatientTypeMasterList.data =
+                        Menu as PatientTypeMaster[])
             );
     }
 
@@ -106,7 +116,6 @@ export class PatienttypeMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
-        // console.log(row);
         var m_data1 = {
             PatientTypeId: row.PatientTypeId,
             PatientType: row.PatientType.trim(),

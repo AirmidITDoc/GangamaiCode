@@ -22,7 +22,7 @@ export class RelationshipMasterComponent implements OnInit {
         "action",
     ];
 
-    dataSource = new MatTableDataSource<RelationshipMaster>();
+    DSRelationshipMasterList = new MatTableDataSource<RelationshipMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -31,18 +31,36 @@ export class RelationshipMasterComponent implements OnInit {
         private accountService: AuthenticationService,
         public notification: NotificationServiceService
     ) {}
+    onSearch() {
+        this.getrelationshipMasterList();
+    }
+
+    onSearchClear() {
+        this._relationshipService.myformSearch.reset({
+            RelationshipNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
 
     ngOnInit(): void {
         this.getrelationshipMasterList();
     }
 
     getrelationshipMasterList() {
+        var m_data = {
+            RelativeName:
+                this._relationshipService.myformSearch.get(
+                    "RelationshipNameSearch"
+                ).value + "%" || "%",
+        };
+
         this._relationshipService
-            .getrelationshipMasterList()
+            .getrelationshipMasterList(m_data)
             .subscribe((Menu) => {
-                this.dataSource.data = Menu as RelationshipMaster[];
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
+                this.DSRelationshipMasterList.data =
+                    Menu as RelationshipMaster[];
+                this.DSRelationshipMasterList.sort = this.sort;
+                this.DSRelationshipMasterList.paginator = this.paginator;
             });
     }
 

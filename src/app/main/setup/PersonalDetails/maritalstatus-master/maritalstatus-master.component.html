@@ -9,15 +9,20 @@
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    MaritalStatus Master
+                    Marital Status Master
                 </span>
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
+    <!-- / APP TITLE -->
+    <!-- SEARCH -->
+
+
+
+
+    <!-- / SEARCH -->
+
+
     <!-- / HEADER -->
 
     <!-- CONTENT -->
@@ -32,13 +37,41 @@
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
+                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_maritalService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Marital Status" autocomplete="off"
+                                            name="MaritalStatusNameSearch" formControlName="MaritalStatusNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                         <div style="width: 100%;">
-                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto">
+                            <mat-table #table matSort [dataSource]="DSMaritalStatusMasterList"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto">
                                 <ng-container matColumnDef="MaritalStatusId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.MaritalStatusId}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.MaritalStatusId}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -68,13 +101,14 @@
 
 
                                 <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                    </mat-header-cell>
                                     <mat-cell *matCellDef="let row">
                                         <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                 title="Edit Menu">launch</mat-icon></button>
                                         <button mat-icon-button (click)="onDeactive(row.BankId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                        
+
                                     </mat-cell>
                                 </ng-container>
 
@@ -100,6 +134,7 @@
                             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                 showFirstLastButtons></mat-paginator>
                         </div>
+
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
