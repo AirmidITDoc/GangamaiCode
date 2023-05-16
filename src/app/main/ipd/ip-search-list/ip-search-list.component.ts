@@ -114,6 +114,7 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Advance');
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
+      this.menuActions.push('Refund of Advance');
       this.menuActions.push('Payment');
     }
     else if (this._ActRoute.url == '/ipd/medicalrecords') {
@@ -554,7 +555,7 @@ debugger;
        const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
      {
          maxWidth: "110vw",
-           maxHeight: "95%", width: '100%', height: "100%"
+           maxHeight: "99%", width: '100%', height: "100%"
          });
        dialogRef.afterClosed().subscribe(result => {
          console.log('The dialog was closed - Insert Action', result);

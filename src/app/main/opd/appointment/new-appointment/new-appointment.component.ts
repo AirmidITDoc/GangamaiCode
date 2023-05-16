@@ -310,12 +310,21 @@ export class NewAppointmentComponent implements OnInit {
       AgeMonth: ['',Validators.pattern("[0-9]+")],
       AgeDay:['',Validators.pattern("[0-9]+")],
       // PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{15}$")]] , 
-      PhoneNo: [''] , 
-      MobileNo: ['', [Validators.required,Validators.pattern("^((\\+91-?)|0)?[7-9]{1}[0-9]{9}$")]], 
+      PhoneNo: ['', [
+       
+        Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+        Validators.minLength(10),
+        Validators.maxLength(10),
+      ]],
+      MobileNo: ['', [Validators.required,Validators.pattern("^((\\+91-?)|0)?[7-9]{1}[0-9]{9}$"),
+      Validators.minLength(10),
+      Validators.maxLength(10),]], 
       AadharCardNo: ['', [
         Validators.required,
-      //  ("^[2-9]{1}[0-9]{11}$")
-        Validators.pattern("^[2-9]{1}[0-9]{11}$")]],
+      
+        Validators.pattern("^[2-9]{1}[0-9]{11}$"),
+        Validators.minLength(12),
+        Validators.maxLength(12),]],
       PanCardNo: '',
       MaritalStatusId: '',
       ReligionId: '',
@@ -777,6 +786,14 @@ export class NewAppointmentComponent implements OnInit {
     });
 
   }
+
+  DocSelectdelete(){
+    // console.log(this.VisitFormGroup.get('DoctorIdOne').value.reset(''));
+   
+  this.getDoctor1List();
+  }
+
+
   getDoctor2List() {
     this._opappointmentService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
@@ -1173,7 +1190,7 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.getSubTPACompCombo().subscribe(data => { this.SubTPACompList = data; })
   }
   onDoctorOneChange(value) {
-    console.log(this.VisitFormGroup.get('DoctorIdOne').value);
+    console.log(this.VisitFormGroup.get('DoctorIdOne').value.reset(''));
   }
 
   backClicked() {

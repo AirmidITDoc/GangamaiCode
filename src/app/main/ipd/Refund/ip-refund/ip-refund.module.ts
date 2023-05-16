@@ -9,7 +9,7 @@ const appRoutes: Routes = [
   // {
   //     path: "iprefundofbill",
   
-  //     loadChildren: () =>import("").then((m) => m.IpSearchListModule),
+  //     loadChildren: () =>import("../ip-s").then((m) => m.IpSearchListModule),
   
   // },
   //  {
