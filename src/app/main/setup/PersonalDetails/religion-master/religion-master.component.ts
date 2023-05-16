@@ -45,7 +45,7 @@ export class ReligionMasterComponent implements OnInit {
     }
     getReligionMasterList() {
         var m_data = {
-            RelativeName:
+            ReligionName:
                 this._religionService.myformSearch.get("ReligionNameSearch")
                     .value + "%" || "%",
         };

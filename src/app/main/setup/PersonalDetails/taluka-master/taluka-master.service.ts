@@ -5,62 +5,63 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class CityMasterService {
-    myform: FormGroup;
+export class TalukaMasterService {
+    myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createCityForm();
+        this.myForm = this.createTalukaForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createCityForm(): FormGroup {
+    createTalukaForm(): FormGroup {
         return this._formBuilder.group({
-            CityId: [""],
+            TalukaId: [""],
+            TalukaName: [""],
             CityName: [""],
-            StateId: [""],
-            StateName: [""],
+            CityId: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            CityNameSearch: [""],
+            TalukaNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
 
     initializeFormGroup() {
-        this.createCityForm();
+        this.createTalukaForm();
     }
 
-    public getCityMasterList() {
+    public getTalukaMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CityNameList_by_Name",
-            { CityName: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_M_TalukaNameList_by_Name",
+            { TalukaName: "%" }
         );
     }
 
-    public getStateMasterCombo() {
+    public getCityMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_StateMasterForCombo ",
+            "Generic/GetByProc?procName=ps_Rtrv_M_CityMasterForCombo",
             {}
         );
     }
 
-    public cityMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CitySave", param);
+    public talukaMasterInsert(param) {
+        return this._httpClient.post("PersonalDetails/TalukaSave", param);
     }
 
-    public cityMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CityUpdate", param);
+    public talukaMasterUpdate(param) {
+        return this._httpClient.post("PersonalDetails/TalukaUpdate", param);
     }
 
     populateForm(param) {
-        this.myform.patchValue(param);
+        this.myForm.patchValue(param);
     }
 }

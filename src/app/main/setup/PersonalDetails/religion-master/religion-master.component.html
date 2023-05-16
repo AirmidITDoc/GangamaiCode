@@ -106,9 +106,7 @@
                                                     title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.BankId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            <!-- <button mat-icon-button [routerLink]="['/auth/menu-configure/menu-configure',row.menu_master_id]">
-                                        <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
-                                    </button> -->
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -129,7 +127,7 @@
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        [ngClass]="{'hide':DSReligionMasterList!=null}"></mat-footer-row>
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>

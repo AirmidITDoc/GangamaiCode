@@ -5,59 +5,60 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class CityMasterService {
+export class BedMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createCityForm();
+        this.myform = this.createBedForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createCityForm(): FormGroup {
+    createBedForm(): FormGroup {
         return this._formBuilder.group({
-            CityId: [""],
-            CityName: [""],
-            StateId: [""],
-            StateName: [""],
+            BedId: [""],
+            BedName: [""],
+            RoomId: [""],
+            RoomName: [""],
+            IsAvailable: ["1"],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            CityNameSearch: [""],
+            BedNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
     initializeFormGroup() {
-        this.createCityForm();
+        this.createBedForm();
     }
 
-    public getCityMasterList() {
+    public getbedMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CityNameList_by_Name",
-            { CityName: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_M_BedMaster_by_Name",
+            { BedName: "%" }
         );
     }
 
-    public getStateMasterCombo() {
+    public getWardMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_StateMasterForCombo ",
+            "Generic/GetByProc?procName=ps_Cmb_rtrv_WardMasterForCombo",
             {}
         );
     }
 
-    public cityMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CitySave", param);
+    public bedMasterInsert(param) {
+        return this._httpClient.post("DepartMentMaster/BedSave", param);
     }
 
-    public cityMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CityUpdate", param);
+    public bedMasterUpdate(param) {
+        return this._httpClient.post("DepartMentMaster/BedUpdate", param);
     }
 
     populateForm(param) {

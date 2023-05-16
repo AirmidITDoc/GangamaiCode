@@ -48,7 +48,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
     ],
-    providers: [ReligionMasterService, NotificationServiceService],
+    providers: [ReligionMasterService],
 
     entryComponents: [ReligionMasterComponent],
 })

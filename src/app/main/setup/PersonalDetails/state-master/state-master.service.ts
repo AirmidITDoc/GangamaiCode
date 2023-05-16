@@ -5,23 +5,23 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class CityMasterService {
+export class StateMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createCityForm();
+        this.myform = this.createStateForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createCityForm(): FormGroup {
+    createStateForm(): FormGroup {
         return this._formBuilder.group({
-            CityId: [""],
-            CityName: [""],
             StateId: [""],
             StateName: [""],
+            CountryId: [""],
+            CountryName: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -29,35 +29,35 @@ export class CityMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            CityNameSearch: [""],
+            StateNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
 
     initializeFormGroup() {
-        this.createCityForm();
+        this.createStateForm();
     }
 
-    public getCityMasterList() {
+    public getstateMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CityNameList_by_Name",
-            { CityName: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_StateNameList_by_Name",
+            { StateName: "%" }
         );
     }
 
-    public getStateMasterCombo() {
+    public getCountryMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_StateMasterForCombo ",
+            "Generic/GetByProc?procName=ps_Rtrv_M_CountryMasterForCombo ",
             {}
         );
     }
 
-    public cityMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CitySave", param);
+    public stateMasterInsert(param) {
+        return this._httpClient.post("PersonalDetails/StateSave", param);
     }
 
-    public cityMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CityUpdate", param);
+    public stateMasterUpdate(param) {
+        return this._httpClient.post("PersonalDetails/StateUpdate", param);
     }
 
     populateForm(param) {

@@ -5,23 +5,22 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class CityMasterService {
+export class DepartmentMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
+
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createCityForm();
+        this.myform = this.createDepartmentForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createCityForm(): FormGroup {
+    createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
-            CityId: [""],
-            CityName: [""],
-            StateId: [""],
-            StateName: [""],
+            DepartmentId: [""],
+            DepartmentName: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -29,38 +28,36 @@ export class CityMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            CityNameSearch: [""],
+          DepartmentName: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
     initializeFormGroup() {
-        this.createCityForm();
+        this.createDepartmentForm();
     }
 
-    public getCityMasterList() {
+    public getDepartmentMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CityNameList_by_Name",
-            { CityName: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_M_DepartmentMaster_by_Name",
+            { DepartmentName: "%" }
         );
     }
 
-    public getStateMasterCombo() {
+    public departmentMasterInsert(employee) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_StateMasterForCombo ",
-            {}
+            "DepartMentMaster/DepartmentSave",
+            employee
         );
     }
 
-    public cityMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CitySave", param);
+    public departmentMasterUpdate(employee) {
+        return this._httpClient.post(
+            "DepartMentMaster/DepartmentUpdate",
+            employee
+        );
     }
 
-    public cityMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/CityUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
+    populateForm(employee) {
+        this.myform.patchValue(employee);
     }
 }

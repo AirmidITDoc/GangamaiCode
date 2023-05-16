@@ -1,0 +1,64 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
+app-doctortype-master {
+    .mat-header-row {
+        width: 800px;
+        max-width: 800px;
+        min-width: 800px;
+        font-weight: bold;
+    }
+
+    .mat-row {
+        width: 800px;
+        max-width: 800px;
+        min-width: 800px;
+    }
+
+    .mat-column-Id {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-DoctorType {
+        width: 450px;
+        max-width: 450px;
+        min-width: 450px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+// .button-row button{
+//     margin: 5px;
+// }
+// .mat-radio-group{
+//     margin: 7px;
+//     margin-bottom: 10px;
+// }

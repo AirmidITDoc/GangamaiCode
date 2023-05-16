@@ -31,11 +31,7 @@ export class MaritalstatusMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(
-        public _maritalService: MaritalstatusMasterService,
-        private accountService: AuthenticationService,
-        public notification: NotificationServiceService
-    ) {}
+    constructor(public _maritalService: MaritalstatusMasterService) {}
 
     ngOnInit(): void {
         this.getmaritalstatusMasterList();
@@ -84,17 +80,15 @@ export class MaritalstatusMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        AddedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
-                console.log(m_data);
+
                 this._maritalService
                     .insertMaritalStatusMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
                         this.getmaritalstatusMasterList();
                     });
-                this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     maritalStatusMasterUpdate: {
@@ -110,7 +104,6 @@ export class MaritalstatusMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        UpdatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
 
@@ -120,7 +113,6 @@ export class MaritalstatusMasterComponent implements OnInit {
                         this.msg = data;
                         this.getmaritalstatusMasterList();
                     });
-                this.notification.success("Record Updated successfully");
             }
             this.onClear();
         }
