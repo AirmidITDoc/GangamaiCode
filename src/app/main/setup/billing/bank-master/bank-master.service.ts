@@ -5,49 +5,51 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class DoctortypeMasterService {
+export class BankMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createDoctortypeForm();
+        this.myform = this.createBankForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoctortypeForm(): FormGroup {
+    createBankForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
-            DoctorType: [""],
+            BankId: [""],
+            BankName: [""],
             IsDeleted: ["false"],
+            AddedBy: ["0"],
+            UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorTypeSearch: [""],
+            BankNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
 
     initializeFormGroup() {
-        this.createDoctortypeForm();
+        this.createBankForm();
     }
 
-    public getDoctortypeMasterList() {
+    public getBankMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DoctortypeMaster_by_Name",
-            { DoctorType: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_BankMaster_by_Name",
+            { BankName: "%" }
         );
     }
 
-    public doctortTypeMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeSave", param);
+    public bankMasterInsert(param) {
+        return this._httpClient.post("Billing/BankMasterSave", param);
     }
 
-    public doctorTypeMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
+    public bankMasterUpdate(param) {
+        return this._httpClient.post("Billing/BankUpdate", param);
     }
 
     populateForm(param) {

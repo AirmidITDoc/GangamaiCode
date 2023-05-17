@@ -62,7 +62,7 @@ export class DoctorMasterComponent implements OnInit {
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
-        public notification: NotificationServiceService,
+        // public notification: NotificationServiceService,
         public _matDialog: MatDialog
     ) {}
 

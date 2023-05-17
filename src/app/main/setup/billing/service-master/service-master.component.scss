@@ -1,0 +1,141 @@
+app-service-master {
+    .mat-header-row {
+        width: 1200px;
+        max-width: 1200px;
+        min-width: 1200px;
+        font-weight: bold;
+    }
+    .mat-row {
+        width: 1200px;
+        max-width: 1200px;
+        min-width: 1200px;
+    }
+
+    .mat-column-ServiceId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-ServiceName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 120px;
+    }
+    .mat-column-GroupName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-IsEditable {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-CreditedtoDoctor {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+    }
+    .mat-column-PrintOrder {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-SubGroupName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-FirstName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-EmgAmt {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-EmgPer {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-AddedByName {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+//sidebar
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}
+
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}

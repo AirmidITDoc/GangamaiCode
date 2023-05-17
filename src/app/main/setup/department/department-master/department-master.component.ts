@@ -39,7 +39,7 @@ export class DepartmentMasterComponent implements OnInit {
 
     onSearchClear() {
         this._departmentService.myformSearch.reset({
-            StateNameSearch: "",
+            DepartmentNameSearch: "",
             IsDeletedSearch: "2",
         });
     }

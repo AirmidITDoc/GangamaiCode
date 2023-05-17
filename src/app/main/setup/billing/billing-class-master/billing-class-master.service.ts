@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class DoctortypeMasterService {
+export class BillingClassMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
@@ -13,41 +13,43 @@ export class DoctortypeMasterService {
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createDoctortypeForm();
+        this.myform = this.createClassForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoctortypeForm(): FormGroup {
+    createClassForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
-            DoctorType: [""],
+            ClassId: [""],
+            ClassName: [""],
             IsDeleted: ["false"],
+            AddedBy: ["0"],
+            UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorTypeSearch: [""],
+            ClassNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
     initializeFormGroup() {
-        this.createDoctortypeForm();
+        this.createClassForm();
     }
 
-    public getDoctortypeMasterList() {
+    public getClassMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DoctortypeMaster_by_Name",
-            { DoctorType: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_M_ClassMaster_by_Name",
+            { ClassName: "%" }
         );
     }
 
-    public doctortTypeMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeSave", param);
+    public classMasterInsert(param) {
+        return this._httpClient.post("Billing/ClassSave", param);
     }
 
-    public doctorTypeMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
+    public classMasterUpdate(param) {
+        return this._httpClient.post("Billing/ClassUpdate", param);
     }
 
     populateForm(param) {

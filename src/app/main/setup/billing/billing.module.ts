@@ -84,6 +84,6 @@ const appRoutes: Routes = [
 
 @NgModule({
     declarations: [],
-    imports: [],
+    imports: [RouterModule.forChild(appRoutes)],
 })
 export class BillingModule {}

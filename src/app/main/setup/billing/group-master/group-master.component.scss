@@ -1,0 +1,84 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
+app-group-master {
+    .mat-header-row {
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
+        font-weight: bold;
+    }
+
+    .mat-row {
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
+    }
+
+    .mat-column-GroupId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-GroupName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+    }
+
+    .mat-column-Isconsolidated {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-IsConsolidatedDR {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-PrintSeqNo {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+    .mat-column-AddedByName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+// .button-row button{
+//     margin: 5px;
+// }
+// .mat-radio-group{
+//     margin: 7px;
+//     margin-bottom: 10px;
+// }

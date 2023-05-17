@@ -1,15 +1,300 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { CompanyMasterService } from "./company-master.service";
+import { ReplaySubject, Subject } from "rxjs";
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { fuseAnimations } from "@fuse/animations";
+import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 
 @Component({
-  selector: 'app-company-master',
-  templateUrl: './company-master.component.html',
-  styleUrls: ['./company-master.component.scss']
+    selector: "app-company-master",
+    templateUrl: "./company-master.component.html",
+    styleUrls: ["./company-master.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class CompanyMasterComponent implements OnInit {
+    //RadiologytemplateMasterList: any;
+    isLoading = true;
+    msg: any;
 
-  constructor() { }
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit(): void {
-  }
+    displayedColumns: string[] = [
+        "CompanyId",
+        "CompanyName",
+        "TypeName",
+        "Address",
+        "City",
+        "PinNo",
+        "PhoneNo",
+        "MobileNo",
+        "FaxNo",
+        "TariffName",
+        "AddedByName",
+        "IsDeleted",
+        "action",
+    ];
 
+    DSCompanyMasterList = new MatTableDataSource<CompanyMaster>();
+
+    //doctorone filter
+    public doctortwoFilterCtrl: FormControl = new FormControl();
+    public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+    private _onDestroy = new Subject<void>();
+
+    constructor(
+        public _companyService: CompanyMasterService,
+
+        public _matDialog: MatDialog
+    ) {}
+
+    ngOnInit(): void {
+        this.getCompanyMaster();
+    }
+    onSearch() {
+        this.getCompanyMaster();
+    }
+
+    onSearchClear() {
+        this._companyService.myformSearch.reset({
+            CompanyNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
+    getCompanyMaster() {
+        this._companyService.getCompanyMaster().subscribe(
+            (Menu) => {
+                this.DSCompanyMasterList.data = Menu as CompanyMaster[];
+                this.isLoading = false;
+                this.DSCompanyMasterList.sort = this.sort;
+                this.DSCompanyMasterList.paginator = this.paginator;
+            },
+            (error) => (this.isLoading = false)
+        );
+    }
+
+    onClear() {
+        this._companyService.myform.reset({ IsDeleted: "false" });
+        this._companyService.initializeFormGroup();
+    }
+
+    onSubmit() {
+        if (this._companyService.myform.valid) {
+            if (!this._companyService.myform.get("CompanyId").value) {
+                var m_data = {
+                    companyMasterInsert: {
+                        CompTypeId:
+                            this._companyService.myform.get("CompTypeId").value,
+                        CompanyName: this._companyService.myform
+                            .get("CompanyName")
+                            .value.trim(),
+                        Address: this._companyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        City: this._companyService.myform
+                            .get("City")
+                            .value.trim(),
+                        PinNo: this._companyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        PhoneNo: this._companyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        MobileNo: this._companyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        FaxNo: this._companyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
+                        TariffId:
+                            this._companyService.myform.get("TariffId").value,
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._companyService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+
+                        IsCancelled: Boolean(
+                            JSON.parse(
+                                this._companyService.myform.get("IsCancelled")
+                                    .value
+                            )
+                        ),
+                        IsCancelledBy:
+                            this._companyService.myform.get("IsCancelledBy")
+                                .value,
+                        IsCancelledDate:
+                            this._companyService.myform.get("IsCancelledBy")
+                                .value,
+                    },
+                };
+
+                this._companyService
+                    .companyMasterInsert(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getCompanyMaster();
+                    });
+            } else {
+                var m_dataUpdate = {
+                    companyMasterUpdate: {
+                        CompanyId:
+                            this._companyService.myform.get("CompanyId").value,
+                        CompTypeId:
+                            this._companyService.myform.get("CompTypeId").value,
+                        CompanyName: this._companyService.myform
+                            .get("CompanyName")
+                            .value.trim(),
+                        Address: this._companyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        City: this._companyService.myform
+                            .get("City")
+                            .value.trim(),
+                        PinNo: this._companyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        PhoneNo: this._companyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        MobileNo: this._companyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        FaxNo: this._companyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
+                        TariffId:
+                            this._companyService.myform.get("TariffId").value,
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._companyService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+
+                        IsCancelled: Boolean(
+                            JSON.parse(
+                                this._companyService.myform.get("IsCancelled")
+                                    .value
+                            )
+                        ),
+                        IsCancelledBy:
+                            this._companyService.myform.get("IsCancelledBy")
+                                .value,
+                        IsCancelledDate:
+                            this._companyService.myform.get("IsCancelledBy")
+                                .value,
+                    },
+                };
+
+                this._companyService
+                    .companyMasterUpdate(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getCompanyMaster();
+                    });
+            }
+            this.onClear();
+        }
+    }
+    onEdit(row) {
+        var m_data = {
+            CompanyId: row.CompanyId,
+            CompTypeId: row.CompTypeId,
+            CompanyName: row.CompanyName.trim(),
+            Address: row.Address.trim(),
+            City: row.City.trim(),
+            PinNo: row.PinNo.trim(),
+            PhoneNo: row.PhoneNo.trim(),
+            MobileNo: row.MobileNo.trim(),
+            FaxNo: row.FaxNo.trim(),
+            TariffId: row.TariffId,
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+            IsCancelled: JSON.stringify(row.IsCancelled),
+            IsCancelledBy: row.IsCancelledBy,
+            IsCancelledDate: row.IsCancelledDate,
+        };
+
+        this._companyService.populateForm(m_data);
+
+        const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
+            maxWidth: "80vw",
+            maxHeight: "95vh",
+            width: "100%",
+            height: "100%",
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getCompanyMaster();
+        });
+    }
+
+    onAdd() {
+        const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
+            maxWidth: "80vw",
+            maxHeight: "95vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getCompanyMaster();
+        });
+    }
+}
+export class CompanyMaster {
+    CompanyId: number;
+    CompTypeId: number;
+    CompanyName: string;
+    Address: string;
+    City: String;
+    PinNo: String;
+    PhoneNo: String;
+    MobileNo: String;
+    FaxNo: String;
+    TariffId: number;
+    IsDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    IsCancelled: boolean;
+    IsCancelledBy: number;
+    IsCancelledDate: Date;
+    AddedByName: string;
+    /**
+   * Constructor
+   *
+export class CompanyMaster {
+   * @param export class CompanyMaster {
+
+   */
+    constructor(CompanyMaster) {
+        {
+            this.CompanyId = CompanyMaster.CompanyId || "";
+            this.CompTypeId = CompanyMaster.CompTypeId || "";
+            this.CompanyName = CompanyMaster.CompanyName || "";
+            this.Address = CompanyMaster.Address || "";
+            this.City = CompanyMaster.City || "";
+            this.PinNo = CompanyMaster.PinNo || "";
+            this.PhoneNo = CompanyMaster.PhoneNo || "";
+            this.MobileNo = CompanyMaster.MobileNo || "";
+            this.FaxNo = CompanyMaster.FaxNo || "";
+            this.TariffId = CompanyMaster.TariffId || "";
+            this.AddedBy = CompanyMaster.AddedBy || "";
+            this.IsDeleted = CompanyMaster.IsDeleted || "false";
+            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+            this.IsCancelled = CompanyMaster.IsCancelled || "false";
+            this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
+            this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
+            this.AddedByName = CompanyMaster.AddedByName || "";
+        }
+    }
 }

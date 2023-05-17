@@ -19,15 +19,7 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select Prefix Name" name="PrefixID" formControlName="PrefixID" required>
-                    <mat-option *ngFor="let M of PrefixcmbList" [value]="M.PrefixID">
-                        {{ M.PrefixName }}
-                    </mat-option>
-                </mat-select>
-                <mat-error>Please Select PrefixName </mat-error>
-            </mat-form-field> -->
-
+          
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Prefix</mat-label>
                 <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect

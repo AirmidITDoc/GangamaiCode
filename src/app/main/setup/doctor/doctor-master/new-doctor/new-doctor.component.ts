@@ -41,7 +41,7 @@ export class NewDoctorComponent implements OnInit {
     constructor(
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
-        public notification: NotificationServiceService,
+        // public notification: NotificationServiceService,
         public dialogRef: MatDialogRef<DoctorMasterComponent>
     ) {}
 
@@ -301,7 +301,7 @@ export class NewDoctorComponent implements OnInit {
                         this.msg = data;
                     });
 
-                this.notification.success("Record added successfully");
+                // this.notification.success("Record added successfully");
             } else {
                 var data3 = [];
                 for (var val of this._doctorService.myform.get("DepartmentId")
@@ -429,7 +429,7 @@ export class NewDoctorComponent implements OnInit {
                         this.msg = data;
                     });
 
-                this.notification.success("Record updated successfully");
+                // this.notification.success("Record updated successfully");
             }
             this.onClose();
         }

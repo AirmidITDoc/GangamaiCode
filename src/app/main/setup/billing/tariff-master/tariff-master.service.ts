@@ -5,49 +5,50 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class DoctortypeMasterService {
+export class TariffMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createDoctortypeForm();
+        this.myform = this.createTariffForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoctortypeForm(): FormGroup {
+    createTariffForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
-            DoctorType: [""],
+            TariffId: [""],
+            TariffName: [""],
             IsDeleted: ["false"],
+            AddedBy: ["0"],
+            UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorTypeSearch: [""],
+            TariffNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
     initializeFormGroup() {
-        this.createDoctortypeForm();
+        this.createTariffForm();
     }
 
-    public getDoctortypeMasterList() {
+    public getTariffMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DoctortypeMaster_by_Name",
-            { DoctorType: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_TariffMaster_by_Name",
+            { TariffName: "%" }
         );
     }
 
-    public doctortTypeMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeSave", param);
+    public tariffMasterInsert(param) {
+        return this._httpClient.post("Billing/TariffSave", param);
     }
 
-    public doctorTypeMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
+    public tariffMasterUpdate(param) {
+        return this._httpClient.post("Billing/TariffUpdate", param);
     }
 
     populateForm(param) {

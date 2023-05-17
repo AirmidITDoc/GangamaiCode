@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-export class DoctortypeMasterService {
+export class CashCounterMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
@@ -13,41 +13,45 @@ export class DoctortypeMasterService {
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
-        this.myform = this.createDoctortypeForm();
+        this.myform = this.createcashcounterForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoctortypeForm(): FormGroup {
+    createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
-            DoctorType: [""],
+            CashCounterId: [""],
+            CashCounterName: [""],
+            Prefix: [""],
+            BillNo: [""],
             IsDeleted: ["false"],
+            AddedBy: ["0"],
+            UpdatedBy: ["0"],
+            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorTypeSearch: [""],
+            CashCounterNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-
     initializeFormGroup() {
-        this.createDoctortypeForm();
+        this.createcashcounterForm();
     }
 
-    public getDoctortypeMasterList() {
+    public getCashcounterMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DoctortypeMaster_by_Name",
-            { DoctorType: "%" }
+            "Generic/GetByProc?procName=ps_Rtrv_M_CashCounterMaster_by_Name",
+            { CashCounterName: "%" }
         );
     }
 
-    public doctortTypeMasterInsert(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeSave", param);
+    public cashCounterMasterInsert(param) {
+        return this._httpClient.post("Billing/CashCounterSave", param);
     }
 
-    public doctorTypeMasterUpdate(param) {
-        return this._httpClient.post("DoctorMaster/DoctorTypeUpdate", param);
+    public cashCounterMasterUpdate(param) {
+        return this._httpClient.post("Billing/CashCounterUpdate", param);
     }
 
     populateForm(param) {

@@ -1,0 +1,157 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>{{_companyService.myform.controls.CompanyId.value?"Modify Company Master":"New
+                Company Master"}}</h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+
+<form [formGroup]="_companyService.myform">
+    <input type="hidden" name="CompanyId" formControlName="CompanyId">
+
+    <br />
+    <br />
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="CompanyName" placeholder="Select Company Name" formControlName="CompanyName" matInput required>
+            <mat-error>Please enter Company Name </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Type Name</mat-label>
+            <mat-select formControlName="CompTypeId" placeholder="Bank" #singleSelect>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="companytypeFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let element of filteredCompanytype | async" [value]="element">
+                    {{element.TypeName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="Address" placeholder="Select Address"
+                [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" formControlName="Address" matInput required>
+            <span class="error" *ngIf="f.Address.invalid && f.Address.touched">Address is required </span>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="City" placeholder="Select City" [ngClass]="{ 'is-invalid': submitted && f.City.errors }"
+                formControlName="City" matInput required>
+            <span class="error" *ngIf="f.City.invalid && f.City.touched">City is required Enter only Alphabets</span>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="PinNo" placeholder="Select PinNo" [ngClass]="{ 'is-invalid': submitted && f.PinNo.errors }"
+                formControlName="PinNo" matInput>
+            <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo is required Enter only Digits</span>
+        </mat-form-field>
+
+    </div>
+
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="PhoneNo" placeholder="Select PhoneNo"
+                [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }" formControlName="PhoneNo" matInput>
+            <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo is required Enter only
+                Digits</span>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="MobileNo" placeholder="Select Mobile No "
+                [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" formControlName="MobileNo" matInput
+                required>
+            <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is required Enter only 10
+                Digits</span>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="FaxNo" placeholder="Select FaxNo" [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }"
+                formControlName="FaxNo" matInput>
+            <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo is required Enter only Digits</span>
+        </mat-form-field>
+    </div>
+
+
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Tariff Name</mat-label>
+            <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let element of filteredTariff | async" [value]="element">
+                    {{element.TariffName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="IsCancelledBy" placeholder="Select IsCancelledBy"
+                [ngClass]="{ 'is-invalid': submitted && f.IsCancelledBy.errors }" formControlName="IsCancelledBy"
+                matInput>
+            <span class="error" *ngIf="f.IsCancelledBy.invalid && f.IsCancelledBy.touched">IsCancelledBy is required
+                Enter only Digits</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a IsCancelledDate" name="IsCancelledDate"
+                formControlName="IsCancelledDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+
+    </div>
+
+
+    <br />
+    <hr style="font-weight: bold;">
+    <hr>
+    <br /><br />
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+        <mat-radio-group name="IsCancelled" formControlName="IsCancelled" value='false'>
+            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsCancelled</mat-radio-button>
+
+        </mat-radio-group>
+
+        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+
+        </mat-radio-group>
+    </div>
+
+</form>
+
+<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+            [disabled]="_companyService.myform.invalid">Save</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+
+    </div>
+</div>
+
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
