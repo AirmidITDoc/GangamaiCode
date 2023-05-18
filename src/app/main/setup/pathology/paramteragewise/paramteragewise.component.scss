@@ -1,0 +1,88 @@
+app-parameteragewise {
+    .mat-header-row {
+        width: 1200px;
+        max-width: 1200px;
+        min-width: 1200px;
+        font-weight: bold;
+    }
+
+    .mat-row {
+        width: 1200px;
+        max-width: 1200px;
+        min-width: 1200px;
+    }
+
+    .mat-column-PathparaRangeId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-ParameterName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+    }
+    .mat-column-GenderName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-MinAge {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-MaxAge {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-AgeType {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-MinValue {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-MaxValue {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-AddedByName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}

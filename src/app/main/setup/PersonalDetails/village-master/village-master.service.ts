@@ -39,10 +39,9 @@ export class VillageMasterService {
         this.createVillageForm();
     }
 
-    public getVillageMasterList() {
+    public getVillageMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_VillageNameList_by_Name",
-            { VillageName: "%" }
+            "Generic/GetByProc?procName=Rtrv_VillageNameList_by_Name",param
         );
     }
 

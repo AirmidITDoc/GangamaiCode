@@ -53,7 +53,10 @@ export class BankMasterComponent implements OnInit {
     }
 
     getBankMasterList() {
-        this._bankService.getBankMasterList().subscribe((Menu) => {
+        var param = {
+            BankName: "%",
+        };
+        this._bankService.getBankMasterList(param).subscribe((Menu) => {
             this.DSBankMasterList.data = Menu as BankMaster[];
             this.DSBankMasterList.sort = this.sort;
             this.DSBankMasterList.paginator = this.paginator;

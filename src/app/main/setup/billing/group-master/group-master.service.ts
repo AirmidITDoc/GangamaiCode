@@ -31,7 +31,7 @@ export class GroupMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          GroupNameSearch: [""],
+            GroupNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -40,10 +40,10 @@ export class GroupMasterService {
         this.createGroupForm();
     }
 
-    public getGroupMasterList() {
+    public getGroupMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_GroupMaster_by_Name",
-            { GroupName: "%" }
+            "Generic/GetByProc?procName=Rtrv_GroupList_by_Name",
+            param
         );
     }
 

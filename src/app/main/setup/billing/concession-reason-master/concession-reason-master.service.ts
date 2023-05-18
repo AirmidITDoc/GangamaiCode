@@ -20,7 +20,7 @@ export class ConcessionReasonMasterService {
     createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
             ConcessionId: [""],
-            ConcessionReason: [""],
+            ConcessionReasonName: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -28,20 +28,20 @@ export class ConcessionReasonMasterService {
         });
     }
     createSearchForm(): FormGroup {
-      return this._formBuilder.group({
-        ConcessionReasonSearch: [""],
-          IsDeletedSearch: ["2"],
-      });
-  }
+        return this._formBuilder.group({
+            ConcessionReasonNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
     initializeFormGroup() {
         this.createConcessionreasonForm();
     }
 
-    public getConcessionreasonMasterList() {
+    public getConcessionreasonMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_ConcessionReasonMaster_by_Name",
-            { ConcessionReason: "%" }
+            "Generic/GetByProc?procName=Rtrv_ConcessionReasonNameList_by_Name",
+            param
         );
     }
 

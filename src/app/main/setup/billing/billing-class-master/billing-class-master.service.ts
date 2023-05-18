@@ -37,10 +37,10 @@ export class BillingClassMasterService {
         this.createClassForm();
     }
 
-    public getClassMasterList() {
+    public getClassMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_ClassMaster_by_Name",
-            { ClassName: "%" }
+            "Generic/GetByProc?procName=Rtrv_ClassNameList_by_Name",
+            param
         );
     }
 

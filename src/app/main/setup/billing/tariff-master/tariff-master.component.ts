@@ -45,7 +45,8 @@ export class TariffMasterComponent implements OnInit {
         });
     }
     getTariffMasterList() {
-        this._tariffService.getTariffMasterList().subscribe((Menu) => {
+        var param = { TariffName: "%" };
+        this._tariffService.getTariffMasterList(param).subscribe((Menu) => {
             this.DSTariffMasterList.data = Menu as TariffMaster[];
             this.DSTariffMasterList.sort = this.sort;
             this.DSTariffMasterList.paginator = this.paginator;

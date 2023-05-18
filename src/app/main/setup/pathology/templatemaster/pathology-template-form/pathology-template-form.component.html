@@ -1,0 +1,48 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>{{_templateService.myform.controls.TemplateId.value?"Modify Pathology Template Master":"New
+                Pathology Template Master"}}</h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+    <form [formGroup]="_templateService.myform">
+        <input type="hidden" name="TemplateId" formControlName="TemplateId">
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <mat-label>Template Name</mat-label>
+                <input name="TemplateName" formControlName="TemplateName" matInput required>
+                <mat-error>Please enter Template Name </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div class="editor">
+                <!-- <angular-editor name="editor" [placeholder]="'Enter text here...'"
+                    formControlName="TemplateDesc"></angular-editor> -->
+
+            </div>
+        </div>
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+
+            </mat-radio-group>
+        </div>
+    </form>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                [disabled]="_templateService.myform.invalid">Save</button>
+            <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+        </div>
+    </div>
+</div>

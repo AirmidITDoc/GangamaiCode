@@ -36,10 +36,10 @@ export class CompanyTypeMasterService {
         this.createcompanytypeForm();
     }
 
-    public getCompanytypeMasterList() {
+    public getCompanytypeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CompanyTypeMaster_by_Name",
-            { TypeName: "%" }
+            "Generic/GetByProc?procName=Rtrv_CompantTypeNameList_by_Name",
+            param
         );
     }
 

@@ -39,10 +39,10 @@ export class CashCounterMasterService {
         this.createcashcounterForm();
     }
 
-    public getCashcounterMasterList() {
+    public getCashcounterMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_CashCounterMaster_by_Name",
-            { CashCounterName: "%" }
+            "Generic/GetByProc?procName=Rtrv_CashCounterNameList_by_Name",
+            param
         );
     }
 

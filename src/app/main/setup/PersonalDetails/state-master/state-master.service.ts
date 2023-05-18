@@ -38,10 +38,10 @@ export class StateMasterService {
         this.createStateForm();
     }
 
-    public getstateMasterList() {
+    public getstateMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_StateNameList_by_Name",
-            { StateName: "%" }
+            "Generic/GetByProc?procName=Rtrv_StateNameList_by_Name",
+            param
         );
     }
 

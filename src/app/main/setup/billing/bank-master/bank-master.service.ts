@@ -37,10 +37,10 @@ export class BankMasterService {
         this.createBankForm();
     }
 
-    public getBankMasterList() {
+    public getBankMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_BankMaster_by_Name",
-            { BankName: "%" }
+            "Generic/GetByProc?procName=Rtrv_BankNameList_by_Name",
+           param
         );
     }
 

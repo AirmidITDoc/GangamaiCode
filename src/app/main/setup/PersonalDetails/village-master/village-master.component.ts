@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { takeUntil } from "rxjs/operators";
 import { VillageMasterService } from "./village-master.service";
 import { FormControl } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "app-village-master",
@@ -34,6 +36,8 @@ export class VillageMasterComponent implements OnInit {
     ];
 
     DSVillageMasterList = new MatTableDataSource<VillageMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _VillageService: VillageMasterService) {}
 
@@ -80,12 +84,14 @@ export class VillageMasterComponent implements OnInit {
     }
 
     getVillageMasterList() {
-        this._VillageService
-            .getVillageMasterList()
-            .subscribe(
-                (Menu) =>
-                    (this.DSVillageMasterList.data = Menu as VillageMaster[])
-            );
+        var param = {
+            VillageName: "%",
+        };
+        this._VillageService.getVillageMasterList(param).subscribe((Menu) => {
+            this.DSVillageMasterList.data = Menu as VillageMaster[];
+            this.DSVillageMasterList.sort = this.sort;
+            this.DSVillageMasterList.paginator = this.paginator;
+        });
     }
 
     getTalukaMasterCombo() {

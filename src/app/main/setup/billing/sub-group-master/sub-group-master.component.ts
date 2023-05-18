@@ -84,7 +84,8 @@ export class SubGroupMasterComponent implements OnInit {
     }
 
     getSubgroupMasterList() {
-        this._subgroupService.getSubgroupMasterList().subscribe((Menu) => {
+        var param = { SubGroupName: "%" };
+        this._subgroupService.getSubgroupMasterList(param).subscribe((Menu) => {
             this.DSSubGroupMasterList.data = Menu as SubGroupMaster[];
             this.DSSubGroupMasterList.sort = this.sort;
             this.DSSubGroupMasterList.paginator = this.paginator;

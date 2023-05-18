@@ -1,0 +1,159 @@
+app-testmaster{
+    .mat-header-row {
+        width: 1700px;
+        max-width: 1700px;
+        min-width: 1700px;   
+        font-weight: bold;      
+    }
+    .mat-row {
+        width: 1700px;
+        max-width: 1700px;
+        min-width: 1700px;            
+    }
+    
+    .mat-column-TestId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    
+    .mat-column-TestName {
+        width:100px;
+        max-width: 100px;
+        min-width: 100px;
+    } 
+    .mat-column-PrintTestName {
+        width:150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-CategoryName {
+        width:150px;
+        max-width: 150px;
+        min-width: 150px;
+    } 
+    .mat-column-IsSubTest {
+        width:70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-TechniqueName {
+        width:150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+     .mat-column-MachineName {
+        width:150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+   
+    .mat-column-SuggestionNote {
+        width:170px;
+        max-width: 170px;
+        min-width: 170px;
+    }
+    
+    .mat-column-FootNote {
+        width:150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+   
+
+    .mat-column-ServiceName {
+        width:200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
+     .mat-column-IsTemplateTest {
+        width:100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+   
+    .mat-column-IsCategoryPrint {
+        width:170px;
+        max-width: 170px;
+        min-width: 170px;
+    }
+    
+    .mat-column-IsPrintTestName {
+        width:100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+   
+       .mat-column-AddedByName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content:center;
+    }
+    
+    .mat-column-action {
+        // color: white !important;
+        width:70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content:right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+    
+  //sidebar
+    #toggle,
+    #container .e-btn.e-info:hover,
+    #toggle:focus {
+        /* csslint allow: adjoining-classes*/
+        background: #00695C;
+        box-shadow: none;
+        border-radius: 0;
+        height: 39px;
+        width: 100px;
+    }
+    
+    #close,
+    #close:hover,
+    #close:active,
+    #close:focus {
+        /* csslint allow: adjoining-classes*/
+        background: #fafafa;
+        color: black
+    }
+
+    #toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695C;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black
+}

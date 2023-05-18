@@ -46,11 +46,17 @@ export class BillingClassMasterComponent implements OnInit {
         });
     }
     getClassMasterList() {
-        this._billingClassService.getClassMasterList().subscribe((Menu) => {
-            this.DSBillingClassMasterList.data = Menu as BillingClassMaster[];
-            this.DSBillingClassMasterList.sort = this.sort;
-            this.DSBillingClassMasterList.paginator = this.paginator;
-        });
+        var param = {
+            ClassName: "%",
+        };
+        this._billingClassService
+            .getClassMasterList(param)
+            .subscribe((Menu) => {
+                this.DSBillingClassMasterList.data =
+                    Menu as BillingClassMaster[];
+                this.DSBillingClassMasterList.sort = this.sort;
+                this.DSBillingClassMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {

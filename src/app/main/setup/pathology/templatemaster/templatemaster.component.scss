@@ -1,0 +1,70 @@
+app-templatemaster {
+    .mat-header-row {
+        width: 1000px;
+        max-width: 1000px;
+        min-width: 1000px;
+        font-weight: bold;
+    }
+    .mat-row {
+        width: 1000px;
+        max-width: 1000px;
+        min-width: 1000px;
+    }
+
+    .mat-column-PTemplateId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-TestName {
+        width: 370px;
+        max-width: 370px;
+        min-width: 170px;
+    }
+    .mat-column-TemplateId {
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+    }
+
+    .mat-column-AddedByName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+
+    .mat-menu-item {
+        line-height: 25px;
+        height: 25px;
+        padding: 0px 5px;
+        text-align: left;
+        justify-content: center;
+    }
+}

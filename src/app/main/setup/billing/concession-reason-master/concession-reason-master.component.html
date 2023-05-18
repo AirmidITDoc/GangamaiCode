@@ -40,7 +40,8 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Concession Reason" autocomplete="off"
-                                            name="ConcessionReasonSearch" formControlName="ConcessionReasonSearch" />
+                                            name="ConcessionReasonNameSearch"
+                                            formControlName="ConcessionReasonNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -74,10 +75,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ConcessionReason">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ConcessionReason
+                                    <ng-container matColumnDef="ConcessionReasonName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Concession Reason
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ConcessionReason}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.ConcessionReasonName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -147,9 +149,9 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>ConcessionReason Name</mat-label>
-                                            <input name="ConcessionReason" formControlName="ConcessionReason" matInput
-                                                required>
+                                            <mat-label>Concession Reason </mat-label>
+                                            <input name="ConcessionReasonName" formControlName="ConcessionReasonName"
+                                                matInput required>
                                             <mat-error>Please enter ConcessionReason </mat-error>
                                         </mat-form-field>
                                     </div>

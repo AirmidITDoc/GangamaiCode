@@ -36,10 +36,10 @@ export class TariffMasterService {
         this.createTariffForm();
     }
 
-    public getTariffMasterList() {
+    public getTariffMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_TariffMaster_by_Name",
-            { TariffName: "%" }
+            "Generic/GetByProc?procName=Rtrv_tariffNameList_by_Name",
+            param
         );
     }
 

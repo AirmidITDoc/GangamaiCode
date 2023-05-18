@@ -39,10 +39,9 @@ export class AreaMasterService {
         this.createAreaForm();
     }
 
-    public getAreaMasterList() {
+    public getAreaMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_AreaMaster_by_Name",
-            { AreaName: "%" }
+            "Generic/GetByProc?procName=Rtrv_AreaName_by_Name",param
         );
     }
 

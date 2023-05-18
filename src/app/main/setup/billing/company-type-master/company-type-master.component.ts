@@ -46,8 +46,9 @@ export class CompanyTypeMasterComponent implements OnInit {
         });
     }
     getCompanytypeMasterList() {
+        var param = { TypeName: "%" };
         this._companytypeService
-            .getCompanytypeMasterList()
+            .getCompanytypeMasterList(param)
             .subscribe((Menu) => {
                 this.DSCompanyTypeMasterList.data = Menu as CompanyTypeMaster[];
                 this.DSCompanyTypeMasterList.sort = this.sort;

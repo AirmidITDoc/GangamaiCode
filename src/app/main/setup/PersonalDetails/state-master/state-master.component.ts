@@ -83,7 +83,10 @@ export class StateMasterComponent implements OnInit {
     }
 
     getstateMasterList() {
-        this._stateService.getstateMasterList().subscribe((Menu) => {
+        var param = {
+            StateName: "%",
+        };
+        this._stateService.getstateMasterList(param).subscribe((Menu) => {
             this.DSStateMasterList.data = Menu as StateMaster[];
             this.DSStateMasterList.sort = this.sort;
             this.DSStateMasterList.paginator = this.paginator;

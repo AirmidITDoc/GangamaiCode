@@ -1,0 +1,108 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>{{_ParameterageService.myform.controls.PathparaRangeId.value?"Modify Parameter Age Type":"New
+                Parameter Age Type"}}</h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+
+<form [formGroup]="_ParameterageService.myform" noValidate>
+    <div>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <br />
+
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Parameter Name</mat-label>
+                <mat-select formControlName="ParaId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="parameternameFilterCtrl" [placeholderLabel]="'Search'"
+                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredParametername | async" [value]="element">
+                        {{element.ParameterName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Gender Name</mat-label>
+                <mat-select formControlName="SexId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="gendernameFilterCtrl" [placeholderLabel]="'Search'"
+                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredGendername | async" [value]="element">
+                        {{element.GenderName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+        <div>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="MinAge" formControlName="MinAge" [ngClass]="{ 'is-invalid': submitted && f.MinAge.errors }"
+                    placeholder="Select MinAge " matInput required>
+                <span class="error" *ngIf="f.MinAge.invalid && f.MinAge.touched">MinAge is required Enter only
+                    Digit</span>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="MaxAge" formControlName="MaxAge" [ngClass]="{ 'is-invalid': submitted && f.MaxAge.errors }"
+                    placeholder="Select MaxAge " matInput required>
+                <span class="error" *ngIf="f.MaxAge.invalid && f.MaxAge.touched">MaxAge is required Enter only
+                    Digit</span>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline" fxFlex>
+                <input name="AgeType" placeholder="Enter AgeType" formControlName="AgeType" matInput required>
+                <mat-error>Please enter AgeType </mat-error>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline" fxFlex>
+                <input name="MinValue" formControlName="MinValue"
+                    [ngClass]="{ 'is-invalid': submitted && f.MinValue.errors }" placeholder="Select MinValue" matInput
+                    required>
+                <span class="error" *ngIf="f.MinValue.invalid && f.MinValue.touched">MinValue is required Enter only
+                    Digits</span>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="MaxValue" placeholder="Enter MaxValue "
+                    [ngClass]="{ 'is-invalid': submitted && f.MaxValue.errors }" formControlName="MaxValue" matInput>
+                <span class="error" *ngIf="f.MaxValue.invalid && f.MaxValue.touched">MaxValue is required Enter only
+                    Digits</span>
+            </mat-form-field>
+
+        </div>
+
+
+        <hr>
+        <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
+                <mat-radio-button value='true' class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+    </div>
+</form>
+<hr>
+<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+            [disabled]="_ParameterageService.myform.invalid">Save</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+
+    </div>
+</div>
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

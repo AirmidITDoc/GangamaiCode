@@ -77,10 +77,9 @@ export class CompanyMasterService {
         this.createCompanymasterForm();
     }
 
-    public getCompanyMaster() {
+    public getCompanyMaster(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CompanyMaster_by_Name",
-            { CompanyName: "%" }
+            "Generic/GetByProc?procName=Rtrv_CompList_by_Name",param
         );
     }
 

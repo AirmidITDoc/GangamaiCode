@@ -38,10 +38,10 @@ export class SubGroupMasterService {
         this.createSubgroupForm();
     }
 
-    public getSubgroupMasterList() {
+    public getSubgroupMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_SubGroupMaster_by_Name",
-            { SubGroupName: "%" }
+            "Generic/GetByProc?procName=Rtrv_SubGroupList_by_Name",
+            param
         );
     }
 

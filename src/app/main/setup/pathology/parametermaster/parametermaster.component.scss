@@ -1,0 +1,84 @@
+app-parametermaster {
+    .mat-header-row {
+        width: 1500px;
+        max-width: 1500px;
+        min-width: 1500px;
+        font-weight: bold;
+    }
+
+    .mat-row {
+        width: 1500px;
+        max-width: 1500px;
+        min-width: 1500px;
+    }
+
+    .mat-column-ParameterID {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-ParameterName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-ParameterShortName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-PrintParameterName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-UnitName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-MethodName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-ParaMultipleRange {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-AddedByName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}

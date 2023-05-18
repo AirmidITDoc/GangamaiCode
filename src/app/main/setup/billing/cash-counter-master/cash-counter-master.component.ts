@@ -47,8 +47,9 @@ export class CashCounterMasterComponent implements OnInit {
         });
     }
     getCashcounterMasterList() {
+        var param = { CashCounterName: "%" };
         this._cashcounterService
-            .getCashcounterMasterList()
+            .getCashcounterMasterList(param)
             .subscribe((Menu) => {
                 this.DSCashCounterMasterList.data = Menu as CashCounterMaster[];
                 this.DSCashCounterMasterList.sort = this.sort;

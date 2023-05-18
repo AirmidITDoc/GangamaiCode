@@ -21,7 +21,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
     displayedColumns: string[] = [
         "ConcessionId",
-        "ConcessionReason",
+        "ConcessionReasonName",
         "AddedByName",
         "IsDeleted",
         "action",
@@ -43,14 +43,15 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
     onSearchClear() {
         this._consessionreasonService.myformSearch.reset({
-            ConcessionReasonSearch: "",
+            ConcessionReasonNameSearch: "",
             IsDeletedSearch: "2",
         });
     }
 
     getConcessionreasonMasterList() {
+        var param = { ConcessionReasonName: "%" };
         this._consessionreasonService
-            .getConcessionreasonMasterList()
+            .getConcessionreasonMasterList(param)
             .subscribe((Menu) => {
                 this.DSConcessionReasonMasterList.data =
                     Menu as ConcessionReasonMaster[];
@@ -71,8 +72,8 @@ export class ConcessionReasonMasterComponent implements OnInit {
             ) {
                 var m_data = {
                     consessionReasonMasterInsert: {
-                        ConcessionReason: this._consessionreasonService.myform
-                            .get("ConcessionReason")
+                        ConcessionReasonName: this._consessionreasonService.myform
+                            .get("ConcessionReasonName")
                             .value.trim(),
                         IsDeleted: Boolean(
                             JSON.parse(
@@ -97,9 +98,9 @@ export class ConcessionReasonMasterComponent implements OnInit {
                             this._consessionreasonService.myform.get(
                                 "ConcessionId"
                             ).value,
-                        ConcessionReason:
+                        ConcessionReasonName:
                             this._consessionreasonService.myform.get(
-                                "ConcessionReason"
+                                "ConcessionReasonName"
                             ).value,
                         IsDeleted: Boolean(
                             JSON.parse(
@@ -124,7 +125,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             ConcessionId: row.ConcessionId,
-            ConcessionReason: row.ConcessionReason.trim(),
+            ConcessionReasonName: row.ConcessionReasonName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -134,7 +135,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
 export class ConcessionReasonMaster {
     ConcessionId: number;
-    ConcessionReason: string;
+    ConcessionReasonName: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
@@ -148,8 +149,8 @@ export class ConcessionReasonMaster {
     constructor(ConcessionReasonMaster) {
         {
             this.ConcessionId = ConcessionReasonMaster.ConcessionId || "";
-            this.ConcessionReason =
-                ConcessionReasonMaster.ConcessionReason || "";
+            this.ConcessionReasonName =
+                ConcessionReasonMaster.ConcessionReasonName || "";
             this.IsDeleted = ConcessionReasonMaster.IsDeleted || "false";
             this.AddedBy = ConcessionReasonMaster.AddedBy || "";
             this.UpdatedBy = ConcessionReasonMaster.UpdatedBy || "";

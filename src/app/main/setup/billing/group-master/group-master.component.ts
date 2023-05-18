@@ -53,7 +53,10 @@ export class GroupMasterComponent implements OnInit {
     }
 
     getGroupMasterList() {
-        this._groupService.getGroupMasterList().subscribe((Menu) => {
+        var param = {
+            GroupName: "%",
+        };
+        this._groupService.getGroupMasterList(param).subscribe((Menu) => {
             this.DSGroupMasterList.data = Menu as GroupMaster[];
             this.DSGroupMasterList.sort = this.sort;
             this.DSGroupMasterList.paginator = this.paginator;

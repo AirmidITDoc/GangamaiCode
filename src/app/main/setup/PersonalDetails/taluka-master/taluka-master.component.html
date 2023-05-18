@@ -127,8 +127,10 @@
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        [ngClass]="{'hide':DSTalukaMasterList!=null}"></mat-footer-row>
                                 </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
                     </div>

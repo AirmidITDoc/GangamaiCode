@@ -68,7 +68,8 @@ export class CompanyMasterComponent implements OnInit {
         });
     }
     getCompanyMaster() {
-        this._companyService.getCompanyMaster().subscribe(
+        var param = { CompanyName: "%" };
+        this._companyService.getCompanyMaster(param).subscribe(
             (Menu) => {
                 this.DSCompanyMasterList.data = Menu as CompanyMaster[];
                 this.isLoading = false;

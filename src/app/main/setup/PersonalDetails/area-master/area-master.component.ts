@@ -83,7 +83,10 @@ export class AreaMasterComponent implements OnInit {
     }
 
     getAreaMasterList() {
-        this._AreaService.getAreaMasterList().subscribe((Menu) => {
+        var param = {
+            AreaName: "%",
+        };
+        this._AreaService.getAreaMasterList(param).subscribe((Menu) => {
             this.DSAreaMasterList.data = Menu as AreaMaster[];
             this.DSAreaMasterList.sort = this.sort;
             this.DSAreaMasterList.paginator = this.paginator;

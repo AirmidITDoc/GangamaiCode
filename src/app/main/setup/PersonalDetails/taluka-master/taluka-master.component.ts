@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { TalukaMasterService } from "./taluka-master.service";
 import { takeUntil } from "rxjs/operators";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "app-taluka-master",
@@ -33,6 +35,8 @@ export class TalukaMasterComponent implements OnInit {
     ];
 
     DSTalukaMasterList = new MatTableDataSource<TalukaMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _TalukaService: TalukaMasterService) {}
 
@@ -78,12 +82,14 @@ export class TalukaMasterComponent implements OnInit {
     }
 
     getTalukaMasterList() {
-        this._TalukaService
-            .getTalukaMasterList()
-            .subscribe(
-                (Menu) =>
-                    (this.DSTalukaMasterList.data = Menu as TalukaMaster[])
-            );
+        var param = {
+            TalukaName: "%",
+        };
+        this._TalukaService.getTalukaMasterList(param).subscribe((Menu) => {
+            this.DSTalukaMasterList.data = Menu as TalukaMaster[];
+            this.DSTalukaMasterList.sort = this.sort;
+            this.DSTalukaMasterList.paginator = this.paginator;
+        });
     }
 
     getCityMasterCombo() {
@@ -150,7 +156,6 @@ export class TalukaMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
-        // console.log(row);
         var m_data1 = {
             TalukaId: row.TalukaId,
             TalukaName: row.TalukaName.trim(),
