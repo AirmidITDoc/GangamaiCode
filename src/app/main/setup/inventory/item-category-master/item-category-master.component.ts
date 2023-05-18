@@ -1,15 +1,205 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ItemCategoryMasterService } from "./item-category-master.service";
+import { ReplaySubject, Subject } from "rxjs";
+import { FormControl } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { takeUntil } from "rxjs/operators";
+import { MatTableDataSource } from "@angular/material/table";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
-  selector: 'app-item-category-master',
-  templateUrl: './item-category-master.component.html',
-  styleUrls: ['./item-category-master.component.scss']
+    selector: "app-item-category-master",
+    templateUrl: "./item-category-master.component.html",
+    styleUrls: ["./item-category-master.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ItemCategoryMasterComponent implements OnInit {
+    ItemCategoryMasterList: any;
+    ItemTypecmbList: any = [];
+    msg: any;
 
-  constructor() { }
+    displayedColumns: string[] = [
+        "ItemCategoryId",
+        "ItemCategoryName",
+        "ItemTypeName",
+        "AddedByName",
+        "IsDeleted",
+        "action",
+    ];
 
-  ngOnInit(): void {
-  }
+    DSItemCategoryMasterList = new MatTableDataSource<ItemCategoryMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    // /Item filter
+    public itemFilterCtrl: FormControl = new FormControl();
+    public filteredItem: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+    private _onDestroy = new Subject<void>();
+
+    constructor(public _itemcategoryService: ItemCategoryMasterService) {}
+
+    ngOnInit(): void {
+        this.getitemcategoryMasterList();
+        this.getitemtypeNameCombobox();
+
+        this.itemFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+                this.filterItem();
+            });
+    }
+    onSearch() {
+        this.getitemcategoryMasterList();
+    }
+
+    onSearchClear() {
+        this._itemcategoryService.myformSearch.reset({
+            ItemCategoryNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
+    private filterItem() {
+        if (!this.ItemTypecmbList) {
+            return;
+        }
+        // get the search keyword
+        let search = this.itemFilterCtrl.value;
+        if (!search) {
+            this.filteredItem.next(this.ItemTypecmbList.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        // filter the banks
+        this.filteredItem.next(
+            this.ItemTypecmbList.filter(
+                (bank) => bank.ItemTypeName.toLowerCase().indexOf(search) > -1
+            )
+        );
+    }
+
+    getitemcategoryMasterList() {
+        this._itemcategoryService
+            .getitemcategoryMasterList()
+            .subscribe((Menu) => {
+                this.DSItemCategoryMasterList.data = Menu as ItemCategoryMaster[];
+                this.DSItemCategoryMasterList.sort = this.sort;
+                this.DSItemCategoryMasterList.paginator = this.paginator;
+            });
+    }
+
+    getitemtypeNameCombobox() {
+        this._itemcategoryService.getItemTypeMasterCombo().subscribe((data) => {
+            this.ItemTypecmbList = data;
+            this._itemcategoryService.myform
+                .get("ItemCategoryId")
+                .setValue(this.ItemTypecmbList[0]);
+        });
+    }
+
+    onClear() {
+        this._itemcategoryService.myform.reset({ IsDeleted: "false" });
+        this._itemcategoryService.initializeFormGroup();
+    }
+
+    onSubmit() {
+        if (this._itemcategoryService.myform.valid) {
+            if (!this._itemcategoryService.myform.get("ItemCategoryId").value) {
+                var m_data = {
+                    insertItemCategoryMaster: {
+                        ItemCategoryName: this._itemcategoryService.myform
+                            .get("ItemCategoryName")
+                            .value.trim(),
+                        ItemTypeID:
+                            this._itemcategoryService.myform.get("ItemTypeID")
+                                .value,
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._itemcategoryService.myform.get(
+                                    "IsDeleted"
+                                ).value
+                            )
+                        ),
+                    },
+                };
+
+                this._itemcategoryService
+                    .insertItemCategoryMaster(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getitemcategoryMasterList();
+                    });
+            } else {
+                var m_dataUpdate = {
+                    updateItemCategoryMaster: {
+                        ItemCategoryId:
+                            this._itemcategoryService.myform.get(
+                                "ItemCategoryId"
+                            ).value,
+                        ItemCategoryName: this._itemcategoryService.myform
+                            .get("ItemCategoryName")
+                            .value.trim(),
+                        ItemTypeID:
+                            this._itemcategoryService.myform.get("ItemTypeID")
+                                .value,
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._itemcategoryService.myform.get(
+                                    "IsDeleted"
+                                ).value
+                            )
+                        ),
+                    },
+                };
+
+                this._itemcategoryService
+                    .updateItemCategoryMaster(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getitemcategoryMasterList();
+                    });
+            }
+            this.onClear();
+        }
+    }
+
+    onEdit(row) {
+        var m_data = {
+            ItemCategoryId: row.ItemCategoryId,
+            ItemCategoryName: row.ItemCategoryName.trim(),
+            ItemTypeID: row.ItemTypeID,
+            ItemTypeName: row.ItemTypeName.trim(),
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._itemcategoryService.populateForm(m_data);
+    }
+}
+export class ItemCategoryMaster {
+    ItemCategoryId: number;
+    ItemCategoryName: string;
+    ItemTypeID: number;
+    IsDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    AddedByName: string;
+
+    /**
+     * Constructor
+     *
+     * @param ItemCategoryMaster
+     */
+    constructor(ItemCategoryMaster) {
+        {
+            this.ItemCategoryId = ItemCategoryMaster.ItemCategoryId || "";
+            this.ItemCategoryName = ItemCategoryMaster.ItemCategoryName || "";
+            this.ItemTypeID = ItemCategoryMaster.ItemTypeID || "";
+            this.IsDeleted = ItemCategoryMaster.IsDeleted || "false";
+            this.AddedBy = ItemCategoryMaster.AddedBy || "";
+            this.UpdatedBy = ItemCategoryMaster.UpdatedBy || "";
+        }
+    }
 }

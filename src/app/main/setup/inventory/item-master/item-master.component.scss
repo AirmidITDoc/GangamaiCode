@@ -1,0 +1,259 @@
+app-item-master {
+    .mat-header-row {
+        width: 2500px;
+        max-width: 2500px;
+        min-width: 2500px;
+        font-weight: bold;
+    }
+    .mat-row {
+        width: 2500px;
+        max-width: 2500px;
+        min-width: 2500px;
+    }
+
+    .mat-column-ItemID {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-ItemShortName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ItemName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ItemTypeName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-ItemCategoryName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ItemGenericName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ItemClassName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-UnitofMeasurementName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-StockUOMId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-ConversionFactor {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+    }
+
+    .mat-column-CurrencyId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-TaxPer {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+    }
+
+    .mat-column-IsBatchRequired {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-MinQty {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-MaxQty {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-ReOrder {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsNursingFlag {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-HSNcode {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-CGST {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-SGST {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-IGST {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-IsNarcotic {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-ManufName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-ProdLocation {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsH1Drug {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+    }
+
+    .mat-column-IsScheduleH {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsHighRisk {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsScheduleX {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-IsLASA {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+    }
+
+    .mat-column-IsEmgerency {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-AddedByName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+//sidebar
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}
+
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}

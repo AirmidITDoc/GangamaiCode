@@ -1,15 +1,141 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ItemTypeMasterService } from "./item-type-master.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
-  selector: 'app-item-type-master',
-  templateUrl: './item-type-master.component.html',
-  styleUrls: ['./item-type-master.component.scss']
+    selector: "app-item-type-master",
+    templateUrl: "./item-type-master.component.html",
+    styleUrls: ["./item-type-master.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ItemTypeMasterComponent implements OnInit {
+    msg: any;
 
-  constructor() { }
+    displayedColumns: string[] = [
+        "ItemTypeId",
+        "ItemTypeName",
+        "AddedByName",
+        "IsDeleted",
+        "action",
+    ];
 
-  ngOnInit(): void {
-  }
+    DSItemTypeMasterList = new MatTableDataSource<ItemTypeMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    constructor(public _itemtypeService: ItemTypeMasterService) {}
+
+    ngOnInit(): void {
+        this.getItemtypeMasterList();
+    }
+    onSearch() {
+        this.getItemtypeMasterList();
+    }
+
+    onSearchClear() {
+        this._itemtypeService.myformSearch.reset({
+            ItemTypeNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
+    getItemtypeMasterList() {
+        this._itemtypeService.getItemtypeMasterList().subscribe((Menu) => {
+            this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
+            this.DSItemTypeMasterList.sort = this.sort;
+            this.DSItemTypeMasterList.paginator = this.paginator;
+        });
+    }
+
+    onClear() {
+        this._itemtypeService.myform.reset({ IsDeleted: "false" });
+        this._itemtypeService.initializeFormGroup();
+    }
+
+    onSubmit() {
+        if (this._itemtypeService.myform.valid) {
+            if (!this._itemtypeService.myform.get("ItemTypeId").value) {
+                var m_data = {
+                    dischargeTypeMasterInsert: {
+                        ItemTypeName: this._itemtypeService.myform
+                            .get("ItemTypeName")
+                            .value.trim(),
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._itemtypeService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+                    },
+                };
+
+                this._itemtypeService
+                    .insertItemTypeMaster(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getItemtypeMasterList();
+                    });
+            } else {
+                var m_dataUpdate = {
+                    dischargeTypeMasterUpdate: {
+                        ItemTypeId:
+                            this._itemtypeService.myform.get("ItemTypeId")
+                                .value,
+                        ItemTypeName: this._itemtypeService.myform
+                            .get("ItemTypeName")
+                            .value.trim(),
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._itemtypeService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+                    },
+                };
+
+                this._itemtypeService
+                    .updateItemTypeMaster(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getItemtypeMasterList();
+                    });
+            }
+            this.onClear();
+        }
+    }
+
+    onEdit(row) {
+        var m_data = {
+            ItemTypeId: row.ItemTypeId,
+            ItemTypeName: row.ItemTypeName.trim(),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._itemtypeService.populateForm(m_data);
+    }
+}
+export class ItemTypeMaster {
+    ItemTypeId: number;
+    ItemTypeName: string;
+    IsDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    AddedByName: string;
+
+    /**
+     * Constructor
+     *
+     * @param ItemTypeMaster
+     */
+    constructor(ItemTypeMaster) {
+        {
+            this.ItemTypeId = ItemTypeMaster.ItemTypeId || "";
+            this.ItemTypeName = ItemTypeMaster.ItemTypeName || "";
+            this.IsDeleted = ItemTypeMaster.IsDeleted || "false";
+            this.AddedBy = ItemTypeMaster.AddedBy || "";
+            this.UpdatedBy = ItemTypeMaster.UpdatedBy || "";
+        }
+    }
 }
