@@ -1,231 +1,175 @@
+@import "src/@fuse/scss/fuse";
+
 .mat-form-field-wrapper {
   padding-bottom: 0.34375em;
 }
-@import "src/@fuse/scss/fuse";
 
-:host {
+app-appointment{
   display: flex;
   flex: 1 1 auto;
   width: 100%;
-  
+
   .mat-table {
-      //height: 400px !important;
-      width: 100%;
-      background: transparent;
-      box-shadow: none;
+    // height: 400px !important;
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
 
-      .mat-column-checkbox {
-          flex: 0 1 64px;
-          padding-left: 18px;
-      }
+    .mat-column-checkbox {
+      flex: 0 1 64px;
+      padding-left: 18px;
+    }
 
-      .mat-column-avatar {
-          flex: 0 1 64px;
-      }
+    .mat-column-avatar {
+      flex: 0 1 64px;
+    }
 
-      .mat-column-buttons {
-          flex: 0 1 80px;
-      }
+    // .mat-column-buttons {
+    //     flex: 0 1 80px;
+    // }
 
-      .mat-row {
-          position: relative;
-          cursor: pointer;
-         
-          .mat-cell {
-              min-width: 0;
-              white-space: nowrap; 
-              text-overflow: ellipsis; 
-              overflow: hidden !important;
-              //display: inline-block;
-              
-              &.mat-column-detail-button {
-                  flex: 0 1 auto;
+    .mat-row {
+      position: relative;
+      cursor: pointer;
 
-                  @include media-breakpoint('gt-md') {
-                      display: none;
-                  }
-              }
+      .mat-cell {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        // display: inline-block;
+
+
+
+        &.mat-column-detail-button {
+          flex: 0 1 auto;
+
+          @include media-breakpoint('gt-md') {
+            display: none;
           }
+        }
       }
+    }
   }
 }
+
 .active-icon {
   border-radius: 50%;
 }
 
 app-appointment {
-
-  .table1{
-      height:590px !important;
+  .table1 {
+    height: 600px !important;
   }
-.mat-header-row {
-  width: 100%;
-  max-width: 1250px;
-  min-width: 1250px;  
-  min-height: 20px;     
-}
 
-.mat-row {
-  width: 100%;
-  max-width: 1250px;
-  min-width: 1250px;      
-  min-height: 20px;            
-}
+  .mat-header-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1500px;
+    min-height: 30px;
+  }
 
-.mat-column-checkbox {
-  width:60px;
-  max-width: 60px;
-  min-width: 60px;
-}
-.mat-column-RegNoWithPrefix {
-  width: 110px; 
-  max-width:110px;
-  min-width: 110px;
-  text-align: center;
-}
-.mat-column-PatientName {
-  width: 250px;
-  max-width: 250px;
-  min-width: 250px;
-  text-align: left;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-   overflow: hidden !important;
-   display: inline-block;
-   margin-top: 7px;
-   margin-right: 7px;
-   justify-content:left; 
-}
-.mat-column-DVisitDate {
-  width:80px;
-  max-width:80px;
-  min-width:80px;
-}
-.mat-column-action {
-  width:100px;
-  max-width: 100px;
-  min-width: 100px;
-}
-.mat-column-VisitTime {
-  width:80px;
-  max-width:80px;
-  min-width:80px;
-}
+  .mat-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1500px;
+    min-height: 40px;
+  }
 
+  .mat-column-RegNo {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
 
-.mat-column-OPDNo {
-  width: 90px;
-  max-width:90px;
-  min-width:90px;
-  text-align: center;
-}
-.mat-column-Doctorname {
-  width: 200px;
-  max-width: 200px;
-  min-width: 200px;
-  text-align: left;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-   overflow: hidden !important;
-   display: inline-block;
-   margin-top: 7px;
-   margin-right: 7px;
-   justify-content:left; 
-}
-.mat-column-RefDocName {
-  width: 200px;
-  max-width: 200px;
-  min-width: 200px;
-  justify-content:left;
-  text-align: left;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-   overflow: hidden !important;
-   display: inline-block;
-   margin-top: 7px;
-   margin-right: 7px;
-   justify-content:left; 
-}
+  }
 
-.mat-column-PatientType {
-  width: 100px;
-  max-width: 100px;
-  min-width: 100px;
-}
-.mat-column-HospitalName {
-  width: 200px;
-  max-width: 200px;
-  min-width: 200px;
-  text-align: left;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-   overflow: hidden !important;
-   display: inline-block;
-   margin-top: 7px;
-   margin-right: 7px;
-   justify-content:left; 
-}
-.mat-icon-button {
-  padding: 0;
-  min-width: 0;
-  width: 40px;
-  height: 20px;
-  flex-shrink: 0;
-  line-height: 20px;
-  border-radius: 50%;
-}
-.mat-column-buttons {
-  color: white !important;
-  width:60px;
-  max-width: 60px;
-  min-width: 60px;
-  text-align: right;
-  justify-content:right;
-}
+  .mat-column-RegDate {
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
+    text-align: left;
+  }
 
-.mat-column-PatientOldNew {
-  width: 60px;
-  max-width: 60px;
-  min-width: 60px;
-  text-align: left;
-  justify-content:left; 
-}
-.mat-column-MPbillNo {
-  width: 60px;
-  max-width: 60px;
-  min-width: 60px;
-  text-align: left;
- 
-   justify-content:left; 
-}
+  .mat-column-PatientName {
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    text-align: left;
+    //  display: inline-block; 
+    white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis; 
+    overflow: hidden !important;
 
+    margin-right: 20px;
+  }
 
+  .mat-column-Address {
+    width: 330px;
+    max-width: 330px;
+    min-width: 330px;
+    text-align: left;
+    white-space: nowrap;
+    margin-right: 20px;
+    overflow: hidden;
+    overflow: hidden !important;
+    //  display: inline-block; 
+  }
 
-}
-// .example-loading-shade {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     bottom: 56px; 
-//     right: 0;
-//     background: rgba(0, 0, 0, 0.15);
-//     z-index: 1;
-//     display: flex;
-//     align-items: center;
-//     max-width: 80%;
-//     justify-content: center;
-//   }
+  .mat-column-AgeYear {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+    white-space: nowrap;
+    margin-right: 20px;
+    overflow: hidden;
+    overflow: hidden !important;
+    //  display: inline-block; 
 
-//   .example-rate-limit-reached {
-//     color: #980000;
-//     max-width: 360px;
-//     text-align: center;
-//   }
+  }
 
-.highlight{
-  background: #42A948; /* green */
+  .mat-column-GenderName {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+
+  }
+
+  .mat-column-PhoneNo {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+
+  }
+
+  .mat-column-MobileNo {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+
+  }
+
+  .mat-column-action {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .table-actions {
+    color: white !important;
+    width: 112px;
+    max-width: 112px;
+    min-width: 112px;
+    text-align: center;
+    justify-content: center;
+    // background:#039be5 !important; 
+  }
 }

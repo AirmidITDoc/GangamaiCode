@@ -5,6 +5,7 @@ import { FuseConfigService } from "@fuse/services/config.service";
 import { fuseAnimations } from "@fuse/animations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "login",
@@ -76,6 +77,7 @@ export class LoginComponent implements OnInit {
         // this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/opd/registration";
 
         this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
+        
     }
 
     // convenience getter for easy access to form fields
@@ -106,12 +108,12 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-debugger;
+
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
-debugger;
+
         this.loading = true;
         
         this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(

@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { OPRefundOfBillComponent } from '../op-refund-of-bill/op-refund-of-bill.component';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
 
 
@@ -223,36 +222,7 @@ console.log(contact);
         //  this.getRadiologytemplateMasterList();
       });
     }
-    // else if (m == "Payment") {
-    //   console.log(contact);
-    //   debugger;
-    //   let xx = {
-    //     RegNo: contact.RegId,
-    //     // RegId: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     ClassName: contact.ClassName,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId
-    //   };
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(xx);
     
-    //     const dialogRef = this._matDialog.open(PaymentComponent, 
-    //      { 
-    //       maxWidth: "99%",
-    //       width:  "90%",
-    //       height: '750px',
-    //     // width: '100%',
-    //    });
-    //    dialogRef.afterClosed().subscribe(result => {
-    //      console.log('The dialog was closed - Insert Action', result);
-    //     //  this.getRadiologytemplateMasterList();
-    //   });
-    // }
     else if(m == "Case Paper") {
         console.log(" This is for Casepaper pop : " + m);
         let xx = {
@@ -289,183 +259,9 @@ console.log(contact);
         });
       }
     
-    // else if (m == "Upload Documents") {
-    //     console.log(" This is for Upload Document pop : " + m);
-    //     let xx = {
-    //       RegNo: contact.RegId,
-    //       AdmissionID: contact.VisitId,
-    //       PatientName: contact.PatientName,
-    //       Doctorname: contact.Doctorname,
-    //       AdmDateTime: contact.AdmDateTime,
-    //       AgeYear: contact.AgeYear,
-    //       ClassId: contact.ClassId,
-    //       TariffName: contact.TariffName,
-    //       TariffId: contact.TariffId,
-    //       opD_IPD_Type :contact.opD_IPD_Type,
-    //     };
-    //     this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-    //     // console.log( this.advanceDataStored.storage);
-    //     //  console.log(xx);
-    //     // debugger;CasePaperComponent
-    //     const dialogRef = this._matDialog.open(UploadFilesComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '670px',
-    //         width: '100%',
-    //         //width: '100%', height: "100%"
-    //       });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //       console.log('The dialog was closed - Insert Action', result);
-    //       //  this.getRadiologytemplateMasterList();
-    //     });
-    //   }
-    //   else if(m == "Camera Capture") {
-    //     console.log(" This is for Casepaper pop : " + m);
-    //     let xx = {
-    //       RegNo: contact.RegId,
-    //       AdmissionID: contact.VisitId,
-    //       PatientName: contact.PatientName,
-    //       Doctorname: contact.Doctorname,
-    //       AdmDateTime: contact.AdmDateTime,
-    //       AgeYear: contact.AgeYear,
-    //       ClassId: contact.ClassId,
-    //       TariffName: contact.TariffName,
-    //       TariffId: contact.TariffId,
-    //       opD_IPD_Type :contact.opD_IPD_Type,
-    //     };
-    //     this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-    //     // console.log( this.advanceDataStored.storage);
-    //     //  console.log(xx);
-    //     // debugger;CasePaperComponent
-    //     const dialogRef = this._matDialog.open(CameraComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '570px',
-    //         width: '60%',
-    //         //width: '100%', height: "100%"
-    //       });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //       console.log('The dialog was closed - Insert Action', result);
-    //       //  this.getRadiologytemplateMasterList();
-    //     });
-    //   }
     
-    // if (m == "Advance") {
-    //   var m_data = {
-    //     RegNo: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId
-    //   }
-    //   this._opSearchListService.populateForm(m_data);
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-    //   const dialogRef = this._matDialog.open(OpAdvanceComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '560px',
-    //       width: '100%',
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
 
-    //   });
-    // }
-    // if (m == "Company Settlement") {
-    //   var m_data = {
-    //     RegNo: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId
-    //   }
-    //   this._opSearchListService.populateForm(m_data);
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-    //   const dialogRef = this._matDialog.open(CompanySettlementComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '600px',
-    //       width: '100%',
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-
-    //   });
-    // }
-
-    if (m == "Refund of Bill") {
-
-      console.log(" This is for Refund of Bill pop : " + m);
-      let xx = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegId,
-        AdmissionID: contact.VisitId,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-      // this._ActRoute.navigate(['opd/new-OpdBilling']);
-      const dialogRef = this._matDialog.open(OPRefundOfBillComponent,
-        {
-          maxWidth: "85%",
-          height: '650px',
-          width: '100%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        //  this.getRadiologytemplateMasterList();
-      });
-    }
-
-   
-    // if (m == " OP_REPORTS") {
-
-    //   console.log(" This is for  OP_REPORTS pop : " + m);
-    //   let xx = {
-    //     RegNo: contact.RegNo,
-    //     RegId: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId,
-    //     DoctorId: contact.DoctorId,
-
-    //   };
-    //   // this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //   // this._ActRoute.navigate(['opd/new-OpdBilling']);
-    //   // const dialogRef = this._matDialog.open(OpReprtsComponent,
-    //   //   {
-    //   //     maxWidth: "85%",
-    //   //     height: '650px',
-    //   //     width: '100%',
-    //   //   });
-    //   // dialogRef.afterClosed().subscribe(result => {
-    //   //   console.log('The dialog was closed - Insert Action', result);
-    //   //   //  this.getRadiologytemplateMasterList();
-    //   // });
-    // }
-
+  
   }
 
    // toggle sidebar

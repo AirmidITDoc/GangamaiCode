@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RouterModule, Routes } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
+
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
@@ -33,10 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
-import { EditRefraneDoctorComponent } from './edit-refrane-doctor/edit-refrane-doctor.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-// import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
     {
@@ -47,10 +44,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AppointmentComponent,
-        NewAppointmentComponent,
-        EditConsultantDoctorComponent,
-        EditRefraneDoctorComponent,
-        // EditAppointmentComponent,
+       
+      
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -104,5 +99,4 @@ const routes: Routes = [
         AppointmentComponent,
     ]
 })
-export class appointmentModule {
-} 
+export class AppointmentModule { }

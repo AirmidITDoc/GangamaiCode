@@ -427,11 +427,11 @@ export class IPBillBrowseListComponent implements OnInit {
       this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrPaiAmdount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPayTMPayAmount', '₹' + (objPrintWordInfo.PayTMPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrCashPayAmount', '₹' + (objPrintWordInfo.CashPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrChequePayAmount', '₹' + (objPrintWordInfo.ChequePayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount', '₹' + (objPrintWordInfo.NEFTPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrTotalAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrPayTMPayAmount', '₹' + (objPrintWordInfo.PayTMPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrCashPayAmount', '₹' + (objPrintWordInfo.CashPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrChequePayAmount', '₹' + (objPrintWordInfo.ChequePayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount', '₹' + (objPrintWordInfo.NEFTPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrTotalAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrAdvanceBalAmount', '₹' + (objPrintWordInfo.AdvanceBalAmount.toFixed(2)));
       this.printTemplate = this.printTemplate.replace('StrAdvanceRefundAmount', '₹' + (objPrintWordInfo.AdvanceRefundAmount.toFixed(2)));
@@ -1126,5 +1126,6 @@ export class ReportPrintObj {
   AgeDay:any;
   Hospitaladdress:any;
   PaymentDate:any;
+  
 }
 

@@ -38,13 +38,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
 import { OPSearhlistService } from './op-searhlist.service';
 import { OPBillingComponent } from './op-billing/op-billing.component';
-import { AdvancePaymentComponent } from './advance-payment/advance-payment.component';
-import { OPRefundOfBillComponent } from './op-refund-of-bill/op-refund-of-bill.component';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
-import { PrescriptionComponent } from './prescription/prescription.component';
+
 
 
 
@@ -62,12 +60,10 @@ const routes: Routes = [
     declarations: [
         OpdSearchListComponent,
         OPBillingComponent,
-        AdvancePaymentComponent,
-        OPRefundOfBillComponent,
         SearchPageComponent,
         OPCasepaperComponent,
         ViewCasepaperComponent,
-        PrescriptionComponent
+        
         
               
     ],

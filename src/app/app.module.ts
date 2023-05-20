@@ -28,6 +28,7 @@ import { JwtInterceptor } from "./core/jwt.interceptor";
 // import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
 
+
 const appRoutes: Routes = [
     {
         path: "auth",
@@ -63,17 +64,7 @@ const appRoutes: Routes = [
             import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
 
-    // {
-    //     path: "pathology",
-    //     loadChildren: () =>
-    //         import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
-    // },
 
-    {
-        path: "radiology",
-        loadChildren: () =>
-            import("./main/radiology/radiology.module").then((m) => m.RadiologyModule),
-    },
 
     {
         path: '**',
@@ -106,6 +97,7 @@ class PickDateAdapter extends NativeDateAdapter {
 @NgModule({
     declarations: [
         AppComponent,
+        // CertificateComponent,
 
 
     ],

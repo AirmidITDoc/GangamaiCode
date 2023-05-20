@@ -62,13 +62,15 @@ import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-r
 import { IPBrowseRefundofBillComponent } from './Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.component';
 import { IPBrowseallListComponent } from './ip-browseall-list/ip-browseall-list.component';
+import { MLCComponent } from './mlc/mlc.component';
+import { SubCompanyTPAComponent } from './sub-company-tpa/sub-company-tpa.component';
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
   declarations: [IPBillBrowseListComponent, 
-    IPSearchListComponent, IPBillBrowseListComponent, AdmissionComponent, BedTransferComponent, DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, IPSettlementComponent, IPBrowseRefundofBillReceiptComponent, ViewRefundofBillComponent, IPRefundofAdvanceReceiptComponent, ViewRefundofAdvanceComponent, IPRefundComponent, IPRefundodAdvanceComponent, IPRefundofBillComponent, IPRefundofAdvanceComponent, IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPBrowseallListComponent],
+    IPSearchListComponent, AdmissionComponent],
   imports: [
     CommonModule,
     MatButtonModule,
