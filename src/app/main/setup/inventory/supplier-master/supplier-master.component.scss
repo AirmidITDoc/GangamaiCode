@@ -1,0 +1,147 @@
+app-supplier-master {
+    .mat-header-row {
+        width: 1600px;
+        max-width: 1600px;
+        min-width: 1600px;
+        font-weight: bold;
+    }
+    .mat-row {
+        width: 1500px;
+        max-width: 1500px;
+        min-width: 1500px;
+    }
+
+    .mat-column-SupplierId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-SupplierName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
+    .mat-column-ContactPerson {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
+    .mat-column-Address {
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+    }
+    .mat-column-CityName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-Mobile {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-Phone {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-Fax {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-Email {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+    }
+
+    .mat-column-GSTNo {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-PanNo {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-AddedByName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+//sidebar
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}
+
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}

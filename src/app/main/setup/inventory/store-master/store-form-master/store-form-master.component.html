@@ -1,0 +1,161 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>{{_StoreService.myform.controls.StoreId.value?"Modify Store Master":"New
+                Store Master"}}</h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+
+<br />
+<br />
+
+<form [formGroup]="_StoreService.myform">
+    <input type="hidden" name="StoreId" formControlName="StoreId">
+
+
+    <div>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="StoreShortName" formControlName="StoreShortName" placeholder="Select StoreShortName Name"
+                matInput required>
+            <mat-error>Please enter StoreShortName </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="StoreName" formControlName="StoreName" placeholder="Select Store Name" matInput required>
+            <mat-error>Please enter StoreName </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label igxLabel for="Prefix">Prefix
+        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label igxLabel for="No">No </label>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label igxLabel for="Prefix">Prefix
+        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label igxLabel for="No">No </label>
+
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" aria-setsize="70">
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="IndentPrefix" formControlName="IndentPrefix" placeholder="Select IndentPrefix Name" matInput
+                required text-length="50">
+            <mat-error>Please enter IndentPrefix </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="IndentNo" formControlName="IndentNo" placeholder="Select IndentNo" matInput required size="30">
+            <mat-error>Please enter IndentNo </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="GrnreturnNoPrefix" placeholder="Enter GrnreturnNoPrefix" formControlName="GrnreturnNoPrefix"
+                matInput required>
+            <mat-error>Please enter GrnreturnNoPrefix </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="GrnreturnNo" placeholder="Enter GrnreturnNo" formControlName="GrnreturnNo" matInput required>
+            <mat-error>Please enter GrnreturnNo</mat-error>
+        </mat-form-field>
+
+
+
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="PurchasePrefix" placeholder="Enter PurchasePrefix" formControlName="PurchasePrefix" matInput
+                required>
+            <mat-error>Please enter PurchasePrefix </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="PurchaseNo" placeholder="PurchaseNo" formControlName="PurchaseNo" matInput required>
+            <mat-error>Please enter PurchaseNo</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="IssueToDeptPrefix" placeholder="Select IssueToDeptPrefix" formControlName="IssueToDeptPrefix"
+                matInput required>
+            <mat-error>Please enter IssueToDeptPrefix </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="IssueToDeptNo" placeholder="Enter IssueToDeptNo" formControlName="IssueToDeptNo" matInput
+                required>
+            <mat-error>Please enter IssueToDeptNo </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="GrnPrefix" placeholder="Select GrnPrefix" formControlName="GrnPrefix" matInput required>
+            <mat-error>Please enter GrnPrefix </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="GrnNo" placeholder="Enter GrnNo" formControlName="GrnNo" matInput required>
+            <mat-error>Please enter GrnNo </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="ReturnFromDeptNoPrefix" placeholder="Enter ReturnFromDeptNoPrefix"
+                formControlName="ReturnFromDeptNoPrefix" matInput required>
+            <mat-error>Please enter ReturnFromDeptNoPrefix </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="ReturnFromDeptNo" placeholder="Enter ReturnFromDeptNo" formControlName="ReturnFromDeptNo"
+                matInput required>
+            <mat-error>Please enter ReturnFromDeptNo </mat-error>
+        </mat-form-field>
+
+    </div>
+    <div>
+
+        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+
+    <hr style="font-weight: bold;">
+    <hr>
+
+</form>
+
+
+<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+            [disabled]="_StoreService.myform.invalid">Save</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+
+    </div>
+</div>
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

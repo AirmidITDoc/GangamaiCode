@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
+import { ProductTypeMasterComponent } from './product-type-master/product-type-master.component';
+import { VendorMasterComponent } from './vendor-master/vendor-master.component';
+import { ParameterDescriptiveMasterComponent } from './parameter-descriptive-master/parameter-descriptive-master.component';
 
 const appRoutes: Routes = [
     {
@@ -41,7 +44,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [ProductTypeMasterComponent, VendorMasterComponent, ParameterDescriptiveMasterComponent],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class DepartmentModule {}

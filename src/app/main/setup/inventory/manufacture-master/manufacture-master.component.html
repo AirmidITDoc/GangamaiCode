@@ -74,13 +74,14 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ManufName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ManufName </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Manufacture Name
+                                        </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ManufName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="ManufShortName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ManufShortName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Manufacture Short Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ManufShortName}}
                                         </mat-cell>
@@ -154,17 +155,17 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>Manuf Name </mat-label>
+                                            <mat-label>Manufacture Name </mat-label>
                                             <input name="ManufName" formControlName="ManufName" matInput required>
-                                            <mat-error>Please Enter ManufName </mat-error>
+                                            <mat-error>Please Enter Manufacture Name </mat-error>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>ManufShort Name </mat-label>
+                                            <mat-label>Manufacture Short Name </mat-label>
                                             <input name="ManufShortName" formControlName="ManufShortName" matInput
                                                 required>
-                                            <mat-error>Please Enter ManufShortName </mat-error>
+                                            <mat-error>Please Enter Manufacture Short Name </mat-error>
                                         </mat-form-field>
                                     </div>
 
