@@ -90,6 +90,7 @@ export class OPBillingComponent implements OnInit {
   b_price = '0';
   b_qty = '1';
   b_totalAmount = '';
+  tettotalAmount:any;
   b_netAmount = '';
   B_netAmount: any;
   b_disAmount = '0';
@@ -572,8 +573,9 @@ export class OPBillingComponent implements OnInit {
 
   onSaveOPBill() {
     this.click = true;
+    let disamt = this.registeredForm.get('concessionAmt').value;
     debugger;
-    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
+    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0 ) {
       this.FinalAmt = this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;
       this.netPaybleAmt1 = this.netPaybleAmt;
     }
@@ -581,6 +583,8 @@ export class OPBillingComponent implements OnInit {
       this.FinalAmt = this.TotalnetPaybleAmt;
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
+
+
     this.isLoading = 'submit';
 
     let Pathreporthsarr = [];
@@ -729,7 +733,7 @@ export class OPBillingComponent implements OnInit {
             Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 let m = response;
-                // this.getPrint(m);
+                this.getPrint(m);
                 this._matDialog.closeAll();
               }
             });
@@ -767,7 +771,7 @@ export class OPBillingComponent implements OnInit {
             Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
               if (result.isConfirmed) {
                 let m = response;
-                // this.getPrint(m);
+                //  this.getPrint(m);
                 this._matDialog.closeAll();
 
               }
@@ -873,10 +877,18 @@ export class OPBillingComponent implements OnInit {
   }
 
   calculatePersc() {
-debugger;
+    this.tettotalAmount = parseInt(this.b_netAmount);
 
+    debugger;
+    let beforeamt= this.b_totalAmount;
+    let disper =this.registeredForm.get('discPer').value;
+ 
+    if(disper==null){
+      this.registeredForm.get('netAmount').setValue(beforeamt);
+    }
+    else {
 
-let amt=parseInt(this.b_disAmount);
+    let amt = parseInt(this.b_disAmount);
 
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
     if (this.formDiscPersc) {
@@ -884,19 +896,20 @@ let amt=parseInt(this.b_disAmount);
       this.b_disAmount = Math.round(discAmt).toString();
       this.b_netAmount = Math.round(netAmt - discAmt).toString();
       this.TotalnetPaybleAmt = this.b_netAmount;
+      
 
-    }else if(amt>0){
+    } else if (amt > 0) {
       this.b_netAmount = Math.round(netAmt - amt).toString();
-      this.TotalnetPaybleAmt=this.b_netAmount;
+      this.TotalnetPaybleAmt = this.b_netAmount;
     }
-
+  }
   }
 
-  
+
 
   calculatePersc1() {
     debugger;
-    this.concessionAmtOfNetAmt=0;
+    this.concessionAmtOfNetAmt = 0;
 
     // if()
 
@@ -930,30 +943,53 @@ let amt=parseInt(this.b_disAmount);
     this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
 
     this.netPaybleAmt1 = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-    this.TotalnetPaybleAmt =this.netPaybleAmt;
+    this.TotalnetPaybleAmt = this.netPaybleAmt;
     console.log(this.netPaybleAmt);
     console.log(this.netPaybleAmt1);
     this.registeredForm.get('FinalAmt').setValue(this.netPaybleAmt);
     console.log(this.TotalnetPaybleAmt);
 
-    // debugger;
-    // if (parseInt(this.concessionAmtOfNetAmt) > 0) {
-    //   let tot = 0;
-    //   // this.b_netAmount = tot.toString();
-    //   if (this.TotalnetPaybleAmt > 0) {
-    //     tot = parseInt(this.TotalnetPaybleAmt) - parseInt(this.concessionAmtOfNetAmt);
-    //     this.TotalnetPaybleAmt = tot;
-    //   }
-    //   else
-    //     this.TotalnetPaybleAmt = this.concessionAmtOfNetAmt;
-    // }
 
-  
+  }
+
+  calculatechargesDiscamt() {
+    debugger;
+    let disamt = this.registeredForm.get('discAmount').value;
+    let Netamt = parseInt(this.b_netAmount);
+    if (parseInt(disamt) > 0) {
+      let tot = 0;
+      if (Netamt > 0) {
+        tot = Netamt - parseInt(disamt);
+        this.b_netAmount = tot.toString();
+        this.registeredForm.get('netAmount').setValue(tot);
+      }
+      else
+        this.TotalnetPaybleAmt = disamt;
+    }
   }
 
 
+
+  calculateDiscamtfinal() {
+
+    debugger;
+    this.Consession = false;
+    let disamt = this.registeredForm.get('concessionAmt').value;
+    if (parseInt(disamt) > 0) {
+      let tot = 0;
+      // this.b_netAmount = tot.toString();
+      if (this.TotalnetPaybleAmt > 0) {
+        tot = parseInt(this.TotalnetPaybleAmt) - parseInt(disamt);
+        this.netPaybleAmt1 = tot;
+        this.registeredForm.get('FinalAmt').setValue(tot);
+      }
+      else
+        this.netPaybleAmt1  = disamt;
+    }
+  }
+
   deleteTableRow(element) {
-   
+
     // debugger;
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -973,10 +1009,10 @@ let amt=parseInt(this.b_disAmount);
     // this._location.back();
   }
 
- 
+
 
   getAdmittedDoctorCombo() {
- 
+
     this._opappointmentService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
       console.log(this.doctorNameCmbList);
@@ -1001,32 +1037,32 @@ let amt=parseInt(this.b_disAmount);
     })
   }
 
-  // getPrint(el) {
-  //   debugger;
-  //   var D_data = {
-  //     "BillNo": el,
-  //   }
-  //   // el.bgColor = 'red';
-  //   //console.log(el);
-  //   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-  //   this.subscriptionArr.push(
-  //     this._opappointmentService.getBillPrint(D_data).subscribe(res => {
+  getPrint(el) {
+    debugger;
+    var D_data = {
+      "BillNo": el,
+    }
+    // el.bgColor = 'red';
+    //console.log(el);
+    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+    this.subscriptionArr.push(
+      this._opappointmentService.getBillPrint(D_data).subscribe(res => {
 
-  //       this.reportPrintObjList = res as BrowseOPDBill[];
-  //       console.log(this.reportPrintObjList);
-  //       this.reportPrintObj = res[0] as BrowseOPDBill;
+        this.reportPrintObjList = res as BrowseOPDBill[];
+        console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as BrowseOPDBill;
 
-  //       this.getTemplate();
+        this.getTemplate();
 
-  //     })
-  //   );
-  // }
+      })
+    );
+  }
   getTemplate() {
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
     this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress','Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
       debugger;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -1093,13 +1129,13 @@ let amt=parseInt(this.b_disAmount);
         strrowslist += strabc;
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
-       let concessinamt;
-       if(objPrintWordInfo.ConcessionAmt >0 ){
-        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-       }
-       else{
-        this.printTemplate = this.printTemplate.replace('StrConcessionAmt','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-       }
+      let concessinamt;
+      if (objPrintWordInfo.ConcessionAmt > 0) {
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      }
+      else {
+        this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      }
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));

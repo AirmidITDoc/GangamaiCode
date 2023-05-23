@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert } from '../registration.component';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -18,12 +18,15 @@ import { SearchPageComponent } from '../../op-search-list/search-page/search-pag
   selector: 'app-new-registration',
   templateUrl: './new-registration.component.html',
   styleUrls: ['./new-registration.component.scss'],
+  // directives: [appCharmaxLength],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
 export class NewRegistrationComponent implements OnInit {
-  personalFormGroup: FormGroup;
+  
 
+  personalFormGroup: FormGroup;
+  charcount:any=0;
   submitted = false;
   now = Date.now();
   searchFormGroup: FormGroup;
@@ -62,9 +65,9 @@ export class NewRegistrationComponent implements OnInit {
   isLinear = true;
   isLoading: string = '';
   Prefix :any;
+snackmessage:any;
 
-
-  IsSaveupdate:any;
+isDisabled: boolean = false;
   IsSave:any;
 
 
@@ -109,13 +112,18 @@ export class NewRegistrationComponent implements OnInit {
     public dialogRef: MatDialogRef<NewRegistrationComponent>,
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
-    private router: Router)  
+    private router: Router,
+    // private toastr: ToastrService
+    )  
     {}
 
-
+  
   ngOnInit(): void {
+    // this.toastr.success('Hello world!', 'Toastr fun!');
 
-    this.IsSaveupdate="true";
+    // this.myFunction("Welcome");
+     
+
   console.log(this.data)
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
@@ -169,7 +177,7 @@ export class NewRegistrationComponent implements OnInit {
         this.registerObj=this.data.registerObj;
       
         console.log( this.registerObj);
-       
+        this.isDisabled=true
           // this.AdmissionID = this.data.PatObj.AdmissionID;
           this.Prefix=this.data.registerObj.PrefixID;
           // this.PatientName=this.data.PatObj.PatientName;
@@ -180,7 +188,8 @@ export class NewRegistrationComponent implements OnInit {
           this.setDropdownObjs1();
       }
 
-      
+     
+
   }
 
   closeDialog() {
@@ -227,12 +236,12 @@ export class NewRegistrationComponent implements OnInit {
       Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
-      AadharCardNo: ['', [
-        // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
+      AadharCardNo: ['',Validators.compose( [Validators.minLength(12),
         Validators.maxLength(12),
-      ]],
+        // Validators.required,
+        Validators.pattern("^[0-9]+$"),
+        
+      ])],
       PanCardNo: '',
       MaritalStatusId: '',
       ReligionId: '',
@@ -245,6 +254,49 @@ export class NewRegistrationComponent implements OnInit {
   }
 
 
+
+
+//  maxLengthCheck(object) {
+//   debugger;
+//   console.log(object);
+//     if (object.value.length > object.maxLength)
+//     object.value = object.value.slice(0, object.maxLength)
+//   }
+
+
+validateadhaarcard( input: any){
+  console.log(input.value);
+}
+
+// readonly max = 999999999999;
+//   mynumber = ;
+//   validateadhaarcard(e: any, input: any = null) {
+//     console.log(e);
+//     let value =Math.abs(e.value) ;
+//     console.log(value);
+//     if (value < 1) value = 1;
+//     if (value > this.max) value = this.max;
+//     this.mynumber = value;
+//     if (input.value != value) {
+//       const start = input.selectionStart ? input.selectionStart - 1 : -1;
+//       input.value = value;
+//       if (start>=0) input.selectionStart = input.selectionEnd = start;
+//     }
+//   }
+
+
+  count_down(count){
+    debugger;
+console.log
+    // let c=+1;
+    this.charcount=this.charcount + 1;
+    if(this.charcount==count){
+    event.preventDefault();
+    event.stopPropagation();
+    }
+        // console.log(count,event);
+   
+  }
 
   get f() { return this._registerService.mySaveForm.controls }
 
@@ -585,6 +637,9 @@ export class NewRegistrationComponent implements OnInit {
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
   onSubmit() {
+
+   
+
     let reg = this.registerObj.RegId;
     this.isLoading = 'submit';
     if (!reg) {
@@ -625,14 +680,17 @@ export class NewRegistrationComponent implements OnInit {
       console.log(m_data);
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-              this.addEmptyRow();
-            }
-          });
+          this.myFunction("Register Data save Successfully !");
+          this._matDialog.closeAll();
+          // Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
+          //   if (result.isConfirmed) {
+          //     this._matDialog.closeAll();
+              
+          //   }
+          // });
         } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
+          this.myFunction("Register Data  not saved', 'error !");
+          // Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
       });
     }
@@ -670,11 +728,8 @@ export class NewRegistrationComponent implements OnInit {
       }
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Register Data Updated Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }
-          });
+          this.myFunction("Register Data Updated Successfully !");
+          this._matDialog.closeAll();
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
@@ -747,5 +802,14 @@ export class NewRegistrationComponent implements OnInit {
   onChangeIsactive(SiderOption){
    this.IsCharity= SiderOption.checked
     console.log(this.IsCharity);
+  }
+
+   myFunction(s) {
+    this.snackmessage=s;
+    console.log(s);
+    console.log(this.snackmessage);
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { BrowseIpdreturnadvanceReceipt } from '../ip-refundof-advance/ip-refundof-advance.component';
@@ -14,12 +14,15 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DatePipe } from '@angular/common';
 import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
 import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-ip-refundof-bill',
   templateUrl: './ip-refundof-bill.component.html',
-  styleUrls: ['./ip-refundof-bill.component.scss']
+  styleUrls: ['./ip-refundof-bill.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPRefundofBillComponent implements OnInit {
 
@@ -229,7 +232,7 @@ export class IPRefundofBillComponent implements OnInit {
     debugger;
     console.log(this.selectedAdvanceObj.RegNo);
     var m_data = {
-      "RegNo": 90069// this.selectedAdvanceObj.RegNo
+      "BillNo": this.selectedAdvanceObj.RegNo || 90069
       
     }
     // this.isLoadingStr = 'loading';

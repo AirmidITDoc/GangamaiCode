@@ -424,7 +424,7 @@ console.log(contact);
       const dialogRef = this._matDialog.open(OPRefundOfBillComponent,
         {
           maxWidth: "85%",
-          height: '650px',
+          height: '760px',
           width: '100%',
         });
       dialogRef.afterClosed().subscribe(result => {

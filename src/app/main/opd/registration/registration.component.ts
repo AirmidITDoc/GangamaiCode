@@ -117,15 +117,7 @@ export class RegistrationComponent implements OnInit {
           width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
-      this._registrationService.getregisterList(this.D_data1).subscribe(reg=> {
-          this.dataArray = reg;
-          // console.log( this.dataArray);
-          this.getregistrationList();
-          this.sIsLoading = '';
-        },
-        error => {
-          this.sIsLoading = '';
-        });
+    this. getregistrationList();
     });
   }
 

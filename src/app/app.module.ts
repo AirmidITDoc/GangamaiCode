@@ -27,6 +27,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { JwtInterceptor } from "./core/jwt.interceptor";
 // import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
+import { CertificateComponent } from './main/Mrd/certificate/certificate.component';
 
 const appRoutes: Routes = [
     {
@@ -76,6 +77,12 @@ const appRoutes: Routes = [
     },
 
     {
+        path: "nursingstation",
+        loadChildren: () =>
+            import("./main/nursingstation/nursingstation.module").then((m) => m.NursingstationModule),
+    },
+
+    {
         path: '**',
         redirectTo: 'auth/login'
     }
@@ -106,6 +113,7 @@ class PickDateAdapter extends NativeDateAdapter {
 @NgModule({
     declarations: [
         AppComponent,
+        // CertificateComponent,
 
 
     ],

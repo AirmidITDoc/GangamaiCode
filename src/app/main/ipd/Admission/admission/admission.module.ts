@@ -42,8 +42,9 @@ import { EditAdmissionComponent } from './edit-admission/edit-admission.componen
 import { ViewAdmissionComponent } from './view-admission/view-admission.component';
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
-
-//import { ViewIPDBillComponent } from './ipd-bil-browse-list/view-ipdbill/view-ipdbill.component';
+    
+    
+// import { DropDownList } from '@syncfusion/ej2-dropdowns';
 
 const routes: Routes = [
   { 
@@ -59,7 +60,8 @@ const routes: Routes = [
     EditAdmissionComponent,
     ViewAdmissionComponent,
     MLCInformationComponent,
-    SubCompanyTPAInfoComponent
+    SubCompanyTPAInfoComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -101,7 +103,8 @@ const routes: Routes = [
     MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
+    // DropDownList
         
   ],
   providers: [

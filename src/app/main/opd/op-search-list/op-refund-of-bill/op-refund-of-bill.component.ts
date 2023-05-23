@@ -459,7 +459,7 @@ getPrint(el) {
  
   var D_data = {
    //"RefundId":el,
-    "RefundId":101,
+    "RefundId":el,
   }
   console.log(el);
   let printContents; 

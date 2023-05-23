@@ -513,6 +513,7 @@ export class BrowseIpdreturnadvanceReceipt
      Age:number;
      AgeYear:number;
      IPDNo:any;
+     BillDate:any;
     /**
      * Constructor
      *
@@ -556,6 +557,7 @@ export class BrowseIpdreturnadvanceReceipt
             this. HospitalAddress = BrowseIpdreturnadvanceReceipt. HospitalAddress || '';
            this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
+           this.BillDate=BrowseIpdreturnadvanceReceipt.BillDate || '';
         }
 
     }

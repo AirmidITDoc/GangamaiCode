@@ -14,6 +14,8 @@ import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { MatStepper } from '@angular/material/stepper';
 import { fuseAnimations } from '@fuse/animations';
+import { SearchPageComponent } from 'app/main/opd/op-search-list/search-page/search-page.component';
+import { IPDSearcPatienthComponent } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 
 @Component({
   selector: 'app-new-admission',
@@ -799,6 +801,13 @@ export class NewAdmissionComponent implements OnInit {
     }
   }
 
+  item1:any;
+  item2:any;
+  onClick(event: any) {
+    this.item1 = "";
+    event.stopPropagation();
+}
+
   getHospitalList() {
     this._AdmissionService.getHospitalCombo().subscribe(data => {
       this.HospitalList = data;
@@ -946,10 +955,10 @@ export class NewAdmissionComponent implements OnInit {
   }
   // RegistrationListComponent
   searchRegList() {
-    // const dialogRef = this._matDialog.open(RegistrationListComponent,
+    // const dialogRef = this._matDialog.open(IPDSearcPatienthComponent,
     //   {
     //     maxWidth: "80vw",
-    //     height: '530px', width: '100%',
+    //     height: '630px', width: '100%',
     //   });
 
     // dialogRef.afterClosed().subscribe(result => {

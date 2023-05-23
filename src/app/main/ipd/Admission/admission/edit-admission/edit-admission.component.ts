@@ -403,10 +403,10 @@ company=this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0;
     debugger;
     var m_data = {
       "admissionNewUpdate": {
-        "AdmissionID": this.AdmissionID,// this._AdmissionService.mySaveForm.get('AdmissionId').value || 0,
+        "AdmissionId": this.AdmissionID,// this._AdmissionService.mySaveForm.get('AdmissionId').value || 0,
         "AdmissionDate": this.dateTimeObj.date,// this._AdmissionService.mySaveForm.get('AdmissionDate').value || "2021-03-31",
         "AdmissionTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
-         "PatientTypeID": this._AdmissionService.mySaveForm.get('PatientTypeID').value.PatientTypeId || 0,
+         "PatientTypeId": this._AdmissionService.mySaveForm.get('PatientTypeID').value.PatientTypeId || 0,
          "HospitalId":0,
         "CompanyId":company,// this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0,
         "TariffId": this._AdmissionService.mySaveForm.get('TariffId').value.TariffId || 0,
@@ -424,7 +424,7 @@ company=this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0;
         "RefByName" :0,// this._AdmissionService.mySaveForm.get('SubCompanyId').value.SubCompanyId || 0,
         "isUpdatedBy" :  this.accountService.currentUserValue.user.id,
         "SubTpaComId" : subcompany,// this._AdmissionService.mySaveForm.get('SubCompanyId').value.SubCompanyId || 0,
-     
+        "IsPackagePatient":0
       }
 
     }

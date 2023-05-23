@@ -152,7 +152,7 @@
                   <mat-label>Age (Y)</mat-label>
                   <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
                     [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" required
-                    type="number" maxlength="4">
+                    type="number" appValidateCharlength="4">
                   <mat-error
                     *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                     enter Age Year </mat-error>
@@ -163,7 +163,7 @@
                   <mat-label>Age (M)</mat-label>
                   <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
                     [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
-                    maxlength="2">
+                    appValidateCharlength="2">
                   <mat-error
                     *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
                     Please enter Age Month </mat-error>
@@ -173,7 +173,7 @@
                   <mat-label>Age (D)</mat-label>
                   <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
                     [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number"
-                    maxlength="2">
+                    appValidateCharlength="2">
                   <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
                     Please enter Age Day </mat-error>
                 </mat-form-field>
@@ -189,8 +189,8 @@
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>AadharCardNo Number</mat-label>
                   <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCardNo Number" matInput
-                    required [(ngModel)]="registerObj.AadharCardNo" maxlength="12" [maxlength]="12" minlength="12"
-                    required="required" type="number" value="987665868800">
+                    required [(ngModel)]="registerObj.AadharCardNo" appValidateCharlength="12" required="required"
+                    type="number" value="987665868800">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
                     digits AadharCardNo number is
@@ -262,18 +262,6 @@
                     enter Address </mat-error>
                 </mat-form-field>
 
-                <!-- <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Area Name</mat-label>
-                    <mat-select formControlName="AreaId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="areaFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let element of filteredArea | async" [value]="element">
-                        {{element.AreaName}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field> -->
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Area Name</mat-label>
@@ -332,7 +320,7 @@
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Phone Number</mat-label>
                   <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
-                    [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
+                    [(ngModel)]="registerObj.PhoneNo" appValidateCharlength="10" type="number" value="9876658688">
                   <!-- <mat-error class="error"
                       *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
                       number is required
@@ -342,7 +330,8 @@
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Mobile Number</mat-label>
                   <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number">
+                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number"
+                    appValidateCharlength="10">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is
@@ -472,15 +461,14 @@
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
 
                   <mat-label>Ref Doctor Name</mat-label>
-                  <button mat-button><mat-icon style="width: 3px;margin-left:2px;"
-                      (click)="DocSelectdelete()">close</mat-icon></button>
 
-                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect (selectionChange)="onDoctorOneChange($event.value)">
+                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
+                    (selectionChange)="onDoctorOneChange($event.value)">
                     <!-- (selectionChange)="onDoctorOneChange($event.value)" -->
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                       
+
                     </mat-option>
 
                     <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
@@ -490,10 +478,13 @@
 
                   </mat-select>
 
-                </mat-form-field>
-                <!-- <button mat-raised-button (click)="DocSelectdelete()"> <mat-icon
-                    style="width:2px;">close</mat-icon></button> -->
+                
 
+                  <!-- <button mat-button *ngIf="element" matSuffix mat-icon-button aria-label="Clear" 
+                  (click)="element=undefined">
+                  <mat-icon>close</mat-icon>
+                </button> -->
+                </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Purpose</mat-label>

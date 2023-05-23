@@ -620,7 +620,7 @@ public updateIPDDischargSummary(employee)
   public getWardNameCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_WardClassMasterForCombo", {})
   }
-  public getAdvanceList(employee)
+  public getAdvanceallList(employee)
   {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
   }

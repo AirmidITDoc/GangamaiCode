@@ -12,11 +12,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SamplecollectionEntryService } from 'app/main/pathology/samplecollection-entry.service';
-import { AdvanceDataStored } from 'app/main/ipd/ip-search-list/advance';
-import { CreateUserService } from '../create-user/create-user.service';
+// import { SamplecollectionEntryService } from 'app/main/pathology/samplecollection-entry.service';
+// import { AdvanceDataStored } from 'app/main/ipd/ip-search-list/advance';
+// import { CreateUserService } from '../create-user/create-user.service';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { AdministrationService } from '../administration.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 @Component({
   selector: 'app-myprofile',

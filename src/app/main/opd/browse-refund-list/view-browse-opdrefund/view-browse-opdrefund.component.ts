@@ -19,11 +19,11 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 })
 export class ViewBrowseOPDRefundComponent implements OnInit {
 
-  selectedAdvanceObj: BrowseOPDBill;
+  selectedAdvanceObj: RefundMaster;
   dataSource = new MatTableDataSource<RefundMaster>();
 
 rptData: any;
-reportPrintObj: BrowseOPDBill;
+reportPrintObj: RefundMaster;
 SummaryData:any=[];  
   
 subscriptionArr: Subscription[] = [];
@@ -71,7 +71,7 @@ outputWords=''
      this.subscriptionArr.push(
        this._BrowseOpdRefundService.getRefundBrowsePrint(D_data).subscribe(res => {
          if(res){
-         this.reportPrintObj = res[0] as BrowseOPDBill;
+         this.reportPrintObj = res[0] as RefundMaster;
         //  debugger;
          console.log(this.reportPrintObj);
         }
@@ -89,128 +89,4 @@ outputWords=''
 
 
 }
-
-
-export class BrowseOPDBill
-{
-    BillNo: Number;
-    RegId: number;
-    PatientName: string;
-    FirstName: string;
-    Middlename: string; 
-    LastName: string;
-    TotalAmt: number;
-    ConcessionAmt : number;
-    NetPayableAmt: number;
-     BillDate:any;
-     PaymentDate:any;
-    OPD_IPD_ID: number;
-    IsCancelled: boolean;
-    OPD_IPD_Type: number;
-    PBillNo: string;
-    BDate: Date;
-    PaidAmount: number;
-    RefundNo:number;
-    VisitDate:any;
-    PaymentId :number;
-    RegNo:number;
-    GenderName:string;
-    AgeYear:number;
-    RefundAmount:number;
-    BillAmount:number;
-    RefundId:number;
-    Remark: string;
-    AddedBy:string;
-    OPDNo:any;
-    ConsultantDoctorName:any;
-    
-    /**
-     * Constructor
-     *
-     * @param BrowseOPDBill
-     */
-    constructor(BrowseOPDBill) {
-        {
-            this.BillNo = BrowseOPDBill.BillNo || '';
-            this.RegId = BrowseOPDBill.RegId || '';
-            this.PatientName = BrowseOPDBill.PatientName || '';
-            this.FirstName = BrowseOPDBill.FirstName || '';
-            this.Middlename = BrowseOPDBill.MiddleName || '';
-            this.LastName = BrowseOPDBill.LastName || '';
-            this.TotalAmt = BrowseOPDBill.TotalAmt || '';
-            this.ConcessionAmt = BrowseOPDBill.ConcessionAmt || '';
-            this.NetPayableAmt = BrowseOPDBill.NetPayableAmt || '';
-            this.BillDate = BrowseOPDBill.BillDate || '';
-            this.OPD_IPD_ID = BrowseOPDBill.OPD_IPD_ID || '';
-            this.IsCancelled = BrowseOPDBill.IsCancelled || '';
-            this.OPD_IPD_Type = BrowseOPDBill.OPD_IPD_Type || '';
-            this.PBillNo = BrowseOPDBill.PBillNo || '';
-            this.BDate = BrowseOPDBill.BDate || '';
-            this.PaidAmount = BrowseOPDBill.PaidAmount || '';
-            this.RefundNo= BrowseOPDBill.RefundNo || '';
-            this.PaymentDate= BrowseOPDBill.PaymentDate || '';
-            this. PaymentId = BrowseOPDBill.PaymentId || '';
-            this.RegNo= BrowseOPDBill.RegNo || '';
-            this.GenderName= BrowseOPDBill.GenderName || '';
-            this.AgeYear=BrowseOPDBill.AgeYear || 0;
-            this.RefundAmount= BrowseOPDBill.RefundAmount || '';
-            this.BillAmount= BrowseOPDBill.BillAmount || '';
-            this. RefundId= BrowseOPDBill.RefundId || '';
-            this.Remark= BrowseOPDBill.Remark || '';
-            this.AddedBy= BrowseOPDBill.AddedBy || '';
-            this.OPDNo= BrowseOPDBill.OPDNo || 0;
-            this.ConsultantDoctorName = BrowseOPDBill.ConsultantDoctorName || '';
-            this.VisitDate =BrowseOPDBill.VisitDate || '';
-        }
-    }
-}
-
-
-// export class RefundMaster {
-//   RefundId: number;
-//   RegId: number;
-//   RefundDate: Date;
-//   RefundAmount: number;
-//   PBillNo: number;
-//   PatientName: Date;
-//   Total: number;
-//   PaymentId: number;
-//   PaymentDate: any;
-//   CashPayAmount:number;
-//   ChequePayAmount:number;
-//   CardPayAmount:number;
-//   TransactionType:number;
-//   PhoneNo:number;
-//   Remark:string;
-//   GenderName:string;
-//   AddedBy:string;
-//   AgeYear:number;
-//   BillDate:any;
-//   OPDNO:any;
-
-//   constructor(RefundMaster) {
-//     {
-//       this.RefundId = RefundMaster.RefundId || 0;
-//       this.RegId = RefundMaster.RegId || '';
-//       this.BillDate = RefundMaster.BillDate || '';
-//       this.RefundDate = RefundMaster.RefundDate || '';
-//       this.RefundAmount = RefundMaster.RefundAmount || 0;
-//       this.PatientName = RefundMaster.PatientName || '';
-//       this.Total = RefundMaster.Total || 0 ;
-//       this.PBillNo = RefundMaster.PBillNo || '';
-//       this.PaymentId = RefundMaster.PaymentId || 0;
-//       this.PaymentDate = RefundMaster.PaymentDate || 0;
-//       this.CashPayAmount = RefundMaster.CashPayAmount || 0 ;
-//       this.ChequePayAmount = RefundMaster.ChequePayAmount || 0;
-//       this.CardPayAmount = RefundMaster.CardPayAmount || 0;
-//       this.TransactionType = RefundMaster.TransactionType || 0;
-//       this.PhoneNo = RefundMaster.PhoneNo || 0;
-//       this.Remark = RefundMaster.Remark || '';
-//       this.GenderName = RefundMaster.GenderName || '';
-//       this.AddedBy = RefundMaster.AddedBy || '';
-//       this.AgeYear=RefundMaster.AgeYear || 0; 
-//       this.OPDNO=RefundMaster.OPDNO || '';
-//     }
-//   }
-// }
 

@@ -1,0 +1,686 @@
+
+.mat-row, .mat-footer-row {
+    min-height: 28px;
+    height: 30px;
+}
+app-ip-billing{
+
+    // .tables-contianer .data-table .mat-header-row {
+    //     width: 1345px;
+    //     max-width: 1345px;
+    //     min-width: 1345px;  
+    //     min-height: 25px;     
+    // }
+    // .tables-contianer .data-table .mat-row {
+    //     width: 1245px;
+    //     max-width: 1245px;
+    //     min-width: 1245px;           
+    // }
+
+    .mat-card{
+        width: 100%;
+       
+    }
+    
+    .mat-table {
+        height: 410px !important;
+    }
+
+
+    .service-table1{
+       
+        .mat-column-ServiceName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            overflow: hidden !important;
+            display: inline-block;
+            justify-content:left;
+            margin-right: 20px; 
+            
+        }
+        .mat-column-Price {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            justify-content:left;
+            text-align: left;
+        }
+        .mat-column-Qty {
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
+            justify-content:center;
+        }
+
+        .mat-header-row {
+            width:300px;
+            max-width: 300px;
+            min-width: 300px;  
+            min-height: 20px;     
+        }
+        .mat-row {
+            width:300px;
+            max-width: 300px;
+            min-width: 300px;            
+        }
+    }
+    
+   .mat-header-row {
+        width:100%;
+        max-width: 1600px;
+        min-width: 1600px;  
+        height: 10px; 
+       background-color: #039be5 !important ;   
+    }
+    .mat-row {
+        width:100%;
+        max-width: 1600px;
+        min-width: 1600px;        
+    }
+    .mat-column-checkbox {
+        width:60px;
+        max-width: 60px;
+        min-width: 60px;
+    }
+    .mat-column-ChargesDate {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ServiceName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        display: inline-block;
+        justify-content:left; 
+        margin-top: 11px;;
+    }
+    .mat-column-Price {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        justify-content:left;
+        text-align: left;
+    }
+    .mat-column-Qty {
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        justify-content:center;
+    }
+    .mat-column-TotalAmt {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        justify-content:flex-end;
+        margin-right: 20px;
+    }
+    .mat-column-DiscPer {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-DiscAmt {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        justify-content:flex-end;
+    }
+    .mat-column-NetAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: center;
+        justify-content:flex-end;
+        margin-right: 20px;
+    }
+    .mat-column-DoctorName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+    }
+    .mat-column-ClassId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-ClassName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        display: inline-block;
+        justify-content:left; 
+        margin-right: 10px;
+    }
+    .mat-column-ChargesAddedName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    }
+    
+    // .data-table .mat-form-field {
+    //     width: 54px !important;
+    // }
+    
+    .mat-data-table.mat-form-field-appearance-legacy .mat-form-field-infix{
+        padding: 0.4375em 0px 0.4375em 5px !important;
+        width: 90%;
+    }
+    
+    .matdate-picker .mat-form-field-appearance-fill .mat-form-field-infix {
+        padding: 0.25em 0 0px 0 !important;
+        position: relative;
+        top: -5px;
+    }
+    
+    .matdate-picker .mat-form-field-underline {
+        display: none;
+    }
+    
+    .matdate-picker1 .mat-form-field-appearance-fill .mat-form-field-infix {
+        padding: 0.25em 0 0px 0 !important;
+        position: relative;
+        top: -5px;
+    }
+    
+    .matdate-picker1 .mat-form-field-underline {
+        display: none;
+    }
+    
+    .matdate-picker1 .mat-form-field-suffix {
+        position: relative;
+        top: -5px;
+    }
+    
+    .matdate-picker .mat-form-field-suffix {
+        padding: 0.25em 0 0px 0 !important;
+        position: relative;
+        top: -5px;
+    }
+    
+    .matdate-picker .mat-form-field-label-wrapper {
+        top: -17px !important;
+    }
+    
+    .matdate-picker1 .mat-form-field-label-wrapper {
+        top: -15px !important;
+    }
+    
+    .matdate-picker .mat-input-element, .matdate-picker1 .mat-input-element  {
+        position: relative;
+        top: -5px;
+    }
+    // .mat-form-field-underline :hover {
+    //     display: block;
+    // }
+    
+    .data-table.mat-form-field-underline:hover {
+        display: none;
+    }
+    
+    // .data-table .mat-cell, .data-table .mat-header-cell {
+    //     justify-content: center;
+    // }
+    
+    // .mat-dialog-container {
+    //     padding: 10px !important;
+    // }
+    
+    // .mat-form-field-wrapper {
+    //     padding-bottom: 0 !important;
+    // }
+    
+    // .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    //     margin: 0 !important;
+    // }
+    
+    .content-div {
+        display: flex;
+        padding: 0 16px;
+    }
+    
+    .example-container {
+        width: 100%;
+    }
+    
+    .mat-drawer {
+        width: 300px;
+    }
+    
+    .mat-form-field {
+        width: 92%;
+    }
+    
+    .header-row {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 15px;
+        align-items: center;
+       // background-color: #e1e2e2;
+        // margin-bottom: 20px;
+    }
+    
+    .heading-container {
+        // display: flex;
+        // flex-direction: row;
+        // font-size: 15px;
+        // align-items: center;
+        width: 100%;
+        // justify-content: space-between;
+    }
+    
+    .header-content {
+        display: flex;
+        align-items: center;
+        // justify-content: space-between;
+    }
+    
+    .register, .register2, .register3, .register4 {
+        margin: 0 20px;
+    }
+    
+    .label-value {
+        margin-left: 10px;
+    }
+    
+    .bill-info {
+        padding: 9px;
+        background-color: #4f505030;
+        height: 40px;
+        width: fit-content;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+    
+    .mat-expansion-panel {
+        margin: 0 5px 0px 5px !important;
+        background-color: #e1e2e2 !important;
+        margin: 0 !important;
+    }
+    
+    .mat-expansion-panel-body {
+        // padding: 0 24px 16px;
+        padding: 20px 24px !important;
+        margin: 0 5px 20px 5px;
+        // height: 200px;
+    }
+    
+    .tables-contianer {
+        display: flex;
+        flex-direction: row;
+        padding: 0 15px;
+        @media (min-width: 100px) and (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+    .header-labels {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .body-content {
+        display: flex;
+        flex-direction: row;
+        // justify-content: space-between;
+        margin: 3px 0;
+    }
+    
+    .top-heading {
+        display: flex;
+        padding: 10px;
+        align-items: center;
+        // background-color: ;
+    }
+    
+    .ip-billing {
+        font-size: 25px;
+        font-weight: 500;
+        color: #48a348;
+    }
+    .mat-card {
+        padding: 5px 5px !important;
+        width: 50%;
+        overflow: auto;
+    }
+    
+    .body-content .mat-form-field-wrapper, .header-content .mat-form-field-wrapper {
+        padding-bottom: 0 !important;
+    }
+    
+    .header-content .mat-form-field-flex {
+        height: 35px !important;
+    }
+    
+    .matdate-picker .mat-form-field-flex {
+        height: 35px !important;
+    }
+    
+    .reg-field .mat-form-field-flex {
+        width: 110px;
+        margin-right: 10px;
+    }
+    
+    .admsn-field .mat-form-field-flex {
+        width: 110px;
+        margin-right: 10px;
+    }
+    
+    .patient-field .mat-form-field-flex {
+        width: 230px;
+        margin-right: 10px;
+    }
+    
+    .date-field .mat-form-field-infix {
+        width: 180px !important;
+    }
+    
+    .filter-date-field .mat-form-field-infix {
+        width: 180px !important;
+    }
+    
+    .filter-date-field .mat-form-field-flex {
+        height: 42px;
+    }
+    
+    .panel-body {
+        margin-top: 20px;
+        // padding: 0 15px;
+    }
+    
+    // .panel-body-maxwidth {
+    //     // width: 75%;
+    // }
+    
+    // .panel-body-minwidth {
+    //     // width: 55%;
+    // }
+    
+    
+    .body-heading span {
+        font-size: 20px;
+        color: #48a348;
+        font-weight: 600;
+    }
+    
+    .body-heading {
+        margin-bottom: 5px;
+    }
+    
+    .bill-amt {
+        width: 50%;
+        display: flex;
+        // justify-content: space-between;
+        align-items: center;
+    }
+    
+    .panel-labels {
+        width: 150px;
+    }
+    
+    .amount-section-values .labels-value {
+        border: 1px solid gray;
+        padding: 4px;
+        background-color: white;
+        text-align: right;
+        width: 110px;
+    }
+    
+    .label-box1 {
+        width: 22%;
+        height: 27px;
+        border: 1px solid gray;
+        padding: 4px;
+        background-color: white;
+        margin-right: 3px;
+    }
+    
+    .label-box2 {
+        width: 41%;
+        height: 27px;
+        border: 1px solid gray;
+        padding: 4px;
+        background-color: white;
+        margin-right: 5px;
+    }
+    
+    .row-container {
+        display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+    }
+    
+    .amount-section {
+        width: 25%;
+    }
+    
+    .amount-section-values {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    
+    .admini-section {
+        width: 40%;
+       // padding: 0 10px 0 25px;
+    }
+    
+    .concession-section {
+        display: flex;
+        align-items: center;
+    }
+    
+    .concession-remark {
+        width: 37%;
+        text-align: right;
+        margin-right: 6px;
+    }
+    
+    .concession-value, .remark-value {
+        width: 63%;
+    }
+    
+    .phar-ip {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    
+    .phar-label, .ip-label {
+        width: 30%;
+        text-align: right;
+        margin-right: 6px;
+    }
+    
+    .phar-ip .labels-value, .ip-label .labels-value {
+        width: 70%;
+    }
+    
+    .redio-checkbox {
+        display: flex;
+    }
+    
+    // .redio-container {
+    //     width: 175px;
+    // }
+    
+    .buttons {
+        // padding-left: 25px;
+        padding-top: 5px;
+        text-align: right;
+    }
+    
+    .interim-button, .save-button, .close-button {
+        // width: 30%;
+        // height: 32px;
+        cursor: pointer;
+        color: white !important;
+        font-size: 15px;
+        border: 2px;
+        border-radius: 3px;
+    }
+    
+    .interim-button, .save-button {
+        margin-right: 18px;
+    }
+    
+    .interim-button {
+        background-color: #039BE5 !important;
+    }
+    
+    .save-button {
+        background-color: #48a348 !important;
+    }
+    
+    .close-button {
+        background-color: grey !important;
+    }
+    
+    .labels-style {
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .mat-checkbox-label {
+        font-size: 12px;
+        // font-weight: bold;
+    }
+    
+    .sidenav-save.mat-raised-button {
+        width: 92%;
+        background-color: #48a348 !important;
+        color: white !important;
+        font-size: 16px;
+    }
+    
+    .mat-drawer-inner-container {
+      //  padding: 10px 0 10px 17px !important;
+    }
+    
+    ::ng-deep .mat-tab-label-active {
+        background-color: #bec4be!important;
+        opacity: 1!important;
+        color: white;
+    }
+    
+    .mat-tab-header {
+        margin: 5px 15px;
+        width: fit-content;
+        border: 1px solid #aeb0b1 !important;
+        border-radius: 5px;
+    }
+    
+    .mat-ink-bar {
+        display: none;
+    }
+    
+    .mat-tab-label-active {
+        background-color: #9ea59e !important;
+        border-radius: 5px;
+    }
+    
+    .mat-tab-label {
+        height: 25px !important;
+        min-width: 128px !important;
+        color: black !important;
+        // font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .mat-paginator-container {
+        justify-content: flex-start !important;
+    }
+    
+    .table-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        margin-top: 7px;
+        margin-bottom:10px;
+    }
+    
+    .net-amt {
+        position: relative;
+        //right: 140px;
+        margin-left: 35px;
+    }
+    
+    .net-amt-label {
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .net-amt-value {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    
+    
+    // .row-yellow {
+    //     background-color: yellow !important;
+    // }
+    
+    // .register-no {
+    //     flex-direction: column;
+    //     display: flex;
+    //     border: 1px solid #96a19a;
+    //     border-radius: 4px;
+    //     padding: 5px;
+    // }
+    
+    // .values-label{
+    //     font-size: 16px;
+    //     text-align: right;
+    //     color: #2e772e;
+    //     font-weight: 700;
+    // }
+    
+    .mat-radio-outer-circle, .mat-radio-inner-circle, .mat-radio-container {
+        height: 15px;
+        width: 15px;
+    }
+    
+    .concs-rsn .mat-form-field-underline {
+        display: none;
+    }
+ 
+
+    .mat-drawer-content {
+        position: relative;
+        z-index: 1;
+        display: block;
+       // height: 100vh;
+    }
+
+    .backgroundBlur{
+        text-align: center;
+        background-color: #818181;
+        position: absolute;
+        z-index: 1000;
+        height: 430px;
+        opacity: 0.5;
+         width: 100%;  
+        
+    }
+  
+   
+
+   
