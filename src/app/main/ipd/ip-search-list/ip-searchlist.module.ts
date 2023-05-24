@@ -50,9 +50,6 @@ import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
 import { IPAdvancePaymentComponent } from './ip-advance-payment/ip-advance-payment.component';
 import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { IPBillingComponent } from './ip-billing/ip-billing.component';
-import { InterimBillComponent } from './interim-bill/interim-bill.component';
-import { IPDSearcPatienthComponent } from '../ipdsearc-patienth/ipdsearc-patienth.component';
 
 
 const routes: Routes = [
@@ -74,9 +71,7 @@ const routes: Routes = [
       IPAdvancePaymentComponent,
       IPRefundofAdvanceComponent,
       IPRefundofBillComponent,
-      IPBillingComponent,
-      InterimBillComponent,
-      IPDSearcPatienthComponent
+     
     ],
     imports: [
         RouterModule.forChild(routes),

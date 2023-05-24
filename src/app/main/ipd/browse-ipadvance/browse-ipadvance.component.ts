@@ -57,7 +57,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
-   this.onShow_IpdAdvance();
+   
   }
 
   ngOnChanges(changes: SimpleChanges) {

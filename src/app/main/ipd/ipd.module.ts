@@ -43,7 +43,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { AdmissionComponent } from './Admission/admission/admission.component';
 import { IPSearchListComponent } from './ip-search-list/ip-search-list.component';
 import { BedTransferComponent } from './ip-search-list/bed-transfer/bed-transfer.component';
 import { DischargeComponent } from './ip-search-list/discharge/discharge.component';
@@ -55,7 +54,6 @@ import { IPRefundofAdvanceComponent } from './Refund/ip-refund/ip-refundof-advan
 import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.component';
 import { IPBrowseRefundofBillComponent } from './Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.component';
-import { IPBrowseallListComponent } from './ip-browseall-list/ip-browseall-list.component';
 import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
@@ -63,7 +61,10 @@ import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth
 
 @NgModule({
   declarations: [IPBillBrowseListComponent, 
-    IPSearchListComponent, IPBillBrowseListComponent, AdmissionComponent, BedTransferComponent, DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, IPSettlementComponent, IPBrowseRefundofBillReceiptComponent, ViewRefundofBillComponent, IPRefundofAdvanceReceiptComponent, ViewRefundofAdvanceComponent, IPRefundComponent, IPRefundodAdvanceComponent, IPRefundofBillComponent, IPRefundofAdvanceComponent, IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPBrowseallListComponent, MLCComponent, SubCompanyTPAComponent, IPDSearcPatienthComponent],
+    IPSearchListComponent, IPBillBrowseListComponent, BedTransferComponent,
+     DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, 
+     IPSettlementComponent, IPRefundComponent, IPRefundofAdvanceComponent, 
+     IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPDSearcPatienthComponent],
   imports: [
     CommonModule,
     MatButtonModule,

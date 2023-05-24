@@ -103,7 +103,7 @@ Advavilableamt:any;
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-      this._IpSearchListService.getAdvanceallList(m_data).subscribe(Visit => {
+      this._IpSearchListService.getAdvanceList(m_data).subscribe(Visit => {
         this.dataSource.data = Visit as AdvanceDetail[];
 
         console.log(this.dataSource.data);
@@ -341,7 +341,12 @@ debugger;
           let re = new RegExp(reString, "g");
           this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-     
+        // this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
+        // this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
+        // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform(this.reportPrintObj.AdmissionDate));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+       
         this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
         this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));

@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { Admission } from '../Admission/admission/admission.component';
+
 import { AdvanceDataStored } from '../advance';
 import { IPSearchListService } from './ip-search-list.service';
 import { Router } from '@angular/router';
@@ -19,7 +19,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { IPBillingComponent } from './ip-billing/ip-billing.component';
+import { Admission } from '../Admission/admission/admission.component';
+
 
 
 @Component({
@@ -563,47 +564,47 @@ debugger;
          //this.getAdmittedPatientList();
        });
     }
-    else if (m == "Bill") {
+//     else if (m == "Bill") {
 
-      debugger;
-// console.log(m);
-      console.log(" This is for refund of Bill pop : " + m);
-      let xx = {
-        RegNo: contact.RegNo,
-        AdmissionID: contact.AdmissionID,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        IsDischarged: contact.IsDischarged,
-        IPDNo:contact.IPDNo,
-        BedName:contact.BedName,
-        WardName:contact.RoomName,
-        CompanyId:contact.CompanyId,
-        IsBillGenerated:contact.IsBillGenerated,
-        UnitId:contact.HospitalID
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      console.log(this.advanceDataStored.storage);
-     if(!contact.IsBillGenerated){
+//       debugger;
+// // console.log(m);
+//       console.log(" This is for refund of Bill pop : " + m);
+//       let xx = {
+//         RegNo: contact.RegNo,
+//         AdmissionID: contact.AdmissionID,
+//         PatientName: contact.PatientName,
+//         Doctorname: contact.Doctorname,
+//         AdmDateTime: contact.AdmDateTime,
+//         AgeYear: contact.AgeYear,
+//         ClassId: contact.ClassId,
+//         TariffName: contact.TariffName,
+//         TariffId: contact.TariffId,
+//         IsDischarged: contact.IsDischarged,
+//         IPDNo:contact.IPDNo,
+//         BedName:contact.BedName,
+//         WardName:contact.RoomName,
+//         CompanyId:contact.CompanyId,
+//         IsBillGenerated:contact.IsBillGenerated,
+//         UnitId:contact.HospitalID
+//       };
+//       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+//       console.log(this.advanceDataStored.storage);
+//      if(!contact.IsBillGenerated){
 
-      console.log(this.advanceDataStored.storage);
-      const dialogRef = this._matDialog.open(IPBillingComponent,
-        {
+//       console.log(this.advanceDataStored.storage);
+//       const dialogRef = this._matDialog.open(IPBillingComponent,
+//         {
 
-          maxWidth: "110vw",
-          height: '890px',    //maxHeight: "170vh",
-          // width: '100%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
+//           maxWidth: "110vw",
+//           height: '890px',    //maxHeight: "170vh",
+//           // width: '100%',
+//         });
+//       dialogRef.afterClosed().subscribe(result => {
+//         console.log('The dialog was closed - Insert Action', result);
       
-      });
-    }else{Swal.fire("Final Bill Already Generated")}
-    }
+//       });
+//     }else{Swal.fire("Final Bill Already Generated")}
+//     }
     else if (m == "Discharge") {
       debugger;
       if(!contact.IsDischarged){

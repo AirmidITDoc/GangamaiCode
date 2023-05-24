@@ -8,7 +8,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Subscription } from 'rxjs';
 import { BrowseRefundlistService } from './browse-refundlist.service';
-import { ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
+import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
 
@@ -25,7 +25,7 @@ export class BrowseRefundListComponent implements OnInit {
   // BrowseOPDBillsList: any;
   msg: any;
   sIsLoading: string = '';
-  reportPrintObj: RefundMaster;
+  reportPrintObj: BrowseIpdreturnadvanceReceipt;
   currentDate=new Date();
  // reportPrintObj: ReportPrintObj;
   subscriptionArr: Subscription[] = [];
@@ -90,6 +90,27 @@ export class BrowseRefundListComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
+  // getBrowseOPDReturnList(registrationValue){
+  //   var D_data= {
+  //     "F_Name":this._BrowseOPDRefundsService.myFilterform.get("FirstName").value || '%',
+  //     "L_Name":this._BrowseOPDRefundsService.myFilterform.get("LastName").value || '%',
+  //     "From_Dt" : this.datePipe.transform(this._BrowseOPDRefundsService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
+  //     "To_Dt" : this.datePipe.transform(this._BrowseOPDRefundsService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+  //     "Reg_No":this._BrowseOPDRefundsService.myFilterform.get("RegNo").value || 0,
+
+  //   }
+
+  //   this._BrowseOPDRefundsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit=> { 
+  //       this.dataSource.data =Visit as RefundMaster[];
+  //       this.dataSource.sort =this.sort;
+  //       this.dataSource.paginator=this.paginator;
+  //       this.sIsLoading = '';
+
+  //     },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
 
 
   onExport(exprtType){
@@ -254,7 +275,7 @@ export class BrowseRefundListComponent implements OnInit {
       
       };
   
-      this.advanceDataStored.storage = new RefundMaster(xx);
+      this.advanceDataStored.storage = new BrowseOPDBill(xx);
      
         const dialogRef = this.matDialog.open(ViewBrowseOPDRefundComponent, 
          {  maxWidth: "95vw",
@@ -291,44 +312,31 @@ export class BrowseRefundListComponent implements OnInit {
     //  return converter.toWords(e);
        }
 
-
-
   getTemplate() {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
-    this._BrowseOPDReturnsService.getTemplates(query).subscribe((resData: any) => {
-      console.log(this.printTemplate = resData[0].TempDesign);
+    this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      
       let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
-      for (let i = 0; i < keysArray.length; i++) {
+        for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+          // this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-        this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount)+' only');
-      
-        this.printTemplate =  this.printTemplate.replace('StrRemark', (this.reportPrintObj.Remark));
-        this.printTemplate =  this.printTemplate.replace('StrUserName', (this.reportPrintObj.UserName));
-  
-        this.printTemplate =  this.printTemplate.replace('StrReceiptNo', (this.reportPrintObj.ReceiptNo));
-        this.printTemplate =  this.printTemplate.replace('StrBillNo', (this.reportPrintObj.BillNo));
-        this.printTemplate =  this.printTemplate.replace('StrBillAmount', (this.reportPrintObj.PaidAmount));
-   
-        this.printTemplate =  this.printTemplate.replace('StrRefundDate', (this.reportPrintObj.RefundDate));
-        this.printTemplate =  this.printTemplate.replace('StrPaymentDate', (this.reportPrintObj.PaymentDate));
-        // this.printTemplate =  this.printTemplate.replace('StrPaidAmount', (this.reportPrintObj.PaidAmount));
-        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        console.log(this.printTemplate.replace(/{{.*}}/g, ''));
+        // this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
+        // // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(this.reportPrintObj.PaymentDate));
+        // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
+        // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
+
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
-        }, 50);
+        }, 1000);
     });
   }
-  
+
 
   transform(value: string) {
     var datePipe = new DatePipe("en-US");
@@ -363,7 +371,7 @@ getPrint(el) {
   this.subscriptionArr.push(
     this._BrowseOPDReturnsService.getRefundBrowsePrint(D_data).subscribe(res => {
       if(res){
-      this.reportPrintObj = res[0] as RefundMaster;
+      this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
       console.log(this.reportPrintObj);
      }
     
@@ -374,7 +382,6 @@ getPrint(el) {
     })
   );
 }
-
 
 
 
@@ -419,6 +426,26 @@ export class ReportPrintObj {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export class RefundMaster {
   RefundId: number;
   RegId: number;
@@ -440,10 +467,6 @@ export class RefundMaster {
   AgeYear:number;
   BillDate:any;
   OPDNO:any;
-  BillNo:any
-  UserName:String;
-  PaidAmount:number
-  ReceiptNo:String
 
   constructor(RefundMaster) {
     {
@@ -467,12 +490,6 @@ export class RefundMaster {
       this.AddedBy = RefundMaster.AddedBy || '';
       this.AgeYear=RefundMaster.AgeYear || 0; 
       this.OPDNO=RefundMaster.OPDNO || '';
-      this.BillNo = RefundMaster.BillNo || '';
-      this.UserName = RefundMaster.UserName || '';
-      this.PaidAmount=RefundMaster.PaidAmount || 0; 
-      this.ReceiptNo=RefundMaster.ReceiptNo || '';
-
-
     }
   }
 }

@@ -16,8 +16,9 @@ import { Router } from '@angular/router';
 import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { AdvancePaymentComponent } from '../advance-payment/advance-payment.component';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
+import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
+
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -649,7 +650,7 @@ export class OPBillingComponent implements OnInit {
     const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
 
 
-    const dialogRef = this._matDialog.open(AdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',
@@ -748,11 +749,11 @@ export class OPBillingComponent implements OnInit {
         console.log("Procced with Credit bill");
         console.log(this.paidamt, this.balanceamt);
 
-        // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+    //     // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
 
-        if (this.concessionDiscPer > 0) {
-          this.balanceamt = this.FinalAmt;
-        }
+    //     if (this.concessionDiscPer > 0) {
+    //       this.balanceamt = this.FinalAmt;
+    //     }
 
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
