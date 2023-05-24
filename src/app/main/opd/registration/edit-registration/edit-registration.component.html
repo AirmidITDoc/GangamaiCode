@@ -163,14 +163,14 @@
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Age (D)</mat-label>
               <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
-                [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number" min="0" appChkCharlength="2">
+                [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number" min="0">
               <!-- <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
           Please enter Age Day </mat-error> -->
             </mat-form-field>
 
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Age (M)</mat-label>
-              <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0" appChkCharlength="2"
+              <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
                 [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number">
               <!-- <mat-error
           *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
@@ -180,7 +180,7 @@
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Age (Y)</mat-label>
               <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
-                [ngModel]="registerObj.Age" (ngModelChange)="registerObj.AgeYear = $event" type="number" min="0" appChkCharlength="4">
+                [ngModel]="registerObj.Age" (ngModelChange)="registerObj.AgeYear = $event" type="number" min="0">
               <mat-error
                 *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                 enter Age Year </mat-error>
@@ -192,7 +192,7 @@
               <mat-label>Aadhar Card No.</mat-label>
               <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="Aadhar Card No."
                 [ngModel]="registerObj.AadharCardNo" (ngModelChange)="registerObj.AadharCardNo = $event" matInput
-                type="number" appChkCharlength="12">
+                type="number">
               <!-- [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('AadharCardNo').errors }" -->
               <mat-error class="error"
                 *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">
@@ -338,7 +338,7 @@
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Mobile Number</mat-label>
               <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required min="0"
-                [(ngModel)]="registerObj.MobileNo" type="number" appChkCharlength="12">
+                [(ngModel)]="registerObj.MobileNo" type="number">
               <mat-error class="error"
                 *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                 digits Mobile number is

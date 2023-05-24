@@ -2,19 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 
+
 const appRoutes: Routes = [
 
-  // {
-  //   path: "registration",
-  //   loadChildren: () => import("./department/department.module").then((m) => m.DepartmentModule),
-  // },
+ 
   {
     path: "phone-appointment",
     loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
   },
   {
     path: "appointment",
-    loadChildren: () => import("./appointment/appointment.module").then((m) => m.AppointmentModule),
+    loadChildren: () => import("./appointment/appointment.module").then((m) => m.appointmentModule),
   },
   {
     
@@ -35,6 +33,39 @@ const appRoutes: Routes = [
     // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
   },
  
+   
+  {
+    path: "registration",
+    loadChildren: () => import("./registration/registration.module").then((m) => m.RegistrationModule),
+},
+
+{
+    path: "browse-opd-bills",
+    loadChildren: () => import("./browse-opbill/browse-opbill.module").then((m) => m.BrowseOPBillModule),
+},
+{
+    path: "browse-opd-payment-receipt",
+    loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
+},
+{
+    path: "medicalrecords",
+    loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+},
+{
+    path: "bill",
+    loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+    // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
+},
+// {
+//     path: "refund",
+//     loadChildren: () =>import("./").then((m) => m.RefundofbillModule),
+    
+// },
+{
+    path: "brows-opd-refund",
+    loadChildren: () =>
+    import("./browse-refund-list/browserefund.module").then((m) => m.browserefundModule),
+},
 
 ];
 

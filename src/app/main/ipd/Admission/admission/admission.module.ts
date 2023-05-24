@@ -37,14 +37,13 @@ import { AdmissionService } from './admission.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
-import { ViewAdmissionComponent } from './view-admission/view-admission.component';
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
-    
-    
-// import { DropDownList } from '@syncfusion/ej2-dropdowns';
+import { AdmissionNewComponent } from './admission-new/admission-new.component';
+import { IPDSearcPatienthComponent } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
+
+//import { ViewIPDBillComponent } from './ipd-bil-browse-list/view-ipdbill/view-ipdbill.component';
 
 const routes: Routes = [
   { 
@@ -55,13 +54,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    AdmissionNewComponent,
     AdmissionComponent,
-    NewAdmissionComponent,
     EditAdmissionComponent,
-    ViewAdmissionComponent,
     MLCInformationComponent,
-    SubCompanyTPAInfoComponent,
-   
+    SubCompanyTPAInfoComponent,IPDSearcPatienthComponent
   ],
   imports: [
     CommonModule,
@@ -103,8 +100,7 @@ const routes: Routes = [
     MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule,
-    // DropDownList
+    MatTooltipModule
         
   ],
   providers: [

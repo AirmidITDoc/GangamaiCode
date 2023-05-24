@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OPSearhlistService {
+  fieldValidations() {
+    throw new Error('Method not implemented.');
+  }
 
   success(arg0: string) {
     throw new Error('Method not implemented.');
@@ -353,7 +356,9 @@ public getConcessionCombo()
   {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_T_AdvanceList",employee)
   }
-
+  public getBankMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+  }
 
   public getHistoryList() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{})

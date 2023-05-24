@@ -42,6 +42,9 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
+import { OPAdvanceComponent } from './op-advance/op-advance.component';
+import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
+import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
 
 
 
@@ -63,6 +66,9 @@ const routes: Routes = [
         SearchPageComponent,
         OPCasepaperComponent,
         ViewCasepaperComponent,
+        OPAdvanceComponent,
+        OPRefundofBillComponent,
+        OPAdvancePaymentComponent,
         
         
               

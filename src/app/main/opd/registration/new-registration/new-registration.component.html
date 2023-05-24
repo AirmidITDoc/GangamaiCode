@@ -161,7 +161,7 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Age (D)</mat-label>
           <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
-            [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number" maxlength="2" (keyup)="count_down($event)">
+            [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number" maxlength="2">
           <!-- <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
             Please enter Age Day </mat-error> -->
         </mat-form-field>
@@ -169,7 +169,7 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Age (M)</mat-label>
           <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
-            [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number" appChkCharlength="2">
+            [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number">
           <!-- <mat-error
             *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
             Please enter Age Month </mat-error> -->
@@ -178,7 +178,7 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Age (Y)</mat-label>
           <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
-            [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number" min="0" minlength="1" maxlength="4" appChkCharlength="4">
+            [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number" min="0" minlength="1" maxlength="4">
           <mat-error
             *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
             enter Age Year </mat-error>
@@ -310,7 +310,7 @@
          <mat-form-field appearance="outline" fxFlex>
           <mat-label>Phone Number</mat-label>
           <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput min="0"
-            [(ngModel)]="registerObj.PhoneNo" type="number" appChkCharlength="10">
+            [(ngModel)]="registerObj.PhoneNo" type="number">
           <mat-error class="error"
             *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">10 Degits
             number is required
@@ -320,7 +320,7 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Mobile Number</mat-label>
           <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required min="0"
-            [(ngModel)]="registerObj.MobileNo" type="number" appChkCharlength="1" >
+            [(ngModel)]="registerObj.MobileNo" type="number">
           <mat-error class="error"
             *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
             digits Mobile number is

@@ -16,22 +16,23 @@
 
     <div class="search-body">
         <div fxlayout="row" style="background-color: white; padding: 15px;">
-            <form [formGroup]="_SearchdialogService.myFilterform">
+            <form [formGroup]="_AdmissionService.myFilterform">
                 <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center">
 
                     <mat-form-field appearance="outline" style="margin-left:30px;">
                         <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="picker" [disabled]="Range">
+                        <mat-date-range-input [rangePicker]="picker" [disabled]="false">
                             <input matStartDate formControlName="start" placeholder="Start date">
-                            <input matEndDate formControlName="end" placeholder="End date">
+                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getOPIPPatientList()">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
+                    
                     &nbsp;
                     <mat-form-field appearance="outline"  style="width:170px;">
                         <mat-label>Reg No</mat-label>
-                        <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput>
+                        <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput >
                     </mat-form-field> &nbsp;
 
                     <mat-form-field appearance="outline" style="width:170px;">
@@ -50,11 +51,11 @@
                     </mat-form-field> &nbsp;
                    
 
-                    <!-- <mat-radio-group aria-label="Select an option" style="width:15%;padding-left:10px;padding:10px;"
+                    <mat-radio-group aria-label="Select an option" style="width:15%;padding-left:10px;padding:10px;"
                         formControlName="PatientType" (change)="getOPIPPatientList()">PatientType
                         <mat-radio-button value="1" [checked]="true"> IP </mat-radio-button>
                         <mat-radio-button value="0" > OP</mat-radio-button>
-                    </mat-radio-group> -->
+                    </mat-radio-group>
 
                     
                     <mat-radio-group aria-label="Select an option" style="width:20%;padding-left:10px;padding-top: 10px;"
@@ -202,7 +203,7 @@
 
                                     <mat-expansion-panel-header style="font-size: small;font-weight: bold;">
                                         <mat-panel-title>
-                                            Search data---
+                                            Search data---->
                                         </mat-panel-title>
                                         <!-- <mat-panel-description>
                                     Type  name 
@@ -210,7 +211,7 @@
                                     </mat-expansion-panel-header>
 
                                     <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                                        <form [formGroup]="_SearchdialogService.myFilterform">
+                                        <form [formGroup]="_AdmissionService.myFilterform">
                                             <div class="dialog-content-wrapper" fxFlex>
 
                                                 <mat-form-field class="mr-sm-12" fxFlex>

@@ -1,0 +1,164 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
+    <div class="header-container accent" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+      fxLayoutAlign="space-between">
+      <span style="font-size: 22px; font-weight: 500; color: #fff;">SubCompany TPA</span>
+      <span class="material-icons" style="cursor: pointer; margin-left: 24px; color: #fff;" (click)="onClose()">
+        close
+      </span>
+    </div>
+    <div style="padding:3px;">
+  
+      <div class="content-card">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+          <form [formGroup]="_AdmissionService.mySaveForm" style="width: 100%;">
+            <div fxFlex.gt-sm="100%" fxFlex>
+              <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                <!-- ================================ LABEL HEADER  -->
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
+                    </h3>
+                  </div>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                    style="align-items: baseline;">
+  
+                    <span class="label">Admission No :</span>
+                    <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span>
+  
+                    <span class="label"> Patient Name : </span>
+                    <span class="data_input">{{_AdmissionService.mySaveForm.get("PatientName").value}}</span>
+  
+                    <span class="label">Admission ON : </span>
+                    <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionDate").value}}
+  
+                    </span>
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                    </app-common-date>
+                  </div>
+                </mat-card>
+                <!-- ================================ LABEL HEADER  -->
+              </div>
+  
+            </div>
+          </form>
+        </div>
+      </div>
+  
+      <br />
+      <mat-card class="example-card" name="m1">
+        <div fxFlexFill fxLayout="column">
+          <form [formGroup]="SubcompanyFormGroup" style="border: blue;">
+            <!-- <h3 style="font-weight:bold ;">Medico Legal Case Information</h3> -->
+            <div fxLayoutGap="5px">
+  
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>City</mat-label>
+                  <mat-select formControlName="CityId" placeholder="Bank" #singleSelect required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="cityFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredCity | async" [value]="element">
+                      {{element.CityName}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="personalFormGroup.get('CityId').invalid && personalFormGroup.get('CityId').touched">
+                    City Name is required</mat-error> -->
+                </mat-form-field>
+  
+  
+                <mat-form-field appearance="outline" #Company fxFlex>
+                  <mat-label>Company Name </mat-label>
+                  <mat-select formControlName="CompanyId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="companyFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredCompany | async" [value]="element">
+                      {{element.CompanyName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+              </div>
+  
+            </div>
+            <div fxLayoutGap="5px">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Phone Number</mat-label>
+                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput max="9999999999"
+                  min="1000000000" maxlength="10" type="number" value="9876658688">
+                <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
+                  number is required
+                </mat-error> -->
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Mobile Number</mat-label>
+                <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                  max="9999999999" min="1000000000" maxlength="10" required="required" type="number" value="9876658688">
+                <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                  digits Mobile number is
+                  required</mat-error> -->
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Fax Number</mat-label>
+                <input name="FaxNo" formControlName="FaxNo" placeholder="Fax Number" matInput  max="9999999999"
+                  min="1000000000" maxlength="10" type="number" value="9876658688">
+                <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                  digits Mobile number is
+                  required</mat-error> -->
+              </mat-form-field>
+            </div>
+  
+  
+            <div fxLayoutGap="5px">
+  
+  
+              <mat-form-field appearance="outline" class="mr-sm-12" style="width:40%;">
+                <textarea name="Address" matInput rows="2" cols="4" placeholder="Enter Address" formControlName="Address">
+              </textarea>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Pin Number</mat-label>
+                <input name="PinNo" formControlName="PinNo" placeholder="Phone Number" matInput max="999999" min="100000"
+                  maxlength="6" type="number" value="987665">
+                <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
+                  number is required
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+            <mat-checkbox  aria-label="Remember Me" formControlName="IsActive"
+              style="margin-right: 20px;">
+              IsActive
+            </mat-checkbox>
+  
+            <div class="footer-navigation-container" style=" float: right;">
+  
+              <div class="next-div">
+  
+                <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">
+                  <span style="display: flex;justify-content: center;">
+                    <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
+                    <span style="margin-right: 10px;">Save</span>
+                  </span>
+                </button>
+                <!-- <button class="footer-btn" (click)="getPrint(5)" style="border-radius: 16px;">Print</button> -->
+                <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-card>
+  
+    </div>
+  </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,23 +8,30 @@ import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from '../advance';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditAdmissionComponent } from '../Admission/admission/edit-admission/edit-admission.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AdmissionService } from '../Admission/admission/admission.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { NotificationServiceService } from 'app/core/notification-service.service';
+import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
+import { AdmissionNewComponent } from '../Admission/admission/admission-new/admission-new.component';
 
 @Component({
   selector: 'app-ipdsearc-patienth',
   templateUrl: './ipdsearc-patienth.component.html',
-  styleUrls: ['./ipdsearc-patienth.component.scss']
+  styleUrls: ['./ipdsearc-patienth.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPDSearcPatienthComponent implements OnInit {
 
 
- 
   step = 0;
   @ViewChild(MatAccordion) accordion: MatAccordion;
   sIsLoading: string = '';
   setStep(index: number) {
     this.step = index;
   }
-  Range: boolean = false;
+  Range: boolean = true;
   OP_IP_Type:any;
   PatientType: any = 1;
   Fromdate: any;
@@ -70,12 +77,11 @@ export class IPDSearcPatienthComponent implements OnInit {
   isLoading: String = '';
 
   constructor(
-    public _SearchdialogService: IPSearchListService,
+    private _IpSearchListService: IPSearchListService,
     // public _NursingStationService: NursingStationService,
-    // public _SearchdialogService: AdmissionService,
-    // private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
-    public _matDialog: MatDialog,
+    public _AdmissionService: AdmissionService,
+    private accountService: AuthenticationService,
+        public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<IPDSearcPatienthComponent>,
@@ -86,21 +92,21 @@ export class IPDSearcPatienthComponent implements OnInit {
 
     debugger;
     this.sIsLoading = 'loading-data';
-
+      
     var m_data = {
-      "OP_IP_Type": 0,
-      "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value).trim() + '%' || '%',
-      "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value).trim() + '%' || '%',
-      "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt":this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt":this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "OP_IP_Type": 1,
+      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value).trim() + '%' || '%',
+      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value).trim() + '%' || '%',
+      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "AdmDisFlag": 0,
-      // "IPNumber": 0
+      "IPNumber": 0
     }
 
     console.log(m_data);
     this.sIsLoading = 'loading-data';
-    this._SearchdialogService.getOPIPPatientList(m_data).subscribe(Visit => {
+    this._AdmissionService.getOPIPPatientList(m_data).subscribe(Visit => {
       console.log(this.dataSource.data);
       this.dataSource.data = Visit as OPIPPatientModel[];
       this.dataSource.sort = this.sort;
@@ -114,48 +120,60 @@ export class IPDSearcPatienthComponent implements OnInit {
         this.sIsLoading = '';
       });
     
-  
+    // if (this.PatientType) {
+    //   this._AdmissionService.myFilterform.get('start').value.enable();
+    //   this._AdmissionService.myFilterform.get('end').value.enable();
+    //   this.Range = false;
+
+    // } else {
+
+    //   this._AdmissionService.myFilterform.get('start').value.updateValueAndValidity();
+    //   this._AdmissionService.myFilterform.get('end').value.updateValueAndValidity();
+    //   this._AdmissionService.myFilterform.get('PatientType').value.disable();
+    //   this.Range = true;
+
+    // }
   }
 
   getOPIPPatientList() {
     debugger;
     this.sIsLoading = 'loading-data';
-    this.PatientType = this._SearchdialogService.myFilterform.get("PatientType").value;
+    this.PatientType = this._AdmissionService.myFilterform.get("PatientType").value;
     
     console.log(this.PatientType);
 
     if (this.PatientType !="0") {
-      this.Fromdate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");//'01/01/1900';
-      this.Todate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
-      this._SearchdialogService.myFilterform.get('start').value.disable;
-      this._SearchdialogService.myFilterform.get('end').value.disable;
-      // this.Range = true;
+      this.Fromdate = '01/01/1900';
+      this.Todate = '01/01/1900';
+      this._AdmissionService.myFilterform.get('start').value.disable;
+      this._AdmissionService.myFilterform.get('end').value.disable;
+      this.Range = true;
       this.OP_IP_Type=1;
     }
     else {
-      this.Fromdate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
-      this.Todate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000");
+      this.Fromdate = this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
+      this.Todate = this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000");
     
-      this._SearchdialogService.myFilterform.get('start').value.enable;
-      this._SearchdialogService.myFilterform.get('end').value.enable;
-      // this.Range = false;
+      this._AdmissionService.myFilterform.get('start').value.enable;
+      this._AdmissionService.myFilterform.get('end').value.enable;
+      this.Range = false;
       this.OP_IP_Type=0;
     }
 
     var m_data = {
-      "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value) + '%' || '%',
-      "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt":this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
+      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%' || '%',
+      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+      "From_Dt": this.Fromdate,// this.Fromdate this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "AdmDisFlag": 0,
-      "OP_IP_Type": 1,//this.OP_IP_Type,
-      "IPNumber": this._SearchdialogService.myFilterform.get("IPDNo").value || 0,
+      "OP_IP_Type": this.OP_IP_Type,
+      // "IPNumber": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
     }
     console.log(m_data);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-      this._SearchdialogService.getOPIPPatientList(m_data).subscribe(Visit => {
+      this._AdmissionService.getOPIPPatientList(m_data).subscribe(Visit => {
         console.log(this.dataSource.data);
         this.dataSource.data = Visit as OPIPPatientModel[];
         this.dataSource.sort = this.sort;
@@ -172,11 +190,18 @@ export class IPDSearcPatienthComponent implements OnInit {
 
 
   onClear() {
-    this._SearchdialogService.myFilterform.get('FirstName').reset();
-    this._SearchdialogService.myFilterform.get('LastName').reset();
-    this._SearchdialogService.myFilterform.get('RegNo').reset();
-    this._SearchdialogService.myFilterform.get('IPDNo').reset();
+    this._AdmissionService.myFilterform.get('FirstName').reset();
+    this._AdmissionService.myFilterform.get('LastName').reset();
+    this._AdmissionService.myFilterform.get('RegNo').reset();
+    this._AdmissionService.myFilterform.get('IPDNo').reset();
 
+
+    // this._AdmissionService.myFilterform.reset(
+    //   {
+    //     start: [],
+    //     end: []
+    //   }
+    // );
   }
 
   dateTimeObj: any;
@@ -192,46 +217,53 @@ export class IPDSearcPatienthComponent implements OnInit {
 
   onEdit(contact) {
     debugger;
-    console.log(contact);
     let PatInforObj = {};
     PatInforObj['PatientName'] = contact.PatientName,
 
-      PatInforObj['AdmissionID'] = contact.AdmissionID,
-      PatInforObj['AdmissionDate'] = contact.DOA,
-      PatInforObj['HospitalId'] = contact.HospitalID,
-      PatInforObj['TariffId'] = contact.TariffId,
-      PatInforObj['CityId'] = contact.CityId,
-      PatInforObj['PatientTypeID'] = contact.PatientTypeID,
+    PatInforObj['AdmissionID'] = contact.AdmissionID,
+    PatInforObj['AdmissionDate'] = contact.DOA,
+    PatInforObj['HospitalId'] = contact.HospitalID,
+    PatInforObj['TariffId'] = contact.TariffId,
+    PatInforObj['CityId'] = contact.CityId,
+    PatInforObj['PatientTypeID'] = contact.PatientTypeID,
 
-      PatInforObj['Departmentid'] = contact.DepartmentId,
-      PatInforObj['DoctorId'] = contact.DocNameID,
-      PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID,
-      PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
+    PatInforObj['Departmentid'] = contact.DepartmentId,
+    PatInforObj['DoctorId'] = contact.DocNameID,
+    PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID ,
+    PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
 
-      PatInforObj['CompanyId'] = contact.CompanyId,
-      PatInforObj['SubCompanyId'] = contact.SubTpaComId,
-      PatInforObj['IsMLC'] = contact.IsMLC,
-      PatInforObj['RelativeName'] = contact.RelativeName,
-      PatInforObj['RelativeAddress'] = contact.RelativeAddress,
-      PatInforObj['RelationshipId'] = contact.RelationshipId,
-      PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
-      PatInforObj['PatientType'] = contact.PatientType,
-      PatInforObj['TariffName'] = contact.TariffName
-
+    PatInforObj['CompanyId'] = contact.CompanyId,
+    PatInforObj['SubCompanyId'] = contact.SubTpaComId,
+    PatInforObj['IsMLC'] = contact.IsMLC,
+    PatInforObj['RelativeName'] = contact.RelativeName,
+    PatInforObj['RelativeAddress'] = contact.RelativeAddress,
+    PatInforObj['RelationshipId'] = contact.RelationshipId,
+    PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
+    PatInforObj['PatientType'] = contact.PatientType,
+    PatInforObj ['TariffName'] = contact.TariffName
+    
 
     console.log(PatInforObj);
-    
-    this._SearchdialogService.populateForm2(PatInforObj);
-    
-    const dialogRef = this._matDialog.open(EditAdmissionComponent, 
-      {   maxWidth: "85vw",
-          height: '550px',
-          width: '100%',
-           data : {
-          registerObj : PatInforObj,
-        }
-    });
+    // this.advanceDataStored.storage = new Editdetail(PatInforObj);
 
+    this.advanceDataStored.storage = new AdvanceDetailObj(PatInforObj);
+
+    this._AdmissionService.populateForm2(PatInforObj);
+
+   
+      const dialogRef = this._matDialog.open(EditAdmissionComponent,
+        {
+          maxWidth: '85vw',
+      
+          height: '580px',width: '100%', 
+          data: {
+            PatObj: PatInforObj 
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+      });
     // if (contact) this.dialogRef.close(PatInforObj);
   }
 

@@ -1,0 +1,475 @@
+// .mat-table {
+//     height: 250px !important;
+// }
+
+app-refund-of-bill{
+    :host {
+        display: flex;
+        flex: 1 1 auto;
+        width: 100%;
+        
+        .mat-table {
+           // height:250px !important;
+            width: 100%;
+            background: transparent;
+            box-shadow: none;
+    
+            .mat-column-checkbox {
+                flex: 0 1 64px;
+                padding-left: 18px;
+            }
+    
+            .mat-column-avatar {
+                flex: 0 1 64px;
+            }
+    
+            .mat-column-buttons {
+                flex: 0 1 80px;
+            }
+    
+            .mat-row {
+                position: relative;
+                cursor: pointer;
+               
+                .mat-cell {
+                    min-width: 0;
+                    white-space: nowrap; 
+                    overflow: hidden;
+                    text-overflow: ellipsis; 
+                    overflow: hidden !important;
+                    display: inline-block;
+                    
+                   
+                }
+               
+            }
+        }
+    }
+    }
+    
+    app-refund-of-bill {
+        height: 100%;
+        max-height: 100%;
+        .buttons {
+            // padding-left: 25px;
+            padding-top: 5px;
+            text-align: right;
+        }
+        .table1{
+            .mat-header-row {
+               width: 80%;
+               min-width:400px;  
+               min-height: 25px;     
+            }
+            .mat-row {
+                width: 80%;
+                min-width: 400px;  
+                min-height: 25px;         
+            }
+            // PatientData
+         
+            .mat-column-RefundDate {
+                width:150px;
+                max-width:150px;
+                min-width:150px;
+                align-items: left;
+            }
+            
+            .mat-column-RefundAmount {
+                width:10px;
+                max-width:150px;
+                min-width:150px;
+                align-items: left;
+            }
+            
+            
+            
+            .mat-column-action {
+               
+                width:40px;
+                max-width:40px;
+                min-width:40px;
+                min-height: 25px;     
+                text-align:right;
+                
+            }
+            }
+        .mat-header-row {
+            width:900px;
+            max-width:900px;
+            min-width:900px;   
+            min-height: 25px;
+        }
+        .mat-row {
+            width:900px;
+            max-width:900px;
+            min-width:900px;   
+            min-height: 25px;
+            // text-align:center;
+        }
+       
+       
+         .mat-column-BillNo {
+            width: 100px;
+            max-width:100px;
+            min-width: 100px;
+            text-align:left;
+        }
+        .mat-column-BillDate {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-NetPayableAmt {
+            width: 300px;
+            max-width: 300px;
+            min-width: 300px;
+            justify-content:center;
+        }
+       
+        .mat-column-RefundAmount {
+            width: 300px;
+            max-width: 300px;
+            min-width: 300px;
+            justify-content:center;
+        }
+        .mat-column-ChargesId {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align:left;
+        }
+        .mat-column-ChargesDate {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-ServiceId {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            justify-content:center;
+        }
+       
+        .mat-column-ServiceName {
+            width: 350px;
+            max-width: 350px;
+            min-width: 350px;
+            // justify-content:center;
+        }
+        .mat-column-Price {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            justify-content:center;
+        }
+        .mat-column-Qty {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            justify-content:center;
+        }
+       
+        .mat-column-TotalAmt {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+    
+        .mat-column-NetAmount {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-ChargesDocName {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+    
+        .mat-column-IsPathology {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-IsRadiology {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-RefundDate {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-RefundAmount {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-action {
+            // color: white !important;
+            width:60px;
+            max-width: 60px;
+            min-width: 60px;
+            text-align: right;
+            justify-content:right;
+        }
+        .mat-icon-button {
+            padding: 0;
+            min-width: 0;
+            width: 40px;
+            height: 20px;
+            flex-shrink: 0;
+            line-height: 20px;
+            border-radius: 50%;
+        }
+    
+        // .save-button {
+        //     width: 100px;
+        //     font-size: 14px;
+        //     padding: 10px;
+        //     border-radius: 2px;
+        //     background-color: #48a348;
+        //     border: 1px solid #48a348;
+        //     color: white;
+        //     cursor: pointer;
+        // }
+    
+        .close-button {
+            width: 100px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 2px;
+            background-color: white;
+            //background-color: #7c7b71;
+            color: black;
+            border: 1px solid #000000;
+           // border: 1px solid #7c7b71;
+            cursor: pointer;
+        }
+    
+        .bill-amts {
+            display: flex;
+            justify-content: space-between;
+               //align-items: center;
+        }
+    
+        // button.save-button:disabled {
+        //     color: #FFFFFF !important;
+        //     background-color: #CCCCCC !important;
+        //     border-radius: 2px;
+        //     border: 1px solid #CCCCCC;
+        //     cursor: auto;
+        // }
+    
+        .dialog-content-wrapper .mat-form-field .mat-form-field-subscript-wrapper {
+            position: relative !important;
+        }
+    
+        .mat-header-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    
+        .save-payment {
+            width: 100%;
+            text-align: right;
+        }
+          
+         
+        .footer-btn {
+            width: 80px;
+            font-size: 16px;
+            font-weight: 700px;
+            padding: 10px;
+            color:  rgb(247, 97, 97);
+            border-radius: 16px;
+            background-color:white;
+            border-color: rgb(247, 97, 97);
+            cursor: pointer;
+        }
+        .footer-btn:hover{
+            background-color: rgb(247, 97, 97);
+            color: white;
+           
+        }
+        
+        .next-btn {
+            width: 80px;
+            font-size: 16px;
+            font-weight: 700px;
+           // padding: 10px;
+            margin-right: 5px;
+            color: #039be5 ;
+            border-radius: 16px;
+             border: 1px solid #039be5 ;
+              background-color: white;
+            cursor: pointer;
+            border-radius: 20%;
+        }
+        .next-btn:hover{
+            background-color: #039be5 ;
+            color:  white;
+           
+        }
+        
+        // button:disabled {
+        //     color: white;
+        //    background-color: #7bd3ff  !important;
+        //     border-radius: 2px;
+        //    border: 1px solid  #b7e6fd ;
+        // }
+    
+        .print-btn{
+            width: 90px; 
+            color:  rgb(22, 1, 1);
+            cursor: pointer;
+            border: 1px solid  rgb(22, 1, 1);
+        }
+    
+        .print-btn:hover{
+            background-color: rgb(22, 1, 1);
+            color:  white;
+           
+        }
+        .mat-card{
+            width: 100%;
+        }
+            
+        .services-table{
+    
+            .mat-header-row {
+                width:1400px;
+                max-width:1400px;
+                min-width:1400px;   
+                min-height: 30px;
+            }
+            .mat-row {
+                width:1400px;
+                max-width:14000px;
+                min-width:1400px;    
+                min-height: 25px;
+                // text-align:center;
+            }
+           
+           
+          
+            .mat-column-ChargesDate {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+            .mat-column-TotalAmt {
+                width: 120px;
+                max-width: 120px;
+                min-width: 120px;
+                justify-content:center;
+            }
+           
+            .mat-column-RefundAmount {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+            .mat-column-ChargesId {
+                width: 130px;
+                max-width: 130px;
+                min-width: 130px;
+                text-align:left;
+            }
+            .mat-column-ChargesDate {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+            .mat-column-ServiceId {
+                width: 100px;
+                max-width: 100px;
+                min-width: 100px;
+                justify-content:center;
+            }
+           
+            .mat-column-ServiceName {
+                width: 400px;
+                max-width: 400px;
+                min-width: 400px;
+                justify-content:center;
+            }
+            .mat-column-Price {
+                width: 70px;
+                max-width: 70px;
+                min-width: 70px;
+                justify-content:center;
+            }
+            .mat-column-Qty {
+                width: 70px;
+                max-width: 70px;
+                min-width: 70px;
+                justify-content:center;
+            }
+           
+            .mat-column-TotalAmt {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+        
+            .mat-column-NetAmount {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+            .mat-column-ChargesDocName {
+                width: 180px;
+                max-width: 180px;
+                min-width: 180px;
+                justify-content:center;
+            }
+            .mat-column-RefundAmount {
+                width: 150px;
+                max-width: 150px;
+                min-width: 150px;
+                justify-content:center;
+            }
+            .mat-column-action {
+                // color: white !important;
+                width:60px;
+                max-width: 60px;
+                min-width: 60px;
+                text-align: right;
+                justify-content:right;
+            }
+            .mat-icon-button {
+                padding: 0;
+                min-width: 0;
+                width: 40px;
+                height: 20px;
+                flex-shrink: 0;
+                line-height: 20px;
+                border-radius: 50%;
+            }
+        }
+        
+    
+        .footer-navigation-container {
+            text-align: right;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+    }

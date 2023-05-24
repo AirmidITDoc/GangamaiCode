@@ -172,14 +172,8 @@ onEdit(row){
     
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this._registrationService.getregisterList(this.D_data1).subscribe(reg=> {
-        this.dataArray = reg;
-        this.getregistrationList();
-        this.sIsLoading = '';
-      },
-      error => {
-        this.sIsLoading = '';
-      });
+      this. getregistrationList();
+     
     });
   }
 
