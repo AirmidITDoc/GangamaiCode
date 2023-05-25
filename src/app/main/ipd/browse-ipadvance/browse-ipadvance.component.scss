@@ -10,28 +10,28 @@ app-browse-ipadvance{
 }
 
 .mat-header-row {
-    width: 1200px;
-    max-width: 1200px;
-    min-width: 1200px;  
+    width: 1400px;
+    max-width: 1400px;
+    min-width: 1400px;  
     // min-height: 30px;     
 }
 
 .mat-row {
-    width: 1200px;
-    max-width: 1200px;
-    min-width: 1200px;           
+    width: 1400px;
+    max-width: 1400px;
+    min-width: 1400px;           
 }
 
 .mat-column-RegNo {
-    width:80px;
-    max-width: 80px;
-    min-width: 80px;
+    width:90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align: left;
 }
 .mat-column-PatientName {
-    width: 250px;
-    max-width: 250px;
-    min-width: 250px;
+    width: 300px;
+    max-width: 300px;
+    min-width: 300px;
     justify-content:flex-start;
     margin-right: 12px;
     text-align: left;
@@ -44,9 +44,9 @@ app-browse-ipadvance{
     justify-content:left; 
 }
 .mat-column-Date {
-    width:80px;
-    max-width: 80px;
-    min-width: 80px;
+    width:90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align: center;
 }
 

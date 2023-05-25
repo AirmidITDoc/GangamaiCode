@@ -1,0 +1,251 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Linen Stock Management
+                </span>
+                <div class="btn" fxLayoutAlign="end">
+                    <button mat-icon-button class="close-btn" [mat-dialog-close]="true">
+                        <mat-icon class="close-icon" color="warn">close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <form class="example-form" [formGroup]="StockFormGroup">
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                <div fxFlex.gt-sm="100%" fxFlex>
+                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                        <!-- ================================ LABEL HEADER  -->
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="align-items: baseline;">
+
+                                <form [formGroup]="StockFormGroup" style="display: flex">
+                                    <div class="col-md-6">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-group aria-label="Select an option" name="IssueToStore">
+                                            <mat-radio-button value="true">Issue To Store </mat-radio-button>
+                                            <mat-radio-button value="False">Issue From Store</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-group aria-label="Select an option" name="Linen">
+                                            <mat-radio-button value="True">Linen Out</mat-radio-button>
+                                            <mat-radio-button value="False">Linen In</mat-radio-button>
+                                        </mat-radio-group>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-group aria-label="Select an option" name="ToStock">
+                                            <mat-radio-button value="True">Discard</mat-radio-button>
+                                            <mat-radio-button value="False">Add Stock</mat-radio-button>
+                                        </mat-radio-group>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <app-common-date [screenFrom]="screenFromString"
+                                            (dateTimeEventEmitter)="getDateTime($event)">
+                                        </app-common-date>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-card>
+                        <!-- ================================ LABEL HEADER  -->
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row" style="display: flex;">
+                    <div style="width: 78%;">
+
+                        <mat-form-field appearance="outline" fxFlex="30%" required>
+                            <mat-label>From Store</mat-label>
+                            <mat-select formControlName="StoreId">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let m of StoreList" [value]="m.StoreId">
+                                    {{m.StoreName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                   
+                        <mat-form-field appearance="outline" fxFlex="30%" required>
+                            <mat-label>Issue Store</mat-label>
+                            <mat-select formControlName="StoreId1">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let m of StoreList" [value]="m.StoreId">
+                                    {{m.StoreName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="content">
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="10px">
+
+                        <div fxlayout="row">
+
+                            <div fxFlex.gt-sm="98%" fxFlex fxLayoutGap="10px"
+                                style="background-color: white; padding: 5px 5px 5px 5px;">
+                                <mat-card>
+                                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                        style="overflow:auto">
+
+                                        <ng-container matColumnDef="ItemCode">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                ItemCode
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.ItemCode}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ItemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                ItemName</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.ItemName}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="HK.Bal">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                HK.Balance </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.HK.Bal}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ToStoreBal">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Store Balance </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.ToStoreBal}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IssueQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                IssueQty </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.IssueQty}} </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Min Qty'">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                MinQty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.MinQty'}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="MaxQty'">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                MaxQty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                {{element.MaxQty}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dataSource!=null}">
+                                        </mat-footer-row>
+
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                        </mat-footer-row>
+
+                                    </mat-table>
+
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                        showFirstLastButtons></mat-paginator>
+                                </mat-card>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+
+
+
+    <div class="row row-container">
+        <!-- <div class="som"> -->
+        <div class="col-3 amount-section">
+            <div class="amount-section-values">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline" style="margin-right: 10px;">
+                    <mat-label>NoOfItem</mat-label>
+                    <input matInput formControlName="NoOfItem" name="NoOfItem">
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline" style="margin-right: 10px;">
+                    <mat-label>Remark</mat-label>
+                    <input matInput formControlName="Remark" name="Remark">
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline">
+                    <mat-label>RecivedBy</mat-label>
+                    <input matInput formControlName="RecivedBy" name="RecivedBy" required>
+                </mat-form-field>
+            </div>
+        </div>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="cool" fxFlex="10%">Import From Excel</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="cool" fxFlex="10%">Add Stock</button>
+        <div class="col-3 button-section">
+            <div class="buttons" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="save-button" (click)="onSave()">Save</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="close-button" (click)="onClose()">Close</button>
+
+            </div>
+        </div>
+    </div>
+
+</div>

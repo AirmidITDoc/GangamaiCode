@@ -65,14 +65,27 @@ const appRoutes: Routes = [
             import("./main/opd/opd.module").then((m) => m.OPDModule),
     },
 
-
+    {
+        path: "mrd",
+        loadChildren: () =>
+            import("./main/Mrd/mrd.module").then((m) => m.MrdModule),
+    },
 
     {
         path: "nursingstation",
         loadChildren: () =>
             import("./main/nursingstation/nursingstation.module").then((m) => m.NursingstationModule),
     },
-
+    // {
+    //     path: "pathology",
+    //     loadChildren: () =>
+    //         import("./main/pathology/pathology.modules").then((m) => m.PathologyModule),
+    // },
+    {
+        path: "radiology",
+        loadChildren: () =>
+            import("./main/radiology/radiology-order-list/radioloy-orderlist.module").then((m) => m.RadioloyOrderlistModule),
+    },
     {
         path: '**',
         redirectTo: 'auth/login'

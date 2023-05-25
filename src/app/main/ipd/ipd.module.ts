@@ -55,6 +55,8 @@ import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-r
 import { IPBrowseRefundofBillComponent } from './Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.component';
 import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
+import { StockManagementComponent } from './stock-management/stock-management.component';
+import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
@@ -64,7 +66,7 @@ import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth
     IPSearchListComponent, IPBillBrowseListComponent, BedTransferComponent,
      DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, 
      IPSettlementComponent, IPRefundComponent, IPRefundofAdvanceComponent, 
-     IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPDSearcPatienthComponent],
+     IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent],
   imports: [
     CommonModule,
     MatButtonModule,

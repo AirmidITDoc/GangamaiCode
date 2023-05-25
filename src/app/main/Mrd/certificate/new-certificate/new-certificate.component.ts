@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { OPIPPatientModel } from 'app/main/nursingstation/patient-vist/patient-vist.component';
+// import { OPIPPatientModel } from 'app/main/nursingstation/patient-vist/patient-vist.component';
 import { MrdService } from '../../mrd.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,11 +11,15 @@ import { DatePipe } from '@angular/common';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-certificate',
   templateUrl: './new-certificate.component.html',
-  styleUrls: ['./new-certificate.component.scss']
+  styleUrls: ['./new-certificate.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class NewCertificateComponent implements OnInit {
 
@@ -255,7 +259,7 @@ export class NewCertificateComponent implements OnInit {
     this.isLoading = 'submit';
 
     console.log()
-    if (this.Adm_Vit_ID) {
+    // if (this.Adm_Vit_ID) {
 
       if (!MLCId) {
         var m_data = {
@@ -296,7 +300,7 @@ export class NewCertificateComponent implements OnInit {
         });
       }
     
-    }
+    // }
   }
 
   

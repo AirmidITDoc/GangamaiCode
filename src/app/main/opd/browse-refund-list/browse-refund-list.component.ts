@@ -316,11 +316,11 @@ export class BrowseRefundListComponent implements OnInit {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
     this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
-          // this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
         // this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
         // // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(this.reportPrintObj.PaymentDate));
@@ -330,7 +330,7 @@ export class BrowseRefundListComponent implements OnInit {
         // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
 
         // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
         }, 1000);

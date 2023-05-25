@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,12 +12,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-op-advance',
   templateUrl: './op-advance.component.html',
-  styleUrls: ['./op-advance.component.scss']
+  styleUrls: ['./op-advance.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class OPAdvanceComponent implements OnInit {
 

@@ -654,14 +654,14 @@ console.log
           "LastName": this.registerObj.LastName || "",
           "Address": this.registerObj.Address || "",
           "City": this.personalFormGroup.get('CityId').value.CityId || 0,
-          "PinNo": '222',// this._registerService.mySaveForm.get("PinNo").value || "0",
+          "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
           "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
           "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
           "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
           "PhoneNo": this.registerObj.PhoneNo || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
           "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
           "AddedBy": this.accountService.currentUserValue.user.id,
-          "UpdatedBy":0,
+          "UpdatedBy":this.accountService.currentUserValue.user.id,
           "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
           "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
           "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
@@ -669,7 +669,7 @@ console.log
           "StateId": this.personalFormGroup.get('StateId').value.StateId,
           "CityId": this.personalFormGroup.get('CityId').value.CityId,
           "MaritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
-          "IsCharity":false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+          "IsCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
           "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           "isSeniorCitizen":0,
@@ -681,7 +681,13 @@ console.log
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
           this.myFunction("Register Data save Successfully !");
-          this._matDialog.closeAll();
+        
+
+          setTimeout(() => {
+             this._matDialog.closeAll();
+          }, 1000);
+
+
           // Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
           //   if (result.isConfirmed) {
           //     this._matDialog.closeAll();
@@ -729,7 +735,11 @@ console.log
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           this.myFunction("Register Data Updated Successfully !");
-          this._matDialog.closeAll();
+                  
+          setTimeout(() => {
+             this._matDialog.closeAll();
+          }, 1000);
+
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
         }

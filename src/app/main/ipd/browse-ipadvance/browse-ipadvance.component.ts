@@ -57,7 +57,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
-   
+   this.onShow_IpdAdvance();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -103,12 +103,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
       "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
     }
-    // this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
-    //     this.dataSource.data = Visit as IpdAdvanceBrowseModel[];
-    //     this.dataSource.sort =this.sort;
-    //     this.dataSource.paginator=this.paginator;
-    //   });
-
+   
     console.log(D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
         this.dataArray = Visit;

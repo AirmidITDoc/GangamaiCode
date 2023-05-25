@@ -1,0 +1,218 @@
+  
+// .p-sm-24 {
+//     padding: 0px !important;
+// }
+// .p-24 {
+//     padding: 0px !important;
+// }
+
+.mat-table {
+    height: 300px !important;
+}
+
+app-stock-management {
+    .buttons {
+        // padding-left: 25px;
+        padding-top: 5px;
+        text-align: right;
+    }
+    
+    
+    .mat-column-ItemCode {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align:left;
+    }
+    .mat-column-ItemName {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+        justify-content:center;
+    }
+    .mat-column-Hk.Bal {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        justify-content:flex-end;
+    }
+    .mat-column-ToStoreBal {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        justify-content:flex-end;
+    }
+    .mat-column-IssueQty {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        justify-content:flex-end;
+    }
+    .mat-column-Min Qty {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        justify-content:flex-end;
+    }
+    .mat-column-Max Qty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        justify-content:flex-end;
+    }   
+    
+  
+    .bill-amts {
+        display: flex;
+        // justify-content: space-between;
+        //align-items: center;
+    }
+    .service-amts {
+        display: flex;
+        justify-content: space-between;
+        //align-items: center;
+    }
+
+    button.save-button:disabled {
+        color: #FFFFFF !important;
+        background-color: #CCCCCC !important;
+        border-radius: 2px;
+        border: 1px solid #CCCCCC;
+        cursor: auto;
+    }
+
+    .dialog-content-wrapper .mat-form-field .mat-form-field-subscript-wrapper {
+        position: relative !important;
+    }
+
+    .mat-header-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .save-payment {
+        width: 100%;
+        text-align: right;
+    }
+    .save-payment {
+        width: 100%;
+        text-align: right;
+    }
+      
+    ::ng-deep .mat-tab-label-active {
+        background-color: #bec4be!important;
+        opacity: 1!important;
+        color: white;
+    }
+    
+    .mat-tab-header {
+        margin: 5px 15px;
+        width: fit-content;
+        border: 1px solid #aeb0b1 !important;
+        border-radius: 5px;
+    }
+    
+    .mat-ink-bar {
+        display: none;
+    }
+    
+    .mat-tab-label-active {
+        background-color: #9ea59e !important;
+        border-radius: 5px;
+    }
+    
+    .mat-tab-label {
+        height: 25px !important;
+        min-width: 128px !important;
+        color: black !important;
+        // font-size: 14px;
+        font-weight: 600;
+    }
+    .header-row {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 15px;
+        align-items: center;
+        background-color: #e1e2e2;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    // .heading-container {
+    //     // display: flex;
+    //     // flex-direction: row;
+    //     // font-size: 15px;
+    //     // align-items: center;
+        
+    //      justify-content: space-between;
+    // }
+    
+    .header-content {
+        display: flex;
+        align-items: center;
+        // justify-content: space-between;
+    }
+    
+    .register, .register2, .register3, .register4 {
+        margin: 0 20px;
+    }
+    
+    .label-value {
+        margin-left: 10px;
+    }
+
+    .tables-contianer {
+        display: flex;
+        flex-direction: row;
+        padding: 0 15px;
+        @media (min-width: 100px) and (max-width: 700px) {
+            flex-direction: column;
+        }
+    }
+    .header-labels {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .body-content {
+        display: flex;
+        flex-direction: row;
+        // justify-content: space-between;
+        margin: 3px 0;
+    }
+    
+    .top-heading {
+        display: flex;
+        padding: 2px;
+        align-items: center;
+        // background-color: ;
+    }
+    .mat-card {
+        padding: 5px 5px !important;
+        // width: 50%;
+        overflow: auto;
+    }
+
+    
+.label{
+    padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: 600; font-size: 17px;
+}
+.data_input{
+    padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: bolder;font-size: 17px;
+}
+
+    
+    .body-content .mat-form-field-wrapper, .header-content .mat-form-field-wrapper {
+        padding-bottom: 0 !important;
+    }
+    
+    .header-content .mat-form-field-flex {
+        height: 35px !important;
+    }
+    
+    .matdate-picker .mat-form-field-flex {
+        height: 35px !important;
+    }
+    
+ 
+     
+}
