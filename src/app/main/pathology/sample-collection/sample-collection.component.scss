@@ -1,0 +1,372 @@
+@import "src/@fuse/scss/fuse";
+
+app-sample-collection{
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    
+    .mat-table {
+       // height: 300px !important;
+      
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+
+        .mat-column-checkbox {
+            flex: 0 1 64px;
+            padding-left: 18px;
+        }
+
+        .mat-column-avatar {
+            flex: 0 1 64px;
+        }
+
+        // .mat-column-buttons {
+        //     flex: 0 1 80px;
+        // }
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+           
+            .mat-cell {
+                min-width: 0;
+                white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                overflow: hidden !important;
+                display: inline-block;
+                
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+.active-icon {
+    border-radius: 50%;
+}
+
+
+.mat-dialog-content {
+    display: block;
+    margin: 0px 0px;
+    // padding: 0px 5px;
+    max-height: 95vh;
+    overflow: auto;
+    padding: 0;
+}
+
+.mat-card {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+// .mat-table {
+//     height: 420px !important;
+   
+// }
+
+.mat-dialog-title{
+    margin-bottom: 2px;
+}
+.error{
+    color:red;
+}
+
+.main-content {
+    display: flex;
+    height: 600px;
+}
+
+
+.footer-navigation-container {
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-btn {
+    width: 80px;
+    padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+app-sample-collection{
+
+// button:disabled {
+//     color: #FFFFFF !important;
+//     background-color: #CCCCCC !important;
+//     border-radius: 2px;
+//     border: 1px solid #CCCCCC;
+// }
+
+.header-container {
+    background-color: #039be5 !important;
+    height: 40px;
+    padding: 0 15px;
+    align-items: center !important;
+}
+.mat-header-row {
+  //  width: 1700px;
+    width:100%;
+   // max-width: 1700px;
+    min-width: 1170px;  
+    min-height: 25px;  
+}
+
+.mat-row {
+    width: 100%;
+  //  max-width: 1700px;
+    min-width: 1170px;   
+    min-height: 25px;            
+}
+// PatientData
+.mat-column-DOA {
+    width:120px;
+    max-width:120px;
+    min-width:120px;
+    justify-content:left;
+}
+
+.mat-column-DOT {
+    width:120px;
+    max-width:120px;
+    min-width:120px;
+    justify-content:left;
+}
+
+.mat-column-RegNo {
+    width:100px;
+    max-width:100px;
+    min-width:100px;
+    justify-content:left;
+}
+.mat-column-PatientName {
+    width:250px;
+    max-width:250px;
+    min-width:250px;
+    text-align: left;
+    justify-content:left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 15px;   
+}
+.mat-column-AgeYear {
+    width:90px;
+    max-width:90px;
+    min-width:90px;
+    justify-content:left;
+}
+.mat-column-GenderName {
+    width:80px;
+    max-width:80px;
+    min-width:80px;
+    justify-content:left;
+}
+
+.mat-column-PatientType {
+    width:100px;
+    max-width:100px;
+    min-width:100px;
+    justify-content:center;
+}
+
+.mat-column-DoctorName {
+    width:250px;
+    max-width:250px;
+    min-width:250px;
+    text-align: left;
+    justify-content:left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 10px;   
+}
+
+.mat-column-PBillNo {
+    width:80px;
+    max-width:80px;
+    min-width:80px;
+    justify-content:left;
+}
+
+.mat-column-WardName {
+    width:250px;
+    max-width:250px;
+    min-width:250px;
+    text-align: left;
+    justify-content:left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 7px;
+    margin-right: 10px;   
+}
+
+.mat-column-checkbox {
+    width:60px;
+    max-width:60px;
+    min-width:60px;
+}
+.mat-column-action {
+   
+    width:60px;
+    max-width:60px;
+    min-width:60px;
+    min-height: 25px;     
+    text-align:right;
+    // justify-content:left;
+}
+    // Sample
+
+    .mat-column-VADate {
+        width:100px;
+        max-width:100px;
+        min-width:100px;
+        justify-content:left;
+    }
+  
+    .mat-column-PathTestID {
+        width: 150px;
+        max-width:150px;
+        min-width:150px;
+        justify-content:left;
+    }
+
+    .mat-column-ServiceName {
+        width: 200px;
+        max-width: 290px;
+        min-width: 290px;
+        justify-content:left;
+    }
+    
+
+    .mat-column-IsSampleCollection {
+    width: 200px;
+    max-width:200px;
+    min-width:320px;
+    }
+
+    .mat-column-SampleCollectionTime {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
+            justify-content:left;
+        }
+        .mat-column-PathReportID {
+            width: 100px;
+            max-width:100px;
+            min-width:100px;
+            justify-content:left;
+        }
+
+
+
+        .menu-btn .mat-icon-button {
+            padding: 0;
+            min-width: 0;
+            width: 40px;
+            height: 20px;
+            flex-shrink: 0;
+            line-height: 20px;
+            border-radius: 50%;
+        }
+        
+      
+.mat-column-buttons {
+    width:170px;
+    max-width: 170px;
+    min-width: 170px;
+    text-align: right;
+    justify-content:center;
+}
+
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+        
+        // .mat-column-action {
+          
+        //     width:190px;
+        //     max-width: 190px;
+        //     min-width: 190px;
+              
+        //     text-align:left;
+        //     justify-content:left;
+        // }
+
+        .page-layout.simple.inner-sidebar > .header {
+            height: 60px;
+            min-height: 35px;
+            max-height: 50px;
+        }
+        
+        .hover-width {
+            width: fit-content;
+            // height: 20px;
+            // overflow: hidden;
+        }
+        
+        .logo {
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar{
+            justify-content: space-between;
+        }
+        .icon{
+            padding-right: 1rem;
+        }
+        
+        .left-icon{
+            color:white;
+        }
+        
+        h1, .h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .logo-text {
+            margin-right: 10px;
+        }
+        
+        .table-actions{
+            color: white;
+        }
+
+        .backgroundBlur{
+            text-align: center;
+            background-color: #818181;
+            position: absolute;
+            z-index: 1000;
+            height: 450px;
+            opacity: 0.5;
+             width: 100%;  
+        }
+
+    }

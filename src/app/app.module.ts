@@ -76,11 +76,11 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/nursingstation/nursingstation.module").then((m) => m.NursingstationModule),
     },
-    // {
-    //     path: "pathology",
-    //     loadChildren: () =>
-    //         import("./main/pathology/pathology.modules").then((m) => m.PathologyModule),
-    // },
+    {
+        path: "pathology",
+        loadChildren: () =>
+            import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
+    },
     {
         path: "radiology",
         loadChildren: () =>

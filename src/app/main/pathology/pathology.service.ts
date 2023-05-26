@@ -1,0 +1,173 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PathologyService {
+
+  myformSearch: FormGroup;
+  myform: FormGroup;
+ 
+  mysamplerequstform: FormGroup;
+
+  myShowPathologyResultForm: FormGroup;
+  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+    this.myform = this.createtemplateForm();
+    this.myformSearch = this.createSearchForm();
+   
+    this.mysamplerequstform = this.createSampleRequstForm();
+    // this.myShowPathologyResultForm = this.ShowPathologyResultForm();
+  }
+
+  sampldetailform
+
+  createtemplateForm(): FormGroup {
+    return this._formBuilder.group({
+      TemplateId: [''],
+      TemplateName: [''],
+      TemplateDesc: [''],
+      IsDeleted: ['false'],
+      AddedBy: ['0'],
+      UpdatedBy: ['0'],
+      AddedByName: ['']
+    });
+  }
+
+  
+  createSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      RegNoSearch: [],
+      FirstNameSearch: ['', [
+
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      LastNameSearch: ['', [
+
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      // BillNo:[''],
+      // BillDate:[''],
+      PatientTypeSearch: ['1'],
+      StatusSearch: ['0'],
+      CategoryId: [''],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      TestStatusSearch:['1']
+    });
+  }
+
+
+
+  createSampleRequstForm(): FormGroup {
+    return this._formBuilder.group({
+
+
+      Reg_No: [],
+      Istype: ['0'],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+
+    });
+  }
+
+ 
+
+
+  // Rtrv_PathologySampleEntryList_Ptnt_Dtls
+
+  //  public getPatientList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", employee)
+  // }
+
+
+  public PathTemplateResultentryInsert(employee) {
+    return this._httpClient.post("Pathology/PathologyTemplateResult", employee);
+  }
+
+
+  
+
+  public getPathologyDoctorMaster1Combo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
+  }
+
+
+ 
+  public getResultList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrive_PathologyResultTemplate_Update", employee)
+  }
+
+ 
+ 
+
+
+  public getRadioTestDetails(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
+  
+  }
+
+  public getTestList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
+  }
+
+  public getPathTemplatePrint(No) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
+  }
+  public getTemplate(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  }
+
+  public getInsertStatementQuery(query) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
+  }
+
+ 
+  public getSampleLabOrRadRequestList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabOrRadRequestList", employee)
+  }
+  public getSampleNursingPathRadReqDetList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingPathRadReqDet", employee)
+  }
+
+
+
+  public getRadiologyList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
+  }
+
+  //  public getSampleEntryList(m_data) {
+  //      return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_PathologySampleEntryList_Ptnt_Dtls",m_data)
+  //  }
+
+  public getSampleEntryList(m_data) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", m_data)
+  }
+
+  public getCategoryCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyCategoryMasterForCombo", {})
+  }
+
+
+
+  populateForm(employee) {
+    this.myform.patchValue(employee);
+  }
+
+  populatePrintForm(employee) {
+    this.myform.patchValue(employee);
+  }
+
+  Print(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rpt_radiologyTemplate", employee)
+  }
+
+
+  getPathologyPrint(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
+  }
+
+
+}
+

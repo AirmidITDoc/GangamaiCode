@@ -375,7 +375,7 @@ export class IPBillBrowseListComponent implements OnInit {
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['GroupName','BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName','RegNo',
+      let keysArray = ['HospitalName', 'HospitalAddress','EmailId', 'Phone','GroupName','BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName','RegNo',
         'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
@@ -631,7 +631,7 @@ export class IPBillBrowseListComponent implements OnInit {
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName',
+      let keysArray = ['HospitalName', 'HospitalAddress','EmailId', 'Phone','BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName',
         'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
@@ -702,7 +702,7 @@ export class IPBillBrowseListComponent implements OnInit {
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['GroupName', "HospitalName", "HospitalAddress", "Phone", "Pin", 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName', 'OPD_IPD_Type', 'TotalAmt', 'NetPayableAmt', 'PaidAmount', 'PBillNo', 'UserName']
+      let keysArray = ['GroupName', "HospitalName", "HospitalAddress","EmailId", "Phone", "Pin", 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName', 'OPD_IPD_Type', 'TotalAmt', 'NetPayableAmt', 'PaidAmount', 'PBillNo', 'UserName']
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -874,7 +874,7 @@ export class IPBillBrowseListComponent implements OnInit {
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['GroupName','BillNo','HospitalName','Hospitaladdress', 'IPDNo', 'BillDate', 'PatientName', 'Age','AgeDay', 'AgeMonth','GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName','RegNo',
+      let keysArray = ['GroupName','BillNo','HospitalName','Hospitaladdress','EmailId','Phone', 'IPDNo', 'BillDate', 'PatientName', 'Age','AgeDay', 'AgeMonth','GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName','RegNo',
         'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
@@ -1082,6 +1082,9 @@ export class IpBillBrowseList {
 
 export class ReportPrintObj {
   HospitalName: any;
+  HospitalAddress: any;
+  EmailId: any;
+  Phone: any;
   IPDNo: any;
   Date:any;
   BillNo: any;

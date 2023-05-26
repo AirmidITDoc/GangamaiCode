@@ -205,7 +205,7 @@ export class IPBillingComponent implements OnInit {
      this.getChargesList();
      this.getChargesList1();
      this.getBillingClassCombo();
-     this.getIPBillinginformation();
+    //  this.getIPBillinginformation();
      this.getConcessionReasonList();
      this.drawer.toggle();
  
@@ -1129,9 +1129,9 @@ export class IPBillingComponent implements OnInit {
          InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
          InsertBillUpdateBillNoObj['TaxPer'] = this.registeredForm.get('Percentage').value || 0,
            InsertBillUpdateBillNoObj['TaxAmount'] = this.registeredForm.get('Amount').value || 0,
-           InsertBillUpdateBillNoObj['CompDiscAmt'] = this.CompDisamount,//this.registeredForm.get('Amount').value || 0,
+         //  InsertBillUpdateBillNoObj['CompDiscAmt'] = this.CompDisamount,//this.registeredForm.get('Amount').value || 0,
            InsertBillUpdateBillNoObj['DiscComments'] = this.registeredForm.get('Remark').value || ''
- 
+           InsertBillUpdateBillNoObj['CashCounterId'] = 0;//this.registeredForm.get('Remark').value || ''
  
          let Billdetsarr = [];
  
@@ -1266,6 +1266,7 @@ export class IPBillingComponent implements OnInit {
            InsertBillUpdateBillNoObj['TaxPer'] = this.registeredForm.get('Percentage').value || 0,
              InsertBillUpdateBillNoObj['TaxAmount'] = this.registeredForm.get('Amount').value || 0,
              InsertBillUpdateBillNoObj['DiscComments'] = this.registeredForm.get('Remark').value || ''
+             InsertBillUpdateBillNoObj['CashCounterId'] = 0;//this.registeredForm.get('Remark').value || ''
  
            // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
            const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -1678,7 +1679,7 @@ export class IPBillingComponent implements OnInit {
      debugger;
  
      var D_data = {
-       "AdmissionID": 93853,//el
+       "AdmissionID": el
      }
      console.log(D_data);
  

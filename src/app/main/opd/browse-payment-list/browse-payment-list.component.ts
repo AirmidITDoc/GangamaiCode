@@ -242,10 +242,25 @@ onExport(exprtType){
     //  return converter.toWords(e);
        }
 getTemplate() {
+
+
+  let query1 = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=20';
+  this._BrowseOpdPaymentReceiptService.getTemplates(query1).subscribe((resData: any) => {
+    console.log(this.printTemplate = resData[0].TempDesign);
+    this.printTemplate = resData[0].TempDesign;
+
+
+
+
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);
-    this.printTemplate = resData[0].TempDesign;
+    this.printTemplate = this.printTemplate + resData[0].TempDesign;
+    console.log(this.printTemplate)
+
+
+
+
     
    let keysArray = ['HospitalName','HospitalAddress','Phone','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
     for (let i = 0; i < keysArray.length; i++) {
@@ -280,6 +295,7 @@ getTemplate() {
         this.print();
       }, 50);
   });
+});
 }
 
 transform(value: string) {
