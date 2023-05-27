@@ -28,6 +28,8 @@ import { JwtInterceptor } from "./core/jwt.interceptor";
 // import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SpinnerInterceptor } from "./core/spinner.interceptor";
 import { CertificateComponent } from './main/Mrd/certificate/certificate.component';
+import { ALLReportComponent } from './main/all-report/all-report.component';
+import { M } from '@angular/cdk/keycodes';
 
 
 const appRoutes: Routes = [
@@ -87,6 +89,11 @@ const appRoutes: Routes = [
             import("./main/radiology/radiology-order-list/radioloy-orderlist.module").then((m) => m.RadioloyOrderlistModule),
     },
     {
+        path: "reports",
+        loadChildren: () =>
+            import("./main/all-report/report.module").then((m) => m.ReportModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
     }
@@ -117,7 +124,7 @@ class PickDateAdapter extends NativeDateAdapter {
 @NgModule({
     declarations: [
         AppComponent,
-        // CertificateComponent,
+                // CertificateComponent,
 
 
     ],

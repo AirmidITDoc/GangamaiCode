@@ -242,12 +242,12 @@ onExport(exprtType){
     //  return converter.toWords(e);
        }
 getTemplate() {
+debugger;
 
-
-  let query1 = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=20';
-  this._BrowseOpdPaymentReceiptService.getTemplates(query1).subscribe((resData: any) => {
-    console.log(this.printTemplate = resData[0].TempDesign);
-    this.printTemplate = resData[0].TempDesign;
+  // let query1 = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=20';
+  // this._BrowseOpdPaymentReceiptService.getTemplates(query1).subscribe((resData: any) => {
+  //   console.log(this.printTemplate = resData[0].TempDesign);
+  //   this.printTemplate = resData[0].TempDesign;
 
 
 
@@ -255,47 +255,46 @@ getTemplate() {
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);
-    this.printTemplate = this.printTemplate + resData[0].TempDesign;
+    this.printTemplate = resData[0].TempDesign;
     console.log(this.printTemplate)
 
 
-
-
     
-   let keysArray = ['HospitalName','HospitalAddress','Phone','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+   let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
     for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      this.printTemplate = this.printTemplate.replace('StrPaidAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount)+' only');
-      this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrCardPayAmount','₹' + (this.reportPrintObj.CardPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrChequePayAmount','₹' + (this.reportPrintObj.ChequePayAmount.toFixed(2)));
+   
+      // this.printTemplate = this.printTemplate.replace('StrPaidAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount)+' only');
+      // this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrCardPayAmount','₹' + (this.reportPrintObj.CardPayAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrChequePayAmount','₹' + (this.reportPrintObj.ChequePayAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount','₹' + (this.reportPrintObj.NEFTPayAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrPayTMAmount','₹' + (this.reportPrintObj.PayTMAmount.toFixed(2)));
-      this.printTemplate =  this.printTemplate.replace('StrRemark', (this.reportPrintObj.Remark));
-      this.printTemplate =  this.printTemplate.replace('StrUserName', (this.reportPrintObj.UserName));
+      // this.printTemplate =  this.printTemplate.replace('StrRemark', (this.reportPrintObj.Remark));
+      // this.printTemplate =  this.printTemplate.replace('StrUserName', (this.reportPrintObj.UserName));
 
-      this.printTemplate =  this.printTemplate.replace('StrReceiptNo', (this.reportPrintObj.ReceiptNo));
-      this.printTemplate =  this.printTemplate.replace('StrBillNo', (this.reportPrintObj.BillNo));
-      this.printTemplate =  this.printTemplate.replace('StrCardPayAmount', (this.reportPrintObj.CardPayAmount));
-      this.printTemplate =  this.printTemplate.replace('StrCardNo', (this.reportPrintObj.CardNo));
-      this.printTemplate =  this.printTemplate.replace('StrCardBankName', (this.reportPrintObj.CardBankName));
-      this.printTemplate =  this.printTemplate.replace('StrNEFTPayAmount', (this.reportPrintObj.NEFTPayAmount));
-      this.printTemplate =  this.printTemplate.replace('StrPayTMAmount', (this.reportPrintObj.PayTMAmount));
-      this.printTemplate =  this.printTemplate.replace('StrPaidAmount', (this.reportPrintObj.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+      // this.printTemplate =  this.printTemplate.replace('StrReceiptNo', (this.reportPrintObj.ReceiptNo));
+      // this.printTemplate =  this.printTemplate.replace('StrBillNo', (this.reportPrintObj.BillNo));
+      // this.printTemplate =  this.printTemplate.replace('StrCardPayAmount', (this.reportPrintObj.CardPayAmount));
+      // this.printTemplate =  this.printTemplate.replace('StrCardNo', (this.reportPrintObj.CardNo));
+      // this.printTemplate =  this.printTemplate.replace('StrCardBankName', (this.reportPrintObj.CardBankName));
+      // this.printTemplate =  this.printTemplate.replace('StrNEFTPayAmount', (this.reportPrintObj.NEFTPayAmount));
+      // this.printTemplate =  this.printTemplate.replace('StrPayTMAmount', (this.reportPrintObj.PayTMAmount));
+      // this.printTemplate =  this.printTemplate.replace('StrPaidAmount', (this.reportPrintObj.PaidAmount));
+      // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       console.log(this.printTemplate.replace(/{{.*}}/g, ''));
       setTimeout(() => {
         this.print();
       }, 50);
   });
-});
+// });
 }
 
 transform(value: string) {
@@ -317,7 +316,7 @@ transform2(value: string) {
 }
 
 getPrint(el) {
-  //console.log(el);
+  debugger
    var D_data = {
      "PaymentId": el.PaymentId,
    }
