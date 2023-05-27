@@ -92,9 +92,10 @@ export class ResultEntryOneComponent implements OnInit {
       AdmDoctorID: [0],
       RefDoctorID: [0],
     });
-  console.log(this.configService.getConfigParam());
-   console.log(this.configService.getConfigParam().IsPathologistDr);
-    this.configDoc= this.configService.getConfigParam().IsPathologistDr;
+
+  // console.log(this.configService.getConfigParam());
+  //  console.log(this.configService.getConfigParam().IsPathologistDr);
+  //   this.configDoc= this.configService.getConfigParam().IsPathologistDr;
 
     this.getDoctor1List();
     this.getDoctorList();

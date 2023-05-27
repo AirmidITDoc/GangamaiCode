@@ -371,16 +371,16 @@
 
                                             <mat-radio-group name="StatusSearch" formControlName="TestStatusSearch"
                                                 value='2' fxLayoutAlign="center center"
-                                                style="float:left;margin-left:0px;margin-left:15px;">
+                                                style="float:left;margin-left:0px;margin-left:15px;" (change)="SearchTest()">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </mat-radio-group>
 
-                                            <button mat-raised-button class="searchButton" (click)="SearchTest()"
+                                            <!-- <button mat-raised-button class="searchButton" (click)="SearchTest()"
                                                 [disabled]="click">
                                                 <mat-icon class="searchiconbutton" matTooltip="search">search
                                                 </mat-icon>
-                                            </button>
+                                            </button> -->
 
                                         </form>
                                     </div>

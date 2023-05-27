@@ -25,7 +25,7 @@ export class SampledetailtwoComponent implements OnInit {
   samplelist: any = [];
   msg: any;
   isLoading: String = '';
-  
+
   displayedColumns: string[] = [
     'checkbox',
     // 'VADate',
@@ -92,7 +92,7 @@ export class SampledetailtwoComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   onSave() {
-    //  debugger;
+    debugger;
     this.isLoading = 'save';
     // this.dataSource.data.push(this.samplelist);
     let updatesamcollection = [];
@@ -101,8 +101,8 @@ export class SampledetailtwoComponent implements OnInit {
       console.log(element);
       let UpdateAddSampleDetailsObj = {};
       UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
-        UpdateAddSampleDetailsObj['SampleDateTime'] = this.dateTimeObj.time,
-        UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;
+        UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || ''
+        UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
       UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
       updatesamcollection.push(UpdateAddSampleDetailsObj);
     });

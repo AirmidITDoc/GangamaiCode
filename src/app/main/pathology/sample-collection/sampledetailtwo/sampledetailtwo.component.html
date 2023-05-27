@@ -190,11 +190,11 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons style=" float: left;">
             </mat-paginator> -->
           </div>
-          <div   fxLayout="column"   fxFlex.gt-sm="35%" fxFlex  style="background-color:#ffffff;overflow: auto;">
+          <div   fxLayout="column"   fxFlex.gt-sm="95%" fxFlex  style="background-color:#ffffff;overflow: auto;">
       
             <form [formGroup]="_SampleService.sampldetailform" >
-                <label style="font-weight: bolder;">Sample Collection Date / Time </label>
-                <div   style="width:100%;margin-bottom: 90px;   height:35px;">
+                <h3>Sample Collection Date / Time </h3>
+                <div   style="width:100%;">
 
                     <!-- <input id="ej2-datetimepicker_0_input" name="ej2-datetimepicker_0" #ejDateTimePicker formControlName="Sampledate" name="datetimepicker" class="e-input e-lib e-keyboard e-datetimepicker" placeholder="Select a date and time" aria-placeholder="Select a date and time" aria-live="assertive" aria-atomic="true" aria-haspopup="true" aria-activedescendant="null" aria-owns="ej2-datetimepicker_0_options" aria-expanded="true" role="combobox" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="true" aria-invalid="false" aria-disabled="false" tabindex="0" value=""> -->
                     <!-- <div class="innerwrap">
@@ -203,23 +203,24 @@
                         <div class="innerwrap">
                         <span>Masked DateTimePicker with mask placeholder:</span> <ejs-datetimepicker [enableMask]="enableMaskSupport" [maskPlaceholder]="maskPlaceholderValue" ></ejs-datetimepicker>
                         </div> -->
-                     <ejs-datetimepicker #ejDateTimePicker formControlName="Sampledate" name="datetimepicker"  floatLabelType='Auto' style="border-color: firebrick 1px solid ;" >
-                     </ejs-datetimepicker> 
+                     <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="Sampledate" name="datetimepicker"  floatLabelType='Auto' style="border-color: firebrick 1px solid ;" >
+                     </ejs-datetimepicker>  -->
+
+                     <mat-form-field >
+                        <input matInput type="datetime-local" placeholder="Sample date" formControlName="SampleDateTime">
+                      </mat-form-field>
+
+
+                      <!-- <mat-form-field>
+                        <input id="pickerId" matInput [matDatepicker]="datepicker" placeholder="{{placeholderDate}}" 
+                               [min]="config.minDate" [max]="config.maxDate" formControlName="SampleDateTime">
+                        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datepicker [disabled]="disabled" [touchUi]="config.touchUi" startView="{{config.startView}}"></mat-datepicker>
+                      </mat-form-field> -->
                 </div>
     
-             
-                 <div >
-                    <!-- <mat-form-field style="width: 100% !important;">
-                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" 
-                           [min]="minDate" [max]="maxDate"  formControlName="Sampledate" name="datetimepicker">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" 
-                           [stepHour]="stepHour" [stepMinute]="stepMinute" [color]="color" [disableMinute]="disableMinute" [hideTime]="hideTime">
-                        </ngx-mat-datetime-picker>
-                     </mat-form-field> -->
-                </div> 
-                <!-- <input [ngxMatTimepicker]="picker">  
-                <ngx-mat-timepicker #picker></ngx-mat-timepicker>   -->
+                         
+                
            
             </form>
           

@@ -63,7 +63,7 @@
                                 <div fxLayoutAlign="center center" appearance="outline" style="margin-bottom: 8px;">
                                     <mat-label style="padding:1px" fxFlex>Patient Type:</mat-label>
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                        value='2' style="margin-right:61px;" (onChange)="onShow($event)">
+                                        value='2' style="margin-right:61px;" (change)="onShow($event)">
                                         <mat-radio-button value='1' checked=true>IP</mat-radio-button>
                                         <mat-radio-button value='0'>OP</mat-radio-button>
                                     </mat-radio-group>
@@ -73,7 +73,7 @@
                                     <mat-label> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2'
                                         fxLayoutAlign="center center"
-                                        style="float:left;margin-left:0px;margin-right:20px">
+                                        style="float:left;margin-left:0px;margin-right:20px" (change)="onShow($event)">
                                         <mat-radio-button value='0'>Pending</mat-radio-button>
                                         <mat-radio-button value='1'>Completed</mat-radio-button>
                                     </mat-radio-group>

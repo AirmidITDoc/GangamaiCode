@@ -49,6 +49,10 @@ export class ResultEntryComponent implements OnInit {
   SBillNo:any;
   SOPIPtype:any;
   SFromDate:any;
+  PatientName:any;
+  OPD_IPD:any;
+  Age:any;
+  PatientType:any;
 
   setStep(index: number) {
     this.step = index;
@@ -161,6 +165,8 @@ export class ResultEntryComponent implements OnInit {
       VADate: contact.VADate,
       VATime: contact.VATime,
       Visit_Adm_ID: contact.Visit_Adm_ID
+
+     
     };
 
     this.advanceDataStored.storage = new Templateprintdetail(XX);
@@ -273,9 +279,18 @@ export class ResultEntryComponent implements OnInit {
   // for sampledetails tablemyformSearch
   onEdit(row,m) {
 
+    console.log(m);
+
+    this.PatientName=m.PatientName;
+    this.OPD_IPD=m.OP_IP_No
+    this.Age=m.AgeYear
+    this.PatientType=m.PatientType
+
     this.SBillNo=m.BillNo;
     this.SOPIPtype=m.OPD_IPD_Type;
     this.SFromDate=this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
+    console.log(m.PathDate);
+    console.log(this.SFromDate);
 
     console.log(this.SBillNo + this.SOPIPtype + this.SFromDate);
 
@@ -283,7 +298,7 @@ export class ResultEntryComponent implements OnInit {
     var m_data = {
       "BillNo": m.BillNo,
       "OP_IP_Type": m.OPD_IPD_Type,
-      "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
+      // "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
     }
     console.log(m_data);
     //  setTimeout(() => {
@@ -291,9 +306,9 @@ export class ResultEntryComponent implements OnInit {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
 
-      if (this.dataSource1.data[0].IsCompleted) {
+      // if (this.dataSource1.data[0].IsCompleted) {
 
-      }
+      // }
 
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
@@ -312,7 +327,7 @@ export class ResultEntryComponent implements OnInit {
       "BillNo":this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
       "IsCompleted":this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-      "From_Dt": this.datePipe.transform(this.SFromDate, "yyyy-MM-dd "),
+      // "From_Dt": this.datePipe.transform(this.SFromDate, "yyyy-MM-dd "),
     }
     console.log(m_data);
     //  setTimeout(() => {
@@ -320,9 +335,9 @@ export class ResultEntryComponent implements OnInit {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
 
-      if (this.dataSource1.data[0].IsCompleted) {
+      // if (this.dataSource1.data[0].IsCompleted) {
 
-      }
+      // }
 
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
@@ -340,11 +355,11 @@ export class ResultEntryComponent implements OnInit {
     let xx = {
       RegNo: m.RegNo,
       AdmissionID: m.VisitId,
-      PatientName: m.PatientName,
+      // PatientName: m.PatientName,
       Doctorname: m.DoctorName,
       AdmDocId: m.Adm_Visit_docId,
       AdmDateTime: m.DOA,
-      AgeYear: m.AgeYear,
+      // AgeYear: m.AgeYear,
       WardName: m.WardName,
       PathReportID: m.PathReportID,
       TestId: m.PathTestID,
@@ -352,7 +367,13 @@ export class ResultEntryComponent implements OnInit {
       ServiceId: m.ServiceId,
       CategoryID: m.CategoryID,
       TemplateDesc: m.TemplateDesc,
-      PathResultDr1:m.PathResultDr1
+      PathResultDr1:m.PathResultDr1,
+
+      PatientName:this.PatientName,
+      OP_IP_No:this.OPD_IPD,
+      AgeYear:this.Age,
+      PatientType:this.PatientType
+
     };
     this.advanceDataStored.storage = new SampleDetailObj(xx);
     // this.ServiceIdList.push(m.ServiceId);

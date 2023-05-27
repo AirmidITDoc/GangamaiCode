@@ -38,10 +38,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RouterModule, Routes } from '@angular/router';
 import { ResultEntryComponent } from './result-entry.component';
 import { ResultEntryService } from './result-entry.service';
-import { SharedModule } from 'app/main/shared/shared.module';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
 import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [

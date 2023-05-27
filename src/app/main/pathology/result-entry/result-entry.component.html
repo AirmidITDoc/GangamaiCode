@@ -79,7 +79,7 @@
                                             <mat-label style="padding:1px" fxFlex>Patient Type:</mat-label>
                                             <mat-radio-group name="PatientTypeSearch"
                                                 formControlName="PatientTypeSearch" value='2'
-                                                style="margin-right:61px;" (onChange)="onShow($event)">
+                                                style="margin-right:61px;" (change)="onShow($event)">
                                                 <mat-radio-button value='1' checked=true>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
@@ -90,7 +90,7 @@
                                             <mat-label> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                                 value='2' fxLayoutAlign="center center"
-                                                style="float:left;margin-left:0px;margin-left:15px;">
+                                                style="float:left;margin-left:0px;margin-left:15px;" (change)="onShow($event)">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </mat-radio-group>
@@ -386,13 +386,14 @@
 
                                         </form>
 
-                                        <button  mat-raised-button color="accent"
-                                            (click)="onExport1('Excel')" matTooltip="Export To Excel">
-                                            <mat-icon>save_alt</mat-icon>
-                                        </button>
+                                        
                                         <button style="float:right;margin-right: 1%" mat-raised-button color="accent"
                                             (click)="onExport1('Pdf')" matTooltip="Export To Pdf">
                                             <mat-icon>picture_as_pdf</mat-icon>
+                                        </button>
+                                        <button  mat-raised-button color="accent"
+                                            (click)="onExport1('Excel')" matTooltip="Export To Excel">
+                                            <mat-icon>save_alt</mat-icon>
                                         </button>
                                     </div>
 

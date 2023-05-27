@@ -42,7 +42,7 @@ export class SampleCollectionService {
 
 
 
-      Sampledate: [new Date().toISOString()],
+      SampleDateTime: [new Date().toISOString()],
 
 
     });
