@@ -1,19 +1,21 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center" >
-        <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
-            <mat-icon>menu</mat-icon>
-        </button>
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
-      </mat-icon>
-      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
-        Collection Report
-      </span>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
+                style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Collection Report
+            </span>
 
-    </div> 
+        </div>
 
-           
-    
+
+
 
     </mat-toolbar>
 
@@ -24,7 +26,7 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-       
+
         <!-- / SIDEBAR -->
         <!-- CENTER -->
         <!-- CENTER -->
@@ -44,18 +46,21 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <!-- <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;margin-top: 2px;">
-                                   
-                                    <ng-container matColumnDef="RegNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg No</mat-header-cell>
+                                <mat-table #table class="table1" matSort [dataSource]="users"
+                                    [@animateStagger]="{value:'50'}"
+                                    style="overflow: auto;width: 100%;margin-top: 2px;">
+
+                                    <ng-container matColumnDef="ReportName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style="font-family: serif;font-size: x-large;">Report Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.RegNo}}
+                                            {{contact.Name}}
                                         </mat-cell>
                                     </ng-container>
 
-                                   
 
-                                    <ng-container matColumnDef="action" stickyEnd>
+
+                                    <!-- <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
@@ -63,7 +68,7 @@
                                                     title="Edit Menu">launch</mat-icon></button>
 
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -78,16 +83,16 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading')}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                                </mat-table> -->
+                                </mat-table>
 
 
-                                <table class="table table-striped table-bordered" >
+                                <!-- <table class="table table-striped table-bordered" >
                                     <thead>
                                         <tr>
                                             <th>Report Name</th>
@@ -100,8 +105,9 @@
                                            
                                         </tr>
                                     </tbody>
-                                </table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                                </table> -->
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>
@@ -114,90 +120,160 @@
 
         <!-- <fuse-sidebar name="app-main" position="right" lockedOpen="gt-sm" style="width:70% !important; border-radius:4px;
         margin-left:12px; background-color: white;height:90%;"> -->
-            <div style="width:70% !important; border-radius:4px;
+        <div style="width:70% !important; border-radius:4px;
             margin-left:12px; background-color: white;height:90%;">
-                <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
-                    <!-- / USER -->
-                </div>
-                <!-- / SIDEBAR HEADER -->
-                <!-- SIDEBAR CONTENT -->
-                <div>
-     
-                    <div class="nav material2">
-                        <form [formGroup]="_registrationService.myFilterform" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <div fxLayoutAlign="center center" appearance="outline" style="margin-bottom: 8px;">
-                                    <mat-label style="padding:1px" fxFlex>Patient Type:</mat-label>
-                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                        value='2' style="margin-right:61px;" (change)="getregistrationList()">
-                                        <mat-radio-button value='1' checked=true>IP</mat-radio-button>
-                                        <mat-radio-button value='0'>OP</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
+            <!-- SIDEBAR HEADER -->
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <span class="h5" style="font-size: 17px;">Search Facility</span>
+                <!-- / USER -->
+            </div>
+            <!-- / SIDEBAR HEADER -->
+            <!-- SIDEBAR CONTENT -->
+            <div>
 
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                <div class="nav material2">
+                    <form [formGroup]="_registrationService.myFilterform" style="padding: 6px 6px 5px 5px;"
+                        fusePerfectScrollbar>
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                            <br />
+                            <div fxLayoutAlign="center center" appearance="outline" style="margin-bottom: 8px;">
+                                <mat-label style="padding:1px;font-weight: bolder;" fxFlex>Patient Type:</mat-label>
+                                <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" value='2'
+                                    style="margin-right:61px;" (change)="getregistrationList()">
+                                    <mat-radio-button value='2'>All</mat-radio-button>
+                                    <mat-radio-button value='1' checked=true>IP</mat-radio-button>
+                                    <mat-radio-button value='0'>OP</mat-radio-button>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>User Name</mat-label>
-                                    <input name="UserName" formControlName="UserName" matInput>
-                                    <!-- <span class="error" *ngIf="f.UserName.invalid && f.FirstName.touched">FirstName is
-                                        required Enter only Alphabets</span> -->
-                                </mat-form-field>
+                                </mat-radio-group>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input name="DoctorName" formControlName="DoctorName" matInput>
-                                    <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
-                                        required Enter only Alphabets</span> -->
-                                </mat-form-field>
+                                <mat-label style="padding:1px;font-weight: bold;" fxFlex>Report Type:</mat-label>
+                                <mat-radio-group name="ReportTypeSearch" formControlName="ReportTypeSearch" value='2'
+                                    style="margin-right:61px;" (change)="getregistrationList()">
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Service Name</mat-label>
-                                    <input name="ServiceName" formControlName="ServiceName" matInput >
-                                    <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span> -->
-                                </mat-form-field>
+                                    <mat-radio-button value='1' checked=true>Detail</mat-radio-button>
+                                    <mat-radio-button value='0'>Summary</mat-radio-button>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Group Name </mat-label>
-                                    <input name="GroupName" formControlName="GroupName" matInput >
-                                    <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span> -->
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Department Name </mat-label>
-                                    <input name="DepartmentName" formControlName="DepartmentName" matInput >
-                                    <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span> -->
-                                </mat-form-field>
-
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getregistrationList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
+                                </mat-radio-group>
                             </div>
 
-                        </form>
-                    </div>
+                            <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                    <input matEndDate formControlName="end" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>User Name</mat-label>
+                                <input name="UserName" formControlName="UserName" matInput>
+                                <!-- <span class="error" *ngIf="f.UserName.invalid && f.FirstName.touched">FirstName is
+                                        required Enter only Alphabets</span> -->
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input name="DoctorName" formControlName="DoctorName" matInput> -->
+                            <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
+                                        required Enter only Alphabets</span> -->
+                            <!-- </mat-form-field> -->
+
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Ref Doctor Name</mat-label>
+                                <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
+                                    <mat-option>
+                                        <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
+                                            [placeholderLabel]="'Search'"
+                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
+                                        {{element.DoctorName}}
+                                    </mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Service Name</mat-label>
+                                <input name="ServiceName" formControlName="ServiceName" matInput>
+                                 <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
+                                        required Enter only Digits</span> -->
+                            <!-- </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Service Name</mat-label>
+                                <mat-select formControlName="ServiceName" placeholder="Bank" #singleSelect>
+                                    <mat-option>
+                                        <ngx-mat-select-search [formControl]="serviceFilterCtrl"
+                                            [placeholderLabel]="'Search'"
+                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let element of filteredService | async" [value]="element">
+                                        {{element.ServiceName}}
+                                    </mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Group Name </mat-label>
+                                <input name="GroupName" formControlName="GroupName" matInput>
+                                <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
+                                        required Enter only Digits</span> -->
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Department Name </mat-label>
+                                    <input name="DepartmentName" formControlName="DepartmentName" matInput >
+                                     <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
+                                        required Enter only Digits</span> -->
+                            <!-- </mat-form-field> -->
+
+                            <!-- (selectionChange)="OnChangeDoctorList($event.value)" -->
+                            <mat-form-field appearance="outline" fxFlex
+                                [floatLabel]="isLoading || (!isOpen && departmentFilterCtrl.value === null) ? 'never' : 'auto'">
+                                <mat-label>Department</mat-label>
+                                <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect
+                                    (openedChange)="openChanged($event)"
+                                    [panelClass]="isLoadings || !isOpen ? 'hide-dummy-option' : ''">
+                                    <mat-option *ngIf="filteredDepartment === null || !filteredDepartment" disabled>
+                                        <ngx-mat-select-search [formControl]="departmentFilterCtrl"
+                                            [placeholderLabel]="'Search'"
+                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
+                                        {{element.departmentName}}
+                                    </mat-option>
+
+                                </mat-select>
+                                <mat-label *ngIf="isLoadings">
+                                    <div class="select-placeholder-container">
+                                        <span>Loading...</span>
+                                        <mat-spinner class="spinner internal-spinner" diameter="20"></mat-spinner>
+                                    </div>
+                                </mat-label>
+
+                            </mat-form-field>
+
+
+
+                            <div style="margin-top: 10px;">
+
+                                <button class="footer-btn" (click)="getPrint()"
+                                    style="border-radius: 16px;padding-right: 10px;">Print</button>
+                                <button class="footer-btn" (click)="onClose()"
+                                    style="border-radius: 16px;">Cancel</button>
+                            </div>
+
+                        </div>
+
+                    </form>
                 </div>
             </div>
+        </div>
         <!-- </fuse-sidebar> -->
         <!-- CENTER -->
     </div>
@@ -205,3 +281,5 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
+
+//

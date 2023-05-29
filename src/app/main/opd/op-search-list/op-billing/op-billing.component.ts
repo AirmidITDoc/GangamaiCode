@@ -91,7 +91,7 @@ export class OPBillingComponent implements OnInit {
   b_price = '0';
   b_qty = '1';
   b_totalAmount = '';
-  tettotalAmount:any;
+  tettotalAmount: any;
   b_netAmount = '';
   B_netAmount: any;
   b_disAmount = '0';
@@ -576,7 +576,7 @@ export class OPBillingComponent implements OnInit {
     this.click = true;
     let disamt = this.registeredForm.get('concessionAmt').value;
     debugger;
-    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0 ) {
+    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
       this.FinalAmt = this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;
       this.netPaybleAmt1 = this.netPaybleAmt;
     }
@@ -749,11 +749,11 @@ export class OPBillingComponent implements OnInit {
         console.log("Procced with Credit bill");
         console.log(this.paidamt, this.balanceamt);
 
-    //     // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+        //     // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
 
-    //     if (this.concessionDiscPer > 0) {
-    //       this.balanceamt = this.FinalAmt;
-    //     }
+        //     if (this.concessionDiscPer > 0) {
+        //       this.balanceamt = this.FinalAmt;
+        //     }
 
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
@@ -881,29 +881,29 @@ export class OPBillingComponent implements OnInit {
     this.tettotalAmount = parseInt(this.b_netAmount);
 
     debugger;
-    let beforeamt= this.b_totalAmount;
-    let disper =this.registeredForm.get('discPer').value;
- 
-    if(disper==null){
+    let beforeamt = this.b_totalAmount;
+    let disper = this.registeredForm.get('discPer').value;
+
+    if (disper == null) {
       this.registeredForm.get('netAmount').setValue(beforeamt);
     }
     else {
 
-    let amt = parseInt(this.b_disAmount);
+      let amt = parseInt(this.b_disAmount);
 
-    let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
-    if (this.formDiscPersc) {
-      let discAmt = (netAmt * parseInt(this.formDiscPersc)) / 100;
-      this.b_disAmount = Math.round(discAmt).toString();
-      this.b_netAmount = Math.round(netAmt - discAmt).toString();
-      this.TotalnetPaybleAmt = this.b_netAmount;
-      
+      let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
+      if (this.formDiscPersc) {
+        let discAmt = (netAmt * parseInt(this.formDiscPersc)) / 100;
+        this.b_disAmount = Math.round(discAmt).toString();
+        this.b_netAmount = Math.round(netAmt - discAmt).toString();
+        this.TotalnetPaybleAmt = this.b_netAmount;
 
-    } else if (amt > 0) {
-      this.b_netAmount = Math.round(netAmt - amt).toString();
-      this.TotalnetPaybleAmt = this.b_netAmount;
+
+      } else if (amt > 0) {
+        this.b_netAmount = Math.round(netAmt - amt).toString();
+        this.TotalnetPaybleAmt = this.b_netAmount;
+      }
     }
-  }
   }
 
 
@@ -985,7 +985,7 @@ export class OPBillingComponent implements OnInit {
         this.registeredForm.get('FinalAmt').setValue(tot);
       }
       else
-        this.netPaybleAmt1  = disamt;
+        this.netPaybleAmt1 = disamt;
     }
   }
 
