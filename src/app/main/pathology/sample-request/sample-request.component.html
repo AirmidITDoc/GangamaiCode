@@ -189,7 +189,7 @@
                                                 AdmDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.AdmDate}}
+                                                {{contact.AdmDate | date:'shortDate'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -198,7 +198,7 @@
                                                 ReqDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.ReqDate}}
+                                                {{contact.ReqDate | date:'shortDate'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -504,4 +504,13 @@
     <!-- / USER -->
     <!-- / CENTER -->
     <!-- / CONTENT-->
+
+    
+    <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1500px; padding-bottom: 10px;">
+          
+          <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
+        
+ 
+    </div>
+    
 </div>

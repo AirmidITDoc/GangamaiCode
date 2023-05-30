@@ -168,6 +168,8 @@ export class PathologyService {
     return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
   }
 
-
+  public InsertLabDetail(employee){
+    return this._httpClient.post("Pathology/PathSamplecollection", employee);
+  }
 }
 

@@ -102,7 +102,7 @@ export class SampledetailtwoComponent implements OnInit {
       let UpdateAddSampleDetailsObj = {};
       UpdateAddSampleDetailsObj['PathReportID'] = element.PathReportID,
         UpdateAddSampleDetailsObj['SampleDateTime'] = this._SampleService.sampldetailform.get('SampleDateTime').value || ''
-        UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
+      UpdateAddSampleDetailsObj['IsSampleCollection'] = 1;// this.datePipe.transform(this._SampleService.sampldetailform.get('SampleDateTime').value, "MM-dd-yyyy"),//  
       UpdateAddSampleDetailsObj['No'] = element.SampleNo || 0;
       updatesamcollection.push(UpdateAddSampleDetailsObj);
     });
@@ -211,7 +211,13 @@ export class SampledetailtwoComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
+
+ 
+
 }
+
+
+
 
 
 export class SampleList {

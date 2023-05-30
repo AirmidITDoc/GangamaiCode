@@ -61,5 +61,7 @@ export class SampleCollectionService {
     return this._httpClient.post("Pathology/PathSamplecollection", employee);
   }
 
+
+
 }
 
