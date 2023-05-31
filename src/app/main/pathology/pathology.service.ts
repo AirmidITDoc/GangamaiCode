@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpBackend  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -13,7 +13,7 @@ export class PathologyService {
   mysamplerequstform: FormGroup;
 
   myShowPathologyResultForm: FormGroup;
-  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  constructor(private handler: HttpBackend,private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
     this.myform = this.createtemplateForm();
     this.myformSearch = this.createSearchForm();
    
@@ -169,7 +169,23 @@ export class PathologyService {
   }
 
   public InsertLabDetail(employee){
-    return this._httpClient.post("Pathology/PathSamplecollection", employee);
+
+    let baseURL='https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/'
+   let headers='*'
+    console.log("yes this is method");
+// console.log("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/");
+
+this._httpClient = new HttpClient(this.handler);
+
+
+// return this._httpClient.post(baseURL + 'employee',{'headers':headers})
+
+    
+// return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/' + 'employee',{'headers':headers})
+
+
+return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/',employee);
+    
   }
 }
 

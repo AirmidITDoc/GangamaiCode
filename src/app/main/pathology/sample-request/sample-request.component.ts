@@ -4,12 +4,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PathologyService } from '../pathology.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-sample-request',
@@ -84,6 +85,7 @@ export class SampleRequestComponent implements OnInit {
   hasSelectedContacts: boolean;
   constructor(
     private formBuilder: FormBuilder,
+    private _httpClient: HttpClient,
     public _PathologyService: PathologyService,
     private _ActRoute: Router,
     // public dialogRef: MatDialogRef<PathologresultEntryComponent>,
@@ -347,7 +349,8 @@ export class SampleRequestComponent implements OnInit {
     // }
   }
 
-
+  private route: ActivatedRoute
+  private router: Router
   onLABSave() {
 
     // console.log(this.dataSource.data);
@@ -355,7 +358,7 @@ export class SampleRequestComponent implements OnInit {
 
     this.sIsLoading = 'submit';
 
-    
+
     // let PersonalDetail = {};
     // PersonalDetail['mobile'] = " ";// this.dataSource[0].mobile;
     // PersonalDetail['email'] = " ";
@@ -379,7 +382,7 @@ export class SampleRequestComponent implements OnInit {
     // PersonalDetail['nationalIdentityNumber'] = " ";
     // PersonalDetail['workerCode'] = " ";
     // PersonalDetail['doctorCode'] = " ";
-    
+
     // var m_data = {
 
     //   "mobile": "",
@@ -406,46 +409,45 @@ export class SampleRequestComponent implements OnInit {
     //   "doctorCode": ""
     // }
 
-    
- 
+
+
     let BillDetail = {};
     BillDetail['emergencyFlag'] = "0",
-    BillDetail['billTotalAmount'] = " ";
+      BillDetail['billTotalAmount'] = " ";
     BillDetail['advance'] = " ";
     BillDetail['billDate'] = " ";
     BillDetail['paymentType'] = " ";
     BillDetail['referralName'] = " ";
     BillDetail['otherReferral'] = " ";
     BillDetail['sampleId'] = " ";
-    BillDetail['orderNumber'] =" ";
-    BillDetail['referralIdLH'] =" ";
+    BillDetail['orderNumber'] = " ";
+    BillDetail['referralIdLH'] = " ";
     BillDetail['organisationName'] = " ";
     BillDetail['billConcession'] = "0",
-    BillDetail['additionalAmount'] = "0",
-    BillDetail['organizationIdLH'] ="440132",
-    BillDetail['comments'] = " ";
-    
+      BillDetail['additionalAmount'] = "0",
+      BillDetail['organizationIdLH'] = "440132",
+      BillDetail['comments'] = " ";
+
     let testList = [];
     this.dataSource1.data.forEach((element) => {
       let testListInsertObj = {};
       testListInsertObj['testCode'] = element.ServiceName;
       testList.push(testListInsertObj);
     });
-    BillDetail["testCode"]=testList;
-    // BillDetailarr.push(BillDetail);
+    BillDetail["testCode"] = testList;
 
-  
+
 
     let paymentListarr = [];
     let paymentList = {};
     paymentList['paymentType'] = "CREDIT",
-    paymentList['paymentAmount'] = " ";
-    paymentList['chequeNo'] =" ";
-    paymentList['issueBank'] =" ";
-
-
+      paymentList['paymentAmount'] = " ";
+    paymentList['chequeNo'] = " ";
+    paymentList['issueBank'] = " ";
     paymentListarr.push(paymentList);
-  
+
+
+    BillDetail["paymentList"] = paymentListarr;
 
     let submitData = {
       "mobile": "",
@@ -470,13 +472,87 @@ export class SampleRequestComponent implements OnInit {
       "nationalIdentityNumber": "",
       "workerCode": "w12",
       "doctorCode": "",
-      "BillDetailarr": BillDetail,
-      "paymentListarr": paymentListarr,
+      "BillDetailarr": BillDetail
+      // "paymentListarr": paymentListarr,
 
     };
     console.log(submitData);
     this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
       if (response) {
+        Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
+        });
+      } else {
+        Swal.fire('Error !', 'Lab Detail  not Send', 'error');
+      }
+      this.sIsLoading = '';
+    });
+  }
+
+
+  Labsave() {
+    debugger;
+    let submitData = {
+      
+      "mobile": "",
+      "email": "",
+      "designation": "Mrs.",
+      "fullName": "Test",
+      "age": 81,
+      "gender": "Female",
+      "area": "",
+      "city": "",
+      "patientType": "IPD",
+      "labPatientId": "123456",
+      "pincode": " ",
+      "patientId": "",
+      "dob": "",
+      "passportNo": "",
+      "panNumber": "",
+      "aadharNumber": "",
+      "insuranceNo": "",
+      "nationalityethnicity": "",
+      "ethnicity": "",
+      "nationalIdentityNumber": "",
+      "workerCode": "w12",
+      "doctorCode": "",
+      "billDetails": {
+        "emergencyFlag": "0",
+        "billTotalAmount": "",
+        "advance": "0",
+        "billDate": "",
+        "paymentType": "CREDIT",
+        "referralName": " ",
+        "otherReferral": "",
+        "sampleId": "",
+        "orderNumber": " ",
+        "referralIdLH": "",
+        "organisationName": "",
+        "billConcession": "0",
+        "additionalAmount": "0",
+        "organizationIdLH": "440132",
+        "comments": "CGHS",
+        "testList": [
+          {
+            "testCode": "Blood Group & Rh Type"
+          }
+        ],
+        "paymentList": [
+          {
+            "paymentType": "CREDIT",
+            "paymentAmount": "",
+            "chequeNo": "",
+            "issueBank": ""
+          }
+        ]
+      }
+
+    }
+    console.log(submitData);
+
+   
+    this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
+      if (response) {
+        console.log(response);
         Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
         });
       } else {
@@ -495,8 +571,8 @@ export class LabOrRadRequestList {
   AdmDate: Date;
   WardName: string;
   IsOnFileTest: boolean;
-  OP_IP_ID:any;
-  AgeYear:any;
+  OP_IP_ID: any;
+  AgeYear: any;
 
   constructor(LabOrRadRequestList) {
     this.RegNo = LabOrRadRequestList.RegNo;
@@ -521,7 +597,7 @@ export class NursingPathRadRequestList {
   AddedByDate: Date;
   IsStatus: number;
   PBillNo: number;
-  ServiceId:any;
+  ServiceId: any;
 
   constructor(NursingPathRadRequestList) {
     this.ReqDate = NursingPathRadRequestList.ReqDate || '';
