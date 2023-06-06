@@ -149,7 +149,6 @@ export class SampleDetailComponent implements OnInit {
 
 
 
-
   onClose() {
     this.dialogRef.close();
   }

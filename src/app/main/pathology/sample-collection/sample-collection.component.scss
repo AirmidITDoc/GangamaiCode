@@ -1,42 +1,142 @@
 @import "src/@fuse/scss/fuse";
 
-app-sample-collection{
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100%;
+
+    .mat-form-field {
+        margin-right: 12px;
+    }
+
+    .hover-width {
+        width: fit-content;
+        // height: 20px;
+        // overflow: hidden;
+    }
+
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background-color: white;
+
+        @include media-breakpoint(gt-sm) {
+            //prasad
+            // padding: 24px 4px 24px 24px;
+            padding: 12px 0 12px 12px;
+        }
+
+        .page-layout.simple.inner-sidebar>.header {
+            height: 60px;
+            min-height: 35px;
+            max-height: 50px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding: 0;
+            border-radius: 8px;
+
+            @include media-breakpoint(gt-sm) {
+                @include mat-elevation(1);
+            }
+
+            >.header {
+                flex: 0 1 auto;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            >.content {
+                flex: 0 1 auto;
+            }
+
+            // .mat-form-field-wrapper {
+            //     padding-bottom: 0.34375em;
+            // }
+        }
+    }
+}
+
+app-sample-collection {
     display: flex;
     flex: 1 1 auto;
     width: 100%;
-    
+    height: 100%;
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0.34375em;
+    }
+
+    .p-12 {
+        padding: 7px !important;
+    }
+
+    h1,
+    .h1 {
+        font-size: 15px;
+    }
+
+
+
+    .mat-dialog-content {
+        display: block;
+        margin: 0px 0px;
+        // padding: 0px 5px;
+        max-height: 95vh;
+        overflow: auto;
+        padding: 0;
+    }
+
+    .mat-card {
+        padding: 5px;
+        border-radius: 4px;
+    }
+
     .mat-table {
-       // height: 300px !important;
-      
+        height: 300px !important;
         width: 100%;
         background: transparent;
         box-shadow: none;
+
 
         .mat-column-checkbox {
             flex: 0 1 64px;
             padding-left: 18px;
         }
 
+        .mat-paginator {
+            min-height: 10px;
+            width: auto;
+        }
+
         .mat-column-avatar {
             flex: 0 1 64px;
         }
 
-        // .mat-column-buttons {
-        //     flex: 0 1 80px;
-        // }
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .hover-width {
+            width: fit-content;
+            // height: 20px;
+            // overflow: hidden;
+        }
 
         .mat-row {
             position: relative;
             cursor: pointer;
-           
+
             .mat-cell {
                 min-width: 0;
-                white-space: nowrap; 
+                white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis; 
-                overflow: hidden !important;
-                display: inline-block;
-                
+                text-overflow: ellipsis;
+
                 &.mat-column-detail-button {
                     flex: 0 1 auto;
 
@@ -46,327 +146,419 @@ app-sample-collection{
                 }
             }
         }
+
     }
-}
-.active-icon {
-    border-radius: 50%;
-}
+
+    .mat-dialog-title {
+        margin-bottom: 2px;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .main-content {
+        display: flex;
+        height: 600px;
+    }
+
+    .mat-column-checkbox:active~.geekmark {
+        background-color: red;
+    }
 
 
-.mat-dialog-content {
-    display: block;
-    margin: 0px 0px;
-    // padding: 0px 5px;
-    max-height: 95vh;
-    overflow: auto;
-    padding: 0;
-}
+    .footer-navigation-container {
+        text-align: right;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.mat-card {
-    padding: 5px;
-    border-radius: 4px;
-}
+    .footer-btn {
+        width: 80px;
+        font-size: 16px;
+        font-weight: 700px;
+        padding: 10px;
+        color: rgb(247, 97, 97);
+        border-radius: 16px;
+        background-color: white;
+        border: 1px solid rgb(247, 97, 97);
+        cursor: pointer;
+    }
 
-// .mat-table {
-//     height: 420px !important;
-   
-// }
+    .footer-btn:hover {
+        background-color: rgb(247, 97, 97);
+        color: white;
 
-.mat-dialog-title{
-    margin-bottom: 2px;
-}
-.error{
-    color:red;
-}
+    }
 
-.main-content {
-    display: flex;
-    height: 600px;
-}
+    // button:disabled {
+    //     color: #FFFFFF !important;
+    //     background-color: #CCCCCC !important;
+    //     border-radius: 2px;
+    //     border: 1px solid #CCCCCC;
+    // }
+
+    .header-container {
+        background-color: #039be5 !important;
+        height: 40px;
+        padding: 0 15px;
+        align-items: center !important;
+    }
 
 
-.footer-navigation-container {
-    text-align: right;
-    display: flex;
-    justify-content: space-between;
-}
+    .table1 {
+        .mat-header-row {
+            width: 100%;
+            min-width: 800px;
+            min-height: 25px;
+        }
 
-.footer-btn {
-    width: 80px;
-    padding: 10px;
-    border-radius: 2px;
-    cursor: pointer;
-}
+        .mat-row {
+            width: 100%;
+            min-width: 800px;
+            min-height: 25px;
+        }
 
-app-sample-collection{
+        // PatientData
+        .mat-column-DOA {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            justify-content: left;
+        }
 
-// button:disabled {
-//     color: #FFFFFF !important;
-//     background-color: #CCCCCC !important;
-//     border-radius: 2px;
-//     border: 1px solid #CCCCCC;
-// }
+        .mat-column-DOT {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            justify-content: left;
+        }
 
-.header-container {
-    background-color: #039be5 !important;
-    height: 40px;
-    padding: 0 15px;
-    align-items: center !important;
-}
-.mat-header-row {
-  //  width: 1700px;
-    width:100%;
-   // max-width: 1700px;
-    min-width: 1170px;  
-    min-height: 25px;  
-}
+        .mat-column-RegNo {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content: left;
+        }
 
-.mat-row {
-    width: 100%;
-  //  max-width: 1700px;
-    min-width: 1170px;   
-    min-height: 25px;            
-}
-// PatientData
-.mat-column-DOA {
-    width:120px;
-    max-width:120px;
-    min-width:120px;
-    justify-content:left;
-}
+        .mat-column-PatientName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            justify-content: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            display: inline-block;
+            margin-top: 7px;
+            margin-right: 15px;
+        }
 
-.mat-column-DOT {
-    width:120px;
-    max-width:120px;
-    min-width:120px;
-    justify-content:left;
-}
+        .mat-column-AgeYear {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            justify-content: left;
+        }
 
-.mat-column-RegNo {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    justify-content:left;
-}
-.mat-column-PatientName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
-    text-align: left;
-    justify-content:left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 15px;   
-}
-.mat-column-AgeYear {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    justify-content:left;
-}
-.mat-column-GenderName {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
-    justify-content:left;
-}
+        .mat-column-GenderName {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            justify-content: left;
+        }
 
-.mat-column-PatientType {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    justify-content:center;
-}
+        .mat-column-PatientType {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content: center;
+        }
 
-.mat-column-DoctorName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
-    text-align: left;
-    justify-content:left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 10px;   
-}
+        .mat-column-DoctorName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            justify-content: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            display: inline-block;
+            margin-top: 7px;
+            margin-right: 10px;
+        }
 
-.mat-column-PBillNo {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
-    justify-content:left;
-}
+        .mat-column-PBillNo {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            justify-content: left;
+        }
 
-.mat-column-WardName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
-    text-align: left;
-    justify-content:left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 10px;   
-}
+        .mat-column-WardName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            justify-content: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            display: inline-block;
+            margin-top: 7px;
+            margin-right: 10px;
+        }
 
-.mat-column-checkbox {
-    width:60px;
-    max-width:60px;
-    min-width:60px;
-}
-.mat-column-action {
-   
-    width:60px;
-    max-width:60px;
-    min-width:60px;
-    min-height: 25px;     
-    text-align:right;
-    // justify-content:left;
-}
+        .mat-column-checkbox {
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
+        }
+
+        .mat-column-action {
+
+            width: 40px;
+            max-width: 40px;
+            min-width: 40px;
+            min-height: 25px;
+            text-align: right;
+
+        }
+    }
+
+    .table-row:selected {
+
+        background-color: rebeccapurple;
+    }
+
     // Sample
 
-    .mat-column-VADate {
-        width:100px;
-        max-width:100px;
-        min-width:100px;
-        justify-content:left;
-    }
-  
-    .mat-column-PathTestID {
-        width: 150px;
-        max-width:150px;
-        min-width:150px;
-        justify-content:left;
-    }
 
-    .mat-column-ServiceName {
-        width: 200px;
-        max-width: 290px;
-        min-width: 290px;
-        justify-content:left;
-    }
-    
+    .table2 {
+        .mat-header-row {
+            width: 100%;
+            min-width: 1200px;
+            min-height: 25px;
+        }
 
-    .mat-column-IsSampleCollection {
-    width: 200px;
-    max-width:200px;
-    min-width:320px;
-    }
+        .mat-row {
+            width: 100%;
+            min-width: 1200px;
+            min-height: 25px;
+        }
 
-    .mat-column-SampleCollectionTime {
+
+        .mat-column-DOA {
             width: 200px;
             max-width: 200px;
             min-width: 200px;
-            justify-content:left;
+            justify-content: left;
         }
+
+        .mat-column-PathTestID {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content: left;
+        }
+
+        .mat-column-ServiceName {
+            width: 600px;
+            max-width: 600px;
+            min-width: 600px;
+            justify-content: left;
+        }
+
+
+        .mat-column-IsSampleCollection {
+            width: 200px;
+            max-width: 200px;
+            min-width: 320px;
+        }
+
+        .mat-column-SampleCollectionTime {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
+            justify-content: left;
+        }
+
         .mat-column-PathReportID {
             width: 100px;
-            max-width:100px;
-            min-width:100px;
-            justify-content:left;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content: left;
+        }
+        .mat-column-IsCompleted{
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content: left;
         }
 
-
-
-        .menu-btn .mat-icon-button {
-            padding: 0;
-            min-width: 0;
-            width: 40px;
-            height: 20px;
-            flex-shrink: 0;
-            line-height: 20px;
-            border-radius: 50%;
-        }
-        
-      
-.mat-column-buttons {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
-    text-align: right;
-    justify-content:center;
-}
-
-.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
-}
-        
-        // .mat-column-action {
-          
-        //     width:190px;
-        //     max-width: 190px;
-        //     min-width: 190px;
-              
-        //     text-align:left;
-        //     justify-content:left;
-        // }
-
-        .page-layout.simple.inner-sidebar > .header {
-            height: 60px;
-            min-height: 35px;
-            max-height: 50px;
-        }
-        
-        .hover-width {
-            width: fit-content;
-            // height: 20px;
-            // overflow: hidden;
-        }
-        
-        .logo {
-            width: 100%;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .navbar{
-            justify-content: space-between;
-        }
-        .icon{
-            padding-right: 1rem;
-        }
-        
-        .left-icon{
-            color:white;
-        }
-        
-        h1, .h1 {
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-        }
-        .logo-text {
-            margin-right: 10px;
-        }
-        
-        .table-actions{
-            color: white;
-        }
-
-        .backgroundBlur{
-            text-align: center;
-            background-color: #818181;
-            position: absolute;
-            z-index: 1000;
-            height: 450px;
-            opacity: 0.5;
-             width: 100%;  
-        }
 
     }
+
+    .menu-btn .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 28px;
+        height: 21px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+
+    .mat-column-buttons {
+        color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .matHeaderCellDef {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .mat-form-field-wrapper {
+        padding-bottom: 2px;
+    }
+
+
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+
+    // .mat-column-IsActive {
+    //     width: 80px;
+    //     max-width: 80px;
+    //     min-width: 80px;
+    //     text-align: center;
+    //     justify-content:center;
+    // }
+    .mat-column-buttons {
+        color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .page-layout.simple.inner-sidebar>.header {
+        height: 60px;
+        min-height: 35px;
+        max-height: 50px;
+    }
+
+    .hover-width {
+        width: fit-content;
+        // height: 20px;
+        // overflow: hidden;
+    }
+
+    .logo {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .icon {
+        padding-right: 1rem;
+    }
+
+    .left-icon {
+        color: white;
+    }
+
+    h1,
+    .h1 {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .logo-text {
+        margin-right: 10px;
+    }
+
+    .table-actions {
+        color: white;
+    }
+
+    // .test-table{
+    //      .mat-table{
+    //         height: 400px !important;
+    //         width: 100%;
+    //         background: transparent;
+    //         box-shadow: none;
+    //      }
+
+    // }
+
+    .backgroundBlur {
+        text-align: center;
+        background-color: #818181;
+        position: absolute;
+        z-index: 1000;
+        height: 300px;
+        opacity: 0.5;
+        width: 100%;
+
+    }
+
+    .spinner-border {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: -.125em;
+        border: .25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: .75s linear infinite spinner-border;
+        animation: .75s linear infinite spinner-border;
+
+
+        //spinner width
+        color: blue;
+        border-width: 10px;
+        margin: auto;
+        width: 80px;
+        height: 80px;
+        margin-top: 100px;
+        text-align: center;
+        margin-right: 280px;
+    }
+
+
+
+}
