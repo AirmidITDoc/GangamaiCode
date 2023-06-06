@@ -441,7 +441,7 @@ export class SampleRequestComponent implements OnInit {
     let paymentListarr = [];
     let paymentList = {};
     paymentList['paymentType'] = "CREDIT",
-      paymentList['paymentAmount'] = " ";
+    paymentList['paymentAmount'] = " ";
     paymentList['chequeNo'] = " ";
     paymentList['issueBank'] = " ";
     paymentListarr.push(paymentList);
@@ -489,78 +489,78 @@ export class SampleRequestComponent implements OnInit {
   }
 
 
-  Labsave() {
-    debugger;
-    let submitData = {
-      
-      "mobile": "",
-      "email": "",
-      "designation": "Mrs.",
-      "fullName": "Test",
-      "age": 81,
-      "gender": "Female",
-      "area": "",
-      "city": "",
-      "patientType": "IPD",
-      "labPatientId": "123456",
-      "pincode": " ",
-      "patientId": "",
-      "dob": "",
-      "passportNo": "",
-      "panNumber": "",
-      "aadharNumber": "",
-      "insuranceNo": "",
-      "nationalityethnicity": "",
-      "ethnicity": "",
-      "nationalIdentityNumber": "",
-      "workerCode": "w12",
-      "doctorCode": "",
-      "billDetails": {
-        "emergencyFlag": "0",
-        "billTotalAmount": "",
-        "advance": "0",
-        "billDate": "",
-        "paymentType": "CREDIT",
-        "referralName": " ",
-        "otherReferral": "",
-        "sampleId": "",
-        "orderNumber": " ",
-        "referralIdLH": "",
-        "organisationName": "",
-        "billConcession": "0",
-        "additionalAmount": "0",
-        "organizationIdLH": "440132",
-        "comments": "CGHS",
-        "testList": [
-          {
-            "testCode": "Blood Group & Rh Type"
-          }
-        ],
-        "paymentList": [
-          {
-            "paymentType": "CREDIT",
-            "paymentAmount": "",
-            "chequeNo": "",
-            "issueBank": ""
-          }
-        ]
-      }
+  // Labsave() {
+  //   debugger;
+  //   let submitData = {
 
-    }
-    console.log(submitData);
+  //     "mobile": "",
+  //     "email": "",
+  //     "designation": "Mrs.",
+  //     "fullName": "Test",
+  //     "age": 81,
+  //     "gender": "Female",
+  //     "area": "",
+  //     "city": "",
+  //     "patientType": "IPD",
+  //     "labPatientId": "123456",
+  //     "pincode": " ",
+  //     "patientId": "",
+  //     "dob": "",
+  //     "passportNo": "",
+  //     "panNumber": "",
+  //     "aadharNumber": "",
+  //     "insuranceNo": "",
+  //     "nationalityethnicity": "",
+  //     "ethnicity": "",
+  //     "nationalIdentityNumber": "",
+  //     "workerCode": "w12",
+  //     "doctorCode": "",
+  //     "billDetails": {
+  //       "emergencyFlag": "0",
+  //       "billTotalAmount": "",
+  //       "advance": "0",
+  //       "billDate": "",
+  //       "paymentType": "CREDIT",
+  //       "referralName": " ",
+  //       "otherReferral": "",
+  //       "sampleId": "",
+  //       "orderNumber": " ",
+  //       "referralIdLH": "",
+  //       "organisationName": "",
+  //       "billConcession": "0",
+  //       "additionalAmount": "0",
+  //       "organizationIdLH": "440132",
+  //       "comments": "CGHS",
+  //       "testList": [
+  //         {
+  //           "testCode": "Blood Group & Rh Type"
+  //         }
+  //       ],
+  //       "paymentList": [
+  //         {
+  //           "paymentType": "CREDIT",
+  //           "paymentAmount": "",
+  //           "chequeNo": "",
+  //           "issueBank": ""
+  //         }
+  //       ]
+  //     }
 
-   
-    this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
-      if (response) {
-        console.log(response);
-        Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
-        });
-      } else {
-        Swal.fire('Error !', 'Lab Detail  not Send', 'error');
-      }
-      this.sIsLoading = '';
-    });
-  }
+  //   }
+  //   console.log(submitData);
+
+
+  //   this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
+  //     if (response) {
+  //       console.log(response);
+  //       Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Lab Detail  not Send', 'error');
+  //     }
+  //     this.sIsLoading = '';
+  //   });
+  // }
 
 }
 

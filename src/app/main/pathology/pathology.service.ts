@@ -1,6 +1,8 @@
-import { HttpClient,HttpBackend  } from '@angular/common/http';
+import { HttpClient,HttpBackend, HttpHeaders, HttpErrorResponse  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { throwError, Observable } from "rxjs";
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -170,9 +172,9 @@ export class PathologyService {
 
   public InsertLabDetail(employee){
 
-    let baseURL='https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/'
-   let headers='*'
-    console.log("yes this is method");
+  //   let baseURL='https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/'
+  //  let headers='*'
+  //   console.log("yes this is method");
 // console.log("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/");
 
 this._httpClient = new HttpClient(this.handler);
@@ -182,10 +184,88 @@ this._httpClient = new HttpClient(this.handler);
 
     
 // return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/' + 'employee',{'headers':headers})
-
-
-return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/',employee);
+let headers = new HttpHeaders()
+    .set("Content-Type", "application/json")
+    .set("Accept", "application/json")
+let  httpOptions = {
     
+    headers: headers,
+  };
+
+let newjson={
+  "mobile": "",
+  "email": "",
+  "designation": "Mrs.",
+  "fullName": "Test",
+  "age": 81,
+  "gender": "Female",
+  "area": "",
+  "city": "",
+  "patientType": "IPD",
+  "labPatientId": "HISPATIENTID",
+  "pincode": " ",
+  "patientId": "",
+  "dob": "",
+  "passportNo": "",
+  "panNumber": "",
+  "aadharNumber": "",
+  "insuranceNo": "",
+  "nationalityethnicity": "",
+  "ethnicity": "",
+  "nationalIdentityNumber": "",
+  "workerCode": "w12",
+  "doctorCode": "",
+  "billDetails": {
+      "emergencyFlag": "0",
+      "billTotalAmount": "",
+      "advance": "0",
+      "billDate": "",
+      "paymentType": "CREDIT",
+      "referralName": " ",
+      "otherReferral": "",
+      "sampleId": "",
+      "orderNumber": " ",
+      "referralIdLH": "",
+      "organisationName": "",
+      "billConcession": "0",
+      "additionalAmount": "0",
+      "organizationIdLH": "440132",
+      "comments": "CGHS",
+      "testList": [
+          {
+              "testCode": "Blood Group & Rh Type"
+          },
+          {
+              "testCode": "Blood Group & Rh Type"
+          }
+
+      ],
+      "paymentList": [
+          {
+              "paymentType": "CREDIT",
+              "paymentAmount": "",
+              "chequeNo": "",
+              "issueBank": ""
+          }
+      ]
   }
+};
+
+//return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/',newjson,httpOptions);
+
+return this._httpClient
+     .post<any>("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/", newjson, httpOptions)
+     .pipe( catchError((error: HttpErrorResponse)=>{
+      console.log(error);
+      if (error.status === 401) {
+       
+      } else {
+       
+        return throwError(error);
+      }
+    }));
+  }
+
+  
 }
 
