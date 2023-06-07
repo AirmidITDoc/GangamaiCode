@@ -155,7 +155,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     let xx = {
       PaymentId:contact.PaymentId,
       HospitalName:contact.HospitalName,
-      HospitalAddress:contact.HospitalAddress,
+      HospAddress:contact.HospitalAddress,
       Phone:contact.Phone,
       BillNo:contact.BillNo,
       RegNo:contact.RegNo,
@@ -184,7 +184,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       PaidAmount: contact.PaidAmount,
       NEFTPayAmount:contact.NEFTPayAmount,
       PayTMAmount:contact.PayTMAmount,
-
+      AdvanceDetailID:contact.AdvanceDetailID,
           
     };
 
@@ -240,6 +240,10 @@ export class IpdAdvanceBrowseModel {
   AdvanceId:number;
   IPDNo:any;
   AdvanceDetailID:number;
+  HospitalName:any;
+  HospAddress:any;
+  Phone:any;
+  EmailId:any;
   /**
 * Constructor
 *
@@ -264,6 +268,11 @@ export class IpdAdvanceBrowseModel {
           this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
           this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
           this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
+
+          this.HospitalName=IpdAdvanceBrowseModel.HospitalName || '';
+          this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
+          this.Phone = IpdAdvanceBrowseModel.Phone || 0;
+          this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
       }
   }
 }

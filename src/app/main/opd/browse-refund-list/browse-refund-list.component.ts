@@ -424,28 +424,6 @@ export class ReportPrintObj {
   GenderName:any;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export class RefundMaster {
   RefundId: number;
   RegId: number;

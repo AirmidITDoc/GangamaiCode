@@ -117,22 +117,22 @@ app-ip-browse-refundof-bill {
 
 .mat-header-row {
     width: 100%;
-    max-width: 1240px;
-    min-width: 1240px;  
+    max-width: 1500px;
+    min-width: 1500px;  
      min-height: 30px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width: 1240px;
-    min-width: 1240px;  
+    max-width: 1500px;
+    min-width: 1500px;  
     min-height: 30px;           
 }
 
 .mat-column-RegNo {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
+    width:100px;
+    max-width:100px;
+    min-width:100px;
 }
 .mat-column-RefundId {
     width: 80px;
@@ -140,9 +140,9 @@ app-ip-browse-refundof-bill {
     min-width: 80px;
 }
 .mat-column-RefundDate {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: center;
     justify-content: center;
 }
@@ -154,10 +154,10 @@ app-ip-browse-refundof-bill {
     justify-content: center;
 }
 .mat-column-PatientName {
-    width: 200px;
-    max-width:200px;
-    min-width:200px;
-    text-align: center;
+    width: 400px;
+    max-width:400px;
+    min-width:400px;
+    text-align: left;
     justify-content: center;
     white-space: nowrap; 
     overflow: hidden;
@@ -186,45 +186,45 @@ app-ip-browse-refundof-bill {
 
 
 .mat-column-PaymentDate {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: center;
     justify-content: center;
 }
 .mat-column-CashPayAmount {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: center;
     justify-content: center;
 }
 .mat-column-ChequePayAmount {
-    width: 90px;
-    max-width: 90px;
-    min-width:90px;
+    width: 110px;
+    max-width: 110px;
+    min-width:110px;
     text-align: center;
     justify-content: center;
 }
 .mat-column-CardPayAmount {
-    width: 90px;
-    max-width:90px;
-    min-width: 90px;
+    width: 10px;
+    max-width:110px;
+    min-width: 110px;
     text-align: center;
     justify-content: center;
     margin-right: 15px;
 }
 .mat-column-TransactionType {
-    width: 90px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: center;
     justify-content: center;
 }
 .mat-column-Remark {
-    width: 190px;
-    max-width: 190px;
-    min-width: 190px;
+    width: 290px;
+    max-width: 290px;
+    min-width: 290px;
     text-align: left;
     justify-content: left;
     white-space: nowrap; 

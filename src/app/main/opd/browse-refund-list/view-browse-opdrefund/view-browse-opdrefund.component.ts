@@ -8,6 +8,7 @@ import { BrowseRefundlistService } from '../browse-refundlist.service';
 import { RefundMaster } from '../browse-refund-list.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
 
 @Component({
   selector: 'app-view-browse-opdrefund',
@@ -23,14 +24,15 @@ export class ViewBrowseOPDRefundComponent implements OnInit {
   dataSource = new MatTableDataSource<RefundMaster>();
 
 rptData: any;
-reportPrintObj: BrowseOPDBill;
+reportPrintObj: RefundMaster;
 SummaryData:any=[];  
   
 subscriptionArr: Subscription[] = [];
 printTemplate: any;
-Today:any;
+Today= this.datePipe.transform(new Date(), 'dd/MM/yyyy h:mm a'); 
 
 mynumber:number=0;
+RefundAmount=0;
 outputWords=''
 
   constructor(
@@ -43,7 +45,7 @@ outputWords=''
   ) { }
 
   ngOnInit(): void {
-    this.Today = [(new Date()).toISOString()];
+    
     
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -71,7 +73,7 @@ outputWords=''
      this.subscriptionArr.push(
        this._BrowseOpdRefundService.getRefundBrowsePrint(D_data).subscribe(res => {
          if(res){
-         this.reportPrintObj = res[0] as BrowseOPDBill;
+         this.reportPrintObj = res[0] as RefundMaster;
         //  debugger;
          console.log(this.reportPrintObj);
         }
@@ -165,52 +167,4 @@ export class BrowseOPDBill
     }
 }
 
-
-// export class RefundMaster {
-//   RefundId: number;
-//   RegId: number;
-//   RefundDate: Date;
-//   RefundAmount: number;
-//   PBillNo: number;
-//   PatientName: Date;
-//   Total: number;
-//   PaymentId: number;
-//   PaymentDate: any;
-//   CashPayAmount:number;
-//   ChequePayAmount:number;
-//   CardPayAmount:number;
-//   TransactionType:number;
-//   PhoneNo:number;
-//   Remark:string;
-//   GenderName:string;
-//   AddedBy:string;
-//   AgeYear:number;
-//   BillDate:any;
-//   OPDNO:any;
-
-//   constructor(RefundMaster) {
-//     {
-//       this.RefundId = RefundMaster.RefundId || 0;
-//       this.RegId = RefundMaster.RegId || '';
-//       this.BillDate = RefundMaster.BillDate || '';
-//       this.RefundDate = RefundMaster.RefundDate || '';
-//       this.RefundAmount = RefundMaster.RefundAmount || 0;
-//       this.PatientName = RefundMaster.PatientName || '';
-//       this.Total = RefundMaster.Total || 0 ;
-//       this.PBillNo = RefundMaster.PBillNo || '';
-//       this.PaymentId = RefundMaster.PaymentId || 0;
-//       this.PaymentDate = RefundMaster.PaymentDate || 0;
-//       this.CashPayAmount = RefundMaster.CashPayAmount || 0 ;
-//       this.ChequePayAmount = RefundMaster.ChequePayAmount || 0;
-//       this.CardPayAmount = RefundMaster.CardPayAmount || 0;
-//       this.TransactionType = RefundMaster.TransactionType || 0;
-//       this.PhoneNo = RefundMaster.PhoneNo || 0;
-//       this.Remark = RefundMaster.Remark || '';
-//       this.GenderName = RefundMaster.GenderName || '';
-//       this.AddedBy = RefundMaster.AddedBy || '';
-//       this.AgeYear=RefundMaster.AgeYear || 0; 
-//       this.OPDNO=RefundMaster.OPDNO || '';
-//     }
-//   }
-// }
 

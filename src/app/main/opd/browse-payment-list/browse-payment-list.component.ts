@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, Pipe, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -11,7 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ViewOPBrowsePaymentListComponent } from './view-opbrowse-payment-list/view-opbrowse-payment-list.component';
 import { PrintPaymentComponent } from './print-payment/print-payment.component';
-
+@Pipe({
+  name: 'numberToWords'
+})
 @Component({
   selector: 'app-browse-payment-list',
   templateUrl: './browse-payment-list.component.html',
@@ -243,6 +245,8 @@ onExport(exprtType){
     // this.numberInWords= converter.toWords(this.mynumber);
     //  return converter.toWords(e);
        }
+
+
 getTemplate() {
 debugger;
 
@@ -388,7 +392,10 @@ getViewbill(contact)
    
       const dialogRef = this._matDialog.open(PrintPaymentComponent, 
        {  maxWidth: "95vw",
-          maxHeight: "130vh", width: '100%', height: "100%"
+          maxHeight: "130vh", width: '100%', height: "100%",
+          data : {
+            registerObj : xx,
+          }
      });
      dialogRef.afterClosed().subscribe(result => {
       //  console.log('The dialog was closed - Insert Action', result);
@@ -501,6 +508,10 @@ export class BrowseOpdPaymentReceipt
     CardNo: any;
     CardBankName:any;
     ChequeNo:any;
+    HospitalName:any;
+    HospitalAddress:any;
+    EmailId:any;
+    Phone:any;
     /**
      * Constructor
      *
@@ -547,6 +558,11 @@ export class BrowseOpdPaymentReceipt
             this.CardNo = BrowseOpdPaymentReceipt.CardNo || '';
             this.CardBankName = BrowseOpdPaymentReceipt.CardBankName || '';
             this.ChequeNo=BrowseOpdPaymentReceipt.ChequeNo || 0;
+
+            this.HospitalName = BrowseOpdPaymentReceipt.HospitalName || '';
+            this.HospitalAddress = BrowseOpdPaymentReceipt.HospitalAddress || '';
+            this.EmailId = BrowseOpdPaymentReceipt.EmailId || '';
+            this.Phone=BrowseOpdPaymentReceipt.Phone || 0;
         }
 
     }

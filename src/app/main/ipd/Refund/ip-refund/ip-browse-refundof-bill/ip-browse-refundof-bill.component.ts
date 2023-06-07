@@ -495,6 +495,11 @@ export class BrowseIpdreturnadvanceReceipt
      NetPayableAmt:any;
      OPDNo:any;
      ConsultantDoctorName:any;
+     HospitalName:any;
+     HospitalAddress:any;
+     Phone:any;
+     EmailId:any;
+
     /**
      * Constructor
      *
@@ -541,6 +546,11 @@ export class BrowseIpdreturnadvanceReceipt
             this.NetPayableAmt=BrowseIpdreturnadvanceReceipt.NetPayableAmt ||0;
             this.OPDNo =BrowseIpdreturnadvanceReceipt.OPDNo || 0;
            this.ConsultantDoctorName=BrowseIpdreturnadvanceReceipt.ConsultantDoctorName || 0;
+
+           this.HospitalName = BrowseIpdreturnadvanceReceipt.HospitalName || '';
+           this.HospitalAddress=BrowseIpdreturnadvanceReceipt.HospitalAddress ||0;
+           this.Phone =BrowseIpdreturnadvanceReceipt.Phone || '';
+          this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
         }
 
     }

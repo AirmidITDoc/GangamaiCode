@@ -520,6 +520,7 @@ export class BrowseOPDBill {
   HospitalName: string;
   HospitalAddress: string;
   Phone: number;
+  EmailId:any;
   ChargesDoctorName: string;
   TotalBillAmount: number;
   ConsultantDocName: string;
@@ -569,6 +570,7 @@ export class BrowseOPDBill {
       this.HospitalAddress = BrowseOPDBill.HospitalAddress || '';
       this.ChargesTotalAmount = BrowseOPDBill.ChargesTotalAmount || '';
       this.Phone = BrowseOPDBill.Phone || '';
+      this.EmailId = BrowseOPDBill.EmailId || '';
       this.ConsultantDocName = BrowseOPDBill.ConsultantDocName || '';
       this.DepartmentName = BrowseOPDBill.DepartmentName || '';
       this.TotalBillAmount = BrowseOPDBill.TotalBillAmount || '';

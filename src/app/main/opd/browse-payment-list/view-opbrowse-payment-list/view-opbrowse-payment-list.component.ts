@@ -16,6 +16,8 @@ import { BrowseOpdPaymentReceipt } from '../browse-payment-list.component';
 })
 export class ViewOPBrowsePaymentListComponent implements OnInit {
 
+
+
   selectedAdvanceObj: BrowseOpdPaymentReceipt;
   dataSource = new MatTableDataSource<BrowseOpdPaymentReceipt>();
 
