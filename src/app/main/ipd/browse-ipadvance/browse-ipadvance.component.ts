@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -22,7 +22,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   hasSelectedContacts: boolean;
-  
+  outputWords=''
   BrowseOPDBillsList:any;
   msg:any;
   sIsLoading:any;
@@ -81,7 +81,9 @@ export class BrowseIPAdvanceComponent implements OnInit {
           let re = new RegExp(reString, "g");
           this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-        
+debugger;
+        // var objPrintWordInfo = this.reportPrintObj[0];
+        this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
@@ -112,6 +114,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   onClear_IpdAdvance(){
     
+  }
+
+  convertToWord(e) {
+    // this.numberInWords= converter.toWords(this.mynumber);
+    return converter.toWords(e);
   }
 
   getPrint(el) {

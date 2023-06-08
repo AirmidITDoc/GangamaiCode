@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { BrowseIPAdvanceService } from '../browse-ipadvance.service';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-view-ipadvance',
   templateUrl: './view-ipadvance.component.html',
@@ -58,7 +58,7 @@ outputWords=''
   
   convertToWord(e){
     // this.outputWords= converter.toWords(this.mynumber);
-    // this.outputWords= converter.toWords(e);
+    this.outputWords= converter.toWords(e);
 
     }
 
@@ -75,6 +75,7 @@ outputWords=''
          if(res){
          this.reportPrintObj = res[0] as IpdAdvanceBrowseModel;
          console.log(this.reportPrintObj);
+         this.convertToWord(this.reportPrintObj.AdvanceAmount);
         }
                 
        })

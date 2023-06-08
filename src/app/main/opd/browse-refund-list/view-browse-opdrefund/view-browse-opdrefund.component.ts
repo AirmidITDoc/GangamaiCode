@@ -9,6 +9,7 @@ import { RefundMaster } from '../browse-refund-list.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
+import * as converter from 'number-to-words';
 
 @Component({
   selector: 'app-view-browse-opdrefund',
@@ -59,7 +60,7 @@ outputWords=''
 
   convertToWord(e){
     // this.outputWords= converter.toWords(this.mynumber);
-    // this.outputWords= converter.toWords(e);
+    this.outputWords= converter.toWords(e);
 
     }
 
@@ -76,6 +77,7 @@ outputWords=''
          this.reportPrintObj = res[0] as RefundMaster;
         //  debugger;
          console.log(this.reportPrintObj);
+         this.convertToWord(this.reportPrintObj.RefundAmount);
         }
                 
        })

@@ -8,6 +8,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { IPBrowseRefundofBillService } from '../ip-browse-refundof-bill.service';
+import * as converter from 'number-to-words';
 
 @Component({
   selector: 'app-view-ip-reunfof-bill',
@@ -59,7 +60,7 @@ outputWords=''
   
   convertToWord(e){
     // this.outputWords= converter.toWords(this.mynumber);
-    // this.outputWords= converter.toWords(e);
+    this.outputWords= converter.toWords(e);
 
     }
 
@@ -75,6 +76,7 @@ outputWords=''
          if(res){
          this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
         //  debugger;
+        this.convertToWord(this.reportPrintObj.RefundAmount);
          console.log(this.reportPrintObj);
         }
                 

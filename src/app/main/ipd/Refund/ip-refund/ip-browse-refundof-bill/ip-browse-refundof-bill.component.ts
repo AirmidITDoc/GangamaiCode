@@ -10,7 +10,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Subscription } from 'rxjs';
 import { IPBrowseRefundofBillService } from './ip-browse-refundof-bill.service';
 import { ViewIPReunfofBillComponent } from './view-ip-reunfof-bill/view-ip-reunfof-bill.component';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-ip-browse-refundof-bill',
   templateUrl: './ip-browse-refundof-bill.component.html',
@@ -276,7 +276,7 @@ getRecord(el,i) {
 }
 convertToWord(e){
   // this.numberInWords= converter.toWords(this.mynumber);
-  //  return converter.toWords(e);
+   return converter.toWords(e);
      }
  
   getTemplate() {
@@ -294,12 +294,12 @@ convertToWord(e){
        
         debugger;
         this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
         }, 50);

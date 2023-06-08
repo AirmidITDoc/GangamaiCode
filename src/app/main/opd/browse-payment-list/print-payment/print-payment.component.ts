@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BrowseOpdPaymentReceipt } from '../browse-payment-list.component';
 import { Subscription } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-print-payment',
   templateUrl: './print-payment.component.html',
@@ -50,6 +50,7 @@ export class PrintPaymentComponent implements OnInit {
   TransactionType:any;
   PayDate:any;
   PaidAmount:any;
+  outputWords=''
 
   Today= this.datePipe.transform(new Date(), 'dd/MM/yyyy h:mm a'); 
   
@@ -61,7 +62,7 @@ export class PrintPaymentComponent implements OnInit {
     public _matDialog: MatDialog) { }
 
   ngOnInit(): void {
-debugger;
+
     // if(this.data){
       
     //   console.log( this.data);
@@ -90,20 +91,32 @@ getPrint(el) {
       if(res){  
       this.registerObj = res[0] as BrowseOpdPaymentReceipt;
       console.log(res);
+     
+      this.convertToWord(this.registerObj.PaidAmount);
+  //     // window.print();
+  // const printContents = document.getElementById('print-payment.component.html').innerText;
+  // console.log(printContents);
+  // const originalContents = document.body.innerHTML;
+  // console.log(originalContents);
+  // document.body.innerHTML = printContents;
+ 
+  // document.body.innerHTML = originalContents;
+
      }
              
     })
   );
-
-  // this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-
-
+  setTimeout(() => {
+    // this.sIsLoading = 'loading-data';
+    window.print();
+  }, 2500);
+ 
  }
 
 
  convertToWord(e){
   // this.numberInWords= converter.toWords(this.mynumber);
-  //  return converter.toWords(e);
+  this.outputWords= converter.toWords(e);
      }
 
 }

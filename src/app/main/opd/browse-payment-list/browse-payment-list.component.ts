@@ -11,9 +11,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ViewOPBrowsePaymentListComponent } from './view-opbrowse-payment-list/view-opbrowse-payment-list.component';
 import { PrintPaymentComponent } from './print-payment/print-payment.component';
-@Pipe({
-  name: 'numberToWords'
-})
+import * as converter from 'number-to-words';
+import { DomSanitizer } from '@angular/platform-browser';
+
+// @Pipe({
+//   name: 'numberToWords'
+// })
+
+
 @Component({
   selector: 'app-browse-payment-list',
   templateUrl: './browse-payment-list.component.html',
@@ -32,6 +37,7 @@ export class BrowsePaymentListComponent implements OnInit {
   printTemplate: any;
   sIsLoading: string = '';
   TempKeys:any;
+  data:any;
 
   @Input() dataArray: any; 
   hasSelectedContacts: boolean;
@@ -63,6 +69,7 @@ export class BrowsePaymentListComponent implements OnInit {
   constructor( private _fuseSidebarService: FuseSidebarService,
     public _BrowseOpdPaymentReceiptService:BrowsePaymentListService,
     public datePipe: DatePipe,
+    private sanitizer:DomSanitizer,
     private advanceDataStored: AdvanceDataStored,
     public _matDialog: MatDialog) { }
 
@@ -243,17 +250,13 @@ onExport(exprtType){
   }
   convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
-
+       val = 1;
 
 getTemplate() {
 debugger;
 
-  // let query1 = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=20';
-  // this._BrowseOpdPaymentReceiptService.getTemplates(query1).subscribe((resData: any) => {
-  //   console.log(this.printTemplate = resData[0].TempDesign);
-  //   this.printTemplate = resData[0].TempDesign;
 
 
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
@@ -261,26 +264,35 @@ debugger;
     console.log(this.printTemplate = resData[0].TempDesign);
     console.log(this.printTemplate = resData[0].TempKeys);
     this.printTemplate = resData[0].TempDesign;
-    console.log(this.printTemplate)
+   
+    // this.data = this.sanitizer.bypassSecurityTrustHtml(resData[0].TempDesign);    
 
-    // this.TempKeys=resData[0].TempKeys;
-    // let keysArray=resData[0].TempKeys.toString();
-    // console.log(keysArray);
-    
-   let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
-  
+    // console.log(this.printTemplate)
+    // console.log(this.data);
+    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+   
 
+//   @Pipe({
+//   name: 'htmlToPlaintext'
+// })
+//     const temp = document.createElement('div');
+//     temp.innerHTML = this.printTemplate;
+//     this.printTemplate=temp.innerHTML
+//     return temp.textContent || temp.innerText || '';
+
+//     console.log(temp.textContent || temp.innerText || '')
   
    for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
+
    
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
+      // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      console.log(this.printTemplate.replace(/{{.*}}/g, ''));
+      
       setTimeout(() => {
         this.print();
       }, 50);

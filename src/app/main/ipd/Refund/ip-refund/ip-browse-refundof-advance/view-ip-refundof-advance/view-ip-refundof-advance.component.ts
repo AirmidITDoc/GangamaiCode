@@ -7,6 +7,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IPBrowseRefundofAdvanceService } from '../ip-browse-refundof-advance.service';
+import * as converter from 'number-to-words';
 
 @Component({
   selector: 'app-view-ip-refundof-advance',
@@ -54,7 +55,7 @@ export class ViewIPRefundofAdvanceComponent implements OnInit {
     
     convertToWord(e){
       // this.outputWords= converter.toWords(this.mynumber);
-      // this.outputWords= converter.toWords(e);
+      this.outputWords= converter.toWords(e);
   
       }
   
@@ -70,6 +71,7 @@ export class ViewIPRefundofAdvanceComponent implements OnInit {
            if(res){
            this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
            console.log(this.reportPrintObj);
+           this.convertToWord(this.reportPrintObj.RefundAmount);
           }
         
          })
