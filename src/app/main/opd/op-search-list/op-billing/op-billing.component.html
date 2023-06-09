@@ -164,8 +164,8 @@
                                                     <mat-select formControlName="DoctorID" placeholder="Bank"
                                                         #singleSelect required>
                                                         <mat-error
-                                                        *ngIf="registeredForm.get('DoctorID').invalid && registeredForm.get('DoctorID').touched">
-                                                        Select Doctor Name</mat-error>
+                                                            *ngIf="registeredForm.get('DoctorID').invalid && registeredForm.get('DoctorID').touched">
+                                                            Select Doctor Name</mat-error>
                                                         <mat-option>
                                                             <ngx-mat-select-search [formControl]="doctorFilterCtrl"
                                                                 [placeholderLabel]="'Search'"
@@ -176,7 +176,7 @@
                                                             [value]="element">
                                                             {{element.DoctorName}}
                                                         </mat-option>
-                                                       
+
                                                     </mat-select>
                                                 </mat-form-field>
                                             </div>
@@ -195,7 +195,8 @@
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
-                                                    formControlName="discAmount" type="number" (keyup)="calculatechargesDiscamt()" >
+                                                    formControlName="discAmount" type="number"
+                                                    (keyup)="calculatechargesDiscamt()">
                                             </mat-form-field>
 
                                             <!-- </div>
@@ -210,10 +211,12 @@
                                             </mat-form-field>
                                             <!-- </div> -->
 
-                                            <div matTooltip="Select doctor name to enable this button!!" [matTooltipDisabled]="!registeredForm.invalid" [matTooltipPosition]="'above'">
+                                            <div matTooltip="Select doctor name to enable this button!!"
+                                                [matTooltipDisabled]="!registeredForm.invalid"
+                                                [matTooltipPosition]="'above'">
                                                 <button mat-raised-button fxLayoutAlign="center center"
-                                                (click)="onSaveEntry()"
-                                                 [disabled]="registeredForm.invalid" style="background-color: blue; color: white; width: 70px; ">
+                                                    (click)="onSaveEntry()" [disabled]="registeredForm.invalid"
+                                                    style="background-color: blue; color: white; width: 70px; ">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>
                                             </div>
@@ -523,7 +526,8 @@
                                                     <mat-label>Disc Amt</mat-label>
                                                     <input matInput [(ngModel)]="concessionAmtOfNetAmt"
                                                         name="concessionAmtOfNetAmt" formControlName="concessionAmt"
-                                                        placeholder="0" style="height: 35px;" type="number" (keyup)="calculateDiscamtfinal()">
+                                                        placeholder="0" style="height: 35px;" type="number"
+                                                        (keyup)="calculateDiscamtfinal()">
                                                 </mat-form-field>
                                             </div>
 
@@ -584,8 +588,8 @@
                                     style="border-radius: 16px;">AddCharges</button> -->
 
 
-                                <button class="next-btn" (click)="onInsertAddCharges()"
-                                    style="border-radius: 16px;" [disabled]="click">Save</button>
+                                <button class="next-btn" (click)="onInsertAddCharges()" style="border-radius: 16px;"
+                                    [disabled]="click">Save</button>
 
                                 <!-- [disabled]="registeredForm.invalid" -->
                                 <button class="footer-btn" (click)="onClose()"
@@ -608,4 +612,4 @@
 
 
         //
-       
+     

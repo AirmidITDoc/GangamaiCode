@@ -689,6 +689,8 @@ export class OPBillingComponent implements OnInit {
       //   // }
       // }
 
+      let InterimOrFinal=1;
+
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
       InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
@@ -708,7 +710,7 @@ export class OPBillingComponent implements OnInit {
       InsertBillUpdateBillNoObj['CompanyId'] = 0;
       InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
       InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-      InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+      InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
       InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
       InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
@@ -746,15 +748,10 @@ export class OPBillingComponent implements OnInit {
       }
       else {
         debugger;
-        console.log("Procced with Credit bill");
-        console.log(this.paidamt, this.balanceamt);
+        // console.log("Procced with Credit bill");
+        // console.log(this.paidamt, this.balanceamt);
 
-        //     // this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-
-        //     if (this.concessionDiscPer > 0) {
-        //       this.balanceamt = this.FinalAmt;
-        //     }
-
+        InterimOrFinal=0;
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
         const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -1063,7 +1060,7 @@ export class OPBillingComponent implements OnInit {
     this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName','', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
       debugger;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -1141,12 +1138,12 @@ export class OPBillingComponent implements OnInit {
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
+      // this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
 

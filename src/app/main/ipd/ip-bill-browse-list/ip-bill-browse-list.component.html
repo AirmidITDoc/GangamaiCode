@@ -201,11 +201,11 @@
                                 <mat-cell *matCellDef="let contact">
                                     <mat-icon
                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                        *ngIf="contact.InterimOrFinal=='1' " matTooltip="Interim Bill"
+                                        *ngIf="contact.InterimOrFinal=='0' " matTooltip="Interim Bill"
                                         class="gray-600 s-16 ">circle</mat-icon>
                                     <mat-icon
                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                        *ngIf="contact.InterimOrFinal=='0' " matTooltip=" Final Bill "
+                                        *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
                                         class="red-600 s-16 ">circle</mat-icon>
                                 </mat-cell>
                             </ng-container>

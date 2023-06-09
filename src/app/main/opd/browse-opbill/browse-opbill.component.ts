@@ -10,7 +10,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ViewOPBillComponent } from './view-opbill/view-opbill.component';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-browse-opbill',
   templateUrl: './browse-opbill.component.html',
@@ -48,7 +48,7 @@ export class BrowseOPBillComponent implements OnInit {
 
   displayedColumns = [
     'BillDate',
-    'PBillNo',
+    'BillNo',
     'RegNo',
     'PatientName',
     'TotalAmt',
@@ -365,7 +365,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
   convertToWord(e) {
     // this.numberInWords= converter.toWords(this.mynumber);
-    // return converter.toWords(e);
+    return converter.toWords(e);
   }
   // GET DATA FROM DATABASE 
 
