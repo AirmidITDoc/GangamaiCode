@@ -571,7 +571,7 @@ export class AdmissionComponent implements OnInit {
     this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
        this.printTemplate = resData[0].TempDesign;
        
-      let keysArray = ['HospitalName','HospAddress','Phone','FirstName','MiddleName','LastName','AdmissionId','RegNo','PatientName','Age','AgeDay','AgeMonth','GenderName','MaritalStatusName','Address','MobileNo','IsMLC','PhoneNo', 'AdmissionTime' ,'IPDNo','CompanyName', 'DepartmentName' ,'AdmittedDoctorName','AdmittedDoctor1','BedName','AdmittedDoctor2',
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','FirstName','MiddleName','LastName','AdmissionId','RegNo','PatientName','Age','AgeDay','AgeMonth','GenderName','MaritalStatusName','Address','MobileNo','IsMLC','PhoneNo', 'AdmissionTime' ,'IPDNo','CompanyName', 'DepartmentName' ,'AdmittedDoctorName','AdmittedDoctor1','BedName','AdmittedDoctor2',
        'RelationshipName','RefDoctorName','RelativePhoneNo','IsReimbursement','TariffName','RelativeName','Aadharcardno','RelativeAddress']; // resData[0].TempKeys;
       for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
@@ -668,7 +668,11 @@ export class Admission {
   AdmissionTime: any;
   PatientTypeID: number;
   HospitalID: number;
+  HospitalName:any;
+  HospitalAddress:any;
+
   Phone:number;
+  EmailId:any;
   DocNameID: number;
   RefDocNameID: number;
   RoomId: number;
@@ -707,7 +711,6 @@ export class Admission {
   MotherName: string;
   RefDocName: string;
   PatientType: string;
-  HospitalName: string;
   RegNoWithPrefix: number;
   CompanyName:string;
   AdmittedDoctor1ID: number;
@@ -716,7 +719,7 @@ export class Admission {
   TariffName: string;
   RelationshipName:string;
   RoomName: string;
-  HospitalAddress:string;
+  
   BedName: string;
   GenderId: number;
   GenderName: string;
@@ -741,6 +744,7 @@ export class Admission {
           this.AdmissionTime = Admission.AdmissionTime || '';
           this.PatientTypeID = Admission.PatientTypeID || '';
           this.HospitalID = Admission.HospitalID || '';
+          this.EmailId=Admission.EmailId || '';
           this.Phone=Admission.Phone||0;
           this.DocNameID = Admission.DocNameID || '';
           this.RefDocNameID = Admission.RefDocNameID || '';

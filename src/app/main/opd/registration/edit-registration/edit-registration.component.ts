@@ -34,7 +34,7 @@ export class EditRegistrationComponent implements OnInit {
   searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
-  snackmessage:any;
+  snackmessage: any;
   msg: any = [];
   AgeYear: any;
   AgeMonth: any;
@@ -66,11 +66,11 @@ export class EditRegistrationComponent implements OnInit {
   capturedImage: any;
   isLinear = true;
   isLoading: string = '';
-  Prefix :any;
+  Prefix: any;
 
 
-  IsSaveupdate:any;
-  IsSave:any;
+  IsSaveupdate: any;
+  IsSave: any;
 
 
   // prefix filter
@@ -114,16 +114,15 @@ export class EditRegistrationComponent implements OnInit {
     public dialogRef: MatDialogRef<EditRegistrationComponent>,
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
-    private router: Router)  
-    {}
+    private router: Router) { }
 
 
   ngOnInit(): void {
 
-    this.IsSaveupdate="true";
-  console.log(this.data)
-   this.personalFormGroup = this.createPesonalForm();
-   this.searchFormGroup = this.createSearchForm();
+    this.IsSaveupdate = "true";
+    console.log(this.data)
+    this.personalFormGroup = this.createPesonalForm();
+    this.searchFormGroup = this.createSearchForm();
     // this.getHospitalList();
     this.getPrefixList();
     this.getMaritalStatusList();
@@ -166,32 +165,32 @@ export class EditRegistrationComponent implements OnInit {
         this.filterArea();
       });
 
-    
-    
-      if(this.data){
-        // this.IsSave="false";
-        // this.IsSaveupdate='false';
-        this.registerObj=this.data.registerObj;
-      
-        console.log( this.registerObj);
-       
-          // this.AgeYear = this.data.PatObj.AgeYear;
-          this.Prefix=this.data.registerObj.PrefixID;
-          // this.PatientName=this.data.PatObj.PatientName;
-          // this.AdmissionDate=this.data.PatObj.AdmissionDate;
-          // this.RelativeName= this.data.PatObj.RelativeName;
-          // this.RelativeAddress= this.data.PatObj.RelativeAddress;
-          // this.RelatvieMobileNo= this.data.PatObj.RelatvieMobileNo;
-          this.setDropdownObjs1();
-      }
 
-      
+
+    if (this.data) {
+      // this.IsSave="false";
+      // this.IsSaveupdate='false';
+      this.registerObj = this.data.registerObj;
+
+      console.log(this.registerObj);
+
+      // this.AgeYear = this.data.PatObj.AgeYear;
+      this.Prefix = this.data.registerObj.PrefixID;
+      // this.PatientName=this.data.PatObj.PatientName;
+      // this.AdmissionDate=this.data.PatObj.AdmissionDate;
+      // this.RelativeName= this.data.PatObj.RelativeName;
+      // this.RelativeAddress= this.data.PatObj.RelativeAddress;
+      // this.RelatvieMobileNo= this.data.PatObj.RelatvieMobileNo;
+      this.setDropdownObjs1();
+    }
+
+
   }
 
   closeDialog() {
     console.log("closed")
     //  this.dialogRef.close();
-   // this.personalFormGroup.reset();
+    // this.personalFormGroup.reset();
   }
   createPesonalForm() {
     return this.formBuilder.group({
@@ -221,9 +220,8 @@ export class EditRegistrationComponent implements OnInit {
       AgeMonth: ['', [
         Validators.pattern("^[0-9]*$")]],
       AgeDay: ['', [
-
         Validators.pattern("^[0-9]*$")]],
-      PhoneNo: ['',[Validators.minLength(10),
+      PhoneNo: ['', [Validators.minLength(10),
       Validators.maxLength(15),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
@@ -255,7 +253,7 @@ export class EditRegistrationComponent implements OnInit {
 
   // prefix filter
   private filterPrefix() {
-    
+
     if (!this.PrefixList) {
 
       return;
@@ -336,7 +334,7 @@ export class EditRegistrationComponent implements OnInit {
   }
   // area filter code  
   private filterArea() {
-    
+
     if (!this.AreaList) {
       return;
     }
@@ -357,8 +355,8 @@ export class EditRegistrationComponent implements OnInit {
   }
 
   addEmptyRow() { }
- 
-  
+
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     console.log('dateTimeObj ==', dateTimeObj);
@@ -371,15 +369,15 @@ export class EditRegistrationComponent implements OnInit {
 
 
   getPrefixList() {
-    
-      this._registerService.getPrefixCombo().subscribe(data => {
+
+    this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       this.filteredPrefix.next(this.PrefixList.slice());
-        if(this.data){
-      const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
-      this.personalFormGroup.get('PrefixID').setValue(ddValue);  
-    }
-     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);   
+      if (this.data) {
+        const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
+        this.personalFormGroup.get('PrefixID').setValue(ddValue);
+      }
+      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     });
   }
 
@@ -394,16 +392,16 @@ export class EditRegistrationComponent implements OnInit {
     this._registerService.getPatientTypeCombo().subscribe(data => { this.PatientTypeList = data; })
   }
 
-  
+
   getAreaList() {
 
     this._registerService.getAreaCombo().subscribe(data => {
       this.AreaList = data;
       this.filteredArea.next(this.AreaList.slice());
 
-      if(this.data){
+      if (this.data) {
         const ddValue = this.AreaList.find(c => c.AreaId == this.data.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(ddValue); 
+        this.personalFormGroup.get('AreaId').setValue(ddValue);
       }
     });
   }
@@ -413,32 +411,32 @@ export class EditRegistrationComponent implements OnInit {
     this._registerService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
       this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      if(this.data){
+      if (this.data) {
         const ddValue = this.MaritalStatusList.find(c => c.MaritalStatusId == this.data.registerObj.MaritalStatusId);
         this.personalFormGroup.get('MaritalStatusId').setValue(ddValue);
-      } 
+      }
     });
   }
 
   getReligionList() {
-   
+
     this._registerService.getReligionCombo().subscribe(data => {
       this.ReligionList = data;
       this.filteredReligion.next(this.ReligionList.slice());
-      if(this.data){
-         const ddValue = this.ReligionList.find(c => c.ReligionId == this.data.registerObj.ReligionId);
-     this.personalFormGroup.get('ReligionId').setValue(ddValue); 
+      if (this.data) {
+        const ddValue = this.ReligionList.find(c => c.ReligionId == this.data.registerObj.ReligionId);
+        this.personalFormGroup.get('ReligionId').setValue(ddValue);
       }
     });
   }
 
 
   getGendorMasterList() {
-    
+
     this._registerService.getGenderMasterCombo().subscribe(data => {
       this.GenderList = data;
-     const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
-     this.personalFormGroup.get('GenderId').setValue(ddValue);  
+      const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
+      this.personalFormGroup.get('GenderId').setValue(ddValue);
     })
   }
 
@@ -446,11 +444,11 @@ export class EditRegistrationComponent implements OnInit {
     this._registerService.getCityList().subscribe(data => {
       this.cityList = data;
       this.filteredCity.next(this.cityList.slice());
-     if(this.data){
-      const ddValue = this.cityList.find(c => c.CityId == this.data.registerObj.CityId);
-     this.personalFormGroup.get('CityId').setValue(ddValue); 
-     this.onChangeCityList(this.data.registerObj.CityId)
-     }
+      if (this.data) {
+        const ddValue = this.cityList.find(c => c.CityId == this.data.registerObj.CityId);
+        this.personalFormGroup.get('CityId').setValue(ddValue);
+        this.onChangeCityList(this.data.registerObj.CityId)
+      }
     });
   }
 
@@ -492,11 +490,11 @@ export class EditRegistrationComponent implements OnInit {
 
 
   onChangeGenderList(prefixObj) {
-    if(prefixObj) {
+    if (prefixObj) {
       this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
         this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-        
+
         this.selectedGenderID = this.GenderList[0].GenderId;
       });
     }
@@ -513,7 +511,7 @@ export class EditRegistrationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       if (result) {
-        
+
         this.registerObj = result as RegInsert;
         this.setDropdownObjs1();
       }
@@ -527,9 +525,9 @@ export class EditRegistrationComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-    
+
     console.log('obj==', obj);
-    
+
     let a, b, c;
 
     a = obj.AgeDay.trim();;
@@ -548,7 +546,7 @@ export class EditRegistrationComponent implements OnInit {
 
   setDropdownObjs1() {
     debugger;
-    
+
     debugger;
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
@@ -570,12 +568,12 @@ export class EditRegistrationComponent implements OnInit {
 
 
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-    
+
     this.onChangeCityList(this.registerObj.CityId);
-    
+
     this.personalFormGroup.updateValueAndValidity();
     // this.dialogRef.close();
-    
+
   }
 
 
@@ -615,18 +613,18 @@ export class EditRegistrationComponent implements OnInit {
           "PhoneNo": this.registerObj.PhoneNo || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
           "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
           "AddedBy": this.accountService.currentUserValue.user.id,
-          "UpdatedBy":0,
+          "UpdatedBy": 0,
           "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
           "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
           "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
           "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
           "StateId": this.personalFormGroup.get('StateId').value.StateId,
           "CityId": this.personalFormGroup.get('CityId').value.CityId,
-          "MaritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
-          "IsCharity":false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+          "MaritalStatusId": this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
+          "IsCharity": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
           "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
-          "isSeniorCitizen":0,
+          "isSeniorCitizen": 0,
           // "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
           // "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
         }
@@ -635,9 +633,9 @@ export class EditRegistrationComponent implements OnInit {
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
           this.myFunction("Register Data Save Successfully !");
-                  
+
           setTimeout(() => {
-             this._matDialog.closeAll();
+            this._matDialog.closeAll();
           }, 1000);
 
         } else {
@@ -652,7 +650,7 @@ export class EditRegistrationComponent implements OnInit {
 
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
-           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
+          "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
           "MiddleName": this.registerObj.MiddleName || "",
           "LastName": this.registerObj.LastName || "",
@@ -671,8 +669,8 @@ export class EditRegistrationComponent implements OnInit {
           "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
           "StateId": this.personalFormGroup.get('StateId').value.StateId,
           "CityId": this.personalFormGroup.get('CityId').value.CityId,
-          "MaritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
-          "IsCharity":false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+          "MaritalStatusId": this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
+          "IsCharity": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
           // "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
           // "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           // "isSeniorCitizen":0,
@@ -684,9 +682,9 @@ export class EditRegistrationComponent implements OnInit {
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           this.myFunction("Register Data Updated Successfully !");
-                  
+
           setTimeout(() => {
-             this._matDialog.closeAll();
+            this._matDialog.closeAll();
           }, 1000);
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
@@ -700,8 +698,8 @@ export class EditRegistrationComponent implements OnInit {
   }
 
 
- onClose() {
-      this.dialogRef.close();
+  onClose() {
+    this.dialogRef.close();
   }
 
   createSearchForm() {
@@ -764,17 +762,17 @@ export class EditRegistrationComponent implements OnInit {
 
   }
   IsCharity: any;
-  onChangeIsactive(SiderOption){
-   this.IsCharity= SiderOption.checked
+  onChangeIsactive(SiderOption) {
+    this.IsCharity = SiderOption.checked
     console.log(this.IsCharity);
   }
 
   myFunction(s) {
-    this.snackmessage=s;
+    this.snackmessage = s;
     console.log(s);
     console.log(this.snackmessage);
     var x = document.getElementById("snackbar");
     x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
   }
 }

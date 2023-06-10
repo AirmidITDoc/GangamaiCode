@@ -295,9 +295,8 @@ export class BrowseOPBillComponent implements OnInit {
         else
           docname = '';
 
-
-        var strabc = `<hr style="border-color:white" >
-        <div style="display:flex;margin:8px 0">
+          // <hr style="border-color:white" >
+        var strabc = ` <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:60px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
@@ -307,13 +306,13 @@ export class BrowseOPBillComponent implements OnInit {
         <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
         <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:100px;text-align:left;justify-content: right;">
             <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:60px;margin-left:30px;">
             <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
         </div>
-        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
+        <div style="display:flex;width:80px;justify-content: right;">
             <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
         </div>`;
@@ -323,16 +322,16 @@ export class BrowseOPBillComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
 
-      this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+      // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(objPrintWordInfo.BillDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       setTimeout(() => {
         this.print();

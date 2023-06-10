@@ -331,7 +331,7 @@ export class BrowseRefundListComponent implements OnInit {
         // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
         // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
 
-        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();

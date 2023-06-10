@@ -133,7 +133,7 @@
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Total Bill Amount </div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.TotalBillAmount | currency:'INR'}}</div>
+                    <div>'₹' + {{reportPrintObj.TotalBillAmount | currency:'INR'}}</div>
                 </div>
             </div>
             <div style="display:flex;justify-content:space-between;margin-left:850px;"
@@ -141,15 +141,15 @@
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Concession </div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.ConcessionAmt | currency:'INR'}}</div>
+                    <div>'₹' +{{reportPrintObj.ConcessionAmt | currency:'INR'}}</div>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;margin-left:850px;"
+            <div style="display:flex;justify-content:space-between;margin-left:850px;justify-content: right;"
                 *ngIf="reportPrintObj.NetPayableAmt >0">
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Net Amount</div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.NetPayableAmt | currency:'INR'}}</div>
+                    <div>'₹' +{{reportPrintObj.NetPayableAmt | currency:'INR'}}</div>
                 </div>
             </div>
             <div style="display:flex;justify-content:space-between;margin-left:850px;"
@@ -193,4 +193,4 @@
 
 
     //
-    
+   

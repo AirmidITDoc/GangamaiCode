@@ -184,8 +184,8 @@
 
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-<!-- 
-                 <mat-form-field appearance="outline" fxFlex>
+
+                 <!-- <mat-form-field appearance="outline" fxFlex>
                   <mat-label>AadharCardNo Number</mat-label>
                   <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCardNo Number" matInput
                     required [(ngModel)]="registerObj.AadharCardNo" maxlength="12" [maxlength]="12" minlength="12"
@@ -194,12 +194,32 @@
                     *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
                     digits AadharCardNo number is
                     required</mat-error>
-                </mat-form-field>  -->
+                </mat-form-field>   -->
 
-                <input type="text" class="form-control" 
+                <mat-form-field  appearance="outline" fxFlex style="margin-top: 10px">
+                  
+                  <mat-label>AadharCard Number</mat-label>
+                  <input matInput #input maxlength="12" placeholder="Enter some input" formControlName="AadharCardNo">
+                  <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                  digits Mobile number is
+                  required</mat-error> -->
+
+                  <mat-hint align="end" style="margin-top: 10px" hintLabel="Max 12 characters">{{input.value?.length || 0}}/12</mat-hint>
+                 
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Outline form field</mat-label>
+                    <input matInput placeholder="Placeholder">
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-hint>Hint</mat-hint>
+                  </mat-form-field>
+
+                <!-- <input type="text" class="form-control" 
                 placeholder="AadharCardNo No." formControlName="AadharCardNo" maxlength="12" minlength="12" style="width: 200px;box-shadow: #33b5e5;border-style: groove;">
                 <small   *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched"
-                class="text-danger"> *AadharCard No. is Required</small>
+                class="text-danger"> *AadharCard No. is Required</small> -->
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Pancardno Number</mat-label>
@@ -342,16 +362,31 @@
                       number is required
                     </mat-error> -->
                 </mat-form-field>
-
+<!-- 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Mobile Number</mat-label>
                   <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number">
+                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number" value="MobileNo.length">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is
                     required</mat-error>
-                </mat-form-field>
+                </mat-form-field> -->
+
+
+                <mat-form-field  appearance="outline" fxFlex style="margin-top: 10px">
+                  
+                  <mat-label>Mobile Number</mat-label>
+                  <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo">
+                  <!-- <mat-error class="error"
+                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                  digits Mobile number is
+                  required</mat-error> -->
+
+                  <mat-hint align="end" style="margin-top: 10px" hintLabel="Max 10 characters">{{input.value?.length || 0}}/10</mat-hint>
+                 
+                  </mat-form-field>
+
               </div>
             </div>
             <!-- <div class="footer-navigation" style="text-align: right;">
