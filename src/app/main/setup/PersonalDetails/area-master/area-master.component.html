@@ -80,10 +80,10 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TalukaName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Taluka Name
+                                    <ng-container matColumnDef="CityName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> City Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TalukaName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CityName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -161,17 +161,17 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Taluka Name</mat-label>
-                                            <mat-select formControlName="TalukaId" placeholder="Bank" #singleSelect
+                                            <mat-label>City Name</mat-label>
+                                            <mat-select formControlName="CityId" placeholder="Bank" #singleSelect
                                                 required>
                                                 <mat-option>
-                                                    <ngx-mat-select-search [formControl]="talukaFilterCtrl"
+                                                    <ngx-mat-select-search [formControl]="cityFilterCtrl"
                                                         [placeholderLabel]="'Search'"
                                                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                                 </mat-option>
-                                                <mat-option *ngFor="let element of filteredTaluka | async"
+                                                <mat-option *ngFor="let element of filteredCity | async"
                                                     [value]="element">
-                                                    {{element.TalukaName}}
+                                                    {{element.CityName}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>

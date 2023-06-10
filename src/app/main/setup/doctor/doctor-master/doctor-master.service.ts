@@ -91,7 +91,7 @@ export class DoctorMasterService {
                 "",
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
             ],
-            DepartmentId: [""],
+            Departmentid: [""],
             DepartmentName: [""],
             AddedBy: [""],
             UpdatedBy: [""],
@@ -126,22 +126,20 @@ export class DoctorMasterService {
 
     public getDepartmentCombobox() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_DepartmentMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo",
             {}
         );
     }
 
-    //Gender Combobox List
-    public getGenderCombo(Id) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_Rtrv_GenderMasterForCombo_Conditional",
-            { Id: Id }
-        );
-    }
+  
+  public getGenderCombo(Id) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {"Id":Id})
+  }
+    
 
     public getPrefixMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_PrefixMasterForCombo",
+            "Generic/GetByProc?procName=RetrievePrefixMasterForCombo",
             {}
         );
     }

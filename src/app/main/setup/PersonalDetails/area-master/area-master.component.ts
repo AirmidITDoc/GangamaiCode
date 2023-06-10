@@ -7,6 +7,7 @@ import { MatSort } from "@angular/material/sort";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-state-master",
@@ -17,19 +18,19 @@ import { fuseAnimations } from "@fuse/animations";
 })
 export class AreaMasterComponent implements OnInit {
     AreaMasterList: any;
-    TalukacmbList: any = [];
+    CitycmbList: any = [];
     msg: any;
 
-    // taluka filter
-    public talukaFilterCtrl: FormControl = new FormControl();
-    public filteredTaluka: ReplaySubject<any> = new ReplaySubject<any>(1);
+    // city filter
+    public cityFilterCtrl: FormControl = new FormControl();
+    public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
 
     displayedColumns: string[] = [
         "AreaId",
         "AreaName",
-        "TalukaName",
+        "CityName",
         "AddedByName",
         "IsDeleted",
         "action",
@@ -39,16 +40,16 @@ export class AreaMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _AreaService: AreaMasterService) {}
+    constructor(public _AreaService: AreaMasterService, private accountService: AuthenticationService,) {}
 
     ngOnInit(): void {
         this.getAreaMasterList();
-        this.getTalukaNameCombobox();
+        this.getCityNameCombobox();
 
-        this.talukaFilterCtrl.valueChanges
+        this.cityFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
-                this.filterTaluka();
+                this.filterCity();
             });
     }
 
@@ -62,22 +63,22 @@ export class AreaMasterComponent implements OnInit {
             IsDeletedSearch: "2",
         });
     }
-    private filterTaluka() {
-        if (!this.TalukacmbList) {
+    private filterCity() {
+        if (!this.CitycmbList) {
             return;
         }
         // get the search keyword
-        let search = this.talukaFilterCtrl.value;
+        let search = this.cityFilterCtrl.value;
         if (!search) {
-            this.filteredTaluka.next(this.TalukacmbList.slice());
+            this.filteredCity.next(this.CitycmbList.slice());
             return;
         } else {
             search = search.toLowerCase();
         }
         // filter the banks
-        this.filteredTaluka.next(
-            this.TalukacmbList.filter(
-                (bank) => bank.TalukaName.toLowerCase().indexOf(search) > -1
+        this.filteredCity.next(
+            this.CitycmbList.filter(
+                (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
             )
         );
     }
@@ -93,17 +94,17 @@ export class AreaMasterComponent implements OnInit {
         });
     }
 
-    getTalukaNameCombobox() {
+    getCityNameCombobox() {
         this._AreaService
-            .getTalukaMasterCombo()
-            .subscribe((data) => (this.TalukacmbList = data));
+            .getCityMasterCombo()
+            .subscribe((data) => (this.CitycmbList = data));
     }
 
     onClear() {
         this._AreaService.myform.reset({ IsDeleted: "false" });
         this._AreaService.initializeFormGroup();
     }
-
+  
     onSubmit() {
         if (this._AreaService.myform.valid) {
             if (!this._AreaService.myform.get("AreaId").value) {
@@ -112,9 +113,8 @@ export class AreaMasterComponent implements OnInit {
                         AreaName: this._AreaService.myform
                             .get("AreaName")
                             .value.trim(),
-                        TalukaId:
-                            this._AreaService.myform.get("TalukaId").value,
-                        IsDeleted: Boolean(
+                            AddedBy:this.accountService.currentUserValue.user.id,
+                            IsDeleted: Boolean(
                             JSON.parse(
                                 this._AreaService.myform.get("IsDeleted").value
                             )
@@ -133,8 +133,8 @@ export class AreaMasterComponent implements OnInit {
                         AreaName: this._AreaService.myform
                             .get("AreaName")
                             .value.trim(),
-                        TalukaId:
-                            this._AreaService.myform.get("TalukaId").value,
+                        CityId:
+                            this._AreaService.myform.get("CityId").value,
                         IsDeleted: Boolean(
                             JSON.parse(
                                 this._AreaService.myform.get("IsDeleted").value
@@ -158,7 +158,7 @@ export class AreaMasterComponent implements OnInit {
         var m_data = {
             AreaId: row.AreaId,
             AreaName: row.AreaName.trim(),
-            TalukaId: row.TalukaId,
+            CityId: row.CityId,
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -169,7 +169,7 @@ export class AreaMasterComponent implements OnInit {
 export class AreaMaster {
     AreaId: number;
     AreaName: string;
-    TalukaId: number;
+    CityId: number;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
@@ -184,7 +184,7 @@ export class AreaMaster {
         {
             this.AreaId = AreaMaster.AreaId || "";
             this.AreaName = AreaMaster.AreaName || "";
-            this.TalukaId = AreaMaster.TalukaId || "";
+            this.CityId = AreaMaster.CityId || "";
             this.IsDeleted = AreaMaster.IsDeleted || "false";
             this.AddedBy = AreaMaster.AddedBy || "";
             this.UpdatedBy = AreaMaster.UpdatedBy || "";

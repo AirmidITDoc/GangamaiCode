@@ -47,7 +47,7 @@ export class StateMasterService {
 
     public getCountryMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_CountryMasterForCombo ",
+            "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo",
             {}
         );
     }

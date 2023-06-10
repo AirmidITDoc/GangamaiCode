@@ -43,7 +43,7 @@ export class NewDoctorComponent implements OnInit {
         private accountService: AuthenticationService,
         // public notification: NotificationServiceService,
         public dialogRef: MatDialogRef<DoctorMasterComponent>
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // this.editor = new Editor();
@@ -168,9 +168,10 @@ export class NewDoctorComponent implements OnInit {
 
         this._doctorService.getDepartmentCombobox().subscribe((data) => {
             this.DepartmentcmbList = data;
+            console.log(data);
             this.filteredDepartment.next(this.DepartmentcmbList.slice());
             this._doctorService.myform
-                .get("DepartmentId")
+                .get("Departmentid")
                 .setValue(this.DepartmentcmbList[0]);
         });
     }
@@ -179,7 +180,7 @@ export class NewDoctorComponent implements OnInit {
         if (this._doctorService.myform.valid) {
             if (!this._doctorService.myform.get("DoctorId").value) {
                 var data2 = [];
-                for (var val of this._doctorService.myform.get("DepartmentId")
+                for (var val of this._doctorService.myform.get("Departmentid")
                     .value) {
                     var data = {
                         DepartmentId: val,
@@ -194,7 +195,7 @@ export class NewDoctorComponent implements OnInit {
                             "0" ||
                             this._doctorService.myform.get("DoctorId").value,
                         PrefixID:
-                            this._doctorService.myform.get("PrefixID").value,
+                            this._doctorService.myform.get("PrefixID").value.PrefixID,
                         FirstName:
                             this._doctorService.myform
                                 .get("FirstName")
@@ -250,9 +251,7 @@ export class NewDoctorComponent implements OnInit {
                                     .value
                             )
                         ),
-                        DoctorTypeId:
-                            this._doctorService.myform.get("DoctorTypeId")
-                                .value,
+                        DoctorTypeId:0,//his._doctorService.myform.get("DoctorTypeId")                 .value,
                         AgeYear:
                             this._doctorService.myform
                                 .get("AgeYear")

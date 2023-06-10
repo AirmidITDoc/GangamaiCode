@@ -40,7 +40,7 @@ export class CityMasterService {
 
     public getCityMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CityNameList_by_Name",
+            "Generic/GetByProc?procName=RetrieveCityMasterForCombo",
             { CityName: "%" }
         );
     }
@@ -51,6 +51,10 @@ export class CityMasterService {
             {}
         );
     }
+
+    public getStateList(CityId) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
+      }
 
     public cityMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/CitySave", param);

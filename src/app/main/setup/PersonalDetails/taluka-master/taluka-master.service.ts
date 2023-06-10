@@ -48,7 +48,7 @@ export class TalukaMasterService {
 
     public getCityMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_CityMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
             {}
         );
     }

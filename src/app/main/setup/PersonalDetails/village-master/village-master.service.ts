@@ -47,7 +47,7 @@ export class VillageMasterService {
 
     public getTalukaMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_TalukaMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_TalukaMasterForCombo",
             {}
         );
     }

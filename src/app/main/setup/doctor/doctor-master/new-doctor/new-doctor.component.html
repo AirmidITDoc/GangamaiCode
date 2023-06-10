@@ -170,7 +170,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>DoctorType</mat-label>
-                <mat-select formControlName="DoctorTypeId" placeholder="Bank" #singleSelect required>
+                <mat-select formControlName="DoctorTypeId" placeholder="Bank" #singleSelect >
                   <mat-option>
                     <ngx-mat-select-search [formControl]="doctortypeFilterCtrl"  [placeholderLabel]="'Search'"
                     [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -196,14 +196,14 @@
 
                  <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Department</mat-label>
-                    <mat-select formControlName="DepartmentId" placeholder="Bank" #singleSelect required>
+                    <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required>
                       <!-- (selectionChange)="OnChangeDoctorList($event.value)"> -->
                       <mat-option>
                         <ngx-mat-select-search [formControl]="departmentFilterCtrl"  [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                       </mat-option>
                       <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                        {{element.DepartmentName}}
+                        {{element.departmentName}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
