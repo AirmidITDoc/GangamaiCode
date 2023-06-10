@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
-
+import * as converter from 'number-to-words';
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -1060,7 +1060,7 @@ export class OPBillingComponent implements OnInit {
     this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'RegNo', 'BillNo', 'PBillNo', 'Phone', 'PhoneNo', 'PatientName','', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
       debugger;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -1102,38 +1102,37 @@ export class OPBillingComponent implements OnInit {
         //   strrowslist += strabc;
         // }
 
-
-        var strabc = ` 
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:10px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:400px;margin-right:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
-    <div>`+ docname + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
-        <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
+        var strabc = `<hr style="border-color:white" >
+        <div style="display:flex;margin:8px 0">
+        <div style="display:flex;width:60px;margin-left:20px;">
+            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
+            <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
+        <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
+            <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+        </div>
+        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
+            <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+        </div>
+        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
+            <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
+        </div>
+        </div>`;
         strrowslist += strabc;
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
       let concessinamt;
-      if (objPrintWordInfo.ConcessionAmt > 0) {
-        this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      }
-      else {
-        this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      }
+      // if (objPrintWordInfo.ConcessionAmt > 0) {
+      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      // }
+      // else {
+      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+      // }
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1156,7 +1155,7 @@ export class OPBillingComponent implements OnInit {
 
   convertToWord(e) {
 
-    // return converter.toWords(e);
+    return converter.toWords(e);
   }
 
   transform1(value: string) {

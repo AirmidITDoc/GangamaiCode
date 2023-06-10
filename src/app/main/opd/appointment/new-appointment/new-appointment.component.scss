@@ -29,9 +29,13 @@
 //     border-left: 5px solid green;
 // } 
 .error{
-    color:rgb(228, 143, 143);
+    // color:rgb(228, 143, 143);
+    margin-top: 10px;
 }
 
+.mat-error{
+    margin-top: 10px;
+}
 .main-content {
     display: flex;
     max-height:780px !important;
@@ -85,6 +89,13 @@
 
 .form-section .mat-form-field .mat-form-field-subscript-wrapper {
     position: relative !important;
+    padding: 0 0 0 10px;
+    margin-top: 0.75em;
+}
+.mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 .75em;
+    margin-top: 0.75em;
+    position: relative;
 }
 
 .register-container {
