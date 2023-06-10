@@ -36,7 +36,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
 import { EditRefraneDoctorComponent } from './edit-refrane-doctor/edit-refrane-doctor.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-// import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
     {
@@ -50,7 +49,6 @@ const routes: Routes = [
         NewAppointmentComponent,
         EditConsultantDoctorComponent,
         EditRefraneDoctorComponent,
-        // EditAppointmentComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

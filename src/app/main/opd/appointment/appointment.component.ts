@@ -22,8 +22,6 @@ import { EditRegistrationComponent } from '../registration/edit-registration/edi
 import { CasepaperVisitDetails } from '../op-search-list/op-casepaper/op-casepaper.component';
 // const jsPDF = require('jspdf');
 
-
-
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
@@ -143,6 +141,10 @@ export class AppointmentComponent implements OnInit {
         end: []
       }
     );
+  }
+
+  onShow($event){
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -311,7 +313,6 @@ export class AppointmentComponent implements OnInit {
   //     //  this.getRadiologytemplateMasterList();
   //   });
   // }
-
 
   onExport(exprtType) {
     // debugger;
