@@ -27,7 +27,6 @@ import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-con
 import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
-import { FeedbackComponent } from "./feedback/feedback.component";
 // const jsPDF = require('jspdf');
 
 @Component({
@@ -79,8 +78,9 @@ export class AppointmentComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService,
         public _registrationService: RegistrationService,
         public _matDialog: MatDialog,
-        public datePipe: DatePipe // private advanceDataStored: AdvanceDataStored
-    ) {
+        public datePipe: DatePipe
+    ) // private advanceDataStored: AdvanceDataStored
+    {
         this.getVisitList();
     }
 
@@ -167,6 +167,8 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
+    onShow($event) {}
+
     ngOnChanges(changes: SimpleChanges) {
         // changes.prop contains the old and the new value...
         // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
@@ -176,51 +178,6 @@ export class AppointmentComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         // this.isLoading = false;
-        this.sIsLoading = '';
-        console.log(this.dataSource.data)
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000);
-
-  }
-
-  // toggle sidebar
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  onClear() {
-    this._AppointmentSreviceService.myFilterform.reset(
-      {
-        start: [],
-        end: []
-      }
-    );
-  }
-
-  onShow($event){
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
-    // this.isLoading = true;
-    this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
-    this.isLoading = false;
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    // this.isLoading = false;
-  }
-
-  getRecord(contact, m): void {
-    debugger;
-    this.VisitID=contact.VisitID;
-    if (m == "CasePaper Print") {
-      this.getPrint();
-
     }
 
     getRecord(contact, m): void {
@@ -376,115 +333,6 @@ export class AppointmentComponent implements OnInit {
     //     {
     //       maxWidth: "95vw",
     //       maxHeight: "95vh", width: '100%', height: "100%"
-      });
-    }
-    //   else if (m == "Refund of Bill") {
-    //     console.log(" This is for refund of Bill pop : " + m);
-    //   }
-    //   else if (m == "Case Paper") {
-    //     console.log("Case Paper : " + m);
-    //   }
-    //   //   const act?ionType: string = response[0];
-    //   //   this.selectedID =  contact.VisitId
-    //   //   this._ActRoute.navigate(['opd/appointment/op_bill'])
-    //   //   this._ActRoute.navigate(['opd/appointment/op_bill'], {queryParams:{id:this.selectedID}})
-
-  }
-
-  newappointment() {
-    const dialogRef = this._matDialog.open(NewAppointmentComponent,
-      {
-        maxWidth: "95vw",
-        height: '700px',
-        width: '100%',
-        // height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
-      this.getVisitList();
-    });
-  }
-
-  // newappointmentwithBill() {
-  //   const dialogRef = this._matDialog.open(AppointmentWithBillComponent,
-  //     {
-  //       maxWidth: "95vw",
-  //       maxHeight: "95vh", width: '100%', height: "100%"
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //     //  this.getRadiologytemplateMasterList();
-  //   });
-  // }
-
-  onExport(exprtType) {
-    // debugger;
-    // let columnList = [];
-    // if (this.dataSource.data.length == 0) {
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else {
-    //   var excelData = [];
-    //   var a = 1;
-    //   for (var i = 0; i < this.dataSource.data.length; i++) {
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-    //       "Reg No": this.dataSource.data[i]["RegNoWithPrefix"],
-    //       "PatientOldNew": this.dataSource.data[i]["PatientOldNew"] ? this.dataSource.data[i]["PatientOldNew"] : "N/A",
-    //       "Patient Name": this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
-    //       "VisitDate": this.dataSource.data[i]["DVisitDate"] ? this.dataSource.data[i]["DVisitDate"] : "N/A",
-    //       "Visit Time": this.dataSource.data[i]["VisitTime"] ? this.dataSource.data[i]["VisitTime"] : "N/A",
-    //       "OPDNo": this.dataSource.data[i]["OPDNo"] ? this.dataSource.data[i]["OPDNo"] : "N/A",
-    //       "Doctorname": this.dataSource.data[i]["Doctorname"] ? this.dataSource.data[i]["Doctorname"] : "N/A",
-    //       "RefDocName": this.dataSource.data[i]["RefDocName"] ? this.dataSource.data[i]["RefDocName"] : "N/A",
-    //       "PatientType": this.dataSource.data[i]["PatientType"] ? this.dataSource.data[i]["PatientType"] : "N/A",
-
-
-    //     };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "OutDoor-Appointment-Patient-List " + new Date() + ".xlsx";
-    //   if (exprtType == "Excel") {
-    //     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if (excelData.length > 0) {
-    //       var columnsIn = excelData[0];
-    //       for (var key in columnsIn) {
-    //         let headerLength = { wch: (key.length + 1) };
-    //         let columnLength = headerLength;
-    //         try {
-    //           columnLength = { wch: Math.max(...excelData.map(o => o[key].length), 0) + 1 };
-    //         }
-    //         catch {
-    //           columnLength = headerLength;
-    //         }
-    //         if (headerLength["wch"] <= columnLength["wch"]) {
-    //           wscols.push(columnLength)
-    //         }
-    //         else {
-    //           wscols.push(headerLength)
-    //         }
-    //       }
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   } else {
-    //     let doc = new jsPDF('p', 'pt', 'a4');
-    //     doc.page = 0;
-    //     var col = [];
-    //     for (var k in excelData[0]) col.push(k);
-    //     console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
     //     });
     //   dialogRef.afterClosed().subscribe(result => {
     //     console.log('The dialog was closed - Insert Action', result);
@@ -659,18 +507,6 @@ export class AppointmentComponent implements OnInit {
         var datePipe = new DatePipe("en-US");
         value = datePipe.transform(new Date(), "dd/MM/yyyy h:mm a");
         return value;
-    }
-    newfeedback() {
-        const dialogRef = this._matDialog.open(FeedbackComponent, {
-            maxWidth: "50%",
-            height: "95%",
-            width: "100%",
-            //width: '100%', height: "100%"
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            //  this.getRadiologytemplateMasterList();
-        });
     }
 
     getPrint() {
