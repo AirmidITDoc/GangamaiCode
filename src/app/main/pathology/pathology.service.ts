@@ -19,8 +19,8 @@ export class PathologyService {
     this.myform = this.createtemplateForm();
     this.myformSearch = this.createSearchForm();
    
-    this.mysamplerequstform = this.createSampleRequstForm();
-    // this.myShowPathologyResultForm = this.ShowPathologyResultForm();
+    // this.mysamplerequstform = this.createSampleRequstForm();
+    // // this.myShowPathologyResultForm = this.ShowPathologyResultForm();
   }
 
   sampldetailform
@@ -56,23 +56,27 @@ export class PathologyService {
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      TestStatusSearch:['1']
-    });
-  }
-
-
-
-  createSampleRequstForm(): FormGroup {
-    return this._formBuilder.group({
-
-
+      TestStatusSearch:['1'],
+      
       Reg_No: [],
       Istype: ['0'],
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-
-    });
+    
+          });
   }
+
+
+
+  // createSampleRequstForm(): FormGroup {
+  //   return this._formBuilder.group({
+
+
+  //     Reg_No: [],
+  //     Istype: ['0'],
+  //     start: [new Date().toISOString()],
+  //     end: [new Date().toISOString()],
+  //     StatusSearch:
+  //   });
+  // }
 
  
 
@@ -172,18 +176,11 @@ export class PathologyService {
 
   public InsertLabDetail(employee){
 
-  //   let baseURL='https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/'
-  //  let headers='*'
-  //   console.log("yes this is method");
-// console.log("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/");
+ 
 
 this._httpClient = new HttpClient(this.handler);
 
 
-// return this._httpClient.post(baseURL + 'employee',{'headers':headers})
-
-    
-// return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/' + 'employee',{'headers':headers})
 let headers = new HttpHeaders()
     .set("Content-Type", "application/json")
     .set("Accept", "application/json")

@@ -24,7 +24,7 @@ export class SampleRequestComponent implements OnInit {
   click: boolean = false;
   MouseEvent = true;
 
-  mysamplerequstform: FormGroup;
+  myformSearch: FormGroup;
   isLoading = true;
   msg: any;
   step = 0;
@@ -100,7 +100,7 @@ export class SampleRequestComponent implements OnInit {
   }
 
 
-  get f() { return this._PathologyService.mysamplerequstform.controls; }
+  get f() { return this._PathologyService.myformSearch.controls; }
 
 
   toggleSidebar(name): void {
@@ -112,10 +112,10 @@ export class SampleRequestComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var m_data = {
 
-      "FromDate": this.datePipe.transform(this._PathologyService.mysamplerequstform.get("start").value, "MM-dd-yyyy"),
-      "ToDate": this.datePipe.transform(this._PathologyService.mysamplerequstform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": (this._PathologyService.mysamplerequstform.get("Reg_No").value) || 0,
-      "Istype": (this._PathologyService.mysamplerequstform.get("Istype").value) || 1,
+      "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
+      "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
+      "Reg_No": (this._PathologyService.myformSearch.get("Reg_No").value) || 0,
+      "Istype": (this._PathologyService.myformSearch.get("Istype").value) || 1,
       // "IsCompleted":1
 
     }

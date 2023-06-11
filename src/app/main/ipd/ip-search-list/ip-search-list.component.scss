@@ -117,16 +117,16 @@ app-ip-search-list{
         height: 600px !important;
     }
 .mat-header-row {
-    width: 1300px;
-    max-width: 1300px;
-    min-width: 1300px;  
+    width: 1600px;
+    max-width: 1600px;
+    min-width: 1600px;  
     min-height: 35px;     
 }
 
 .mat-row {
-    width: 1300px;
-    max-width: 1300px;
-    min-width: 1300px;
+    width: 1600px;
+    max-width: 1600px;
+    min-width: 1600px;
     min-height: 35px;              
 }
 
@@ -143,16 +143,16 @@ app-ip-search-list{
     text-align:left;
 }
 .mat-column-RegNo {
-    width: 80px;
-    max-width:80px;
-    min-width: 80px;
+    width: 90px;
+    max-width:90px;
+    min-width: 90px;
     text-align:left;
 }
 
 .mat-column-PatientName {
-    width:200px;
-    max-width: 200px;
-    min-width: 200px;
+    width:300px;
+    max-width: 300px;
+    min-width: 300px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -163,7 +163,12 @@ app-ip-search-list{
     margin-right: 20px;   
     justify-content:left; 
 }
-
+.mat-column-PatientType{
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
+    text-align:center;
+}
 
 
 .mat-column-DOA {
@@ -198,9 +203,9 @@ app-ip-search-list{
     text-align: center;
 }
 .mat-column-Doctorname {
-    width:170px;
-    max-width:170px;
-    min-width:170px;
+    width:200px;
+    max-width:200px;
+    min-width:200px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -212,9 +217,9 @@ app-ip-search-list{
     justify-content:left; 
 }
 .mat-column-RefDocName {
-    width: 170px;
-    max-width:170px;
-    min-width: 170px;
+    width: 200px;
+    max-width:200px;
+    min-width: 200px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -226,9 +231,9 @@ app-ip-search-list{
     justify-content:left; 
 }
 .mat-column-CompanyName {
-    width:170px;
-    max-width:170px;
-    min-width:170px;
+    width:200px;
+    max-width:200px;
+    min-width:200px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;

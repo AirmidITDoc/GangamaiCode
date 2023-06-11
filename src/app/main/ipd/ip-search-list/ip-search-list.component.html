@@ -137,35 +137,20 @@
                                     </mat-cell>
                                 </ng-container>
                                 
-                                <!-- <ng-container matColumnDef="PatientName" sticky>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm [ngClass]="{'make-gold': contact.PatientType=='Company'}">
-                                        {{contact.PatientName}}
-                                    </mat-cell>
-                                </ng-container> -->
-            
-                                <ng-container matColumnDef="PatientOldNew">
+                            
+                                 <!-- <ng-container matColumnDef="PatientOldNew">
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">PatientOldNew</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" >
-                                         <!-- {{contact.PatientOldNew}}  -->
-                                           <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
+                                      {{contact.PatientOldNew}}  -->
+                                           <!-- <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
                                         <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='0' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
                                             
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container>  --> 
             
-                                <ng-container matColumnDef="action">
-                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm></mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" >
-                                        
-                                          <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientType=='Company' || contact.PatientType=='Company'" matTooltip="PatientType" class=" red-600 s-16">circle</mat-icon>
-                                        <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientType=='Self' "  matTooltip="PatientType" class=" black-600 s-16">circle</mat-icon>  
+                                 
+         
                                    
-                                      </mat-cell>
-                                </ng-container>
-            
-            
-                                
                                 
                                 <ng-container matColumnDef="DOA">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date</mat-header-cell>

@@ -251,6 +251,7 @@ export class IpdAdvanceBrowseModel {
   HospAddress:any;
   Phone:any;
   EmailId:any;
+  reason:any;
   /**
 * Constructor
 *
@@ -280,6 +281,7 @@ export class IpdAdvanceBrowseModel {
           this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
           this.Phone = IpdAdvanceBrowseModel.Phone || 0;
           this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
+          this.reason = IpdAdvanceBrowseModel.reason || 0;
       }
   }
 }

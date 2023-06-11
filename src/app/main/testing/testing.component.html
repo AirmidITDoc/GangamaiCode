@@ -1,0 +1,28 @@
+
+<h1>{{title}}</h1>
+ 
+<div>
+  <div>
+    <label>Name: </label>
+    <input [(ngModel)]="person.name" />
+  </div>
+  <div>
+    <button (click)="addPerson()">Add</button>
+  </div>
+</div>
+ 
+<table class='table'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of people;">
+      <td>{{person.id}}</td>
+      <td>{{person.name}}</td>
+    </tr>
+  </tbody>
+</table>
+ 

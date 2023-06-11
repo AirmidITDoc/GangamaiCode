@@ -449,11 +449,12 @@ export class SampleCollectionComponent implements OnInit {
 
     });
   }
-
-
-
-
   onExport(exprtType) {
+  }
+
+
+
+  onExport1(exprtType) {
     debugger;
     //   let columnList=[];
     //   if(this.dataSource.data.length == 0){

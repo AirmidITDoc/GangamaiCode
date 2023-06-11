@@ -92,6 +92,7 @@ const routes: Routes = [
       NgxMatSelectSearchModule,
       MatBadgeModule,
       MatSelectModule,
+      // NgxEditorModule ,
       // NgxEditorModule,
       // AngularEditorModule,
       // NgxPrintModule,

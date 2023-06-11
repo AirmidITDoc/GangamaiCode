@@ -159,7 +159,7 @@ app-sample-collection {
 
     .main-content {
         display: flex;
-        height: 600px;
+        height: 500px;
     }
 
     .mat-column-checkbox:active~.geekmark {
@@ -340,6 +340,7 @@ app-sample-collection {
 
 
     .table2 {
+        height: 300px !important;
         .mat-header-row {
             width: 100%;
             min-width: 1200px;

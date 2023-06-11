@@ -47,7 +47,7 @@ const appRoutes: Routes = [
     //     path: "ipd-browse-receipt",
     //     loadChildren: () =>
     //        // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-    //        import("./").then((m) => m.IpdBrowsePaymentreceiptModule),
+    //        import("./browse-ipdpayment-receipt/browse-paymentreceipt.module").then((m) => m.BrowsePaymentreceiptModule),
     // },
     {
         path: "discharge",

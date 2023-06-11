@@ -36,15 +36,16 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { ALLReportComponent } from './all-report.component';
-import { ReportService } from './report.service';
+import { TestingComponent } from './testing.component';
+import { APIServiceService } from './apiservice.service';
+
 
 // reports/opbillingreport
 const routes: Routes = [
   {
     path: "opbillingreport",
     // loadChildren: () => import("./op-reports/op-report/op-report.module").then((m) => m.OpReportModule),
-    component:ALLReportComponent,
+    component:TestingComponent,
 
   },
   // {
@@ -56,7 +57,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ALLReportComponent,
+    TestingComponent,
     
   ],
   imports: [
@@ -103,13 +104,13 @@ const routes: Routes = [
         
   ],
   providers: [
-    ReportService,
+    APIServiceService,
     DatePipe,
     
   
 ],
 entryComponents: [
-  ALLReportComponent,
+  TestingComponent,
 ]
 })
-export class ReportModule { }
+export class TestingModule { }

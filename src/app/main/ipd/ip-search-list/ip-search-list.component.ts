@@ -64,7 +64,6 @@ export class IPSearchListComponent implements OnInit {
     // 'IsBillGenerated',
     'RegNo',
     'PatientName',
-    'action',
     'DOA',
     'DOT',
     'IPDNo',

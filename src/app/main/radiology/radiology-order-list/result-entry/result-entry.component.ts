@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+// import { Editor } from 'ngx-editor';
 
 @Component({
   selector: 'app-result-entry',
@@ -21,6 +22,9 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class ResultEntryComponent implements OnInit {
+  // editor: Editor;
+  // html: '';
+
 
   msg: any;
   selectedAdvanceObj: RadiologyPrint;
@@ -80,7 +84,7 @@ export class ResultEntryComponent implements OnInit {
 
   ngOnInit(): void {
 
-
+//  this.editor = new Editor();
     this.getTemplateList();
     this.getDoctorList();
 

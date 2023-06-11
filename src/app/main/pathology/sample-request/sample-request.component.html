@@ -58,7 +58,7 @@
                         <!-- SIDEBAR CONTENT -->
                         <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
                             <div class="nav material2">
-                                <form [formGroup]="_PathologyService.mysamplerequstform">
+                                <form [formGroup]="_PathologyService.myformSearch">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <mat-form-field appearance="outline" style="margin-top: 5px;">
                                             <mat-label>Enter a date range</mat-label>
@@ -84,7 +84,37 @@
                                             </mat-radio-group>
                                         </div>
 
-
+                                        <div fxLayoutAlign="center center" appearance="outline" style="margin-bottom: 8px;">
+                                            <mat-label> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2'
+                                                fxLayoutAlign="center center"
+                                                style="float:left;margin-left:0px;margin-right:20px" (change)="onShow($event)">
+                                                <mat-radio-button value='0'>Pending</mat-radio-button>
+                                                <mat-radio-button value='1'>Completed</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+        
+        
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Search First Name</mat-label>
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput>
+                                            <span class="error"
+                                                *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName is
+                                                required Enter only Alphabets</span>
+                                        </mat-form-field>
+        
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Search Last Name</mat-label>
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput>
+                                            <span class="error"
+                                                *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is
+                                                required Enter only Alphabets</span>
+                                        </mat-form-field>
+        
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Search RegNo</mat-label>
+                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput>
+                                        </mat-form-field>
 
                                         <div style="margin-top: 20px;">
                                             <!-- <button mat-raised-button (click)="onClear()" class="clearbutton">
