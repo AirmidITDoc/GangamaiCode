@@ -74,7 +74,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ItemGenericName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ItemGenericName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Item Generic Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ItemGenericName}}
                                         </mat-cell>
@@ -140,17 +140,17 @@
                             <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
                                 <form [formGroup]="_itemgenericService.myform">
                                     <h3>{{_itemgenericService.myform.controls.ItemGenericNameId.value?"Modify
-                                        ItemGenericName Master":"New ItemGenericName Master"}}</h3>
+                                        ItemGenericName Master":"New Item Generic Name Master"}}</h3>
 
 
                                     <input type="hidden" name="ItemGenericNameId" formControlName="ItemGenericNameId">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>ItemGeneric Name</mat-label>
+                                            <mat-label>Item Generic Name</mat-label>
                                             <input name="ItemGenericName" formControlName="ItemGenericName" matInput
                                                 required>
-                                            <mat-error>Please Enter ItemGeneric Name </mat-error>
+                                            <mat-error>Please Enter Item Generic Name </mat-error>
                                         </mat-form-field>
                                     </div>
 

@@ -149,17 +149,18 @@
                         <div class="dialog-content-wrapper">
                             <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
                                 <form [formGroup]="_itemcategoryService.myform">
-                                    <h3>{{_itemcategoryService.myform.controls.ItemCategoryId.value?"Modify ItemCategory
-                                        Master":"New ItemCategory Master"}}</h3>
+                                    <h3>{{_itemcategoryService.myform.controls.ItemCategoryId.value?"Modify Item
+                                        Category
+                                        Master":"New Item Category Master"}}</h3>
 
                                     <input type="hidden" name="ItemCategoryId" formControlName="ItemCategoryId">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>ItemCategory Name</mat-label>
+                                            <mat-label>Item Category Name</mat-label>
                                             <input name="ItemCategoryName" formControlName="ItemCategoryName" matInput
                                                 required>
-                                            <mat-error>Please Enter ItemCategoryName</mat-error>
+                                            <mat-error>Please Enter Item CategoryName</mat-error>
                                         </mat-form-field>
                                     </div>
 
@@ -167,7 +168,7 @@
 
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ItemType Name</mat-label>
+                                            <mat-label>Item Type Name</mat-label>
                                             <mat-select formControlName="ItemTypeID" placeholder="Bank" #singleSelect>
                                                 <mat-option>
                                                     <ngx-mat-select-search [formControl]="itemFilterCtrl"

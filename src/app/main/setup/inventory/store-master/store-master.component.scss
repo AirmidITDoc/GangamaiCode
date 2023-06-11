@@ -1,0 +1,170 @@
+app-store-master {
+    .mat-header-row {
+        width: 2000px;
+        max-width: 2000px;
+        min-width: 2000px;
+        font-weight: bold;
+    }
+    .mat-row {
+        width: 2000px;
+        max-width: 2000px;
+        min-width: 2000px;
+    }
+
+    .mat-column-StoreId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-StoreShortName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-StoreName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-IndentPrefix {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-IndentNo {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-PurchasePrefix {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+    .mat-column-PurchaseNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-GrnPrefix {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-GrnNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .mat-column-GrnreturnNoPrefix {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-GrnreturnNo {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-IssueToDeptPrefix {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-IssueToDeptNo {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-ReturnFromDeptNoPrefix {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-ReturnFromDeptNo {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+
+    .mat-column-AddedByName {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    .mat-column-IsDeleted {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        // color: white !important;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content: right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+}
+
+//sidebar
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}
+
+#toggle,
+#container .e-btn.e-info:hover,
+#toggle:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #00695c;
+    box-shadow: none;
+    border-radius: 0;
+    height: 39px;
+    width: 100px;
+}
+
+#close,
+#close:hover,
+#close:active,
+#close:focus {
+    /* csslint allow: adjoining-classes*/
+    background: #fafafa;
+    color: black;
+}

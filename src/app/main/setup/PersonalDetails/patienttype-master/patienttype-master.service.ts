@@ -39,7 +39,7 @@ export class PatienttypeMasterService {
 
     public getPatientTypeMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_PatientTypeMaster_by_Name",
+            "Generic/GetByProc?procName=RetrievePatientTypeMasterForCombo",
             { PatientType: "%" }
         );
     }

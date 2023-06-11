@@ -44,6 +44,8 @@
         </mat-error> -->
 
             </mat-form-field>
+
+
             <div class="search-button-div" style="padding-right:120px;">
               <button class="search-btn" mat-raised-button style="border-radius: 16px;" (click)="searchRegList()"
                 [disabled]="isRegSearchDisabled">Search
@@ -68,7 +70,7 @@
                     <span style="font-size: 16px; font-weight: 500; color: black;">Personal:</span>
                 </div> -->
             <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-              style=" height: 35px;background-color:#33b5e5">
+              style=" height: 35px;background-color:#4863A0">
               <span style="font-size:18px; font-weight: 500; color:white;padding:7px;">Personal </span>
 
             </div>
@@ -401,7 +403,7 @@
           <form [formGroup]="VisitFormGroup">
 
             <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-              style=" height: 35px;background-color: #33b5e5">
+              style=" height: 35px;background-color: #4863A0">
               <span style="font-size:18px; font-weight: 500; color:white;padding:5px;">Visit Details </span>
 
             </div>
@@ -511,13 +513,16 @@
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
 
                   <mat-label>Ref Doctor Name</mat-label>
-             
-                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect (selectionChange)="onDoctorOneChange($event.value)">
+                  <button mat-button><mat-icon style="width: 3px;margin-left:2px;"
+                      (click)="DocSelectdelete()">close</mat-icon></button>
+
+                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
+                    (selectionChange)="onDoctorOneChange($event.value)">
                     <!-- (selectionChange)="onDoctorOneChange($event.value)" -->
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                       
+
                     </mat-option>
 
                     <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
@@ -602,3 +607,4 @@
       </div>
     </div>
   </div>
+</mat-dialog-content>

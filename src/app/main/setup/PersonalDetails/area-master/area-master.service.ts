@@ -21,8 +21,8 @@ export class AreaMasterService {
         return this._formBuilder.group({
             AreaId: [""],
             AreaName: [""],
-            TalukaId: [""],
-            TalukaName: [""],
+            CityId: [""],
+            CityName: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -45,10 +45,10 @@ export class AreaMasterService {
         );
     }
 
-    // Taluka Master Combobox List
-    public getTalukaMasterCombo() {
+    // City Master Combobox List
+    public getCityMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_TalukaListForCombo",
+            "Generic/GetByProc?procName=RetrieveCityMasterForCombo",
             {}
         );
     }

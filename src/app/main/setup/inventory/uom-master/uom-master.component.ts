@@ -1,15 +1,155 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { UomMasterService } from "./uom-master.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
-  selector: 'app-uom-master',
-  templateUrl: './uom-master.component.html',
-  styleUrls: ['./uom-master.component.scss']
+    selector: "app-uom-master",
+    templateUrl: "./uom-master.component.html",
+    styleUrls: ["./uom-master.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class UomMasterComponent implements OnInit {
+    msg: any;
 
-  constructor() { }
+    displayedColumns: string[] = [
+        "UnitofMeasurementId",
+        "UnitofMeasurementName",
+        "AddedByName",
+        "IsDeleted",
+        "action",
+    ];
 
-  ngOnInit(): void {
-  }
+    DSUnitofmeasurementList = new MatTableDataSource<UnitofmeasurementMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    constructor(public _unitofmeasurementService: UomMasterService) {}
+
+    ngOnInit(): void {
+        this.getUnitofmeasurementMasterList();
+    }
+    onSearch() {
+        this.getUnitofmeasurementMasterList();
+    }
+
+    onSearchClear() {
+        this._unitofmeasurementService.myformSearch.reset({
+            UnitofMeasurementSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
+    getUnitofmeasurementMasterList() {
+        this._unitofmeasurementService
+            .getUnitofmeasurementMasterList()
+            .subscribe((Menu) => {
+                this.DSUnitofmeasurementList.data =
+                    Menu as UnitofmeasurementMaster[];
+                this.DSUnitofmeasurementList.sort = this.sort;
+                this.DSUnitofmeasurementList.paginator = this.paginator;
+            });
+    }
+
+    onClear() {
+        this._unitofmeasurementService.myform.reset({ IsDeleted: "false" });
+        this._unitofmeasurementService.initializeFormGroup();
+    }
+
+    onSubmit() {
+        if (this._unitofmeasurementService.myform.valid) {
+            if (
+                !this._unitofmeasurementService.myform.get(
+                    "UnitofMeasurementId"
+                ).value
+            ) {
+                var m_data = {
+                    insertUnitofMeasurementMaster: {
+                        UnitofMeasurementName:
+                            this._unitofmeasurementService.myform
+                                .get("UnitofMeasurementName")
+                                .value.trim(),
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._unitofmeasurementService.myform.get(
+                                    "IsDeleted"
+                                ).value
+                            )
+                        ),
+                    },
+                };
+
+                this._unitofmeasurementService
+                    .insertUnitofMeasurementMaster(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getUnitofmeasurementMasterList();
+                    });
+            } else {
+                var m_dataUpdate = {
+                    updateUnitofMeasurementMaster: {
+                        UnitofMeasurementId:
+                            this._unitofmeasurementService.myform.get(
+                                "UnitofMeasurementId"
+                            ).value,
+                        UnitofMeasurementName:
+                            this._unitofmeasurementService.myform
+                                .get("UnitofMeasurementName")
+                                .value.trim(),
+                        IsDeleted: Boolean(
+                            JSON.parse(
+                                this._unitofmeasurementService.myform.get(
+                                    "IsDeleted"
+                                ).value
+                            )
+                        ),
+                    },
+                };
+
+                this._unitofmeasurementService
+                    .updateUnitofMeasurementMaster(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getUnitofmeasurementMasterList();
+                    });
+            }
+            this.onClear();
+        }
+    }
+
+    onEdit(row) {
+        var m_data = {
+            UnitofMeasurementId: row.UnitofMeasurementId,
+            UnitofMeasurementName: row.UnitofMeasurementName.trim(),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._unitofmeasurementService.populateForm(m_data);
+    }
+}
+export class UnitofmeasurementMaster {
+    UnitofMeasurementId: number;
+    UnitofMeasurementName: string;
+    IsDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    AddedByName: string;
+
+    /**
+     * Constructor
+     *
+     * @param UnitofmeasurementMaster
+     */
+    constructor(UnitofmeasurementMaster) {
+        {
+            this.UnitofMeasurementId =
+                UnitofmeasurementMaster.UnitofMeasurementId || "";
+            this.UnitofMeasurementName =
+                UnitofmeasurementMaster.UnitofMeasurementName || "";
+            this.IsDeleted = UnitofmeasurementMaster.IsDeleted || "false";
+            this.AddedBy = UnitofmeasurementMaster.AddedBy || "";
+            this.UpdatedBy = UnitofmeasurementMaster.UpdatedBy || "";
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
@@ -17,103 +18,109 @@
                 <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
             </button>
         </div>
-
-
-
-
     </mat-toolbar>
     <!-- / HEADER -->
+
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
     <!-- / SELECTED BAR -->
+
     <!-- CONTENT -->
     <div class="content">
+
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
-            <div>
-                <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
-                    <!-- / USER -->
-                </div>
-                <!-- / SIDEBAR HEADER -->
-                <!-- SIDEBAR CONTENT -->
-                <div>
-                    <div class="nav material2">
-                        <form [formGroup]="_AppointmentSreviceService.myFilterform" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" style="background-color: white;
+        height:100%; margin-top: 10px;">
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
-                                    <!-- <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
-                                        required Enter only Alphabets</span> -->
-                                </mat-form-field>
+            <!-- SIDEBAR CONTENT -->
+            <div class="sidebar-content">
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
-                                    <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
-                                        required Enter only Alphabets</span> -->
-                                </mat-form-field>
+                <div class="card">
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Mobile Number</mat-label>
-                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number">
-                                    <!-- <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span> -->
-                                </mat-form-field>
+                    <!-- SIDEBAR HEADER -->
+                    <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
+                        <!-- USER -->
+                        <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
+                        <span class="h5">Search Facility</span>
+                        <!-- / USER -->
+                    </div>
+                    <!-- / SIDEBAR HEADER -->
+                    <!-- SIDEBAR CONTENT -->
+                    <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                        <div class="nav material2">
+                            <form [formGroup]="_AppointmentSreviceService.myFilterform">
+                                <div fxLayout="column" fxLayoutAlign="start none">
 
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                        matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getVisitList()"
-                                        matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="start" placeholder="Start date">
+                                            <input matEndDate formControlName="end" placeholder="End date"
+                                                (dateChange)="onShow($event)">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Bill No</mat-label>
+                                        <input name="PBillNo" formControlName="PBillNo" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Reg No</mat-label>
+                                        <input name="RegNo" formControlName="RegNo" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>First Name</mat-label>
+                                        <input name="FirstName" formControlName="FirstName" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Last Name</mat-label>
+                                        <input name="LastName" formControlName="LastName" matInput>
+                                    </mat-form-field>
+
+
+                                    <div style="margin-top: 10px;">
+                                        <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                            matTooltip="close">
+                                            <mat-icon class="cleariconbutton">close</mat-icon>
+                                        </button>&nbsp;
+                                        <button mat-raised-button class="searchButton" (click)="getVisitList()"
+                                            matTooltip="search">
+                                            <mat-icon class="searchiconbutton">search</mat-icon>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- / SIDEBAR CONTENT -->
+
         </fuse-sidebar>
         <!-- / SIDEBAR -->
+
         <!-- CENTER -->
-        <!-- CENTER -->
+        <div class="center p-12 pb-56">
 
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
-
-            <div class="content-card" style="border-radius:4px; ">
-
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+            <!-- CONTENT -->
+            <div class="content-card" style="border-radius:4px;width: 100%; ">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="row">
-                            <div style="width: 100%;">
+                            <div style="width: 100%; overflow: hidden;">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
-                                <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    class="table1">
+                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
+
                                     <ng-container matColumnDef="PatientOldNew">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             style="color: white;">Patient</mat-header-cell>
@@ -263,7 +270,8 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[20, 25, 50, 100]" [pageSize]="20"
+
+                                <mat-paginator [pageSizeOptions]="[25,50, 75, 100]" [pageSize]="25"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
@@ -271,12 +279,16 @@
                     </div>
                 </div>
             </div>
+            <!-- / CONTENT -->
+
         </div>
-        <!-- CENTER -->
+        <!-- / CENTER -->
+
     </div>
-    <!-- / USER -->
-    <!-- / CENTER -->
     <!-- / CONTENT-->
+
 </div>
+
+
 
 //

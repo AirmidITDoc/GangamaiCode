@@ -13,8 +13,7 @@ import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-    PrefixMasterList: any;
-    GendercmbList: any = [];
+   
     msg: any;
 
     @ViewChild(MatSort) sort: MatSort;

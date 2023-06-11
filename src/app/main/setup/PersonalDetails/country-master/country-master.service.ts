@@ -17,11 +17,11 @@ export class CountryMasterService {
         this.myformSearch = this.createSearchForm();
     }
     createSearchForm(): FormGroup {
-      return this._formBuilder.group({
-        CountryNameSearch: [""],
-          IsDeletedSearch: ["2"],
-      });
-  }
+        return this._formBuilder.group({
+            CountryNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
     createCountryForm(): FormGroup {
         return this._formBuilder.group({
             CountryId: [""],
@@ -45,7 +45,7 @@ export class CountryMasterService {
     }
 
     public countryMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/CountrySave", param);
+        return this._httpClient.post("insert_CountryMaster_1", param);
     }
 
     public countryMasterUpdate(param) {
