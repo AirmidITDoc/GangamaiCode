@@ -7,13 +7,13 @@
                     src="../../../../assets/images/logos/Airmid_NewLogo.jpeg" width="90">
                 <div style="margin-top: 12px;">
                     <div style="font-weight:700;font-size:18px;text-align:center;margin-left: 30%;width:500px;">
-                        {{selectedAdvanceObj.HospitalName}}</div>
+                        {{reportPrintObj.HospitalName}}</div>
                     <div style="color:#464343;text-align:center;margin-left: 30%;width:500px;">
-                        {{selectedAdvanceObj.HospitalAddress}}
+                        {{reportPrintObj.HospitalAddress}},{{reportPrintObj.Phone}}
                     </div>
                     <div style="color:#464343;text-align:center;margin-left: 30%;width:500px;">
-                        E-mail ID :
-                        info@gangamaihospital.com | www.gangamaihospital.co</div>
+                        E-mail ID :{{reportPrintObj.EmailId}}
+                        </div>
                 </div>
             </div>
             <div style="display:flex;margin-left:750px;;">
@@ -31,14 +31,14 @@
                     <div style="width:140px;font-weight:700;">Refund No</div>
                     <div style="width:10px;font-weight:700">:</div>
                     <!-- <div>{{BillNo}}</div>  -->
-                    <div>{{selectedAdvanceObj.RefundId}}</div>
+                    <div>{{reportPrintObj.RefundId}}</div>
                 </div>
 
                 <div style="display:flex;width: 30%;float: right;">
                     <div style="width:100px;font-weight:700;">DOA/Time</div>
                     <div style="width:10px;font-weight:700">:</div>
                     <!-- <div>{{AdmissionDate}}</div>  -->
-                    <div>{{selectedAdvanceObj.PaymentDate | date:'shortDate'}}</div>
+                    <div>{{reportPrintObj.PaymentDate | date:'shortDate'}}</div>
                 </div>
             </div>
             <div style="display:flex;justify-content:space-between;margin-top: 10px;margin-right: 230px;">
@@ -47,16 +47,16 @@
                     <div style="width:60px;font-weight:700">Reg.No</div>
                     <div style="width:10px;font-weight:700;margin-left: 80PX;">:</div>
 
-                    <div>{{selectedAdvanceObj.RegNo}}</div>
+                    <div>{{reportPrintObj.RegNo}}</div>
                 </div>
 
                 <div style="display:flex;float: right;margin-left: 510px;">
                     <div style="width:70px;font-weight:700;">Sex</div>
                     <div style="width:10px;font-weight:700">:</div>
-                    <div>{{selectedAdvanceObj.AgeYear}}</div>
+                    <div>{{reportPrintObj.AgeYear}}</div>
                     <!-- <div>55</div> -->
                     <div style="width:10px;font-weight:700">/</div>
-                    <div>{{selectedAdvanceObj.GenderName}}</div>
+                    <div>{{reportPrintObj.GenderName}}</div>
                 </div>
 
 
@@ -65,7 +65,7 @@
                 <div style="display:flex;width:600px">
                     <div style="width:140px;font-weight:700">Patient Name</div>
                     <div style="width:10px;font-weight:700">:</div>
-                    <div>{{selectedAdvanceObj.PatientName}}</div>
+                    <div>{{reportPrintObj.PatientName}}</div>
                 </div>
 
             </div>
@@ -75,7 +75,7 @@
                 <div style="display:flex;width:340px">
                     <div style="width:140px;font-weight:700">Refund Amount</div>
                     <div style="width:10px;font-weight:700">:</div>
-                    <div>{{selectedAdvanceObj.RefundAmount}}</div>
+                    <div>{{reportPrintObj.RefundAmount}}</div>
                 </div>
 
             </div>
@@ -91,7 +91,7 @@
                 <div style="display:flex;width:auto">
                     <div style="width:140px;font-weight:700">Remark</div>
                     <div style="width:10px;font-weight:700">:</div>
-                    <div>{{selectedAdvanceObj.Remark}}</div>
+                    <div>{{reportPrintObj.Remark}}</div>
                 </div>
 
             </div>
@@ -100,7 +100,7 @@
                 <div style="position:relative;top:100px;text-align:center">
 
                     <!-- <div style="font-weight:700;font-size:16px">{{UserName}}</div> -->
-                    <div>{{selectedAdvanceObj.AddedBy}}</div>
+                    <div>{{reportPrintObj.AddedBy}}</div>
                     <div style="font-weight:700;font-size:16px"> Prepared By</div>
                 </div>
 

@@ -1,16 +1,17 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel, Editdetail } from '../admission.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AdmissionService } from '../admission.service';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { AdmissionService } from '../admission.service';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { AdmissionPersonlModel, Editdetail } from '../admission.component';
+import { fuseAnimations } from '@fuse/animations';
+
 
 @Component({
   selector: 'app-edit-admission',
@@ -310,8 +311,8 @@ debugger;
   getDoctor2List() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      if ((this.data.PatObj.AdmittedDoctor2 != 0) && (this.data.PatObj.AdmittedDoctor2 != undefined)) {
-        const toSelect = this.Doctor2List.find(c => c.AdmittedDoctor2 == this.data.PatObj.AdmittedDoctor2);
+      if ((this.data.PatObj.DoctorID != 0) && (this.data.PatObj.DoctorID != undefined)) {
+        const toSelect = this.Doctor2List.find(c => c.DoctorID == this.data.PatObj.DoctorID);
         this._AdmissionService.mySaveForm.get('AdmittedDoctor2').setValue(toSelect);
       }
     })
@@ -403,10 +404,10 @@ company=this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0;
     debugger;
     var m_data = {
       "admissionNewUpdate": {
-        "AdmissionID": this.AdmissionID,// this._AdmissionService.mySaveForm.get('AdmissionId').value || 0,
+        "AdmissionId": this.AdmissionID,// this._AdmissionService.mySaveForm.get('AdmissionId').value || 0,
         "AdmissionDate": this.dateTimeObj.date,// this._AdmissionService.mySaveForm.get('AdmissionDate').value || "2021-03-31",
         "AdmissionTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
-         "PatientTypeID": this._AdmissionService.mySaveForm.get('PatientTypeID').value.PatientTypeId || 0,
+         "PatientTypeId": this._AdmissionService.mySaveForm.get('PatientTypeID').value.PatientTypeId || 0,
          "HospitalId":0,
         "CompanyId":company,// this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0,
         "TariffId": this._AdmissionService.mySaveForm.get('TariffId').value.TariffId || 0,
@@ -424,7 +425,7 @@ company=this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0;
         "RefByName" :0,// this._AdmissionService.mySaveForm.get('SubCompanyId').value.SubCompanyId || 0,
         "isUpdatedBy" :  this.accountService.currentUserValue.user.id,
         "SubTpaComId" : subcompany,// this._AdmissionService.mySaveForm.get('SubCompanyId').value.SubCompanyId || 0,
-     
+        "IsPackagePatient":0
       }
 
     }

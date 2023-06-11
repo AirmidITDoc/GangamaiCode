@@ -310,8 +310,7 @@ export class NewAppointmentComponent implements OnInit {
       AgeMonth: ['',Validators.pattern("[0-9]+")],
       AgeDay:['',Validators.pattern("[0-9]+")],
       // PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{15}$")]] , 
-      PhoneNo: ['', [
-       
+      PhoneNo: ['', [       
         Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
         Validators.minLength(10),
         Validators.maxLength(10),

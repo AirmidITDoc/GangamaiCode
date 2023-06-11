@@ -1,0 +1,458 @@
+@import "src/@fuse/scss/fuse";
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+app-ipdsearc-patienth {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    
+    .mat-table {
+        height: 530px !important;
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+        padding-left: 30px;
+
+        .mat-column-checkbox {
+            flex: 0 1 64px;
+            padding-left: 18px;
+        }
+
+        .mat-column-avatar {
+            flex: 0 1 64px;
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+           
+            .mat-cell {
+                min-width: 0;
+                white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                overflow: hidden !important;
+              //  display: inline-block;
+                
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+.active-icon {
+    border-radius: 50%;
+}
+.p-sm-24 {
+    padding: 10px !important;
+}
+.search-btn{
+    text-align: center; 
+    color:white ;
+    border-radius: 16px;
+    border: 1px solid #039be5 ;
+    background-color: blue;
+  }
+
+ .search-btn:disabled {
+   color: white;
+   background-color: #c5c5e3 !important;
+   border-radius: 2px;
+   border: 1px solid  #b7e6fd ;
+  }
+
+
+  .search-btn:hover{
+   background-color:#039be5 ;
+  color: white;
+   }
+   .backgroundBlur{
+    text-align: center;
+    background-color: #818181;
+    position: absolute;
+    z-index: 1000;
+    height: 200px;
+    opacity: 0.5;
+     width: 100%;  
+    
+}
+app-ipdsearc-patienth{
+    .mat-header-row {
+        width: 100%;
+        max-width: 1700px;
+        min-width: 1700px;   
+        font-weight: bold;   
+        min-height: 25px;        
+    }
+    
+    .mat-row {
+        width: 100%;
+        max-width: 1700px;
+        min-width: 1700px;   
+        min-height: 25px;                 
+    }    
+    
+    .mat-column-Adm_Vit_ID {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+    }
+    .mat-column-RegId {
+        width: 62px;
+        max-width: 62px;
+        min-width: 62px;
+    }
+
+    .mat-column-PatientName {
+        width: 280px;
+        max-width: 280px;
+        min-width: 280px;
+        text-align: center;
+    }
+    
+   
+    .mat-column-RegNoWithPrefix {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+
+    .mat-column-RegNoWithPrefix {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+
+    .mat-column-Adm_Vit_Date {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+
+    .mat-column-Adm_Vit_Time {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+
+    .mat-column-PatientType {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+
+    .mat-column-IsDischarged {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      
+        margin-right: 20px;
+    }
+    .mat-column-AgeYear {
+        width:80px;
+        max-width:80px;
+        min-width:80px;
+        text-align: center;
+    }
+    .mat-column-IP_OP_Number {
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: center;
+    }
+    .mat-column-Adm_DoctorName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: center;
+    }
+    .mat-column-ClassName {
+        width: 130px;
+        max-width:130px;
+        min-width: 130px;
+        text-align: center;
+    }
+    .mat-column-TariffName {
+        width: 130px;
+        max-width:130px;
+        min-width:130px;
+        text-align: center;
+    }
+    .mat-column-CompanyName {
+        width: 265px;
+        max-width: 265px;
+        min-width: 265px;
+        text-align: center;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+    }
+    .mat-column-IPNumber {
+        width: 65px;
+        max-width: 65px;
+        min-width: 65px;
+        text-align: center;
+    }
+
+    .mat-column-WardId {
+        width: 65px;
+        max-width: 65px;
+        min-width: 65px;
+        text-align: center;
+    }
+
+
+    .mat-column-BedId {
+        width: 65px;
+        max-width: 65px;
+        min-width: 65px;
+        text-align: center;
+    }
+
+    .mat-column-IsPharClearance {
+        width: 65px;
+        max-width: 65px;
+        min-width: 65px;
+        text-align: center;
+    }
+
+    .mat-column-IPNumber {
+        width: 65px;
+        max-width: 65px;
+        min-width: 65px;
+        text-align: center;
+    }
+    
+    .mat-column-action {
+        // color: white !important;
+        width:70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: right;
+        justify-content:right;
+    }
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 20px;
+        flex-shrink: 0;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+    
+  
+    .header-container {
+        background-color: #039be5 !important;
+        height: 40px;
+        padding: 0 15px;
+        align-items: center !important;
+      
+    }
+
+
+    .footer-btn {
+        width: 70px;
+        height: 40px;
+        font-size: 16px;
+        font-weight: 700px;
+        padding: 10px;
+        color:  rgb(247, 97, 97);
+        border-radius: 16px;
+        background-color:white;
+        border-color: rgb(247, 97, 97);
+        cursor: pointer;
+    }
+    .footer-btn:hover{
+        background-color: rgb(247, 97, 97);
+        color: white;
+       
+    }
+    .search-btn{
+        text-align: center; 
+        color:white ;
+        border-radius: 16px;
+        border: 1px solid #039be5 ;
+        background-color: blue;
+      }
+  
+     .search-btn:disabled {
+       color: white;
+       background-color: #c5c5e3 !important;
+       border-radius: 2px;
+       border: 1px solid  #b7e6fd ;
+      }
+  
+  
+      .search-btn:hover{
+       background-color:#039be5 ;
+      color: white;
+       }
+       
+    .header {
+        display: flex;
+        justify-content: space-between;
+        // background-color: #3C9CE5;
+        align-items: center;
+        padding: 10px 20px;
+        color: white;
+        font-size: 20px;
+        background: linear-gradient(to right ,rgb(30, 40, 223), rgb(238, 69, 233));
+    }
+
+    .backgroundBlur{
+        text-align: center;
+        background-color: #818181;
+        position: absolute;
+        z-index: 1000;
+        height: 470px;
+        opacity: 0.5;
+         width: 100%;  
+    }
+    
+    .spinner-border {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: -.125em;
+        border: .25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+         -webkit-animation: .75s linear infinite spinner-border;
+         animation: .75s linear infinite spinner-border;
+    
+      
+    
+    //spinner width
+        color:blue;
+        border-width:10px; 
+        margin: auto; 
+        width: 80px;
+        height: 80px; 
+        margin-top: 140px;
+        text-align: center;
+        margin-right: 280px;
+    }
+    
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: .2em
+    }
+    
+    @-webkit-keyframes spinner-grow {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+    
+        50% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+    
+    @keyframes spinner-grow {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+    
+        50% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+    
+    
+    .spinner-grow {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: -.125em;
+        background-color: currentColor;
+        border-radius: 50%;
+        opacity: 0;
+       // -webkit-animation: .75s linear infinite spinner-grow;
+        //animation: .75s linear infinite spinner-grow
+        -webkit-animation: 0.5s linear infinite spinner-grow;
+        animation: loading 0.5s linear infinite;
+    }
+    
+    .spinner-grow-sm {
+        width: 1rem;
+        height: 1rem
+    }
+    
+    @media (prefers-reduced-motion:reduce) {
+        .spinner-border, .spinner-grow {
+            -webkit-animation-duration: 0.2s;
+            //animation-duration: 1.5s
+            animation-duration: 0.2s;
+        }
+    }
+    
+    
+    
+    @-webkit-keyframes spinner-border {
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+    
+    @keyframes spinner-border {
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+    
+}

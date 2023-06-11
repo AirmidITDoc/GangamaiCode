@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -22,7 +22,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   hasSelectedContacts: boolean;
-  
+  outputWords=''
   BrowseOPDBillsList:any;
   msg:any;
   sIsLoading:any;
@@ -57,7 +57,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
-   
+   this.onShow_IpdAdvance();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -81,7 +81,9 @@ export class BrowseIPAdvanceComponent implements OnInit {
           let re = new RegExp(reString, "g");
           this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-        
+debugger;
+        // var objPrintWordInfo = this.reportPrintObj[0];
+        this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
@@ -103,12 +105,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
       "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
     }
-    // this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
-    //     this.dataSource.data = Visit as IpdAdvanceBrowseModel[];
-    //     this.dataSource.sort =this.sort;
-    //     this.dataSource.paginator=this.paginator;
-    //   });
-
+   
     console.log(D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
         this.dataArray = Visit;
@@ -117,6 +114,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   onClear_IpdAdvance(){
     
+  }
+
+  convertToWord(e) {
+    // this.numberInWords= converter.toWords(this.mynumber);
+    return converter.toWords(e);
   }
 
   getPrint(el) {
@@ -160,7 +162,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     let xx = {
       PaymentId:contact.PaymentId,
       HospitalName:contact.HospitalName,
-      HospitalAddress:contact.HospitalAddress,
+      HospAddress:contact.HospitalAddress,
       Phone:contact.Phone,
       BillNo:contact.BillNo,
       RegNo:contact.RegNo,
@@ -189,7 +191,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       PaidAmount: contact.PaidAmount,
       NEFTPayAmount:contact.NEFTPayAmount,
       PayTMAmount:contact.PayTMAmount,
-
+      AdvanceDetailID:contact.AdvanceDetailID,
           
     };
 
@@ -245,6 +247,10 @@ export class IpdAdvanceBrowseModel {
   AdvanceId:number;
   IPDNo:any;
   AdvanceDetailID:number;
+  HospitalName:any;
+  HospAddress:any;
+  Phone:any;
+  EmailId:any;
   /**
 * Constructor
 *
@@ -269,6 +275,11 @@ export class IpdAdvanceBrowseModel {
           this.AdvanceId = IpdAdvanceBrowseModel.AdvanceId || 0;
           this.AdvanceDetailID = IpdAdvanceBrowseModel.AdvanceDetailID || 0;
           this.IPDNo = IpdAdvanceBrowseModel.IPDNo || 0;
+
+          this.HospitalName=IpdAdvanceBrowseModel.HospitalName || '';
+          this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
+          this.Phone = IpdAdvanceBrowseModel.Phone || 0;
+          this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
       }
   }
 }

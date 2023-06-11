@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Admission, AdmissionComponent } from '../admission.component';
+
 import { AdmissionService } from '../admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { Admission } from '../admission.component';
+
 
 @Component({
   selector: 'app-mlcinformation',
@@ -32,7 +34,7 @@ export class MLCInformationComponent implements OnInit {
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<AdmissionComponent>,
+    public dialogRef: MatDialogRef<MLCInformationComponent>,
     private router: Router
   ) { }
 

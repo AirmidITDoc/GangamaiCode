@@ -8,6 +8,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
+import { EditRegistrationComponent } from '../../registration/edit-registration/edit-registration.component';
+import { RegInsert } from '../../registration/registration.component';
+import { RegistrationService } from '../../registration/registration.service';
 
 @Component({
   selector: 'app-search-page',
@@ -25,6 +28,8 @@ export class SearchPageComponent implements OnInit {
   setStep(index: number) {
     this.step = index;
   }
+  registerObj = new RegInsert({});
+
   Range: boolean = false;
   OP_IP_Type:any;
   PatientType: any = 1;
@@ -36,47 +41,27 @@ export class SearchPageComponent implements OnInit {
   displayedColumns: string[] = [
 
 
-    // 'Adm_Vit_ID',
+    'RegNo',
     'PatientName',
-    'RegNoWithPrefix',
     'AgeYear',
-    'IP_OP_Number',
-    'Adm_DoctorName',
-    'ClassName',
-    'TariffName',
-    'CompanyName',
-    'IPNumber',
+    'GenderName',
+    'PhoneNo',
+    'MobileNo',
+    // 'Address',
 
-    // 'Adm_Vit_Date',
-    // 'Adm_Vit_Time',
-    // 'PatientType',
-    // 'IPNumber',
-    // 'IsDischarged',
-    // 'WardId',
-    // 'BedId',
-    // 'IsPharClearance',
-    // 'IPNumber',
-    'action'
+     'action'
   ];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-  // @Input() childName: string [];
-  // @Output() parentFunction:EventEmitter<any> = new EventEmitter();
 
   dataSource = new MatTableDataSource<OPIPPatientModel>();
   isLoading: String = '';
 
   constructor(
     public _SearchdialogService: OPSearhlistService,
-    // public _NursingStationService: NursingStationService,
-    // public _SearchdialogService: AdmissionService,
-    // private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
-    public _matDialog: MatDialog,
+    public _registrationService: RegistrationService,
+      public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<SearchPageComponent>,
@@ -89,19 +74,18 @@ export class SearchPageComponent implements OnInit {
     this.sIsLoading = 'loading-data';
 
     var m_data = {
-      "OP_IP_Type": 0,
+      
       "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value).trim() + '%' || '%',
       "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value).trim() + '%' || '%',
       "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": '01/01/1900',//this.datePipe.transform(this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt": '01/01/1900',//this.datePipe.transform(this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag": 0,
-      // "IPNumber": 0
+      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "To_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "MobileNo":'%'
     }
 
     console.log(m_data);
     this.sIsLoading = 'loading-data';
-    this._SearchdialogService.getOPIPPatientList(m_data).subscribe(Visit => {
+    this._SearchdialogService.getOPPatientList(m_data).subscribe(Visit => {
       console.log(this.dataSource.data);
       this.dataSource.data = Visit as OPIPPatientModel[];
       this.dataSource.sort = this.sort;
@@ -147,16 +131,14 @@ export class SearchPageComponent implements OnInit {
       "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value) + '%' || '%',
       "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value) + '%' || '%',
       "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.Fromdate,// this.Fromdate this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
       "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag": 0,
-      "OP_IP_Type": this.OP_IP_Type,
-      "IPNumber": this._SearchdialogService.myFilterform.get("IPDNo").value || 0,
+      "MobileNo":'%'
     }
     console.log(m_data);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-      this._SearchdialogService.getOPIPPatientList(m_data).subscribe(Visit => {
+      this._SearchdialogService.getOPPatientList(m_data).subscribe(Visit => {
         console.log(this.dataSource.data);
         this.dataSource.data = Visit as OPIPPatientModel[];
         this.dataSource.sort = this.sort;
@@ -191,29 +173,66 @@ export class SearchPageComponent implements OnInit {
   }
 
 
-  onEdit(row) {
-    debugger;
+  onEdit(row){
     console.log(row);
-    var m_data = {
-      "Adm_Vit_ID": row.Adm_Vit_ID,
-      "PatientName": row.PatientName.trim(),
-      "RegNoWithPrefix": row.RegNoWithPrefix,
-      "AgeYear": row.AgeYear,
-      "IP_OP_Number": row.IP_OP_Number,
-      "Adm_DoctorName": row.Adm_DoctorName,
-      "ClassName": row.ClassName,
-      "TariffName": row.TariffName,
-      "CompanyName": row.CompanyName,
-      "IPNumber": row.IPNumber,
-      "TariffId": row.TariffId,
-      "ClassId": row.ClassId
-
-
+      var m_data = {
+        "RegNo":row.RegNo,
+        "RegId":row.RegId,
+        "PrefixID":row.PrefixID,
+        "PrefixName":row.PrefixName,
+        "FirstName":row.FirstName.trim(),
+        "MiddleName":row.MiddleName.trim(),
+        "LastName":row.LastName.trim(),
+        "PatientName":row.PatientName.trim(),
+        "DateofBirth":row.DateofBirth,
+        "MaritalStatusId":row.MaritalStatusId,
+        "AadharCardNo":row.AadharCardNo,
+        "Age":row.Age,
+        "AgeDay":row.AgeDay.trim(),
+        "AgeMonth":row.AgeMonth.trim(),
+        "AgeYear":row.AgeYear.trim(),
+        "Address":row.Address.trim(),
+        "AreaId":row.AreaId,
+        "City":row.City.trim(),
+        "CityId":row.CityId,
+        "StateId":row.StateId,
+        "CountryId":row.CountryId,
+        "PhoneNo":row.PhoneNo.trim(),
+        "MobileNo":row.MobileNo.trim(),
+        "GenderId":row.GenderId,
+        "GenderName":row.GenderName,
+        "ReligionId":row.ReligionId,
+        "IsCharity":0,
+        "PinNo":row.PinNo,
+        "RegDate":row.RegDate,
+        "RegNoWithPrefix":row.RegNoWithPrefix,
+        "RegTime":row.RegTime.trim()
+      }
+    
+      console.log(m_data);
+      this._registrationService.populateFormpersonal(m_data);
+      
+      const dialogRef = this._matDialog.open(EditRegistrationComponent, 
+        {   maxWidth: "85vw",
+            height: '550px',
+            width: '100%',
+             data : {
+            registerObj : m_data,
+          }
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
+        //   this.dataArray = reg;
+        //   this.getregistrationList();
+        //   this.sIsLoading = '';
+        // },
+        // error => {
+        //   this.sIsLoading = '';
+        // });
+      });
     }
-
-
-    if (row) this.dialogRef.close(m_data);
-  }
 
 
 }

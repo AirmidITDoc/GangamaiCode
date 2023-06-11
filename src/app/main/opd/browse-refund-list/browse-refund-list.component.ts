@@ -11,6 +11,8 @@ import { BrowseRefundlistService } from './browse-refundlist.service';
 import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
+import * as converter from 'number-to-words';
+
 
 @Component({
   selector: 'app-browse-refund-list',
@@ -309,20 +311,20 @@ export class BrowseRefundListComponent implements OnInit {
 
   convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
 
   getTemplate() {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
     this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
-          // this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-        // this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
+        this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
         // // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(this.reportPrintObj.PaymentDate));
         // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
         // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
@@ -330,7 +332,7 @@ export class BrowseRefundListComponent implements OnInit {
         // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
 
         // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
         }, 1000);
@@ -408,43 +410,21 @@ getPrint(el) {
 
 
 
-export class ReportPrintObj {
-  AdvanceNo: any;
-  Address: any;
-  HospitalName: any;
-  RegNo: any;
-  PatientName: any;
-  IPDNo: any;
-  Date: any;
-  PatientType: any;
-  AdvanceAmount: any;
-  BillDate:any;
-  PaymentDate:any;
-  AgeYear:any;
-  GenderName:any;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// export class ReportPrintObj {
+//   AdvanceNo: any;
+//   Address: any;
+//   HospitalName: any;
+//   RegNo: any;
+//   PatientName: any;
+//   IPDNo: any;
+//   Date: any;
+//   PatientType: any;
+//   AdvanceAmount: any;
+//   BillDate:any;
+//   PaymentDate:any;
+//   AgeYear:any;
+//   GenderName:any;
+// }
 
 export class RefundMaster {
   RefundId: number;
@@ -468,6 +448,19 @@ export class RefundMaster {
   BillDate:any;
   OPDNO:any;
 
+  AdvanceNo: any;
+  HospAddress: any;
+  HospitalName: any;
+  Phone:any;
+  VisitDate:any;
+  OPDNo:any;
+EmailId:any;
+  RegNo: any;
+  IPDNo: any;
+  Date: any;
+  PatientType: any;
+  AdvanceAmount: any;
+  
   constructor(RefundMaster) {
     {
       this.RefundId = RefundMaster.RefundId || 0;
@@ -490,6 +483,18 @@ export class RefundMaster {
       this.AddedBy = RefundMaster.AddedBy || '';
       this.AgeYear=RefundMaster.AgeYear || 0; 
       this.OPDNO=RefundMaster.OPDNO || '';
+
+      this.AdvanceNo = RefundMaster.AdvanceNo || 0;
+      this.HospAddress = RefundMaster.HospAddress || 0;
+      this.HospitalName = RefundMaster.HospitalName || '';
+      this.RegNo = RefundMaster.RegNo || '';
+      this.IPDNo = RefundMaster.IPDNo || '';
+      this.PatientType=RefundMaster.PatientType || 0; 
+      this.AdvanceAmount=RefundMaster.AdvanceAmount || '';
+      this.Phone=RefundMaster.Phone || '';
+      this.VisitDate =RefundMaster.VisitDate ||'';
+      this.OPDNo=RefundMaster.OPDNo ||'';
+      this.EmailId=RefundMaster.EmailId||'';
     }
   }
 }

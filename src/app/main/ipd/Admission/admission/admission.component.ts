@@ -10,15 +10,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
 import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
-import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
 import { FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ViewAdmissionComponent } from './view-admission/view-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
+import { AdmissionNewComponent } from './admission-new/admission-new.component';
+import { AdmissionViewComponent } from './admission-view/admission-view.component';
 
 @Component({
   selector: 'app-admission',
@@ -296,7 +296,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   addNewAdmission() {
-    const dialogRef = this._matDialog.open(NewAdmissionComponent,
+    const dialogRef = this._matDialog.open(AdmissionNewComponent,
       {
         maxWidth: "90vw",
         // maxHeight: "95vh", 
@@ -552,7 +552,7 @@ export class AdmissionComponent implements OnInit {
 
     };
     this.advanceDataStored.storage = new AdmissionPersonlModel(xx);
-    const dialogRef = this._matDialog.open(ViewAdmissionComponent,
+    const dialogRef = this._matDialog.open(AdmissionViewComponent,
       {
         maxWidth: "90vw",
         maxHeight: "100vh", width: '100%', height: "100%"

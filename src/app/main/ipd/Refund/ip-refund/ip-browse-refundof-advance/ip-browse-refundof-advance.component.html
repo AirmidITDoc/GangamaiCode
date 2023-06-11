@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" >
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center" >
         <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
@@ -103,7 +103,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort class="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                <mat-table  matSort class="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="overflow:auto">
                                 <ng-container matColumnDef="RegNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo

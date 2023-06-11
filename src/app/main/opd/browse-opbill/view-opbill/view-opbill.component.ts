@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { BrowseOPBillService } from '../browse-opbill.service';
 import { fuseAnimations } from '@fuse/animations';
+import * as converter from 'number-to-words';
 
 @Component({
   selector: 'app-view-opbill',
@@ -39,8 +40,7 @@ export class ViewOPBillComponent implements OnInit {
      public datePipe: DatePipe,
      public _matDialog: MatDialog,
      public _BrowseOPDBillsService:BrowseOPBillService,
-     // private ngxNumToWordsService: NgxNumToWordsService,
-     @Inject(MAT_DIALOG_DATA) public data: any,
+       @Inject(MAT_DIALOG_DATA) public data: any,
      private accountService: AuthenticationService,) { 
        this.rptData = data;
      }
@@ -50,7 +50,7 @@ export class ViewOPBillComponent implements OnInit {
  
      if (this.advanceDataStored.storage) {
        this.selectedAdvanceObj = this.advanceDataStored.storage;
-        /// console.log(this.selectedAdvanceObj);
+       
      }
        
       this.getPrint(this.selectedAdvanceObj.BillNo);
@@ -60,7 +60,7 @@ export class ViewOPBillComponent implements OnInit {
    
    convertToWord(e){
      // this.outputWords= converter.toWords(this.mynumber);
-    //  this.outputWords= converter.toWords(e);
+     this.outputWords= converter.toWords(e);
  
      }
  
@@ -81,6 +81,7 @@ export class ViewOPBillComponent implements OnInit {
               this.reportPrintObjList = res as BrowseOPDBill[];
               console.log(this.reportPrintObjList);
               this.reportPrintObj = res[0] as BrowseOPDBill;
+              this.convertToWord(this.reportPrintObj.PaidAmount);
            
             })
           );

@@ -935,4 +935,5 @@ public getprescriptionList(employee) {
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IP_Prescriptio_Det", employee)
    
 }
+
 }

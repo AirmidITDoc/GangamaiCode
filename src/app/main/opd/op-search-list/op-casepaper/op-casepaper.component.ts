@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { COMMA, ENTER, I } from '@angular/cdk/keycodes';
 import { ViewCasepaperComponent } from './view-casepaper/view-casepaper.component';
-import { PrescriptionComponent } from '../prescription/prescription.component';
+
 import { OPSearhlistService } from '../op-searhlist.service';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -1335,16 +1335,16 @@ debugger;
       opD_IPD_Type :this.selectedAdvanceObj.opD_IPD_Type,
     };
     this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-    const dialogRef = this._matDialog.open(PrescriptionComponent,
-      {
-        maxWidth: "80vw",
-        maxHeight: "100vh", width: '100%', height: "100%"
-      }
-    );
-    this.dialogRef.afterClosed().subscribe(result => {
-      console.log("Close All",result);
-    }
-    );
+    // const dialogRef = this._matDialog.open(PrescriptionComponent,
+    //   {
+    //     maxWidth: "80vw",
+    //     maxHeight: "100vh", width: '100%', height: "100%"
+    //   }
+    // );
+    // this.dialogRef.afterClosed().subscribe(result => {
+    //   console.log("Close All",result);
+    // }
+    // );
   }
 
   copy(){}

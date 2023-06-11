@@ -10,7 +10,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Subscription } from 'rxjs';
 import { IPBrowseRefundofBillService } from './ip-browse-refundof-bill.service';
 import { ViewIPReunfofBillComponent } from './view-ip-reunfof-bill/view-ip-reunfof-bill.component';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-ip-browse-refundof-bill',
   templateUrl: './ip-browse-refundof-bill.component.html',
@@ -276,14 +276,14 @@ getRecord(el,i) {
 }
 convertToWord(e){
   // this.numberInWords= converter.toWords(this.mynumber);
-  //  return converter.toWords(e);
+   return converter.toWords(e);
      }
  
   getTemplate() {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=5';
     this._IPBrowseRefundofBillService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospitalAddress','Phone','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy','BillDate']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -294,12 +294,12 @@ convertToWord(e){
        
         debugger;
         this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
         }, 50);
@@ -495,6 +495,11 @@ export class BrowseIpdreturnadvanceReceipt
      NetPayableAmt:any;
      OPDNo:any;
      ConsultantDoctorName:any;
+     HospitalName:any;
+     HospitalAddress:any;
+     Phone:any;
+     EmailId:any;
+
     /**
      * Constructor
      *
@@ -541,6 +546,11 @@ export class BrowseIpdreturnadvanceReceipt
             this.NetPayableAmt=BrowseIpdreturnadvanceReceipt.NetPayableAmt ||0;
             this.OPDNo =BrowseIpdreturnadvanceReceipt.OPDNo || 0;
            this.ConsultantDoctorName=BrowseIpdreturnadvanceReceipt.ConsultantDoctorName || 0;
+
+           this.HospitalName = BrowseIpdreturnadvanceReceipt.HospitalName || '';
+           this.HospitalAddress=BrowseIpdreturnadvanceReceipt.HospitalAddress ||0;
+           this.Phone =BrowseIpdreturnadvanceReceipt.Phone || '';
+          this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
         }
 
     }

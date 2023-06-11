@@ -10,7 +10,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ViewOPBillComponent } from './view-opbill/view-opbill.component';
-
+import * as converter from 'number-to-words';
 @Component({
   selector: 'app-browse-opbill',
   templateUrl: './browse-opbill.component.html',
@@ -48,7 +48,7 @@ export class BrowseOPBillComponent implements OnInit {
 
   displayedColumns = [
     'BillDate',
-    'PBillNo',
+    'BillNo',
     'RegNo',
     'PatientName',
     'TotalAmt',
@@ -276,7 +276,7 @@ export class BrowseOPBillComponent implements OnInit {
     this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -365,7 +365,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
   convertToWord(e) {
     // this.numberInWords= converter.toWords(this.mynumber);
-    // return converter.toWords(e);
+    return converter.toWords(e);
   }
   // GET DATA FROM DATABASE 
 
@@ -520,6 +520,7 @@ export class BrowseOPDBill {
   HospitalName: string;
   HospitalAddress: string;
   Phone: number;
+  EmailId:any;
   ChargesDoctorName: string;
   TotalBillAmount: number;
   ConsultantDocName: string;
@@ -569,6 +570,7 @@ export class BrowseOPDBill {
       this.HospitalAddress = BrowseOPDBill.HospitalAddress || '';
       this.ChargesTotalAmount = BrowseOPDBill.ChargesTotalAmount || '';
       this.Phone = BrowseOPDBill.Phone || '';
+      this.EmailId = BrowseOPDBill.EmailId || '';
       this.ConsultantDocName = BrowseOPDBill.ConsultantDocName || '';
       this.DepartmentName = BrowseOPDBill.DepartmentName || '';
       this.TotalBillAmount = BrowseOPDBill.TotalBillAmount || '';

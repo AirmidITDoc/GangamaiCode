@@ -12,6 +12,8 @@ import { ViewIPRefundofAdvanceComponent } from './view-ip-refundof-advance/view-
 import { IPBrowseRefundofAdvanceService } from './ip-browse-refundof-advance.service';
 import { fuseAnimations } from '@fuse/animations';
 
+import * as converter from 'number-to-words';
+
 @Component({
   selector: 'app-ip-browse-refundof-advance',
   templateUrl: './ip-browse-refundof-advance.component.html',
@@ -249,11 +251,11 @@ getRecord(el,i) {
 
         
         this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-        this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+        // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
         }, 50);
@@ -418,6 +420,8 @@ export class BrowseIpdreturnadvanceReceipt
     RefundAmount:number;
     RefundNo:number;
     HospitalAddress:string;
+    Phone:any;
+    EmailId:any;
      Age:number;
      AgeYear:number;
      IPDNo:any;
@@ -464,6 +468,8 @@ export class BrowseIpdreturnadvanceReceipt
             this. HospitalAddress = BrowseIpdreturnadvanceReceipt. HospitalAddress || '';
            this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
+           this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
+           this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
         }
 
     }

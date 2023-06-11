@@ -34,7 +34,7 @@ export class EditRegistrationComponent implements OnInit {
   searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
-
+  snackmessage:any;
   msg: any = [];
   AgeYear: any;
   AgeMonth: any;
@@ -634,13 +634,12 @@ export class EditRegistrationComponent implements OnInit {
       console.log(m_data);
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-               this.addEmptyRow();
-               
-            }
-          });
+          this.myFunction("Register Data Save Successfully !");
+                  
+          setTimeout(() => {
+             this._matDialog.closeAll();
+          }, 1000);
+
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
@@ -684,11 +683,11 @@ export class EditRegistrationComponent implements OnInit {
       console.log(m_data1);
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Register Data Updated Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }
-          });
+          this.myFunction("Register Data Updated Successfully !");
+                  
+          setTimeout(() => {
+             this._matDialog.closeAll();
+          }, 1000);
         } else {
           Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
@@ -768,5 +767,14 @@ export class EditRegistrationComponent implements OnInit {
   onChangeIsactive(SiderOption){
    this.IsCharity= SiderOption.checked
     console.log(this.IsCharity);
+  }
+
+  myFunction(s) {
+    this.snackmessage=s;
+    console.log(s);
+    console.log(this.snackmessage);
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
   }
 }

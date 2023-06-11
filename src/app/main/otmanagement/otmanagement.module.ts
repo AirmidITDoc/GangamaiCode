@@ -55,34 +55,33 @@ import { SharedModule } from '../shared/shared.module';
 
 
 
-
 const appRoutes: Routes = [
-//   {
-//     path: "otrequest",
-//     component:OtRequestListComponent
-//   },
-//   {
-//     path: "listofreservation",
-//     component:ReservationListComponent
-//   },
-//   {
-//     path: "endoscopylist",
-//     component:EndoscopyDetailsComponent
-//   },
-//   {
-//     path: "cathlablist",
-//     component:CathlabListComponent
-//   },
-//   {
-//     path: "otnotes",
-//     component:OTNoteComponent
-//   }
+  // {
+  //   path: "otrequest",
+  //   component:OtRequestListComponent
+  // },
+  // {
+  //   path: "listofreservation",
+  //   component:ReservationListComponent
+  // },
+  // {
+  //   path: "endoscopylist",
+  //   component:EndoscopyDetailsComponent
+  // },
+  // {
+  //   path: "cathlablist",
+  //   component:CathlabListComponent
+  // },
+  // {
+  //   path: "otnotes",
+  //   component:OTNoteComponent
+  // }
 
 ];
 
 @NgModule({
   declarations: [
-    // CathLabListComponent, EndoscopyListComponent, NeuroSurgeryListComponent, OTRequestListComponent, ReservationListComponent, OTNoteComponent, PrePostNoteComponent, NewEndoscopyRequestComponent
+    // CathLabListComponent, EndoscopyListComponent, NeuroSurgeryListComponent, OTRequestListComponent, ReservationListComponent, OTNoteComponent, PrePostNoteComponent, NewEndoscopyRequestComponent, NewReservationComponent, NewRequestComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes),

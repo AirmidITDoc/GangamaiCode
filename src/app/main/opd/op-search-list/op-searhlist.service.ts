@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OPSearhlistService {
+  fieldValidations() {
+    throw new Error('Method not implemented.');
+  }
 
   success(arg0: string) {
     throw new Error('Method not implemented.');
@@ -44,17 +47,16 @@ export class OPSearhlistService {
       LastName:['', [
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
      ]],
-      // DepartmentId: '',
-      // DepartmentName: '',
+     
       DoctorId: '',
       DoctorName: '',
       IsMark:'',
 
       AdmDisFlag: 0,
-      OP_IP_Type: 1,
-      PatientType:1,
+      OP_IP_Type: 0,
+      PatientType:0,
       patientstatus:0,
-      IPDNo:'',
+      OPDNo:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -354,7 +356,9 @@ public getConcessionCombo()
   {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_T_AdvanceList",employee)
   }
-
+  public getBankMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+  }
 
   public getHistoryList() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{})
@@ -413,9 +417,9 @@ public getConcessionCombo()
   }
 
 
-  public getOPIPPatientList(employee) {
+  public getOPPatientList(employee) {
 
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
   }
 
 

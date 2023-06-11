@@ -58,16 +58,16 @@ app-admission{
 .mat-header-row {
     //width: 2530px;
     width: 100%;
-    max-width: 1800px;
-    min-width: 1800px;  
+    max-width: 2100px;
+    min-width: 2100px;  
     min-height: 25px;     
 }
 
 .mat-row {
     //width: 2530px;
     width: 100%;
-    max-width: 1800px;
-    min-width: 1800px;  
+    max-width: 2100px;
+    min-width: 2100px;  
     min-height: 25px;   
 }
 
@@ -83,9 +83,9 @@ app-admission{
     text-align:left;
 }
 .mat-column-PatientName {
-    width: 210px;
-    max-width:210px;
-    min-width:210px;
+    width: 310px;
+    max-width:310px;
+    min-width:310px;
  text-align: left;
  white-space: nowrap; 
  overflow: hidden;

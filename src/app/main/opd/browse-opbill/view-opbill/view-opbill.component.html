@@ -1,21 +1,21 @@
-<div id="print-section" class="printed-div" style="padding:20px;height:550px;width: 100%;">
+<div id="print-section" class="printed-div" style="padding:20px;height:550px;width:1240px;">
     <div>
-        <div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/HIMS_LOGO.JPG"
+        <div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/Hospital_logo.jpeg"
                 width="90">
             <div style="margin-top: 12px;">
-                <div style="font-weight:700;font-size:18px;text-align:center;margin-left:18%;width:500px;">GANGAMAI
-                    HOSPITAL</div>
+                <div style="font-weight:700;font-size:18px;text-align:center;margin-left:18%;width:500px;">
+                    {{reportPrintObj.HospitalName}}</div>
                 <!-- <div style="font-weight:700;font-size:16px;text-align:center;width:800px;">{{HospitalName}}</div> -->
                 <!-- <div></div> -->
                 <!-- <div style="color:#464343;text-align:center;width:800px;">{{HospitalAddress}}</div> -->
                 <div style="color:#464343;text-align:center;margin-left: 18%;width:700px;">
-                    Plot No 1,C.S.No :279/2,Ramwadi Road,Modikhana,Solapur-413004</div>
+                    {{reportPrintObj.HospitalAddress}},{{reportPrintObj.Phone}}</div>
                 <!-- <div style="color:#464343;text-align:center;width:800px;">{{Phone}}</div> -->
-                <div style="color:#464343;text-align:center;margin-left:18%;width:500px;">WWW.gangamaihospital.com
+                <div style="color:#464343;text-align:center;margin-left:18%;width:500px;">{{reportPrintObj.EmailId}}
                 </div>
             </div>
         </div>
-        <div style="display:flex;margin-left:750px;;">
+        <div style="display:flex;margin-left:850px;;">
             <div style="width:90px;font-weight:700">PrintDate</div>
             <div style="width:10px;font-weight:700">:</div>
             <div>{{Today | date:'dd/MM/yyyy, h:mm a'}}</div>
@@ -26,15 +26,15 @@
     <hr style="border-color:#a0a0a0">
     <div>
         <div style="display:flex;justify-content:space-between">
-            <div style="display:flex;">
+            <div style="display:flex;width:500px">
                 <div style="width:140px;font-weight:700">Reg.No</div>
                 <div style="width:10px;font-weight:700">:</div>
-                <div>{{ selectedAdvanceObj.RegNo}}</div> <!-- <div>Ip/9807</div> -->
+                <div>{{ reportPrintObj.RegNo}}</div> <!-- <div>Ip/9807</div> -->
             </div>
-            <div style="display:flex;width:28%;float: right;">
+            <div style="display:flex;width:30%;float: right;">
                 <div style="width:120px;font-weight:700;">BIIL No</div>
                 <div style="width:10px;font-weight:700">:</div>
-                <div>{{selectedAdvanceObj.PBillNo}}</div> <!-- <div>1234</div> -->
+                <div>{{reportPrintObj.PBillNo}}</div> <!-- <div>1234</div> -->
             </div>
 
 
@@ -43,12 +43,12 @@
             <div style="display:flex;width:500px">
                 <div style="width:140px;font-weight:700">Patient Name</div>
                 <div style="width:10px;font-weight:700">:</div>
-                <div>{{selectedAdvanceObj.PatientName}}</div>
+                <div>{{reportPrintObj.PatientName}}</div>
             </div>
             <div style="display:flex;width:30%;float:right;">
-                <div style="width:120px;font-weight:700;margin-left: 20px;">BIIL Date</div>
+                <div style="width:120px;font-weight:700;">BIIL Date</div>
                 <div style="width:10px;font-weight:700">:</div>
-                <div>{{selectedAdvanceObj.BillDate | date:'dd/MM/yyyy, h:mm a'}}</div>
+                <div>{{reportPrintObj.BillDate | date:'dd/MM/yyyy, h:mm a'}}</div>
                 <!-- <div>08/12/2021 1.37PM</div> -->
             </div>
 
@@ -59,13 +59,13 @@
             </div>   -->
         </div>
         <div style="display:flex;justify-content:space-between">
-            <div style="display:flex;width:370px">
+            <div style="display:flex;width:500px">
                 <div style="width:140px;font-weight:700">Consultant Dr.</div>
                 <div style="width:10px;font-weight:700">:</div>
                 <div>{{reportPrintObj.ConsultantDocName}}</div>
             </div>
 
-            <div style="display:flex;width:28%;float: right;">
+            <div style="display:flex;width:30%;float: right;">
                 <div style="width:120px;font-weight:700;">DepartmentName</div>
                 <div style="width:10px;font-weight:700">:</div>
                 <div>{{reportPrintObj.DepartmentName}}</div> <!-- <div>08/12/2021 1.37PM</div> -->
@@ -78,28 +78,28 @@
             <div style="display:flex">
                 <div style="display:flex;margin-right:10px;">
                     <div style="width:80px;font-weight:700;">SR.NO.</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
                 <div style="display:flex;margin-right:10px;">
                     <div style="width:270px;font-weight:700;justify-content: center;">Service Name</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
 
                 <div style="display:flex;margin-right:10px;">
                     <div style="width:270px;font-weight:700;justify-content: center;">Doctor Name</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
                 <div style="display:flex;margin-right:10px;justify-content: center;">
                     <div style="width:170px;font-weight:700;">Price</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
                 <div style="display:flex;margin-right:30px;justify-content:center;">
                     <div style="width:170px;font-weight:700;">QTY</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
                 <div style="display:flex;margin-right:210px;justify-content:left">
                     <div style="width:120px;font-weight:700;">NetAmount</div>
-                    <!-- <div style="width:10px;font-weight:700">:</div> -->
+
                 </div>
             </div>
             <hr style="border-color:white">
@@ -133,35 +133,39 @@
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Total Bill Amount </div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.TotalBillAmount | currency:'INR'}}</div> <!-- <div>89000</div> -->
+                    <div>{{reportPrintObj.TotalBillAmount | currency:'INR'}}</div>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;margin-left:850px;">
+            <div style="display:flex;justify-content:space-between;margin-left:850px;"
+                *ngIf="reportPrintObj.ConcessionAmt >0">
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Concession </div>
                     <div style="width:20px;font-weight:700">:</div>
                     <div>{{reportPrintObj.ConcessionAmt | currency:'INR'}}</div>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;margin-left:850px;">
+            <div style="display:flex;justify-content:space-between;margin-left:850px;"
+                *ngIf="reportPrintObj.NetPayableAmt >0">
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">Net Amount</div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.NetPayableAmt | currency:'INR'}}</div> <!-- <div>8900</div> -->
+                    <div>{{reportPrintObj.NetPayableAmt | currency:'INR'}}</div>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;margin-left:850px;">
+            <div style="display:flex;justify-content:space-between;margin-left:850px;"
+                *ngIf="reportPrintObj.PaidAmount >0">
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">PaidAmount</div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.PaidAmount | currency:'INR'}}</div> <!-- <div>28900</div> -->
+                    <div>{{reportPrintObj.PaidAmount | currency:'INR'}}</div>
                 </div>
             </div>
-            <div style="display:flex;justify-content:space-between;margin-left:850px;">
+            <div style="display:flex;justify-content:space-between;margin-left:850px;"
+                *ngIf="reportPrintObj.BalanceAmt >0">
                 <div style="display:flex;width:465px">
                     <div style="width:110px;font-weight:700">BalanceAmt</div>
                     <div style="width:20px;font-weight:700">:</div>
-                    <div>{{reportPrintObj.BalanceAmt | currency:'INR'}}</div> <!-- <div>28900</div> -->
+                    <div>{{reportPrintObj.BalanceAmt | currency:'INR'}}</div>
                 </div>
             </div>
 
@@ -183,14 +187,10 @@
                 <div style="font-weight:700;font-size:16px">{{reportPrintObj.AddedByName}}</div>
                 <div>Prepared By </div>
             </div>
-            <!-- <div style="position:relative;top:100px;text-align:center;margin-left:30px;">
-                <div style="font-weight:700;font-size:16px">{{UserName}}</div>
-              
-                <div>Authorized By </div>
-            </div> -->
+
         </div>
     </div>
 
 
-    /
-  
+    //
+    

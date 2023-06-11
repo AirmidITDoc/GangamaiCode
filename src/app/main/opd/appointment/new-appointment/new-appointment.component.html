@@ -70,7 +70,7 @@
                     <span style="font-size: 16px; font-weight: 500; color: black;">Personal:</span>
                 </div> -->
             <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-              style=" height: 35px;background-color:#33b5e5">
+              style=" height: 35px;background-color:#4863A0">
               <span style="font-size:18px; font-weight: 500; color:white;padding:7px;">Personal </span>
 
             </div>
@@ -186,9 +186,8 @@
 
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-
-
-                <mat-form-field appearance="outline" fxFlex>
+                <!-- 
+                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>AadharCardNo Number</mat-label>
                   <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCardNo Number" matInput
                     required [(ngModel)]="registerObj.AadharCardNo" maxlength="12" [maxlength]="12" minlength="12"
@@ -197,7 +196,13 @@
                     *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
                     digits AadharCardNo number is
                     required</mat-error>
-                </mat-form-field>
+                </mat-form-field>  -->
+
+                <input type="text" class="form-control" placeholder="AadharCardNo No." formControlName="AadharCardNo"
+                  maxlength="12" minlength="12" style="width: 200px;box-shadow: #33b5e5;border-style: groove;">
+                <small
+                  *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched"
+                  class="text-danger"> *AadharCard No. is Required</small>
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Pancardno Number</mat-label>
@@ -364,7 +369,7 @@
           <form [formGroup]="VisitFormGroup">
 
             <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-              style=" height: 35px;background-color: #33b5e5">
+              style=" height: 35px;background-color: #4863A0">
               <span style="font-size:18px; font-weight: 500; color:white;padding:5px;">Visit Details </span>
 
             </div>

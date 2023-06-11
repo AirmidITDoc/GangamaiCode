@@ -35,6 +35,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
+import { CharmaxLengthDirective } from './new-registration/charmax-length.directive';
+import { ChkCharlengthDirective } from './chk-charlength.directive';
+
 
 const routes: Routes = [
     {
@@ -47,6 +50,8 @@ const routes: Routes = [
         RegistrationComponent,
         NewRegistrationComponent,
         EditRegistrationComponent,
+        CharmaxLengthDirective,
+        ChkCharlengthDirective,
         
     ],
     imports: [
@@ -87,7 +92,9 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatCardModule,
         MatTooltipModule,
-        MatExpansionModule
+        MatExpansionModule,
+        // ToastrModule.forRoot({ positionClass: 'inline' }),
+        // ToastContainerModule,
     ],
     providers: [
         DatePipe

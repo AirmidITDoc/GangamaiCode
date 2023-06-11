@@ -75,7 +75,7 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date">
+                                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -201,11 +201,11 @@
                                 <mat-cell *matCellDef="let contact">
                                     <mat-icon
                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                        *ngIf="contact.InterimOrFinal=='1' " matTooltip="Interim Bill"
+                                        *ngIf="contact.InterimOrFinal=='0' " matTooltip="Interim Bill"
                                         class="gray-600 s-16 ">circle</mat-icon>
                                     <mat-icon
                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                        *ngIf="contact.InterimOrFinal=='0' " matTooltip=" Final Bill "
+                                        *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
                                         class="red-600 s-16 ">circle</mat-icon>
                                 </mat-cell>
                             </ng-container>

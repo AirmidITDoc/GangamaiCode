@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, Pipe, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -10,6 +10,14 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ViewOPBrowsePaymentListComponent } from './view-opbrowse-payment-list/view-opbrowse-payment-list.component';
+import { PrintPaymentComponent } from './print-payment/print-payment.component';
+import * as converter from 'number-to-words';
+import { DomSanitizer } from '@angular/platform-browser';
+
+// @Pipe({
+//   name: 'numberToWords'
+// })
+
 
 @Component({
   selector: 'app-browse-payment-list',
@@ -28,6 +36,8 @@ export class BrowsePaymentListComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   sIsLoading: string = '';
+  TempKeys:any;
+  data:any;
 
   @Input() dataArray: any; 
   hasSelectedContacts: boolean;
@@ -59,6 +69,7 @@ export class BrowsePaymentListComponent implements OnInit {
   constructor( private _fuseSidebarService: FuseSidebarService,
     public _BrowseOpdPaymentReceiptService:BrowsePaymentListService,
     public datePipe: DatePipe,
+    private sanitizer:DomSanitizer,
     private advanceDataStored: AdvanceDataStored,
     public _matDialog: MatDialog) { }
 
@@ -239,47 +250,54 @@ onExport(exprtType){
   }
   convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
+       val = 1;
+
 getTemplate() {
+debugger;
+
+
+
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);
+    console.log(this.printTemplate = resData[0].TempKeys);
     this.printTemplate = resData[0].TempDesign;
-    
-   let keysArray = ['HospitalName','HospitalAddress','Phone','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
-    for (let i = 0; i < keysArray.length; i++) {
+   
+    // this.data = this.sanitizer.bypassSecurityTrustHtml(resData[0].TempDesign);    
+
+    // console.log(this.printTemplate)
+    // console.log(this.data);
+    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+   
+
+//   @Pipe({
+//   name: 'htmlToPlaintext'
+// })
+//     const temp = document.createElement('div');
+//     temp.innerHTML = this.printTemplate;
+//     this.printTemplate=temp.innerHTML
+//     return temp.textContent || temp.innerText || '';
+
+//     console.log(temp.textContent || temp.innerText || '')
+  
+   for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      this.printTemplate = this.printTemplate.replace('StrPaidAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount)+' only');
-      this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrCardPayAmount','₹' + (this.reportPrintObj.CardPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrChequePayAmount','₹' + (this.reportPrintObj.ChequePayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount','₹' + (this.reportPrintObj.NEFTPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPayTMAmount','₹' + (this.reportPrintObj.PayTMAmount.toFixed(2)));
-      this.printTemplate =  this.printTemplate.replace('StrRemark', (this.reportPrintObj.Remark));
-      this.printTemplate =  this.printTemplate.replace('StrUserName', (this.reportPrintObj.UserName));
 
-      this.printTemplate =  this.printTemplate.replace('StrReceiptNo', (this.reportPrintObj.ReceiptNo));
-      this.printTemplate =  this.printTemplate.replace('StrBillNo', (this.reportPrintObj.BillNo));
-      this.printTemplate =  this.printTemplate.replace('StrCardPayAmount', (this.reportPrintObj.CardPayAmount));
-      this.printTemplate =  this.printTemplate.replace('StrCardNo', (this.reportPrintObj.CardNo));
-      this.printTemplate =  this.printTemplate.replace('StrCardBankName', (this.reportPrintObj.CardBankName));
-      this.printTemplate =  this.printTemplate.replace('StrNEFTPayAmount', (this.reportPrintObj.NEFTPayAmount));
-      this.printTemplate =  this.printTemplate.replace('StrPayTMAmount', (this.reportPrintObj.PayTMAmount));
-      this.printTemplate =  this.printTemplate.replace('StrPaidAmount', (this.reportPrintObj.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
+   
+      // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      console.log(this.printTemplate.replace(/{{.*}}/g, ''));
+      
       setTimeout(() => {
         this.print();
       }, 50);
   });
+// });
 }
 
 transform(value: string) {
@@ -301,7 +319,7 @@ transform2(value: string) {
 }
 
 getPrint(el) {
-  //console.log(el);
+  debugger
    var D_data = {
      "PaymentId": el.PaymentId,
    }
@@ -311,7 +329,7 @@ getPrint(el) {
      this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
        if(res){
        this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-    console.log(this.reportPrintObj);
+       console.log(this.reportPrintObj);
       this.getTemplate();
       }
               
@@ -384,9 +402,12 @@ getViewbill(contact)
 
     this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
    
-      const dialogRef = this._matDialog.open(ViewOPBrowsePaymentListComponent, 
+      const dialogRef = this._matDialog.open(PrintPaymentComponent, 
        {  maxWidth: "95vw",
-          maxHeight: "130vh", width: '100%', height: "100%"
+          maxHeight: "130vh", width: '100%', height: "100%",
+          data : {
+            registerObj : xx,
+          }
      });
      dialogRef.afterClosed().subscribe(result => {
       //  console.log('The dialog was closed - Insert Action', result);
@@ -499,6 +520,10 @@ export class BrowseOpdPaymentReceipt
     CardNo: any;
     CardBankName:any;
     ChequeNo:any;
+    HospitalName:any;
+    HospitalAddress:any;
+    EmailId:any;
+    Phone:any;
     /**
      * Constructor
      *
@@ -545,6 +570,11 @@ export class BrowseOpdPaymentReceipt
             this.CardNo = BrowseOpdPaymentReceipt.CardNo || '';
             this.CardBankName = BrowseOpdPaymentReceipt.CardBankName || '';
             this.ChequeNo=BrowseOpdPaymentReceipt.ChequeNo || 0;
+
+            this.HospitalName = BrowseOpdPaymentReceipt.HospitalName || '';
+            this.HospitalAddress = BrowseOpdPaymentReceipt.HospitalAddress || '';
+            this.EmailId = BrowseOpdPaymentReceipt.EmailId || '';
+            this.Phone=BrowseOpdPaymentReceipt.Phone || 0;
         }
 
     }

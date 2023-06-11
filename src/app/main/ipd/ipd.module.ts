@@ -43,32 +43,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { AdmissionComponent } from './Admission/admission/admission.component';
 import { IPSearchListComponent } from './ip-search-list/ip-search-list.component';
 import { BedTransferComponent } from './ip-search-list/bed-transfer/bed-transfer.component';
 import { DischargeComponent } from './ip-search-list/discharge/discharge.component';
 import { IPAdvanceComponent } from './ip-search-list/ip-advance/ip-advance.component';
 import { IPAdvancePaymentComponent } from './ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { IPSettlementComponent } from './ip-search-list/ip-settlement/ip-settlement.component';
-import { IPBrowseRefundofBillReceiptComponent } from './ip-browse-refundof-bill-receipt/ip-browse-refundof-bill-receipt.component';
-import { ViewRefundofBillComponent } from './ip-browse-refundof-bill-receipt/view-refundof-bill/view-refundof-bill.component';
-import { IPRefundofAdvanceReceiptComponent } from './ip-refundof-advance-receipt/ip-refundof-advance-receipt.component';
-import { ViewRefundofAdvanceComponent } from './ip-refundof-advance-receipt/view-refundof-advance/view-refundof-advance.component';
 import { IPRefundComponent } from './Refund/ip-refund/ip-refund.component';
-import { IPRefundodAdvanceComponent } from './Refund/ip-refundod-advance/ip-refundod-advance.component';
-import { IPRefundofBillComponent } from './Refund/ip-refundof-bill/ip-refundof-bill.component';
 import { IPRefundofAdvanceComponent } from './Refund/ip-refund/ip-refundof-advance/ip-refundof-advance.component';
 import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.component';
 import { IPBrowseRefundofBillComponent } from './Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.component';
-import { IPBrowseallListComponent } from './ip-browseall-list/ip-browseall-list.component';
+import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
+import { StockManagementComponent } from './stock-management/stock-management.component';
+import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
   declarations: [IPBillBrowseListComponent, 
-    IPSearchListComponent, IPBillBrowseListComponent, AdmissionComponent, BedTransferComponent, DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, IPSettlementComponent, IPBrowseRefundofBillReceiptComponent, ViewRefundofBillComponent, IPRefundofAdvanceReceiptComponent, ViewRefundofAdvanceComponent, IPRefundComponent, IPRefundodAdvanceComponent, IPRefundofBillComponent, IPRefundofAdvanceComponent, IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPBrowseallListComponent],
+    IPSearchListComponent, IPBillBrowseListComponent, BedTransferComponent,
+     DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, 
+     IPSettlementComponent, IPRefundComponent, IPRefundofAdvanceComponent, 
+     IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent, BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent],
   imports: [
     CommonModule,
     MatButtonModule,

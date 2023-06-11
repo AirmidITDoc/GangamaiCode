@@ -510,6 +510,8 @@ export class BrowseIpdreturnadvanceReceipt
     RefundAmount:number;
     RefundNo:number;
     HospitalAddress:string;
+    Phone:any;
+    EmailId:any;
      Age:number;
      AgeYear:number;
      IPDNo:any;
@@ -556,6 +558,8 @@ export class BrowseIpdreturnadvanceReceipt
             this. HospitalAddress = BrowseIpdreturnadvanceReceipt. HospitalAddress || '';
            this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
+           this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
+           this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
         }
 
     }

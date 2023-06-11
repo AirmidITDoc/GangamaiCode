@@ -433,4 +433,9 @@ public getVistdetailsList(employee){
 public getGenderMasterCombo() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_GenderMasterForCombo", {})
 }
+
+public getOPIPPatientList(employee) {
+
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList", employee)
+}
 }

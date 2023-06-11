@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Admission } from '../admission.component';
+
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { Admission } from '../admission.component';
+
 
 @Component({
   selector: 'app-sub-company-tpainfo',

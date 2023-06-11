@@ -32,7 +32,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { IPBillBrowseListComponent } from './ip-bill-browse-list.component';
-import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
 
 //import { ViewIPDBillComponent } from './ipd-bil-browse-list/view-ipdbill/view-ipdbill.component';
@@ -90,7 +89,7 @@ const routes: Routes = [
         
   ],
   providers: [
-    IPSearchListService,
+    // IPSearchListService,
     DatePipe,
     
   
