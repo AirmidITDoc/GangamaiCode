@@ -44,6 +44,8 @@
         </mat-error> -->
 
             </mat-form-field>
+
+
             <div class="search-button-div" style="padding-right:120px;">
               <button class="search-btn" mat-raised-button style="border-radius: 16px;" (click)="searchRegList()"
                 [disabled]="isRegSearchDisabled">Search
@@ -475,12 +477,13 @@
                   <button mat-button><mat-icon style="width: 3px;margin-left:2px;"
                       (click)="DocSelectdelete()">close</mat-icon></button>
 
-                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect (selectionChange)="onDoctorOneChange($event.value)">
+                  <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
+                    (selectionChange)="onDoctorOneChange($event.value)">
                     <!-- (selectionChange)="onDoctorOneChange($event.value)" -->
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                       
+
                     </mat-option>
 
                     <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
@@ -565,3 +568,4 @@
       </div>
     </div>
   </div>
+</mat-dialog-content>
