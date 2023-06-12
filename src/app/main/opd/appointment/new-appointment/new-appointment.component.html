@@ -32,7 +32,7 @@
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                 (optionSelected)='getSelectedObj($event.option.value)'>
                 <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                  {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
+                  {{option.FirstName}} {{option.LastName}} | {{option.RegNo}} |  {{option.MobileNo}}
                 </mat-option>
               </mat-autocomplete>
               <!-- <mat-hint>

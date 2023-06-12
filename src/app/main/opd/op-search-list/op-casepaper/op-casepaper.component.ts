@@ -675,6 +675,7 @@ private filterExamination(){
   }
 
   getDrugList() {
+    debugger
     this._opSearchListService.getDrugList('%').subscribe((data: ILookup[]) => {
       this.lookups = data;
       this.drugList1 = data;

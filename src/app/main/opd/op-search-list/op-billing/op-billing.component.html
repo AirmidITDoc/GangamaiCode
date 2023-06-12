@@ -97,10 +97,9 @@
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
-                                                    (optionSelected)='getSelectedObj($event.option.value)'>
-                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option" style="color: #039BE5;">
-                                                        {{option.ServiceName}} {{option.Price}}{{DoctorName}}
-                                                        <hr>
+                                                    (optionSelected)='getSelectedObj($event.option.value)' style="width: 500px;">
+                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option" style="width: 500px;">
+                                                        {{option.ServiceName}} | Price {{option.Price}} 
                                                     </mat-option>
                                                   
                                                 </mat-autocomplete>
