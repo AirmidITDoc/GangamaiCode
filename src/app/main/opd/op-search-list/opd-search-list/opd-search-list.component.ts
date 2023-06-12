@@ -150,7 +150,7 @@ private filterDoctor() {
   }
 
   getVisitList() {
-    debugger;
+    // debugger;
     this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": (this._opSearchListService.myFilterform.get("FirstName").value).trim() + '%' || "%",
@@ -161,11 +161,10 @@ private filterDoctor() {
       "To_Dt": this.datePipe.transform(this._opSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || '01/01/1900',
       "IsMark": this._opSearchListService.myFilterform.get("IsMark").value.selected || 0,
     }
-     console.log(D_data);
+    //  console.log(D_data);
     this._opSearchListService.getAppointmentList(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as VisitMaster[];
-
-      console.log( this.dataSource.data);
+      // console.log( this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -189,11 +188,9 @@ private filterDoctor() {
   }
 
   getRecord(contact, m): void {
-    ;
-console.log(contact);
-
+// console.log(contact);
     if (m == "Bill") {
-      console.log(contact);
+      // console.log(contact);
       let xx = {
         RegNo: contact.RegId,
         // RegId: contact.RegId,
@@ -224,7 +221,7 @@ console.log(contact);
     }
     
     else if(m == "Case Paper") {
-        console.log(" This is for Casepaper pop : " + m);
+        // console.log(" This is for Casepaper pop : " + m);
         let xx = {
           RegNo: contact.RegId,
           AdmissionID: contact.VisitId,
@@ -244,8 +241,8 @@ console.log(contact);
         };
         this.advanceDataStored.storage = new AdvanceDetailObj(xx);
         // console.log( this.advanceDataStored.storage);
-         console.log(xx);
-        debugger;
+        //  console.log(xx);
+        // debugger;
         const dialogRef = this._matDialog.open(OPCasepaperComponent,
           {
             maxWidth: "95%",
@@ -312,8 +309,7 @@ console.log(contact);
     // }
 
     if (m == "Refund of Bill") {
-
-      console.log(" This is for Refund of Bill pop : " + m);
+      // console.log(" This is for Refund of Bill pop : " + m);
       let xx = {
         RegNo: contact.RegNo,
         RegId: contact.RegId,
