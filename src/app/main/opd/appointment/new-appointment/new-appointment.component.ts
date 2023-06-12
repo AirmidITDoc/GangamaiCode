@@ -185,7 +185,7 @@ export class NewAppointmentComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router
   ) {
-    // dialogRef.disableClose = true;
+     dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
@@ -320,8 +320,7 @@ export class NewAppointmentComponent implements OnInit {
       Validators.maxLength(10),]], 
       AadharCardNo: ['', [
         Validators.required,
-      
-        Validators.pattern("^[2-9]{1}[0-9]{11}$"),
+        Validators.pattern("^[0-9]*$"),
         Validators.minLength(12),
         Validators.maxLength(12),]],
       PanCardNo: '',
@@ -1128,8 +1127,9 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   onClose() {
-    this._opappointmentService.mySaveForm.reset();
-     this.dialogRef.close();
+    debugger
+    //this._opappointmentService.mySaveForm.reset();
+    this.dialogRef.close();
   }
 
   onChangeGenderList(prefixObj) {

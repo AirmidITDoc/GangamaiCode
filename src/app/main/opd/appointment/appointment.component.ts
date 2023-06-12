@@ -27,6 +27,7 @@ import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-con
 import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
+import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
 // const jsPDF = require('jspdf');
 
 @Component({
@@ -142,11 +143,11 @@ export class AppointmentComponent implements OnInit {
                 .subscribe(
                     (Visit) => {
                         this.dataSource.data = Visit as VisitMaster[];
-                        console.log(this.dataSource.data);
+                        // console.log(this.dataSource.data);
                         this.dataSource.sort = this.sort;
                         this.dataSource.paginator = this.paginator;
                         this.sIsLoading = "";
-                        console.log(this.dataSource.data);
+                        // console.log(this.dataSource.data);
                     },
                     (error) => {
                         this.sIsLoading = "";
@@ -167,7 +168,21 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
-    onShow($event) {}
+    appointment(){
+        const dialogRef = this._matDialog.open(PatientAppointmentComponent, {
+            maxWidth: "95vw",
+            height: "800px",
+            width: "100%",
+            // height: "100%"
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            // console.log('The dialog was closed - Insert Action', result);
+            this.getVisitList();
+        });
+    }
+    onShow() {
+        // this.getVisitList();
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         // changes.prop contains the old and the new value...
@@ -318,7 +333,7 @@ export class AppointmentComponent implements OnInit {
     newappointment() {
         const dialogRef = this._matDialog.open(NewAppointmentComponent, {
             maxWidth: "95vw",
-            height: "700px",
+            height: "800px",
             width: "100%",
             // height: "100%"
         });

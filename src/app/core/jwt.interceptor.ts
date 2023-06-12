@@ -28,9 +28,9 @@ export class JwtInterceptor implements HttpInterceptor {
         }
         // HIMS Link
         //  request = request.clone({ url: `http://localhost:63750/swagger/index.html/${request.url}` });
-        request = request.clone({
-            url: `http://103.113.29.249:7001/api/${request.url}`,
-        });
+        // request = request.clone({
+        //     url: `http://103.113.29.249:7001/api/${request.url}`,
+        // });
 
         // Vijaypura Live
         //  request = request.clone({ url: `http://103.112.213.175:201/api/${request.url}` });
