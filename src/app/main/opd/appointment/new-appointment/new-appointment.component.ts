@@ -809,7 +809,6 @@ export class NewAppointmentComponent implements OnInit {
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
                 this.filteredOptions = resData;
-
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -879,7 +878,7 @@ export class NewAppointmentComponent implements OnInit {
 
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
   getSelectedObj(obj) {

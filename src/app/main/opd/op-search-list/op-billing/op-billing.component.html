@@ -97,7 +97,7 @@
                                                     showPanel="true" (optionsScroll)="onScroll()"
                                                     (optionSelected)='getSelectedObj($event.option.value)' style="width: 500px;">
                                                     <mat-option *ngFor="let option of filteredOptions" [value]="option" style="width: 500px;">
-                                                        {{option.ServiceName}} {{option.Price}}{{DoctorName}}
+                                                        {{option.ServiceName}} | Price {{option.Price}} 
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <mat-hint>
