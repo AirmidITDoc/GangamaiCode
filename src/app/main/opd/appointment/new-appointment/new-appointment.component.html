@@ -75,7 +75,7 @@
 
             </div>
             <div style="padding: 7px;">
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Prefix</mat-label>
@@ -106,8 +106,6 @@
                     Alphabets</mat-error>
                 </mat-form-field>
 
-
-
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Middle Name</mat-label>
                   <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
@@ -120,6 +118,7 @@
                     Enter
                     only Alphabets</mat-error>
                 </mat-form-field>
+               
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Last Name</mat-label>
                   <input name="LastName" formControlName="LastName" placeholder="Last Name"
@@ -134,7 +133,7 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Birth date</mat-label>
                   <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
@@ -184,10 +183,10 @@
 
               </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
 
 
-                 <!-- <mat-form-field appearance="outline" fxFlex>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                   <mat-label>AadharCardNo Number</mat-label>
                   <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCardNo Number" matInput
                     required [(ngModel)]="registerObj.AadharCardNo" maxlength="12" [maxlength]="12" minlength="12"
@@ -196,27 +195,26 @@
                     *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
                     digits AadharCardNo number is
                     required</mat-error>
-                </mat-form-field>   -->
+                </mat-form-field> -->
 
-                <mat-form-field  appearance="outline" fxFlex style="margin-top: 10px">
-                  
-                  <mat-label>AadharCard Number</mat-label>
+                <mat-form-field appearance="outline" fxFlex style="margin-top: 10px">
+
+                  <mat-label>Aadhar Card Number</mat-label>
                   <input matInput #input maxlength="12" placeholder="Enter some input" formControlName="AadharCardNo">
-                  <!-- <mat-error class="error"
-                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                  digits Mobile number is
-                  required</mat-error> -->
+                  <mat-error class="error"
+                  *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
+                  digits Aadhar Card No is
+                  required</mat-error>
+                  <mat-hint align="end" style="margin-top: 10px" hintLabel="Max 12 characters">{{input.value?.length ||
+                    0}}/12</mat-hint>
+                </mat-form-field>
 
-                  <mat-hint align="end" style="margin-top: 10px" hintLabel="Max 12 characters">{{input.value?.length || 0}}/12</mat-hint>
-                 
-                  </mat-form-field>
-
-                  <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>Outline form field</mat-label>
                     <input matInput placeholder="Placeholder">
                     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                     <mat-hint>Hint</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
 
                 <!-- <input type="text" class="form-control" 
                 placeholder="AadharCardNo No." formControlName="AadharCardNo" maxlength="12" minlength="12" style="width: 200px;box-shadow: #33b5e5;border-style: groove;">
@@ -224,13 +222,12 @@
                 class="text-danger"> *AadharCard No. is Required</small> -->
 
                 <mat-form-field appearance="outline" fxFlex>
-                  <mat-label>Pancardno Number</mat-label>
+                  <mat-label>Pan Card No</mat-label>
                   <input name="PanCardNo" formControlName="PanCardNo" placeholder="PanCardNo Number" matInput
                     [(ngModel)]="registerObj.PanCardNo" value="987665868800" maxlength="12">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12
-                    digits PanCardNo number is
-                    required</mat-error>
+                    digits Pan Card No is required</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex>
@@ -278,7 +275,7 @@
 
               </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Address</mat-label>
                   <input name="Address" formControlName="Address" placeholder="Address" matInput
@@ -344,7 +341,7 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Country Name</mat-label>
                   <mat-select formControlName="CountryId">
@@ -364,8 +361,8 @@
                       number is required
                     </mat-error> -->
                 </mat-form-field>
-<!-- 
-                <mat-form-field appearance="outline" fxFlex>
+
+                <!-- <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Mobile Number</mat-label>
                   <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
                     [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number" value="MobileNo.length">
@@ -376,19 +373,15 @@
                 </mat-form-field> -->
 
 
-                <mat-form-field  appearance="outline" fxFlex style="margin-top: 10px">
-                  
+                <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters" style="margin-top: 10px">
                   <mat-label>Mobile Number</mat-label>
                   <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo">
-                  <!-- <mat-error class="error"
-                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                  digits Mobile number is
-                  required</mat-error> -->
-
-                  <mat-hint align="end" style="margin-top: 10px" hintLabel="Max 10 characters">{{input.value?.length || 0}}/10</mat-hint>
-                 
-                  </mat-form-field>
-
+                  <mat-error class="error"
+                    *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                    digits Mobile number is required</mat-error>
+                  <mat-hint align="end" style="margin-top: 10px">{{input.value?.length ||
+                    0}}/10</mat-hint>
+                </mat-form-field>
               </div>
             </div>
             <!-- <div class="footer-navigation" style="text-align: right;">
@@ -409,7 +402,7 @@
             </div>
 
             <div style="padding: 7px;">
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between" style="padding-bottom: 10px;">
 
                 <!-- <mat-form-field appearance="outline" fxFlex=40% style="margin-right: 5px;">
                       <mat-label>Hospital Name</mat-label>
@@ -454,7 +447,7 @@
               </div>
 
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" *ngIf="isCompanySelected">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" *ngIf="isCompanySelected" style="padding-bottom: 10px;">
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Company Name </mat-label>
@@ -481,7 +474,7 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-bottom: 10px;">
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Department</mat-label>
@@ -511,27 +504,22 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
-
+                
                   <mat-label>Ref Doctor Name</mat-label>
-                  <button mat-button><mat-icon style="width: 3px;margin-left:2px;"
-                      (click)="DocSelectdelete()">close</mat-icon></button>
-
+              
                   <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
                     (selectionChange)="onDoctorOneChange($event.value)">
                     <!-- (selectionChange)="onDoctorOneChange($event.value)" -->
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-
                     </mat-option>
-
                     <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
                       {{element.DoctorName}}
                       <!-- <button>delete</button> -->
                     </mat-option>
-
                   </mat-select>
-
+                  <button mat-button><mat-icon style="width: 3px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button>
                 </mat-form-field>
                 <!-- <button mat-raised-button (click)="DocSelectdelete()"> <mat-icon
                     style="width:2px;">close</mat-icon></button> -->
@@ -599,11 +587,6 @@
           </form>
 
         </div>
-
-
-
-
-
       </div>
     </div>
   </div>

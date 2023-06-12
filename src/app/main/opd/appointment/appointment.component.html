@@ -13,6 +13,11 @@
                 Appointment
             </span>
 
+            <!-- <button mat-raised-button (click)="appointment()" fxLayoutAlign="center center"
+            style="margin-left: 700px;">
+            <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
+            </button> -->
+
             <button mat-raised-button (click)="newappointment()" fxLayoutAlign="center center"
                 style="margin-left: 1300px;">
                 <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
@@ -55,17 +60,16 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date"
-                                                (dateChange)="onShow($event)">
+                                            <input matEndDate formControlName="end" placeholder="End date">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Bill No</mat-label>
                                         <input name="PBillNo" formControlName="PBillNo" matInput>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Reg No</mat-label>
