@@ -404,13 +404,13 @@ export class IPBillBrowseListComponent implements OnInit {
     <div style="display:flex;width:300px;margin-left:10px;">
     <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
     </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
+    <div style="display:flex;width:70px;justify-content: right;">
     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
     </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
+    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
         <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
     </div>
-    <div style="display:flex;width:150px;align-text:left;">
+    <div style="display:flex;width:110px;justify-content: right;">
         <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
     </div>
 </div>`;
@@ -473,7 +473,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
   convertToWord(e) {
     // this.numberInWords= converter.toWords(this.mynumber);
-    // return converter.toWords(e);
+    return converter.toWords(e);
   }
 
   // GET DATA FROM DATABASE 
@@ -735,24 +735,30 @@ export class IPBillBrowseListComponent implements OnInit {
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         var objreportPrint = this.reportPrintObjList[i - 1];
         // var strabc = ` <hr >
+
+        let docname;
+        if (objreportPrint.ChargesDoctorName)
+          docname = objreportPrint.ChargesDoctorName;
+        else
+          docname = '';
         var strabc = ` 
 <div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:60px;margin-left:10px;margin-right:10px;">
+    <div style="display:flex;width:80px;margin-left:20px;">
         <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
     </div>
-    <div style="display:flex;width:300px;text-align: left;">
+    <div style="display:flex;width:300px;margin-left:10px;">
         <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
     </div>
-    <div style="display:flex;width:300px;text-align:center;">
-    <div>`+ objreportPrint.ChargesDoctorName + `</div> <!-- <div>BLOOD UREA</div> -->
+    <div style="display:flex;width:300px;margin-left:10px;">
+    <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
     </div>
-    <div style="display:flex;width:100px;align-text:center;">
+    <div style="display:flex;width:70px;justify-content: right;">
     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
     </div>
-    <div style="display:flex;width:100px;align-text:center;">
+    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
         <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
     </div>
-    <div style="display:flex;width:100px;align-text:right;">
+    <div style="display:flex;width:110px;justify-content: right;">
         <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
     </div>
 </div>`;

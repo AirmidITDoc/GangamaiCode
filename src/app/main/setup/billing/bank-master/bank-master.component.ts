@@ -30,7 +30,7 @@ export class BankMasterComponent implements OnInit {
 
     DSBankMasterList = new MatTableDataSource<BankMaster>();
 
-    constructor(public _bankService: BankMasterService) {}
+    constructor(public _bankService: BankMasterService) { }
 
     ngOnInit(): void {
         this.getBankMasterList();
@@ -73,13 +73,11 @@ export class BankMasterComponent implements OnInit {
             if (!this._bankService.myform.get("BankId").value) {
                 var m_data = {
                     bankMasterInsert: {
-                        BankName: this._bankService.myform
-                            .get("BankName")
-                            .value.trim(),
-                        IsDeleted: JSON.parse(
-                            this._bankService.myform.get("IsDeleted").value
-                        ),
-                    },
+                        BankName: this._bankService.myform.get("BankName").value.trim(),
+                        IsDeleted: JSON.parse(this._bankService.myform.get("IsDeleted").value),
+                        AddedBy: 1
+                    
+                    }
                 };
 
                 // ture  - 0

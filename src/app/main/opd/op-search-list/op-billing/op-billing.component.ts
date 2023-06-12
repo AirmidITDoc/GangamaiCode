@@ -42,6 +42,7 @@ export class OPBillingComponent implements OnInit {
   paidamt: number;
   flagSubmit: boolean;
   balanceamt: number;
+  disamt: any;
   msg: any;
   reportPrintObj: BrowseOPDBill;
   subscriptionArr: Subscription[] = [];
@@ -689,7 +690,7 @@ export class OPBillingComponent implements OnInit {
       //   // }
       // }
 
-      let InterimOrFinal=1;
+      let InterimOrFinal = 1;
 
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
@@ -751,7 +752,7 @@ export class OPBillingComponent implements OnInit {
         // console.log("Procced with Credit bill");
         // console.log(this.paidamt, this.balanceamt);
 
-        InterimOrFinal=0;
+        InterimOrFinal = 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
         const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -952,38 +953,51 @@ export class OPBillingComponent implements OnInit {
 
   calculatechargesDiscamt() {
     debugger;
-    let disamt = this.registeredForm.get('discAmount').value;
+    let d = this.registeredForm.get('discAmount').value;
+
+    this.disamt = this.registeredForm.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
-    if (parseInt(disamt) > 0) {
+    if (parseInt(this.disamt) > 0) {
       let tot = 0;
       if (Netamt > 0) {
-        tot = Netamt - parseInt(disamt);
+        tot = Netamt - parseInt(this.disamt);
         this.b_netAmount = tot.toString();
         this.registeredForm.get('netAmount').setValue(tot);
       }
-      else
-        this.TotalnetPaybleAmt = disamt;
+    } else if (d == null) {
+
+      this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
+      this.Consession = true;
     }
+    //   else
+    //     this.TotalnetPaybleAmt = this.disamt;
+    // }
   }
 
 
 
   calculateDiscamtfinal() {
+    let d = this.registeredForm.get('concessionAmt').value;
 
     debugger;
     this.Consession = false;
-    let disamt = this.registeredForm.get('concessionAmt').value;
-    if (parseInt(disamt) > 0) {
+    this.disamt = this.registeredForm.get('concessionAmt').value;
+    if (parseInt(this.disamt) > 0) {
       let tot = 0;
       // this.b_netAmount = tot.toString();
       if (this.TotalnetPaybleAmt > 0) {
-        tot = parseInt(this.TotalnetPaybleAmt) - parseInt(disamt);
+        tot = parseInt(this.TotalnetPaybleAmt) - parseInt(this.disamt);
         this.netPaybleAmt1 = tot;
         this.registeredForm.get('FinalAmt').setValue(tot);
       }
-      else
-        this.netPaybleAmt1 = disamt;
     }
+
+    else if (d == null) {
+
+      this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+      this.Consession = true;
+    }
+
   }
 
   deleteTableRow(element) {
@@ -1060,7 +1074,7 @@ export class OPBillingComponent implements OnInit {
     this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
       debugger;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";

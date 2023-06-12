@@ -222,7 +222,7 @@ debugger;
             if (response) {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                  this.getAdvanceList();
+                  // this.getAdvanceList();
                    console.log(response);
                   this.getPrint(response);
                   this._matDialog.closeAll();
@@ -334,8 +334,8 @@ debugger;
     this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
        this.printTemplate = resData[0].TempDesign;
       // let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','TariffName','CompanyName','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby']; // resData[0].TempKeys;
-      let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
-    'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospAddress','Phone','EmailId','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
+      'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount']; // resData[0].TempKeys;
       for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -348,11 +348,11 @@ debugger;
         // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
        
         this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-        this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
-        this.printTemplate = this.printTemplate.replace('StrDate', this.transform(this.reportPrintObj.Date));
-        this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform(this.reportPrintObj.AdmissionDate));
-        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transformpay(this.reportPrintObj.PaymentDate));
+        // this.printTemplate = this.printTemplate.replace('StrDate', this.transform(this.reportPrintObj.Date));
+        // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform(this.reportPrintObj.AdmissionDate));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transformpay(this.reportPrintObj.PaymentDate));
        
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
 
@@ -383,7 +383,7 @@ transformpay(value: string) {
   getPrint(el) {
     debugger;
     var D_data = {
-      "AdvanceDetailID": el.AdvanceDetailID,
+      "AdvanceDetailID": el,
     }
     console.log(D_data);
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;

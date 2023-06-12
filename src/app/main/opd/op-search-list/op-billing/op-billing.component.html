@@ -87,8 +87,10 @@
                                     style="padding: 0 5px; height: fit-content; background-color: white;">
                                     &nbsp;
                                     <form [formGroup]="registeredForm" style="display: flex;">
+
                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
-                                            <mat-form-field appearance="outline" style="width: 20%;">
+                                            
+                                            <mat-form-field appearance="outline" style="width: 30%;">
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
                                                     (input)="getServiceListCombobox()" required>
@@ -96,9 +98,11 @@
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
                                                     (optionSelected)='getSelectedObj($event.option.value)'>
-                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option" style="color: #039BE5;">
                                                         {{option.ServiceName}} {{option.Price}}{{DoctorName}}
+                                                        <hr>
                                                     </mat-option>
+                                                  
                                                 </mat-autocomplete>
                                                 <mat-hint>
                                                     <!-- <span *ngIf="!noOptionFound">Select Service Name</span> -->

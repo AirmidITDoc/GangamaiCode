@@ -234,14 +234,14 @@ getRecord(el,i) {
   }
   convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
 
   getTemplate() {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=4';
     this._IpReturnadvanceReceiptService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','RefundId','PaymentDate','RegNo','IPDNo','AgeDay','AgeMonth','AgeYear','ReceiptNo','GenderName','PatientName','RefundAmount','Remark','AddedBy'];
+      let keysArray = ['HospitalName','HospAddress','Phone','EmailId','RefundId','PaymentDate','RegNo','IPDNo','AgeDay','AgeMonth','AgeYear','ReceiptNo','GenderName','PatientName','RefundAmount','Remark','AddedBy'];
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -254,7 +254,7 @@ getRecord(el,i) {
         // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
         // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
         // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
         // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
@@ -417,6 +417,7 @@ export class BrowseIpdreturnadvanceReceipt
     PayTMAmount: number;
     AddedBy:string;
     HospitalName:string;
+    
     RefundAmount:number;
     RefundNo:number;
     HospitalAddress:string;
