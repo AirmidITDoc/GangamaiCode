@@ -13,7 +13,7 @@
 
                     <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
                         style="width: 80%;font-size: 16px;">
-                        OPD BILLING
+                        OPD BILLING   || ( {{selectedAdvanceObj.RegNo}} ) {{selectedAdvanceObj.PatientName}} ( {{selectedAdvanceObj.AgeYear}})  Yrs | {{selectedAdvanceObj.Doctorname}}
                     </span>
 
                     <div fxLayout="row" fxLayoutAlign="start center" style="float: right; margin-right: 5px;  ">
@@ -31,50 +31,6 @@
             </div>
 
             <mat-card-content style="width: 100%;margin-right: 5px;">
-                <div fusePerfectScrollbar
-                    style="width:17%;height: 620px !important; float: left; border-radius:4px; background-color: white; border:rgba(0,0,0,0.12) 1px solid;">
-                    <div style="background-color:#039BE5; color: white;">
-                        <h3 style="font-weight: bold;  font-size: 16px;margin: 5px;">Patient Information
-                        </h3>
-                    </div>
-                    <div fxLayout="row" class="content py-10 pl-10 p-12" style=" 
-                 padding: 1em; ">
-                        <div class="nav material2">
-                            <form class="example-form" fxLayoutAlign="space-between">
-                                <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%; color: black;">
-
-
-                                    <span class="label" style="float: left; "> Reg No : </span>
-                                    <span class="data_input1">{{selectedAdvanceObj.RegNo}}
-                                    </span>
-
-
-                                    <span class="label" style="float: left;"> Patient Name : </span>
-                                    <span class="data_input1">{{selectedAdvanceObj.PatientName}}
-                                    </span>
-
-                                    <span class="label" style="float: left;"> Doctor Name : </span>
-                                    <span class="data_input1">{{selectedAdvanceObj.Doctorname}}
-                                    </span>
-
-                                    <span class="label" style="float: left;"> Age(Y) : </span>
-                                    <span class="data_input1">
-                                        {{selectedAdvanceObj.AgeYear}}</span>
-
-
-                                    <span class="label" style="float: left"> Tariff Name : </span>
-                                    <span class="data_input1">
-                                        {{selectedAdvanceObj.TariffId}}</span>
-
-                                    <span class="label" style="float: left"> Class Name : </span>
-                                    <span class="data_input1" style="margin-bottom: 20px;">
-                                        {{selectedAdvanceObj.ClassName}}</span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
                 <div fxLayout="column">
 
                     <div class="content-card"
@@ -93,7 +49,7 @@
                                             <mat-form-field appearance="outline" style="width: 30%;">
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                                    (input)="getServiceListCombobox()" required>
+                                                    (input)="getServiceListCombobox()" required #ft01 (keyup.enter)="keytab($event)">
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
@@ -612,7 +568,3 @@
 
 
         </div>
-
-
-        //
-     

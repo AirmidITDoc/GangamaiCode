@@ -370,6 +370,7 @@ export class NewAppointmentComponent implements OnInit {
     });
   }
   createSearchForm() {
+    debugger
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
@@ -1151,12 +1152,22 @@ export class NewAppointmentComponent implements OnInit {
       this.searchFormGroup.get('RegId').reset();
       this.searchFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
+
+      this.personalFormGroup = this.createPesonalForm();
+      this.personalFormGroup.markAllAsTouched();
+      this.VisitFormGroup = this.createVisitdetailForm();
+      this.VisitFormGroup.markAllAsTouched();
       // this.Patientnewold = 1;
     } else {
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
       this.personalFormGroup.reset();
       this.Patientnewold = 2;
+      
+      this.personalFormGroup = this.createPesonalForm();
+      this.personalFormGroup.markAllAsTouched();
+      this.VisitFormGroup = this.createVisitdetailForm();
+      this.VisitFormGroup.markAllAsTouched();
     }
   }
   getHospitalList1() {
