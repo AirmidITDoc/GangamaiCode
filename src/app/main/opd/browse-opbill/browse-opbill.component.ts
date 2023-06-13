@@ -276,7 +276,7 @@ export class BrowseOPBillComponent implements OnInit {
     this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName','Address','MobileNo']; // resData[0].TempKeys;
 
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -309,7 +309,7 @@ export class BrowseOPBillComponent implements OnInit {
         <div style="display:flex;width:100px;text-align:left;justify-content: right;">
             <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
-        <div style="display:flex;width:60px;margin-left:30px;">
+        <div style="display:flex;width:60px;margin-left:40px;">
             <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
         </div>
         <div style="display:flex;width:80px;justify-content: right;">
@@ -531,8 +531,9 @@ export class BrowseOPDBill {
   VisitDate: Date;
   BalanceAmt: number;
   AddedByName: string;
-
-
+Department:any;
+Address:any;
+MobileNo:any;
   //PayTMAmount:number;
   //NEFTPayAmount:number;
   /**
@@ -577,6 +578,10 @@ export class BrowseOPDBill {
       this.VisitDate = BrowseOPDBill.VisitDate || '';
       this.AddedByName = BrowseOPDBill.AddedByName || '';
       this.TotalAmt = BrowseOPDBill.TotalAmt || '';
+
+      this.Address = BrowseOPDBill.Address || '';
+      this.Department = BrowseOPDBill.Department || '';
+      this.MobileNo=BrowseOPDBill.MobileNo || '';
     }
   }
 

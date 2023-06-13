@@ -37,7 +37,7 @@ import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-con
 import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FeedbackComponent } from "./feedback/feedback.component";
-import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
+
 
 const routes: Routes = [
     {
@@ -52,7 +52,7 @@ const routes: Routes = [
         EditConsultantDoctorComponent,
         EditRefraneDoctorComponent,
         FeedbackComponent,
-        PatientAppointmentComponent,
+        
     ],
     imports: [
         RouterModule.forChild(routes),

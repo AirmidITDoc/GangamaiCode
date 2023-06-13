@@ -116,7 +116,9 @@ export class OPBillingComponent implements OnInit {
   ChargesDoctorname: any;
   finalAmt: any;
 
+  // @ViewChild('Price', {static: false}) inputEl: ElementRef;
 
+  @ViewChild('Price') inputEl: ElementRef;
   @ViewChild(MatAccordion) accordion: MatAccordion;
   @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -159,6 +161,7 @@ export class OPBillingComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   resBillId: Post;
+  renderer: any;
 
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -400,22 +403,23 @@ export class OPBillingComponent implements OnInit {
   keytab(event){
     debugger
    
-    let element = event.srcElement.nextElementSibling; // get the sibling element
+    // let element = event.srcElement.nextElementSibling; // get the sibling element
   
     
-    if(element == null)  // check if its null
-        return;
-    else
-        element.focus();   // focus if not null
+    // if(element == null)  // check if its null
+    //     return;
+    // else
+    //     element.focus();   // focus if not null
 
-        if(event.code =='Enter'){
-        let element = event.srcElement.nextElementSibling;
-        console.log(element);
-        element.nextElementSibling.focus();
+    //     if(event.code =='Enter'){
+    //     let element = event.srcElement.nextElementSibling;
+    //     console.log(element);
+    //     element.nextElementSibling.focus();
 
         
-        console.log(element);
-        }
+    //     console.log(element);
+    //     }
+   this.inputEl.nativeElement.focus();
 }
 
   toggleSidebar(name): void {

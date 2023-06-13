@@ -46,13 +46,13 @@
             </mat-form-field>
 
 
-            <div class="search-button-div" style="padding-right:120px;">
-              <button class="search-btn" mat-raised-button style="border-radius: 16px;" (click)="searchRegList()"
+            <!-- <div class="search-button-div" style="padding-right:120px;">
+              <button class="search-btn" mat-raised-button style="border-radius: 16px;" (click)="searchPatientList()"
                 [disabled]="isRegSearchDisabled">Search
 
                 <mat-icon>search</mat-icon>
               </button>
-            </div>
+            </div> -->
             <!-- </div> -->
 
             <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
@@ -80,7 +80,7 @@
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Prefix</mat-label>
                   <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect
-                    (selectionChange)="onChangeGenderList($event.value)" required>
+                    (selectionChange)="onChangeGenderList($event.value)" required >
                     <mat-option>
                       <ngx-mat-select-search [formControl]="bankFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -362,7 +362,7 @@
                     </mat-error> -->
                 </mat-form-field>
 
-                <!-- <mat-form-field appearance="outline" fxFlex>
+                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Mobile Number</mat-label>
                   <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
                     [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number" value="MobileNo.length">
@@ -370,10 +370,10 @@
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is
                     required</mat-error>
-                </mat-form-field> -->
+                </mat-form-field> 
 
 
-                <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters">
+                <!-- <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters">
                   <mat-label>Mobile Number</mat-label>
                   <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo">
                   <mat-error class="error"
@@ -381,7 +381,7 @@
                     digits Mobile number is required</mat-error>
                   <mat-hint align="end" style="margin-top: 10px">{{input.value?.length ||
                     0}}/10</mat-hint>
-                </mat-form-field>
+                </mat-form-field> -->
 
 
               </div>
@@ -478,7 +478,7 @@
 
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-bottom: 10px;">
 
-                <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
+                <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Department</mat-label>
                   <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
                     (selectionChange)="OnChangeDoctorList($event.value)">
@@ -503,7 +503,60 @@
                       {{element.Doctorname}}
                     </mat-option>
                   </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline" fxFlex
+                [floatLabel]="isLoading || (!isOpen && departmentFilterCtrl.value === null) ? 'never' : 'auto'">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
+                  (selectionChange)="OnChangeDoctorList($event.value)" (openedChange)="openChanged($event)"
+                  [panelClass]="isLoadings || !isOpen ? 'hide-dummy-option' : ''">
+                  <mat-option *ngIf="filteredDepartment === null || !filteredDepartment" disabled>
+                    <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'"
+                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
+                    {{element.departmentName}}
+                  </mat-option>
+                </mat-select>
+                <mat-label *ngIf="isLoadings">
+                  <div class="select-placeholder-container">
+                    <span>Loading...</span>
+                    <mat-spinner class="spinner internal-spinner" diameter="20"></mat-spinner>
+                  </div>
+                </mat-label>
+
+              </mat-form-field>
+
+              <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
+                <mat-label>Doctor Name</mat-label>
+                <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
+                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
+                    {{element.Doctorname}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+
+
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Doctor Name</mat-label>
+                <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
+                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
+                    {{element.Doctorname }} <b>|</b> {{element.DepartmentName }} <b>|</b> {{element.DoctorId }}
+                  </mat-option>
+
+                </mat-select>
+
+              </mat-form-field>
+
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Ref Doctor Name</mat-label>
@@ -517,6 +570,7 @@
                       {{element.DoctorName}}
                       </mat-option>
                   </mat-select>
+                  <!-- <mat-icon matSuffix>cancel</mat-icon> -->
                   <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button>
                 </mat-form-field>
               

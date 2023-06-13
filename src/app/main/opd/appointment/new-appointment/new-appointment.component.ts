@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -102,8 +102,12 @@ export class NewAppointmentComponent implements OnInit {
   OTTableID:any;
   AnestheticsDr:any;
   OTTableName :any;
+  RegAppoint=0;
 
-
+  isLoadings = false;
+  isOpen = false;
+  loadID = 0;
+  savedValue: number = null;
 
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
@@ -179,6 +183,7 @@ export class NewAppointmentComponent implements OnInit {
     private accountService: AuthenticationService,
     public _registerService:RegistrationService,
     // public notification: NotificationServiceService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewAppointmentComponent>,
     public datePipe: DatePipe,
@@ -282,6 +287,59 @@ export class NewAppointmentComponent implements OnInit {
 
       this.FirstName.markAsTouched();
       this.AreaId.markAsTouched();
+
+      debugger;
+
+      if (this.data) {
+       
+        this.registerObj = this.data.registerObj;
+  
+        console.log(this.registerObj);
+  
+        // this.AgeYear = this.data.PatObj.AgeYear;
+        // this.Prefix = this.data.registerObj.PrefixID;
+        // this.PatientName=this.data.PatObj.PatientName;
+        // this.AdmissionDate=this.data.PatObj.AdmissionDate;
+        // this.RelativeName= this.data.PatObj.RelativeName;
+        // this.RelativeAddress= this.data.PatObj.RelativeAddress;
+        // this.RelatvieMobileNo= this.data.PatObj.RelatvieMobileNo;
+       
+        this.setDropdownObjs1();
+      }
+  }
+
+
+  
+  setDropdownObjs1() {
+    debugger;
+
+  
+    const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
+    this.personalFormGroup.get('PrefixID').setValue(toSelect);
+
+    const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
+    this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
+
+    const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
+    this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
+
+    const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
+    this.personalFormGroup.get('AreaId').setValue(toSelectArea);
+
+    const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+    this.personalFormGroup.get('CityId').setValue(toSelectCity);
+
+    // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+
+
+    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+
+    this.onChangeCityList(this.registerObj.CityId);
+
+    this.personalFormGroup.updateValueAndValidity();
+    // this.dialogRef.close();
+
   }
 
   createPesonalForm() {
@@ -401,9 +459,11 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
+    debugger;
     console.log(value);
 
     if (value.PatientTypeId == 2) {
+      this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
       this.VisitFormGroup.get('CompanyId').clearValidators();
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
       this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
@@ -411,10 +471,14 @@ export class NewAppointmentComponent implements OnInit {
       this.isCompanySelected = true;
     } else {
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
-      // this.VisitFormGroup.get('SubCompanyId').setValidators([Validators.required]);
+      // this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[0]);
+      this._opappointmentService.getCompanyCombo();
       this.isCompanySelected = false;
     }
+    
   }
+
+
   // getGendorMasterList() {
   //   this._opappointmentService.getGenderMasterCombo().subscribe(data => {
   //     this.GenderList = data;
@@ -771,11 +835,25 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.initializeFormGroup();
   }
 
+  // OnChangeDoctorList(departmentObj) {
+  //   //debugger;
+  //   console.log(departmentObj);
+  //   this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+  // }
+
+  
   OnChangeDoctorList(departmentObj) {
-    //debugger;
-    console.log(departmentObj);
-    this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+    // debugger;
+    // console.log("departmentObj", departmentObj)
+    this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+      data => {
+        this.DoctorList = data;
+        console.log(this.DoctorList);
+        this.filteredDoctor.next(this.DoctorList.slice());
+      })
   }
+
+
 
   getDoctor1List() {
     // this._opappointmentService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
@@ -851,10 +929,17 @@ export class NewAppointmentComponent implements OnInit {
   
   searchPatientList() {
     debugger;
+    this.dialogRef.close();
+    var m_data = {
+      "RegAppoint":0
+    }
     const dialogRef = this._matDialog.open(SearchPageComponent,
       {
         maxWidth: "90%",
         height: "530px !important ", width: '100%',
+        data : {
+          registerObj : m_data,
+        }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -877,7 +962,18 @@ export class NewAppointmentComponent implements OnInit {
     });
   }
 
+  openChanged(event) {
+    this.isOpen = event;
+    this.isLoading = event;
+    if (event) {
+      this.savedValue = this.departmentFilterCtrl.value;
+      this.options = [];
+      this.departmentFilterCtrl.reset();
+      this._opappointmentService.getDepartmentCombo();
+    }
+  }
 
+  
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';

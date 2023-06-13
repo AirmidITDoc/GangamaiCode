@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { OPSearhlistService } from '../op-searhlist.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
@@ -22,7 +22,7 @@ import { NewAppointmentComponent } from '../../appointment/new-appointment/new-a
 })
 export class SearchPageComponent implements OnInit {
 
- 
+
   step = 0;
   @ViewChild(MatAccordion) accordion: MatAccordion;
   sIsLoading: string = '';
@@ -32,7 +32,7 @@ export class SearchPageComponent implements OnInit {
   registerObj = new RegInsert({});
 
   Range: boolean = false;
-  OP_IP_Type:any;
+  OP_IP_Type: any;
   PatientType: any = 1;
   Fromdate: any;
   Todate: any;
@@ -50,7 +50,7 @@ export class SearchPageComponent implements OnInit {
     'MobileNo',
     // 'Address',
 
-     'action'
+    'action'
   ];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -62,8 +62,9 @@ export class SearchPageComponent implements OnInit {
   constructor(
     public _SearchdialogService: OPSearhlistService,
     public _registrationService: RegistrationService,
-      public _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<SearchPageComponent>,
   ) { }
@@ -75,13 +76,13 @@ export class SearchPageComponent implements OnInit {
     this.sIsLoading = 'loading-data';
 
     var m_data = {
-      
+
       "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value).trim() + '%' || '%',
       "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value).trim() + '%' || '%',
       "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "MobileNo":'%'
+      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "MobileNo": '%'
     }
 
     console.log(m_data);
@@ -99,42 +100,48 @@ export class SearchPageComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
-    
+
+      if (this.data) {
+        debugger;
+        this.registerObj = this.data.registerObj;
   
+        console.log(this.registerObj);
+  
+      }
   }
 
   getOPIPPatientList() {
-    debugger;
+
     this.sIsLoading = 'loading-data';
     this.PatientType = this._SearchdialogService.myFilterform.get("PatientType").value;
-    
+
     console.log(this.PatientType);
 
-    if (this.PatientType !="0") {
+    if (this.PatientType != "0") {
       this.Fromdate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");//'01/01/1900';
       this.Todate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
       this._SearchdialogService.myFilterform.get('start').value.disable;
       this._SearchdialogService.myFilterform.get('end').value.disable;
       // this.Range = true;
-      this.OP_IP_Type=1;
+      this.OP_IP_Type = 1;
     }
     else {
       this.Fromdate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
       this.Todate = this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000");
-    
+
       this._SearchdialogService.myFilterform.get('start').value.enable;
       this._SearchdialogService.myFilterform.get('end').value.enable;
       // this.Range = false;
-      this.OP_IP_Type=0;
+      this.OP_IP_Type = 0;
     }
 
     var m_data = {
       "F_Name": (this._SearchdialogService.myFilterform.get("FirstName").value) + '%' || '%',
       "L_Name": (this._SearchdialogService.myFilterform.get("LastName").value) + '%' || '%',
       "Reg_No": this._SearchdialogService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+      "From_Dt": this.datePipe.transform(this._SearchdialogService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._SearchdialogService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "MobileNo":'%'
+      "MobileNo": '%'
     }
     console.log(m_data);
     setTimeout(() => {
@@ -174,54 +181,57 @@ export class SearchPageComponent implements OnInit {
   }
 
 
-  onEdit(row){
+  onEdit(row) {
     console.log(row);
-      var m_data = {
-        "RegNo":row.RegNo,
-        "RegId":row.RegId,
-        "PrefixID":row.PrefixID,
-        "PrefixName":row.PrefixName,
-        "FirstName":row.FirstName.trim(),
-        "MiddleName":row.MiddleName.trim(),
-        "LastName":row.LastName.trim(),
-        "PatientName":row.PatientName.trim(),
-        "DateofBirth":row.DateofBirth,
-        "MaritalStatusId":row.MaritalStatusId,
-        "AadharCardNo":row.AadharCardNo,
-        "Age":row.Age,
-        "AgeDay":row.AgeDay.trim(),
-        "AgeMonth":row.AgeMonth.trim(),
-        "AgeYear":row.AgeYear.trim(),
-        "Address":row.Address.trim(),
-        "AreaId":row.AreaId,
-        "City":row.City.trim(),
-        "CityId":row.CityId,
-        "StateId":row.StateId,
-        "CountryId":row.CountryId,
-        "PhoneNo":row.PhoneNo.trim(),
-        "MobileNo":row.MobileNo.trim(),
-        "GenderId":row.GenderId,
-        "GenderName":row.GenderName,
-        "ReligionId":row.ReligionId,
-        "IsCharity":0,
-        "PinNo":row.PinNo,
-        "RegDate":row.RegDate,
-        "RegNoWithPrefix":row.RegNoWithPrefix,
-        "RegTime":row.RegTime.trim()
-      }
-    
-      console.log(m_data);
-      this._registrationService.populateFormpersonal(m_data);
-      this.onClose();
-      const dialogRef = this._matDialog.open(NewAppointmentComponent, 
-        {   maxWidth: "95vw",
-            height: '800px',
-            width: '100%',
-             data : {
-            registerObj : m_data,
+    var m_data = {
+      "RegNo": row.RegNo,
+      "RegId": row.RegId,
+      "PrefixID": row.PrefixID,
+      "PrefixName": row.PrefixName,
+      "FirstName": row.FirstName.trim(),
+      "MiddleName": row.MiddleName.trim(),
+      "LastName": row.LastName.trim(),
+      "PatientName": row.PatientName.trim(),
+      "DateofBirth": row.DateofBirth,
+      "MaritalStatusId": row.MaritalStatusId,
+      "AadharCardNo": row.AadharCardNo,
+      "Age": row.Age,
+      "AgeDay": row.AgeDay.trim(),
+      "AgeMonth": row.AgeMonth.trim(),
+      "AgeYear": row.AgeYear.trim(),
+      "Address": row.Address.trim(),
+      "AreaId": row.AreaId,
+      "City": row.City.trim(),
+      "CityId": row.CityId,
+      "StateId": row.StateId,
+      "CountryId": row.CountryId,
+      "PhoneNo": row.PhoneNo.trim(),
+      "MobileNo": row.MobileNo.trim(),
+      "GenderId": row.GenderId,
+      "GenderName": row.GenderName,
+      "ReligionId": row.ReligionId,
+      "IsCharity": 0,
+      "PinNo": row.PinNo,
+      "RegDate": row.RegDate,
+      "RegNoWithPrefix": row.RegNoWithPrefix,
+      "RegTime": row.RegTime.trim()
+    }
+
+    console.log(m_data);
+    this._registrationService.populateFormpersonal(m_data);
+    this.onClose();
+debugger;
+    if (this.data.registerObj.RegAppoint == 0) {
+      const dialogRef = this._matDialog.open(NewAppointmentComponent,
+        {
+          maxWidth: "95vw",
+          height: '800px',
+          width: '100%',
+          data: {
+            registerObj: m_data,
           }
-      });
-      
+        });
+
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
         // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
@@ -233,10 +243,34 @@ export class SearchPageComponent implements OnInit {
         //   this.sIsLoading = '';
         // });
       });
+    } else {
+
+      const dialogRef = this._matDialog.open(EditRegistrationComponent,
+        {
+          maxWidth: "85vw",
+          height: '550px',
+          width: '100%',
+          data: {
+            registerObj: m_data,
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
+        //   this.dataArray = reg;
+        //   this.getregistrationList();
+        //   this.sIsLoading = '';
+        // },
+        // error => {
+        //   this.sIsLoading = '';
+        // });
+      });
+
     }
+  }
 
-
-}
+  }
 
 
 export class OPIPPatientModel {
@@ -260,8 +294,8 @@ export class OPIPPatientModel {
   Bedname: any;
   TariffId: any;
   ClassId: any;
-  OP_IP_ID:any;
-RegNo:number;
+  OP_IP_ID: any;
+  RegNo: number;
   /**
 * Constructor
 *
@@ -287,7 +321,7 @@ RegNo:number;
       this.WardId = OPIPPatientModel.WardId || '';
       this.BedId = OPIPPatientModel.BedId || '';
       this.IsPharClearance = OPIPPatientModel.IsPharClearance || '';
-      this.RegNo=OPIPPatientModel.RegNo || 0;
+      this.RegNo = OPIPPatientModel.RegNo || 0;
       this.Bedname = OPIPPatientModel.Bedname || '';
       this.WardId = OPIPPatientModel.WardId || '';
       this.PatientType = OPIPPatientModel.PatientType || '';
