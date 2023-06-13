@@ -515,6 +515,7 @@ export class BrowseIpdreturnadvanceReceipt
      Age:number;
      AgeYear:number;
      IPDNo:any;
+     NetPayableAmt:any;
     /**
      * Constructor
      *
@@ -560,6 +561,8 @@ export class BrowseIpdreturnadvanceReceipt
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
            this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
            this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
+
+           this.NetPayableAmt=BrowseIpdreturnadvanceReceipt.NetPayableAmt || 0;
         }
 
     }

@@ -70,7 +70,7 @@
                                             </mat-form-field>
 
 
-                                            <mat-form-field appearance="outline" style="width: 7%;">
+                                            <mat-form-field appearance="outline" style="width: 7%;" #Price>
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice"
                                                     (keyup)="calculateTotalAmt()" formControlName="price" required>
