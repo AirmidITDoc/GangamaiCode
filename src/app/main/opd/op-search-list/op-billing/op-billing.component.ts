@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -164,6 +164,7 @@ export class OPBillingComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     private changeDetectorRefs: ChangeDetectorRef,
     public _opappointmentService: OPSearhlistService,
+    public element: ElementRef<HTMLElement>,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
@@ -395,14 +396,26 @@ export class OPBillingComponent implements OnInit {
 
     }
   }
+  
   keytab(event){
     debugger
+   
     let element = event.srcElement.nextElementSibling; // get the sibling element
-
+  
+    
     if(element == null)  // check if its null
         return;
     else
         element.focus();   // focus if not null
+
+        if(event.code =='Enter'){
+        let element = event.srcElement.nextElementSibling;
+        console.log(element);
+        element.nextElementSibling.focus();
+
+        
+        console.log(element);
+        }
 }
 
   toggleSidebar(name): void {
@@ -925,7 +938,7 @@ export class OPBillingComponent implements OnInit {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').enable;
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[3]);
+      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
       this.Consession = false;
       this.finalAmt = this.totalAmtOfNetAmt;
     }
@@ -964,6 +977,7 @@ export class OPBillingComponent implements OnInit {
     } else if (d == null) {
 
       this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
+      
       this.Consession = true;
     }
     //   else
@@ -992,10 +1006,24 @@ export class OPBillingComponent implements OnInit {
     else if (d == null) {
 
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+      // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
+      this.registeredForm.get('ConcessionId').reset;
+      this.registeredForm.get('ConcessionId').reset();
+      this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
+      this.registeredForm.get('ConcessionId').disable;
       this.Consession = true;
+
     }
 
   }
+
+  onKeydown(event) {
+    if (event.key === "Enter") {
+      // console.log(event);
+      
+    }
+  }
+
 
   deleteTableRow(element) {
 
