@@ -680,15 +680,15 @@ padding-bottom: 2px;
 
 .mat-header-row {
     width: 100%;
-    max-width:1095px;
-    min-width:1095px; 
+    max-width:1250px;
+    min-width:1250px; 
     min-height: 20px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width:1095px;
-    min-width:1095px; 
+    max-width:1250px;
+    min-width:1250px; 
     min-height: 30px;            
 }
 // PatientData
@@ -705,33 +705,23 @@ padding-bottom: 2px;
     max-width:120px;
     min-width:120px;
     text-align: right;
-    // justify-content: left;
-    
 }
 
 .mat-column-ServiceName {
     width:250px;
     max-width:250px;
     min-width:250px;
-    // justify-content:left;
     text-align:left;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    //display: inline-block;
 
 }
 .mat-column-Price {
     width:90px;
     max-width:90px;
     min-width:90px;
-    
-    // white-space: nowrap; 
-    // overflow: hidden;
-    // text-overflow: ellipsis; 
-    // overflow: hidden !important;
-    // justify-content:right;
     text-align:center;
 }
 
@@ -739,12 +729,6 @@ padding-bottom: 2px;
     width:60px;
     max-width:60px;
     min-width:60px;
-    
-    // white-space: nowrap; 
-    // overflow: hidden;
-    // text-overflow: ellipsis; 
-    // overflow: hidden !important;
-    // justify-content:center;
     text-align:center;
 }
 
@@ -752,11 +736,6 @@ padding-bottom: 2px;
     width:100px;
     max-width:100px;
     min-width:100px;
-    // white-space: nowrap; 
-    // overflow: hidden;
-    // text-overflow: ellipsis; 
-    // overflow: hidden !important;
-    // justify-content:right;
     text-align:center;
 }
 
@@ -764,15 +743,12 @@ padding-bottom: 2px;
     width:60px;
     max-width:60px;
     min-width:60px;
-
-    // justify-content:center;
     text-align:center;
 }
 .mat-column-DiscAmt {
     width:70px;
     max-width:70px;
     min-width:70px;
-    // justify-content:right;
     text-align:center;
 }
 .mat-column-NetAmount {
