@@ -65,19 +65,20 @@ export class PrescriptionclassmasterComponent implements OnInit {
             ) {
                 var m_data = {
                     prescriptionTemplateMasterInsert: {
-                        TemplateName: this._PrescriptionclassService.myForm
+                        templateName: this._PrescriptionclassService.myForm
                             .get("TemplateName")
                             .value.trim(),
-                        TemplateDesc: this._PrescriptionclassService.myForm
+                        templateDesc: this._PrescriptionclassService.myForm
                             .get("TemplateDesc")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._PrescriptionclassService.myForm.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
                 this._PrescriptionclassService
@@ -89,23 +90,24 @@ export class PrescriptionclassmasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     prescriptionTemplateMasterUpdate: {
-                        TemplateId:
+                        templateId:
                             this._PrescriptionclassService.myForm.get(
                                 "TemplateId"
                             ).value,
-                        TemplateName: this._PrescriptionclassService.myForm
+                        templateName: this._PrescriptionclassService.myForm
                             .get("TemplateName")
                             .value.trim(),
-                        TemplateDesc: this._PrescriptionclassService.myForm
+                        templateDesc: this._PrescriptionclassService.myForm
                             .get("TemplateDesc")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._PrescriptionclassService.myForm.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._PrescriptionclassService

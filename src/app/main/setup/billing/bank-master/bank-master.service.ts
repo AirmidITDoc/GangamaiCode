@@ -40,7 +40,7 @@ export class BankMasterService {
     public getBankMasterList(param) {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_BankNameList_by_Name",
-           param
+            param
         );
     }
 

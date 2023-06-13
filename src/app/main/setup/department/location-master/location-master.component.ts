@@ -63,11 +63,11 @@ export class LocationMasterComponent implements OnInit {
             if (!this._locationService.myform.get("LocationId").value) {
                 var m_data = {
                     locationMasterInsert: {
-                        LocationName: this._locationService.myform
+                        locationName: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._locationService.myform.get("IsDeleted")
                                     .value
@@ -85,18 +85,19 @@ export class LocationMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     locationMasterUpdate: {
-                        LocationId:
+                        locationID:
                             this._locationService.myform.get("LocationId")
                                 .value,
-                        LocationName: this._locationService.myform
+                        locationName: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._locationService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

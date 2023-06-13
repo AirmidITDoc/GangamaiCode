@@ -123,54 +123,54 @@ export class TestmasterComponent implements OnInit {
             if (!this._TestService.myform.get("TestId").value) {
                 var m_data = {
                     insertPathologyTestMaster: {
-                        TestName: this._TestService.myform
+                        testName: this._TestService.myform
                             .get("TestName")
                             .value.trim(),
-                        PrintTestName: this._TestService.myform
+                        printTestName: this._TestService.myform
                             .get("PrintTestName")
                             .value.trim(),
-                        CategoryId:
+                        categoryId:
                             this._TestService.myform.get("CategoryId").value,
-                        IsSubTest: Boolean(
+                        isSubTest: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsSubTest").value
                             )
                         ),
-                        TechniqueName: this._TestService.myform
+                        techniqueName: this._TestService.myform
                             .get("TechniqueName")
                             .value.trim(),
-                        MachineName: this._TestService.myform
+                        machineName: this._TestService.myform
                             .get("MachineName")
                             .value.trim(),
-                        SuggestionNote: this._TestService.myform
+                        suggestionNote: this._TestService.myform
                             .get("SuggestionNote")
                             .value.trim(),
-                        FootNote: this._TestService.myform
+                        footNote: this._TestService.myform
                             .get("FootNote")
                             .value.trim(),
-                        ServiceID:
+                        isDeleted: Boolean(
+                            JSON.parse(
+                                this._TestService.myform.get("IsDeleted").value
+                            )
+                        ),
+                        addedBy: this._TestService.myform.get("AddedBy").value,
+                        serviceId:
                             this._TestService.myform.get("ServiceID").value,
-                        IsTemplateTest:
+                        isTemplateTest:
                             this._TestService.myform.get("IsTemplateTest")
                                 .value,
-                        IsCategoryPrint: Boolean(
+                        isCategoryPrint: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsCategoryPrint")
                                     .value
                             )
                         ),
-                        IsPrintTestName: Boolean(
+                        isPrintTestName: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsPrintTestName")
                                     .value
                             )
                         ),
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._TestService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        AddedBy: this._TestService.myform.get("AddedBy").value,
                     },
                 };
 
@@ -182,56 +182,56 @@ export class TestmasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updatePathologyTestMaster: {
-                        TestId: this._TestService.myform.get("TestId").value,
-                        TestName: this._TestService.myform
+                        testId: this._TestService.myform.get("TestId").value,
+                        testName: this._TestService.myform
                             .get("TestName")
                             .value.trim(),
-                        PrintTestName: this._TestService.myform
+                        printTestName: this._TestService.myform
                             .get("PrintTestName")
                             .value.trim(),
-                        CategoryId:
+                        categoryId:
                             this._TestService.myform.get("CategoryId").value,
-                        IsSubTest: Boolean(
+                        isSubTest: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsSubTest").value
                             )
                         ),
-                        TechniqueName: this._TestService.myform
+                        techniqueName: this._TestService.myform
                             .get("TechniqueName")
                             .value.trim(),
-                        MachineName: this._TestService.myform
+                        machineName: this._TestService.myform
                             .get("MachineName")
                             .value.trim(),
-                        SuggestionNote: this._TestService.myform
+                        suggestionNote: this._TestService.myform
                             .get("SuggestionNote")
                             .value.trim(),
-                        FootNote: this._TestService.myform
+                        footNote: this._TestService.myform
                             .get("FootNote")
                             .value.trim(),
-                        ServiceID:
+                        isDeleted: Boolean(
+                            JSON.parse(
+                                this._TestService.myform.get("IsDeleted").value
+                            )
+                        ),
+                        updatedBy:
+                            this._TestService.myform.get("UpdatedBy").value,
+                        serviceId:
                             this._TestService.myform.get("ServiceID").value,
-                        IsTemplateTest:
+                        isTemplateTest:
                             this._TestService.myform.get("IsTemplateTest")
                                 .value,
-                        IsCategoryPrint: Boolean(
+                        isCategoryPrint: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsCategoryPrint")
                                     .value
                             )
                         ),
-                        IsPrintTestName: Boolean(
+                        isPrintTestName: Boolean(
                             JSON.parse(
                                 this._TestService.myform.get("IsPrintTestName")
                                     .value
                             )
                         ),
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._TestService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        UpdatedBy:
-                            this._TestService.myform.get("UpdatedBy").value,
                     },
                 };
                 this._TestService

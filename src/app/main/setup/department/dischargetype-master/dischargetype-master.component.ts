@@ -115,10 +115,11 @@ export class DischargetypeMasterComponent implements OnInit {
             ) {
                 var m_data = {
                     dischargeTypeMasterInsert: {
-                        DischargeTypeName: this._dischargetypeService.myform
+                        dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._dischargetypeService.myform.get(
                                     "IsDeleted"
@@ -137,20 +138,21 @@ export class DischargetypeMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     dischargeTypeMasterUpdate: {
-                        DischargeTypeId:
+                        dischargeTypeId:
                             this._dischargetypeService.myform.get(
                                 "DischargeTypeId"
                             ).value,
-                        DischargeTypeName: this._dischargetypeService.myform
+                        dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._dischargetypeService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

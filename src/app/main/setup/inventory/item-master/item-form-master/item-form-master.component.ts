@@ -398,117 +398,121 @@ export class ItemFormMasterComponent implements OnInit {
 
                 var m_data = {
                     insertItemMaster: {
-                        ItemID: "0", //|| this._itemService.myform.get("ItemID").value,
-                        ItemShortName:
-                            this._itemService.myform
-                                .get("ItemShortName")
-                                .value.trim() || "%",
-                        ItemName:
+                        // ItemShortName:
+                        //     this._itemService.myform
+                        //         .get("ItemShortName")
+                        //         .value.trim() || "%",
+                        itemName:
                             this._itemService.myform
                                 .get("ItemName")
                                 .value.trim() || "%",
-                        ItemTypeID:
+                        itemTypeId:
                             this._itemService.myform.get("ItemTypeID").value,
-                        ItemCategoryId:
+                        itemCategoryId:
                             this._itemService.myform.get("ItemCategoryId")
                                 .value,
-                        ItemGenericNameId:
+                        itemGenericNameId:
                             this._itemService.myform.get("ItemGenericNameId")
                                 .value,
-                        ItemClassId:
+                        itemClassId:
                             this._itemService.myform.get("ItemClassId").value,
-                        PurchaseUOMId:
+                        purchaseUOMId:
                             this._itemService.myform.get("PurchaseUOMId")
                                 .value || "0",
-                        StockUOMId:
+                        stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
-                        ConversionFactor:
+                        conversionFactor:
                             this._itemService.myform
                                 .get("ConversionFactor")
                                 .value.trim() || "%",
-                        CurrencyId:
+                        currencyId:
                             this._itemService.myform.get("CurrencyId").value ||
                             "0",
-                        TaxPer:
+                        taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsDeleted").value
                             )
                         ),
-                        // "Addedby": this.accountService.currentUserValue.user.id || "0",
-                        IsBatchRequired: Boolean(
+                        Addedby: 1,
+                        isBatchRequired: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsBatchRequired")
                                     .value
                             )
                         ),
-                        MinQty:
+                        minQty:
                             this._itemService.myform.get("MinQty").value || "0",
-                        MaxQty:
+                        maxQty:
                             this._itemService.myform.get("MaxQty").value || "0",
-                        ReOrder:
+                        reorder:
                             this._itemService.myform.get("ReOrder").value ||
                             "0",
-                        IsNursingFlag: Boolean(
+                        isNursingFlag: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNursingFlag")
                                     .value
                             )
                         ),
-                        HSNcode:
+                        hsNcode:
                             this._itemService.myform
                                 .get("HSNcode")
                                 .value.trim() || "%",
-                        CGST: this._itemService.myform.get("CGST").value || "0",
-                        SGST: this._itemService.myform.get("SGST").value || "0",
-                        IGST: this._itemService.myform.get("IGST").value || "0",
-                        IsNarcotic: Boolean(
+                        cgst: this._itemService.myform.get("CGST").value || "0",
+                        sgst: this._itemService.myform.get("SGST").value || "0",
+                        igst: this._itemService.myform.get("IGST").value || "0",
+                        isNarcotic: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNarcotic").value
                             )
                         ),
-                        ManufId:
+                        manufId:
                             this._itemService.myform.get("ManufId").value ||
                             "0",
-                        ProdLocation:
+                        prodLocation:
                             this._itemService.myform
                                 .get("ProdLocation")
                                 .value.trim() || "%",
-                        IsH1Drug: Boolean(
+                        isH1Drug: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsH1Drug").value
                             )
                         ),
-                        IsScheduleH: Boolean(
+                        isScheduleH: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsScheduleH")
                                     .value
                             )
                         ),
-                        IsHighRisk: Boolean(
+                        isHighRisk: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsHighRisk").value
                             )
                         ),
-                        IsScheduleX: Boolean(
+                        isScheduleX: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsScheduleX")
                                     .value
                             )
                         ),
-                        IsLASA: Boolean(
+                        isLASA: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsLASA").value
                             )
                         ),
-                        IsEmgerency: Boolean(
+                        isEmgerency: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsEmgerency")
                                     .value
                             )
                         ),
+                        itemID: "0", //|| this._itemService.myform.get("ItemID").value,
+                        drugType: 0,
+                        drugTypeName: "0",
+                        itemCompnayId: 0,
+                        isCreatedBy: 1,
                     },
                     insertAssignItemToStore: data2,
                 };
@@ -528,112 +532,113 @@ export class ItemFormMasterComponent implements OnInit {
 
                 var m_dataUpdate = {
                     updateItemMaster: {
-                        ItemID: this._itemService.myform.get("ItemID").value,
-                        ItemShortName:
-                            this._itemService.myform
-                                .get("ItemShortName")
-                                .value.trim() || "%",
-                        ItemName:
+                        itemID: this._itemService.myform.get("ItemID").value,
+
+                        itemName:
                             this._itemService.myform
                                 .get("ItemName")
                                 .value.trim() || "%",
-                        ItemTypeID:
+                        itemShortName:
+                            this._itemService.myform
+                                .get("ItemShortName")
+                                .value.trim() || "%",
+                        itemTypeID:
                             this._itemService.myform.get("ItemTypeID").value,
-                        ItemCategoryId:
+                        itemCategoryId:
                             this._itemService.myform.get("ItemCategoryId")
                                 .value,
-                        ItemGenericNameId:
+                        itemGenericNameId:
                             this._itemService.myform.get("ItemGenericNameId")
                                 .value,
-                        ItemClassId:
+                        itemClassId:
                             this._itemService.myform.get("ItemClassId").value,
-                        PurchaseUOMId:
+                        purchaseUOMId:
                             this._itemService.myform.get("PurchaseUOMId")
                                 .value || "0",
-                        StockUOMId:
+                        stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
-                        ConversionFactor:
+                        conversionFactor:
                             this._itemService.myform
                                 .get("ConversionFactor")
                                 .value.trim() || "0",
-                        CurrencyId:
+                        currencyId:
                             this._itemService.myform.get("CurrencyId").value ||
                             "0",
-                        TaxPer:
+                        taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsDeleted").value
                             )
                         ),
-                        // "UpdatedBy": this.accountService.currentUserValue.user.id,
-                        IsBatchRequired: Boolean(
+                        UpdatedBy: 1, // this.accountService.currentUserValue.user.id,
+                        isBatchRequired: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsBatchRequired")
                                     .value
                             )
                         ),
-                        MinQty:
+                        minQty:
                             this._itemService.myform.get("MinQty").value || "0",
-                        MaxQty:
+                        maxQty:
                             this._itemService.myform.get("MaxQty").value || "0",
-                        ReOrder:
+                        reorder:
                             this._itemService.myform.get("ReOrder").value ||
                             "0",
-                        IsNursingFlag: Boolean(
+                        isNursingFlag: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNursingFlag")
                                     .value
                             )
                         ),
-                        HSNcode:
+                        hsNcode:
                             this._itemService.myform
                                 .get("HSNcode")
                                 .value.trim() || "%",
-                        CGST: this._itemService.myform.get("CGST").value || "0",
-                        SGST: this._itemService.myform.get("SGST").value || "0",
-                        IGST: this._itemService.myform.get("IGST").value || "0",
-                        IsNarcotic: Boolean(
+                        cgst: this._itemService.myform.get("CGST").value || "0",
+                        sgst: this._itemService.myform.get("SGST").value || "0",
+                        igst: this._itemService.myform.get("IGST").value || "0",
+                        isNarcotic: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNarcotic").value
                             )
                         ),
-                        ManufId:
+                        manufId:
                             this._itemService.myform.get("ManufId").value ||
                             "0",
-                        ProdLocation:
+                        prodLocation:
                             this._itemService.myform
                                 .get("ProdLocation")
                                 .value.trim() || "%",
-                        IsH1Drug: Boolean(
+                        isH1Drug: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsH1Drug").value
                             )
                         ),
-                        IsScheduleH: Boolean(
+                        isScheduleH: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsScheduleH")
                                     .value
                             )
                         ),
-                        IsHighRisk: Boolean(
+                        isHighRisk: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsHighRisk").value
                             )
                         ),
-                        IsScheduleX: Boolean(
+                        isScheduleX: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsScheduleX")
                                     .value
                             )
                         ),
-                        IsLASA: Boolean(
+                        isLASA: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsLASA").value
                             )
                         ),
-                        IsEmgerency: Boolean(
+                        isEmgerency: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsEmgerency")
                                     .value

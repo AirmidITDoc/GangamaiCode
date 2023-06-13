@@ -14,7 +14,6 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-
 export class ServiceMasterComponent implements OnInit {
     submitted = false;
 
@@ -88,52 +87,53 @@ export class ServiceMasterComponent implements OnInit {
             if (!this._serviceMasterService.myform.get("ServiceId").value) {
                 var m_data = {
                     serviceMasterInsert: {
-                        ServiceShortDesc:
+                        groupId: 1,
+                        serviceShortDesc:
                             this._serviceMasterService.myform.get(
                                 "ServiceShortDesc"
                             ).value,
-                        ServiceName: this._serviceMasterService.myform
+                        serviceName: this._serviceMasterService.myform
                             .get("ServiceName")
                             .value.trim(),
-                        Price:
+                        price:
                             this._serviceMasterService.myform.get("Price")
                                 .value || "0",
-                        IsEditable: Boolean(
+                        isEditable: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "IsEditable"
                                 ).value
                             )
                         ),
-                        CreditedtoDoctor: Boolean(
+                        creditedtoDoctor: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "CreditedtoDoctor"
                                 ).value
                             )
                         ),
-                        IsPathology:
+                        isPathology:
                             this._serviceMasterService.myform.get("IsPathology")
                                 .value,
-                        IsRadiology:
+                        isRadiology:
                             this._serviceMasterService.myform.get("IsRadiology")
                                 .value,
-                        IsDeleted:
+                        isDeleted:
                             this._serviceMasterService.myform.get("IsDeleted")
                                 .value,
-                        PrintOrder:
+                        printOrder:
                             this._serviceMasterService.myform.get("PrintOrder")
                                 .value || "0",
-                        IsPackage:
+                        isPackage:
                             this._serviceMasterService.myform.get("IsPackage")
                                 .value,
-                        SubGroupId:
+                        subgroupId:
                             this._serviceMasterService.myform.get("SubGroupId")
                                 .value,
-                        DoctorId:
+                        doctorId:
                             this._serviceMasterService.myform.get("DoctorId]")
                                 .value,
-                        IsEmergency:
+                        isEmergency:
                             Boolean(
                                 JSON.parse(
                                     this._serviceMasterService.myform.get(
@@ -141,13 +141,13 @@ export class ServiceMasterComponent implements OnInit {
                                     ).value
                                 )
                             ) || "0",
-                        EmgAmt:
+                        emgAmt:
                             this._serviceMasterService.myform.get("EmgAmt")
                                 .value || "0",
-                        EmgPer:
+                        emgPer:
                             this._serviceMasterService.myform.get("EmgPer")
                                 .value || "0",
-                        IsDocEditable:
+                        isDocEditable:
                             Boolean(
                                 JSON.parse(
                                     this._serviceMasterService.myform.get(
@@ -155,6 +155,9 @@ export class ServiceMasterComponent implements OnInit {
                                     ).value
                                 )
                             ) || "0",
+                        serviceId:
+                            this._serviceMasterService.myform.get("ServiceId")
+                                .value,
                     },
                 };
 
@@ -167,59 +170,58 @@ export class ServiceMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     serviceMasterUpdate: {
-                        ServiceId:
-                            this._serviceMasterService.myform.get("ServiceId")
-                                .value,
-                        ServiceShortDesc:
+                        groupId: 1,
+
+                        serviceShortDesc:
                             this._serviceMasterService.myform.get(
                                 "ServiceShortDesc"
                             ).value || "%",
-                        ServiceName: this._serviceMasterService.myform
+                        serviceName: this._serviceMasterService.myform
                             .get("ServiceName")
                             .value.trim(),
-                        Price:
+                        price:
                             this._serviceMasterService.myform.get("Price")
                                 .value || "0",
-                        IsEditable: Boolean(
+                        isEditable: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "IsEditable"
                                 ).value
                             )
                         ),
-                        CreditedtoDoctor: Boolean(
+                        creditedtoDoctor: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "CreditedtoDoctor"
                                 ).value
                             )
                         ),
-                        IsPathology:
+                        isPathology:
                             this._serviceMasterService.myform.get("IsPathology")
                                 .value,
-                        IsRadiology:
+                        isRadiology:
                             this._serviceMasterService.myform.get("IsRadiology")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
-                        PrintOrder:
+                        printOrder:
                             this._serviceMasterService.myform.get("PrintOrder")
                                 .value || "0",
-                        IsPackage:
+                        isPackage:
                             this._serviceMasterService.myform.get("IsPackage")
                                 .value,
-                        SubGroupId:
+                        subgroupId:
                             this._serviceMasterService.myform.get("SubGroupId")
                                 .value,
-                        DoctorId:
+                        doctorId:
                             this._serviceMasterService.myform.get("DoctorId]")
                                 .value,
-                        IsEmergency:
+                        isEmergency:
                             Boolean(
                                 JSON.parse(
                                     this._serviceMasterService.myform.get(
@@ -227,19 +229,22 @@ export class ServiceMasterComponent implements OnInit {
                                     ).value
                                 )
                             ) || "0",
-                        EmgAmt:
+                        emgAmt:
                             this._serviceMasterService.myform.get("EmgAmt")
                                 .value || "0",
-                        EmgPer:
+                        emgPer:
                             this._serviceMasterService.myform.get("EmgPer")
                                 .value || "0",
-                        IsDocEditable: Boolean(
+                        isDocEditable: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "IsDocEditable"
                                 ).value
                             )
                         ),
+                        serviceId:
+                            this._serviceMasterService.myform.get("ServiceId")
+                                .value,
                     },
                 };
                 this._serviceMasterService

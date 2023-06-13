@@ -105,8 +105,8 @@ export class SupplierFormMasterComponent implements OnInit {
                 for (var val of this._supplierService.myform.get("StoreId")
                     .value) {
                     var data = {
-                        StoreId: val,
-                        SupplierId: 0,
+                        storeId: val,
+                        supplierId: 0,
                     };
                     data2.push(data);
                 }
@@ -114,73 +114,73 @@ export class SupplierFormMasterComponent implements OnInit {
 
                 var m_data = {
                     insertSupplierMaster: {
-                        SupplierId: "0", //|| this._supplierService.myform.get("SupplierId").value,
-                        SupplierName: this._supplierService.myform
+                        supplierId: "0", //|| this._supplierService.myform.get("SupplierId").value,
+                        supplierName: this._supplierService.myform
                             .get("SupplierName")
                             .value.trim(),
-                        ContactPerson:
+                        contactPerson:
                             this._supplierService.myform
                                 .get("ContactPerson")
                                 .value.trim() || "%",
-                        Address:
+                        address:
                             this._supplierService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        CityId: this._supplierService.myform.get("CityId")
+                        cityId: this._supplierService.myform.get("CityId")
                             .value,
-                        StateId:
+                        stateId:
                             this._supplierService.myform.get("StateId").value,
-                        CountryId:
+                        countryId:
                             this._supplierService.myform.get("CountryId").value,
-                        CreditPeriod:
+                        creditPeriod:
                             this._supplierService.myform
                                 .get("CreditPeriod")
                                 .value.trim() || "0",
-                        Mobile:
+                        mobile:
                             this._supplierService.myform
                                 .get("Mobile")
                                 .value.trim() || "0",
-                        Phone:
+                        phone:
                             this._supplierService.myform
                                 .get("Phone")
                                 .value.trim() || "0",
-                        Fax:
+                        fax:
                             this._supplierService.myform
                                 .get("Fax")
                                 .value.trim() || "0",
-                        Email:
+                        email:
                             this._supplierService.myform
                                 .get("Email")
                                 .value.trim() || "%",
-                        ModeOfPayment:
+                        modeOfPayment:
                             this._supplierService.myform.get("ModeOfPayment")
                                 .value || "0",
-                        TermOfPayment:
+                        termOfPayment:
                             this._supplierService.myform.get("TermOfPayment")
                                 .value || "0",
-                        TaxNature:
+                        taxNature:
                             this._supplierService.myform.get("TaxNature")
                                 .value || "0",
-                        CurrencyId:
+                        currencyId:
                             this._supplierService.myform.get("CurrencyId")
                                 .value || "0",
-                        Octroi:
+                        octroi:
                             this._supplierService.myform.get("Octroi").value ||
                             "0",
-                        Freight:
+                        freight:
                             this._supplierService.myform.get("Freight").value ||
                             "0",
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._supplierService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-
-                        GSTNo: this._supplierService.myform
+                        addedBy: 1,
+                        gstNo: this._supplierService.myform
                             .get("GSTNo")
                             .value.trim(),
-                        PanNo: this._supplierService.myform
+                        panNo: this._supplierService.myform
                             .get("PanNo")
                             .value.trim(),
                     },
@@ -198,8 +198,8 @@ export class SupplierFormMasterComponent implements OnInit {
                 for (var val of this._supplierService.myform.get("StoreId")
                     .value) {
                     var data4 = {
-                        StoreId: val,
-                        SupplierId:
+                        storeId: val,
+                        supplierId:
                             this._supplierService.myform.get("SupplierId")
                                 .value,
                     };
@@ -208,79 +208,80 @@ export class SupplierFormMasterComponent implements OnInit {
                 console.log(data3);
                 var m_dataUpdate = {
                     updateSupplierMaster: {
-                        SupplierId:
+                        supplierId:
                             this._supplierService.myform.get("SupplierId")
                                 .value,
-                        SupplierName: this._supplierService.myform
+                        supplierName: this._supplierService.myform
                             .get("SupplierName")
                             .value.trim(),
-                        ContactPerson:
+                        contactPerson:
                             this._supplierService.myform
                                 .get("ContactPerson")
                                 .value.trim() || "%",
-                        Address:
+                        address:
                             this._supplierService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        CityId: this._supplierService.myform.get("CityId")
+                        cityId: this._supplierService.myform.get("CityId")
                             .value,
-                        StateId:
+                        stateId:
                             this._supplierService.myform.get("StateId").value,
-                        CountryId:
+                        countryId:
                             this._supplierService.myform.get("CountryId").value,
-                        CreditPeriod:
+                        creditPeriod:
                             this._supplierService.myform
                                 .get("CreditPeriod")
                                 .value.trim() || "0",
-                        Mobile:
+                        mobile:
                             this._supplierService.myform
                                 .get("Mobile")
                                 .value.trim() || "0",
-                        Phone:
+                        phone:
                             this._supplierService.myform
                                 .get("Phone")
                                 .value.trim() || "0",
-                        Fax:
+                        fax:
                             this._supplierService.myform
                                 .get("Fax")
                                 .value.trim() || "0",
-                        Email:
+                        email:
                             this._supplierService.myform
                                 .get("Email")
                                 .value.trim() || "%",
-                        ModeOfPayment:
+                        modeOfPayment:
                             this._supplierService.myform.get("ModeOfPayment")
                                 .value || "0",
-                        TermOfPayment:
+                        termOfPayment:
                             this._supplierService.myform.get("TermOfPayment")
                                 .value || "0",
-                        TaxNature:
+                        taxNature:
                             this._supplierService.myform.get("TaxNature")
                                 .value || "0",
-                        CurrencyId:
+                        currencyId:
                             this._supplierService.myform.get("CurrencyId")
                                 .value || "0",
-                        Octroi:
+                        octroi:
                             this._supplierService.myform.get("Octroi").value ||
                             "0",
-                        Freight:
+                        freight:
                             this._supplierService.myform.get("Freight").value ||
                             "0",
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._supplierService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        GSTNo: this._supplierService.myform
+                        updatedBy: 1,
+                        gstNo: this._supplierService.myform
                             .get("GSTNo")
                             .value.trim(),
-                        PanNo: this._supplierService.myform
+                        panNo: this._supplierService.myform
                             .get("PanNo")
                             .value.trim(),
                     },
                     deleteAssignSupplierToStore: {
-                        SupplierId:
+                        supplierId:
                             this._supplierService.myform.get("SupplierId")
                                 .value,
                     },

@@ -110,11 +110,13 @@ export class TalukaMasterComponent implements OnInit {
             if (!this._TalukaService.myForm.get("TalukaId").value) {
                 var m_data = {
                     talukaMasterInsert: {
-                        TalukaName: this._TalukaService.myForm
+                        talukaName: this._TalukaService.myForm
                             .get("TalukaName")
                             .value.trim(),
-                        CityId: this._TalukaService.myForm.get("CityId").value,
-                        IsDeleted: Boolean(
+                        cityId: this._TalukaService.myForm.get("CityId").value,
+
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._TalukaService.myForm.get("IsDeleted")
                                     .value
@@ -131,18 +133,19 @@ export class TalukaMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     talukaMasterUpdate: {
-                        TalukaId:
+                        talukaId:
                             this._TalukaService.myForm.get("TalukaId").value,
-                        TalukaName: this._TalukaService.myForm
+                        talukaName: this._TalukaService.myForm
                             .get("TalukaName")
                             .value.trim(),
-                        CityId: this._TalukaService.myForm.get("CityId").value,
-                        IsDeleted: Boolean(
+                        cityId: this._TalukaService.myForm.get("CityId").value,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._TalukaService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._TalukaService

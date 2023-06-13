@@ -60,10 +60,11 @@ export class CountryMasterComponent implements OnInit {
             if (!this._CountryService.myform.get("CountryId").value) {
                 var m_data = {
                     countryMasterInsert: {
-                        CountryName: this._CountryService.myform
+                        countryName_1: this._CountryService.myform
                             .get("CountryName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted_2: Boolean(
                             JSON.parse(
                                 this._CountryService.myform.get("IsDeleted")
                                     .value
@@ -81,17 +82,18 @@ export class CountryMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     countryMasterUpdate: {
-                        CountryId:
+                        countryId:
                             this._CountryService.myform.get("CountryId").value,
-                        CountryName: this._CountryService.myform
+                        countryName: this._CountryService.myform
                             .get("CountryName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._CountryService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

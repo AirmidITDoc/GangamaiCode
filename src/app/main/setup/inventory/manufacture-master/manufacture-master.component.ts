@@ -63,18 +63,19 @@ export class ManufactureMasterComponent implements OnInit {
             if (!this._manufactureService.myform.get("ManufId").value) {
                 var m_data = {
                     insertManufactureMaster: {
-                        ManufName: this._manufactureService.myform
+                        manufName: this._manufactureService.myform
                             .get("ManufName")
                             .value.trim(),
-                        ManufShortName: this._manufactureService.myform
+                        manufShortName: this._manufactureService.myform
                             .get("ManufShortName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._manufactureService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -87,22 +88,23 @@ export class ManufactureMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateManufactureMaster: {
-                        ManufId:
+                        manufId:
                             this._manufactureService.myform.get(
                                 "ManufIdManufId"
                             ).value,
-                        ManufName: this._manufactureService.myform
+                        manufName: this._manufactureService.myform
                             .get("ManufName")
                             .value.trim(),
-                        ManufShortName: this._manufactureService.myform
+                        manufShortName: this._manufactureService.myform
                             .get("ManufShortName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._manufactureService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 console.log(m_dataUpdate);

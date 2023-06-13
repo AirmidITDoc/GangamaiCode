@@ -112,12 +112,13 @@ export class VillageMasterComponent implements OnInit {
             if (!this._VillageService.myForm.get("VillageId").value) {
                 var m_data = {
                     villageMasterInsert: {
-                        VillageName: this._VillageService.myForm
+                        villageName: this._VillageService.myForm
                             .get("VillageName")
                             .value.trim(),
-                        TalukaId:
+                        talukaId:
                             this._VillageService.myForm.get("TalukaId").value,
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._VillageService.myForm.get("IsDeleted")
                                     .value
@@ -134,19 +135,20 @@ export class VillageMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     villageMasterUpdate: {
-                        VillageId:
+                        villageID:
                             this._VillageService.myForm.get("VillageId").value,
-                        VillageName: this._VillageService.myForm
+                        villageName: this._VillageService.myForm
                             .get("VillageName")
                             .value.trim(),
-                        TalukaId:
+                        talukaId:
                             this._VillageService.myForm.get("TalukaId").value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._VillageService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._VillageService

@@ -66,10 +66,11 @@ export class CompanyTypeMasterComponent implements OnInit {
             if (!this._companytypeService.myform.get("CompanyTypeId").value) {
                 var m_data = {
                     companyTypeMasterInsert: {
-                        TypeName: this._companytypeService.myform
+                        typeName: this._companytypeService.myform
                             .get("TypeName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 10,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._companytypeService.myform.get("IsDeleted")
                                     .value
@@ -87,18 +88,19 @@ export class CompanyTypeMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     companyTypeMasterUpdate: {
-                        CompanyTypeId:
+                        companyTypeId:
                             this._companytypeService.myform.get("CompanyTypeId")
                                 .value,
-                        TypeName:
+                        typeName:
                             this._companytypeService.myform.get("TypeName")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._companytypeService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 20,
                     },
                 };
 

@@ -85,7 +85,8 @@ export class ItemCategoryMasterComponent implements OnInit {
         this._itemcategoryService
             .getitemcategoryMasterList()
             .subscribe((Menu) => {
-                this.DSItemCategoryMasterList.data = Menu as ItemCategoryMaster[];
+                this.DSItemCategoryMasterList.data =
+                    Menu as ItemCategoryMaster[];
                 this.DSItemCategoryMasterList.sort = this.sort;
                 this.DSItemCategoryMasterList.paginator = this.paginator;
             });
@@ -110,19 +111,21 @@ export class ItemCategoryMasterComponent implements OnInit {
             if (!this._itemcategoryService.myform.get("ItemCategoryId").value) {
                 var m_data = {
                     insertItemCategoryMaster: {
-                        ItemCategoryName: this._itemcategoryService.myform
+                        itemCategoryName: this._itemcategoryService.myform
                             .get("ItemCategoryName")
                             .value.trim(),
-                        ItemTypeID:
-                            this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
-                        IsDeleted: Boolean(
+
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemcategoryService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
+                        itemTypeId:
+                            this._itemcategoryService.myform.get("ItemTypeID")
+                                .value,
                     },
                 };
 
@@ -135,23 +138,24 @@ export class ItemCategoryMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateItemCategoryMaster: {
-                        ItemCategoryId:
+                        itemCategoryId:
                             this._itemcategoryService.myform.get(
                                 "ItemCategoryId"
                             ).value,
-                        ItemCategoryName: this._itemcategoryService.myform
+                        itemCategoryName: this._itemcategoryService.myform
                             .get("ItemCategoryName")
                             .value.trim(),
-                        ItemTypeID:
-                            this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemcategoryService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
+                        itemTypeId:
+                            this._itemcategoryService.myform.get("ItemTypeID")
+                                .value,
                     },
                 };
 

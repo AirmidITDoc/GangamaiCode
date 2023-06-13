@@ -109,12 +109,13 @@ export class BedMasterComponent implements OnInit {
             if (!this._bedService.myform.get("BedId").value) {
                 var m_data = {
                     bedMasterInsert: {
-                        BedName: this._bedService.myform
+                        bedName: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        RoomId: this._bedService.myform.get("RoomId").value,
-                        IsAvailable: 1,
-                        IsDeleted: 0,
+                        roomId: this._bedService.myform.get("RoomId").value,
+                        isAvailable: 1,
+                        addedBy: 1,
+                        isDeleted: 0,
                     },
                 };
 
@@ -125,21 +126,22 @@ export class BedMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     bedMasterUpdate: {
-                        BedId: this._bedService.myform.get("BedId").value,
-                        BedName: this._bedService.myform
+                        bedID: this._bedService.myform.get("BedId").value,
+                        bedName: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        RoomId: this._bedService.myform.get("RoomId").value,
-                        IsAvailable: Boolean(
+                        roomId: this._bedService.myform.get("RoomId").value,
+                        isAvailable: Boolean(
                             JSON.parse(
                                 this._bedService.myform.get("IsAvailable").value
                             )
                         ),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._bedService.myform.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

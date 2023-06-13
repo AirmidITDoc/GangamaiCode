@@ -40,7 +40,10 @@ export class AreaMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _AreaService: AreaMasterService, private accountService: AuthenticationService,) {}
+    constructor(
+        public _AreaService: AreaMasterService,
+        private accountService: AuthenticationService
+    ) {}
 
     ngOnInit(): void {
         this.getAreaMasterList();
@@ -104,17 +107,17 @@ export class AreaMasterComponent implements OnInit {
         this._AreaService.myform.reset({ IsDeleted: "false" });
         this._AreaService.initializeFormGroup();
     }
-  
+
     onSubmit() {
         if (this._AreaService.myform.valid) {
             if (!this._AreaService.myform.get("AreaId").value) {
                 var m_data = {
                     areaMasterInsert: {
-                        AreaName: this._AreaService.myform
+                        areaName: this._AreaService.myform
                             .get("AreaName")
                             .value.trim(),
-                            AddedBy:this.accountService.currentUserValue.user.id,
-                            IsDeleted: Boolean(
+                        addedBy: this.accountService.currentUserValue.user.id,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._AreaService.myform.get("IsDeleted").value
                             )
@@ -129,17 +132,17 @@ export class AreaMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     areaMasterUpdate: {
-                        AreaId: this._AreaService.myform.get("AreaId").value,
-                        AreaName: this._AreaService.myform
+                        areaId: this._AreaService.myform.get("AreaId").value,
+                        areaName: this._AreaService.myform
                             .get("AreaName")
                             .value.trim(),
-                        CityId:
-                            this._AreaService.myform.get("CityId").value,
-                        IsDeleted: Boolean(
+                        // CityId: this._AreaService.myform.get("CityId").value,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._AreaService.myform.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

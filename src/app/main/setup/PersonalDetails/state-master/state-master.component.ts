@@ -109,12 +109,14 @@ export class StateMasterComponent implements OnInit {
             if (!this._stateService.myform.get("StateId").value) {
                 var m_data = {
                     stateMasterInsert: {
-                        StateName: this._stateService.myform
+                        stateName: this._stateService.myform
                             .get("StateName")
                             .value.trim(),
-                        CountryId:
+                        countryId:
                             this._stateService.myform.get("CountryId").value,
-                        IsDeleted: Boolean(
+
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._stateService.myform.get("IsDeleted").value
                             )
@@ -131,17 +133,18 @@ export class StateMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     stateMasterUpdate: {
-                        StateId: this._stateService.myform.get("StateId").value,
-                        StateName: this._stateService.myform
+                        stateId: this._stateService.myform.get("StateId").value,
+                        stateName: this._stateService.myform
                             .get("StateName")
                             .value.trim(),
-                        CountryId:
+                        countryId:
                             this._stateService.myform.get("CountryId").value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._stateService.myform.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

@@ -69,10 +69,10 @@ export class BillingClassMasterComponent implements OnInit {
             if (!this._billingClassService.myform.get("ClassId").value) {
                 var m_data = {
                     classMasterInsert: {
-                        ClassName: this._billingClassService.myform
+                        className: this._billingClassService.myform
                             .get("ClassName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._billingClassService.myform.get(
                                     "IsDeleted"
@@ -91,13 +91,13 @@ export class BillingClassMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     classMasterUpdate: {
-                        ClassId:
+                        classId:
                             this._billingClassService.myform.get("ClassId")
                                 .value,
-                        ClassName:
+                        className:
                             this._billingClassService.myform.get("ClassName")
                                 .value,
-                        IsDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._billingClassService.myform.get(
                                     "IsDeleted"

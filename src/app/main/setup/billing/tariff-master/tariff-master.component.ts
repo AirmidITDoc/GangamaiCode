@@ -63,10 +63,10 @@ export class TariffMasterComponent implements OnInit {
             if (!this._tariffService.myform.get("TariffId").value) {
                 var m_data = {
                     tariffMasterInsert: {
-                        TariffName: this._tariffService.myform
+                        tariffName: this._tariffService.myform
                             .get("TariffName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._tariffService.myform.get("IsDeleted")
                                     .value
@@ -84,11 +84,11 @@ export class TariffMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     tariffMasterUpdate: {
-                        TariffId:
+                        tariffId:
                             this._tariffService.myform.get("TariffId").value,
-                        TariffName:
+                        tariffName:
                             this._tariffService.myform.get("TariffName").value,
-                        IsDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._tariffService.myform.get("IsDeleted")
                                     .value

@@ -64,15 +64,16 @@ export class ItemGenericMasterComponent implements OnInit {
             ) {
                 var m_data = {
                     insertItemGenericMaster: {
-                        ItemGenericName: this._itemgenericService.myform
+                        itemGenericName: this._itemgenericService.myform
                             .get("ItemGenericName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemgenericService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -84,20 +85,21 @@ export class ItemGenericMasterComponent implements OnInit {
                     });
             } else {
                 var m_dataUpdate = {
-                    dischargeTypeMasterUpdate: {
-                        ItemGenericNameId:
+                    updateItemGenericMaster: {
+                        itemGenericNameId:
                             this._itemgenericService.myform.get(
                                 "ItemGenericNameId"
                             ).value,
-                        ItemGenericName: this._itemgenericService.myform
+                        itemGenericName: this._itemgenericService.myform
                             .get("ItemGenericName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemgenericService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 
