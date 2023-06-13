@@ -809,6 +809,7 @@ export class NewAppointmentComponent implements OnInit {
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
                 this.filteredOptions = resData;
+                console.log(resData)
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {

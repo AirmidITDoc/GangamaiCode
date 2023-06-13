@@ -11,6 +11,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { EditRegistrationComponent } from '../../registration/edit-registration/edit-registration.component';
 import { RegInsert } from '../../registration/registration.component';
 import { RegistrationService } from '../../registration/registration.service';
+import { NewAppointmentComponent } from '../../appointment/new-appointment/new-appointment.component';
 
 @Component({
   selector: 'app-search-page',
@@ -211,10 +212,10 @@ export class SearchPageComponent implements OnInit {
     
       console.log(m_data);
       this._registrationService.populateFormpersonal(m_data);
-      
-      const dialogRef = this._matDialog.open(EditRegistrationComponent, 
-        {   maxWidth: "85vw",
-            height: '550px',
+      this.onClose();
+      const dialogRef = this._matDialog.open(NewAppointmentComponent, 
+        {   maxWidth: "95vw",
+            height: '800px',
             width: '100%',
              data : {
             registerObj : m_data,

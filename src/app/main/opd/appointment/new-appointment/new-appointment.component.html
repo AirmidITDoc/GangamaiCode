@@ -375,13 +375,15 @@
 
                 <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters" style="margin-top: 10px">
                   <mat-label>Mobile Number</mat-label>
-                  <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo">
+                  <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo"  [(ngModel)]="registerObj.MobileNo">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is required</mat-error>
                   <mat-hint align="end" style="margin-top: 10px">{{input.value?.length ||
                     0}}/10</mat-hint>
                 </mat-form-field>
+
+
               </div>
             </div>
             <!-- <div class="footer-navigation" style="text-align: right;">
@@ -518,7 +520,8 @@
                       {{element.DoctorName}}
                       </mat-option>
                   </mat-select>
-                  <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button>
+                  <mat-icon matSuffix>close</mat-icon>
+                  <!-- <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button> -->
                 </mat-form-field>
               
 
