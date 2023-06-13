@@ -419,18 +419,18 @@
                     </mat-form-field> -->
 
 
-                <mat-form-field appearance="outline" fxFlex=40%>
+                <mat-form-field appearance="outline" fxFlex=40% >
                   <mat-label>Hospital Name </mat-label>
-                  <mat-select formControlName="HospitalId">
+                  <mat-select formControlName="HospitalId" required>
                     <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
                       {{Doc.HospitalName}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxFlex=30% style="margin-right: 5px;">
+                <mat-form-field appearance="outline" fxFlex=30% style="margin-right: 5px;" >
                   <mat-label>Patient Type</mat-label>
-                  <mat-select formControlName="PatientTypeID" (selectionChange)="onChangePatient($event.value)">
+                  <mat-select formControlName="PatientTypeID" (selectionChange)="onChangePatient($event.value)" required>
                     <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
                       {{Doc.PatientType}}
                     </mat-option>
@@ -439,7 +439,7 @@
 
                 <mat-form-field appearance="outline" fxFlex=30% style="margin-right: 5px;">
                   <mat-label>Tariff Name</mat-label>
-                  <mat-select formControlName="TariffId">
+                  <mat-select formControlName="TariffId" required>
                     <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
                       {{Doc.TariffName}}
                     </mat-option>
@@ -494,7 +494,7 @@
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Doctor Name</mat-label>
-                  <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
+                  <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect required>
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>

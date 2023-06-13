@@ -373,7 +373,7 @@ export class NewAppointmentComponent implements OnInit {
         Validators.minLength(10),
         Validators.maxLength(10),
       ]],
-      MobileNo: ['', [Validators.required,Validators.pattern("^((\\+91-?)|0)?[7-9]{1}[0-9]{9}$"),
+      MobileNo: ['', [Validators.required,Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]], 
       AadharCardNo: ['', [
@@ -1175,9 +1175,9 @@ export class NewAppointmentComponent implements OnInit {
       visitUpdate['VisitDate'] = this.dateTimeObj.date;
       visitUpdate['VisitTime'] = this.dateTimeObj.time;
 
-      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0; // this.VisitFormGroup.get('UnitId').value.UnitId ? this.VisitFormGroup.get('UnitId').value.UnitId: 0;
-      visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
@@ -1255,6 +1255,12 @@ export class NewAppointmentComponent implements OnInit {
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       // this.Patientnewold = 1;
+      
+    this.getHospitalList1();
+    this.getHospitalList();
+    this.getTariffList();
+    this.getPatientTypeList();
+
     } else {
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
@@ -1265,6 +1271,11 @@ export class NewAppointmentComponent implements OnInit {
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
+      
+    this.getHospitalList1();
+    this.getHospitalList();
+    this.getTariffList();
+    this.getPatientTypeList();
     }
   }
   getHospitalList1() {
