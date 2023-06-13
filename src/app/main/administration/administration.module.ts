@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
   {
-      path: "create-user",
+      path: "createuser",
       loadChildren: () => import("./create-user/create-user.module").then((m) => m.CreateUserModule),
   },
   {
-      path: "password-change",
-     loadChildren: () => import("./password-change/password-change.module").then((m) => m.PasswordChangeModule),
-  },
-  {
-    path: "system-configuration",
+    path: "configuration",
    loadChildren: () => import("./system-configuration/system-configuration.module").then((m) => m.SystemConfigurationModule),
   },
   {
-    path: "role-template-master",
+    path: "roletemplatemaster",
    loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
   },
  
@@ -27,7 +23,7 @@ const appRoutes: Routes = [
   declarations: [
     ],
   imports: [
-    CommonModule
+    RouterModule.forChild(appRoutes),
   ]
 })
 export class AdministrationModule { }
