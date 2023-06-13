@@ -200,7 +200,7 @@
                 <mat-form-field appearance="outline" fxFlex style="margin-top: 10px">
 
                   <mat-label>Aadhar Card Number</mat-label>
-                  <input matInput #input maxlength="12" placeholder="Enter some input" formControlName="AadharCardNo">
+                  <input matInput #input maxlength="12" [(ngModel)]="registerObj.AadharCardNo" placeholder="Enter some input" formControlName="AadharCardNo">
                   <mat-error class="error"
                   *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">12
                   digits Aadhar Card No is
@@ -373,9 +373,9 @@
                 </mat-form-field> -->
 
 
-                <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters" style="margin-top: 10px">
+                <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters">
                   <mat-label>Mobile Number</mat-label>
-                  <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo"  [(ngModel)]="registerObj.MobileNo">
+                  <input matInput #input maxlength="10" placeholder="Enter some input" formControlName="MobileNo">
                   <mat-error class="error"
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is required</mat-error>
@@ -506,12 +506,9 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
-                
                   <mat-label>Ref Doctor Name</mat-label>
-              
                   <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
                     (selectionChange)="onDoctorOneChange($event.value)">
-                    
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -520,8 +517,7 @@
                       {{element.DoctorName}}
                       </mat-option>
                   </mat-select>
-                  <mat-icon matSuffix>close</mat-icon>
-                  <!-- <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button> -->
+                  <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button>
                 </mat-form-field>
               
 

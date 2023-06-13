@@ -63,7 +63,7 @@ export class OPBillingComponent implements OnInit {
     'NetAmount',
     // 'DoctorName',
 
-    // 'ChargeDoctorName',
+    'ChargeDoctorName',
     //'ClassId',
     'ClassName',
     'ChargesAddedName',
@@ -174,20 +174,11 @@ export class OPBillingComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-
     this.createForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-
     }
-
-    // this.myControl = new FormControl();
-    // this.filteredOptions = this.myControl.valueChanges.pipe(
-    //   debounceTime(100),
-    //   startWith(''),
-    //   map((value) => (value && value.length >= 1 ? this.filterStates(value) : this.billingServiceList.slice()))
-    // );
-
+    
     // this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
@@ -200,9 +191,6 @@ export class OPBillingComponent implements OnInit {
       .subscribe(() => {
         this.filterDoctor();
       });
-
-    debugger;
-
   }
 
   // doctorone filter code  
@@ -357,16 +345,15 @@ export class OPBillingComponent implements OnInit {
       this.registeredForm.get('DoctorID').setValidators([Validators.required]);
       this.registeredForm.get('DoctorID').enable();
       // this.isDoctor = true;
-
     } else {
       this.registeredForm.get('DoctorID').reset();
       this.registeredForm.get('DoctorID').clearValidators();
       this.registeredForm.get('DoctorID').updateValueAndValidity();
       this.registeredForm.get('DoctorID').disable();
       // this.isDoctor = false;
-
     }
   }
+
   drugChange(event) {
     // console.log(event);
     // this.dataSource.data.forEach((element, index1) => {
@@ -408,6 +395,16 @@ export class OPBillingComponent implements OnInit {
 
     }
   }
+  keytab(event){
+    debugger
+    let element = event.srcElement.nextElementSibling; // get the sibling element
+
+    if(element == null)  // check if its null
+        return;
+    else
+        element.focus();   // focus if not null
+}
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
