@@ -34,15 +34,15 @@ export class CategorymasterComponent implements OnInit {
         this.getCategoryMasterList();
     }
     onSearch() {
-      this.getCategoryMasterList();
-  }
+        this.getCategoryMasterList();
+    }
 
-  onSearchClear() {
-      this._categorymasterService.myformSearch.reset({
-        CategoryNameSearch: "",
-          IsDeletedSearch: "2",
-      });
-  }
+    onSearchClear() {
+        this._categorymasterService.myformSearch.reset({
+            CategoryNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
 
     getCategoryMasterList() {
         this._categorymasterService
@@ -64,16 +64,17 @@ export class CategorymasterComponent implements OnInit {
             if (!this._categorymasterService.myform.get("CategoryId").value) {
                 var m_data = {
                     insertPathologyCategoryMaster: {
-                        CategoryName: this._categorymasterService.myform
+                        categoryName: this._categorymasterService.myform
                             .get("CategoryName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._categorymasterService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -86,20 +87,21 @@ export class CategorymasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updatePathologyCategoryMaster: {
-                        CategoryId:
+                        categoryId:
                             this._categorymasterService.myform.get("CategoryId")
                                 .value,
-                        CategoryName:
+                        categoryName:
                             this._categorymasterService.myform.get(
                                 "CategoryName"
                             ).value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._categorymasterService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

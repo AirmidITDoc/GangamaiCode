@@ -67,17 +67,18 @@ export class UomMasterComponent implements OnInit {
             ) {
                 var m_data = {
                     insertUnitofMeasurementMaster: {
-                        UnitofMeasurementName:
+                        unitofMeasurementName:
                             this._unitofmeasurementService.myform
                                 .get("UnitofMeasurementName")
                                 .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._unitofmeasurementService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -90,21 +91,22 @@ export class UomMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateUnitofMeasurementMaster: {
-                        UnitofMeasurementId:
+                        unitofMeasurementId:
                             this._unitofmeasurementService.myform.get(
                                 "UnitofMeasurementId"
                             ).value,
-                        UnitofMeasurementName:
+                        unitofMeasurementName:
                             this._unitofmeasurementService.myform
                                 .get("UnitofMeasurementName")
                                 .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._unitofmeasurementService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

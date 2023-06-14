@@ -73,29 +73,30 @@ export class GroupMasterComponent implements OnInit {
             if (!this._groupService.myform.get("GroupId").value) {
                 var m_data = {
                     groupMasterInsert: {
-                        GroupName: this._groupService.myform
+                        groupName: this._groupService.myform
                             .get("GroupName")
                             .value.trim(),
-                        Isconsolidated: Boolean(
+                        isconsolidated: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get("Isconsolidated")
                                     .value
                             )
                         ),
-                        IsConsolidatedDR: Boolean(
+                        isConsolidatedDR: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get(
                                     "IsConsolidatedDR"
                                 ).value
                             )
                         ),
-                        PrintSeqNo:
-                            this._groupService.myform.get("PrintSeqNo").value,
-                        IsDeleted: Boolean(
+
+                        isActive: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get("IsDeleted").value
                             )
                         ),
+                        PrintSeqNo:
+                            this._groupService.myform.get("PrintSeqNo").value,
                     },
                 };
 
@@ -108,30 +109,31 @@ export class GroupMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     groupMasterUpdate: {
-                        GroupId: this._groupService.myform.get("GroupId").value,
-                        GroupName: this._groupService.myform
+                        groupId: this._groupService.myform.get("GroupId").value,
+                        groupName: this._groupService.myform
                             .get("GroupName")
                             .value.trim(),
-                        Isconsolidated: Boolean(
+                        isconsolidated: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get("Isconsolidated")
                                     .value
                             )
                         ),
-                        IsConsolidatedDR: Boolean(
+                        isConsolidatedDR: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get(
                                     "IsConsolidatedDR"
                                 ).value
                             )
                         ),
-                        PrintSeqNo:
-                            this._groupService.myform.get("PrintSeqNo").value,
-                        IsDeleted: Boolean(
+
+                        isActive: Boolean(
                             JSON.parse(
                                 this._groupService.myform.get("IsDeleted").value
                             )
                         ),
+                        PrintSeqNo:
+                            this._groupService.myform.get("PrintSeqNo").value,
                     },
                 };
 

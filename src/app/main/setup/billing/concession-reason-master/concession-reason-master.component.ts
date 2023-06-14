@@ -72,10 +72,11 @@ export class ConcessionReasonMasterComponent implements OnInit {
             ) {
                 var m_data = {
                     consessionReasonMasterInsert: {
-                        ConcessionReasonName: this._consessionreasonService.myform
+                        concessionReason: this._consessionreasonService.myform
                             .get("ConcessionReasonName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 10,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._consessionreasonService.myform.get(
                                     "IsDeleted"
@@ -94,21 +95,22 @@ export class ConcessionReasonMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     consessionReasonMasterUpdate: {
-                        ConcessionId:
+                        concessionId:
                             this._consessionreasonService.myform.get(
                                 "ConcessionId"
                             ).value,
-                        ConcessionReasonName:
+                        concessionReason:
                             this._consessionreasonService.myform.get(
                                 "ConcessionReasonName"
                             ).value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._consessionreasonService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 10,
                     },
                 };
 

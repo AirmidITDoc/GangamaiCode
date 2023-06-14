@@ -151,32 +151,33 @@ export class ParamteragewiseformComponent implements OnInit {
                 var m_data = {
                     insertParameterMasterAgeWise: {
                         PathparaRangeId: "0", // this._ParameterageService.myform.get("PathparaRangeId").value,
-                        ParaId: this._ParameterageService.myform.get("ParaId")
+                        paraId: this._ParameterageService.myform.get("ParaId")
                             .value,
-                        SexId: this._ParameterageService.myform.get("SexId")
+                        sexId: this._ParameterageService.myform.get("SexId")
                             .value,
-                        MinAge:
-                            this._ParameterageService.myform.get("MinAge")
-                                .value || "0",
-                        MaxAge:
-                            this._ParameterageService.myform.get("MaxAge")
-                                .value || "0",
-                        MinValue: this._ParameterageService.myform
+                        minValue: this._ParameterageService.myform
                             .get("MinValue")
                             .value.trim(),
-                        MaxValue: this._ParameterageService.myform
+                        maxValue: this._ParameterageService.myform
                             .get("MaxValue")
                             .value.trim(),
-                        AgeType: this._ParameterageService.myform
+                        addedBy: 1,
+                        minAge:
+                            this._ParameterageService.myform.get("MinAge")
+                                .value || "0",
+                        maxAge:
+                            this._ParameterageService.myform.get("MaxAge")
+                                .value || "0",
+                        ageType: this._ParameterageService.myform
                             .get("AgeType")
                             .value.trim(),
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._ParameterageService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        // IsDeleted: Boolean(
+                        //     JSON.parse(
+                        //         this._ParameterageService.myform.get(
+                        //             "IsDeleted"
+                        //         ).value
+                        //     )
+                        // ),
                     },
                 };
                 console.log(m_data);
@@ -188,36 +189,38 @@ export class ParamteragewiseformComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateParameterMasterAgeWise: {
-                        PathparaRangeId:
+                        pathparaRangeId:
                             this._ParameterageService.myform.get(
                                 "PathparaRangeId"
                             ).value,
-                        ParaId: this._ParameterageService.myform.get("ParaId")
+                        paraId: this._ParameterageService.myform.get("ParaId")
                             .value,
-                        SexId: this._ParameterageService.myform.get("SexId")
+                        sexId: this._ParameterageService.myform.get("SexId")
                             .value,
-                        MinAge:
-                            this._ParameterageService.myform.get("MinAge")
-                                .value || "0",
-                        MaxAge:
-                            this._ParameterageService.myform.get("MaxAge")
-                                .value || "0",
-                        MinValue: this._ParameterageService.myform
+
+                        minValue: this._ParameterageService.myform
                             .get("MinValue")
                             .value.trim(),
-                        MaxValue: this._ParameterageService.myform
+                        maxValue: this._ParameterageService.myform
                             .get("MaxValue")
                             .value.trim(),
-                        AgeType: this._ParameterageService.myform
+                        updatedby: 1,
+                        minAge:
+                            this._ParameterageService.myform.get("MinAge")
+                                .value || "0",
+                        maxAge:
+                            this._ParameterageService.myform.get("MaxAge")
+                                .value || "0",
+                        ageType: this._ParameterageService.myform
                             .get("AgeType")
                             .value.trim(),
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._ParameterageService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        // IsDeleted: Boolean(
+                        //     JSON.parse(
+                        //         this._ParameterageService.myform.get(
+                        //             "IsDeleted"
+                        //         ).value
+                        //     )
+                        // ),
                     },
                 };
                 console.log(m_dataUpdate);

@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
-
 const appRoutes: Routes = [
-
- 
   {
     path: "phone-appointment",
     loadChildren: () => import("./phoneappointment/phoneappointment.module").then((m) => m.phoneappointmentModule),
@@ -18,27 +14,16 @@ const appRoutes: Routes = [
     
     path: "browse-opd-bills",
     loadChildren: () => import("./browse-opbill/browse-opbill.module").then((m) => m.BrowseOPBillModule),
-
-    // loadChildren: () => import("./all-browse-list-page/all-browse-list.module").then((m) => m.AllBrowseListModule),
-
   },
- 
-  // {
-  //   path: "medicalrecords",
-  //   loadChildren: () => import("./department/department.module").then((m) => m.DepartmentModule),
-  // },
   {
     path: "bill",
     loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
-    // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
   },
- 
    
   {
     path: "registration",
     loadChildren: () => import("./registration/registration.module").then((m) => m.RegistrationModule),
-},
-
+  },
 {
     path: "browse-opd-bills",
     loadChildren: () => import("./browse-opbill/browse-opbill.module").then((m) => m.BrowseOPBillModule),
@@ -54,7 +39,6 @@ const appRoutes: Routes = [
 {
     path: "bill",
     loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
-    // loadChildren: () => import("./op-bill/op-bill.module").then((m) => m.OpBillModule),
 },
 // {
 //     path: "refund",

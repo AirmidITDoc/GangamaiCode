@@ -65,19 +65,20 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             if (!this._termsofpaymentService.myform.get("ID").value) {
                 var m_data = {
                     insertTermsofPaymentMaster: {
-                        TermsOfPayment: this._termsofpaymentService.myform
+                        termsOfPayment: this._termsofpaymentService.myform
                             .get("TermsOfPayment")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._termsofpaymentService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
-                
+
                 this._termsofpaymentService
                     .insertTermsofPaymentMaster(m_data)
                     .subscribe((data) => {
@@ -87,17 +88,18 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateTermsofPaymentMaster: {
-                        ID: this._termsofpaymentService.myform.get("ID").value,
-                        TermsOfPayment: this._termsofpaymentService.myform
+                        id: this._termsofpaymentService.myform.get("ID").value,
+                        termsOfPayment: this._termsofpaymentService.myform
                             .get("TermsOfPayment")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._termsofpaymentService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

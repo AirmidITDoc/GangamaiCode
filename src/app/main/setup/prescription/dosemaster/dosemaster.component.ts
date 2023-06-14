@@ -64,21 +64,22 @@ export class DosemasterComponent implements OnInit {
             if (!this._DoseService.myForm.get("DoseId").value) {
                 var m_data = {
                     insertDoseMaster: {
-                        DoseName: this._DoseService.myForm
+                        doseName: this._DoseService.myForm
                             .get("DoseName")
                             .value.trim(),
-                        DoseNameInEnglish: this._DoseService.myForm
+                        doseNameInEnglish: this._DoseService.myForm
                             .get("DoseNameInEnglish")
                             .value.trim(),
-
-                        DoseQtyPerDay:
+                        doseNameInMarathi: "",
+                        doseQtyPerDay:
                             this._DoseService.myForm.get("DoseQtyPerDay").value,
 
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._DoseService.myForm.get("IsDeleted").value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
                 this._DoseService.insertDoseMaster(m_data).subscribe((data) => {
@@ -88,22 +89,23 @@ export class DosemasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateDoseMaster: {
-                        DoseId: this._DoseService.myForm.get("DoseId").value,
-                        DoseName: this._DoseService.myForm
+                        doseId: this._DoseService.myForm.get("DoseId").value,
+                        doseName: this._DoseService.myForm
                             .get("DoseName")
                             .value.trim(),
-                        DoseNameInEnglish: this._DoseService.myForm
+                        doseNameInEnglish: this._DoseService.myForm
                             .get("DoseNameInEnglish")
                             .value.trim(),
-
-                        DoseQtyPerDay:
+                        doseNameInMarathi: "",
+                        doseQtyPerDay:
                             this._DoseService.myForm.get("DoseQtyPerDay").value,
 
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._DoseService.myForm.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._DoseService

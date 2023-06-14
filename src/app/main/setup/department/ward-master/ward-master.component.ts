@@ -155,25 +155,25 @@ export class WardMasterComponent implements OnInit {
             if (!this._wardService.myform.get("RoomId").value) {
                 var m_data = {
                     wardMasterInsert: {
-                        RoomName: this._wardService.myform
+                        roomName: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        RoomType: "1",
-                        LocationId:
+                        roomType: "1",
+                        locationId:
                             this._wardService.myform.get("LocationId").value,
-                        IsAvailable: Boolean(
+                        isAvailable: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsAvailable")
                                     .value
                             )
                         ),
-
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsDeleted").value
                             )
                         ),
-                        ClassId: this._wardService.myform.get("ClassId").value,
+                        classId: this._wardService.myform.get("ClassId").value,
                     },
                 };
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
@@ -183,26 +183,26 @@ export class WardMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     wardMasterUpdate: {
-                        RoomId: this._wardService.myform.get("RoomId").value,
-                        RoomName: this._wardService.myform
+                        roomID: this._wardService.myform.get("RoomId").value,
+                        roomName: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        RoomType: "1",
-                        LocationId:
+                        roomType: "1",
+                        locationId:
                             this._wardService.myform.get("LocationId").value,
-                        IsAvailable: Boolean(
+                        isAvailable: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsAvailable")
                                     .value
                             )
                         ),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsDeleted").value
                             )
                         ),
-
-                        ClassId: this._wardService.myform.get("ClassId").value,
+                        updatedBy: 1,
+                        classId: this._wardService.myform.get("ClassId").value,
                     },
                 };
                 this._wardService

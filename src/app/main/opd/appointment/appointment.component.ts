@@ -27,6 +27,7 @@ import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-con
 import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
+import { FeedbackComponent } from "./feedback/feedback.component";
 
 // const jsPDF = require('jspdf');
 
@@ -79,9 +80,8 @@ export class AppointmentComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService,
         public _registrationService: RegistrationService,
         public _matDialog: MatDialog,
-        public datePipe: DatePipe
-    ) // private advanceDataStored: AdvanceDataStored
-    {
+        public datePipe: DatePipe // private advanceDataStored: AdvanceDataStored
+    ) {
         this.getVisitList();
     }
 
@@ -340,6 +340,14 @@ export class AppointmentComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             // console.log('The dialog was closed - Insert Action', result);
             this.getVisitList();
+        });
+    }
+    feedback() {
+        const dialogRef = this._matDialog.open(FeedbackComponent, {
+            maxWidth: "55vw",
+            height: "800px",
+            width: "100%",
+            // height: "100%"
         });
     }
 

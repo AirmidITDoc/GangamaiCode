@@ -30,7 +30,7 @@ export class BankMasterComponent implements OnInit {
 
     DSBankMasterList = new MatTableDataSource<BankMaster>();
 
-    constructor(public _bankService: BankMasterService) { }
+    constructor(public _bankService: BankMasterService) {}
 
     ngOnInit(): void {
         this.getBankMasterList();
@@ -73,15 +73,16 @@ export class BankMasterComponent implements OnInit {
             if (!this._bankService.myform.get("BankId").value) {
                 var m_data = {
                     bankMasterInsert: {
-                        BankName: this._bankService.myform.get("BankName").value.trim(),
-                        IsDeleted: JSON.parse(this._bankService.myform.get("IsDeleted").value),
-                        AddedBy: 1
-                    
-                    }
+                        bankName: this._bankService.myform
+                            .get("BankName")
+                            .value.trim(),
+                        isDeleted: JSON.parse(
+                            this._bankService.myform.get("IsDeleted").value
+                        ),
+                        addedBy: 1,
+                    },
                 };
 
-                // ture  - 0
-                // False - 1
                 console.log(m_data);
                 this._bankService.bankMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
@@ -90,12 +91,13 @@ export class BankMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     bankMasterUpdate: {
-                        BankId: this._bankService.myform.get("BankId").value,
-                        BankName:
+                        bankID: this._bankService.myform.get("BankId").value,
+                        bankName:
                             this._bankService.myform.get("BankName").value,
-                        IsDeleted: JSON.parse(
+                        isDeleted: JSON.parse(
                             this._bankService.myform.get("IsDeleted").value
                         ),
+                        updatedBy: 1,
                     },
                 };
                 console.log(m_dataUpdate);

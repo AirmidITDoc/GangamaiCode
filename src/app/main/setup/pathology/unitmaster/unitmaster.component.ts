@@ -64,15 +64,16 @@ export class UnitmasterComponent implements OnInit {
             if (!this._unitmasterService.myform.get("UnitId").value) {
                 var m_data = {
                     insertUnitMaster: {
-                        UnitName: this._unitmasterService.myform
+                        unitName: this._unitmasterService.myform
                             .get("UnitName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._unitmasterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -85,17 +86,18 @@ export class UnitmasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateUnitMaster: {
-                        UnitId: this._unitmasterService.myform.get("UnitId")
+                        unitId: this._unitmasterService.myform.get("UnitId")
                             .value,
-                        UnitName:
+                        unitName:
                             this._unitmasterService.myform.get("UnitName")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._unitmasterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._unitmasterService

@@ -68,10 +68,11 @@ export class ReligionMasterComponent implements OnInit {
             if (!this._religionService.myform.get("ReligionId").value) {
                 var m_data = {
                     religionMasterInsert: {
-                        ReligionName: this._religionService.myform
+                        religionName: this._religionService.myform
                             .get("ReligionName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._religionService.myform.get("IsDeleted")
                                     .value
@@ -89,18 +90,19 @@ export class ReligionMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     religionMasterUpdate: {
-                        ReligionId:
+                        religionID:
                             this._religionService.myform.get("ReligionId")
                                 .value,
-                        ReligionName: this._religionService.myform
+                        religionName: this._religionService.myform
                             .get("ReligionName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._religionService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

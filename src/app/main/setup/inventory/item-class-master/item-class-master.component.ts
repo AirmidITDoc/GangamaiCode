@@ -60,15 +60,16 @@ export class ItemClassMasterComponent implements OnInit {
             if (!this._itemclassService.myform.get("ItemClassId").value) {
                 var m_data = {
                     insertItemClassMaster: {
-                        ItemClassName: this._itemclassService.myform
+                        itemClassName: this._itemclassService.myform
                             .get("ItemClassName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemclassService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -81,18 +82,19 @@ export class ItemClassMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateItemClassMaster: {
-                        ItemClassId:
+                        itemClassId:
                             this._itemclassService.myform.get("ItemClassId")
                                 .value,
-                        ItemClassName: this._itemclassService.myform
+                        itemClassName: this._itemclassService.myform
                             .get("ItemClassName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemclassService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

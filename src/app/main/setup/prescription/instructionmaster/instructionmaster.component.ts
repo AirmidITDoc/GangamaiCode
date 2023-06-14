@@ -61,16 +61,17 @@ export class InstructionmasterComponent implements OnInit {
             if (!this._InstructionService.myForm.get("InstructionId").value) {
                 var m_data = {
                     insertInstructionMaster: {
-                        InstructionName: this._InstructionService.myForm
+                        instructionName: this._InstructionService.myForm
                             .get("InstructionName")
                             .value.trim(),
 
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._InstructionService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
                 this._InstructionService
@@ -82,19 +83,20 @@ export class InstructionmasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateInstructionMaster: {
-                        InstructionId:
+                        instructionId:
                             this._InstructionService.myForm.get("InstructionId")
                                 .value,
-                        InstructionName: this._InstructionService.myForm
+                        instructionName: this._InstructionService.myForm
                             .get("InstructionName")
                             .value.trim(),
 
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._InstructionService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._InstructionService

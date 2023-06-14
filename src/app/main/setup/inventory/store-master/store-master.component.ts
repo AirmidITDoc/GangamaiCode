@@ -126,54 +126,54 @@ export class StoreMasterComponent implements OnInit {
             if (!this._StoreService.myform.get("StoreId").value) {
                 var m_data = {
                     insertStoreMaster: {
-                        StoreShortName: this._StoreService.myform
+                        storeShortName: this._StoreService.myform
                             .get("StoreShortName")
                             .value.trim(),
-                        StoreName: this._StoreService.myform
+                        storeName: this._StoreService.myform
                             .get("StoreName")
                             .value.trim(),
-                        IndentPrefix: this._StoreService.myform
+                        indentPrefix: this._StoreService.myform
                             .get("IndentPrefix")
                             .value.trim(),
-                        IndentNo: this._StoreService.myform
+                        indentNo: this._StoreService.myform
                             .get("IndentNo")
                             .value.trim(),
-                        PurchasePrefix: this._StoreService.myform
+                        purchasePrefix: this._StoreService.myform
                             .get("PurchasePrefix")
                             .value.trim(),
-                        PurchaseNo: this._StoreService.myform
+                        purchaseNo: this._StoreService.myform
                             .get("PurchaseNo")
                             .value.trim(),
-                        GrnPrefix: this._StoreService.myform
+                        grnPrefix: this._StoreService.myform
                             .get("GrnPrefix")
                             .value.trim(),
-                        GrnNo: this._StoreService.myform
+                        grnNo: this._StoreService.myform
                             .get("GrnNo")
                             .value.trim(),
-                        GrnreturnNoPrefix: this._StoreService.myform
+                        grnreturnNoPrefix: this._StoreService.myform
                             .get("GrnreturnNoPrefix")
                             .value.trim(),
-                        GrnreturnNo: this._StoreService.myform
+                        grnreturnNo: this._StoreService.myform
                             .get("GrnreturnNo")
                             .value.trim(),
-                        IssueToDeptPrefix: this._StoreService.myform
+                        issueToDeptPrefix: this._StoreService.myform
                             .get("IssueToDeptPrefix")
                             .value.trim(),
-                        IssueToDeptNo: this._StoreService.myform
+                        issueToDeptNo: this._StoreService.myform
                             .get("IssueToDeptNo")
                             .value.trim(),
-                        ReturnFromDeptNoPrefix: this._StoreService.myform
+                        returnFromDeptNoPrefix: this._StoreService.myform
                             .get("ReturnFromDeptNoPrefix")
                             .value.trim(),
-                        ReturnFromDeptNo: this._StoreService.myform
+                        returnFromDeptNo: this._StoreService.myform
                             .get("ReturnFromDeptNo")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._StoreService.myform.get("IsDeleted").value
                             )
                         ),
-                       
+                        addedBy: 1,
                     },
                 };
                 // console.log(m_data);
@@ -183,59 +183,58 @@ export class StoreMasterComponent implements OnInit {
                         this.msg = data;
                         this.getStoreMasterList();
                     });
-                
             } else {
                 var m_dataUpdate = {
-                    updateItemMaster: {
-                        StoreId: this._StoreService.myform.get("StoreId").value,
-                        StoreShortName: this._StoreService.myform
+                    updateStoreMaster: {
+                        storeId: this._StoreService.myform.get("StoreId").value,
+                        storeShortName: this._StoreService.myform
                             .get("StoreShortName")
                             .value.trim(),
-                        StoreName: this._StoreService.myform
+                        storeName: this._StoreService.myform
                             .get("StoreName")
                             .value.trim(),
-                        IndentPrefix: this._StoreService.myform
-                            .get("IndentPrefix")
-                            .value.trim(),
-                        IndentNo: this._StoreService.myform
-                            .get("IndentNo")
-                            .value.trim(),
-                        PurchasePrefix: this._StoreService.myform
-                            .get("PurchasePrefix")
-                            .value.trim(),
-                        PurchaseNo: this._StoreService.myform
-                            .get("PurchaseNo")
-                            .value.trim(),
-                        GrnPrefix: this._StoreService.myform
-                            .get("GrnPrefix")
-                            .value.trim(),
-                        GrnNo: this._StoreService.myform
-                            .get("GrnNo")
-                            .value.trim(),
-                        GrnreturnNoPrefix: this._StoreService.myform
-                            .get("GrnreturnNoPrefix")
-                            .value.trim(),
-                        GrnreturnNo: this._StoreService.myform
-                            .get("GrnreturnNo")
-                            .value.trim(),
-                        IssueToDeptPrefix: this._StoreService.myform
-                            .get("IssueToDeptPrefix")
-                            .value.trim(),
-                        IssueToDeptNo: this._StoreService.myform
-                            .get("IssueToDeptNo")
-                            .value.trim(),
-                        ReturnFromDeptNoPrefix: this._StoreService.myform
-                            .get("ReturnFromDeptNoPrefix")
-                            .value.trim(),
-                        ReturnFromDeptNo: this._StoreService.myform
-                            .get("ReturnFromDeptNo")
-                            .value.trim(),
-                        IsDeleted: Boolean(
+                        // IndentPrefix: this._StoreService.myform
+                        //     .get("IndentPrefix")
+                        //     .value.trim(),
+                        // IndentNo: this._StoreService.myform
+                        //     .get("IndentNo")
+                        //     .value.trim(),
+                        // PurchasePrefix: this._StoreService.myform
+                        //     .get("PurchasePrefix")
+                        //     .value.trim(),
+                        // PurchaseNo: this._StoreService.myform
+                        //     .get("PurchaseNo")
+                        //     .value.trim(),
+                        // GrnPrefix: this._StoreService.myform
+                        //     .get("GrnPrefix")
+                        //     .value.trim(),
+                        // GrnNo: this._StoreService.myform
+                        //     .get("GrnNo")
+                        //     .value.trim(),
+                        // GrnreturnNoPrefix: this._StoreService.myform
+                        //     .get("GrnreturnNoPrefix")
+                        //     .value.trim(),
+                        // GrnreturnNo: this._StoreService.myform
+                        //     .get("GrnreturnNo")
+                        //     .value.trim(),
+                        // IssueToDeptPrefix: this._StoreService.myform
+                        //     .get("IssueToDeptPrefix")
+                        //     .value.trim(),
+                        // IssueToDeptNo: this._StoreService.myform
+                        //     .get("IssueToDeptNo")
+                        //     .value.trim(),
+                        // ReturnFromDeptNoPrefix: this._StoreService.myform
+                        //     .get("ReturnFromDeptNoPrefix")
+                        //     .value.trim(),
+                        // ReturnFromDeptNo: this._StoreService.myform
+                        //     .get("ReturnFromDeptNo")
+                        //     .value.trim(),
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._StoreService.myform.get("IsDeleted").value
                             )
                         ),
-                      
+                        updatedBy: 1,
                     },
                 };
                 this._StoreService
@@ -244,7 +243,6 @@ export class StoreMasterComponent implements OnInit {
                         this.msg = data;
                         this.getStoreMasterList();
                     });
-                
             }
             this.onClear();
         }

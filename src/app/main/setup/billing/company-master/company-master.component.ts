@@ -90,49 +90,49 @@ export class CompanyMasterComponent implements OnInit {
             if (!this._companyService.myform.get("CompanyId").value) {
                 var m_data = {
                     companyMasterInsert: {
-                        CompTypeId:
+                        compTypeId:
                             this._companyService.myform.get("CompTypeId").value,
-                        CompanyName: this._companyService.myform
+                        companyName: this._companyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address: this._companyService.myform
+                        address: this._companyService.myform
                             .get("Address")
                             .value.trim(),
-                        City: this._companyService.myform
+                        city: this._companyService.myform
                             .get("City")
                             .value.trim(),
-                        PinNo: this._companyService.myform
+                        pinNo: this._companyService.myform
                             .get("PinNo")
                             .value.trim(),
-                        PhoneNo: this._companyService.myform
+                        phoneNo: this._companyService.myform
                             .get("PhoneNo")
                             .value.trim(),
-                        MobileNo: this._companyService.myform
+                        mobileNo: this._companyService.myform
                             .get("MobileNo")
                             .value.trim(),
-                        FaxNo: this._companyService.myform
+                        faxNo: this._companyService.myform
                             .get("FaxNo")
                             .value.trim(),
-                        TariffId:
+                        tariffId:
                             this._companyService.myform.get("TariffId").value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-
-                        IsCancelled: Boolean(
+                        addedBy: 10,
+                        isCancelled: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsCancelled")
                                     .value
                             )
                         ),
-                        IsCancelledBy:
+                        isCancelledBy:
                             this._companyService.myform.get("IsCancelledBy")
                                 .value,
-                        IsCancelledDate:
-                            this._companyService.myform.get("IsCancelledBy")
+                        isCancelledDate:
+                            this._companyService.myform.get("IsCancelledDate")
                                 .value,
                     },
                 };
@@ -146,50 +146,50 @@ export class CompanyMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     companyMasterUpdate: {
-                        CompanyId:
+                        companyId:
                             this._companyService.myform.get("CompanyId").value,
-                        CompTypeId:
+                        compTypeId:
                             this._companyService.myform.get("CompTypeId").value,
-                        CompanyName: this._companyService.myform
+                        companyName: this._companyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address: this._companyService.myform
+                        address: this._companyService.myform
                             .get("Address")
                             .value.trim(),
-                        City: this._companyService.myform
+                        city: this._companyService.myform
                             .get("City")
                             .value.trim(),
-                        PinNo: this._companyService.myform
+                        pinNo: this._companyService.myform
                             .get("PinNo")
                             .value.trim(),
-                        PhoneNo: this._companyService.myform
+                        phoneNo: this._companyService.myform
                             .get("PhoneNo")
                             .value.trim(),
-                        MobileNo: this._companyService.myform
+                        mobileNo: this._companyService.myform
                             .get("MobileNo")
                             .value.trim(),
-                        FaxNo: this._companyService.myform
+                        faxNo: this._companyService.myform
                             .get("FaxNo")
                             .value.trim(),
-                        TariffId:
+                        tariffId:
                             this._companyService.myform.get("TariffId").value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-
-                        IsCancelled: Boolean(
+                        updatedBy: 1,
+                        isCancelled: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsCancelled")
                                     .value
                             )
                         ),
-                        IsCancelledBy:
+                        isCancelledBy:
                             this._companyService.myform.get("IsCancelledBy")
                                 .value,
-                        IsCancelledDate:
+                        isCancelledDate:
                             this._companyService.myform.get("IsCancelledBy")
                                 .value,
                     },

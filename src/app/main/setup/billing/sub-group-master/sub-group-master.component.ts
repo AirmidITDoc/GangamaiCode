@@ -111,12 +111,13 @@ export class SubGroupMasterComponent implements OnInit {
             if (!this._subgroupService.myform.get("SubGroupId").value) {
                 var m_data = {
                     subGroupMasterInsert: {
-                        SubGroupName: this._subgroupService.myform
+                        groupId:
+                            this._subgroupService.myform.get("GroupId").value,
+                        subGroupName: this._subgroupService.myform
                             .get("SubGroupName")
                             .value.trim(),
-                        GroupId:
-                            this._subgroupService.myform.get("GroupId").value,
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._subgroupService.myform.get("IsDeleted")
                                     .value
@@ -134,20 +135,22 @@ export class SubGroupMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     subGroupMasterUpdate: {
-                        SubGroupId:
+                        subGroupID:
                             this._subgroupService.myform.get("SubGroupId")
                                 .value,
-                        SubGroupName:
+                        groupId:
+                            this._subgroupService.myform.get("GroupId").value,
+                        subGroupName:
                             this._subgroupService.myform.get("SubGroupName")
                                 .value,
-                        GroupId:
-                            this._subgroupService.myform.get("GroupId").value,
-                        IsDeleted: Boolean(
+
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._subgroupService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

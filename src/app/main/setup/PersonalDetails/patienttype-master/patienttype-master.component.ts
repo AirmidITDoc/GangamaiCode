@@ -67,16 +67,16 @@ export class PatienttypeMasterComponent implements OnInit {
             if (!this._PatientTypeService.myForm.get("PatientTypeId").value) {
                 var m_data = {
                     patientTypeMasterInsert: {
-                        PatientType: this._PatientTypeService.myForm
+                        patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: this.accountService.currentUserValue.user.id,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        AddedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
                 this._PatientTypeService
@@ -89,19 +89,19 @@ export class PatienttypeMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     patientTypeMasterUpdate: {
-                        PatientTypeId:
+                        patientTypeID:
                             this._PatientTypeService.myForm.get("PatientTypeId")
                                 .value,
-                        PatientType: this._PatientTypeService.myForm
+                        patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        UpdatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
                 this._PatientTypeService
