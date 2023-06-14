@@ -561,17 +561,18 @@
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                   <mat-label>Ref Doctor Name</mat-label>
                   <mat-select formControlName="RefDocId" placeholder="Bank" #singleSelect
-                    (selectionChange)="onDoctorOneChange($event.value)">
+                    (selectionChange)="onDoctorOneChange($event.value)" >
                     <mat-option>
                       <ngx-mat-select-search [formControl]="doctoroneFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                     </mat-option>
+                    
                     <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
                       {{element.DoctorName}}
                       </mat-option>
                   </mat-select>
-                  <!-- <mat-icon matSuffix>cancel</mat-icon> -->
-                  <button mat-button><mat-icon style="width: 2px;margin-left:2px;" (click)="DocSelectdelete()">close</mat-icon></button>
+                  <!-- <mat-icon matSuffix (click)="DocSelectdelete()">cancel</mat-icon> -->
+                  <button mat-button><mat-icon matSuffix (click)="DocSelectdelete()">cancel</mat-icon></button>
                 </mat-form-field>
               
 
