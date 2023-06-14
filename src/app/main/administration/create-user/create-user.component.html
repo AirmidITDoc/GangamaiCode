@@ -1,1 +1,13 @@
-<p>create-user works!</p>
+<form [formGroup]="form">
+	<mat-form-field class="full-width">
+		<input matInput id="myInput" (keydown.enter)="focusMyNextInput()" formControlName="myInput"  placeholder="Focused Input">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+		<input matInput id="myInput1" (keydown.enter)="focusMyNextInput2()" formControlName="myInput1"  placeholder="Focused Input">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+		<input matInput id="myInput2" (keydown.enter)="focusMyNextInput3()" formControlName="myInput2"  placeholder="Focused Input">
+  </mat-form-field>
+  <button id="Btnsave"> Save </button>
+<br>
+ </form>
