@@ -13,7 +13,6 @@ import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-   
     msg: any;
 
     @ViewChild(MatSort) sort: MatSort;
@@ -65,16 +64,17 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             if (!this._modeofpaymentService.myform.get("Id").value) {
                 var m_data = {
                     insertModeofPaymentMaster: {
-                        ModeOfPayment: this._modeofpaymentService.myform
+                        modeOfPayment: this._modeofpaymentService.myform
                             .get("ModeOfPayment")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._modeofpaymentService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -87,18 +87,19 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateModeofPaymentMaster: {
-                        Id: this._modeofpaymentService.myform.get("Id").value,
-                        ModeOfPayment:
+                        id: this._modeofpaymentService.myform.get("Id").value,
+                        modeOfPayment:
                             this._modeofpaymentService.myform.get(
                                 "ModeOfPayment"
                             ).value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._modeofpaymentService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._modeofpaymentService

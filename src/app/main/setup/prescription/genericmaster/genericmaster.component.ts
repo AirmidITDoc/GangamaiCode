@@ -24,29 +24,27 @@ export class GenericmasterComponent implements OnInit {
 
     DSGenericMasterList = new MatTableDataSource<GenericMaster>();
 
-    constructor(
-        public _GenericService: GenericmasterService,
-       
-    ) {}
+    constructor(public _GenericService: GenericmasterService) {}
 
     ngOnInit(): void {
         this.getGenericMasterList();
     }
     onSearch() {
-      this.getGenericMasterList();
-  }
+        this.getGenericMasterList();
+    }
 
-  onSearchClear() {
-      this._GenericService.myformSearch.reset({
-          PrefixNameSearch: "",
-          IsDeletedSearch: "2",
-      });
-  }
+    onSearchClear() {
+        this._GenericService.myformSearch.reset({
+            PrefixNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+    }
     getGenericMasterList() {
         this._GenericService
             .getGenericMasterList()
             .subscribe(
-                (Menu) => (this.DSGenericMasterList.data = Menu as GenericMaster[])
+                (Menu) =>
+                    (this.DSGenericMasterList.data = Menu as GenericMaster[])
             );
     }
 
@@ -60,16 +58,16 @@ export class GenericmasterComponent implements OnInit {
             if (!this._GenericService.myForm.get("GenericId").value) {
                 var m_data = {
                     insertGenericMaster: {
-                        GenericName: this._GenericService.myForm
+                        genericName: this._GenericService.myForm
                             .get("GenericName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                      
+                        addedBy: 1,
                     },
                 };
                 this._GenericService
@@ -78,23 +76,22 @@ export class GenericmasterComponent implements OnInit {
                         this.msg = m_data;
                         this.getGenericMasterList();
                     });
-               
             } else {
                 var m_dataUpdate = {
                     updateGenericMaster: {
-                        GenericId:
+                        genericId:
                             this._GenericService.myForm.get("GenericId").value,
-                        GenericName: this._GenericService.myForm
+                        genericName: this._GenericService.myForm
                             .get("GenericName")
                             .value.trim(),
 
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                       
+                        updatedBy: 1,
                     },
                 };
                 this._GenericService
@@ -103,13 +100,11 @@ export class GenericmasterComponent implements OnInit {
                         this.msg = m_dataUpdate;
                         this.getGenericMasterList();
                     });
-                
             }
             this.onClear();
         }
     }
     onEdit(row) {
-       
         var m_data1 = {
             GenericId: row.GenericId,
             GenericName: row.GenericName.trim(),

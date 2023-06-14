@@ -3,7 +3,8 @@
 
 
         <mat-toolbar matDialogTitle class="mat-accent m-0">
-            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between">
+                <mat-icon color="Primary" title=" Feedback Form ">feedback</mat-icon>
                 <h3>Patient Feedback </h3>
                 <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
@@ -22,19 +23,19 @@
 
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
-                                <mat-label style="width:150px;">Patient
+                                <mat-label style="width:200px;">Patient
                                     Name :</mat-label>
                                 <mat-form-field appearance="outline">
 
-                                    <input matInput minlength="4" maxlength="100" style="font-size:18px;width:300px;"
-                                        placeholder="Enter your name here">
+                                    <input matInput minlength="4" maxlength="100" formControlName="nameInput"
+                                        style="font-size:18px;width:900px;" placeholder="Enter your name here">
 
                                 </mat-form-field>
 
-                                <mat-label style="width:150px;">Mobile Number</mat-label>
+                                <mat-label style="width:200px;">Mobile Number</mat-label>
                                 <mat-form-field appearance="outline" fxFlex>
                                     <input name="MobileNo" formControlName="MobileNo"
-                                        style="font-size:18px;width:300px;" placeholder="Mobile Number" minlength="10"
+                                        style="font-size:18px;width:900px;" placeholder="Mobile Number" minlength="10"
                                         maxlength="10" type="number">
                                 </mat-form-field>
                             </div>
@@ -250,8 +251,9 @@
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px"
                         fxLayoutAlign="space-between" style="padding:50px;font-size: 20px;height:200px">
-                        <mat-label>Leave a comment</mat-label>
-                        <mat-form-field class=" comment" style="width:800px; ">
+                        <mat-label style="width:300px;">Leave a comment</mat-label>
+                        <mat-form-field class=" comment" formControlName="commentText"
+                            style="width:800px;font-size: 20px;height:300px ">
                             <textarea matInput appearance="outline" placeholder=" Write your comment here.."></textarea>
                         </mat-form-field>
                     </div>

@@ -149,14 +149,14 @@ export class ParameterFormMasterComponent implements OnInit {
                         "parameterValues"
                     ).value) {
                         var data = {
+                            parameterId: 0,
                             parameterValues: val,
-                            ParameterID: 0,
-                            IsDefaultValue: 0,
-                            DefaultValue:
+                            isDefaultValue: 0,
+                            addedBy: 1,
+                            defaultValue:
                                 this._ParameterService.myform
                                     .get("DefaultValue")
                                     .value.trim() || "%",
-                           
                         };
                         data2.push(data);
                     }
@@ -166,58 +166,58 @@ export class ParameterFormMasterComponent implements OnInit {
 
                 var m_data = {
                     insertParameterMaster: {
-                        ParameterID: 0, // this._ParameterService.myform.get("ParameterID").value,
-                        ParameterShortName:
+                        parameterShortName:
                             this._ParameterService.myform
                                 .get("ParameterShortName")
                                 .value.trim() || "%",
-                        ParameterName:
+                        parameterName:
                             this._ParameterService.myform
                                 .get("ParameterName")
                                 .value.trim() || "%",
-                        PrintParameterName:
+                        printParameterName:
                             this._ParameterService.myform
                                 .get("PrintParameterName")
                                 .value.trim() || "%",
-                        UnitId:
+                        unitId:
                             this._ParameterService.myform.get("UnitId").value ||
                             "0",
-                        IsNumeric:
+                        isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                      
-                        IsPrintDisSummary: Boolean(
+                        addedBy: 1,
+                        isPrintDisSummary: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get(
                                     "IsPrintDisSummary"
                                 ).value
                             )
                         ),
-                        MethodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim(),
-                        ParaMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
+                        methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim(),
+                        paraMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
+                        parameterID: 0, // this._ParameterService.myform.get("ParameterID").value,
                     },
                     insertParameterMasterRangeWise: {
-                        ParaId:
+                        paraId:
                             "0" ||
                             this._ParameterService.myform.get("ParameterID")
                                 .value,
-                        SexId: 1, // this._ParameterService.myform.get("SexId").value,
-                        MinValue:
+                        sexId: 1, // this._ParameterService.myform.get("SexId").value,
+                        minValue:
                             this._ParameterService.myform
                                 .get("MinValue")
                                 .value.trim() || "%",
-                        Maxvalue:
+                        maxvalue:
                             this._ParameterService.myform
                                 .get("Maxvalue")
                                 .value.trim() || "%",
-                        IsDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
-                        Addedby: 218, // this.accountService.currentUserValue.user.id ,
+                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+                        addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
                     insertAssignParameterToDescriptives: data2,
                 };
@@ -228,7 +228,6 @@ export class ParameterFormMasterComponent implements OnInit {
                         this.msg = data;
                         this.msg = data;
                     });
-               
             } else {
                 if (this._ParameterService.myform.get("IsNumeric").value == 2) {
                     var data3 = [];
@@ -236,80 +235,81 @@ export class ParameterFormMasterComponent implements OnInit {
                         "ParameterValues"
                     ).value) {
                         var data4 = {
-                            ParameterValues: val,
-                            ParameterID:
+                            parameterId:
                                 this._ParameterService.myform.get("ParameterID")
                                     .value,
-                            DefaultValue:
+                            parameterValues: val,
+                            isDefaultValue: 0,
+                            addedBy: 1,
+                            defaultValue:
                                 this._ParameterService.myform
                                     .get("DefaultValue")
                                     .value.trim() || "%",
-                            
                         };
                         data3.push(data4);
                     }
                 }
                 var m_dataUpdate = {
                     updateParameterMaster: {
-                        ParameterID:
+                        parameterID:
                             this._ParameterService.myform.get("ParameterID")
                                 .value,
-                        ParameterShortName:
+                        parameterShortName:
                             this._ParameterService.myform
                                 .get("ParameterShortName")
                                 .value.trim() || "%",
-                        ParameterName:
+                        parameterName:
                             this._ParameterService.myform
                                 .get("ParameterName")
                                 .value.trim() || "%",
-                        PrintParameterName:
+                        printParameterName:
                             this._ParameterService.myform
                                 .get("PrintParameterName")
                                 .value.trim() || "%",
-                        UnitId: this._ParameterService.myform.get("UnitId")
+                        unitId: this._ParameterService.myform.get("UnitId")
                             .value,
-                        IsNumeric:
+                        isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                       
-                        IsPrintDisSummary: Boolean(
+                        updatedBy: 1,
+                        isPrintDisSummary: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get(
                                     "IsPrintDisSummary"
                                 ).value
                             )
                         ),
-                        MethodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim() || "%",
-                        ParaMultipleRange: "", // this._ParameterService.myform.get("ParaMultipleRange").value || "0"
+                        paraMultipleRange: "", // this._ParameterService.myform.get("ParaMultipleRange").value || "0",
+                        methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim() || "%",
                     },
                     deleteAssignParameterToRange: {
-                        ParaId: this._ParameterService.myform.get("ParameterID")
+                        paraId: this._ParameterService.myform.get("ParameterID")
                             .value,
                     },
                     insertParameterMasterRangeWise: {
                         // "PathparaRangeId":"0",//this._ParameterService.myform.get("PathparaRangeId").value,
-                        ParaId: this._ParameterService.myform.get("ParameterID")
+                        paraId: this._ParameterService.myform.get("ParameterID")
                             .value,
-                        SexId: 1, // this._ParameterService.myform.get("SexId").value,
-                        MinValue:
+                        sexId: 1, // this._ParameterService.myform.get("SexId").value,
+                        minValue:
                             this._ParameterService.myform
                                 .get("MinValue")
                                 .value.trim() || "%",
-                        Maxvalue:
+                        maxvalue:
                             this._ParameterService.myform
                                 .get("Maxvalue")
                                 .value.trim() || "%",
-                        IsDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
-                        Addedby: 218, // this.accountService.currentUserValue.user.id ,
+                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+                        addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
                     deleteAssignParameterToDescriptive: {
-                        ParameterId:
+                        parameterId:
                             this._ParameterService.myform.get("ParameterID")
                                 .value,
                     },
@@ -321,7 +321,6 @@ export class ParameterFormMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                     });
-                
             }
             this.onClear();
         }

@@ -36,6 +36,8 @@ export class FeedbackComponent implements OnInit {
 
     createFeedbackForm() {
         return this.formBuilder.group({
+            nameInput: this.formBuilder.control(null),
+            MobileNo: this.formBuilder.control(null),
             opdRadio: this.formBuilder.control(null),
             recpRadio: this.formBuilder.control(null),
             signRadio: this.formBuilder.control(null),
@@ -52,6 +54,7 @@ export class FeedbackComponent implements OnInit {
             canteenRadio: this.formBuilder.control(null),
             speechRadio: this.formBuilder.control(null),
             dietRadio: this.formBuilder.control(null),
+            commentText: this.formBuilder.control(null),
         });
     }
 

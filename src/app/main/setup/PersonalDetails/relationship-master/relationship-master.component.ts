@@ -74,17 +74,17 @@ export class RelationshipMasterComponent implements OnInit {
             if (!this._relationshipService.myform.get("RelationshipId").value) {
                 var m_data = {
                     relationshipMasterInsert: {
-                        RelationshipName: this._relationshipService.myform
+                        relationshipName_1: this._relationshipService.myform
                             .get("RelationshipName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: this.accountService.currentUserValue.user.id,
+                        isDeleted_2: Boolean(
                             JSON.parse(
                                 this._relationshipService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
-                        AddedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
                 console.log(m_data);
@@ -98,21 +98,21 @@ export class RelationshipMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     relationshipMasterUpdate: {
-                        RelationshipId:
+                        relationshipId:
                             this._relationshipService.myform.get(
                                 "RelationshipId"
                             ).value,
-                        RelationshipName: this._relationshipService.myform
+                        relationshipName: this._relationshipService.myform
                             .get("RelationshipName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._relationshipService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
-                        UpdatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: this.accountService.currentUserValue.user.id,
                     },
                 };
                 console.log(m_dataUpdate);

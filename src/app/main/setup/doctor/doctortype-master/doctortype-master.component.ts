@@ -56,10 +56,10 @@ export class DoctortypeMasterComponent implements OnInit {
             if (!this._doctortypeService.myform.get("Id").value) {
                 var m_data = {
                     doctortTypeMasterInsert: {
-                        DoctorType: this._doctortypeService.myform
+                        doctorType: this._doctortypeService.myform
                             .get("DoctorType")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._doctortypeService.myform.get("IsDeleted")
                                     .value
@@ -77,11 +77,11 @@ export class DoctortypeMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     doctorTypeMasterUpdate: {
-                        Id: this._doctortypeService.myform.get("Id").value,
-                        DoctorType:
+                        id: this._doctortypeService.myform.get("Id").value,
+                        doctorType:
                             this._doctortypeService.myform.get("DoctorType")
                                 .value,
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._doctortypeService.myform.get("IsDeleted")
                                     .value

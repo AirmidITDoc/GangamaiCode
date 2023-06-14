@@ -222,10 +222,10 @@ export class TestFormMasterComponent implements OnInit {
                     for (var val of this._TestService.myform.get("ParameterId1")
                         .value) {
                         var data = {
-                            parameterID: val,
-                            TestId: this._TestService.myform.get("TestId")
+                            testId: this._TestService.myform.get("TestId")
                                 .value,
-                            SubTestID: "0", //this._TestService.myform.get("SubTestID").value || "%",
+                            subTestID: "0", //this._TestService.myform.get("SubTestID").value || "%",
+                            parameterID: val,
                         };
                         data2.push(data);
                     }
@@ -236,43 +236,45 @@ export class TestFormMasterComponent implements OnInit {
                 var m_data = {
                     insertPathologyTestMaster: {
                         // "TestId":"0",
-                        TestName: this._TestService.myform
+                        testName: this._TestService.myform
                             .get("TestName")
                             .value.trim(),
-                        PrintTestName: this._TestService.myform
+                        printTestName: this._TestService.myform
                             .get("PrintTestName")
                             .value.trim(),
-                        CategoryId:
+                        categoryId:
                             this._TestService.myform.get("CategoryId").value,
-                        IsSubTest:
+                        isSubTest:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get("IsSubTest")
                                         .value
                                 )
                             ) || 0,
-                        TechniqueName:
+                        techniqueName:
                             this._TestService.myform
                                 .get("TechniqueName")
                                 .value.trim() || "%",
-                        MachineName:
+                        machineName:
                             this._TestService.myform
                                 .get("MachineName")
                                 .value.trim() || "%",
-                        SuggestionNote:
+                        suggestionNote:
                             this._TestService.myform
                                 .get("SuggestionNote")
                                 .value.trim() || "%",
-                        FootNote:
+                        footNote:
                             this._TestService.myform
                                 .get("FootNote")
                                 .value.trim() || "%",
-                        ServiceID:
+                        isDeleted: 0,
+                        addedBy: 1,
+                        serviceId:
                             this._TestService.myform.get("ServiceID").value,
-                        IsTemplateTest: parseInt(
+                        isTemplateTest: parseInt(
                             this._TestService.myform.get("IsTemplateTest").value
                         ),
-                        IsCategoryPrint:
+                        isCategoryPrint:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get(
@@ -280,7 +282,7 @@ export class TestFormMasterComponent implements OnInit {
                                     ).value
                                 )
                             ) || 0,
-                        IsPrintTestName:
+                        isPrintTestName:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get(
@@ -290,8 +292,8 @@ export class TestFormMasterComponent implements OnInit {
                             ) || 0,
                     },
                     pathologyTemplateTest: {
-                        TestId: "0",
-                        TemplateId: "0",
+                        testId: "0",
+                        templateId: "0",
                     },
                     pathTestDetailMaster: data2,
                 };
@@ -304,45 +306,47 @@ export class TestFormMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updatePathologyTestMaster: {
-                        TestId: this._TestService.myform.get("TestId").value,
-                        TestName: this._TestService.myform
+                        testId: this._TestService.myform.get("TestId").value,
+                        testName: this._TestService.myform
                             .get("TestName")
                             .value.trim(),
-                        PrintTestName: this._TestService.myform
+                        printTestName: this._TestService.myform
                             .get("PrintTestName")
                             .value.trim(),
-                        CategoryId:
+                        categoryId:
                             this._TestService.myform.get("CategoryId").value,
-                        IsSubTest:
+                        isSubTest:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get("IsSubTest")
                                         .value
                                 )
                             ) || 0,
-                        TechniqueName:
+                        techniqueName:
                             this._TestService.myform
                                 .get("TechniqueName")
                                 .value.trim() || "%",
-                        MachineName:
+                        machineName:
                             this._TestService.myform
                                 .get("MachineName")
                                 .value.trim() || "%",
-                        SuggestionNote:
+                        suggestionNote:
                             this._TestService.myform
                                 .get("SuggestionNote")
                                 .value.trim() || "%",
-                        FootNote:
+                        footNote:
                             this._TestService.myform
                                 .get("FootNote")
                                 .value.trim() || "%",
-                        ServiceID:
+                        isDeleted: 0,
+                        updatedBy: 1,
+                        serviceId:
                             this._TestService.myform.get("ServiceID").value ||
                             0,
-                        IsTemplateTest: parseInt(
+                        isTemplateTest: parseInt(
                             this._TestService.myform.get("IsTemplateTest").value
                         ),
-                        IsCategoryPrint:
+                        isCategoryPrint:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get(
@@ -350,7 +354,7 @@ export class TestFormMasterComponent implements OnInit {
                                     ).value
                                 )
                             ) || 0,
-                        IsPrintTestName:
+                        isPrintTestName:
                             Boolean(
                                 JSON.parse(
                                     this._TestService.myform.get(

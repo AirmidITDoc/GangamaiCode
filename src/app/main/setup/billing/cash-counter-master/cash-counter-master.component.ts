@@ -67,16 +67,17 @@ export class CashCounterMasterComponent implements OnInit {
             if (!this._cashcounterService.myform.get("CashCounterId").value) {
                 var m_data = {
                     cashCounterMasterInsert: {
-                        CashCounterName: this._cashcounterService.myform
+                        cashCounterName: this._cashcounterService.myform
                             .get("CashCounterName")
                             .value.trim(),
-                        Prefix: this._cashcounterService.myform
+                        prefix: this._cashcounterService.myform
                             .get("Prefix")
                             .value.trim(),
-                        BillNo: this._cashcounterService.myform
+                        billNo: this._cashcounterService.myform
                             .get("BillNo")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._cashcounterService.myform.get("IsDeleted")
                                     .value
@@ -94,25 +95,26 @@ export class CashCounterMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     cashCounterMasterUpdate: {
-                        CashCounterId:
+                        cashCounterId:
                             this._cashcounterService.myform.get("CashCounterId")
                                 .value,
-                        CashCounterName:
+                        cashCounterName:
                             this._cashcounterService.myform.get(
                                 "CashCounterName"
                             ).value,
-                        Prefix: this._cashcounterService.myform
+                        prefix: this._cashcounterService.myform
                             .get("Prefix")
                             .value.trim(),
-                        BillNo: this._cashcounterService.myform
+                        billNo: this._cashcounterService.myform
                             .get("BillNo")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._cashcounterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

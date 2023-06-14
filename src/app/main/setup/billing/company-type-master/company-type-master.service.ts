@@ -44,17 +44,11 @@ export class CompanyTypeMasterService {
     }
 
     public companyTypeMasterInsert(param) {
-        return this._httpClient.post(
-            "/api/Billing/CompanyTypeMasterSave",
-            param
-        );
+        return this._httpClient.post("Billing/CompanyTypeMasterSave", param);
     }
 
     public companyTypeMasterUpdate(param) {
-        return this._httpClient.post(
-            "/api/Billing/CompanyTypeMasterUpdate",
-            param
-        );
+        return this._httpClient.post("Billing/CompanyTypeMasterUpdate", param);
     }
 
     populateForm(param) {

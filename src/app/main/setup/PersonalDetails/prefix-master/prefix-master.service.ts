@@ -36,7 +36,9 @@ export class PrefixMasterService {
             AddedByName: [""],
         });
     }
-
+    initializeFormGroup() {
+        this.createPrefixForm();
+    }
     // get Perfix Master list
     public getPrefixMasterList(Param) {
         return this._httpClient.post(

@@ -145,17 +145,18 @@ export class DrugmasterComponent implements OnInit {
             if (!this._drugService.myform.get("DrugId").value) {
                 var m_data = {
                     insertDrugMaster: {
-                        DrugName: this._drugService.myform
+                        drugName: this._drugService.myform
                             .get("DrugName")
                             .value.trim(),
-                        GenericId:
+                        genericId:
                             this._drugService.myform.get("GenericId").value,
-                        ClassId: this._drugService.myform.get("ClassId").value,
-                        IsDeleted: Boolean(
+                        classId: this._drugService.myform.get("ClassId").value,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -166,17 +167,18 @@ export class DrugmasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateDrugMaster: {
-                        DrugId: this._drugService.myform.get("DrugId").value,
-                        DrugName:
+                        drugId: this._drugService.myform.get("DrugId").value,
+                        drugName:
                             this._drugService.myform.get("DrugName").value,
-                        GenericId:
+                        genericId:
                             this._drugService.myform.get("GenericId").value,
-                        ClassId: this._drugService.myform.get("ClassId").value,
-                        IsDeleted: Boolean(
+                        classId: this._drugService.myform.get("ClassId").value,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._drugService

@@ -105,13 +105,13 @@ export class CityMasterComponent implements OnInit {
         if (this._cityService.myform.valid) {
             if (!this._cityService.myform.get("CityId").value) {
                 var m_data = {
-                    stateMasterInsert: {
-                        StateName: this._cityService.myform
+                    cityMasterInsert: {
+                        cityName: this._cityService.myform
                             .get("CityName")
                             .value.trim(),
-                        CountryId:
-                            this._cityService.myform.get("StateId").value,
-                        IsDeleted: Boolean(
+                        stateId: this._cityService.myform.get("StateId").value,
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._cityService.myform.get("IsDeleted").value
                             )
@@ -125,18 +125,18 @@ export class CityMasterComponent implements OnInit {
                 });
             } else {
                 var m_dataUpdate = {
-                    stateMasterUpdate: {
-                        StateId: this._cityService.myform.get("StateId").value,
-                        StateName: this._cityService.myform
+                    cityMasterUpdate: {
+                        cityId: this._cityService.myform.get("StateId").value,
+                        cityName: this._cityService.myform
                             .get("CityName")
                             .value.trim(),
-                        CountryId:
-                            this._cityService.myform.get("StateId").value,
-                        IsDeleted: Boolean(
+                        stateId: this._cityService.myform.get("StateId").value,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._cityService.myform.get("IsDeleted").value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

@@ -14,7 +14,7 @@ import { fuseAnimations } from "@fuse/animations";
 })
 export class PrefixMasterComponent implements OnInit {
     GendercmbList: any = [];
-
+    msg: any;
     displayedColumns: string[] = [
         "PrefixID",
         "PrefixName",
@@ -68,9 +68,65 @@ export class PrefixMasterComponent implements OnInit {
         });
     }
 
-    onSubmit() {}
+    onSubmit() {
+        if (this._PrefixService.myform.valid) {
+            if (!this._PrefixService.myform.get("AreaId").value) {
+                var m_data = {
+                    prefixMasterInsert: {
+                        prefixName: this._PrefixService.myform
+                            .get("PrefixName")
+                            .value.trim(),
+                        sexID: this._PrefixService.myform.get("SexID").value,
+                        addedBy: 1, //this.accountService.currentUserValue.user.id,
+                        isDeleted: Boolean(
+                            JSON.parse(
+                                this._PrefixService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+                    },
+                };
 
-    onClear() {}
+                this._PrefixService
+                    .insertPrefixMaster(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getPrefixMasterList();
+                    });
+            } else {
+                var m_dataUpdate = {
+                    prefixMasterUpdate: {
+                        prefixID:
+                            this._PrefixService.myform.get("PrefixID").value,
+                        prefixName: this._PrefixService.myform
+                            .get("PrefixName")
+                            .value.trim(),
+                        sexID: this._PrefixService.myform.get("SexID").value,
+                        isDeleted: Boolean(
+                            JSON.parse(
+                                this._PrefixService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
+                        updatedBy: 1,
+                    },
+                };
+
+                this._PrefixService
+                    .updatePrefixMaster(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        this.getPrefixMasterList();
+                    });
+            }
+            this.onClear();
+        }
+    }
+
+    onClear() {
+        this._PrefixService.myform.reset({ IsDeleted: "false" });
+        this._PrefixService.initializeFormGroup();
+    }
 }
 
 export class PrefixMaster {

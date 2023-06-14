@@ -71,10 +71,11 @@ export class MaritalstatusMasterComponent implements OnInit {
             if (!this._maritalService.myform.get("MaritalStatusId").value) {
                 var m_data = {
                     maritalStatusMasterInsert: {
-                        MaritalStatusName: this._maritalService.myform
+                        maritalStatusName: this._maritalService.myform
                             .get("MaritalStatusName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._maritalService.myform.get("IsDeleted")
                                     .value
@@ -92,18 +93,19 @@ export class MaritalstatusMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     maritalStatusMasterUpdate: {
-                        MaritalStatusId:
+                        maritalStatusId:
                             this._maritalService.myform.get("MaritalStatusId")
                                 .value,
-                        MaritalStatusName: this._maritalService.myform
+                        maritalStatusName: this._maritalService.myform
                             .get("MaritalStatusName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._maritalService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

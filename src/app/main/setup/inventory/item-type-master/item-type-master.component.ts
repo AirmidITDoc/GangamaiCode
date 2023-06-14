@@ -59,16 +59,17 @@ export class ItemTypeMasterComponent implements OnInit {
         if (this._itemtypeService.myform.valid) {
             if (!this._itemtypeService.myform.get("ItemTypeId").value) {
                 var m_data = {
-                    dischargeTypeMasterInsert: {
-                        ItemTypeName: this._itemtypeService.myform
+                    insertItemTypeMaster: {
+                        itemTypeName: this._itemtypeService.myform
                             .get("ItemTypeName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemtypeService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -80,19 +81,20 @@ export class ItemTypeMasterComponent implements OnInit {
                     });
             } else {
                 var m_dataUpdate = {
-                    dischargeTypeMasterUpdate: {
-                        ItemTypeId:
+                    updateItemTypeMaster: {
+                        itemTypeId:
                             this._itemtypeService.myform.get("ItemTypeId")
                                 .value,
-                        ItemTypeName: this._itemtypeService.myform
+                        itemTypeName: this._itemtypeService.myform
                             .get("ItemTypeName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._itemtypeService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

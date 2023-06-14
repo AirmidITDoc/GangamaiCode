@@ -60,15 +60,16 @@ export class TaxMasterComponent implements OnInit {
             if (!this._taxmasterService.myform.get("Id").value) {
                 var m_data = {
                     insertTaxMaster: {
-                        TaxNature: this._taxmasterService.myform
+                        taxNature: this._taxmasterService.myform
                             .get("TaxNature")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._taxmasterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
 
@@ -81,16 +82,17 @@ export class TaxMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateTaxMaster: {
-                        Id: this._taxmasterService.myform.get("Id").value,
-                        TaxNature: this._taxmasterService.myform
+                        id: this._taxmasterService.myform.get("Id").value,
+                        taxNature: this._taxmasterService.myform
                             .get("TaxNature")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._taxmasterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
 

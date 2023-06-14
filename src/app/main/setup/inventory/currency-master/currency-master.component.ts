@@ -40,7 +40,7 @@ export class CurrencyMasterComponent implements OnInit {
 
     onSearchClear() {
         this._currencyService.myformSearch.reset({
-          CurrencyNameSearch: "",
+            CurrencyNameSearch: "",
             IsDeletedSearch: "2",
         });
     }
@@ -62,15 +62,16 @@ export class CurrencyMasterComponent implements OnInit {
             if (!this._currencyService.myform.get("CurrencyId").value) {
                 var m_data = {
                     insertCurrencyMaster: {
-                        CurrencyName: this._currencyService.myform
+                        currencyName: this._currencyService.myform
                             .get("CurrencyName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._currencyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        addedBy: 1,
                     },
                 };
                 // console.log(m_data);
@@ -83,18 +84,19 @@ export class CurrencyMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateCurrencyMaster: {
-                        CurrencyId:
+                        currencyId:
                             this._currencyService.myform.get("CurrencyId")
                                 .value,
-                        CurrencyName: this._currencyService.myform
+                        currencyName: this._currencyService.myform
                             .get("CurrencyName")
                             .value.trim(),
-                        IsDeleted: Boolean(
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._currencyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
+                        updatedBy: 1,
                     },
                 };
                 this._currencyService

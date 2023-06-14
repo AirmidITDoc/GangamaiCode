@@ -129,37 +129,38 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             if (!this._subtpacompanyService.myform.get("SubCompanyId").value) {
                 var m_data = {
                     subTpaCompanyMasterInsert: {
-                        CompTypeId:
+                        compTypeId:
                             this._subtpacompanyService.myform.get("CompTypeId")
                                 .value,
-                        CompanyName: this._subtpacompanyService.myform
+                        companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address:
+                        address:
                             this._subtpacompanyService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        City:
+                        city:
                             this._subtpacompanyService.myform
                                 .get("City")
                                 .value.trim() || "%",
-                        PinNo:
+                        pinNo:
                             this._subtpacompanyService.myform
                                 .get("PinNo")
                                 .value.trim() || "0",
-                        PhoneNo:
+                        phoneNo:
                             this._subtpacompanyService.myform
                                 .get("PhoneNo")
                                 .value.trim() || "0",
-                        MobileNo:
+                        mobileNo:
                             this._subtpacompanyService.myform
                                 .get("MobileNo")
                                 .value.trim() || "0",
-                        FaxNo:
+                        faxNo:
                             this._subtpacompanyService.myform
                                 .get("FaxNo")
                                 .value.trim() || "0",
-                        IsDeleted: Boolean(
+                        addedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
                                     "IsDeleted"
@@ -167,18 +168,18 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             )
                         ),
 
-                        IsCancelled: Boolean(
+                        isCancelled: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
                                     "IsCancelled"
                                 ).value
                             )
                         ),
-                        IsCancelledBy:
+                        isCancelledBy:
                             this._subtpacompanyService.myform.get(
                                 "IsCancelledBy"
                             ).value || "0",
-                        IsCancelledDate:
+                        isCancelledDate:
                             this._subtpacompanyService.myform.get(
                                 "IsCancelledDate"
                             ).value || "01/01/1900",
@@ -194,41 +195,42 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     subTpaCompanyMasterUpdate: {
-                        SubCompanyId:
+                        subCompanyID:
                             this._subtpacompanyService.myform.get(
                                 "SubCompanyId"
                             ).value,
-                        CompTypeId:
+                        compTypeId:
                             this._subtpacompanyService.myform.get("CompTypeId")
                                 .value,
-                        CompanyName: this._subtpacompanyService.myform
+                        companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address:
+                        address:
                             this._subtpacompanyService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        City:
+                        city:
                             this._subtpacompanyService.myform
                                 .get("City")
                                 .value.trim() || "%",
-                        PinNo:
+                        pinNo:
                             this._subtpacompanyService.myform
                                 .get("PinNo")
                                 .value.trim() || "0",
-                        PhoneNo:
+                        phoneNo:
                             this._subtpacompanyService.myform
                                 .get("PhoneNo")
                                 .value.trim() || "0",
-                        MobileNo:
+                        mobileNo:
                             this._subtpacompanyService.myform
                                 .get("MobileNo")
                                 .value.trim() || "0",
-                        FaxNo:
+                        faxNo:
                             this._subtpacompanyService.myform
                                 .get("FaxNo")
                                 .value.trim() || "0",
-                        IsDeleted: Boolean(
+                        updatedBy: 1,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
                                     "IsDeleted"
@@ -236,18 +238,18 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             )
                         ),
 
-                        IsCancelled: Boolean(
+                        isCancelled: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
                                     "IsCancelled"
                                 ).value
                             )
                         ),
-                        IsCancelledBy:
+                        isCancelledBy:
                             this._subtpacompanyService.myform.get(
                                 "IsCancelledBy"
                             ).value || "0",
-                        IsCancelledDate:
+                        isCancelledDate:
                             this._subtpacompanyService.myform.get(
                                 "IsCancelledDate"
                             ).value || "01/01/1900",
