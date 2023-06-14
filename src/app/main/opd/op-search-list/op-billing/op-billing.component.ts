@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -161,7 +161,7 @@ export class OPBillingComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   resBillId: Post;
-  renderer: any;
+  
 
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -171,6 +171,7 @@ export class OPBillingComponent implements OnInit {
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
+    private renderer: Renderer2,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private dialogRef: MatDialogRef<OPBillingComponent>,
@@ -197,6 +198,15 @@ export class OPBillingComponent implements OnInit {
       });
   }
 
+  focusMyNextInput() {
+    this.renderer.selectRootElement('#Price').focus();
+
+  }
+
+  focusMyNextInput1() {
+    this.renderer.selectRootElement('#qty').focus();
+
+  }
   // doctorone filter code  
   private filterDoctor() {
 
@@ -345,6 +355,8 @@ export class OPBillingComponent implements OnInit {
 
 
     if (obj.IsDocEditable) {
+
+      // this.renderer.selectRootElement('#DoctorID').focus();
       this.registeredForm.get('DoctorID').reset();
       this.registeredForm.get('DoctorID').setValidators([Validators.required]);
       this.registeredForm.get('DoctorID').enable();

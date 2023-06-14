@@ -42,14 +42,14 @@
                                 <mat-card fxFlex.gt-sm="100%" fxFlex
                                     style="padding: 0 5px; height: fit-content; background-color: white;">
                                     &nbsp;
-                                    <form [formGroup]="registeredForm" style="display: flex;">
+                                    <form [formGroup]="registeredForm" style="display: flex;"   #f="ngForm" #aForm>
 
                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
                                             
                                             <mat-form-field appearance="outline" style="width: 30%;">
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                                    (input)="getServiceListCombobox()" required #ft01 (keyup.enter)="keytab($event)" (keydown)="onKeydown($event)">
+                                                    (input)="getServiceListCombobox()" required (keydown.enter)="focusMyNextInput()" id="myInput" >
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
@@ -73,7 +73,7 @@
                                             <mat-form-field appearance="outline" style="width: 7%;" #Price>
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice"
-                                                    (keyup)="calculateTotalAmt()" formControlName="price" required>
+                                                    (keyup)="calculateTotalAmt()" formControlName="price" required id="Price" (keydown.enter)="focusMyNextInput1()">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
@@ -82,7 +82,7 @@
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty"
-                                                    (keyup)="calculateTotalAmt()" formControlName="qty" required>
+                                                    (keyup)="calculateTotalAmt()" formControlName="qty" required id="qty">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
                                                     Qty is required</mat-error>
@@ -118,10 +118,10 @@
                                                 </mat-form-field> -->
 
 
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <mat-select formControlName="DoctorID" placeholder="Bank"
-                                                        #singleSelect required>
+                                                        #singleSelect required  >
                                                       
                                                         <mat-option>
                                                             <ngx-mat-select-search [formControl]="doctorFilterCtrl"
