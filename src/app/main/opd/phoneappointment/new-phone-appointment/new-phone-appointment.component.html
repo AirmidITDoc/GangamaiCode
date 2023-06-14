@@ -27,64 +27,9 @@
   <!-- / SELECTED BAR -->
 
   <!-- CONTENT -->
-  <div class="content" style="border: blue;">
-
-    <div class="profile" fxLayoutAlign="center center" style="height: 100%;">
-      <div fxlayout="row">
-        <div style="width:95%;" fxLayout="column" fxFlex="100">
-
-          <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto;margin-top: 7px;margin-left: 5px;height: 260px !important;">
-
-            <ng-container matColumnDef="AppDate">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Appointment Date
-              </mat-header-cell>
-              <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                {{contact.AppDate}}
-              </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="Cnt">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Count
-              </mat-header-cell>
-              <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                {{contact.Cnt}}
-              </mat-cell>
-            </ng-container>
-
-
-            <ng-container matColumnDef="loading">
-              <mat-footer-cell *matFooterCellDef colspan="6">
-                <!-- loading data... -->
-                <mat-spinner [color]="blue" [diameter]="20"></mat-spinner>
-              </mat-footer-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="noData">
-              <mat-footer-cell *matFooterCellDef colspan="6">
-                no data found...
-              </mat-footer-cell>
-            </ng-container>
-
-            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-            </mat-header-row>
-            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-              [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-            </mat-footer-row>
-            <mat-footer-row *matFooterRowDef="['noData']"
-              [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-            </mat-footer-row>
-          </mat-table>
-
-          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons style=" float: left;">
-          </mat-paginator>
-        </div>
-      </div>
-    </div>
-
+  <div class="content" >
     &nbsp;  &nbsp;
     <div class="center " style="background-color:#ffffff;">
-
       <form [formGroup]="personalFormGroup">
         <div layout="row" layout-xs="column" fxLayout="column" fxFlex="100"
         style="margin-top: 7px; ">

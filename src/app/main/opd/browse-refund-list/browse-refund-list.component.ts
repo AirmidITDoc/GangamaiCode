@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { BrowseRefundlistService } from './browse-refundlist.service';
 import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
 import { fuseAnimations } from '@fuse/animations';
-import { BrowseIpdreturnadvanceReceipt } from 'app/main/ipd/ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
 import * as converter from 'number-to-words';
 
 
@@ -318,7 +317,7 @@ export class BrowseRefundListComponent implements OnInit {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
     this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -499,3 +498,98 @@ EmailId:any;
   }
 }
 
+
+
+export class BrowseIpdreturnadvanceReceipt
+{
+    PaymentId: Number;
+    BillNo: Number;
+    RegNo: number;
+    RegId: number;
+    PatientName: string;
+    FirstName: string;
+    MiddleName: string; 
+    LastName: string;
+    TotalAmt: number;
+    BalanceAmt: number;
+    GenderName:string;
+    Remark: string;
+    PaymentDate: any;
+    CashPayAmount : number;
+    ChequePayAmount : number;
+    CardPayAmount : number;
+    AdvanceUsedAmount: number;
+    AdvanceId:number;
+    RefundId: number;
+    IsCancelled: boolean;
+    AddBy: number;
+    UserName:string;
+    PBillNo: string;
+    ReceiptNo: string;
+    TransactionType:number;
+    PayDate:Date;
+    PaidAmount: number;
+    NEFTPayAmount:number;
+    PayTMAmount: number;
+    AddedBy:string;
+    HospitalName:string;
+    RefundAmount:number;
+    RefundNo:number;
+    HospitalAddress:string;
+    Phone:any;
+    EmailId:any;
+     Age:number;
+     AgeYear:number;
+     IPDNo:any;
+     NetPayableAmt:any;
+    /**
+     * Constructor
+     *
+     * @param BrowseIpdreturnadvanceReceipt
+     */
+    constructor(BrowseIpdreturnadvanceReceipt) {
+        {
+            this.PaymentId = BrowseIpdreturnadvanceReceipt.PaymentId || '';
+            this.BillNo = BrowseIpdreturnadvanceReceipt.BillNo || '';
+            this.RegNo = BrowseIpdreturnadvanceReceipt.RegNo || '';
+            this.RegId = BrowseIpdreturnadvanceReceipt.RegId || '';
+            this.PatientName = BrowseIpdreturnadvanceReceipt.PatientName || '';
+            this.FirstName = BrowseIpdreturnadvanceReceipt.FirstName || '';
+            this.MiddleName = BrowseIpdreturnadvanceReceipt.MiddleName || '';
+            this.LastName = BrowseIpdreturnadvanceReceipt.LastName || '';
+            this.TotalAmt = BrowseIpdreturnadvanceReceipt.TotalAmt || '';
+            this.BalanceAmt = BrowseIpdreturnadvanceReceipt.BalanceAmt || '';
+            this.Remark = BrowseIpdreturnadvanceReceipt.Remark || '';
+            this.PaymentDate = BrowseIpdreturnadvanceReceipt.PaymentDate || '';
+            this.CashPayAmount = BrowseIpdreturnadvanceReceipt.CashPayAmount || '';
+            this.ChequePayAmount = BrowseIpdreturnadvanceReceipt.ChequePayAmount || '';
+            this.CardPayAmount = BrowseIpdreturnadvanceReceipt.CardPayAmount || '';
+            this.AdvanceUsedAmount = BrowseIpdreturnadvanceReceipt.AdvanceUsedAmount || '';
+            this.AdvanceId = BrowseIpdreturnadvanceReceipt.AdvanceId || '';
+            this.RefundId = BrowseIpdreturnadvanceReceipt.RefundId || '';
+            this.IsCancelled = BrowseIpdreturnadvanceReceipt.IsCancelled || '';
+            this.AddBy = BrowseIpdreturnadvanceReceipt.AddBy || '';
+            this.UserName = BrowseIpdreturnadvanceReceipt.UserName || '';
+            this.ReceiptNo = BrowseIpdreturnadvanceReceipt.ReceiptNo || '';
+            this.PBillNo = BrowseIpdreturnadvanceReceipt.PBillNo || '';
+            this.TransactionType = BrowseIpdreturnadvanceReceipt.TransactionType || '';
+            this.PayDate = BrowseIpdreturnadvanceReceipt.PayDate || '';
+            this.PaidAmount = BrowseIpdreturnadvanceReceipt.PaidAmount || '';
+            this.NEFTPayAmount = BrowseIpdreturnadvanceReceipt.NEFTPayAmount || '';
+            this.PayTMAmount = BrowseIpdreturnadvanceReceipt.PayTMAmount || '';
+            this.HospitalName=BrowseIpdreturnadvanceReceipt.HospitalName;
+            this.RefundAmount = BrowseIpdreturnadvanceReceipt.  RefundAmount|| '';
+            this. RefundNo = BrowseIpdreturnadvanceReceipt. RefundNo|| ''; 
+            this. GenderName = BrowseIpdreturnadvanceReceipt. GenderName || ''; 
+            this. AddedBy = BrowseIpdreturnadvanceReceipt. AddedBy|| '';
+            this. HospitalAddress = BrowseIpdreturnadvanceReceipt. HospitalAddress || '';
+           this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
+           this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
+           this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
+           this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
+
+           this.NetPayableAmt=BrowseIpdreturnadvanceReceipt.NetPayableAmt || 0;
+        }
+
+    }
+}

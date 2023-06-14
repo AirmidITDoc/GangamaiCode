@@ -283,7 +283,7 @@ convertToWord(e){
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=5';
     this._IPBrowseRefundofBillService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy','BillDate']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','NetPayableAmt','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy','BillDate']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -298,7 +298,7 @@ convertToWord(e){
         // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
         // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
         // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
-        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
         // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
@@ -499,6 +499,7 @@ export class BrowseIpdreturnadvanceReceipt
      HospitalAddress:any;
      Phone:any;
      EmailId:any;
+     
 
     /**
      * Constructor

@@ -74,7 +74,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
        // let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','TariffName','CompanyName','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby']; // resData[0].TempKeys;
-       let keysArray = ['HospitalName','HospAddress','Phone','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
+       let keysArray = ['HospitalName','HospAddress','Phone','EmailId','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
        'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
@@ -84,6 +84,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 debugger;
         // var objPrintWordInfo = this.reportPrintObj[0];
         this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
+        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
           this.print();
@@ -114,6 +115,12 @@ debugger;
 
   onClear_IpdAdvance(){
     
+  }
+
+  transform1(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+    return value;
   }
 
   convertToWord(e) {

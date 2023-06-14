@@ -675,6 +675,7 @@ private filterExamination(){
   }
 
   getDrugList() {
+    debugger
     this._opSearchListService.getDrugList('%').subscribe((data: ILookup[]) => {
       this.lookups = data;
       this.drugList1 = data;
@@ -1053,8 +1054,8 @@ if(this.prescriptionData.length == 0){
       
       this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-       this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDocName));
-       this.printTemplate =  this.printTemplate.replace('StrOPDDate', this.transform1(this.reportPrintObj.VisitDate));
+      //  this.printTemplate =  this.printTemplate.replace('StrConsultantDr', (this.reportPrintObj.ConsultantDocName));
+      //  this.printTemplate =  this.printTemplate.replace('StrOPDDate', this.transform1(this.reportPrintObj.VisitDate));
     //   var strrowslist = "";
     //   for (let i = 1; i <= this.reportPrintObjList.length; i++) {
     //     var objreportPrint = this.reportPrintObjList[i - 1];

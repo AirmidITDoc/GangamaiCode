@@ -27,8 +27,8 @@ import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-con
 import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
-import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
 import { FeedbackComponent } from "./feedback/feedback.component";
+
 // const jsPDF = require('jspdf');
 
 @Component({
@@ -169,16 +169,16 @@ export class AppointmentComponent implements OnInit {
     }
 
     appointment() {
-        const dialogRef = this._matDialog.open(PatientAppointmentComponent, {
-            maxWidth: "95vw",
-            height: "800px",
-            width: "100%",
-            // height: "100%"
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            // console.log('The dialog was closed - Insert Action', result);
-            this.getVisitList();
-        });
+        // const dialogRef = this._matDialog.open(PatientAppointmentComponent, {
+        //     maxWidth: "95vw",
+        //     height: "800px",
+        //     width: "100%",
+        //     // height: "100%"
+        // });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     // console.log('The dialog was closed - Insert Action', result);
+        //     this.getVisitList();
+        // });
     }
     onShow() {
         // this.getVisitList();
