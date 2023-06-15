@@ -352,17 +352,17 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
-    // newappointmentwithBill() {
-    //   const dialogRef = this._matDialog.open(AppointmentWithBillComponent,
-    //     {
-    //       maxWidth: "95vw",
-    //       maxHeight: "95vh", width: '100%', height: "100%"
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    //     //  this.getRadiologytemplateMasterList();
-    //   });
-    // }
+    PatientAppointment() {
+      const dialogRef = this._matDialog.open(PatientAppointmentComponent,
+        {
+          maxWidth: "95vw",
+          maxHeight: "95vh", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        //  this.getRadiologytemplateMasterList();
+      });
+    }
 
     onExport(exprtType) {
         // debugger;

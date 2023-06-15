@@ -12,4 +12,5 @@ export class PatientAppointmentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  
 }

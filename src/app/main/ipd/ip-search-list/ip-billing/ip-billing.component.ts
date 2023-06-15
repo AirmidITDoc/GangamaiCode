@@ -538,8 +538,6 @@ export class IPBillingComponent implements OnInit {
    }
  
    getNetAmount() {
- 
-     debugger
      this.netPaybleAmt = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
      // this.netPaybleAmt = parseInt(this.netPaybleAmt);
      // this.ConAmt = parseInt(this.netPaybleAmt);
@@ -548,8 +546,6 @@ export class IPBillingComponent implements OnInit {
      console.log(this.FinalAmountpay);
    //  Swal.fire("Final Amount is",this.FinalAmountpay +"And DiscAmount is" +this.concessionAmtOfNetAmt);
    //  Swal.fire("DiscAmount",this.concessionAmtOfNetAmt);
- 
-     
  
      if (this.concessionAmtOfNetAmt > 0) {
        this.registeredForm.get('ConcessionId').reset();

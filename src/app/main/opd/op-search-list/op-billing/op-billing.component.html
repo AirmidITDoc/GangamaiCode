@@ -406,19 +406,32 @@
                                 <form class="example-form" [formGroup]="registeredForm">
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                                        <div style="margin-bottom: 7px;">
+                                        <div
+                                        style="float: left;float: left;font-size: 12px bold;width:100%; color: black; ">
+                                        <span>Total Amount</span>
+                                        <mat-form-field appearance="outline"
+                                            style="width:100%;color: rgb(3, 68, 65);font-weight: bolder;">
+                                            <input matInput [(ngModel)]="b_TotalChargesAmount" name="b_TotalChargesAmount"  formControlName="TotallistAmount"
+                                            readonly>
+                                            <mat-error
+                                                *ngIf="registeredForm.get('TotallistAmount').invalid && registeredForm.get('TotallistAmount').touched">
+                                                FinalAmt is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                        <!-- <div style="float: left;float: left;font-size: 12px bold;width:100%; color: black; ">>
                                             <div fxLayoutAlign=" start  end"
                                                 style="margin-right:0px;float: left;font-size: 12px bold; color: black;">
                                                 Total Amount:</div>
                                             
-                                            <!-- <mat-form-field appearance="outline" style="width: 120px;">
-                                                <input matInput [(ngModel)]="totalAmtOfNetAmt" name="totalAmtOfNetAmt"  formControlName="TotallistAmount"
+                                            <mat-form-field appearance="outline" style="width: 120px; color: blue;">
+                                                <input matInput [(ngModel)]="b_TotalChargesAmount" name="b_TotalChargesAmount"  formControlName="TotallistAmount"
                                                     readonly>
-                                            </mat-form-field> -->
+                                            </mat-form-field>
 
                                             &nbsp;<span class="net-amt-value">{{getNetAmtSum(dataSource.data)|
                                                 currency:'INR'}}</span>
-                                        </div>
+                                        </div> -->
 
                                         <div>
                                             <div fxLayout="column"
@@ -454,16 +467,6 @@
                                                         (keyup)="calculateDiscamtfinal()">
                                                 </mat-form-field>
                                             </div>
-
-                                            <!-- <div style="margin-bottom: 5px;margin-top: 2px;">
-                                                    <div fxLayoutAlign=" start  end"
-                                                        style="margin-right:0px;float: left;font-size: 12px bold; color: black;">
-                                                        Net Amount:</div>
-                                                    &nbsp;&nbsp;&nbsp;<span
-                                                        class="net-amt-value">{{getNetAmtSum(dataSource.data)|
-                                                        currency:'INR'}}</span>
-                                                </div> -->
-
                                             <div
                                                 style="float: left;float: left;font-size: 12px bold;width:100%; color: black; ">
                                                 <span>Net Payable Amount </span>
