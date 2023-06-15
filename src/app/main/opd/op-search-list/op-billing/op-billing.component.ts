@@ -111,7 +111,7 @@ export class OPBillingComponent implements OnInit {
   formDiscPersc: any;
   serviceId: number;
   serviceName: String;
-
+  b_TotalChargesAmount:any;
   DoctornewId: any;
   ChargesDoctorname: any;
   finalAmt: any;
@@ -468,7 +468,9 @@ export class OPBillingComponent implements OnInit {
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
-    this.TotalnetPaybleAmt = netAmt;
+    // this.TotalnetPaybleAmt = netAmt;
+    this.b_TotalChargesAmount=netAmt;
+    console.log(this.b_TotalChargesAmount);
     // this.TotalnetPaybleAmt= this.netPaybleAmt.toString();
 
     return netAmt
@@ -478,10 +480,8 @@ export class OPBillingComponent implements OnInit {
     value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
     return value;
   }
-  getNetAmount() {
-
-    this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
+  getTotalNetAmount() {
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
   }
 
   tableElementChecked(event, element) {
@@ -584,13 +584,13 @@ export class OPBillingComponent implements OnInit {
   getChargesList() {
     this.chargeslist = [];
     this.dataSource.data = [];
-    // console.log( this.dataSource.data.length);
     this.isLoading = 'list-loading';
     let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=0 Order by Chargesid"
     this._opappointmentService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as ChargesList[];
       this.getNetAmtSum(this.dataSource.data);
+      this.getTotalNetAmount();
       if (this.dataSource.data.length > 0) {
         this.onSaveOPBill();
       }
@@ -607,8 +607,8 @@ export class OPBillingComponent implements OnInit {
     let disamt = this.registeredForm.get('concessionAmt').value;
     debugger;
     if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
-      this.FinalAmt = this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;
-      this.netPaybleAmt1 = this.netPaybleAmt;
+      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
     else {
       this.FinalAmt = this.TotalnetPaybleAmt;
@@ -697,27 +697,13 @@ export class OPBillingComponent implements OnInit {
       };
       this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
       this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-
-      debugger;
       this.flagSubmit = result.IsSubmitFlag
-
-      console.log(this.paidamt, this.balanceamt);
-      //
       let InsertBillUpdateBillNoObj = {};
-
       if (this.concessionDiscPer > 0) {
         this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
       } else {
         this.FinalAmt = this.TotalnetPaybleAmt;
       }
-
-      // if(!this.flagSubmit){
-      //   this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-      //   // if (this.concessionDiscPer > 0) {
-      //   //   this.balanceamt = this.FinalAmt;
-      //   // }
-      // }
 
       let InterimOrFinal = 1;
 
@@ -731,8 +717,8 @@ export class OPBillingComponent implements OnInit {
       InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-        InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+      InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -777,10 +763,7 @@ export class OPBillingComponent implements OnInit {
         });
       }
       else {
-        debugger;
-        // console.log("Procced with Credit bill");
-        // console.log(this.paidamt, this.balanceamt);
-
+        console.log("Procced with Credit bill");
         InterimOrFinal = 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
@@ -799,7 +782,7 @@ export class OPBillingComponent implements OnInit {
             Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
               if (result.isConfirmed) {
                 let m = response;
-                //  this.getPrint(m);
+                this.getPrint(m);
                 this._matDialog.closeAll();
 
               }
@@ -855,7 +838,7 @@ export class OPBillingComponent implements OnInit {
 
     }
     this.onClearServiceAddList();
-
+    this.getTotalNetAmount();
   }
 
 
@@ -864,7 +847,6 @@ export class OPBillingComponent implements OnInit {
     console.log('controll===', value);
     this.registeredForm.get(`drugController$`).setValue(value);
     console.log(this.registeredForm.get(`drugController$`).value);
-
   }
 
   displayWith(lookup) {
@@ -883,7 +865,6 @@ export class OPBillingComponent implements OnInit {
   }
 
   onClearServiceAddList() {
-
     this.registeredForm.get('SrvcName').reset();
     this.registeredForm.get('price').reset();
     this.registeredForm.get('qty').reset('1');
@@ -895,37 +876,28 @@ export class OPBillingComponent implements OnInit {
   }
 
   calculateTotalAmt() {
-
     if (this.b_price && this.b_qty) {
       this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
       this.b_netAmount = this.b_totalAmount;
-
       this.calculatePersc();
     }
   }
 
   calculatePersc() {
     this.tettotalAmount = parseInt(this.b_netAmount);
-
-    debugger;
     let beforeamt = this.b_totalAmount;
     let disper = this.registeredForm.get('discPer').value;
-
     if (disper == null) {
       this.registeredForm.get('netAmount').setValue(beforeamt);
     }
     else {
-
       let amt = parseInt(this.b_disAmount);
-
       let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
       if (this.formDiscPersc) {
         let discAmt = (netAmt * parseInt(this.formDiscPersc)) / 100;
         this.b_disAmount = Math.round(discAmt).toString();
         this.b_netAmount = Math.round(netAmt - discAmt).toString();
         this.TotalnetPaybleAmt = this.b_netAmount;
-
-
       } else if (amt > 0) {
         this.b_netAmount = Math.round(netAmt - amt).toString();
         this.TotalnetPaybleAmt = this.b_netAmount;
@@ -936,19 +908,12 @@ export class OPBillingComponent implements OnInit {
 
 
   calculatePersc1() {
-    debugger;
     this.concessionAmtOfNetAmt = 0;
-
-    // if()
-
-
-    let netAmt = this.totalAmtOfNetAmt;
-
+    let netAmt = this.b_TotalChargesAmount;
     if (this.concessionDiscPer) {
-      let discAmt1 = (netAmt * parseInt(this.concessionDiscPer)) / 100;
+      let discAmt1 = (this.b_TotalChargesAmount * parseInt(this.concessionDiscPer)) / 100;
       this.concessionAmtOfNetAmt = Math.round(discAmt1).toString();
-      this.TotalnetPaybleAmt = Math.round(netAmt - discAmt1).toString();
-      // console.log(this.TotalnetPaybleAmt);
+      this.TotalnetPaybleAmt = Math.round(this.b_TotalChargesAmount - discAmt1).toString();
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
       this.TotalnetPaybleAmt = parseInt(this.TotalnetPaybleAmt);
       this.Consession = false;
@@ -964,26 +929,20 @@ export class OPBillingComponent implements OnInit {
     if (this.concessionDiscPer <= 0) {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
+      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = false;
     }
 
-    this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
-    this.netPaybleAmt1 = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+    this.netPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
+    this.netPaybleAmt1 = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
     this.TotalnetPaybleAmt = this.netPaybleAmt;
-    console.log(this.netPaybleAmt);
-    console.log(this.netPaybleAmt1);
     this.registeredForm.get('FinalAmt').setValue(this.netPaybleAmt);
-    console.log(this.TotalnetPaybleAmt);
-
-
   }
 
   calculatechargesDiscamt() {
     debugger;
     let d = this.registeredForm.get('discAmount').value;
-
     this.disamt = this.registeredForm.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
     if (parseInt(this.disamt) > 0) {
@@ -994,44 +953,30 @@ export class OPBillingComponent implements OnInit {
         this.registeredForm.get('netAmount').setValue(tot);
       }
     } else if (d == null) {
-
       this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
-      
       this.Consession = true;
     }
-    //   else
-    //     this.TotalnetPaybleAmt = this.disamt;
-    // }
   }
-
-
 
   calculateDiscamtfinal() {
     let d = this.registeredForm.get('concessionAmt').value;
-
-    debugger;
     this.Consession = false;
     this.disamt = this.registeredForm.get('concessionAmt').value;
     if (parseInt(this.disamt) > 0) {
       let tot = 0;
-      // this.b_netAmount = tot.toString();
-      if (this.TotalnetPaybleAmt > 0) {
-        tot = parseInt(this.TotalnetPaybleAmt) - parseInt(this.disamt);
-        this.netPaybleAmt1 = tot;
+      if (this.b_TotalChargesAmount > 0) {
+        tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
+        this.TotalnetPaybleAmt = tot;
         this.registeredForm.get('FinalAmt').setValue(tot);
       }
     }
-
     else if (d == null) {
-
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
       // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
       this.registeredForm.get('ConcessionId').reset;
-      this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = true;
-
     }
 
   }
