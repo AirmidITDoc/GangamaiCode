@@ -28,6 +28,7 @@ import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-d
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
 import { FeedbackComponent } from "./feedback/feedback.component";
+import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
 
 // const jsPDF = require('jspdf');
 
@@ -344,7 +345,15 @@ export class AppointmentComponent implements OnInit {
     }
     feedback() {
         const dialogRef = this._matDialog.open(FeedbackComponent, {
-            maxWidth: "55vw",
+            maxWidth: "95vw",
+            height: "800px",
+            width: "100%",
+            // height: "100%"
+        });
+    }
+    PatientAppointment() {
+        const dialogRef = this._matDialog.open(PatientAppointmentComponent, {
+            maxWidth: "95vw",
             height: "800px",
             width: "100%",
             // height: "100%"
