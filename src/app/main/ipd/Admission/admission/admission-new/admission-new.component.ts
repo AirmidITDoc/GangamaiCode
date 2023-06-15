@@ -1327,7 +1327,7 @@ export class AdmissionNewComponent implements OnInit {
     this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
 
-      let keysArray = ['HospitalName', 'HospAddress','Phone', 'FirstName', 'MiddleName', 'LastName',
+      let keysArray = ['HospitalName', 'HospitalAddress','Phone','EmailId' ,'FirstName', 'MiddleName', 'LastName',
         'AdmissionId', 'RegNo', 'PatientName', 'AgeDay','AgeMonth','Age', 'GenderName', 'MaritalStatusName', 'Address',
         'MobileNo', 'IsMLC', 'PhoneNo', 'AdmissionTime', 'IPDNo', 'CompanyName',
         'DepartmentName', 'AdmittedDoctorName', 'AdmittedDoctor1', 'BedName', 'AdmittedDoctor2',

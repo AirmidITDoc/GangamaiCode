@@ -268,21 +268,6 @@ validateadhaarcard( input: any){
   console.log(input.value);
 }
 
-// readonly max = 999999999999;
-//   mynumber = ;
-//   validateadhaarcard(e: any, input: any = null) {
-//     console.log(e);
-//     let value =Math.abs(e.value) ;
-//     console.log(value);
-//     if (value < 1) value = 1;
-//     if (value > this.max) value = this.max;
-//     this.mynumber = value;
-//     if (input.value != value) {
-//       const start = input.selectionStart ? input.selectionStart - 1 : -1;
-//       input.value = value;
-//       if (start>=0) input.selectionStart = input.selectionEnd = start;
-//     }
-//   }
 
 
   count_down(count){
