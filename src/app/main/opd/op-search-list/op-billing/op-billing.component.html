@@ -131,6 +131,8 @@
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
                                                     formControlName="discAmount" type="number"
                                                     (keyup)="calculatechargesDiscamt()">
+                                                    <mat-error *ngIf="registeredForm.get('discAmount').invalid && registeredForm.get('discAmount').touched">
+                                                       Discount Amount Schod me Less than Tptal Amount TotalAmount is required</mat-error>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" style="width: 10%;">
@@ -408,8 +410,8 @@
                                             <div fxLayoutAlign=" start  end"
                                                 style="margin-right:0px;float: left;font-size: 12px bold; color: black;">
                                                 Total Amount:</div>
-                                            <!-- 
-                                            <mat-form-field appearance="outline" style="width: 120px;">
+                                            
+                                            <!-- <mat-form-field appearance="outline" style="width: 120px;">
                                                 <input matInput [(ngModel)]="totalAmtOfNetAmt" name="totalAmtOfNetAmt"  formControlName="TotallistAmount"
                                                     readonly>
                                             </mat-form-field> -->

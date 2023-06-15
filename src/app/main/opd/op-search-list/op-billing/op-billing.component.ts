@@ -161,7 +161,7 @@ export class OPBillingComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   resBillId: Post;
-  
+
 
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -183,7 +183,7 @@ export class OPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
-    
+
     // this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
@@ -414,13 +414,13 @@ export class OPBillingComponent implements OnInit {
 
     }
   }
-  
-  keytab(event){
+
+  keytab(event) {
     debugger
-   
+
     // let element = event.srcElement.nextElementSibling; // get the sibling element
-  
-    
+
+
     // if(element == null)  // check if its null
     //     return;
     // else
@@ -431,11 +431,11 @@ export class OPBillingComponent implements OnInit {
     //     console.log(element);
     //     element.nextElementSibling.focus();
 
-        
+
     //     console.log(element);
     //     }
-   this.inputEl.nativeElement.focus();
-}
+    this.inputEl.nativeElement.focus();
+  }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -986,7 +986,8 @@ export class OPBillingComponent implements OnInit {
 
     this.disamt = this.registeredForm.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
-    if (parseInt(this.disamt) > 0) {
+
+    if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
       let tot = 0;
       if (Netamt > 0) {
         tot = Netamt - parseInt(this.disamt);
@@ -996,12 +997,9 @@ export class OPBillingComponent implements OnInit {
     } else if (d == null) {
 
       this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
-      
       this.Consession = true;
     }
-    //   else
-    //     this.TotalnetPaybleAmt = this.disamt;
-    // }
+   
   }
 
 
@@ -1012,6 +1010,7 @@ export class OPBillingComponent implements OnInit {
     debugger;
     this.Consession = false;
     this.disamt = this.registeredForm.get('concessionAmt').value;
+    if(this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt){
     if (parseInt(this.disamt) > 0) {
       let tot = 0;
       // this.b_netAmount = tot.toString();
@@ -1033,13 +1032,15 @@ export class OPBillingComponent implements OnInit {
       this.Consession = true;
 
     }
-
+  }else{
+    Swal.fire("Discount Amount Schoud be Less than Total Amount")
+  }
   }
 
   onKeydown(event) {
     if (event.key === "Enter") {
       // console.log(event);
-      
+
     }
   }
 

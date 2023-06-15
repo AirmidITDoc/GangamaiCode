@@ -1159,5 +1159,6 @@ export class ReportPrintObj {
   PaymentDate: any;
   RegId: any;
   Doctorname: any;
+  TariffName:any;
 }
 

@@ -241,7 +241,7 @@ getRecord(el,i) {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=4';
     this._IpReturnadvanceReceiptService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','Phone','EmailId','RefundId','PaymentDate','RegNo','IPDNo','AgeDay','AgeMonth','AgeYear','ReceiptNo','GenderName','PatientName','RefundAmount','Remark','AddedBy'];
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','RefundId','PaymentDate','RegNo','IPDNo','AgeDay','AgeMonth','AgeYear','ReceiptNo','GenderName','PatientName','RefundAmount','Remark','AddedBy'];
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
