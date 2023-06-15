@@ -198,13 +198,16 @@ export class OPBillingComponent implements OnInit {
       });
   }
 
-  focusMyNextInput() {
+  focusNextPrice() {
     this.renderer.selectRootElement('#Price').focus();
-
   }
 
-  focusMyNextInput1() {
+  focusNextQty() {
     this.renderer.selectRootElement('#qty').focus();
+  }
+
+  focusNextbtnAdd() {
+    this.renderer.selectRootElement('#DoctorId').focus();
 
   }
   // doctorone filter code  

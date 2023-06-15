@@ -49,7 +49,7 @@
                                             <mat-form-field appearance="outline" style="width: 30%;">
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                                    (input)="getServiceListCombobox()" required (keydown.enter)="focusMyNextInput()" id="myInput" >
+                                                    (input)="getServiceListCombobox()" required (keydown.enter)="focusNextPrice()" id="myInput" >
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
@@ -57,10 +57,8 @@
                                                     <mat-option *ngFor="let option of filteredOptions" [value]="option" style="width: 500px;">
                                                         {{option.ServiceName}} | Price {{option.Price}} 
                                                     </mat-option>
-                                                  
                                                 </mat-autocomplete>
                                                 <mat-hint>
-                                                    <!-- <span *ngIf="!noOptionFound">Select Service Name</span> -->
                                                     <span *ngIf="noOptionFound" style="color: #f44336;">No data
                                                         Found</span>
                                                 </mat-hint>
@@ -73,56 +71,34 @@
                                             <mat-form-field appearance="outline" style="width: 7%;" #Price>
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice"
-                                                    (keyup)="calculateTotalAmt()" formControlName="price" required id="Price" (keydown.enter)="focusMyNextInput1()">
+                                                    (keyup)="calculateTotalAmt()" formControlName="price" required id="Price" (keydown.enter)="focusNextQty()">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
                                             </mat-form-field>
-                                            <!-- </div>   <div style="width: 50px;"> -->
+
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty"
-                                                    (keyup)="calculateTotalAmt()" formControlName="qty" required id="qty">
+                                                    (keyup)="calculateTotalAmt()" formControlName="qty" required id="qty" (keydown.enter)="focusNextbtnAdd()">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
                                                     Qty is required</mat-error>
                                             </mat-form-field>
-                                            <!-- </div>
-                            <div style="width: 100px;"> -->
+
                                             <mat-form-field appearance="outline" style="width: 10%;">
                                                 <mat-label>TotalAmt</mat-label>
                                                 <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                                                     formControlName="totalAmount" required>
-                                                <mat-error
-                                                    *ngIf="registeredForm.get('totalAmount').invalid && registeredForm.get('totalAmount').touched">
+                                                <mat-error *ngIf="registeredForm.get('totalAmount').invalid && registeredForm.get('totalAmount').touched">
                                                     TotalAmount is required</mat-error>
                                             </mat-form-field>
-                                            <!-- </div>
-                            <div style="width: 200px;"> -->
+
                                             <div *ngIf="isDoctor" style="margin-right: 10px; width:200px;">
-                                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Doctor Name</mat-label>
-                                                    <mat-select formControlName="DoctorID" placeholder="Bank"
-                                                        #singleSelect>
-                                                        <mat-option>
-                                                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                                                [placeholderLabel]="'Search'"
-                                                                [noEntriesFoundLabel]="'No matching found'">
-                                                            </ngx-mat-select-search>
-                                                        </mat-option>
-                                                        <mat-option *ngFor="let element of filteredDoctor | async"
-                                                            [value]="element">
-                                                            {{element.DoctorName}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field> -->
-
-
                                                 <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
-                                                    <mat-select formControlName="DoctorID" placeholder="Bank"
+                                                    <mat-select formControlName="DoctorID" placeholder="Bank" #DoctorId
                                                         #singleSelect required  >
-                                                      
                                                         <mat-option>
                                                             <ngx-mat-select-search [formControl]="doctorFilterCtrl"
                                                                 [placeholderLabel]="'Search'"
@@ -140,8 +116,7 @@
                                                     </mat-select>
                                                 </mat-form-field>
                                             </div>
-                                            <!-- </div>
-                            <div style="width: 100px;"> -->
+                                         
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
@@ -150,8 +125,7 @@
                                                     *ngIf="registeredForm.get('discPer').invalid && registeredForm.get('discPer').touched">
                                                     Percentage is Number</mat-error>
                                             </mat-form-field>
-                                            <!-- </div>
-                            <div style="width: 100px;"> -->
+                                         
                                             <mat-form-field appearance="outline" style="width: 7%;">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
@@ -159,8 +133,6 @@
                                                     (keyup)="calculatechargesDiscamt()">
                                             </mat-form-field>
 
-                                            <!-- </div>
-                            <div style="width: 100px;"> -->
                                             <mat-form-field appearance="outline" style="width: 10%;">
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly
@@ -169,28 +141,18 @@
                                                     *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
                                                     NetAmount is required</mat-error>
                                             </mat-form-field>
-                                            <!-- </div> -->
 
                                             <div matTooltip="Select doctor name to enable this button!!"
                                                 [matTooltipDisabled]="!registeredForm.invalid"
-                                                [matTooltipPosition]="'above'">
-                                                <button mat-raised-button fxLayoutAlign="center center"
+                                                [matTooltipPosition]="'above'" >
+                                                <button mat-raised-button fxLayoutAlign="center center" id="btnAdd"
                                                     (click)="onSaveEntry()" [disabled]="registeredForm.invalid"
                                                     style="background-color: blue; color: white; width: 70px; ">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>
                                             </div>
-
-
-
-                                            <!-- <button mat-raised-button fxLayoutAlign="center center"
-                                                (click)="onSaveEntry()" [disabled]="registeredForm.invalid"
-                                                style="background-color: blue; color: white; width: 70px; ">
-                                                <mat-icon> add </mat-icon> &nbsp;Add
-                                            </button> -->
                                         </div>
                                     </form>
-                                    <!-- </div> -->
                                 </mat-card>
 
                             </div>
