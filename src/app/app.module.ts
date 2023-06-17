@@ -30,6 +30,7 @@ import { SpinnerInterceptor } from "./core/spinner.interceptor";
 import { CertificateComponent } from './main/Mrd/certificate/certificate.component';
 import { M } from '@angular/cdk/keycodes';
 import { TestingComponent } from './main/testing/testing.component';
+import { AppConfigModule } from './app-config.module';
 
 
 const appRoutes: Routes = [
@@ -129,6 +130,7 @@ class PickDateAdapter extends NativeDateAdapter {
     ],
     imports: [
         BrowserModule,
+        AppConfigModule,
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),

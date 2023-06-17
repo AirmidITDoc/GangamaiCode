@@ -345,8 +345,8 @@ export class AppointmentComponent implements OnInit {
     }
     feedback() {
         const dialogRef = this._matDialog.open(FeedbackComponent, {
-            maxWidth: "75vw",
-            height: "700px",
+            maxWidth: "80vw",
+            height: "90%",
             width: "100%",
             // height: "100%"
         });

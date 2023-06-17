@@ -252,27 +252,18 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px"
                         fxLayoutAlign="space-between" style="padding:50px;font-size: 20px;height:200px">
                         <mat-label style="width:300px;">Leave a comment</mat-label>
-                        <mat-form-field class=" comment" formControlName="commentText"
-                            style="width:800px;font-size: 20px;height:300px ">
+                        <mat-form-field class=" comment" formControlName="commentText">
                             <textarea matInput appearance="outline" placeholder=" Write your comment here.."></textarea>
                         </mat-form-field>
                     </div>
 
                     <div class="footer-navigation-container" fxLayout.gt-xs="row">
-
-
                         <button class="next-btn" color="accent" style="border-radius: 16px;"
                             (click)="submitFeedbackForm()">Submit</button>
                         &nbsp; &nbsp; &nbsp;
-
                         <button class="footer-btn" id="btncancel" (click)="clearForm()">Clear</button>
-
                     </div>
-
-
-
                 </form>
-
             </div>
         </div>
         <hr>
