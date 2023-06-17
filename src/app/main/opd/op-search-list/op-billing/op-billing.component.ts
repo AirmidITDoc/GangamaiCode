@@ -415,28 +415,6 @@ export class OPBillingComponent implements OnInit {
     }
   }
 
-  keytab(event) {
-    debugger
-
-    // let element = event.srcElement.nextElementSibling; // get the sibling element
-
-
-    // if(element == null)  // check if its null
-    //     return;
-    // else
-    //     element.focus();   // focus if not null
-
-    //     if(event.code =='Enter'){
-    //     let element = event.srcElement.nextElementSibling;
-    //     console.log(element);
-    //     element.nextElementSibling.focus();
-
-
-    //     console.log(element);
-    //     }
-    this.inputEl.nativeElement.focus();
-  }
-
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -565,14 +543,11 @@ export class OPBillingComponent implements OnInit {
   getChargesList1() {
     this.chargeslist = [];
     this.dataSource.data = [];
-    // console.log(this.chargeslist);
-    // console.log( this.dataSource.data.length);
     this.isLoading = 'list-loading';
     let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=0 Order by Chargesid"
     this._opappointmentService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as ChargesList[];
-      // console.log(this.dataSource.data.length);
       this.getNetAmtSum(this.dataSource.data);
       this.isLoading = 'list-loaded';
     },
@@ -626,9 +601,9 @@ export class OPBillingComponent implements OnInit {
         PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
         PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
         PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-          PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
+        PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
         PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
+        PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
         PathologyReportHeaderObj['IsCompleted'] = 0;
         PathologyReportHeaderObj['IsPrinted'] = 0;
         PathologyReportHeaderObj['IsSampleCollection'] = 0;
@@ -658,8 +633,8 @@ export class OPBillingComponent implements OnInit {
     let OPDoctorShareGroupAdmChargeObj = {};
     OPDoctorShareGroupAdmChargeObj['BillNo'] = 0;
 
-    let Cal_DiscAmount_OPBillObj = {};
-    Cal_DiscAmount_OPBillObj['BillNo'] = 0;
+    // let Cal_DiscAmount_OPBillObj = {};
+    // Cal_DiscAmount_OPBillObj['BillNo'] = 0;
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -677,7 +652,7 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
+    // const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
 
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
@@ -743,7 +718,7 @@ export class OPBillingComponent implements OnInit {
           "insertRadiologyReportHeader": Redioreporthsarr,
           "insertBillupdatewithbillno": insertBillUpdateBillNo,
           "opBillDetailsInsert": Billdetsarr,
-          "opCalDiscAmountBill": Cal_DiscAmount_OPBillObj,
+          // "opCalDiscAmountBill": Cal_DiscAmount_OPBillObj,
           "opInsertPayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -773,7 +748,7 @@ export class OPBillingComponent implements OnInit {
           "insertRadiologyReportHeadercredit": Redioreporthsarr,
           "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
           "opBillDetailscreditInsert": Billdetsarr,
-          "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
+          // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
           // "opInsertPayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -922,14 +897,14 @@ export class OPBillingComponent implements OnInit {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').enable;
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
+      this.registeredForm.get('ConcessionId').reset();
       this.Consession = false;
       this.finalAmt = this.totalAmtOfNetAmt;
     }
     if (this.concessionDiscPer <= 0) {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
+      this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = false;
     }
@@ -977,11 +952,10 @@ export class OPBillingComponent implements OnInit {
     }
     else if (d == null) {
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-      // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
-      this.registeredForm.get('ConcessionId').reset;
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = true;
+      this.registeredForm.get('ConcessionId').reset();
     }
   }else{
     Swal.fire("Discount Amount Schoud be Less than Total Amount")
@@ -1035,13 +1009,12 @@ export class OPBillingComponent implements OnInit {
       this.BillingClassCmbList = data
       // this.registeredForm.get('ClassId').setValue(this.selectedAdvanceObj.ClassId);
     });
-    console.log();
   }
 
   getConcessionReasonList() {
     this._opappointmentService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[3]);
+      // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
     })
   }
 
