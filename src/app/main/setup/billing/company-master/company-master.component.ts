@@ -8,6 +8,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-company-master",
@@ -85,126 +86,6 @@ export class CompanyMasterComponent implements OnInit {
         this._companyService.initializeFormGroup();
     }
 
-    onSubmit() {
-        if (this._companyService.myform.valid) {
-            if (!this._companyService.myform.get("CompanyId").value) {
-                var m_data = {
-                    companyMasterInsert: {
-                        compTypeId:
-                            this._companyService.myform.get("CompTypeId").value,
-                        companyName: this._companyService.myform
-                            .get("CompanyName")
-                            .value.trim(),
-                        address: this._companyService.myform
-                            .get("Address")
-                            .value.trim(),
-                        city: this._companyService.myform
-                            .get("City")
-                            .value.trim(),
-                        pinNo: this._companyService.myform
-                            .get("PinNo")
-                            .value.trim(),
-                        phoneNo: this._companyService.myform
-                            .get("PhoneNo")
-                            .value.trim(),
-                        mobileNo: this._companyService.myform
-                            .get("MobileNo")
-                            .value.trim(),
-                        faxNo: this._companyService.myform
-                            .get("FaxNo")
-                            .value.trim(),
-                        tariffId:
-                            this._companyService.myform.get("TariffId").value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        addedBy: 10,
-                        isCancelled: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsCancelled")
-                                    .value
-                            )
-                        ),
-                        isCancelledBy:
-                            this._companyService.myform.get("IsCancelledBy")
-                                .value,
-                        isCancelledDate:
-                            this._companyService.myform.get("IsCancelledDate")
-                                .value,
-                    },
-                };
-
-                this._companyService
-                    .companyMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        this.getCompanyMaster();
-                    });
-            } else {
-                var m_dataUpdate = {
-                    companyMasterUpdate: {
-                        companyId:
-                            this._companyService.myform.get("CompanyId").value,
-                        compTypeId:
-                            this._companyService.myform.get("CompTypeId").value,
-                        companyName: this._companyService.myform
-                            .get("CompanyName")
-                            .value.trim(),
-                        address: this._companyService.myform
-                            .get("Address")
-                            .value.trim(),
-                        city: this._companyService.myform
-                            .get("City")
-                            .value.trim(),
-                        pinNo: this._companyService.myform
-                            .get("PinNo")
-                            .value.trim(),
-                        phoneNo: this._companyService.myform
-                            .get("PhoneNo")
-                            .value.trim(),
-                        mobileNo: this._companyService.myform
-                            .get("MobileNo")
-                            .value.trim(),
-                        faxNo: this._companyService.myform
-                            .get("FaxNo")
-                            .value.trim(),
-                        tariffId:
-                            this._companyService.myform.get("TariffId").value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                        isCancelled: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsCancelled")
-                                    .value
-                            )
-                        ),
-                        isCancelledBy:
-                            this._companyService.myform.get("IsCancelledBy")
-                                .value,
-                        isCancelledDate:
-                            this._companyService.myform.get("IsCancelledBy")
-                                .value,
-                    },
-                };
-
-                this._companyService
-                    .companyMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        this.getCompanyMaster();
-                    });
-            }
-            this.onClear();
-        }
-    }
     onEdit(row) {
         var m_data = {
             CompanyId: row.CompanyId,
@@ -228,7 +109,7 @@ export class CompanyMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -242,10 +123,11 @@ export class CompanyMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(CompanyMasterListComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
+
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.getCompanyMaster();

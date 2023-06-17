@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-cash-counter-master",
@@ -67,7 +68,7 @@ export class CashCounterMasterComponent implements OnInit {
             if (!this._cashcounterService.myform.get("CashCounterId").value) {
                 var m_data = {
                     cashCounterMasterInsert: {
-                        cashCounterName: this._cashcounterService.myform
+                        cashCounter: this._cashcounterService.myform
                             .get("CashCounterName")
                             .value.trim(),
                         prefix: this._cashcounterService.myform
@@ -76,8 +77,8 @@ export class CashCounterMasterComponent implements OnInit {
                         billNo: this._cashcounterService.myform
                             .get("BillNo")
                             .value.trim(),
-                        addedBy: 1,
-                        isDeleted: Boolean(
+                        //  addedBy: 1,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._cashcounterService.myform.get("IsDeleted")
                                     .value
@@ -85,12 +86,27 @@ export class CashCounterMasterComponent implements OnInit {
                         ),
                     },
                 };
-
                 this._cashcounterService
                     .cashCounterMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        this.getCashcounterMasterList();
+                    .subscribe((response) => {
+                        this.msg = response;
+                        if (response) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCashcounterMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
             } else {
                 var m_dataUpdate = {
@@ -98,23 +114,17 @@ export class CashCounterMasterComponent implements OnInit {
                         cashCounterId:
                             this._cashcounterService.myform.get("CashCounterId")
                                 .value,
-                        cashCounterName:
+                        cashCounter:
                             this._cashcounterService.myform.get(
                                 "CashCounterName"
                             ).value,
-                        prefix: this._cashcounterService.myform
-                            .get("Prefix")
-                            .value.trim(),
-                        billNo: this._cashcounterService.myform
-                            .get("BillNo")
-                            .value.trim(),
-                        isDeleted: Boolean(
+
+                        isActive: Boolean(
                             JSON.parse(
                                 this._cashcounterService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
                     },
                 };
 
@@ -122,6 +132,23 @@ export class CashCounterMasterComponent implements OnInit {
                     .cashCounterMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCashcounterMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCashcounterMasterList();
                     });
             }
@@ -131,11 +158,11 @@ export class CashCounterMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             CashCounterId: row.CashCounterId,
-            CashCounterName: row.CashCounterName.trim(),
-            Prefix: row.Prefix.trim(),
-            BillNo: row.BillNo.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
+            CashCounterName: row.CashCounterName,
+            Prefix: row.Prefix,
+            BillNo: row.BillNo,
+            // IsDeleted: JSON.stringify(row.IsDeleted),
+            // UpdatedBy: row.UpdatedBy,
         };
         this._cashcounterService.populateForm(m_data);
     }

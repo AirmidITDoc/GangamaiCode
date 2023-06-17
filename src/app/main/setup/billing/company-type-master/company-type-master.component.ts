@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { CompanyTypeMasterService } from "./company-type-master.service";
 import { MatTableDataSource } from "@angular/material/table";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-company-type-master",
@@ -83,6 +84,23 @@ export class CompanyTypeMasterComponent implements OnInit {
                     .companyTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCompanytypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getCompanytypeMasterList();
                     });
             } else {
@@ -108,6 +126,23 @@ export class CompanyTypeMasterComponent implements OnInit {
                     .companyTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCompanytypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCompanytypeMasterList();
                     });
             }

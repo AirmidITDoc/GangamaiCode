@@ -67,7 +67,7 @@
                             <div style="width: 100%;">
 
                                 <mat-table #table matSort [dataSource]="DSCompanyMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="CompanyId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -79,7 +79,8 @@
                                     <ng-container matColumnDef="CompanyName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> Company Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CompanyName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm style="height:30px;width:50px">
+                                            {{element.CompanyName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -153,12 +154,11 @@
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
+                                            <button mat-icon-button (click)="onEdit(row)">
+                                                <mat-icon title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.CompanyId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.CompanyId)"
-                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
+
                                         </mat-cell>
                                     </ng-container>
 

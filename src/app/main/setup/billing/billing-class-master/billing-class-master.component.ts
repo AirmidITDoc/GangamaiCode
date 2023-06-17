@@ -4,6 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-billing-class-master",
@@ -86,6 +87,23 @@ export class BillingClassMasterComponent implements OnInit {
                     .classMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getClassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getClassMasterList();
                     });
             } else {
@@ -111,6 +129,23 @@ export class BillingClassMasterComponent implements OnInit {
                     .classMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getClassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getClassMasterList();
                     });
             }
@@ -122,7 +157,6 @@ export class BillingClassMasterComponent implements OnInit {
             ClassId: row.ClassId,
             ClassName: row.ClassName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
         };
         this._billingClassService.populateForm(m_data);
     }

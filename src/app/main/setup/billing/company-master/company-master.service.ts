@@ -64,7 +64,7 @@ export class CompanyMasterService {
             IsCancelledBy: ["", Validators.pattern("[0-9]+")],
             IsCancelledDate: [""],
             AddedByName: [""],
-            IsDeleted: [""],
+            IsDeleted: ["false"],
         });
     }
     createSearchForm(): FormGroup {
@@ -79,20 +79,21 @@ export class CompanyMasterService {
 
     public getCompanyMaster(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_CompList_by_Name",param
+            "Generic/GetByProc?procName=Rtrv_CompList_by_Name",
+            param
         );
     }
 
     public getCompanytypeMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_CompanytypeMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveCompanyTypeMasterForCombo",
             {}
         );
     }
 
     public getTariffMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_TariffMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo",
             {}
         );
     }

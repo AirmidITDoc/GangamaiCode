@@ -6,6 +6,7 @@ import { CompanyMasterComponent } from "../company-master.component";
 import { MatDialogRef } from "@angular/material/dialog";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-company-master-list",
@@ -21,6 +22,8 @@ export class CompanyMasterListComponent implements OnInit {
     // SubGroupcmbList:any=[];
 
     msg: any;
+    dataArray = {};
+    isLoading = true;
 
     //company filter
     public companytypeFilterCtrl: FormControl = new FormControl();
@@ -118,125 +121,146 @@ export class CompanyMasterListComponent implements OnInit {
                 .setValue(this.TariffcmbList[0]);
         });
     }
+    getCompanyMaster() {
+        var data = {
+            compTypeId: this._companyService.myform.get("CompTypeId").value,
+            companyName: this._companyService.myform.get("CompanyName").value,
+            address: this._companyService.myform.get("Address").value,
+            city: this._companyService.myform.get("City").value,
+            pinNo: this._companyService.myform.get("PinNo").value,
+            phoneNo: this._companyService.myform.get("PhoneNo").value,
+            mobileNo: this._companyService.myform.get("MobileNo").value,
+            faxNo: this._companyService.myform.get("FaxNo").value,
+            tariffId: this._companyService.myform.get("TariffId").value,
+            isDeleted: Boolean(
+                JSON.parse(this._companyService.myform.get("IsDeleted").value)
+            ),
+            addedBy: 10,
+            updatedBy: 0,
+            isCancelled: false,
+            isCancelledBy: 0,
+            isCancelledDate: "01/01/1900",
+        };
+        this._companyService.getCompanyMaster(data).subscribe(
+            (Menu) => {
+                this.dataArray = Menu;
+            },
+            (error) => (this.isLoading = false)
+        );
+    }
 
     onSubmit() {
         if (this._companyService.myform.valid) {
             if (!this._companyService.myform.get("CompanyId").value) {
                 var m_data = {
                     companyMasterInsert: {
-                        CompTypeId:
-                            this._companyService.myform.get("CompTypeId").value,
-                        CompanyName: this._companyService.myform
+                        compTypeId:
+                            this._companyService.myform.get("CompTypeId").value
+                                .CompanyTypeId,
+                        companyName: this._companyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address:
-                            this._companyService.myform
-                                .get("Address")
-                                .value.trim() || "%",
-                        City:
-                            this._companyService.myform
-                                .get("City")
-                                .value.trim() || "%",
-                        PinNo:
-                            this._companyService.myform
-                                .get("PinNo")
-                                .value.trim() || "0",
-                        PhoneNo:
-                            this._companyService.myform
-                                .get("PhoneNo")
-                                .value.trim() || "0",
-                        MobileNo:
-                            this._companyService.myform
-                                .get("MobileNo")
-                                .value.trim() || "0",
-                        FaxNo:
-                            this._companyService.myform
-                                .get("FaxNo")
-                                .value.trim() || "0",
-                        TariffId:
-                            this._companyService.myform.get("TariffId").value,
-                        IsDeleted: Boolean(
+                        address: this._companyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        city: this._companyService.myform
+                            .get("City")
+                            .value.trim(),
+                        pinNo: this._companyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        phoneNo: this._companyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        mobileNo: this._companyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        faxNo: this._companyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
+                        tariffId:
+                            this._companyService.myform.get("TariffId").value
+                                .TariffId,
+                        isDeleted: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-
-                        IsCancelled: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsCancelled")
-                                    .value
-                            )
-                        ),
-                        IsCancelledBy:
-                            this._companyService.myform.get("IsCancelledBy")
-                                .value || "0",
-                        IsCancelledDate:
-                            this._companyService.myform.get("IsCancelledDate")
-                                .value || "01/01/1900",
+                        addedBy: 10,
+                        updatedBy: 0,
+                        isCancelled: false,
+                        isCancelledBy: 0,
+                        isCancelledDate: "01/01/1900",
                     },
                 };
-
+                console.log(m_data);
                 this._companyService
                     .companyMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCompanyMaster();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
+                        this.getCompanyMaster();
                     });
             } else {
                 var m_dataUpdate = {
                     companyMasterUpdate: {
-                        CompanyId:
+                        companyId:
                             this._companyService.myform.get("CompanyId").value,
-                        CompTypeId:
-                            this._companyService.myform.get("CompTypeId").value,
-                        CompanyName: this._companyService.myform
+                        compTypeId:
+                            this._companyService.myform.get("CompTypeId").value
+                                .CompanyTypeId,
+                        companyName: this._companyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        Address:
-                            this._companyService.myform
-                                .get("Address")
-                                .value.trim() || "%",
-                        City:
-                            this._companyService.myform
-                                .get("City")
-                                .value.trim() || "%",
-                        PinNo:
-                            this._companyService.myform
-                                .get("PinNo")
-                                .value.trim() || "0",
-                        PhoneNo:
-                            this._companyService.myform
-                                .get("PhoneNo")
-                                .value.trim() || "0",
-                        MobileNo:
-                            this._companyService.myform
-                                .get("MobileNo")
-                                .value.trim() || "0",
-                        FaxNo:
-                            this._companyService.myform
-                                .get("FaxNo")
-                                .value.trim() || "0",
-                        TariffId:
-                            this._companyService.myform.get("TariffId").value,
-                        IsDeleted: Boolean(
+                        address: this._companyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        city: this._companyService.myform
+                            .get("City")
+                            .value.trim(),
+                        pinNo: this._companyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        phoneNo: this._companyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        mobileNo: this._companyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        faxNo: this._companyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
+                        tariffId:
+                            this._companyService.myform.get("TariffId").value
+                                .TariffId,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-
-                        IsCancelled: Boolean(
-                            JSON.parse(
-                                this._companyService.myform.get("IsCancelled")
-                                    .value
-                            )
-                        ),
-                        IsCancelledBy:
-                            this._companyService.myform.get("IsCancelledBy")
-                                .value || "0",
-                        IsCancelledDate:
-                            this._companyService.myform.get("IsCancelledDate")
-                                .value || "01/01/1900",
+                        addedBy: 10,
+                        updatedBy: 1,
+                        isCancelled: false,
+                        isCancelledBy: 0,
+                        isCancelledDate: "01/01/1900",
                     },
                 };
 
@@ -244,31 +268,49 @@ export class CompanyMasterListComponent implements OnInit {
                     .companyMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    //  this.getCompanyMaster();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
+                        //  this.getCompanyMaster();
                     });
             }
             this.onClose();
         }
     }
-    onEdit(row) {
-        var m_data = {
-            CompanyId: row.CompanyId,
-            CompTypeId: row.CompTypeId,
-            CompanyName: row.CompanyName.trim(),
-            Address: row.Address.trim(),
-            City: row.City.trim(),
-            PinNo: row.PinNo.trim(),
-            PhoneNo: row.PhoneNo.trim(),
-            MobileNo: row.MobileNo.trim(),
-            FaxNo: row.FaxNo.trim(),
-            TariffId: row.TariffId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-            IsCancelled: JSON.stringify(row.IsCancelled),
-            IsCancelledBy: row.IsCancelledBy,
-            IsCancelledDate: row.IsCancelledDate,
-        };
-        this._companyService.populateForm(m_data);
-    }
+    // onEdit(row) {
+    //     var m_data = {
+    //         CompanyId: row.CompanyId,
+    //         CompTypeId: row.CompTypeId,
+    //         CompanyName: row.CompanyName.trim(),
+    //         Address: row.Address.trim(),
+    //         City: row.City.trim(),
+    //         PinNo: row.PinNo.trim(),
+    //         PhoneNo: row.PhoneNo.trim(),
+    //         MobileNo: row.MobileNo.trim(),
+    //         FaxNo: row.FaxNo.trim(),
+    //         TariffId: row.TariffId,
+    //         IsDeleted: JSON.stringify(row.IsDeleted),
+    //         UpdatedBy: row.UpdatedBy,
+    //         IsCancelled: JSON.stringify(row.IsCancelled),
+    //         IsCancelledBy: row.IsCancelledBy,
+    //         IsCancelledDate: row.IsCancelledDate,
+    //     };
+    //     this._companyService.populateForm(m_data);
+    // }
 
     onClear() {
         this._companyService.myform.reset();

@@ -4,6 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ConcessionReasonMasterService } from "./concession-reason-master.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-concession-reason-master",
@@ -90,6 +91,23 @@ export class ConcessionReasonMasterComponent implements OnInit {
                     .consessionReasonMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getConcessionreasonMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getConcessionreasonMasterList();
                     });
             } else {
@@ -118,6 +136,23 @@ export class ConcessionReasonMasterComponent implements OnInit {
                     .consessionReasonMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getConcessionreasonMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getConcessionreasonMasterList();
                     });
             }
@@ -127,7 +162,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             ConcessionId: row.ConcessionId,
-            ConcessionReasonName: row.ConcessionReasonName.trim(),
+            ConcessionReasonName: row.ConcessionReason,
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
