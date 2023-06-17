@@ -376,11 +376,7 @@ export class NewAppointmentComponent implements OnInit {
       MobileNo: ['', [Validators.required,Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]], 
-      AadharCardNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),]],
+      AadharCardNo: [''],
       PanCardNo: '',
       MaritalStatusId: '',
       ReligionId: '',

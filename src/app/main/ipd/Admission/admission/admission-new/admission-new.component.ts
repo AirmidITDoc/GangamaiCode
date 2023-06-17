@@ -168,15 +168,31 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+
+    this.isAlive = true;
+    // this.personalFormGroup = this.createPesonalForm();
+    // this.hospitalFormGroup = this.createHospitalForm();
+    // this.wardFormGroup = this.wardForm();
+    // this.otherFormGroup = this.otherForm();
+
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
+
+    this.hospitalFormGroup = this.createHospitalForm();
+    this.hospitalFormGroup.markAllAsTouched();
+    
+    this.wardFormGroup = this.wardForm();
+    this.wardFormGroup.markAllAsTouched();
+    
+    this.otherFormGroup = this.otherForm();
+    this.otherFormGroup.markAllAsTouched()
+
+
+    this.searchFormGroup = this.createSearchForm();
+
     this.getHospitalList();
     this.getPrefixList();
-    this.isAlive = true;
-    this.personalFormGroup = this.createPesonalForm();
-    this.hospitalFormGroup = this.createHospitalForm();
-    this.wardFormGroup = this.wardForm();
-    this.otherFormGroup = this.otherForm();
-    this.searchFormGroup = this.createSearchForm();
-    console.log("Line 187")
     this.getPatientTypeList();
     this.getTariffList();
     this.getAreaList();
@@ -587,17 +603,13 @@ export class AdmissionNewComponent implements OnInit {
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern("[a-zA-Z][a-zA-Z ]+")
-        ]
-        ],
-
-
+        ]],
       MiddleName:
         ['', [
 
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-Z ]*$')
-        ]
-        ],
+        ]],
       LastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
@@ -612,13 +624,8 @@ export class AdmissionNewComponent implements OnInit {
       AgeDay: [''],
       PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       MobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      AadharCardNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),
-      ]],
-      Pancardno:'',
+      AadharCardNo: [''],
+      Pancardno: '',
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -791,19 +798,52 @@ export class AdmissionNewComponent implements OnInit {
       this.registerObj = new AdmissionPersonlModel({});
       this.personalFormGroup.reset();
 
+      this.personalFormGroup = this.createPesonalForm();
+      this.personalFormGroup.markAllAsTouched();
+      
+      this.hospitalFormGroup = this.createHospitalForm();
+      this.hospitalFormGroup.markAllAsTouched();
+
+      this.wardFormGroup = this.wardForm();
+      this.wardFormGroup.markAllAsTouched();
+
+      this.otherFormGroup = this.otherForm();
+      this.otherFormGroup.markAllAsTouched()
+
+    this.getHospitalList();
+    this.getPrefixList();
+    this.getPatientTypeList();
+    this.getTariffList();
+
     } else {
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
-      // this.personalFormGroup.reset();
+
+      this.personalFormGroup = this.createPesonalForm();
+      this.personalFormGroup.markAllAsTouched();
+
+      this.hospitalFormGroup = this.createHospitalForm();
+      this.hospitalFormGroup.markAllAsTouched();
+
+      this.wardFormGroup = this.wardForm();
+      this.wardFormGroup.markAllAsTouched();
+      
+      this.otherFormGroup = this.otherForm();
+      this.otherFormGroup.markAllAsTouched();
+
+      this.getHospitalList();
+      this.getPrefixList();
+      this.getPatientTypeList();
+      this.getTariffList();
     }
   }
 
-  item1:any;
-  item2:any;
+  item1: any;
+  item2: any;
   onClick(event: any) {
     this.item1 = "";
     event.stopPropagation();
-}
+  }
 
   getHospitalList() {
     this._AdmissionService.getHospitalCombo().subscribe(data => {
@@ -877,11 +917,11 @@ export class AdmissionNewComponent implements OnInit {
 
   getDoctorList() {
     this._AdmissionService.getDoctorMaster().subscribe(
-      data => { 
-        this.DoctorList = data; 
+      data => {
+        this.DoctorList = data;
         console.log(data)
-      // data => {
-      //   this.DoctorList = data;
+        // data => {
+        //   this.DoctorList = data;
         this.filteredDoctor.next(this.DoctorList.slice());
       })
   }
@@ -889,7 +929,7 @@ export class AdmissionNewComponent implements OnInit {
   getDoctor1List() {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      console.log(this.Doctor1List );
+      console.log(this.Doctor1List);
       this.filteredDoctorone.next(this.Doctor1List.slice());
     })
   }
@@ -1024,7 +1064,7 @@ export class AdmissionNewComponent implements OnInit {
       this._AdmissionService.getDepartmentCombo();
     }
   }
-  
+
   OnChangeBedList(wardObj) {
     console.log(wardObj);
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
@@ -1209,7 +1249,7 @@ export class AdmissionNewComponent implements OnInit {
       admissionNewInsert['AprovAmount'] = 0;
       admissionNewInsert['CompDOD'] = this.dateTimeObj.date;
       admissionNewInsert['IsPackagePatient'] = 0;
-      
+
 
 
       submissionObj['admissionNewInsert'] = admissionNewInsert;
@@ -1229,7 +1269,7 @@ export class AdmissionNewComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-                let m = response;
+              let m = response;
               this.getPrint(m);
               // console.log( this.getPrint(m));
               this._matDialog.closeAll();
@@ -1245,7 +1285,7 @@ export class AdmissionNewComponent implements OnInit {
 
     }
     else {
-    
+
       this.isLoading = 'submit';
       let submissionObj = {};
       let admissionInsert = {};
@@ -1327,8 +1367,8 @@ export class AdmissionNewComponent implements OnInit {
     this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
 
-      let keysArray = ['HospitalName', 'HospitalAddress','Phone','EmailId' ,'FirstName', 'MiddleName', 'LastName',
-        'AdmissionId', 'RegNo', 'PatientName', 'AgeDay','AgeMonth','Age', 'GenderName', 'MaritalStatusName', 'Address',
+      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'FirstName', 'MiddleName', 'LastName',
+        'AdmissionId', 'RegNo', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'GenderName', 'MaritalStatusName', 'Address',
         'MobileNo', 'IsMLC', 'PhoneNo', 'AdmissionTime', 'IPDNo', 'CompanyName',
         'DepartmentName', 'AdmittedDoctorName', 'AdmittedDoctor1', 'BedName', 'AdmittedDoctor2',
         'RelationshipName', 'RefDoctorName', 'RelativePhoneNo', 'IsReimbursement', 'TariffName',

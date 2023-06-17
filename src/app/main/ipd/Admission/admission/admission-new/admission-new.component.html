@@ -179,18 +179,17 @@
                 </div>
   
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                  <mat-form-field appearance="outline" fxFlex>
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Aadhar Card No.</mat-label>
                     <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="Aadhar Card No."
                       [ngModel]="registerObj.AadharCardNo | trim" (ngModelChange)="registerObj.AadharCardNo = $event"
                       matInput type="number" required minlength="12" maxlength="12">
-                    <!-- [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('AadharCardNo').errors }" -->
                     <mat-error class="error"
                       *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">
                       12 digits
                       AadharCardNo is
                       required</mat-error>
-                  </mat-form-field>
+                  </mat-form-field> -->
   
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Pan Card No.</mat-label>
@@ -513,7 +512,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Ward Name</mat-label>
                     <mat-select formControlName="RoomId" placeholder="Bank" #singleSelect
-                      (selectionChange)="OnChangeBedList($event.value)">
+                      (selectionChange)="OnChangeBedList($event.value)" required>
                       <mat-option>
                         <ngx-mat-select-search [formControl]="wardFilterCtrl" [placeholderLabel]="'Search'"
                           [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -527,7 +526,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Bed Name</mat-label>
                     <mat-select formControlName="BedId" placeholder="Bank" #singleSelect
-                      (selectionChange)="onBedChange($event.value)">
+                      (selectionChange)="onBedChange($event.value)" required>
                       <mat-option>
                         <ngx-mat-select-search [formControl]="bedFilterCtrl" [placeholderLabel]="'Search'"
                           [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -540,7 +539,7 @@
   
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Class Name</mat-label>
-                    <mat-select formControlName="ClassId">
+                    <mat-select formControlName="ClassId" required>
                       <mat-option></mat-option>
                       <mat-option *ngFor="let m of BedClassList" [value]="m">
                         {{m.ClassName}}
@@ -616,7 +615,7 @@
                 </mat-form-field> -->
   
   
-                  <mat-form-field fxFlex>
+                  <mat-form-field appearance="outline" fxFlex>
                     <mat-select placeholder="RelationshipId" [(value)]="item1" >
                       <div *ngFor="let item of RelationshipList">
                         <mat-option *ngFor="let item of RelationshipList" [value]="item">{{item.RelationshipName}}</mat-option>
@@ -654,14 +653,7 @@
               </div>
   
               <div class="footer-navigation-container" style=" float: right;">
-  
                 <div class="next-div">
-                  <!-- <button class="next-btn" (click)="nextClicked(otherFormGroup)" [disabled]="isLoading=='submit'" style="border-radius: 16px;">
-                          <span style="display: flex;justify-content: center;">
-                            <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
-                            <span style="margin-left: 5px;">Save</span>
-                          </span>
-                        </button> -->
                   <button class="next-btn" color="accent" (click)="nextClicked(otherFormGroup)"
                     [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup. invalid || otherFormGroup.invalid"
                     style="border-radius: 16px;">
@@ -670,21 +662,14 @@
                       <span style="margin-left: 6px;">Save</span>
                     </span>
                   </button>
-                  <button class="footer-btn" (click)="getPrint(5)" style="border-radius: 16px;">Print</button>
                   <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
                 </div>
               </div>
             </form>
   
           </div>
-  
-  
-  
         </div>
-  
-  
         <!-- </form> -->
       </div>
-  
     </div>
   </mat-dialog-content>
