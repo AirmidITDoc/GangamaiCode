@@ -447,4 +447,16 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", param);
   }
 
+  public getRefundofBillServiceList(employee)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
+  }
+
+  public getRefundofBillDetailList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
+  }
+  public getRefundofBillOPDList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
+    }
+
 }

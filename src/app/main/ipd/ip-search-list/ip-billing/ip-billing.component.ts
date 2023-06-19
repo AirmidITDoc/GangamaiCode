@@ -1418,7 +1418,7 @@ export class IPBillingComponent implements OnInit {
                // this.getChargesList();
                this._matDialog.closeAll();
  
-               this.getPrintDraft(response);
+              //  this.getPrintDraft(response);
              }
            });
  // debugger;
@@ -1673,7 +1673,7 @@ export class IPBillingComponent implements OnInit {
      // this.getIPIntreimBillPrint(el);
    }
  
-   getPrintDraft(el) {
+   getPrintDraft() {
      debugger;
  
      var D_data = {
@@ -1784,7 +1784,7 @@ export class IPBillingComponent implements OnInit {
  
        this.printTemplate = resData[0].TempDesign;
        let keysArray = ['HospitalName','HospitalAddress','EmailId','Phone','RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay','AgeMonth','GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
-         'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt','TotalBillAmt', 'AdvanceUsedAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AddedBy','RoomName','BedName','BillDate','PBillNo']; // resData[0].TempKeys;
+         'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt','TotalBillAmt', 'AdvanceAmount','NetPayableAmt', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmt', 'AddedByName','RoomName','BedName','BillDate','PBillNo']; // resData[0].TempKeys;
   
        for (let i = 0; i < keysArray.length; i++) {
          let reString = "{{" + keysArray[i] + "}}";
@@ -1804,7 +1804,7 @@ export class IPBillingComponent implements OnInit {
            docname = '';
            var strabc = ` 
            <div style="display:flex;margin:8px 0">
-               <div style="display:flex;width:80px;margin-left:20px;">
+               <div style="display:flex;width:60px;margin-left:20px;">
                    <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
                </div>
                <div style="display:flex;width:300px;">
@@ -1813,17 +1813,17 @@ export class IPBillingComponent implements OnInit {
                <div style="display:flex;width:300px;">
                <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
                </div>
-               <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
+               <div style="display:flex;width:90px;margin-left:20px;justify-content: right;">
                <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
                </div>
-               <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
+               <div style="display:flex;width:70px;margin-left:10px;justify-content: right;;">
                    <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
                </div>
-               <div style="display:flex;width:150px;text-align:right;">
-                   <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
+               <div style="display:flex;width:130px;text-align:right;justify-content: right;">
+                   <div>`+ '₹' + objreportPrint.TotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
                </div>
            </div>`;
-         strrowslist += strabc;
+                   strrowslist += strabc;
        }
        var objPrintWordInfo = this.reportPrintObjList[0];
        this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceAmount);
