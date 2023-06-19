@@ -1,15 +1,15 @@
 app-state-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
     }
 
     .mat-column-StateId {
@@ -19,15 +19,15 @@ app-state-master {
     }
 
     .mat-column-StateName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
     }
 
     .mat-column-CountryName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-AddedByName {
@@ -46,9 +46,9 @@ app-state-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         text-align: right;
         justify-content: right;
     }

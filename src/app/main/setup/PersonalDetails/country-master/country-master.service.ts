@@ -29,7 +29,6 @@ export class CountryMasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 
@@ -39,13 +38,13 @@ export class CountryMasterService {
 
     public getCountryMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_CountryNameList_by_Name",
+            "Generic/GetByProc?procName=Rtrv_CountryNameList_by_Name",
             { CountryName: "%" }
         );
     }
 
     public countryMasterInsert(param) {
-        return this._httpClient.post("insert_CountryMaster_1", param);
+        return this._httpClient.post("PersonalDetails/CountrySave", param);
     }
 
     public countryMasterUpdate(param) {

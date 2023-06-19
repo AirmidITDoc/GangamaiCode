@@ -6,6 +6,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { PatienttypeMasterService } from "./patienttype-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-patienttype-master",
@@ -83,6 +84,23 @@ export class PatienttypeMasterComponent implements OnInit {
                     .patientTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPatientTypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getPatientTypeMasterList();
                     });
                 this.notification.success("Record added successfully");
@@ -108,6 +126,23 @@ export class PatienttypeMasterComponent implements OnInit {
                     .patientTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPatientTypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getPatientTypeMasterList();
                     });
                 this.notification.success("Record updated successfully");

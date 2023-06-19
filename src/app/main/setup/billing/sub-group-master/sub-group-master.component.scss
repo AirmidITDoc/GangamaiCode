@@ -19,15 +19,15 @@ app-sub-group-master {
     }
 
     .mat-column-SubGroupName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
     }
 
     .mat-column-GroupName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-AddedByName {
@@ -46,9 +46,9 @@ app-sub-group-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         text-align: right;
         justify-content: right;
     }

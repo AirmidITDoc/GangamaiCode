@@ -8,6 +8,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-state-master",
@@ -31,7 +32,7 @@ export class AreaMasterComponent implements OnInit {
         "AreaId",
         "AreaName",
         "CityName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -116,7 +117,7 @@ export class AreaMasterComponent implements OnInit {
                         areaName: this._AreaService.myform
                             .get("AreaName")
                             .value.trim(),
-                        addedBy: this.accountService.currentUserValue.user.id,
+                        addedBy: 10,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._AreaService.myform.get("IsDeleted").value
@@ -127,6 +128,19 @@ export class AreaMasterComponent implements OnInit {
 
                 this._AreaService.areaMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getAreaMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getAreaMasterList();
                 });
             } else {
@@ -150,6 +164,23 @@ export class AreaMasterComponent implements OnInit {
                     .areaMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getAreaMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getAreaMasterList();
                     });
             }
@@ -176,7 +207,6 @@ export class AreaMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

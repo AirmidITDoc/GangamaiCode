@@ -23,9 +23,6 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
         <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
@@ -198,6 +195,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
                             <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
@@ -214,132 +212,101 @@
                                             <mat-error>Please enter Company Name </mat-error>
                                         </mat-form-field>
                                     </div>
+
+
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Type Name</mat-label>
+                                            <mat-select formControlName="CompTypeId" placeholder="Bank" #singleSelect>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="companytypeFilterCtrl"
+                                                        [placeholderLabel]="'Search'"
+                                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let element of filteredCompanytype | async"
+                                                    [value]="element">
+                                                    {{element.TypeName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
 
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Type Name</mat-label>
-                                                <mat-select formControlName="CompTypeId" placeholder="Bank"
-                                                    #singleSelect>
-                                                    <mat-option>
-                                                        <ngx-mat-select-search [formControl]="companytypeFilterCtrl"
-                                                            [placeholderLabel]="'Search'"
-                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                                    </mat-option>
-                                                    <mat-option *ngFor="let element of filteredCompanytype | async"
-                                                        [value]="element">
-                                                        {{element.TypeName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>Address</mat-label>
-                                                <input name="Address" formControlName="Address"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.Address.errors }"
-                                                    matInput>
-                                                <span class="error" *ngIf="f.Address.invalid && f.Address.touched">City
-                                                    required only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>City Name</mat-label>
-                                                <input name="City"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.City.errors }"
-                                                    formControlName="City" matInput required>
-                                                <span class="error" *ngIf="f.City.invalid && f.City.touched">City
-                                                    required
-                                                    only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>PinNo</mat-label>
-                                                <input name="PinNo"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.Pin.errors }"
-                                                    formControlName="PinNo" maxlength="6" matInput required>
-                                                <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo
-                                                    required only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>PhoneNo </mat-label>
-                                                <input name="PhoneNo"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }"
-                                                    formControlName="PhoneNo" maxlength="10" matInput required>
-                                                <span class="error"
-                                                    *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo
-                                                    required only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>MobileNo </mat-label>
-                                                <input name="MobileNo" formControlName="MobileNo" maxlength="10"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }"
-                                                    matInput required>
-                                                <span class="error"
-                                                    *ngIf="f.MobileNo.invalid && f.MobileNo.touched">Mobile
-                                                    required only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>FaxNo </mat-label>
-                                                <input name="FaxNo" formControlName="FaxNo" maxlength="10"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }" matInput>
-                                                <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo
-                                                    required only 10 Digits</span>
-                                            </mat-form-field>
-                                        </div>
-                                        <!-- 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>IsCancelledBy </mat-label>
-                                            <input name="IsCancelledBy" formControlName="IsCancelledBy" matInput
-                                                required>
-                                            <mat-error>Please enter IsCancelledBy </mat-error>
+                                            <mat-label>Address</mat-label>
+                                            <input name="Address" formControlName="Address"
+                                                [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" matInput>
+                                            <span class="error" *ngIf="f.Address.invalid && f.Address.touched">City
+                                                required only 10 Digits</span>
                                         </mat-form-field>
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <input matInput [matDatepicker]="picker3"
-                                                placeholder="Choose a IsCancelledDate" name="IsCancelledDate"
-                                                formControlName="IsCancelledDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker3></mat-datepicker>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>City Name</mat-label>
+                                            <input name="City" [ngClass]="{ 'is-invalid': submitted && f.City.errors }"
+                                                formControlName="City" matInput required>
+                                            <span class="error" *ngIf="f.City.invalid && f.City.touched">City
+                                                required
+                                                only 10 Digits</span>
                                         </mat-form-field>
-                                    </div>-->
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>PinNo</mat-label>
+                                            <input name="PinNo" [ngClass]="{ 'is-invalid': submitted && f.Pin.errors }"
+                                                formControlName="PinNo" maxlength="6" matInput required>
+                                            <span class="error" *ngIf="f.PinNo.invalid && f.PinNo.touched">PinNo
+                                                required only 6 Digits</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>PhoneNo </mat-label>
+                                            <input name="PhoneNo"
+                                                [ngClass]="{ 'is-invalid': submitted && f.PhoneNo.errors }"
+                                                formControlName="PhoneNo" maxlength="10" matInput required>
+                                            <span class="error" *ngIf="f.PhoneNo.invalid && f.PhoneNo.touched">PhoneNo
+                                                required only 10 Digits</span>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>MobileNo </mat-label>
+                                            <input name="MobileNo" formControlName="MobileNo" maxlength="10"
+                                                [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" matInput
+                                                required>
+                                            <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">Mobile
+                                                required only 10 Digits</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-label>FaxNo </mat-label>
+                                            <input name="FaxNo" formControlName="FaxNo" maxlength="10"
+                                                [ngClass]="{ 'is-invalid': submitted && f.FaxNo.errors }" matInput>
+                                            <span class="error" *ngIf="f.FaxNo.invalid && f.FaxNo.touched">FaxNo
+                                                required only 10 Digits</span>
+                                        </mat-form-field>
+                                    </div>
 
 
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-radio-group name="IsCancelled" formControlName="IsCancelled"
-                                                value='false'>
-                                                <mat-radio-button class="mr-sm-12" fxFlex>IsCancelled</mat-radio-button>
-                                                <mat-radio-button value='false' class="mr-sm-12"
-                                                    fxFlex>IsActive</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
 
-
-                                            </mat-radio-group>
-                                        </div>
+                                            <mat-radio-button value='false' class="mr-sm-12"
+                                                fxFlex>IsActive</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
 
 
                                 </form>
                             </div>
+
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
                                 <div class="button-row">
                                     <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
@@ -347,8 +314,11 @@
                                     <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
+
 
                 </div>
             </div>

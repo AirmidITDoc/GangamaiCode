@@ -45,7 +45,7 @@ export class ServiceMasterService {
 
             ServiceDetailId: [""],
             TariffId: [""],
-            CassId: ["0"],
+            ClassId: ["0"],
             ClassRate: ["0"],
             EffectiveDate: [""],
         });
@@ -69,14 +69,14 @@ export class ServiceMasterService {
 
     public getGroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_GroupMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_GroupMasterForCombo",
             {}
         );
     }
 
     public getDoctorMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_DoctorMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_DoctorMasterForCombo",
             {}
         );
     }
@@ -90,14 +90,14 @@ export class ServiceMasterService {
 
     public getClassMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_M_ClassMasterForList",
+            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
             { ClassName: "%" }
         );
     }
 
     public getTariffMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_TariffMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo",
             {}
         );
     }

@@ -7,6 +7,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { CityMasterService } from "./city-master.service";
 import { takeUntil } from "rxjs/operators";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-city-master",
@@ -30,7 +31,7 @@ export class CityMasterComponent implements OnInit {
         "CityId",
         "CityName",
         "StateName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -77,13 +78,14 @@ export class CityMasterComponent implements OnInit {
         // filter the banks
         this.filteredState.next(
             this.StatecmbList.filter(
-                (bank) => bank.CountryName.toLowerCase().indexOf(search) > -1
+                (bank) => bank.StateName.toLowerCase().indexOf(search) > -1
             )
         );
     }
 
     getCityMasterList() {
-        this._cityService.getCityMasterList().subscribe((Menu) => {
+        var param = { CityName: "%" };
+        this._cityService.getCityMasterList(param).subscribe((Menu) => {
             this.DSCityMasterList.data = Menu as CityMaster[];
             this.DSCityMasterList.sort = this.sort;
             this.DSCityMasterList.paginator = this.paginator;
@@ -109,7 +111,9 @@ export class CityMasterComponent implements OnInit {
                         cityName: this._cityService.myform
                             .get("CityName")
                             .value.trim(),
-                        stateId: this._cityService.myform.get("StateId").value,
+                        stateId:
+                            this._cityService.myform.get("StateId").value
+                                .StateId,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -121,12 +125,25 @@ export class CityMasterComponent implements OnInit {
 
                 this._cityService.cityMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getCityMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getCityMasterList();
                 });
             } else {
                 var m_dataUpdate = {
                     cityMasterUpdate: {
-                        cityId: this._cityService.myform.get("StateId").value,
+                        cityId: this._cityService.myform.get("CityId").value,
                         cityName: this._cityService.myform
                             .get("CityName")
                             .value.trim(),
@@ -144,6 +161,23 @@ export class CityMasterComponent implements OnInit {
                     .cityMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCityMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCityMasterList();
                     });
             }
@@ -153,9 +187,9 @@ export class CityMasterComponent implements OnInit {
 
     onEdit(row) {
         var m_data = {
+            CityId: row.CityId,
+            CityName: row.CityName,
             StateId: row.StateId,
-            StateName: row.StateName.trim(),
-            CountryId: row.CountryId,
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };

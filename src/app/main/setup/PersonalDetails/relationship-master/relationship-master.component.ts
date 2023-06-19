@@ -92,9 +92,25 @@ export class RelationshipMasterComponent implements OnInit {
                     .relationshipMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getrelationshipMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getrelationshipMasterList();
                     });
-                this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     relationshipMasterUpdate: {
@@ -112,7 +128,7 @@ export class RelationshipMasterComponent implements OnInit {
                                 ).value
                             )
                         ),
-                        updatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: 10,
                     },
                 };
                 console.log(m_dataUpdate);
@@ -120,9 +136,25 @@ export class RelationshipMasterComponent implements OnInit {
                     .relationshipMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getrelationshipMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getrelationshipMasterList();
                     });
-                this.notification.success("Record Updated successfully");
             }
             this.onClear();
         }
@@ -145,6 +177,7 @@ import { RelationshipMasterService } from "./relationship-master.service";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 export class RelationshipMaster {
     RelationshipId: number;

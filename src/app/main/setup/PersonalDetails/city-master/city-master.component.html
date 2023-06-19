@@ -67,6 +67,7 @@
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSCityMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
+
                                     <ng-container matColumnDef="CityId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -87,9 +88,9 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -181,8 +182,7 @@
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
                                             <mat-radio-button value='false' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
-                                            <mat-radio-button value='true' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button>
+
                                         </mat-radio-group>
                                     </div>
                                 </form>

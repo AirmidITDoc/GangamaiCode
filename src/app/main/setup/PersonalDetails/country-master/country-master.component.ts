@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { MatPaginator } from "@angular/material/paginator";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-country-master",
@@ -18,7 +19,7 @@ export class CountryMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CountryId",
         "CountryName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -77,6 +78,23 @@ export class CountryMasterComponent implements OnInit {
                     .countryMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCountryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getCountryMasterList();
                     });
             } else {
@@ -101,6 +119,23 @@ export class CountryMasterComponent implements OnInit {
                     .countryMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCountryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCountryMasterList();
                     });
             }
@@ -125,7 +160,6 @@ export class CountryMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -139,7 +173,6 @@ export class CountryMaster {
             this.IsDeleted = CountryMaster.IsDeleted || "false";
             this.AddedBy = CountryMaster.AddedBy || "";
             this.UpdatedBy = CountryMaster.UpdatedBy || "";
-            this.AddedByName = CountryMaster.AddedByName || "";
         }
     }
 }
