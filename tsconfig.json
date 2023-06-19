@@ -1,5 +1,6 @@
 {
     "compileOnSave": false,
+  
     "compilerOptions": {
         "baseUrl": "./src",
         "outDir": "./dist/out-tsc",
@@ -7,6 +8,8 @@
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
         "module": "es2020",
         "moduleResolution": "node",
         "importHelpers": true,

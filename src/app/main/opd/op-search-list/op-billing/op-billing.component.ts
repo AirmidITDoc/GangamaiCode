@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
-import { AdvanceDetailObj, ChargesList } from '../opd-search-list/opd-search-list.component';
+import { SearchInforObj, ChargesList } from '../opd-search-list/opd-search-list.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -111,7 +111,7 @@ export class OPBillingComponent implements OnInit {
   formDiscPersc: any;
   serviceId: number;
   serviceName: String;
-
+  b_TotalChargesAmount:any;
   DoctornewId: any;
   ChargesDoctorname: any;
   finalAmt: any;
@@ -123,7 +123,7 @@ export class OPBillingComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatDrawer;
 
   isLoading: String = '';
-  selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: SearchInforObj;
   isFilteredDateDisabled: boolean = true;
   currentDate = new Date();
 
@@ -161,7 +161,7 @@ export class OPBillingComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   resBillId: Post;
-  renderer: any;
+
 
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -171,6 +171,7 @@ export class OPBillingComponent implements OnInit {
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
+    private renderer: Renderer2,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private dialogRef: MatDialogRef<OPBillingComponent>,
@@ -182,7 +183,7 @@ export class OPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
-    
+
     // this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
@@ -197,6 +198,18 @@ export class OPBillingComponent implements OnInit {
       });
   }
 
+  focusNextPrice() {
+    this.renderer.selectRootElement('#Price').focus();
+  }
+
+  focusNextQty() {
+    this.renderer.selectRootElement('#qty').focus();
+  }
+
+  focusNextbtnAdd() {
+    this.renderer.selectRootElement('#DoctorId').focus();
+
+  }
   // doctorone filter code  
   private filterDoctor() {
 
@@ -345,6 +358,8 @@ export class OPBillingComponent implements OnInit {
 
 
     if (obj.IsDocEditable) {
+
+      // this.renderer.selectRootElement('#DoctorID').focus();
       this.registeredForm.get('DoctorID').reset();
       this.registeredForm.get('DoctorID').setValidators([Validators.required]);
       this.registeredForm.get('DoctorID').enable();
@@ -399,28 +414,6 @@ export class OPBillingComponent implements OnInit {
 
     }
   }
-  
-  keytab(event){
-    debugger
-   
-    // let element = event.srcElement.nextElementSibling; // get the sibling element
-  
-    
-    // if(element == null)  // check if its null
-    //     return;
-    // else
-    //     element.focus();   // focus if not null
-
-    //     if(event.code =='Enter'){
-    //     let element = event.srcElement.nextElementSibling;
-    //     console.log(element);
-    //     element.nextElementSibling.focus();
-
-        
-    //     console.log(element);
-    //     }
-   this.inputEl.nativeElement.focus();
-}
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -453,7 +446,9 @@ export class OPBillingComponent implements OnInit {
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
-    this.TotalnetPaybleAmt = netAmt;
+    // this.TotalnetPaybleAmt = netAmt;
+    this.b_TotalChargesAmount=netAmt;
+    console.log(this.b_TotalChargesAmount);
     // this.TotalnetPaybleAmt= this.netPaybleAmt.toString();
 
     return netAmt
@@ -463,10 +458,8 @@ export class OPBillingComponent implements OnInit {
     value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
     return value;
   }
-  getNetAmount() {
-
-    this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
+  getTotalNetAmount() {
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
   }
 
   tableElementChecked(event, element) {
@@ -550,14 +543,11 @@ export class OPBillingComponent implements OnInit {
   getChargesList1() {
     this.chargeslist = [];
     this.dataSource.data = [];
-    // console.log(this.chargeslist);
-    // console.log( this.dataSource.data.length);
     this.isLoading = 'list-loading';
     let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=0 Order by Chargesid"
     this._opappointmentService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as ChargesList[];
-      // console.log(this.dataSource.data.length);
       this.getNetAmtSum(this.dataSource.data);
       this.isLoading = 'list-loaded';
     },
@@ -569,13 +559,13 @@ export class OPBillingComponent implements OnInit {
   getChargesList() {
     this.chargeslist = [];
     this.dataSource.data = [];
-    // console.log( this.dataSource.data.length);
     this.isLoading = 'list-loading';
     let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=0 Order by Chargesid"
     this._opappointmentService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       this.dataSource.data = data as ChargesList[];
       this.getNetAmtSum(this.dataSource.data);
+      this.getTotalNetAmount();
       if (this.dataSource.data.length > 0) {
         this.onSaveOPBill();
       }
@@ -592,8 +582,8 @@ export class OPBillingComponent implements OnInit {
     let disamt = this.registeredForm.get('concessionAmt').value;
     debugger;
     if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
-      this.FinalAmt = this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;
-      this.netPaybleAmt1 = this.netPaybleAmt;
+      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
     else {
       this.FinalAmt = this.TotalnetPaybleAmt;
@@ -611,9 +601,9 @@ export class OPBillingComponent implements OnInit {
         PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
         PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
         PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-          PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
+        PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
         PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
+        PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
         PathologyReportHeaderObj['IsCompleted'] = 0;
         PathologyReportHeaderObj['IsPrinted'] = 0;
         PathologyReportHeaderObj['IsSampleCollection'] = 0;
@@ -643,8 +633,8 @@ export class OPBillingComponent implements OnInit {
     let OPDoctorShareGroupAdmChargeObj = {};
     OPDoctorShareGroupAdmChargeObj['BillNo'] = 0;
 
-    let Cal_DiscAmount_OPBillObj = {};
-    Cal_DiscAmount_OPBillObj['BillNo'] = 0;
+    // let Cal_DiscAmount_OPBillObj = {};
+    // Cal_DiscAmount_OPBillObj['BillNo'] = 0;
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -662,7 +652,7 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
+    // const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
 
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
@@ -682,27 +672,13 @@ export class OPBillingComponent implements OnInit {
       };
       this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
       this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-
-      debugger;
       this.flagSubmit = result.IsSubmitFlag
-
-      console.log(this.paidamt, this.balanceamt);
-      //
       let InsertBillUpdateBillNoObj = {};
-
       if (this.concessionDiscPer > 0) {
         this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
       } else {
         this.FinalAmt = this.TotalnetPaybleAmt;
       }
-
-      // if(!this.flagSubmit){
-      //   this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-      //   // if (this.concessionDiscPer > 0) {
-      //   //   this.balanceamt = this.FinalAmt;
-      //   // }
-      // }
 
       let InterimOrFinal = 1;
 
@@ -716,8 +692,8 @@ export class OPBillingComponent implements OnInit {
       InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-        InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+      InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
       InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -742,7 +718,7 @@ export class OPBillingComponent implements OnInit {
           "insertRadiologyReportHeader": Redioreporthsarr,
           "insertBillupdatewithbillno": insertBillUpdateBillNo,
           "opBillDetailsInsert": Billdetsarr,
-          "opCalDiscAmountBill": Cal_DiscAmount_OPBillObj,
+          // "opCalDiscAmountBill": Cal_DiscAmount_OPBillObj,
           "opInsertPayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -762,10 +738,7 @@ export class OPBillingComponent implements OnInit {
         });
       }
       else {
-        debugger;
-        // console.log("Procced with Credit bill");
-        // console.log(this.paidamt, this.balanceamt);
-
+        console.log("Procced with Credit bill");
         InterimOrFinal = 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = 0;
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
@@ -775,7 +748,7 @@ export class OPBillingComponent implements OnInit {
           "insertRadiologyReportHeadercredit": Redioreporthsarr,
           "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
           "opBillDetailscreditInsert": Billdetsarr,
-          "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
+          // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
           // "opInsertPayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -784,7 +757,7 @@ export class OPBillingComponent implements OnInit {
             Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
               if (result.isConfirmed) {
                 let m = response;
-                //  this.getPrint(m);
+                this.getPrint(m);
                 this._matDialog.closeAll();
 
               }
@@ -840,7 +813,7 @@ export class OPBillingComponent implements OnInit {
 
     }
     this.onClearServiceAddList();
-
+    this.getTotalNetAmount();
   }
 
 
@@ -849,7 +822,6 @@ export class OPBillingComponent implements OnInit {
     console.log('controll===', value);
     this.registeredForm.get(`drugController$`).setValue(value);
     console.log(this.registeredForm.get(`drugController$`).value);
-
   }
 
   displayWith(lookup) {
@@ -868,7 +840,6 @@ export class OPBillingComponent implements OnInit {
   }
 
   onClearServiceAddList() {
-
     this.registeredForm.get('SrvcName').reset();
     this.registeredForm.get('price').reset();
     this.registeredForm.get('qty').reset('1');
@@ -880,37 +851,28 @@ export class OPBillingComponent implements OnInit {
   }
 
   calculateTotalAmt() {
-
     if (this.b_price && this.b_qty) {
       this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
       this.b_netAmount = this.b_totalAmount;
-
       this.calculatePersc();
     }
   }
 
   calculatePersc() {
     this.tettotalAmount = parseInt(this.b_netAmount);
-
-    debugger;
     let beforeamt = this.b_totalAmount;
     let disper = this.registeredForm.get('discPer').value;
-
     if (disper == null) {
       this.registeredForm.get('netAmount').setValue(beforeamt);
     }
     else {
-
       let amt = parseInt(this.b_disAmount);
-
       let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
       if (this.formDiscPersc) {
         let discAmt = (netAmt * parseInt(this.formDiscPersc)) / 100;
         this.b_disAmount = Math.round(discAmt).toString();
         this.b_netAmount = Math.round(netAmt - discAmt).toString();
         this.TotalnetPaybleAmt = this.b_netAmount;
-
-
       } else if (amt > 0) {
         this.b_netAmount = Math.round(netAmt - amt).toString();
         this.TotalnetPaybleAmt = this.b_netAmount;
@@ -921,19 +883,12 @@ export class OPBillingComponent implements OnInit {
 
 
   calculatePersc1() {
-    debugger;
     this.concessionAmtOfNetAmt = 0;
-
-    // if()
-
-
-    let netAmt = this.totalAmtOfNetAmt;
-
+    let netAmt = this.b_TotalChargesAmount;
     if (this.concessionDiscPer) {
-      let discAmt1 = (netAmt * parseInt(this.concessionDiscPer)) / 100;
+      let discAmt1 = (this.b_TotalChargesAmount * parseInt(this.concessionDiscPer)) / 100;
       this.concessionAmtOfNetAmt = Math.round(discAmt1).toString();
-      this.TotalnetPaybleAmt = Math.round(netAmt - discAmt1).toString();
-      // console.log(this.TotalnetPaybleAmt);
+      this.TotalnetPaybleAmt = Math.round(this.b_TotalChargesAmount - discAmt1).toString();
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
       this.TotalnetPaybleAmt = parseInt(this.TotalnetPaybleAmt);
       this.Consession = false;
@@ -942,36 +897,31 @@ export class OPBillingComponent implements OnInit {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').enable;
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
+      this.registeredForm.get('ConcessionId').reset();
       this.Consession = false;
       this.finalAmt = this.totalAmtOfNetAmt;
     }
     if (this.concessionDiscPer <= 0) {
       this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
+      this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = false;
     }
 
-    this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-
-    this.netPaybleAmt1 = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+    this.netPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
+    this.netPaybleAmt1 = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
     this.TotalnetPaybleAmt = this.netPaybleAmt;
-    console.log(this.netPaybleAmt);
-    console.log(this.netPaybleAmt1);
     this.registeredForm.get('FinalAmt').setValue(this.netPaybleAmt);
-    console.log(this.TotalnetPaybleAmt);
-
-
   }
 
   calculatechargesDiscamt() {
     debugger;
     let d = this.registeredForm.get('discAmount').value;
-
     this.disamt = this.registeredForm.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
-    if (parseInt(this.disamt) > 0) {
+
+    if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
       let tot = 0;
       if (Netamt > 0) {
         tot = Netamt - parseInt(this.disamt);
@@ -979,9 +929,7 @@ export class OPBillingComponent implements OnInit {
         this.registeredForm.get('netAmount').setValue(tot);
       }
     } else if (d == null) {
-
       this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
-      
       this.Consession = true;
     }
     //   else
@@ -989,42 +937,35 @@ export class OPBillingComponent implements OnInit {
     // }
   }
 
-
-
   calculateDiscamtfinal() {
     let d = this.registeredForm.get('concessionAmt').value;
-
-    debugger;
     this.Consession = false;
     this.disamt = this.registeredForm.get('concessionAmt').value;
+    if(this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt){
     if (parseInt(this.disamt) > 0) {
       let tot = 0;
-      // this.b_netAmount = tot.toString();
-      if (this.TotalnetPaybleAmt > 0) {
-        tot = parseInt(this.TotalnetPaybleAmt) - parseInt(this.disamt);
-        this.netPaybleAmt1 = tot;
+      if (this.b_TotalChargesAmount > 0) {
+        tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
+        this.TotalnetPaybleAmt = tot;
         this.registeredForm.get('FinalAmt').setValue(tot);
       }
     }
-
     else if (d == null) {
-
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-      // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
-      this.registeredForm.get('ConcessionId').reset;
-      this.registeredForm.get('ConcessionId').reset();
       this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
       this.registeredForm.get('ConcessionId').disable;
       this.Consession = true;
-
+      this.registeredForm.get('ConcessionId').reset();
     }
-
+  }else{
+    Swal.fire("Discount Amount Schoud be Less than Total Amount")
+  }
   }
 
   onKeydown(event) {
     if (event.key === "Enter") {
       // console.log(event);
-      
+
     }
   }
 
@@ -1068,13 +1009,12 @@ export class OPBillingComponent implements OnInit {
       this.BillingClassCmbList = data
       // this.registeredForm.get('ClassId').setValue(this.selectedAdvanceObj.ClassId);
     });
-    console.log();
   }
 
   getConcessionReasonList() {
     this._opappointmentService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;
-      this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[3]);
+      // this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[0]);
     })
   }
 

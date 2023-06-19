@@ -335,7 +335,7 @@ debugger;
        this.printTemplate = resData[0].TempDesign;
       // let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','TariffName','CompanyName','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby']; // resData[0].TempKeys;
       let keysArray = ['HospitalName','HospAddress','Phone','EmailId','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
-      'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount']; // resData[0].TempKeys;
+      'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','TariffName']; // resData[0].TempKeys;
       for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");

@@ -376,11 +376,7 @@ export class NewAppointmentComponent implements OnInit {
       MobileNo: ['', [Validators.required,Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]], 
-      AadharCardNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),]],
+      AadharCardNo: [''],
       PanCardNo: '',
       MaritalStatusId: '',
       ReligionId: '',
@@ -865,8 +861,13 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   DocSelectdelete(){
-    // console.log(this.VisitFormGroup.get('DoctorIdOne').value.reset(''));
-   
+    debugger;
+    // this.VisitFormGroup.get('RefDocId').setValue(this.Doctor1List[-1]);
+    // this.VisitFormGroup.get('RefDocId').clearValidators();
+    // this.VisitFormGroup.get('RefDocId').updateValueAndValidity();
+       
+    this.VisitFormGroup.get('RefDocId').setValue(null);
+
   this.getDoctor1List();
   }
 

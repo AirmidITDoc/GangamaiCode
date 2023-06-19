@@ -15,6 +15,7 @@ import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
+import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
 
 
 @Component({
@@ -95,13 +96,9 @@ export class OpdSearchListComponent implements OnInit {
 
     }
     else if (this._ActRoute.url == '/opd/bill') {
-      // this.menuActions.push('Vital Inforamtion');
-      // this.menuActions.push('Case Paper');
-      // this.menuActions.push('Advance');
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Payment');
-      // this.menuActions.push('OpSettlement');
     }
     else if (this._ActRoute.url == '/opd/medicalrecords') {
       this.menuActions.push('Case Paper');
@@ -188,9 +185,7 @@ private filterDoctor() {
   }
 
   getRecord(contact, m): void {
-// console.log(contact);
     if (m == "Bill") {
-      // console.log(contact);
       let xx = {
         RegNo: contact.RegId,
         // RegId: contact.RegId,
@@ -204,8 +199,7 @@ private filterDoctor() {
         TariffName: contact.TariffName,
         TariffId: contact.TariffId
       };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
+      this.advanceDataStored.storage = new SearchInforObj(xx);
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
         const dialogRef = this._matDialog.open(OPBillingComponent, 
          {  maxWidth: "90%",
@@ -220,9 +214,9 @@ private filterDoctor() {
       });
     }
     
-    else if(m == "Case Paper") {
+    else if(m == "Payment") {
         // console.log(" This is for Casepaper pop : " + m);
-        let xx = {
+        let data = {
           RegNo: contact.RegId,
           AdmissionID: contact.VisitId,
           PatientName: contact.PatientName,
@@ -239,16 +233,14 @@ private filterDoctor() {
           VisitId:contact.VisitId,
           opD_IPD_Type :contact.opD_IPD_Type,
         };
-        this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+        // this.advanceDataStored.storage = new SearchInforObj(data);
         // console.log( this.advanceDataStored.storage);
-        //  console.log(xx);
-        // debugger;
-        const dialogRef = this._matDialog.open(OPCasepaperComponent,
+        const dialogRef = this._matDialog.open(OutstandingPaymentComponent,
           {
             maxWidth: "95%",
             height: '95%',
             width: '100%',
-            //width: '100%', height: "100%"
+            data :{data}
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -324,7 +316,7 @@ private filterDoctor() {
         DoctorId: contact.DoctorId,
 
       };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+      this.advanceDataStored.storage = new SearchInforObj(xx);
 
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
       // const dialogRef = this._matDialog.open(OPRefundOfBillComponent,
@@ -395,7 +387,7 @@ function PrescriptionTable(PrescriptionTable: any, arg1: { maxWidth: string; max
 }
 
 
-export class AdvanceDetailObj
+export class SearchInforObj
 {
     RegNo : Number;
     AdmissionID: Number;
@@ -431,41 +423,40 @@ export class AdvanceDetailObj
      /**
      * Constructor
      *
-     * @param AdvanceDetailObj
+     * @param SearchInforObj
      */
-      constructor(AdvanceDetailObj) {
+      constructor(SearchInforObj) {
         {
-           this.RegNo = AdvanceDetailObj.RegNo || '';
-           this.RegId = AdvanceDetailObj.RegId || '';
-           this.AdmissionID = AdvanceDetailObj.AdmissionID || '';
-           this.PatientName = AdvanceDetailObj.PatientName || '';
-           this.Doctorname = AdvanceDetailObj.Doctorname || '';
-           this.AdmDateTime = AdvanceDetailObj.AdmDateTime || '';
-           this.AgeYear = AdvanceDetailObj.AgeYear || '';
-           this.ClassId = AdvanceDetailObj.ClassId || '';
-           this.ClassName = AdvanceDetailObj.ClassName || '';
-           this.TariffName = AdvanceDetailObj.TariffName || '';
-           this.TariffId = AdvanceDetailObj.TariffId || '';
-           this.IsDischarged =AdvanceDetailObj.IsDischarged || 0 ;
-           this.opD_IPD_Type = AdvanceDetailObj.opD_IPD_Type | 0;
-           this.PatientType = AdvanceDetailObj.PatientType || 0;
-           this.VisitId = AdvanceDetailObj.VisitId || '';
-           this.AdmissionId = AdvanceDetailObj.AdmissionId || '';
-           this.IPDNo = AdvanceDetailObj.IPDNo || '';
-           this.BedName = AdvanceDetailObj.BedName || '';
-           this.WardName = AdvanceDetailObj.WardName || '';
-           this.CompanyId = AdvanceDetailObj.CompanyId || '';
-           this.IsBillGenerated = AdvanceDetailObj.IsBillGenerated || 0;
-           this.UnitId = AdvanceDetailObj.UnitId || 0;
-           this.RefId = AdvanceDetailObj.RefId || 0;
-            this.DoctorId = AdvanceDetailObj.DoctorId || 0;
-            this.OPD_IPD_ID = AdvanceDetailObj.OPD_IPD_ID || 0;
-            this.IsMLC = AdvanceDetailObj.IsMLC || 0;
-            this.BedId = AdvanceDetailObj.BedId || 0;
-            this.SubCompanyId =AdvanceDetailObj.SubCompanyId || 0;
-            this.PatientTypeID =AdvanceDetailObj.PatientTypeID || 0;
-           this.NetPayableAmt =AdvanceDetailObj.NetPayableAmt || 0;
-
+           this.RegNo = SearchInforObj.RegNo || '';
+           this.RegId = SearchInforObj.RegId || '';
+           this.AdmissionID = SearchInforObj.AdmissionID || '';
+           this.PatientName = SearchInforObj.PatientName || '';
+           this.Doctorname = SearchInforObj.Doctorname || '';
+           this.AdmDateTime = SearchInforObj.AdmDateTime || '';
+           this.AgeYear = SearchInforObj.AgeYear || '';
+           this.ClassId = SearchInforObj.ClassId || '';
+           this.ClassName = SearchInforObj.ClassName || '';
+           this.TariffName = SearchInforObj.TariffName || '';
+           this.TariffId = SearchInforObj.TariffId || '';
+           this.IsDischarged =SearchInforObj.IsDischarged || 0 ;
+           this.opD_IPD_Type = SearchInforObj.opD_IPD_Type | 0;
+           this.PatientType = SearchInforObj.PatientType || 0;
+           this.VisitId = SearchInforObj.VisitId || '';
+           this.AdmissionId = SearchInforObj.AdmissionId || '';
+           this.IPDNo = SearchInforObj.IPDNo || '';
+           this.BedName = SearchInforObj.BedName || '';
+           this.WardName = SearchInforObj.WardName || '';
+           this.CompanyId = SearchInforObj.CompanyId || '';
+           this.IsBillGenerated = SearchInforObj.IsBillGenerated || 0;
+           this.UnitId = SearchInforObj.UnitId || 0;
+           this.RefId = SearchInforObj.RefId || 0;
+            this.DoctorId = SearchInforObj.DoctorId || 0;
+            this.OPD_IPD_ID = SearchInforObj.OPD_IPD_ID || 0;
+            this.IsMLC = SearchInforObj.IsMLC || 0;
+            this.BedId = SearchInforObj.BedId || 0;
+            this.SubCompanyId =SearchInforObj.SubCompanyId || 0;
+            this.PatientTypeID =SearchInforObj.PatientTypeID || 0;
+           this.NetPayableAmt =SearchInforObj.NetPayableAmt || 0;
         }
     }
 }

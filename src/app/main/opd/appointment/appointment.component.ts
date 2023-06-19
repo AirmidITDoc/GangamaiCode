@@ -28,6 +28,7 @@ import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-d
 import { EditRegistrationComponent } from "../registration/edit-registration/edit-registration.component";
 import { CasepaperVisitDetails } from "../op-search-list/op-casepaper/op-casepaper.component";
 import { FeedbackComponent } from "./feedback/feedback.component";
+import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
 
 // const jsPDF = require('jspdf');
 
@@ -344,24 +345,24 @@ export class AppointmentComponent implements OnInit {
     }
     feedback() {
         const dialogRef = this._matDialog.open(FeedbackComponent, {
-            maxWidth: "55vw",
-            height: "800px",
+            maxWidth: "80vw",
+            height: "90%",
             width: "100%",
             // height: "100%"
         });
     }
 
-    // newappointmentwithBill() {
-    //   const dialogRef = this._matDialog.open(AppointmentWithBillComponent,
-    //     {
-    //       maxWidth: "95vw",
-    //       maxHeight: "95vh", width: '100%', height: "100%"
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    //     //  this.getRadiologytemplateMasterList();
-    //   });
-    // }
+    PatientAppointment() {
+      const dialogRef = this._matDialog.open(PatientAppointmentComponent,
+        {
+          maxWidth: "95vw",
+          maxHeight: "95vh", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        //  this.getRadiologytemplateMasterList();
+      });
+    }
 
     onExport(exprtType) {
         // debugger;

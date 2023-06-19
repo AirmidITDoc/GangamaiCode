@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
-import { AdvanceDetailObj } from '../opd-search-list/opd-search-list.component';
+import { SearchInforObj } from '../opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -118,7 +118,7 @@ Dignosflist:any=[];
   prescriptionData: PrescriptionTable[] = [];
   lookupsObj: ILookup = new ILookup();
   screenFromString = 'OP-billing';
-  selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: SearchInforObj;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -1304,7 +1304,7 @@ console.log(D_data);
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
        "VisitId": 10003,//this.selectedAdvanceObj.VisitId,
      }
-     this.advanceDataStored.storage = new AdvanceDetailObj(D_data);
+     this.advanceDataStored.storage = new SearchInforObj(D_data);
     const dialogRef = this._matDialog.open(ViewCasepaperComponent,
       {
         maxWidth: "80vw",
@@ -1335,7 +1335,7 @@ debugger;
       TariffId: this.selectedAdvanceObj.TariffId,
       opD_IPD_Type :this.selectedAdvanceObj.opD_IPD_Type,
     };
-    this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    this.advanceDataStored.storage = new SearchInforObj(xx);
     // const dialogRef = this._matDialog.open(PrescriptionComponent,
     //   {
     //     maxWidth: "80vw",
