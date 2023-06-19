@@ -44,7 +44,7 @@ export class TariffMasterService {
     }
 
     public tariffMasterInsert(param) {
-        return this._httpClient.post("Billing/TariffSave", param);
+        return this._httpClient.post("Billing/TeriffSave", param);
     }
 
     public tariffMasterUpdate(param) {

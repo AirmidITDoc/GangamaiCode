@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-tariff-master",
@@ -79,6 +80,23 @@ export class TariffMasterComponent implements OnInit {
                     .tariffMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTariffMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getTariffMasterList();
                     });
             } else {
@@ -101,6 +119,23 @@ export class TariffMasterComponent implements OnInit {
                     .tariffMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTariffMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getTariffMasterList();
                     });
             }
@@ -109,9 +144,9 @@ export class TariffMasterComponent implements OnInit {
     }
     onEdit(row) {
         var m_data = {
-            TariffId: row.TariffId,
-            TariffName: row.TariffName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            TariffId: row.tariffId,
+            TariffName: row.tariffName.trim(),
+            IsDeleted: JSON.stringify(row.isActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._tariffService.populateForm(m_data);

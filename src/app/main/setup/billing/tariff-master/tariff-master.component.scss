@@ -1,15 +1,15 @@
 app-tariff-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
     }
 
     .mat-column-TariffId {
@@ -31,17 +31,17 @@ app-tariff-master {
     }
 
     .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
+        width: 70px;
+        max-width: 70px;
         min-width: 100px;
         text-align: center;
         justify-content: center;
     }
 
     .mat-column-action {
-        // color: white !important;
-        width: 70px;
-        max-width: 70px;
+        //color: white !important;
+        width: 140px;
+        max-width: 140px;
         min-width: 70px;
         text-align: right;
         justify-content: right;

@@ -7,6 +7,7 @@ import { FormControl } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-subtpa-company-master",
@@ -159,15 +160,15 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             this._subtpacompanyService.myform
                                 .get("FaxNo")
                                 .value.trim() || "0",
-                        addedBy: 1,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
                                     "IsDeleted"
                                 ).value
                             )
                         ),
-
+                        addedBy: 10,
+                        updatedBy: 11,
                         isCancelled: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
@@ -190,6 +191,23 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                     .subTpaCompanyMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getSubtpacompanyMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getSubtpacompanyMasterList();
                     });
             } else {
@@ -260,6 +278,23 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                     .subTpaCompanyMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getSubtpacompanyMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getSubtpacompanyMasterList();
                     });
             }

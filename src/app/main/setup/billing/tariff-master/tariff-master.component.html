@@ -69,14 +69,14 @@
                                     <ng-container matColumnDef="TariffId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TariffId}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.tariffId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="TariffName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> Tariff Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TariffName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.tariffName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -84,9 +84,10 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsDeleted"
+                                            <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-
+                                            <mat-icon *ngIf="element.IsActive"
+                                                class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 

@@ -79,19 +79,19 @@ export class SubtpaCompanyMasterService {
 
     public getSubtpacompanyMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_SubTPACompanyMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_M_SubTPACompanyMasterList_by_Name",
             { CompanyName: "%" }
         );
     }
     public getCompanytypeCombobox() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_CompanyTypeMasterForCombo ",
+            "Generic/GetByProc?procName=RetrieveCompanyTypeMasterForCombo ",
             {}
         );
     }
 
     public subTpaCompanyMasterInsert(param) {
-        return this._httpClient.post("Billing/SubTpaCompanyUpdate", param);
+        return this._httpClient.post("Billing/SubTpaCompanySave", param);
     }
 
     public subTpaCompanyMasterUpdate(param) {
