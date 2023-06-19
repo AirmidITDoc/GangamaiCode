@@ -4,7 +4,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
-import { AdvanceDetailObj, ChargesList } from '../opd-search-list/opd-search-list.component';
+import { SearchInforObj, ChargesList } from '../opd-search-list/opd-search-list.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -118,7 +118,7 @@ export class OPBillingComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatDrawer;
 
   isLoading: String = '';
-  selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: SearchInforObj;
   isFilteredDateDisabled: boolean = true;
   currentDate = new Date();
 
