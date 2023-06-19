@@ -11,13 +11,15 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class OutstandingPaymentComponent implements OnInit {
   inputdata:any;
-  constructor(@inject(MAT_DIALOG_DATA) public data:any,
-  private ref:MatDialogRef<OutstandingPaymentComponent>
+  constructor(
+  // @inject(MAT_DIALOG_DATA) public data:any,
+  // private ref:MatDialogRef<OutstandingPaymentComponent>
+
   ) { }
 
   ngOnInit(): void {
-    this.inputdata=this.data;
-    console.log(this.inputdata);
+    // this.inputdata=this.data;
+    // console.log(this.inputdata);
   }
 
 }
