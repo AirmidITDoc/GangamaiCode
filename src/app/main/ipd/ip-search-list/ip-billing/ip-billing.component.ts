@@ -1677,7 +1677,7 @@ export class IPBillingComponent implements OnInit {
      debugger;
  
      var D_data = {
-       "AdmissionID": el
+       "AdmissionID":10528,// el
      }
      console.log(D_data);
  
@@ -1738,7 +1738,7 @@ export class IPBillingComponent implements OnInit {
  
    getBillingClassCombo() {
      this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
-       this.BillingClassCmbList = data
+       this.BillingClassCmbList = data;
        this.registeredForm.get('ClassId').setValue(this.BillingClassCmbList[0]);
      });
    }
@@ -1783,10 +1783,9 @@ export class IPBillingComponent implements OnInit {
      this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
  
        this.printTemplate = resData[0].TempDesign;
-       let keysArray = ['RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay','AgeMonth','GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
-         'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt', 'AdvanceUsedAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AddedBy']; // resData[0].TempKeys;
- 
- 
+       let keysArray = ['HospitalName','HospitalAddress','EmailId','Phone','RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay','AgeMonth','GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
+         'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt','TotalBillAmt', 'AdvanceUsedAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AddedBy','RoomName','BedName','BillDate','PBillNo']; // resData[0].TempKeys;
+  
        for (let i = 0; i < keysArray.length; i++) {
          let reString = "{{" + keysArray[i] + "}}";
          let re = new RegExp(reString, "g");
@@ -1803,28 +1802,27 @@ export class IPBillingComponent implements OnInit {
            docname = objreportPrint.ChargesDoctorName;
          else
            docname = '';
- 
-         var strabc = ` 
-         <div style="display:flex;margin:8px 0">
-             <div style="display:flex;width:80px;margin-left:20px;">
-                 <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-             </div>
-             <div style="display:flex;width:300px;">
-                 <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-             </div>
-             <div style="display:flex;width:300px;">
-             <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-             </div>
-             <div style="display:flex;width:70px;margin-left:100px;">
-             <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-             </div>
-             <div style="display:flex;width:70px;margin-left:40px;">
-                 <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-             </div>
-             <div style="display:flex;width:150px;text-align:center;margin-left:20px;">
-                 <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-             </div>
-         </div>`;
+           var strabc = ` 
+           <div style="display:flex;margin:8px 0">
+               <div style="display:flex;width:80px;margin-left:20px;">
+                   <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+               </div>
+               <div style="display:flex;width:300px;">
+                   <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+               </div>
+               <div style="display:flex;width:300px;">
+               <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
+               </div>
+               <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
+               <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+               </div>
+               <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
+                   <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+               </div>
+               <div style="display:flex;width:150px;text-align:right;">
+                   <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
+               </div>
+           </div>`;
          strrowslist += strabc;
        }
        var objPrintWordInfo = this.reportPrintObjList[0];
