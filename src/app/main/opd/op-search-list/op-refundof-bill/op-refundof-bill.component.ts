@@ -237,7 +237,7 @@ export class OPRefundofBillComponent implements OnInit {
     debugger;
     // console.log(this.selectedAdvanceObj.RegId);
     var m_data = {
-      "RegNo": this.selectedAdvanceObj.OPD_IPD_ID
+      "RegNo": 3,// this.selectedAdvanceObj.OPD_IPD_ID
       //137151
       
     }

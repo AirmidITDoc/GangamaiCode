@@ -43,12 +43,12 @@ const appRoutes: Routes = [
          // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
            import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
-    // {
-    //     path: "ipd-browse-receipt",
-    //     loadChildren: () =>
-    //        // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-    //        import("./browse-ipdpayment-receipt/browse-paymentreceipt.module").then((m) => m.BrowsePaymentreceiptModule),
-    // },
+    {
+        path: "ipd-browse-receipt",
+        loadChildren: () =>
+           // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
+           import("./browse-ipdpayment-receipt/payment-receipt.module").then((m) => m.PaymentReceiptModule),
+    },
     {
         path: "discharge",
         loadChildren: () =>

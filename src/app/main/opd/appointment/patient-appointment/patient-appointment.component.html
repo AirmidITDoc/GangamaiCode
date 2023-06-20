@@ -576,18 +576,18 @@
               <!-- <button class="next-btn"  *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"  (click)="onSubmit()" [disabled]="personalFormGroup.invalid" style="border-radius: 16px;" >Save
                         </button> -->
 
-              <button class="next-btn" color="accent" (click)="nextClicked(VisitFormGroup)"
+              <!-- <button class="next-btn" color="accent" (click)="nextClicked(VisitFormGroup)"
                 [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;">
-                <span style="display: flex;justify-content: center;">
+                <span style="display: flex;justify-content: center;"> -->
                   <!-- <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner> -->
-                  <span style="margin-left: 6px;">Save</span>
+                  <!-- <span style="margin-left: 6px;">Save</span>
                 </span>
               </button>
 
 
 
               <button class="footer-btn" (click)="onClose()">Cancel</button>
-              &nbsp;
+              &nbsp; -->
             </div>
 
 
@@ -608,7 +608,15 @@
         </div>
       </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+<mat-dialog-actions align="end" style="background-color: rgb(240, 169, 204);">
+
+    <button class="next-btn" color="accent" (click)="nextClicked(VisitFormGroup)"
+    [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;margin-right: 10px;">
+    <span style="display: flex;justify-content: center;">
+      <!-- <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner> -->
+      <span style="margin-left: 6px;">Save</span>
+    </span>
+  </button>
+
+  <button class="footer-btn" (click)="onClose()">Cancel</button>
 </mat-dialog-actions>

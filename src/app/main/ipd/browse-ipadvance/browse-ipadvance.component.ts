@@ -129,6 +129,8 @@ debugger;
   }
 
   getPrint(el) {
+
+    debugger
     var D_data = {
       "AdvanceDetailID": el.AdvanceDetailID,
     }
