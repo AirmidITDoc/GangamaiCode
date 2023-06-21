@@ -38,23 +38,26 @@ export class CityMasterService {
         this.createCityForm();
     }
 
-    public getCityMasterList() {
+    public getCityMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveCityMasterForCombo",
-            { CityName: "%" }
+            "Generic/GetByProc?procName=Rtrv_CityNameList_by_Name",
+            param
         );
     }
 
     public getStateMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_StateMasterForCombo ",
+            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo ",
             {}
         );
     }
 
     public getStateList(CityId) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
-      }
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",
+            { Id: CityId }
+        );
+    }
 
     public cityMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/CitySave", param);

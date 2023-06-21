@@ -61,6 +61,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                 this.filterCompanytype();
             });
     }
+
     onSearch() {
         this.getSubtpacompanyMasterList();
     }
@@ -136,30 +137,24 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                         companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        address:
-                            this._subtpacompanyService.myform
-                                .get("Address")
-                                .value.trim() || "%",
-                        city:
-                            this._subtpacompanyService.myform
-                                .get("City")
-                                .value.trim() || "%",
-                        pinNo:
-                            this._subtpacompanyService.myform
-                                .get("PinNo")
-                                .value.trim() || "0",
-                        phoneNo:
-                            this._subtpacompanyService.myform
-                                .get("PhoneNo")
-                                .value.trim() || "0",
-                        mobileNo:
-                            this._subtpacompanyService.myform
-                                .get("MobileNo")
-                                .value.trim() || "0",
-                        faxNo:
-                            this._subtpacompanyService.myform
-                                .get("FaxNo")
-                                .value.trim() || "0",
+                        address: this._subtpacompanyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        city: this._subtpacompanyService.myform
+                            .get("City")
+                            .value.trim(),
+                        pinNo: this._subtpacompanyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        phoneNo: this._subtpacompanyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        mobileNo: this._subtpacompanyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        faxNo: this._subtpacompanyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
                         isActive: Boolean(
                             JSON.parse(
                                 this._subtpacompanyService.myform.get(
@@ -168,22 +163,10 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 10,
-                        updatedBy: 11,
-                        isCancelled: Boolean(
-                            JSON.parse(
-                                this._subtpacompanyService.myform.get(
-                                    "IsCancelled"
-                                ).value
-                            )
-                        ),
-                        isCancelledBy:
-                            this._subtpacompanyService.myform.get(
-                                "IsCancelledBy"
-                            ).value || "0",
-                        isCancelledDate:
-                            this._subtpacompanyService.myform.get(
-                                "IsCancelledDate"
-                            ).value || "01/01/1900",
+                        updatedBy: 0,
+                        isCancelled: false,
+                        isCancelledBy: "0",
+                        isCancelledDate: "01/01/1900",
                     },
                 };
 
@@ -223,30 +206,24 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                         companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
-                        address:
-                            this._subtpacompanyService.myform
-                                .get("Address")
-                                .value.trim() || "%",
-                        city:
-                            this._subtpacompanyService.myform
-                                .get("City")
-                                .value.trim() || "%",
-                        pinNo:
-                            this._subtpacompanyService.myform
-                                .get("PinNo")
-                                .value.trim() || "0",
-                        phoneNo:
-                            this._subtpacompanyService.myform
-                                .get("PhoneNo")
-                                .value.trim() || "0",
-                        mobileNo:
-                            this._subtpacompanyService.myform
-                                .get("MobileNo")
-                                .value.trim() || "0",
-                        faxNo:
-                            this._subtpacompanyService.myform
-                                .get("FaxNo")
-                                .value.trim() || "0",
+                        address: this._subtpacompanyService.myform
+                            .get("Address")
+                            .value.trim(),
+                        city: this._subtpacompanyService.myform
+                            .get("City")
+                            .value.trim(),
+                        pinNo: this._subtpacompanyService.myform
+                            .get("PinNo")
+                            .value.trim(),
+                        phoneNo: this._subtpacompanyService.myform
+                            .get("PhoneNo")
+                            .value.trim(),
+                        mobileNo: this._subtpacompanyService.myform
+                            .get("MobileNo")
+                            .value.trim(),
+                        faxNo: this._subtpacompanyService.myform
+                            .get("FaxNo")
+                            .value.trim(),
                         updatedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -256,21 +233,9 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             )
                         ),
 
-                        isCancelled: Boolean(
-                            JSON.parse(
-                                this._subtpacompanyService.myform.get(
-                                    "IsCancelled"
-                                ).value
-                            )
-                        ),
-                        isCancelledBy:
-                            this._subtpacompanyService.myform.get(
-                                "IsCancelledBy"
-                            ).value || "0",
-                        isCancelledDate:
-                            this._subtpacompanyService.myform.get(
-                                "IsCancelledDate"
-                            ).value || "01/01/1900",
+                        isCancelled: false,
+                        isCancelledBy: "0",
+                        isCancelledDate: "01/01/1900",
                     },
                 };
 
@@ -339,7 +304,6 @@ export class SubtpacompanyMaster {
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-    // AddedByName:string;
 
     /**
      * Constructor
@@ -363,7 +327,6 @@ export class SubtpacompanyMaster {
             this.IsCancelled = SubtpacompanyMaster.IsCancelled || "";
             this.IsCancelledBy = SubtpacompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = SubtpacompanyMaster.IsCancelledDate || "";
-            //       this.AddedByName=SubtpacompanyMaster.AddedByName || '';
         }
     }
 }

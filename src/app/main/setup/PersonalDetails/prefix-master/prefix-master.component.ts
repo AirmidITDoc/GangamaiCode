@@ -4,6 +4,7 @@ import { PrefixMasterService } from "./prefix-master.service";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-prefix-master",
@@ -77,7 +78,7 @@ export class PrefixMasterComponent implements OnInit {
                             .get("PrefixName")
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value,
-                        addedBy: 1, //this.accountService.currentUserValue.user.id,
+                        addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
@@ -91,6 +92,23 @@ export class PrefixMasterComponent implements OnInit {
                     .insertPrefixMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrefixMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getPrefixMasterList();
                     });
             } else {
@@ -116,6 +134,23 @@ export class PrefixMasterComponent implements OnInit {
                     .updatePrefixMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrefixMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getPrefixMasterList();
                     });
             }

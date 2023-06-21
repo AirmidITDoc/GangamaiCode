@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { fuseAnimations } from "@fuse/animations";
 import { MatRadioModule } from "@angular/material/radio/radio-module";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { valuesIn } from "lodash";
 
 @Component({
     selector: "app-feedback",
@@ -36,25 +37,25 @@ export class FeedbackComponent implements OnInit {
 
     createFeedbackForm() {
         return this.formBuilder.group({
-            nameInput: this.formBuilder.control(null),
-            MobileNo: this.formBuilder.control(null),
-            opdRadio: this.formBuilder.control(null),
-            recpRadio: this.formBuilder.control(null),
-            signRadio: this.formBuilder.control(null),
-            staffBehvRadio: this.formBuilder.control(null),
-            clinicalStaffRadio: this.formBuilder.control(null),
-            docTreatRadio: this.formBuilder.control(null),
-            cleanRadio: this.formBuilder.control(null),
-            radiologyRadio: this.formBuilder.control(null),
-            pathologyRadio: this.formBuilder.control(null),
-            securityRadio: this.formBuilder.control(null),
-            parkRadio: this.formBuilder.control(null),
-            pharmaRadio: this.formBuilder.control(null),
-            physioRadio: this.formBuilder.control(null),
-            canteenRadio: this.formBuilder.control(null),
-            speechRadio: this.formBuilder.control(null),
-            dietRadio: this.formBuilder.control(null),
-            commentText: this.formBuilder.control(null),
+            PatientName: [""],
+            MobileNo: [""],
+            opdRadio: ["5"],
+            recpRadio: ["5"],
+            signRadio: ["5"],
+            staffBehvRadio: ["5"],
+            clinicalStaffRadio: ["5"],
+            docTreatRadio: ["5"],
+            cleanRadio: ["5"],
+            radiologyRadio: ["5"],
+            pathologyRadio: ["5"],
+            securityRadio: ["5"],
+            parkRadio: ["5"],
+            pharmaRadio: ["5"],
+            physioRadio: ["5"],
+            canteenRadio: ["5"],
+            speechRadio: ["5"],
+            dietRadio: ["5"],
+            commentText: "",
         });
     }
 
@@ -65,7 +66,11 @@ export class FeedbackComponent implements OnInit {
     clearForm() {
         this.feedbackFormGroup.reset(); // Resets the formgroup
     }
-
+    // onChangeReg(event) {
+    //
+    //         console.log(event.value);
+    //
+    // }
     submitFeedbackForm() {
         console.log(this.feedbackFormGroup.value);
     }

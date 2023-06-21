@@ -48,7 +48,7 @@ export class SubGroupMasterService {
     // Group Master Combobox List
     public getGroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_GroupListForCombo",
+            "Generic/GetByProc?procName=RetrieveGroupMasterForCombo",
             {}
         );
     }

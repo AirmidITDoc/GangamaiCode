@@ -224,7 +224,7 @@ private _onDestroy = new Subject<void>();
               "ServiceDetailId": "0",
               "ServiceId":"0" ,
               "TariffId":this._serviceMasterService.myform.get("TariffId").value ||"0",
-              "CassId":"1",//this._serviceService.myform.get("CassId").value ||"0",
+              "ClassId":"1",//this._serviceService.myform.get("ClassId").value ||"0",
               "ClassRate":"1",//this._serviceService.myform.get("ClassRate").value ||"0" ,
               "EffectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
           }
@@ -265,7 +265,7 @@ private _onDestroy = new Subject<void>();
             "ServiceDetailId": "0",
             "ServiceId": "0",
             "TariffId":this._serviceMasterService.myform.get("TariffId").value ||"0",
-            "CassId":"1",//this._serviceService.myform.get("CassId").value ||"0",
+            "ClassId":"1",//this._serviceService.myform.get("ClassId").value ||"0",
             "ClassRate":"1",//this._serviceService.myform.get("ClassRate").value ||"0" ,
             "EffectiveDate":this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
         }

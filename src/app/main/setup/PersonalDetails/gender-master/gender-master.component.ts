@@ -6,6 +6,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { GenderMasterService } from "./gender-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-gender-master",
@@ -21,8 +22,8 @@ export class GenderMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "GenderId",
         "GenderName",
-        // "AddedByName",
-        // "IsDeleted",
+
+        "IsDeleted",
         "action",
     ];
 
@@ -30,9 +31,7 @@ export class GenderMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(
-        public _GenderService: GenderMasterService // public notification: NotificationServiceService
-    ) {}
+    constructor(public _GenderService: GenderMasterService) {}
 
     ngOnInit(): void {
         this.getGenderMasterList();
@@ -48,7 +47,7 @@ export class GenderMasterComponent implements OnInit {
             IsDeletedSearch: "2",
         });
     }
-    //
+
     getGenderMasterList() {
         this._GenderService.getGenderMasterList().subscribe((Menu) => {
             this.DSGenderMasterList.data = Menu as GenderMaster[];
@@ -58,13 +57,11 @@ export class GenderMasterComponent implements OnInit {
         });
     }
 
-    //
     onClear() {
         this._GenderService.myform.reset({ IsDeleted: "false" });
         this._GenderService.initializeFormGroup();
     }
 
-    //
     onSubmit() {
         if (this._GenderService.myform.valid) {
             if (!this._GenderService.myform.get("GenderId").value) {
@@ -73,13 +70,7 @@ export class GenderMasterComponent implements OnInit {
                         genderName: this._GenderService.myform
                             .get("GenderName")
                             .value.trim(),
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._GenderService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        // AddedBy: this.accountService.currentUserValue.user.id,
+                        isActive: 1,
                     },
                 };
                 console.log(m_data);
@@ -87,9 +78,25 @@ export class GenderMasterComponent implements OnInit {
                     .genderMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenderMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getGenderMasterList();
                     });
-                ////  this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     genderMasterUpdate: {
@@ -98,35 +105,43 @@ export class GenderMasterComponent implements OnInit {
                         genderName: this._GenderService.myform
                             .get("GenderName")
                             .value.trim(),
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._GenderService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        //  UpdatedBy: this.accountService.currentUserValue.user.id,
+                        isActive: 1,
                     },
                 };
-                //  console.log(m_dataUpdate);
+
                 this._GenderService
                     .genderMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenderMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getGenderMasterList();
                     });
-                //this.notification.success("Record Updated successfully");
             }
             this.onClear();
         }
     }
 
     onEdit(row) {
-        //console.log(row);
         var m_data = {
             GenderId: row.GenderId,
             GenderName: row.GenderName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
         };
         this._GenderService.populateForm(m_data);
     }
@@ -136,9 +151,6 @@ export class GenderMaster {
     GenderId: number;
     GenderName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -149,10 +161,7 @@ export class GenderMaster {
         {
             this.GenderId = GenderMaster.GenderId || "";
             this.GenderName = GenderMaster.GenderName || "";
-            this.IsDeleted = GenderMaster.IsDeleted || "false";
-            this.AddedBy = GenderMaster.AddedBy || "";
-            this.UpdatedBy = GenderMaster.UpdatedBy || "";
-            this.AddedByName = GenderMaster.AddedByName || "";
+            this.IsDeleted = GenderMaster.IsDeleted || "true";
         }
     }
 }

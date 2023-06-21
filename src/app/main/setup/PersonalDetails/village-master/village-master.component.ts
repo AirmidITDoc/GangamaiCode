@@ -7,6 +7,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-village-master",
@@ -130,6 +131,23 @@ export class VillageMasterComponent implements OnInit {
                     .villageMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getVillageMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getVillageMasterList();
                     });
             } else {
@@ -155,6 +173,23 @@ export class VillageMasterComponent implements OnInit {
                     .villageMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getVillageMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getVillageMasterList();
                     });
             }
