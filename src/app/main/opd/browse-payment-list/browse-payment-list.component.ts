@@ -256,9 +256,6 @@ onExport(exprtType){
 
 getTemplate() {
 debugger;
-
-
-
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
     console.log(this.printTemplate = resData[0].TempDesign);

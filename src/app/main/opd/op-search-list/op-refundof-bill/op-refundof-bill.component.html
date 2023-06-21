@@ -7,12 +7,12 @@
             <div fxLayout="row" fxLayoutAlign="space-between " style="width: 100%;">
                 <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 82%; font-weight: 400;">
-                    OP Refund Of Bill
-                </span>
-
+                <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
+                style="width: 80%;font-size: 16px;">
+                OPD REFUND OF BILL   || ( {{selectedAdvanceObj.RegNo}} ) {{selectedAdvanceObj.PatientName}} ( {{selectedAdvanceObj.AgeYear}})  Yrs | {{selectedAdvanceObj.Doctorname}}
+            </span>
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+            style="border-color: red;"></app-common-date>
                 <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" (click)="onClose()">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -20,48 +20,7 @@
 
         </div>
 
-        <div class="content-card">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <form [formGroup]="_OpSearchListService.myRefundBillForm" style="width: 100%;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                            <!-- ================================ LABEL HEADER  -->
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                                    </h3>
-                                </div>
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-
-                                    <span class="label">Reg No :</span>
-                                    <!-- <span class="data_input">{{selectedAdvanceObj.RegNo}}</span> -->
-
-                                    <span class="label"> Patient Name : </span>
-                                    <!-- <span class="data_input">{{selectedAdvanceObj.PatientName}}</span> -->
-
-                                    <span class="label">Doctor Name : </span>
-                                    <!-- <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span> -->
-
-                                    <span class="label">Age(Y) :</span>
-                                    <!-- <span class="data_input">{{selectedAdvanceObj.AgeYear}} -->
-                                    <!-- </span> -->
-
-                                    <span class="label">Tariff Name : </span>
-                                    <!-- <span class="data_input">{{selectedAdvanceObj.TariffName}} -->
-                                        <!-- {{_OpSearchListService.myShowDischargeSummaryForm.get("DOT").value}} -->
-                                    <!-- </span> -->
-
-                                    <app-common-date [screenFrom]="screenFromString"
-                                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                                </div>
-                            </mat-card>
-                            <!-- ================================ LABEL HEADER  -->
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        
     </div>
 
     <!--Middle Data-->
@@ -80,7 +39,7 @@
                                     style="background-color: white; width:90%; ">
                                     <mat-card>
                                         <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
-                                            style="height: 200px !important;">
+                                            style="height: 200px !important;overflow: auto;">
 
                                             <ng-container matColumnDef="BillNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -102,14 +61,14 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     BillAmount </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                    {{element.NetPayableAmt | currency:'INR'}} </mat-cell>
+                                                    {{element.NetPayableAmt}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="RefundAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     RefundAmount </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                    {{element.RefundAmount | currency:'INR'}} </mat-cell>
+                                                    {{element.RefundAmount}} </mat-cell>
                                             </ng-container>
 
                                             <!-- <ng-container matColumnDef="action" stickyEnd>
@@ -244,7 +203,7 @@
                                         <mat-card>
 
                                             <div fxlayout="row"
-                                                style="background-color: white; padding: 2px;height:200px;">
+                                                style="background-color: white; padding: 2px;height:190px;">
                                                 <!-- <form [formGroup]="_OpSearchListService.myShowAdvanceForm"> -->
                                                 <div class="dialog-content-wrapper">
 
@@ -428,33 +387,9 @@
                                         <div style="width: 100%;">
                                             <mat-table class="services-table" matSort [dataSource]="dataSource2"
                                                 [@animateStagger]="{value:'50'}"
-                                                style="height:80% !important;margin-left: 5px;">
+                                                style="height: 250px !important;overflow: auto;">
 
-                                                <!-- <ng-container matColumnDef="ChargesId">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Charges Id  </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                    {{element.ChargesId}} </mat-cell>
-                                            </ng-container>
-                                         
-                                            <ng-container matColumnDef="ChargesDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ChargesDate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ChargesDate |
-                                                    date}}
-                                                </mat-cell>
-                                            </ng-container> -->
-                                                <!-- <ng-container matColumnDef="checkbox" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                    <span class="material-icons" (onclick)="Serviceselect(contact,$event)">
-                                                        cached
-                                                    </span>
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                                    </mat-checkbox>
-                                                </mat-cell>
-                                            </ng-container> -->
+                                           
                                                 <ng-container matColumnDef="ServiceId">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
@@ -572,9 +507,9 @@
                                             </div>
                                         </div>
 
-                                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="6" showFirstLastButtons sticky>
+                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="6" showFirstLastButtons sticky>
                                         </mat-paginator>
-                                  -->
+                                 
 
                                     </mat-tab>
                                 </mat-tab-group>
@@ -635,4 +570,4 @@
 
 </div>
 
-//
+

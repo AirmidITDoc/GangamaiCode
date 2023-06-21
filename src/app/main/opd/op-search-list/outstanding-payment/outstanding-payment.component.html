@@ -1,445 +1,350 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"
+    style="background-color: #F5F5F5;height:auto;">
 
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-    fxLayoutAlign.gt-xs="space-between center ">
 
-    <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
-            
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 70%; font-weight: 400;">
-                Payment Transaction
-            </span>
-          
-            <div fxLayout="column" fxLayout.gt-xs="row">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                    style="border-color: red;"></app-common-date>
-                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose1()">
-                    close
-                </span>
-               </div>
-        </div>
+    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
-</div>
-
-    <!-- <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <div fxLayout="row" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"  fxLayoutAlign="space-between " style="height: 60px;">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px; font-weight: 400;margin-top: 20px;">
-                Payment Transaction
+                style="font-size: 20px; font-weight: 500;width:90%;">
+                Payment : &nbsp;
+                <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}}</span> -->
             </span>
-            <div fxLayout="column" fxLayout.gt-xs="row">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                style="border-color: red;"></app-common-date>
-            <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose()">
-                close
+
+            <span style="float: right;background: white;color: black;">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                </app-common-date>
             </span>
-           </div>
-          
+
+            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
-
-     
-
-    </div> -->
-
-    <!-- </div> -->
-    <!-- </div> -->
-    <div class="header-container" style="display: flex; padding: 5px;">
-        <div fxFlex.gt-sm="100%" fxFlex>
-            <div fxlayout="row" style="background-color: white; ">
-                <!-- ================================ LABEL HEADER  -->
-                <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="padding: 0 9px; height: fit-content;height: 50px;width: 100%;">
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                       
-                    </div> -->
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="align-items: baseline;" fxLayoutAlign="space-between center "> 
-                        <h3 style="font-weight: bold; font-size: 16px; margin-top: 10px;margin-right: 20px;">Patient
-                            Information &nbsp;:
-                        </h3>
-
-                        <span class="label" style="margin-right: 10px;">OPD/IPD No &nbsp;:</span>
-                        <!-- <span class="data_input" style="margin-right:30px;">{{advanceData.advanceObj.OPD_IPD_Id}}</span> -->
-
-                        <span class="label" style="margin-right: 10px;"> Patient Name &nbsp; : </span>
-                        <!-- <span class="data_input" style="margin-right:30px;">{{advanceData.advanceObj.PatientName}}</span> -->
-
-                        <span class="label" style="margin-right: 10px;">Date &nbsp; :</span>
-                        <!-- <span class="data_input" style="margin-right: 5px;">{{advanceData.advanceObj.Date}}</span> -->
-                      
-                        <div style="border-style:double;border-color: blue;text-align: right;" >
-                        <span class="label" style="font-weight:bolder;font-size:large;font-style: italic;">Net Pay Amount &nbsp; :</span>
-                        <!-- <span class="data_input" style="font-weight: bolder;font-size: large;color: blue;font-style: italic;">{{netPayAmt}}</span> -->
-                        </div>
-
-                    </div>
-                </mat-card>
-                <!-- ================================ LABEL HEADER  -->
-            </div>
-        </div>
-
-
-        <!-- //end first part -->
 
     </div>
- 
-    <!-- <div class="net-pay" style="margin-left: 10px;">
-        <div style="width:100px; margin-bottom: 25px;">
-            <span>NetPay Amt</span>
+
+    <div>
+
+
+        <div style="height:600px;width:100%;">
+
+            <div style="border-radius:4px;">
+                <!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
+
+                <div fxlayout="row" style="height:fit-content;">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                        <div fxFlex.gt-sm="98%" fxFlex>
+                            <mat-card>
+                                <div fxlayout="row" style="height:240px;overflow: auto;">
+                                    <div style="width: 100%;background-color: white;">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                            style="background-color:white; margin-left:5px; width:100%; width: fit-content;"
+                                            sticky>
+                                            <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Paid
+                                                Bills
+                                            </h3>
+                                        </div>
+                                        <div matColumnDef="loading"
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur">
+                                            <div class="spinner-border text-danger"></div>
+
+                                        </div>
+
+                                        <mat-table class="table1" #table matSort [dataSource]="dataSource"
+                                            [@animateStagger]="{value:'50'}">
+
+
+                                            <ng-container matColumnDef="BillNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    BillNo
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.BillNo}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="TotalAmt">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Bill Amt
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.TotalAmt}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="ConcessionAmt">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Con. Amt
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.ConcessionAmt}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="NetPayableAmt">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Net Payable Amt
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.NetPayableAmt}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="PaidAmount">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Paid Amt
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.PaidAmount}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="BalanceAmt">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Balance Amt
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.BalanceAmt}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="BillDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Bill Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    {{contact.BillDate | date:'short'}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
+                                                    Action</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <button mat-icon-button
+                                                        (click)="getViewbill1(contact)"><mat-icon>how_to_reg</mat-icon></button>
+                                                    <button mat-icon-button (click)="getPrint(contact)"
+                                                        matTooltip="Print" matTooltip="Bill Print">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button (click)="getPrintreceipt(contact)"
+                                                        matTooltip="ReceiptPrint" matTooltip="Receipt Print">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    no data found...
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                (click)="onEdit($event,contact)">
+                                            </mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                            </mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table>
+
+
+                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
+                                            showFirstLastButtons>
+                                        </mat-paginator>
+                                    </div>
+
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                        <div fxFlex.gt-sm="98%" fxFlex>
+                            &nbsp;
+                            <form [formGroup]="paymentFormGroup" fxLayoutAlign="space-between start"
+                                style="margin-top: 10px;margin-bottom: 7px;">
+                                <mat-card>
+                                    <div fxlayout="row" style="height:240px;overflow: auto;">
+                                        <div style="width: 100%;margin-top: 7px;">
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                fxLayoutAlign="space-between"
+                                                style="background-color:white; margin-left:5px; width:100%; width: fit-content;"
+                                                sticky>
+                                                <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;"> Credit
+                                                    Bills
+                                                </h3>
+                                                <div class="admini-checkbox" style="margin-top: 10px;">
+                                                    <mat-checkbox class="labels-style" formControlName="IsCompany"
+                                                        (change)="getCompanyCreditBillDetails($event);"
+                                                        aria-label="Administrative Charges" style="font-weight: bold;">
+                                                        Is Company
+                                                    </mat-checkbox>
+                                                </div>
+
+                                                <!-- (change)='Adminchargeselect($event)' -->
+                                            </div>
+                                            <mat-table class="table2" #table matSort [dataSource]="dataSource1"
+                                                [@animateStagger]="{value:'50'}">
+
+
+                                                <ng-container matColumnDef="BillNo">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        BillNo
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.BillNo}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="TotalAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Bill Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.TotalAmt}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="ConcessionAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Con. Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.ConcessionAmt}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="NetPayableAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Net Payable Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.NetPayableAmt}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="PaidAmount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Paid Amount
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.PaidAmount}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="BalanceAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Balance Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.BalanceAmt}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="BillDate">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Bill Date
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        {{contact.BillDate | date:'short'}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">
+                                                        Action</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <button mat-icon-button (click)="addpayment(contact)"
+                                                            matTooltip="Payment">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button (click)="getViewbill(contact)">
+                                                            <mat-icon>how_to_reg</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button (click)="getPrintreceipt(contact)"
+                                                            matTooltip="Print">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
+
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        <!-- <mat-spinner *ngIf="isLoading == 'list-loading'" class="spinner" [diameter]="35"
+                                    [color]="blue"></mat-spinner> -->
+
+                                                        <div class="spinner-border text-danger"
+                                                            *ngIf="isLoading == 'list-loading'" class="backgroundBlur">
+                                                        </div>
+                                                        <span *ngIf="isLoading == 'list-loaded'">No Data Found</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns1;"
+                                                    [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide':dataSource1!=null}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']" style="height: 100%;"
+                                                    [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+                                            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
+                                                showFirstLastButtons>
+                                            </mat-paginator> -->
+                                        </div> &nbsp;
+
+
+                                    </div>
+                                </mat-card>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
         </div>
-        <div>
-            <mat-form-field appearance="outline" class="form-fields">
-                <input matInput readonly [(ngModel)]="netPayAmt" style="font-weight: bold;font-size: 18px;">
-            </mat-form-field>
-        </div>
-    </div> -->
-    <div class="payment-container">
-        <form [formGroup]="paymentForm">
-            <div class="chips-container" style="margin-bottom: 20px;">
-                <mat-chip-list aria-label="Fish selection" selectable multiple>
-                    <mat-chip *ngFor="let chip of chipsElements" [selected]="chip.state"
-                        (click)="chipsSelectionChanged(chip)">
-                        <span class="chips-name">{{chip.name}}</span>
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-            <hr size="50">
-            <div style="padding: 20px 20px 100px 20px; height: 250px !important;  overflow: auto !important;">
-                <div *ngIf="chipsElements[0].state">
-                    <div>
-                        <span>Cash Payment</span>
-                    </div>
-                    <mat-form-field appearance="outline" style="width: 180px;">
-                        <mat-label>Enter Cash</mat-label>
-                        <input type="number" min="1" required matInput formControlName="cashAmountController" [(ngModel)]="cashAmt"
-                            (keyup)="calculatePaidAmt('cashAmountController')" (change)="chkPaidAmt($event,'cashAmountController')">
-                        <mat-error
-                            *ngIf="paymentForm.controls.cashAmountController.touched && paymentForm.controls.cashAmountController.invalid">
-                            <span *ngIf="paymentForm.controls.cashAmountController.errors.required">This field is
-                                mandatory.</span>
-                            <span *ngIf="paymentForm.get('cashAmountController').invalid">This field is
-                                invalid.</span>
-                        </mat-error>
-                        <!-- <mat-error class="error"
-                        *ngIf="paymentForm.get('cashAmountController').invalid && paymentForm.get('cashAmountController').touched">
-                         Amount is   required</mat-error>
-                        <mat-error *ngIf="paymentForm.get('cashAmountController').hasError('invalidRange')">
-                            Entered Amount must not be greater than Net Amount
-                        </mat-error> -->
-
-                    </mat-form-field>
-                </div>
-
-                <div *ngIf="chipsElements[1].state">
-                    <div>
-                        <span>Card Payment</span>
-                    </div>
-                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Amount</mat-label>
-                                <input matInput formControlName="cardAmountController" [(ngModel)]="cardAmt"type="number" min="0"
-                                    (keyup)="calculatePaidAmt('cardAmountController')">
-                                    <mat-error class="error"
-                                    *ngIf="paymentForm.get('cardAmountController').invalid && paymentForm.get('cardAmountController').touched">
-                                    Entered Amount must not be greater than Net Amount</mat-error>
-                                <!-- <mat-error
-                                    *ngIf="paymentForm.get('cardAmountController').hasError('invalidRange')">
-                                    Entered Amount must not be greater than Net Amount
-                                </mat-error> -->
-
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Card No</mat-label>
-                                <input matInput [(ngModel)]="cardNo" formControlName="cardNumberController">
-                                <mat-error class="error" *ngIf="paymentForm.get('cardNumberController').invalid && paymentForm.get('cardNumberController').touched"></mat-error>
-                         </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;width:200px;">
-                           
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Select Bank Name</mat-label>
-                                <mat-select formControlName="cardBankNameController" placeholder="Bank" #singleSelect [(ngModel)]="bankNameData">
-                                    <mat-option>
-                                        <ngx-mat-select-search [formControl]="cardbankFilterCtrl"
-                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                        </ngx-mat-select-search>
-                                    </mat-option>
-                                    <mat-option *ngFor="let element of filteredCardbank | async" [value]="element">
-                                        {{element.BankName}}
-                                    </mat-option>
-                                </mat-select>
-                                <!-- <mat-error class="error"
-                                *ngIf="paymentForm.get('cardbankFilterCtrl').invalid && paymentForm.get('cardbankFilterCtrl').touched">
-                                Bank Name is required</mat-error> -->
-                            </mat-form-field>
-
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="cardDate"
-                                    placeholder="Choose a DateofBirth" name="cardDateController"
-                                    formControlName="cardDateController">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field> -->
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Enter date</mat-label>
-                                <input matInput [matDatepicker]="picker" name="cardDateController" formControlName="cardDateController"
-                                 >
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                               
-                              </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="chipsElements[2].state">
-                    <div>
-                        <span>Cheque Payment</span>
-                    </div>
-                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Amount</mat-label>
-                                <input matInput formControlName="chequeAmountController" [(ngModel)]="chequeAmt"
-                                    type="number" min="0" (keyup)="calculatePaidAmt('chequeAmountController')">
-                                    <mat-error class="error"
-                                     *ngIf="paymentForm.get('chequeAmountController').invalid && paymentForm.get('chequeAmountController').touched"> digits  is  required</mat-error>
-                                    <!-- <mat-error class="error"
-                                    *ngIf="paymentForm.get('chequeAmountController').invalid">
-                                    digits  required</mat-error> -->
-
-                                
-                                  <!-- <mat-error class="error"
-                                    *ngIf="paymentForm.get('chequeAmountController').invalid && paymentForm.get('chequeAmountController').touched">
-                                    Only Digits</mat-error>    -->
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right:10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Cheque No</mat-label>
-                                <input matInput [(ngModel)]="chequeNo" formControlName="chequeNumberController">
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px; width:200px;">
-                           
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Select Bank Name</mat-label>
-                                <mat-select formControlName="chequeBankNameController" placeholder="Bank" #singleSelect>
-                                    <mat-option>
-                                        <ngx-mat-select-search [formControl]="chequebankFilterCtrl"
-                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                        </ngx-mat-select-search>
-                                    </mat-option>
-                                    <mat-option *ngFor="let element of filteredChequebank | async" [value]="element">
-                                        {{element.BankName}}
-                                    </mat-option>
-                                </mat-select>
-                                <!-- <mat-error class="error"
-                                *ngIf="paymentForm.get('chequeBankNameController').invalid && paymentForm.get('chequeBankNameController').touched">
-                                Bank Name is required</mat-error> -->
-                            </mat-form-field>
-
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="ChequeDate" [(ngModel)]="chequeDate" matInput [matDatepicker]="picker2"
-                                    formControlName="chequeDateController"  required>
-                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                            </mat-form-field> -->
-
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>ChequeDate </mat-label>
-                                <input  matInput [matDatepicker]="picker" name="chequeDateController" formControlName="chequeDateController"
-                                required >
-                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                               
-                              </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="chipsElements[3].state">
-                    <div>
-                        <span>NEFT Payment</span>
-                    </div>
-                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Amount</mat-label>
-                                <input matInput formControlName="neftAmountController" [(ngModel)]="neftAmt" type="number" min="0"
-                                    (keyup)="calculatePaidAmt('neftAmountController')">
-                                <mat-error *ngIf="paymentForm.get('neftAmountController').hasError('invalidRange') || paymentForm.get('neftAmountController').invalid">
-                                    Entered Amount must not be greater than Net Amount
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter NEFT No</mat-label>
-                                <input matInput [(ngModel)]="neftNo" formControlName="neftNumberController">
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;width:200px;">
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Select Bank Name</mat-label>
-                                <mat-select formControlName="neftBankNameController" placeholder="Bank" #singleSelect>
-                                    <mat-option>
-                                        <ngx-mat-select-search [formControl]="bankFilterCtrl"
-                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                        </ngx-mat-select-search>
-                                    </mat-option>
-                                    <mat-option *ngFor="let element of filteredBank | async" [value]="element">
-                                        {{element.BankName}}
-                                    </mat-option>
-                                </mat-select>
-                                <!-- <mat-error class="error"
-                                *ngIf="paymentForm.get('neftBankNameController').invalid && paymentForm.get('neftBankNameController').touched">
-                                Bank Name is required</mat-error> -->
-                            </mat-form-field>
-
-                        </div>
-                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="NEFTDate" matInput [matDatepicker]="picker" formControlName="neftDateController" [readonly]="true" required>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <!-- <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="NEFTDate" matInput [matDatepicker]="picker"
-                                    formControllName="neftDateController" [readonly]="true" required>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div> -->
-                    </div>
-                </div>
-                <div *ngIf="chipsElements[4].state">
-                    <div>
-                        <span>PayTM Payment</span>
-                    </div>
-                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Amount</mat-label>
-                                <input matInput formControlName="paytmAmountController" [(ngModel)]="paytmAmt" type="number" min="0"
-                                    (keyup)="calculatePaidAmt('paytmAmountController')">
-                                <mat-error *ngIf="paymentForm.get('paytmAmountController').hasError('invalidRange')">
-                                    Entered Amount must not be greater than Net Amount
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Trans ID/Mobile No</mat-label>
-                                <input matInput [(ngModel)]="paytmTransNo" formControlName="paytmMobileNoController">
-                                <mat-error class="error" *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">
-                                Please enter valid 10 Digit</mat-error>
-                                </mat-form-field>
-                        </div>
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="PayTMDate" matInput [matDatepicker]="picker" formControlName="paytmDateController" [readonly]="true" required>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="chipsElements[5].state">
-                    <div>
-                        <span>Wrf Payment</span>
-                    </div>
-                    <div class="cards-div" fxLayout.gt-xs="row" fxLayoutAlign="start">
-                        <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Amount</mat-label>
-                                <input matInput formControlName="wrfAmountController" [(ngModel)]="wrfAmt" type="number" min="0"
-                                    (keyup)="calculatePaidAmt('wrfAmountController')">
-                                <mat-error *ngIf="paymentForm.get('wrfAmountController').hasError('invalidRange')">
-                                    Entered Amount must not be greater than Net Amount
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <hr size="50">
-            <div >
-                <div>
-                    <span>Paid Amount</span>
-                </div>
-                <div class="cards-div" fxLayout.gt-xs="row" fxLayout="row" style="width: 100%;" fxLayoutAlign="space-between center ">
-                    <div style="margin-right: 10px; width: 68%;">
-                        <mat-form-field appearance="outline" style="width: 180px;">
-                            <mat-label>Paid Amount</mat-label>
-                            <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt" readonly>
-                        </mat-form-field> &nbsp;
-                           
-                   
-                        <mat-form-field appearance="outline" style="width: 180px;">
-                            <mat-label>Balance Amount</mat-label>
-                            <input matInput #balanceAmnt formControlName="balanceAmountController"
-                                [(ngModel)]="balanceAmt" readonly>
-                        </mat-form-field> &nbsp;
-                        <!-- <app-refund-of-advance [BalanceData]="balanceAmnt.value"> </app-refund-of-advance> -->
-
-                    
-                  
-
-                        <mat-form-field appearance="outline" style="width: 180px;">
-                            <mat-label>Comments</mat-label>
-                            <input matInput formControlName="commentsController">
-                        </mat-form-field> &nbsp;
-                    </div>
-                    <!-- <div class="admini-checkbox" style="margin-top: 10px;">
-                        <mat-checkbox class="labels-style" formControlName="Iscredited"
-                            (change)='Adminchargeselect($event)' aria-label="Administrative Charges"
-                            style="font-weight: bold;">
-                            Is credited
-                        </mat-checkbox>
-                    </div>&nbsp; -->
-                    <div class="save-payment">
-                        <!-- <button type="submit" class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || !balanceAmt|| checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)" -->
-                         
-                        <button type="submit" class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)"
-                        style="border-radius: 16px;">
-                            <span style="display: flex;justify-content: center;">
-                                <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
-                                </mat-spinner>
-                                <span style="margin-left: 5px;">Save</span>
-                            </span>
-                        </button>
-                        &nbsp;
-                        <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
-
-
-                    </div>
-                </div>
-            </div>
-
-        </form>
+        <!-- CENTER -->
     </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
+    <!-- / CONTENT-->
 </div>

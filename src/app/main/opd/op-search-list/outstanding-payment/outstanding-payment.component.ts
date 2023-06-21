@@ -1,12 +1,23 @@
-import { Component, Inject, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { AdvanceDetailObj } from '../../appointment/appointment.component';
+import { ReportPrintObj } from '../../browse-opbill/browse-opbill.component';
+import { IpBillBrowseList } from 'app/main/ipd/ip-bill-browse-list/ip-bill-browse-list.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
+import { BrowseOpdPaymentReceipt } from '../../browse-payment-list/browse-payment-list.component';
 
 @Component({
   selector: 'app-outstanding-payment',
@@ -16,996 +27,612 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations
 })
 export class OutstandingPaymentComponent implements OnInit {
-  inputdata:any;
- 
-  chipsElements = [
-    { name: 'Cash', state: true },
-    { name: 'Card', state: false },
-    { name: 'Cheque', state: false },
-    { name: 'NEFT', state: false },
-    { name: 'UPI', state: false },
-    { name: 'Wrf Option', state: false }
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  sIsLoading: string = '';
+  selectedAdvanceObj: AdvanceDetailObj;
+  regId:any;
+  screenFromString = 'OP-billing';
+  reportPrintObj: ReportPrintObj;
+  subscriptionArr: Subscription[] = [];
+  printTemplate: any;
+  reportPrintObjList: IpBillBrowseList[] = [];
+  currentDate = new Date();
+  FinalAmt:any;
+  balanceamt: any;
+  reportPrintbillObj: ReportPrintObj;
+  reportPrintbillObjList: ReportPrintObj[] = [];
+
+
+  dataSource = new MatTableDataSource<PaidBilldetail>();
+  displayedColumns: string[] = [
+    'BillNo',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'PaidAmount',
+    'BalanceAmt',
+    'BillDate',
+    'action',
+
   ];
 
-  paidamt: any;
-  balanceamt: any;
+  dataSource1 = new MatTableDataSource<CreditBilldetail>();
+  @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
+  paymentFormGroup: FormGroup;
+  displayedColumns1: string[] = [
+    'BillNo',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'PaidAmount',
+    'BalanceAmt',
+    'BillDate',
+    'action',
+   
+  ];
 
-  paymentForm: FormGroup;
-  billNo: number;
-  advanceData: any = {};
-  now: Date;
-  netPayAmt: number = 0;
-  cashAmt: number = 0;
-  cardAmt: number = 0;
-  cardNo: any;
-  refundId: number;
-  cardBankName: any;
-  BankNameList: any = [];
-  BankNameList1: any = [];
-  BankNameList2: any = [];
-  cardDate: Date;
-  chequeAmt: number = 0;
-  chequeNo: any;
-  chequeBankName: any;
-  chequeDate: Date;
-  neftAmt: number = 0;
-  neftNo: any;
-  neftBankName: any;
-  neftDate: Date;
-  paytmAmt: number = 0;
-  paytmTransNo: any;
-  paytmDate: Date;
-  wrfAmt: number = 0;
-  paidAmt: number = 0;
-  balanceAmt: number = 0;
-  balanceAmt1: number = 0;
-  paidAmtPrev: number = 0;
-  balanceAmtPrev: number = 0;
-  screenFromString = 'payment-form';
-  isLoading: string = '';
-  balAmt: any = [];
-  dateTimeObj: any;
-  PatientName: any;
-  BillDate: any;
-
-  //bANK filter
-  public bankFilterCtrl: FormControl = new FormControl();
-  public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //cheque filter
-  public chequebankFilterCtrl: FormControl = new FormControl();
-  public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //Card filter
-  public cardbankFilterCtrl: FormControl = new FormControl();
-  public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
-
-  constructor(
-    private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private ipSearchService: OPSearhlistService,
+  hasSelectedContacts: boolean;
+  constructor(public _OpSearchListService: OPSearhlistService,
     private accountService: AuthenticationService,
-    private dialogRef: MatDialogRef<OutstandingPaymentComponent>,
-    private authServie: AuthenticationService,
-
-  ) {
-    dialogRef.disableClose = true;
-    // debugger;
-    this.advanceData = data;
-    console.log(this.advanceData.advanceObj);
-
-    if (this.advanceData.FromName == "Advance-Refund") {
-      this.netPayAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
-      this.cashAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
-      this.paidAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
-      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
-    }
-    if (this.advanceData.FromName == "OP-Bill") {
-      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
-    }
-    if (this.advanceData.FromName == "IP-Bill") {
-      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-      this.PatientName = this.advanceData.advanceObj.PatientName;
-      this.BillDate = this.advanceData.advanceObj.Date;
-
-    }
-    else {
-      // this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      // this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      // this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
-      this.getBalanceAmt();
-    }
-  }
-
-  bankNameData: any;
-  checkAmt(netPayAmt, cashAmt, cardAmt, neftAmt, paytmAmt, wrfAmt) {
-    if (parseInt(netPayAmt) < (parseInt(cashAmt) + parseInt(cardAmt) + parseInt(neftAmt) + parseInt(paytmAmt) + parseInt(wrfAmt))) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
+    // public notification: NotificationServiceService,
+    public _matDialog: MatDialog,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    // public dialogRef: MatDialogRef<IPSettlementComponent>,
+    public datePipe: DatePipe,
+    private advanceDataStored: AdvanceDataStored,
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
   ngOnInit(): void {
-
-    this.paymentForm = this.createForm();
-    this.getBankNameList();
-    this.getBankNameList1();
-    this.getBankNameList2();
-    if (this.cashAmt) {
-      this.calculatePaidAmt();
-      const controllers = this.paymentForm.controls;
-      Object.keys(controllers).forEach(controlName => {
-        const controlValue = this.paymentForm.get(controlName);
-        console.log(controlName);
-        if (controlValue.untouched) {
-          controlValue.markAsUntouched();
-          controlValue.clearValidators();
-          controlValue.updateValueAndValidity();
-        }
-      });
+    
+debugger;
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.regId = this.selectedAdvanceObj.RegNo;
+     console.log(this.regId);
     }
 
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterBank();
-      });
+    // if(this.data){
+    //   this.regId = this.data.registerObj.RegNo;
+    //   console.log(this.regId);
+    // }
 
-    this.chequebankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filtercardbank();
-      });
+    this.getPaidBillDetails();
+    this.getCreditBillDetails();
 
-    this.cardbankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterchequebank();
-      });
   }
-
-
 
   createForm() {
-    return this.formBuilder.group({
-      // cashAmountController: ['', []],
-      cardAmountController: ['', []],
-      cardNumberController: ['', []],
-      cardBankNameController: ['', []],
-      cardDateController: [(new Date()).toISOString()],
-      chequeAmountController: ['', []],
-      chequeNumberController: ['', []],
-      chequeBankNameController: ['', []],
-      chequeDateController: [(new Date()).toISOString()],
-      neftAmountController: ['', []],
-      neftNumberController: ['', []],
-      neftBankNameController: ['', []],
-      neftDateController: [(new Date()).toISOString()],
-      paytmAmountController: ['', []],
-      paytmMobileNoController: ['', []],
-      paytmDateController: [(new Date()).toISOString()],
-      wrfAmountController: ['', []],
-
-      cashAmountController: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$")
-
-      ]],
-
-      // cardAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // cardNumberController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(16),
-      //   Validators.maxLength(16),
-      // ]],
-
-      // cardBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      //  cardDateController: [(new Date()).toISOString()],
-
-      // chequeAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-
-      // ]],
-      // chequeNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // chequeBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // chequeDateController: [(new Date()).toISOString()],
-      // neftAmountController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // neftDateController: [(new Date()).toISOString()],
-      // paytmAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")]],
-      // paytmMobileNoController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(10),
-      //   Validators.maxLength(10),
-      // ]],
-
-      // paytmDateController: [(new Date()).toISOString()],
-      // wrfAmountController: ['', [Validators.pattern('^[0-9]{2,8}$')]],
-
-      paidAmountController: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$")]],
-      balanceAmountController: ['', [Validators.pattern('^[0-9]{2,8}$')]],
-      commentsController: [''],
-      Iscredited: [1]
-
-    });
-  }
-
-  get f() { return this.paymentForm.controls }
-
-
-  // bank filter code
-  private filterBank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredBank.next(this.BankNameList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredBank.next(
-      this.BankNameList.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // bank filter code
-  private filtercardbank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.chequebankFilterCtrl.value;
-    if (!search) {
-      this.filteredChequebank.next(this.BankNameList2.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredChequebank.next(
-      this.BankNameList2.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // bank filter code
-  private filterchequebank() {
-
-    if (!this.BankNameList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cardbankFilterCtrl.value;
-    if (!search) {
-      this.filteredCardbank.next(this.BankNameList1.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCardbank.next(
-      this.BankNameList1.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-
-  getBankNameList() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList = data;
-      this.filteredBank.next(this.BankNameList.slice());
-
-
-    });
-  }
-
-  getBankNameList1() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList1 = data;
-      this.filteredCardbank.next(this.BankNameList1.slice());
-    });
-  }
-
-
-  getBankNameList2() {
-    this.ipSearchService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList2 = data;
-      this.filteredChequebank.next(this.BankNameList2.slice());
-    });
-  }
-  async chipsSelectionChanged(event: any) {
-    if(this.cashAmt < this.netPayAmt){
-    this.calculatePaidAmt();
-    const controllers = this.paymentForm.controls;
-    Object.keys(controllers).forEach(controlName => {
-      const controlValue = this.paymentForm.get(controlName);
-      console.log(controlName);
-      if (controlValue.untouched) {
-        controlValue.markAsUntouched();
-        controlValue.clearValidators();
-        controlValue.updateValueAndValidity();
-      }
-    });
-    console.log(event)
-    let chipName = event.name;
-    event.state = !event.state;
-    if (event.state) {
-      switch (chipName) {
-        case 'Cash': {
-          this.cashAmt = 0;
-          this.paymentForm.get('cashAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
-          break;
-        }
-
-        case 'Card': {
-          this.cardAmt = 0;
-          console.log("378")
-          this.paymentForm.controls["cardAmountController"].setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]);
-          this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
-
-          this.paymentForm.controls["cardNumberController"].setValidators([Validators.required,
-          Validators.pattern("^[0-9]*$"),
-        //   Validators.minLength(16),
-        //   Validators.maxLength(16)
-             ]);
-          this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
-
-          this.paymentForm.controls["cardBankNameController"].setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]);
-          this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardDateController: new Date() });
-          console.log("Line 398", this.paymentForm);
-          break;
-        }
-        case 'Cheque':
-          this.chequeAmt = 0;
-          console.log("406")
-          this.paymentForm.controls['chequeAmountController'].setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
-
-          this.paymentForm.get('chequeNumberController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.get('chequeNumberController').updateValueAndValidity();
-
-          this.paymentForm.controls['chequeBankNameController'].setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]); this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeDateController: new Date() });
-          break;
-
-        case 'NEFT':
-          this.neftAmt = 0;
-          this.paymentForm.get('neftAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
-          this.paymentForm.get('neftNumberController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
-          this.paymentForm.get('neftBankNameController').setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]); this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftDateController: new Date() });
-          break;
-
-        case 'UPI':
-          this.paytmAmt = 0;
-          this.paymentForm.get('paytmAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-          this.paymentForm.get('paytmMobileNoController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$"),
-            Validators.minLength(10),
-            Validators.maxLength(10)
-          ]);
-          this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ paytmDateController: new Date() });
-          break;
-
-        case 'Wrf Option':
-          this.wrfAmt = 0;
-          this.paymentForm.get('wrfAmountController').setValidators([Validators.required, Validators.pattern('^[0-9]{2,8}$')]);
-          this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
-          break;
-
-        default:
-          console.log(460)
-          break;
-      }
-      this.calculatePaidAmt();
-    }
-    else {
-      switch (chipName) {
-        case 'Cash': {
-          this.cashAmt = 0;
-          this.paymentForm.get('cashAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
-          break;
-        }
-
-        case 'Card': {
-          this.cardAmt = 0;
-          console.log("378")
-          this.paymentForm.controls["cardAmountController"].clearValidators();
-          this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
-          this.paymentForm.controls["cardNumberController"].clearValidators();
-          this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardNumberController: '' });
-          this.paymentForm.controls["cardBankNameController"].clearValidators();
-          this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardBankNameController: '' });
-          this.paymentForm.patchValue({ cardDateController: new Date() });
-          console.log("Line 398", this.paymentForm);
-          break;
-        }
-        case 'Cheque':
-          this.chequeAmt = 0;
-          console.log("406")
-          this.paymentForm.controls['chequeAmountController'].clearValidators();
-          this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
-
-          this.paymentForm.get('chequeNumberController').clearValidators();
-          this.paymentForm.get('chequeNumberController').updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeNumberController: '' });
-          this.paymentForm.controls['chequeBankNameController'].clearValidators();
-          this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeBankNameController: '' });
-          this.paymentForm.patchValue({ chequeDateController: new Date() });
-          break;
-
-        case 'NEFT':
-          this.neftAmt = 0;
-          this.paymentForm.get('neftAmountController').clearValidators();
-          this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
-          this.paymentForm.get('neftNumberController').clearValidators();
-          this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftNumberController: '' });
-          this.paymentForm.get('neftBankNameController').clearValidators();
-          this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftBankNameController: '' });
-          this.paymentForm.patchValue({ neftDateController: new Date() });
-          break;
-
-        case 'PayTM':
-          this.paytmAmt = 0;
-          this.paymentForm.get('paytmAmountController').clearValidators();
-          this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-          this.paymentForm.get('paytmMobileNoController').clearValidators();
-          this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ paytmMobileNoController: '' });
-          this.paymentForm.patchValue({ paytmDateController: new Date() });
-          break;
-
-        case 'Wrf Option':
-          this.wrfAmt = 0;
-          this.paymentForm.get('wrfAmountController').clearValidators();
-          this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
-          break;
-      }
-      this.calculatePaidAmt();
-    }
-    }
-    // event.state = !event.state;
-    console.log('==', event);
-    // this.cdr.detectChanges();
-  }
-
-
-
-  calculatePaidAmt(controlNameParam?) {
-    debugger;
-   
-   
-// console.log(controlNameParam != 'cashAmountController');
-    Object.keys(this.paymentForm.controls).forEach(controlName => {
-      if (controlNameParam == controlName) {
-        this.paymentForm.get(controlNameParam).markAsTouched();
-      } else {
-        this.paymentForm.get(controlName).markAsUntouched();
-      }
+    this.paymentFormGroup = this.formBuilder.group({
     
-   
-    });
+      IsCompany: [0]
 
-    let cashAmtLocal = '0';
-    let cardAmtLocal = '0';
-    let chequeAmtLocal = '0';
-    let neftAmtLocal = '0';
-    let paytmAmtLocal = '0';
-    let wrfAmtLocal = '0';
-    let paidAmtLocal;
-    // if (this.cashAmt) {
-    this.paidAmt = null;
-    this.balanceAmt1 = this.paymentForm.get('balanceAmountController').value;
-    this.balanceAmt = null;
-
-    // if(paidAmtLocal < this.balanceAmt1)
-    // {
-    //   Swal.fire('CHK');
-    // }
-
-    paidAmtLocal = parseInt(this.cashAmt ? this.cashAmt.toString() : cashAmtLocal)
-      + parseInt(this.cardAmt ? this.cardAmt.toString() : cardAmtLocal)
-      + parseInt(this.chequeAmt ? this.chequeAmt.toString() : chequeAmtLocal)
-      + parseInt(this.neftAmt ? this.neftAmt.toString() : neftAmtLocal)
-      + parseInt(this.paytmAmt ? this.paytmAmt.toString() : paytmAmtLocal)
-      + parseInt(this.wrfAmt ? this.wrfAmt.toString() : wrfAmtLocal);
-    console.log(paidAmtLocal)
-    console.log(this.balanceAmt1)
-
-debugger;
-
-
-console.log(this.balanceAmt1);
-console.log(paidAmtLocal);
-console.log(this.paidAmt);
-
-// if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-debugger;
-// if(chipName)
-//  if( paidAmtLocal > this.balanceAmt1){
-// Swal.fire("Amount chk")
-//   }
-    if (paidAmtLocal > this.netPayAmt) {
-      this.paidAmt = this.paidAmtPrev;
-      this.balanceAmt = this.balanceAmtPrev;
-      var val = this.paymentForm.get(controlNameParam).value;
-
-      // this.paymentForm.patchValue({controlNameParam:val.toString().substr(0, val.length - 1)});
-      // return;
-      // const controllers = this.paymentForm.controls;
-      // Object.keys(controllers).forEach(controlName => {
-      //   const controlValue = this.paymentForm.get(controlName);
-      //   if (controlValue && controlValue.touched) {
-      //     controlValue.setValidators(this.rangevalidation(true));
-      //     controlValue.updateValueAndValidity();
-      //     return;
-      //   } else if (controlValue.untouched) {
-      //     controlValue.markAsUntouched();
-      //     controlValue.clearValidators();
-      //     controlValue.updateValueAndValidity();
-      //   }
-      // });
-
-    } else {
-      this.paidAmt = paidAmtLocal;
-      this.getBalanceAmt();
-      this.paidAmtPrev = this.paidAmt;
-      const controllers = this.paymentForm.controls;
-      Object.keys(controllers).forEach(controlName => {
-        const controlValue = this.paymentForm.get(controlName); //controls[controlName].value;
-        // controlValue.markAsUntouched();
-        // console.log("controlValue",controlName)
-        // controlValue.clearValidators();
-        // controlValue.updateValueAndValidity();
       });
     }
-    // }
-    // else{
-    //   Swal.fire("Enter validate Amount");
-    // }
+
+
+  getPaidBillDetails() {
+debugger
+    this.sIsLoading = 'loading-data';
+
+    // Set value for testing
+  this.regId=62;
+
+    // let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
+    let query ="Select * from lvwBillOPD  where RegID=" + this.regId + " and BalanceAmt=0";
+   console.log(query);
+    this._OpSearchListService.getPaidBillList(query).subscribe(Visit => {
+     this.dataSource.data = Visit as PaidBilldetail[];
+     this.dataSource.sort =this.sort;
+    this.dataSource.paginator=this.paginator;
+    console.log(this.dataSource.data);
+   this.sIsLoading = '';
+      
+  },
+  error => {
+    this.sIsLoading = '';
+  });
+
+  }
+  // and companyid = 0
+
+  getCreditBillDetails(){
+    debugger
+    this.sIsLoading = 'loading-data';
+
+     // Set value for testing
+    this.regId=62;
+    let query = "Select * from lvwBillOPD  where TransactionType =0  and RegID= " + this.regId + " and BalanceAmt>0";
+    console.log(query);
+    this._OpSearchListService.getCreditBillList(query).subscribe(Visit => {
+     this.dataSource1.data = Visit as CreditBilldetail[];
+     this.dataSource1.sort =this.sort;
+    this.dataSource1.paginator=this.paginator;
+    console.log(this.dataSource1.data);
+   this.sIsLoading = '';
+      
+  },
+  error => {
+    this.sIsLoading = '';
+  });
+  }
+
+  getCompanyCreditBillDetails(event){
+    debugger
+    this.dataSource1.data =[];
+    this.sIsLoading = 'loading-data';
+  if(event == true){
+    let query = "Select * from lvwBill where companyid != 0  and BalanceAmt>0";
+    console.log(query);
+    this._OpSearchListService.getCreditBillList(query).subscribe(Visit => {
+     this.dataSource1.data = Visit as CreditBilldetail[];
+     this.dataSource1.sort =this.sort;
+    this.dataSource1.paginator=this.paginator;
+   //  console.log(this.dataSource.data);
+   this.sIsLoading = '';
+      
+  },
+  error => {
+    this.sIsLoading = '';
+  });
+}
+  }
+  
+  addpayment(contact) {
+    debugger;
+   console.log(contact);
+    this.FinalAmt = contact.NetPayableAmt;
+   
+    let PatientHeaderObj = {};
+
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+    PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      {
+        maxWidth: "85vw",
+        height: '540px',
+        width: '100%',
+        data: {
+          advanceObj: PatientHeaderObj,
+          FromName: "OP-Payment"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      let BillUpdateObj = {};
+
+      BillUpdateObj['BillNo'] = contact.BillNo;
+      BillUpdateObj['BillBalAmount'] = result.BalAmt;
+
+        console.log("Procced with Payment Option");
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+
+
+        UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+        console.log(UpdateAdvanceDetailarr1);
+        debugger
+        // new
+      
+
+        let UpdateAdvanceDetailarr = [];
+        if (result.submitDataAdvancePay > 0) {
+          result.submitDataAdvancePay.forEach((element) => {
+            let UpdateAdvanceDetailObj = {};
+            UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+            UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+            UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+          });
+          
+        }
+        else {
+          let UpdateAdvanceDetailObj = {};
+          UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
+            UpdateAdvanceDetailObj['UsedAmount'] = 0,
+            UpdateAdvanceDetailObj['BalanceAmount'] = 0,
+            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+        }
+
+        let UpdateAdvanceHeaderObj = {};
+        if (result.submitDataAdvancePay > 0) {
+          UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
+            UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
+        }
+        else {
+
+          UpdateAdvanceHeaderObj['AdvanceId'] = 0,
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+            UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+        }
+        let submitData = {
+          "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
+           "updateIpBill": BillUpdateObj,
+           "iPsettlementAdvanceDetailUpdate": UpdateAdvanceDetailarr,
+           "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
+          
+        };
+         console.log(submitData);
+        this._OpSearchListService.InsertOPSettlementPayment(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Payment Done  !', 'OP Settlemet Done Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                let m = response;
+                this.getPrint(m);
+                this._matDialog.closeAll();
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'OP Settlement data not saved', 'error');
+          }
+         
+        });
+     
+    });
+  }
+
+
+  getTemplate() {
+    debugger;
+      let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
+      this._OpSearchListService.getTemplates(query).subscribe((resData: any) => {
+        console.log(this.printTemplate = resData[0].TempDesign);
+        console.log(this.printTemplate = resData[0].TempKeys);
+        this.printTemplate = resData[0].TempDesign;
+       
+        let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+       
+    
+      
+       for (let i = 0; i < keysArray.length; i++) {
+            let reString = "{{" + keysArray[i] + "}}";
+            let re = new RegExp(reString, "g");
+            this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+          }
+    
+       
+          this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+          // this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
+          this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+          
+          setTimeout(() => {
+            this.print();
+          }, 50);
+      });
+    // });
+    }
+    
+
+  transform(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform(value, 'dd/MM/yyyy ');
+    return value;
+  }
+
+  transform1(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
+    return value;
+  }
+
+  transform2(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+    return value;
+  }
+  // transformBilld(value: string) {
+  //   var datePipe = new DatePipe("en-US");
+  //   value = datePipe.transform(this.reportPrintObj.BillDate, 'dd/MM/yyyy');
+  //   return value;
   // }
 
-    // }
+  transformpay(value: string) {
+    var datePipe = new DatePipe("en-US");
+    // value = datePipe.transform(this.reportPrintObj.PaymentDate, 'dd/MM/yyyy');
+    return value;
   }
+  convertToWord(e) {
+    // this.numberInWords= converter.toWords(this.mynumber);
+    // return converter.toWords(e);
+  }
+  
+  getPrint(el) {
+    debugger;
+    // if (el.InterimOrFinal == 0) {
+      var D_data = {
+        "BillNo":  el.BillNo,
+      }
+      el.bgColor = 'red';
 
-  rangevalidation(value) {
-    console.log(value)
-    // const controlValidation = this.ipSearchService.fieldValidations();
-    // const controlRule = controlValidation.find(row => row.key === 'cash_controller');
-    // const validation = controlRule.validation;
-    // console.log(validation)
-    // if (value) {
-    //   validation.push(InvalidDataValidator(true));
+      let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+      // this.subscriptionArr.push(
+      //   this._OpSearchListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
+      //     console.log(res);
+      //     this.reportPrintbillObjList = res as ReportPrintObj[];
+      //     this.reportPrintbillObj = res[0] as ReportPrintObj;
+
+      //     console.log(this.reportPrintbillObj);
+      //     // this.getTemplate();
+      //     // console.log(res);
+
+      //   })
+      // );
     // }
     // else {
-    //   validation.push(InvalidDataValidator(false));
+
+    //   this.getIPIntreimBillPrint(el);
     // }
-    // console.log(validation)
-    // return validation;
   }
 
-  getBalanceAmt() {
-    this.balanceAmt = this.netPayAmt - this.paidAmt;
-    this.balanceAmtPrev = this.balanceAmt;
+  // getTemplate() {
+  //   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
+  //   this._OpSearchListService.getTemplate(query).subscribe((resData: any) => {
+
+  //     this.printTemplate = resData[0].TempDesign;
+  //     let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'PhoneNo', 'RegNo', 'BillNo', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
+
+  //     for (let i = 0; i < keysArray.length; i++) {
+  //       let reString = "{{" + keysArray[i] + "}}";
+  //       let re = new RegExp(reString, "g");
+  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+  //     }
+  //     var strrowslist = "";
+  //     for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+  //       var objreportPrint = this.reportPrintObjList[i - 1];
+
+  //       console.log(objreportPrint);
+     
+  //       var strabc = `<hr style="border-color:white" >
+  //       <div style="display:flex;margin:8px 0">
+  //       <div style="display:flex;width:60px;margin-left:20px;">
+  //           <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+  //       </div>
+  //       <div style="display:flex;width:370px;margin-left:10px;text-align:left;">
+  //           <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+  //       </div>
+  //       <div style="display:flex;width:370px;margin-left:30px;text-align:left;">
+  //       <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
+  //       </div>
+  //       <div style="display:flex;width:90px;margin-left:40px;text-align:right;">
+  //           <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+  //       </div>
+  //       <div style="display:flex;width:60px;margin-left:40px;text-align:right;">
+  //           <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+  //       </div>
+  //       <div style="display:flex;width:140px;margin-left:45px;text-align:left;">
+  //           <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
+  //       </div>
+  //       </div>`;
+  //       strrowslist += strabc;
+  //     }
+  //     var objPrintWordInfo = this.reportPrintObjList[0];
+
+  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+
+  //     this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+  //     this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+  //     this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+  //     // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(objPrintWordInfo.BillDate));
+  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+  //     // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
+  //   //  this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+  //     this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
+  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+  //     setTimeout(() => {
+  //       this.print();
+  //     }, 1000);
+  //   });
+  // }
+  // GET DATA FROM DATABASE 
+  getPrintreceipt(el) {
+
+    var D_data = {
+      // "PaymentId": el.PaymentId,
+      "PaymentId": 328102
+    }
+    el.bgColor = 'red';
+    //console.log(el);
+    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+    this.subscriptionArr.push(
+      this._OpSearchListService.getOPsettlementPrint(D_data).subscribe(res => {
+        this.reportPrintObj = res[0] as ReportPrintObj;
+        this.getSettlementTemplate();
+        // console.log(this.reportPrintObj.PaidAmount);
+
+      })
+    );
   }
 
+  getSettlementTemplate() {
+    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
+    this._OpSearchListService.getTemplate(query).subscribe((resData: any) => {
+       this.printTemplate = resData[0].TempDesign;
+       let keysArray= ["HospitalName","HospAddress","PaymentId","ReceiptNo","RegNo","IPDNo","PBillNo","BillDate","PaymentDate","PaidAmount","CashPayAmount","PatientName","AgeDay","AgeMonth","AgeYear","CashPayAmount","Remark","UserName"];
+      // let keysArray = ['HospitalName','HospitalAddress','PBillNo','RegNo','Date','PatientName','Age','IPDNo','AdmissionDate','PatientType','PaidAmount','reason','Addedby']; // resData[0].TempKeys;
+      for (let i = 0; i < keysArray.length; i++) {
+          let reString = "{{" + keysArray[i] + "}}";
+          let re = new RegExp(reString, "g");
+          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+        }
 
+        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
+        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+        // this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
+        // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+        
+        // console.log(this.printTemplate);
+
+
+        setTimeout(() => {
+          this.print();
+        }, 1000);
+    });
+  }
+
+  // PRINT 
+  print() {
+    // HospitalName, HospitalAddress, AdvanceNo, PatientName
+    let popupWin, printContents;
+    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    // popupWin.document.open();
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+    </html>`);
+    popupWin.document.close();
+  }
+
+  getViewbill(contact)
+{
+  console.log(contact);
+    let xx = {
+      AddedBy: 1,
+      AdvBalanceAmount: contact.AdvBalanceAmount,
+      AdvanceAmount:contact.AdvanceAmount,
+      AdvanceUsedAmount:contact.AdvanceUsedAmount,
+      BalanceAmt:contact.BalanceAmt,
+      BillDate:contact.BillDate,
+      BillNo:contact.BillNo,
+      BillTime: contact.BillTime,
+      CashCounterId:contact.CashCounterId,
+      CompanyId:contact.CompanyId,
+      ConcessionAmt:contact.ConcessionAmt,
+      IsCancelled:contact.IsCancelled,
+      NetPayableAmt:contact.NetPayableAmt,
+      OPD_IPD_ID: contact.OPD_IPD_ID,
+      OPD_IPD_Type: contact.OPD_IPD_Type,
+      PBillNo: contact.PBillNo,
+      PaidAmount: contact.PaidAmount,
+      PaymentBillNo:contact.PaymentBillNo,
+      RegID:contact.RegID,
+      RegNo: contact.RegNo,
+      TotalAmt:contact.TotalAmt,
+      TransactionType:contact.TransactionType,
+   
+     
+    };
+
+    this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
+   
+    //   const dialogRef = this._matDialog.open(PaymentViewComponent, 
+    //    {  maxWidth: "95vw",
+    //       maxHeight: "130vh", width: '100%', height: "100%"
+    //  });
+    //  dialogRef.afterClosed().subscribe(result => {
+    //   //  console.log('The dialog was closed - Insert Action', result);
+    //   //  this.getRadiologytemplateMasterList();
+    //  });
+  }
+
+  getViewbill1(contact)
+{
+  console.log(contact);
+    let xx = {
+      AddedBy: 1,
+      AdvBalanceAmount: contact.AdvBalanceAmount,
+      AdvanceAmount:contact.AdvanceAmount,
+      AdvanceUsedAmount:contact.AdvanceUsedAmount,
+      BalanceAmt:contact.BalanceAmt,
+      BillDate:contact.BillDate,
+      BillNo:contact.BillNo,
+      BillTime: contact.BillTime,
+      CashCounterId:contact.CashCounterId,
+      CompanyId:contact.CompanyId,
+      ConcessionAmt:contact.ConcessionAmt,
+      IsCancelled:contact.IsCancelled,
+      NetPayableAmt:contact.NetPayableAmt,
+      OPD_IPD_ID: contact.OPD_IPD_ID,
+      OPD_IPD_Type: contact.OPD_IPD_Type,
+      PBillNo: contact.PBillNo,
+      PaidAmount: contact.PaidAmount,
+      PaymentBillNo:contact.PaymentBillNo,
+      RegID:contact.RegID,
+      RegNo: contact.RegNo,
+      TotalAmt:contact.TotalAmt,
+      TransactionType:contact.TransactionType,
+   
+     
+    };
+
+    this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
+   
+    //   const dialogRef = this._matDialog.open(IPSettlementViewComponent, 
+    //    {  maxWidth: "95vw",
+    //       maxHeight: "130vh", width: '100%', height: "100%"
+    //  });
+    //  dialogRef.afterClosed().subscribe(result => {
+      //  console.log('The dialog was closed - Insert Action', result);
+      //  this.getRadiologytemplateMasterList();
+    //  });
+  }
+
+  
+  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
-
   }
-
-  saveClicked() {
-    debugger
-    if(this.balanceAmt==0){
-    let Paymentobj = {};
-    if (this.advanceData.FromName == "OP-Payment") {
-      // Paymentobj['PaymentId'] = 0;
-      Paymentobj['BillNo'] = this.billNo;
-      Paymentobj['ReceiptNo'] = '';
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = this.dateTimeObj.date;
-      Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = this.chequeNo;
-      Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = this.cardNo;
-      Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-      Paymentobj['AdvanceId'] = 0;
-      Paymentobj['RefundId'] = 0;
-      Paymentobj['TransactionType'] = 0;
-      Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-      Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['IsSelfORCompany'] = 0;
-      Paymentobj['CompanyId'] = 0;
-      Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = this.neftNo;
-      Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-    }
-    else if (this.advanceData.FromName == "OP-Bill") {
-        // Paymentobj['PaymentId'] = 0;
-        Paymentobj['BillNo'] = this.billNo;
-        Paymentobj['ReceiptNo'] = '';
-        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-        Paymentobj['ChequeNo'] = this.chequeNo;
-        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-        Paymentobj['CardNo'] = this.cardNo;
-        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-        Paymentobj['CardDate'] = this.dateTimeObj.date;
-        Paymentobj['AdvanceUsedAmount'] = 0;
-        Paymentobj['AdvanceId'] = 0;
-        Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 0;
-        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-        Paymentobj['IsCancelled'] = 0;
-        Paymentobj['IsCancelledBy'] = 0;
-        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-        Paymentobj['CashCounterId'] = 0;
-        Paymentobj['IsSelfORCompany'] = 0;
-        Paymentobj['CompanyId'] = 0;
-        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-        Paymentobj['NEFTNo'] = this.neftNo;
-        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-        Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-        Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-    }
-    else if (this.advanceData.FromName == "Advance") {
-      // Paymentobj['PaymentId'] = 0;
-      Paymentobj['BillNo'] = this.billNo;
-      Paymentobj['ReceiptNo'] = '';
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = this.chequeNo;
-      Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = this.cardNo;
-      Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-      Paymentobj['AdvanceId'] = 0;
-      Paymentobj['RefundId'] = 0;
-      Paymentobj['TransactionType'] = 0;
-      Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-      Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['IsSelfORCompany'] = 0;
-      Paymentobj['CompanyId'] = 0;
-      Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = this.neftNo;
-      Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-  }
-  else if (this.advanceData.FromName == "Advance-Refund") {
-    // Paymentobj['PaymentId'] = 0;
-    Paymentobj['BillNo'] = this.billNo;
-    Paymentobj['ReceiptNo'] = '';
-    Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-    Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-    Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-    Paymentobj['ChequeNo'] = this.chequeNo;
-    Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-    Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-    Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-    Paymentobj['CardNo'] = this.cardNo;
-    Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-    Paymentobj['CardDate'] = this.dateTimeObj.date;
-    Paymentobj['AdvanceUsedAmount'] = 0;
-    Paymentobj['AdvanceId'] = 0;
-    Paymentobj['RefundId'] = 0;
-    Paymentobj['TransactionType'] = 0;
-    Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-    Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-    Paymentobj['IsCancelled'] = 0;
-    Paymentobj['IsCancelledBy'] = 0;
-    Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-    Paymentobj['CashCounterId'] = 0;
-    Paymentobj['IsSelfORCompany'] = 0;
-    Paymentobj['CompanyId'] = 0;
-    Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-    Paymentobj['NEFTNo'] = this.neftNo;
-    Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-    Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-    Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-    Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-    Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-    Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-    Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-}
-
-    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-    let submitDataPay = {
-      ipPaymentInsert,
-    };
-    let IsSubmit = {
-      "submitDataPay": submitDataPay,
-      // "submitDataAdvancePay":ipAdvanceInsert,
-      "IsSubmitFlag": true
-    }
-    console.log(IsSubmit);
-    this.dialogRef.close(IsSubmit);
-    // console.log('======================= Payment ======');
-    // console.log(IsSubmit);
-  }
-  else{
-    Swal.fire('Error !', 'Balance Amount Have to Zero', 'error')
-  }
-  }
-
   onClose() {
-    debugger
-
-    let Paymentobj = {};
-    // Paymentobj['PaymentId'] = 0;
-    Paymentobj['BillNo'] = 0,// this.billNo;
-      Paymentobj['ReceiptNo'] = '',//'RE';
-      Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = '',//this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = 0,// parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-      Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = '',//this.cardNo;
-      Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-    Paymentobj['AdvanceId'] = 0;
-    Paymentobj['RefundId'] = 0;
-    Paymentobj['TransactionType'] = 2;
-    Paymentobj['Remark'] = '',//'REMArk';
-      Paymentobj['AddBy'] = '',// this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-    Paymentobj['IsCancelledBy'] = 0;
-    Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-    Paymentobj['IsSelfORCompany'] = 0;
-    Paymentobj['CompanyId'] = 0;
-    Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = '',// this.neftNo;
-      Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-      Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = 0,//this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-
-    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-    let submitDataPay1 = {
-      ipPaymentInsert,
-    };
-
-    let IsSubmit = {
-      "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": false
-    }
-    this.dialogRef.close(IsSubmit);
+    // this.dialogRef.close();
   }
 
-  onClose1() {
-    this.dialogRef.close();
-  }
 }
 
 
 
-export class IpPaymentInsert {
-  PaymentId: number;
-  BillNo: number;
-  ReceiptNo: any;
-  PaymentDate: Date;
-  PaymentTime: any;
-  CashPayAmount: number;
-  ChequePayAmount: number;
-  ChequeNo: any;
-  BankName: any;
-  ChequeDate: Date;
-  CardPayAmount: number;
-  CardNo: any;
-  CardBankName: any;
-  CardDate: Date;
-  AdvanceUsedAmount: number;
-  AdvanceId: any;
-  RefundId: any;
-  TransactionType: any;
-  Remark: any;
-  AddBy: any;
-  IsCancelled: boolean;
-  IsCancelledBy: any;
-  IsCancelledDate: Date;
-  CashCounterId: number;
-  IsSelfORCompany: number;
-  CompanyId: any;
-  NEFTPayAmount: number;
-  NEFTNo: any;
-  NEFTBankMaster: any;
-  NEFTDate: any;
-  PayTMAmount: number;
-  PayTMTranNo: any;
-  PayTMDate: Date;
-  PaidAmt: number;
+export class PaidBilldetail {
+  
+  BillNo: any;
+  TotalAmt: number;
+  ConcessionAmt: number;
+  NetPayableAmt: number;
+  PaidAmount: number;
   BalanceAmt: number;
+  BillDate: Date;
 
-  constructor(IpPayment) {
-    this.PaymentId = IpPayment.PaymentId || 0;
-    this.BillNo = IpPayment.BillNo || 0;
-    this.ReceiptNo = IpPayment.ReceiptNo || '';
-    this.PaymentDate = IpPayment.PaymentDate || '01/01/1900';
-    this.PaymentTime = IpPayment.PaymentTime || '';
-    this.CashPayAmount = IpPayment.CashPayAmount || 0;
-    this.ChequePayAmount = IpPayment.ChequePayAmount || 0;
-    this.ChequeNo = IpPayment.ChequeNo || '';
+  constructor(PaidBilldetail) {
+    this.BillDate = PaidBilldetail.BillDate || '';
+    this.BillNo = PaidBilldetail.BillNo || '';
+    this.TotalAmt = PaidBilldetail.TotalAmt || 0;
+    this.ConcessionAmt = PaidBilldetail.ConcessionAmt || '';
+    this.NetPayableAmt = PaidBilldetail.NetPayableAmt || 0;
+    this.PaidAmount = PaidBilldetail.PaidAmount || 0;
+    this.BalanceAmt = PaidBilldetail.BalanceAmt || '';
+  
+  }
+}
 
-    this.BankName = IpPayment.BankName || '';
-    this.ChequeDate = IpPayment.ChequeDate || '01/01/1900';
-    this.CardPayAmount = IpPayment.CardPayAmount || 0;
-    this.CardNo = IpPayment.CardNo || '';
-    this.CardBankName = IpPayment.CardBankName || '';
+export class CreditBilldetail {
+  
+  BillNo: any;
+  TotalAmt: number;
+  ConcessionAmt: number;
+  NetPayableAmt: number;
+  PaidAmount: number;
+  BalanceAmt: number;
+  BillDate: Date;
 
-    this.CardDate = IpPayment.CardDate || '01/01/1900';
-    this.AdvanceUsedAmount = IpPayment.AdvanceUsedAmount || 0;
-    this.AdvanceId = IpPayment.AdvanceId || 0;
-    this.RefundId = IpPayment.RefundId || 0;
-    this.TransactionType = IpPayment.TransactionType || 0;
-    this.Remark = IpPayment.Remark || '';
-
-    this.AddBy = IpPayment.AddBy || 0;
-    this.IsCancelled = IpPayment.IsCancelled || 0;
-    this.IsCancelledBy = IpPayment.IsCancelledBy || 0;
-    this.IsCancelledDate = IpPayment.IsCancelledDate || '01/01/1900';
-
-    this.CashCounterId = IpPayment.CashCounterId || 0;
-    this.IsSelfORCompany = IpPayment.IsSelfORCompany || 0;
-    this.CompanyId = IpPayment.CompanyId || 0;
-
-    this.NEFTPayAmount = IpPayment.NEFTPayAmount || 0;
-    this.NEFTNo = IpPayment.NEFTNo || '';
-    this.NEFTBankMaster = IpPayment.NEFTBankMaster || '';
-    this.NEFTDate = IpPayment.NEFTDate || '01/01/1900';
-
-    this.PayTMAmount = IpPayment.PayTMAmount || 0;
-    this.PayTMTranNo = IpPayment.PayTMTranNo || '';
-    this.PayTMDate = IpPayment.PayTMDate || '01/01/1900';
-
-    this.PaidAmt = IpPayment.PaidAmt || 0;
-    this.BalanceAmt = IpPayment.BalanceAmt || 0;
+  constructor(CreditBilldetail) {
+    this.BillDate = CreditBilldetail.BillDate || '';
+    this.BillNo = CreditBilldetail.BillNo || '';
+    this.TotalAmt = CreditBilldetail.TotalAmt || 0;
+    this.ConcessionAmt = CreditBilldetail.ConcessionAmt || '';
+    this.NetPayableAmt = CreditBilldetail.NetPayableAmt || 0;
+    this.PaidAmount = CreditBilldetail.PaidAmount || 0;
+    this.BalanceAmt = CreditBilldetail.BalanceAmt || '';
+  
   }
 
 }

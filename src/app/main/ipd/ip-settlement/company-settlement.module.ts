@@ -23,18 +23,18 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { BrowseIPAdvanceService } from './browse-ipadvance.service';
-import { BrowseIPAdvanceComponent } from './browse-ipadvance.component';
-import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
+import { IPSettlementComponent } from './ip-settlement.component';
+import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [
-    { path: '**', component: BrowseIPAdvanceComponent },
+    { path: '**', component: IPSettlementComponent },
 ];
 @NgModule({
     declarations: [
-      BrowseIPAdvanceComponent,
-      ViewIPAdvanceComponent
+      IPSettlementComponent,
+      IPSettlementViewComponent
        
     ],
     imports: [
@@ -59,6 +59,7 @@ const routes: Routes = [
         MatDialogModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
+        SharedModule,
         FuseSidebarModule,
         MatExpansionModule
     ],
@@ -67,7 +68,7 @@ const routes: Routes = [
         DatePipe
     ],
     entryComponents: [
-      BrowseIPAdvanceComponent,
+      IPSettlementComponent,
     ]
 })
-export class BrowseIPAdvanceModule { }
+export class CompanySettlementModule { }
