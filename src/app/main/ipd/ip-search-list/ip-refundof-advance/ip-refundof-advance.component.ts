@@ -128,7 +128,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getReturndetails() {
     var m_data = {
-    "OPIPID":32,// this.selectedAdvanceObj.AdmissionID
+    "OPIPID":this.selectedAdvanceObj.AdmissionID
     }
     debugger;
     // this.dataSource1.data = [];

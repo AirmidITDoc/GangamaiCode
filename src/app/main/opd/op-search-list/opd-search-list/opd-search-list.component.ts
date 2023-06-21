@@ -97,7 +97,7 @@ export class OpdSearchListComponent implements OnInit {
     }
     else if (this._ActRoute.url == '/opd/bill') {
       this.menuActions.push('Bill');
-      this.menuActions.push('Refund of Bill');
+      // this.menuActions.push('Refund of Bill');
       this.menuActions.push('Payment');
     }
     else if (this._ActRoute.url == '/opd/medicalrecords') {

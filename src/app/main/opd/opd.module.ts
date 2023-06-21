@@ -40,11 +40,11 @@ const appRoutes: Routes = [
     path: "bill",
     loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
 },
-// {
-//     path: "refund",
-//     loadChildren: () =>import("./").then((m) => m.RefundofbillModule),
+{
+    path: "refund",
+    loadChildren: () =>import("./op-search-list/op-refundof-bill/refundof-bill.module").then((m) => m.RefundofBillModule),
     
-// },
+},
 {
     path: "brows-opd-refund",
     loadChildren: () =>

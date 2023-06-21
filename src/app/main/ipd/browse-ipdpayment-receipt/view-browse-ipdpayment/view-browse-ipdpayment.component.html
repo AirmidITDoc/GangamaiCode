@@ -1,0 +1,131 @@
+<div id="print-section" class="printed-div" style="padding:20px;height:550px;width: 100%;">
+    <div>
+        <div>
+            <!-- <app-header></app-header>   -->
+            <div style="display:flex;text-align: center;"><img class="logo-print"
+                    src="../../../../assets/images/logos/Airmid_NewLogo.jpeg" width="90">
+                <div style="margin-top: 12px;">
+                    <div style="font-weight:700;font-size:18px;text-align:center;margin-left: 30%;width:500px;">
+                        {{selectedAdvanceObj.HospitalName}}</div>
+                    <div style="color:#464343;text-align:center;margin-left: 30%;width:500px;">
+                        {{selectedAdvanceObj.HospitalAddress}}
+                    </div>
+                    <!-- <div style="color:#464343;text-align:center;margin-left: 30%;width:500px;">www.yashodharahospital.org</div>  -->
+                </div>
+            </div>
+            <div style="display:flex;margin-left:1100px;;">
+                <div style="width:80px;font-weight:700">PrintDate</div>
+                <div style="width:10px;font-weight:700">:</div>
+                <div>{{Today | date:'dd/MM/yyyy, h:mm a'}}</div>
+            </div>
+            <div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span
+                    style="font-weight:700">IP SETTELMENT RECEIPT</span></div>
+        </div>
+        <hr style="border-color:#a0a0a0">
+        <div>
+            <div style="display:flex;justify-content:space-between">
+                <div style="display:flex;margin-right: 40px;">
+                    <div style="width:140px;font-weight:700;">Receipt No</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <!-- <div>{{BillNo}}</div>  -->
+                    <div>{{selectedAdvanceObj.ReceiptNo}}</div>
+                </div>
+
+                <div style="display:flex;margin-right: 210px;">
+                    <div style="width:60px;font-weight:700;">Date</div>
+                    <div style="width:10px;font-weight:500">:</div>
+                    <!-- <div>{{AdmissionDate}}</div>  -->
+                    <div>{{selectedAdvanceObj.PaymentDate }}</div>
+                </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between">
+                <div style="display:flex;margin-right: 40px;">
+                    <div style="width:140px;font-weight:700;">Reg No</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <!-- <div>{{BillNo}}</div>  -->
+                    <div>{{selectedAdvanceObj.RegNo}}</div>
+                </div>
+
+                <div style="display:flex;margin-right: 210px;">
+                    <div style="width:60px;font-weight:700;">IPD No.</div>
+                    <div style="width:10px;font-weight:500">:</div>
+                    <!-- <div>{{AdmissionDate}}</div>  -->
+                    <div>{{selectedAdvanceObj.OPIPNo }}</div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+                <div style="display:flex;width:400px">
+                    <div style="width:140px;font-weight:700">Patient Name</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.PatientName}}</div>
+                </div>
+
+            </div>
+
+
+            <hr style="border-color:#a0a0a0">
+            <div style="display:flex;justify-content:space-between">
+                <div style="display:flex;width:340px">
+                    <div style="width:140px;font-weight:700">Bill No</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.PBillNo}}</div>
+                </div>
+                <div style="display:flex;width:340px">
+                    <div style="width:100px;font-weight:700">Bill Date</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.BillDate}}</div>
+                </div>
+                <div style="display:flex;width:340px">
+                    <div style="width:100px;font-weight:700">Bill Amount</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.TotalAmt}}</div>
+                </div>
+
+            </div>
+            <hr style="border-color:#a0a0a0">
+            <div style="display:flex;justify-content:space-between;margin-top: 10px;">
+                <div style="display:flex;width:500px">
+                    <div style="width:140px;font-weight:700">Paid Amount</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.PaidAmount}}</div>
+                </div>
+
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top: 10px;">
+                <div style="display:flex;width:500px">
+                    <div style="width:140px;font-weight:700">Amt in word</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{numberInWords }}</div>
+                </div>
+
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top: 10px;">
+                <div style="display:flex;width:340px">
+                    <div style="width:140px;font-weight:700">Remark</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.Remark}}</div>
+                </div>
+
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top: 10px;">
+                <div style="display:flex;width:340px">
+                    <div style="width:140px;font-weight:700">Cash Pay</div>
+                    <div style="width:10px;font-weight:700">:</div>
+                    <div>{{selectedAdvanceObj.CashPayAmount}}</div>
+                </div>
+
+            </div>
+            <hr style="border-color:#a0a0a0">
+            <div style="display:flex;justify-content:space-between;margin-left:70%;">
+                <div style="position:relative;top:100px;text-align:center">
+                    <div style="font-weight:700;font-size:16px"> Cashier</div>
+                    <!-- <div style="font-weight:700;font-size:16px">{{UserName}}</div> -->
+                    <div>{{selectedAdvanceObj.UserName}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    //
