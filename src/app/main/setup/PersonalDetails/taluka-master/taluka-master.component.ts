@@ -7,6 +7,7 @@ import { TalukaMasterService } from "./taluka-master.service";
 import { takeUntil } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-taluka-master",
@@ -26,11 +27,11 @@ export class TalukaMasterComponent implements OnInit {
     private _onDestroy = new Subject<void>();
 
     displayedColumns: string[] = [
-        "TalukaId",
-        "TalukaName",
-        "CityName",
-        "AddedByName",
-        "IsDeleted",
+        "TalukaID",
+        "TalukaNAME",
+        "CityNAME",
+        "AddedBy",
+        "ISDELETED",
         "action",
     ];
 
@@ -87,13 +88,13 @@ export class TalukaMasterComponent implements OnInit {
         };
         this._TalukaService.getTalukaMasterList(param).subscribe((Menu) => {
             this.DSTalukaMasterList.data = Menu as TalukaMaster[];
+            console.log(this.DSTalukaMasterList.data);
             this.DSTalukaMasterList.sort = this.sort;
             this.DSTalukaMasterList.paginator = this.paginator;
         });
     }
 
     getCityMasterCombo() {
-        // this._TalukaService.getCityMasterCombo().subscribe(data => this.CitycmbList =data);
         this._TalukaService.getCityMasterCombo().subscribe((data) => {
             this.CitycmbList = data;
             this.filteredCity.next(this.CitycmbList.slice());
@@ -113,7 +114,8 @@ export class TalukaMasterComponent implements OnInit {
                         talukaName: this._TalukaService.myForm
                             .get("TalukaName")
                             .value.trim(),
-                        cityId: this._TalukaService.myForm.get("CityId").value,
+                        cityId: this._TalukaService.myForm.get("CityId").value
+                            .CityId,
 
                         addedBy: 1,
                         isDeleted: Boolean(
@@ -128,6 +130,23 @@ export class TalukaMasterComponent implements OnInit {
                     .talukaMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTalukaMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getTalukaMasterList();
                     });
             } else {
@@ -138,7 +157,8 @@ export class TalukaMasterComponent implements OnInit {
                         talukaName: this._TalukaService.myForm
                             .get("TalukaName")
                             .value.trim(),
-                        cityId: this._TalukaService.myForm.get("CityId").value,
+                        cityId: this._TalukaService.myForm.get("CityId").value
+                            .CityId,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._TalukaService.myForm.get("IsDeleted")
@@ -152,6 +172,23 @@ export class TalukaMasterComponent implements OnInit {
                     .talukaMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTalukaMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getTalukaMasterList();
                     });
             }
@@ -160,10 +197,10 @@ export class TalukaMasterComponent implements OnInit {
     }
     onEdit(row) {
         var m_data1 = {
-            TalukaId: row.TalukaId,
-            TalukaName: row.TalukaName.trim(),
-            CityId: row.CityId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            TalukaId: row.TalukaID,
+            TalukaName: row.TalukaNAME,
+            CityId: row.CityID,
+            IsDeleted: JSON.stringify(row.ISDELETED),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(m_data1);
@@ -179,7 +216,6 @@ export class TalukaMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -195,7 +231,6 @@ export class TalukaMaster {
             this.IsDeleted = TalukaMaster.IsDeleted || "false";
             this.AddedBy = TalukaMaster.AddedBy || "";
             this.UpdatedBy = TalukaMaster.UpdatedBy || "";
-            this.AddedByName = TalukaMaster.AddedByName || "";
         }
     }
 }

@@ -26,11 +26,7 @@ export class RelationshipMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(
-        public _relationshipService: RelationshipMasterService,
-        private accountService: AuthenticationService,
-        public notification: NotificationServiceService
-    ) {}
+    constructor(public _relationshipService: RelationshipMasterService) {}
     onSearch() {
         this.getrelationshipMasterList();
     }
@@ -48,10 +44,7 @@ export class RelationshipMasterComponent implements OnInit {
 
     getrelationshipMasterList() {
         var m_data = {
-            RelativeName:
-                this._relationshipService.myformSearch.get(
-                    "RelationshipNameSearch"
-                ).value + "%" || "%",
+            RelativeName: "%",
         };
 
         this._relationshipService
@@ -77,7 +70,7 @@ export class RelationshipMasterComponent implements OnInit {
                         relationshipName_1: this._relationshipService.myform
                             .get("RelationshipName")
                             .value.trim(),
-                        addedBy: this.accountService.currentUserValue.user.id,
+                        addedBy: 10,
                         isDeleted_2: Boolean(
                             JSON.parse(
                                 this._relationshipService.myform.get(

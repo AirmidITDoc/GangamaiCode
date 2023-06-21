@@ -1,15 +1,15 @@
 app-area-master {
     .mat-header-row {
-        width: 80px;
+        width: 850px;
         max-width: 850px;
         min-width: 850px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 850px;
+        max-width: 850px;
+        min-width: 850px;
     }
 
     .mat-column-AreaId {
@@ -19,9 +19,9 @@ app-area-master {
     }
 
     .mat-column-AreaName {
-        width: 400px;
-        max-width: 400px;
-        min-width: 400px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
     }
 
     .mat-column-CityName {

@@ -28,11 +28,11 @@ export class CityMasterComponent implements OnInit {
     private _onDestroy = new Subject<void>();
 
     displayedColumns: string[] = [
-        "CityId",
-        "CityName",
-        "StateName",
+        "CITYID",
+        "CITYNAME",
+        "STATENAME",
         "AddedBy",
-        "IsDeleted",
+        "ISDELETED",
         "action",
     ];
 
@@ -147,7 +147,9 @@ export class CityMasterComponent implements OnInit {
                         cityName: this._cityService.myform
                             .get("CityName")
                             .value.trim(),
-                        stateId: this._cityService.myform.get("StateId").value,
+                        stateId:
+                            this._cityService.myform.get("StateId").value
+                                .StateId,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._cityService.myform.get("IsDeleted").value
@@ -187,10 +189,10 @@ export class CityMasterComponent implements OnInit {
 
     onEdit(row) {
         var m_data = {
-            CityId: row.CityId,
-            CityName: row.CityName,
-            StateId: row.StateId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            CityId: row.CITYID,
+            CityName: row.CITYNAME,
+            StateId: row.STATEID,
+            IsDeleted: JSON.stringify(row.ISDELETED),
             UpdatedBy: row.UpdatedBy,
         };
         this._cityService.populateForm(m_data);
