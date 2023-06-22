@@ -29,10 +29,14 @@ const appRoutes: Routes = [
         loadChildren: () =>
         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
-    {
-        path: "ip-addCharges",
-        // loadChildren: () => import("./browse-ipd-payment-receipt/ipd-browse-paymentreceipt.module").then((m) => m.IpdBrowsePaymentreceiptModule),
-    },
+    // {
+    //     path: "ip-addCharges",
+    //     loadChildren: () =>
+        
+    //     import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
+    //     // import("./browse-ipd-payment-receipt/ipd-browse-paymentreceipt.module").then((m) => m.IpdBrowsePaymentreceiptModule),
+        
+    // },
     {
         path: "refund",
         loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),
@@ -69,12 +73,11 @@ const appRoutes: Routes = [
             // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
     },
     
-
-   
+       
     {
          path: "companysettlement", 
          loadChildren: () =>
-         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+         import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
     },
 
 //     {
@@ -82,6 +85,7 @@ const appRoutes: Routes = [
 //         loadChildren: () =>
 //            import("./pathology-view-report/pathology-view-report.module").then((m) => m.PathologyViewReportModule),
 //    }
+
 ];
 
 @NgModule({

@@ -429,7 +429,44 @@ company=this._AdmissionService.mySaveForm.get('CompanyId').value.CompanyId || 0;
       }
 
     }
-    console.log(m_data);
+
+
+    // let admissionNewUpdate = {};
+    // // this.isLoading = 'submit';
+    // let submissionObj = {};
+   
+    // // debugger;
+    // admissionNewUpdate['AdmissionId'] = this.AdmissionID;
+    // admissionNewUpdate['AdmissionDate'] = this.dateTimeObj.date;
+    // admissionNewUpdate['AdmissionTime'] = this.dateTimeObj.time;
+
+    // admissionNewUpdate['patientTypeId'] = this._AdmissionService.mySaveForm.get('PatientTypeID').value.PatientTypeId || 0;
+    // admissionNewUpdate['HospitalId'] =0;
+    // admissionNewUpdate['CompanyId'] =company || 0;
+    // admissionNewUpdate['TariffId'] = this._AdmissionService.mySaveForm.get('TariffId').value.TariffId || 0;
+
+    // admissionNewUpdate['DepartmentId'] =  this._AdmissionService.mySaveForm.get('Departmentid').value.Departmentid || 0;
+    // admissionNewUpdate['AdmittedNameID'] = this._AdmissionService.mySaveForm.get('AdmittedDoctorId').value.DoctorId  || 0;
+    // admissionNewUpdate['RelativeName'] = this._AdmissionService.mySaveForm.get('RelativeName').value || "";
+    // admissionNewUpdate['RelativeAddress'] =  this._AdmissionService.mySaveForm.get('RelativeAddress').value || "";
+
+    // admissionNewUpdate['RelativePhoneNo'] =  this._AdmissionService.mySaveForm.get('RelatvieMobileNo').value || "";
+    // admissionNewUpdate['RelationshipId'] = 0;
+    // admissionNewUpdate['IsMLC'] = this._AdmissionService.mySaveForm.get('IsMLC').value || 0;
+    // admissionNewUpdate['MotherName'] = "";
+
+    // admissionNewUpdate['AdmittedDoctor1'] = this._AdmissionService.mySaveForm.get('AdmittedDoctorId1').value.DoctorID || 0;
+    // admissionNewUpdate['AdmittedDoctor2'] =  this._AdmissionService.mySaveForm.get('AdmittedDoctor2').value.DoctorID || 0;
+    // admissionNewUpdate['RefByTypeId'] = 0;
+    // admissionNewUpdate['RefByName'] = 0;
+
+    // admissionNewUpdate['isUpdatedBy'] =  this.accountService.currentUserValue.user.id;
+    // admissionNewUpdate['SubTpaComId'] = subcompany|| '';
+    // admissionNewUpdate['IsPackagePatient'] = 0;
+   
+
+    // submissionObj['admissionNewUpdate'] = admissionNewUpdate;
+    // console.log(submissionObj);
     this._AdmissionService.AdmissionUpdate(m_data).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'Admission Data Updated Successfully !', 'success').then((result) => {

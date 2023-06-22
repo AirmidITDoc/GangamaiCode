@@ -34,7 +34,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { DatePipe } from "@angular/common";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { OPRefundofBillComponent } from "./op-refundof-bill.component";
+import { OutstandingPaymentComponent } from "./outstanding-payment.component";
+import { OPSearhlistService } from "../op-searhlist.service";
 import { SharedModule } from "app/main/shared/shared.module";
 
 
@@ -42,13 +43,13 @@ import { SharedModule } from "app/main/shared/shared.module";
 const routes: Routes = [
   {
       path: '**',
-      component: OPRefundofBillComponent
+      component: OutstandingPaymentComponent
   }
  
 ];
 @NgModule({
   declarations: [
-    OPRefundofBillComponent,
+    OutstandingPaymentComponent
         
   ],
   imports: [
@@ -96,13 +97,13 @@ const routes: Routes = [
       
   ],
   providers: [
-      // OpSearchListService,
+      OPSearhlistService,
       NotificationServiceService ,
       DatePipe
   ],
   entryComponents: [
-    OPRefundofBillComponent
+    OutstandingPaymentComponent
       // CasePaperComponent
   ]
 })
-export class RefundofBillModule { }
+export class OutstandingModule { }

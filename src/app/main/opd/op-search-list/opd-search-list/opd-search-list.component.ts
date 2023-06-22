@@ -16,6 +16,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
 import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
+import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
 
 
 @Component({
@@ -97,7 +98,6 @@ export class OpdSearchListComponent implements OnInit {
     }
     else if (this._ActRoute.url == '/opd/bill') {
       this.menuActions.push('Bill');
-      // this.menuActions.push('Refund of Bill');
       this.menuActions.push('Payment');
     }
     else if (this._ActRoute.url == '/opd/medicalrecords') {
@@ -108,6 +108,9 @@ export class OpdSearchListComponent implements OnInit {
     }
     else if (this._ActRoute.url == '/opd/refund') {
       this.menuActions.push('Refund Of Bill');
+    }
+    else if (this._ActRoute.url == '/opd/payment') {
+      this.menuActions.push('Payment');
     }
     this.getVisitList();
   }
@@ -215,7 +218,7 @@ private filterDoctor() {
     }
     
     else if(m == "Payment") {
-        // console.log(" This is for Casepaper pop : " + m);
+        
         let data = {
           RegNo: contact.RegId,
           AdmissionID: contact.VisitId,
@@ -233,14 +236,17 @@ private filterDoctor() {
           VisitId:contact.VisitId,
           opD_IPD_Type :contact.opD_IPD_Type,
         };
-        // this.advanceDataStored.storage = new SearchInforObj(data);
-        // console.log( this.advanceDataStored.storage);
+        this.advanceDataStored.storage = new SearchInforObj(data);
+        console.log( this.advanceDataStored.storage);
+        console.log(data);
         const dialogRef = this._matDialog.open(OutstandingPaymentComponent,
           {
             maxWidth: "95%",
-            height: '95%',
+            height: '65%',
             width: '100%',
-            data :{data}
+            data : {
+              registerObj : data,
+            }
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -300,7 +306,7 @@ private filterDoctor() {
     //   });
     // }
 
-    if (m == "Refund of Bill") {
+    if (m == "Refund Of Bill") {
       // console.log(" This is for Refund of Bill pop : " + m);
       let xx = {
         RegNo: contact.RegNo,
@@ -319,16 +325,16 @@ private filterDoctor() {
       this.advanceDataStored.storage = new SearchInforObj(xx);
 
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
-      // const dialogRef = this._matDialog.open(OPRefundOfBillComponent,
-      //   {
-      //     maxWidth: "85%",
-      //     height: '760px',
-      //     width: '100%',
-      //   });
-      // dialogRef.afterClosed().subscribe(result => {
-      //   console.log('The dialog was closed - Insert Action', result);
-      //   //  this.getRadiologytemplateMasterList();
-      // });
+      const dialogRef = this._matDialog.open(OPRefundofBillComponent,
+        {
+          maxWidth: "85%",
+          height: '900px',
+          width: '100%',
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        //  this.getRadiologytemplateMasterList();
+      });
     }
 
    

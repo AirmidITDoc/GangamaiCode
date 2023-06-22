@@ -36,7 +36,7 @@ export class IPBillingComponent implements OnInit {
    chargeslist1: any = [];
    // currentDate = new Date();
    currentDate: Date=new Date();
- 
+   disamt:any;
    selectDate: Date=new Date();
    displayedColumns = [
      'checkbox',
@@ -1516,6 +1516,55 @@ export class IPBillingComponent implements OnInit {
        this.b_netAmount = (netAmt - discAmt).toString();
      }
    }
+
+   
+  calculatechargesDiscamt() {
+    debugger;
+    let d = this.registeredForm.get('discAmount').value;
+    this.disamt = this.registeredForm.get('discAmount').value;
+    let Netamt = parseInt(this.b_netAmount);
+
+    if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
+      let tot = 0;
+      if (Netamt > 0) {
+        tot = Netamt - parseInt(this.disamt);
+        this.b_netAmount = tot.toString();
+        this.registeredForm.get('netAmount').setValue(tot);
+      }
+    } else if (d == null) {
+      this.registeredForm.get('netAmount').setValue(this.b_totalAmount);
+      this.Consession = true;
+    }
+    //   else
+    //     this.TotalnetPaybleAmt = this.disamt;
+    // }
+  }
+
+
+  // calculateDiscamtfinal() {
+  //   let d = this.registeredForm.get('concessionAmt').value;
+  //   this.Consession = false;
+  //   this.disamt = this.registeredForm.get('concessionAmt').value;
+  //   if(this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt){
+  //   if (parseInt(this.disamt) > 0) {
+  //     let tot = 0;
+  //     if (this.b_TotalChargesAmount > 0) {
+  //       tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
+  //       this.TotalnetPaybleAmt = tot;
+  //       this.registeredForm.get('FinalAmt').setValue(tot);
+  //     }
+  //   }
+  //   else if (d == null) {
+  //     this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+  //     this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
+  //     this.registeredForm.get('ConcessionId').disable;
+  //     this.Consession = true;
+  //     this.registeredForm.get('ConcessionId').reset();
+  //   }
+  // }else{
+  //   Swal.fire("Discount Amount Schoud be Less than Total Amount")
+  // }
+  // }
  
    deleteTableRow(element) {
      debugger;

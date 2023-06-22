@@ -141,7 +141,7 @@ export class OPRefundofBillComponent implements OnInit {
     private formBuilder: FormBuilder,
 
     private changeDetectorRefs: ChangeDetectorRef,
-    // private dialogRef: MatDialogRef<OPRefundofBillComponent>,
+    private dialogRef: MatDialogRef<OPRefundofBillComponent>,
     private _formBuilder: FormBuilder
     ) {
       // this.RefundOfBillFormGroup=this.refundForm();
@@ -237,7 +237,7 @@ export class OPRefundofBillComponent implements OnInit {
     debugger;
     // console.log(this.selectedAdvanceObj.RegId);
     var m_data = {
-      "RegNo": 3,// this.selectedAdvanceObj.OPD_IPD_ID
+      "RegNo": 99686,//this.selectedAdvanceObj.OPD_IPD_ID
       //137151
       
     }
@@ -400,7 +400,7 @@ export class OPRefundofBillComponent implements OnInit {
     if(this.TotalRefundAmount <= this.RefundBalAmount){
     let InsertRefundObj = {};
 
-    InsertRefundObj['refundNo'] = 0;
+    InsertRefundObj['refundNo'] = 311;
     InsertRefundObj['RefundDate'] =  this.dateTimeObj.date;
     InsertRefundObj['RefundTime'] =  this.dateTimeObj.date;
     InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
@@ -594,8 +594,9 @@ onEdit(row) {
   this.getserviceetailList();
 
   debugger;
+  //Testing
   var m_data1 = {
-    "BillId": row.BillNo
+    "BillId": 144,//row.BillNo
   }
   this.isLoadingStr = 'loading';
   this._OpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
@@ -634,7 +635,7 @@ convertToWord(e){
       let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
       this._OpSearchListService.getTemplate(query).subscribe((resData: any) => {
         this.printTemplate = resData[0].TempDesign;
-        let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy']; // resData[0].TempKeys;
+        let keysArray = ['HospitalName','HospAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
           for (let i = 0; i < keysArray.length; i++) {
             let reString = "{{" + keysArray[i] + "}}";
             let re = new RegExp(reString, "g");
@@ -642,10 +643,10 @@ convertToWord(e){
           }
           this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
           // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(this.reportPrintObj.PaymentDate));
-          this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
-          this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-          this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-          this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
+          // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
+          // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+          // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
+          // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
   
           this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
           this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');

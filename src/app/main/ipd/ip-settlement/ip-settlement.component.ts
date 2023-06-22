@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
@@ -12,14 +12,18 @@ import { AdvanceDataStored } from '../advance';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
-import { IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
 import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
+import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-ip-settlement',
   templateUrl: './ip-settlement.component.html',
-  styleUrls: ['./ip-settlement.component.scss']
+  styleUrls: ['./ip-settlement.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPSettlementComponent implements OnInit {
 
@@ -73,7 +77,7 @@ export class IPSettlementComponent implements OnInit {
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    public dialogRef: MatDialogRef<IPSettlementComponent>,
+    // public dialogRef: MatDialogRef<IPSettlementComponent>,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
@@ -174,7 +178,7 @@ debugger
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const dialogRef = this._matDialog.open(IppaymentWithAdvanceComponent,
+    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',
@@ -604,7 +608,7 @@ debugger
     this.dateTimeObj = dateTimeObj;
   }
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 }

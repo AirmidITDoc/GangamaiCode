@@ -45,6 +45,7 @@ import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casep
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
 import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
 import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
+import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
 
 
 
@@ -68,8 +69,8 @@ const routes: Routes = [
         ViewCasepaperComponent,
         OPAdvanceComponent,
          OPAdvancePaymentComponent,
-        OutstandingPaymentComponent,
-      
+        // OutstandingPaymentComponent,
+        OPRefundofBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),

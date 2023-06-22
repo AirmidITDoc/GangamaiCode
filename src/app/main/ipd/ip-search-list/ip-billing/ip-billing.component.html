@@ -163,7 +163,7 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Disc Amt</mat-label>
                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" formControlName="discAmount"
-                                    type="number">
+                                    type="number" (keyup)="calculatechargesDiscamt()">
                             </mat-form-field>
                         </div>
                     </div>
@@ -628,7 +628,7 @@
                                         <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
                                             (change)='CalAdmincharge($event)' type="number">
                                     </mat-form-field>
-                                    <mat-form-field appearance="outline" style=" width:90px;">
+                                    <mat-form-field appearance="outline" style=" width:90px;margin-left: 10px;">
                                         <mat-label>Amount</mat-label>
                                         <input matInput name="Amount" formControlName="Amount" placeholder="0"
                                             type="number" [(ngModel)]="Adminamt">

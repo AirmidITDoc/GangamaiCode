@@ -458,5 +458,16 @@ public prescriptionDetails(visistId) {
   public getRefundofBillOPDList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
     }
+    public InsertOPSettlementPayment (employee){
+      // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
+       return this._httpClient.post("InPatient/IPSettlement", employee)
+    }
 
+    public getOPsettlementPrint(employee){
+      return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint ", employee)
+    }
+    
+  public getTemplates(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
 }
