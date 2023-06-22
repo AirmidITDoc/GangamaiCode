@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { DischargetypeMasterService } from "./dischargetype-master.service";
 import { MatAccordion } from "@angular/material/expansion";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-dischargetype-master",
@@ -133,6 +134,23 @@ export class DischargetypeMasterComponent implements OnInit {
                     .dischargeTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getdischargetypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getdischargetypeMasterList();
                     });
             } else {
@@ -160,6 +178,23 @@ export class DischargetypeMasterComponent implements OnInit {
                     .dischargeTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getdischargetypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getdischargetypeMasterList();
                     });
             }

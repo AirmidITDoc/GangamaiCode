@@ -7,6 +7,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { WardMasterService } from "./ward-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-ward-master",
@@ -178,6 +179,19 @@ export class WardMasterComponent implements OnInit {
                 };
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getwardMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getwardMasterList();
                 });
             } else {
@@ -209,6 +223,23 @@ export class WardMasterComponent implements OnInit {
                     .wardMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getwardMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getwardMasterList();
                     });
             }

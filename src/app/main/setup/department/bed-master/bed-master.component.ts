@@ -7,6 +7,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { takeUntil } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-bed-master",
@@ -23,10 +24,10 @@ export class BedMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "BedId",
         "BedName",
+        "RoomId",
         "RoomName",
-        "AddedByName",
         "IsAvailable",
-        "IsDeleted",
+        "IsActive",
         "action",
     ];
 
@@ -45,7 +46,7 @@ export class BedMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getbedMasterList();
         this.getWardNameCombobox();
-
+        
         this.roomFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
@@ -84,7 +85,9 @@ export class BedMasterComponent implements OnInit {
         });
     }
     getbedMasterList() {
-        this._bedService.getbedMasterList().subscribe((Menu) => {
+        var param = { BedName: "%", RoomId: 0 };
+
+        this._bedService.getbedMasterList(param).subscribe((Menu) => {
             this.DSBedMasterList.data = Menu as BedMaster[];
             this.DSBedMasterList.sort = this.sort;
             this.DSBedMasterList.paginator = this.paginator;
@@ -112,7 +115,8 @@ export class BedMasterComponent implements OnInit {
                         bedName: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        roomId: this._bedService.myform.get("RoomId").value,
+                        roomId: this._bedService.myform.get("RoomId").value
+                            .RoomId,
                         isAvailable: 1,
                         addedBy: 1,
                         isDeleted: 0,
@@ -121,6 +125,19 @@ export class BedMasterComponent implements OnInit {
 
                 this._bedService.bedMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getbedMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getbedMasterList();
                 });
             } else {
@@ -130,7 +147,8 @@ export class BedMasterComponent implements OnInit {
                         bedName: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        roomId: this._bedService.myform.get("RoomId").value,
+                        roomId: this._bedService.myform.get("RoomId").value
+                            .RoomId,
                         isAvailable: Boolean(
                             JSON.parse(
                                 this._bedService.myform.get("IsAvailable").value
@@ -149,6 +167,23 @@ export class BedMasterComponent implements OnInit {
                     .bedMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getbedMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getbedMasterList();
                     });
             }
@@ -159,7 +194,7 @@ export class BedMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             BedId: row.BedId,
-            BedName: row.BedName.trim(),
+            BedName: row.BedName,
             RoomId: row.RoomId,
             IsAvailable: JSON.stringify(row.IsAvailable),
             IsDeleted: JSON.stringify(row.IsDeleted),
@@ -172,12 +207,12 @@ export class BedMasterComponent implements OnInit {
 export class BedMaster {
     BedId: number;
     BedName: string;
+    RoomName: string;
     RoomId: number;
     IsAvailable: boolean;
-    IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -190,10 +225,9 @@ export class BedMaster {
             this.BedName = BedMaster.BedName || "";
             this.RoomId = BedMaster.RoomId || "";
             this.IsAvailable = BedMaster.BedMaster || "";
-            this.IsDeleted = BedMaster.IsDeleted || "false";
+            this.IsActive = BedMaster.IsActive || "false";
             this.AddedBy = BedMaster.AddedBy || "";
             this.UpdatedBy = BedMaster.UpdatedBy || "";
-            this.AddedByName = BedMaster.AddedByName || "";
         }
     }
 }
