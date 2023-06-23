@@ -42,23 +42,23 @@ export class WardMasterService {
         this.createWardForm();
     }
 
-    public getwardMasterList() {
+    public getwardMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_WardNameList_by_Name",
-            { RoomName: "%" }
+            "Generic/GetByProc?procName=Rtrv_WardMaster_by_Name",
+            param
         );
     }
 
     public getLocationMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_LocationMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveLocationMasterForCombo",
             {}
         );
     }
 
     public getClassMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_ClassMasterForCombo",
+            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
             {}
         );
     }

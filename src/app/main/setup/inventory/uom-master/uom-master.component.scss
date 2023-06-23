@@ -1,33 +1,33 @@
 app-uom-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 750px;
+        max-width: 750px;
+        min-width: 750px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 750px;
+        max-width: 750px;
+        min-width: 750px;
     }
 
     .mat-column-UnitofMeasurementId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
     .mat-column-UnitofMeasurementName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
-    .mat-column-AddedByName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+    .mat-column-AddedBy {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-IsDeleted {
@@ -40,9 +40,9 @@ app-uom-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         text-align: right;
         justify-content: right;
     }

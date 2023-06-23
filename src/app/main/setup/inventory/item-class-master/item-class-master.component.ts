@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ItemClassMasterService } from "./item-class-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-class-master",
@@ -43,11 +44,14 @@ export class ItemClassMasterComponent implements OnInit {
         });
     }
     getitemclassMasterList() {
-        this._itemclassService.getitemclassMasterList().subscribe((Menu) => {
-            this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
-            this.DSItemClassMasterList.sort = this.sort;
-            this.DSItemClassMasterList.paginator = this.paginator;
-        });
+        var param = { ItemClassName: "%" };
+        this._itemclassService
+            .getitemclassMasterList(param)
+            .subscribe((Menu) => {
+                this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
+                this.DSItemClassMasterList.sort = this.sort;
+                this.DSItemClassMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {
@@ -77,6 +81,23 @@ export class ItemClassMasterComponent implements OnInit {
                     .insertItemClassMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getitemclassMasterList();
                     });
             } else {
@@ -102,6 +123,23 @@ export class ItemClassMasterComponent implements OnInit {
                     .updateItemClassMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getitemclassMasterList();
                     });
             }

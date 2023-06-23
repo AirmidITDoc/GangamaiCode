@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 @Injectable({
     providedIn: "root",
 })
-
 export class LocationMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
@@ -27,20 +26,20 @@ export class LocationMasterService {
         });
     }
     createSearchForm(): FormGroup {
-      return this._formBuilder.group({
-        LocationNameSearch: [""],
-          IsDeletedSearch: ["2"],
-      });
-  }
+        return this._formBuilder.group({
+            LocationNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
     initializeFormGroup() {
         this.createLocationForm();
     }
 
-    public getLocationMasterList() {
+    public getLocationMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_LocationMaster_by_Name",
-            { LocationName: "%" }
+            "Generic/GetByProc?procName=Rtrv_LocationMaster_by_Name",
+            param
         );
     }
 

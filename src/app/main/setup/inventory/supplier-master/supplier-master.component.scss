@@ -1,14 +1,14 @@
 app-supplier-master {
     .mat-header-row {
-        width: 1600px;
-        max-width: 1600px;
-        min-width: 1600px;
+        width: 1700px;
+        max-width: 1700px;
+        min-width: 1700px;
         font-weight: bold;
     }
     .mat-row {
-        width: 1500px;
-        max-width: 1500px;
-        min-width: 1500px;
+        width: 1700px;
+        max-width: 1700px;
+        min-width: 1700px;
     }
 
     .mat-column-SupplierId {
@@ -18,9 +18,9 @@ app-supplier-master {
     }
 
     .mat-column-SupplierName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
     }
     .mat-column-ContactPerson {
         width: 200px;
@@ -28,9 +28,9 @@ app-supplier-master {
         min-width: 200px;
     }
     .mat-column-Address {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
     .mat-column-CityName {
         width: 100px;
@@ -88,9 +88,9 @@ app-supplier-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

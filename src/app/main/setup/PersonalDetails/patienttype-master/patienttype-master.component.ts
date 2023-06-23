@@ -49,8 +49,9 @@ export class PatienttypeMasterComponent implements OnInit {
         this.getPatientTypeMasterList();
     }
     getPatientTypeMasterList() {
+        var param = { PatientType: "%" };
         this._PatientTypeService
-            .getPatientTypeMasterList()
+            .getPatientTypeMasterList(param)
             .subscribe(
                 (Menu) =>
                     (this.DSPatientTypeMasterList.data =
@@ -71,7 +72,7 @@ export class PatienttypeMasterComponent implements OnInit {
                         patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        addedBy: this.accountService.currentUserValue.user.id,
+                        addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
@@ -103,7 +104,6 @@ export class PatienttypeMasterComponent implements OnInit {
                         }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     patientTypeMasterUpdate: {
@@ -119,7 +119,7 @@ export class PatienttypeMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        updatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: 1,
                     },
                 };
                 this._PatientTypeService
@@ -145,7 +145,6 @@ export class PatienttypeMasterComponent implements OnInit {
                         }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record updated successfully");
             }
             this.onClear();
         }

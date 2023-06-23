@@ -28,7 +28,7 @@ export class CurrencymasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          CurrencyNameSearch: [""],
+            CurrencyNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -36,10 +36,10 @@ export class CurrencymasterService {
         this.createCurrencyForm();
     }
 
-    public getCurrencyMasterList() {
+    public getCurrencyMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_CurrencyMaster_by_Name",
-            { CurrencyName: "%" }
+            "Generic/GetByProc?procName=Rtrv_CurrencyMaster_by_Name",
+            param
         );
     }
 

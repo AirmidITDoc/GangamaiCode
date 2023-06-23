@@ -53,7 +53,7 @@ export class SupplierMasterComponent implements OnInit {
 
     constructor(
         public _supplierService: SupplierMasterService,
-      
+
         public _matDialog: MatDialog
     ) {}
 
@@ -79,12 +79,8 @@ export class SupplierMasterComponent implements OnInit {
 
     getSupplierMasterList() {
         var m_data = {
-            SupplierName:
-                this._supplierService.myformSearch
-                    .get("SupplierNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._supplierService.myformSearch.get("IsDeletedSearch").value,
+            SupplierName: "%",
+            StoreId: 1,
         };
         this._supplierService.getSupplierMasterList(m_data).subscribe(
             (Menu) => {

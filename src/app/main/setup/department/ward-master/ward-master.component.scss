@@ -4,49 +4,49 @@
 
 app-ward-master {
     .mat-header-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
+        width: 1000px;
+        max-width: 1000px;
+        min-width: 1000px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
+        width: 1000px;
+        max-width: 1000px;
+        min-width: 1000px;
     }
 
     .mat-column-RoomId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
-    .mat-column-RoomName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-    .mat-column-LocationName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+    }
+    .mat-column-RoomName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-LocationName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
 
     .mat-column-ClassName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
+    .mat-column-AddedByName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
     }
-    .mat-column-AddedByName {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
 
     .mat-column-IsAvailable {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-IsDeleted {
@@ -59,9 +59,9 @@ app-ward-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

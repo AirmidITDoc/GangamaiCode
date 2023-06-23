@@ -47,7 +47,7 @@ export class BedMasterService {
 
     public getWardMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_WardClassMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_RoomMasterForCombo",
             {}
         );
     }

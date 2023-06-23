@@ -51,13 +51,7 @@ export class DischargetypeMasterComponent implements OnInit {
 
     getdischargetypeMasterList() {
         var m_data = {
-            DischargeTypeName:
-                this._dischargetypeService.myformSearch
-                    .get("DischargeTypeNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._dischargetypeService.myformSearch.get("IsDeletedSearch")
-                    .value,
+            DischargeTypeName: "%",
         };
         this._dischargetypeService
             .getdischargetypeMasterList(m_data)
@@ -120,13 +114,7 @@ export class DischargetypeMasterComponent implements OnInit {
                             .get("DischargeTypeName")
                             .value.trim(),
                         addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._dischargetypeService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        isDeleted: 0,
                     },
                 };
 
@@ -163,13 +151,7 @@ export class DischargetypeMasterComponent implements OnInit {
                         dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._dischargetypeService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        isDeleted: 0,
                         updatedBy: 1,
                     },
                 };

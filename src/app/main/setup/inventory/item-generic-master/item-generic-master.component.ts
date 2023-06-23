@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { ItemGenericMasterService } from "./item-generic-master.service";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-generic-master",
@@ -18,7 +19,7 @@ export class ItemGenericMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ItemGenericNameId",
         "ItemGenericName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,8 +44,10 @@ export class ItemGenericMasterComponent implements OnInit {
         });
     }
     getitemgenericMasterList() {
+        var param = { ItemId: 0, ItemGenericId: 0 };
+
         this._itemgenericService
-            .getitemgenericMasterList()
+            .getitemgenericMasterList(param)
             .subscribe((Menu) => {
                 this.DSItemGenericMasterList.data = Menu as ItemGenericMaster[];
                 this.DSItemGenericMasterList.sort = this.sort;
@@ -81,6 +84,23 @@ export class ItemGenericMasterComponent implements OnInit {
                     .insertItemGenericMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemgenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getitemgenericMasterList();
                     });
             } else {
@@ -107,6 +127,23 @@ export class ItemGenericMasterComponent implements OnInit {
                     .updateItemGenericMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemgenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getitemgenericMasterList();
                     });
             }
@@ -129,7 +166,6 @@ export class ItemGenericMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-mode-of-payment-master",
@@ -44,8 +45,9 @@ export class ModeOfPaymentMasterComponent implements OnInit {
         });
     }
     getModeofpaymentMasterList() {
+        var param = { ModeOfPayment: "%" };
         this._modeofpaymentService
-            .getModeofpaymentMasterList()
+            .getModeofpaymentMasterList(param)
             .subscribe((Menu) => {
                 this.DSModeofpaymentMasterList.data =
                     Menu as ModeofpaymentMaster[];
@@ -82,6 +84,23 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                     .insertModeofPaymentMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getModeofpaymentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getModeofpaymentMasterList();
                     });
             } else {
@@ -106,6 +125,23 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                     .updateModeofPaymentMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getModeofpaymentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getModeofpaymentMasterList();
                     });
             }
@@ -115,7 +151,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             Id: row.Id,
-            ModeOfPayment: row.ModeOfPayment.trim(),
+            ModeOfPayment: row.ModeofPayment,
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };

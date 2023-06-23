@@ -47,7 +47,8 @@ export class LocationMasterComponent implements OnInit {
     }
 
     getLocationMasterList() {
-        this._locationService.getLocationMasterList().subscribe((Menu) => {
+        var param = { LocationName: "%" };
+        this._locationService.getLocationMasterList(param).subscribe((Menu) => {
             this.DSLocationMasterList.data = Menu as LocationMaster[];
             this.DSLocationMasterList.sort = this.sort;
             this.DSLocationMasterList.paginator = this.paginator;
@@ -68,12 +69,7 @@ export class LocationMasterComponent implements OnInit {
                             .get("LocationName")
                             .value.trim(),
                         addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._locationService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                        isDeleted: 0,
                     },
                 };
 
@@ -109,12 +105,7 @@ export class LocationMasterComponent implements OnInit {
                         locationName: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._locationService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                        isDeleted: 0,
                         updatedBy: 1,
                     },
                 };
@@ -163,7 +154,6 @@ export class LocationMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

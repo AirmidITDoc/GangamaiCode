@@ -45,11 +45,14 @@ export class DepartmentMasterComponent implements OnInit {
         });
     }
     getDepartmentMasterList() {
-        this._departmentService.getDepartmentMasterList().subscribe((Menu) => {
-            this.DSDepartmentMasterList.data = Menu as DepartmentMaster[];
-            this.DSDepartmentMasterList.sort = this.sort;
-            this.DSDepartmentMasterList.paginator = this.paginator;
-        });
+        var param = { DepartmentName: "%" };
+        this._departmentService
+            .getDepartmentMasterList(param)
+            .subscribe((Menu) => {
+                this.DSDepartmentMasterList.data = Menu as DepartmentMaster[];
+                this.DSDepartmentMasterList.sort = this.sort;
+                this.DSDepartmentMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {

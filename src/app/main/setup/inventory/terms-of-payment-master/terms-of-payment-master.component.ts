@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-terms-of-payment-master",
@@ -18,7 +19,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     msg: any;
 
     displayedColumns: string[] = [
-        "ID",
+        "Id",
         "TermsOfPayment",
         "AddedByName",
         "IsDeleted",
@@ -45,8 +46,9 @@ export class TermsOfPaymentMasterComponent implements OnInit {
         });
     }
     getTermsofPaymentMasterList() {
+        var param = { TermsOfPayment: "%" };
         this._termsofpaymentService
-            .getTermsofPaymentMasterList()
+            .getTermsofPaymentMasterList(param)
             .subscribe((Menu) => {
                 this.DSTermsofPaymentMasterList.data =
                     Menu as TermsOfPaymentMaster[];
@@ -62,7 +64,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
 
     onSubmit() {
         if (this._termsofpaymentService.myform.valid) {
-            if (!this._termsofpaymentService.myform.get("ID").value) {
+            if (!this._termsofpaymentService.myform.get("Id").value) {
                 var m_data = {
                     insertTermsofPaymentMaster: {
                         termsOfPayment: this._termsofpaymentService.myform
@@ -83,12 +85,29 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                     .insertTermsofPaymentMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTermsofPaymentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getTermsofPaymentMasterList();
                     });
             } else {
                 var m_dataUpdate = {
                     updateTermsofPaymentMaster: {
-                        id: this._termsofpaymentService.myform.get("ID").value,
+                        id: this._termsofpaymentService.myform.get("Id").value,
                         termsOfPayment: this._termsofpaymentService.myform
                             .get("TermsOfPayment")
                             .value.trim(),
@@ -107,6 +126,23 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                     .updateTermsofPaymentMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getTermsofPaymentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getTermsofPaymentMasterList();
                     });
             }
@@ -116,8 +152,8 @@ export class TermsOfPaymentMasterComponent implements OnInit {
 
     onEdit(row) {
         var m_data = {
-            ID: row.ID,
-            TermsOfPayment: row.TermsOfPayment.trim(),
+            Id: row.Id,
+            TermsOfPayment: row.TermsOfPayment,
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -125,12 +161,11 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     }
 }
 export class TermsOfPaymentMaster {
-    ID: number;
+    Id: number;
     TermsOfPayment: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -139,7 +174,7 @@ export class TermsOfPaymentMaster {
      */
     constructor(TermsOfPaymentMaster) {
         {
-            this.ID = TermsOfPaymentMaster.ID || "";
+            this.Id = TermsOfPaymentMaster.Id || "";
             this.TermsOfPayment = TermsOfPaymentMaster.TermsOfPayment || "";
             this.IsDeleted = TermsOfPaymentMaster.IsDeleted || "false";
             this.AddedBy = TermsOfPaymentMaster.AddedBy || "";

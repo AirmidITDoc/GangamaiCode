@@ -119,7 +119,8 @@ export class WardMasterComponent implements OnInit {
     }
 
     getwardMasterList() {
-        this._wardService.getwardMasterList().subscribe((Menu) => {
+        var param = { WardName: "%" };
+        this._wardService.getwardMasterList(param).subscribe((Menu) => {
             this.DSWardMasterList.data = Menu as WardMaster[];
             this.DSWardMasterList.sort = this.sort;
             this.DSWardMasterList.paginator = this.paginator;
@@ -161,7 +162,8 @@ export class WardMasterComponent implements OnInit {
                             .value.trim(),
                         roomType: "1",
                         locationId:
-                            this._wardService.myform.get("LocationId").value,
+                            this._wardService.myform.get("LocationId").value
+                                .LocationId,
                         isAvailable: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsAvailable")
@@ -169,12 +171,10 @@ export class WardMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        classId: this._wardService.myform.get("ClassId").value,
+                        isDeleted: 0,
+                        classId:
+                            this._wardService.myform.get("ClassId").value
+                                .ClassId,
                     },
                 };
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
@@ -203,20 +203,14 @@ export class WardMasterComponent implements OnInit {
                             .value.trim(),
                         roomType: "1",
                         locationId:
-                            this._wardService.myform.get("LocationId").value,
-                        isAvailable: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsAvailable")
-                                    .value
-                            )
-                        ),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsDeleted").value
-                            )
-                        ),
+                            this._wardService.myform.get("LocationId").value
+                                .LocationId,
+                        isAvailable: 1,
+                        isDeleted: 0,
                         updatedBy: 1,
-                        classId: this._wardService.myform.get("ClassId").value,
+                        classId:
+                            this._wardService.myform.get("ClassId").value
+                                .ClassId,
                     },
                 };
                 this._wardService
@@ -250,7 +244,7 @@ export class WardMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             RoomId: row.RoomId,
-            RoomName: row.RoomName.trim(),
+            RoomName: row.WardName,
             LocationId: row.LocationId,
             IsAvailable: JSON.stringify(row.IsAvailable),
             ClassId: row.ClassID,

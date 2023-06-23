@@ -13,21 +13,21 @@ app-department-master {
     }
 
     .mat-column-DepartmentId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
-
-    .mat-column-DepartmentName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
-    }
-
-    .mat-column-AddedByName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+    }
+
+    .mat-column-DepartmentName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+    }
+
+    .mat-column-AddedByName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-IsDeleted {
@@ -40,9 +40,9 @@ app-department-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

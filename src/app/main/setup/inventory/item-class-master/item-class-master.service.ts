@@ -36,10 +36,10 @@ export class ItemClassMasterService {
         this.createItemclassForm();
     }
 
-    public getitemclassMasterList() {
+    public getitemclassMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_ItemClassMaster_by_Name",
-            { ItemClassName: "%" }
+            "Generic/GetByProc?procName=Rtrv_ItemClassMaster_by_Name",
+            param
         );
     }
 

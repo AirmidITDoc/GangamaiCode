@@ -37,10 +37,10 @@ export class PatienttypeMasterService {
         this.createPatientTypeForm();
     }
 
-    public getPatientTypeMasterList() {
+    public getPatientTypeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrievePatientTypeMasterForCombo",
-            { PatientType: "%" }
+            "Generic/GetByProc?procName=Rtrv_PatientTypeMaster_by_Name",
+            param
         );
     }
 

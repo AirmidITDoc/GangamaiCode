@@ -37,10 +37,10 @@ export class ModeOfPaymentMasterService {
         this.createModeofpaymentForm();
     }
 
-    public getModeofpaymentMasterList() {
+    public getModeofpaymentMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_ModeOfPaymentMaster_by_Name",
-            { ModeOfPayment: "%" }
+            "Generic/GetByProc?procName=Rtrv_ModeOfPaymentList_by_Name",
+            param
         );
     }
 

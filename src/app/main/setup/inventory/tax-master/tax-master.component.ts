@@ -4,6 +4,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-tax-master",
@@ -43,7 +44,8 @@ export class TaxMasterComponent implements OnInit {
         });
     }
     gettaxMasterList() {
-        this._taxmasterService.gettaxMasterList().subscribe((Menu) => {
+        var param = { TaxNature: "%" };
+        this._taxmasterService.gettaxMasterList(param).subscribe((Menu) => {
             this.DSTaxMasterList.data = Menu as TaxMaster[];
             this.DSTaxMasterList.sort = this.sort;
             this.DSTaxMasterList.paginator = this.paginator;
@@ -77,6 +79,23 @@ export class TaxMasterComponent implements OnInit {
                     .insertTaxMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.gettaxMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.gettaxMasterList();
                     });
             } else {
@@ -100,6 +119,23 @@ export class TaxMasterComponent implements OnInit {
                     .updateTaxMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.gettaxMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.gettaxMasterList();
                     });
             }

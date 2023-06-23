@@ -71,13 +71,14 @@ export class PrefixMasterComponent implements OnInit {
 
     onSubmit() {
         if (this._PrefixService.myform.valid) {
-            if (!this._PrefixService.myform.get("AreaId").value) {
+            if (!this._PrefixService.myform.get("PrefixID").value) {
                 var m_data = {
                     prefixMasterInsert: {
                         prefixName: this._PrefixService.myform
                             .get("PrefixName")
                             .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value,
+                        sexID: this._PrefixService.myform.get("SexID").value
+                            .SexID,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -119,7 +120,8 @@ export class PrefixMasterComponent implements OnInit {
                         prefixName: this._PrefixService.myform
                             .get("PrefixName")
                             .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value,
+                        sexID: this._PrefixService.myform.get("SexID").value
+                            .SexID,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
@@ -162,6 +164,17 @@ export class PrefixMasterComponent implements OnInit {
         this._PrefixService.myform.reset({ IsDeleted: "false" });
         this._PrefixService.initializeFormGroup();
     }
+
+    onEdit(row) {
+        var m_data = {
+            PrefixID: row.PrefixID,
+            PrefixName: row.PrefixName,
+            SexID: row.SexID,
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._PrefixService.populateForm(m_data);
+    }
 }
 
 export class PrefixMaster {
@@ -171,8 +184,7 @@ export class PrefixMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
-    IsDeletedSearch: number;
+
     /**
      * Constructor
      *
@@ -186,8 +198,6 @@ export class PrefixMaster {
             this.IsDeleted = PrefixMaster.IsDeleted || "false";
             this.AddedBy = PrefixMaster.AddedBy || 0;
             this.UpdatedBy = PrefixMaster.UpdatedBy || 0;
-            this.AddedByName = PrefixMaster.AddedByName || "";
-            this.IsDeletedSearch = PrefixMaster.IsDeletedSearch || "2";
         }
     }
 }

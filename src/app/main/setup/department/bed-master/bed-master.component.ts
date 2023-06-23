@@ -46,7 +46,7 @@ export class BedMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getbedMasterList();
         this.getWardNameCombobox();
-        
+
         this.roomFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
@@ -85,7 +85,7 @@ export class BedMasterComponent implements OnInit {
         });
     }
     getbedMasterList() {
-        var param = { BedName: "%", RoomId: 0 };
+        var param = { BedName: "%", WardId: 0 };
 
         this._bedService.getbedMasterList(param).subscribe((Menu) => {
             this.DSBedMasterList.data = Menu as BedMaster[];
@@ -149,16 +149,8 @@ export class BedMasterComponent implements OnInit {
                             .value.trim(),
                         roomId: this._bedService.myform.get("RoomId").value
                             .RoomId,
-                        isAvailable: Boolean(
-                            JSON.parse(
-                                this._bedService.myform.get("IsAvailable").value
-                            )
-                        ),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._bedService.myform.get("IsDeleted").value
-                            )
-                        ),
+                        isAvailable: 1,
+                        isDeleted: 0,
                         updatedBy: 1,
                     },
                 };
