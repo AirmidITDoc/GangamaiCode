@@ -4,6 +4,7 @@ import { PrefixMasterService } from "./prefix-master.service";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-prefix-master",
@@ -70,14 +71,15 @@ export class PrefixMasterComponent implements OnInit {
 
     onSubmit() {
         if (this._PrefixService.myform.valid) {
-            if (!this._PrefixService.myform.get("AreaId").value) {
+            if (!this._PrefixService.myform.get("PrefixID").value) {
                 var m_data = {
                     prefixMasterInsert: {
                         prefixName: this._PrefixService.myform
                             .get("PrefixName")
                             .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value,
-                        addedBy: 1, //this.accountService.currentUserValue.user.id,
+                        sexID: this._PrefixService.myform.get("SexID").value
+                            .SexID,
+                        addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
@@ -91,6 +93,23 @@ export class PrefixMasterComponent implements OnInit {
                     .insertPrefixMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrefixMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getPrefixMasterList();
                     });
             } else {
@@ -101,7 +120,8 @@ export class PrefixMasterComponent implements OnInit {
                         prefixName: this._PrefixService.myform
                             .get("PrefixName")
                             .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value,
+                        sexID: this._PrefixService.myform.get("SexID").value
+                            .SexID,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
@@ -116,6 +136,23 @@ export class PrefixMasterComponent implements OnInit {
                     .updatePrefixMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrefixMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getPrefixMasterList();
                     });
             }
@@ -127,6 +164,17 @@ export class PrefixMasterComponent implements OnInit {
         this._PrefixService.myform.reset({ IsDeleted: "false" });
         this._PrefixService.initializeFormGroup();
     }
+
+    onEdit(row) {
+        var m_data = {
+            PrefixID: row.PrefixID,
+            PrefixName: row.PrefixName,
+            SexID: row.SexID,
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._PrefixService.populateForm(m_data);
+    }
 }
 
 export class PrefixMaster {
@@ -136,8 +184,7 @@ export class PrefixMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
-    IsDeletedSearch: number;
+
     /**
      * Constructor
      *
@@ -151,8 +198,6 @@ export class PrefixMaster {
             this.IsDeleted = PrefixMaster.IsDeleted || "false";
             this.AddedBy = PrefixMaster.AddedBy || 0;
             this.UpdatedBy = PrefixMaster.UpdatedBy || 0;
-            this.AddedByName = PrefixMaster.AddedByName || "";
-            this.IsDeletedSearch = PrefixMaster.IsDeletedSearch || "2";
         }
     }
 }

@@ -6,6 +6,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { PatienttypeMasterService } from "./patienttype-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-patienttype-master",
@@ -48,8 +49,9 @@ export class PatienttypeMasterComponent implements OnInit {
         this.getPatientTypeMasterList();
     }
     getPatientTypeMasterList() {
+        var param = { PatientType: "%" };
         this._PatientTypeService
-            .getPatientTypeMasterList()
+            .getPatientTypeMasterList(param)
             .subscribe(
                 (Menu) =>
                     (this.DSPatientTypeMasterList.data =
@@ -70,7 +72,7 @@ export class PatienttypeMasterComponent implements OnInit {
                         patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        addedBy: this.accountService.currentUserValue.user.id,
+                        addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
@@ -83,9 +85,25 @@ export class PatienttypeMasterComponent implements OnInit {
                     .patientTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPatientTypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     patientTypeMasterUpdate: {
@@ -101,16 +119,32 @@ export class PatienttypeMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        updatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: 1,
                     },
                 };
                 this._PatientTypeService
                     .patientTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPatientTypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record updated successfully");
             }
             this.onClear();
         }

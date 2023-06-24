@@ -27,19 +27,19 @@ export class UomMasterService {
         });
     }
     createSearchForm(): FormGroup {
-      return this._formBuilder.group({
-        UnitofMeasurementSearch: [""],
-          IsDeletedSearch: ["2"],
-      });
-  }
+        return this._formBuilder.group({
+            UnitofMeasurementSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
     initializeFormGroup() {
         this.createUnitofmeasurementForm();
     }
 
-    public getUnitofmeasurementMasterList() {
+    public getUnitofmeasurementMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_UnitofMeasurementMaster_by_Name",
-            { UnitofMeasurementName: "%" }
+            "Generic/GetByProc?procName=Rtrv_UnitofMeasurment_by_Name",
+            param
         );
     }
 

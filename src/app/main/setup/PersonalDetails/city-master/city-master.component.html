@@ -67,39 +67,40 @@
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSCityMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
-                                    <ng-container matColumnDef="CityId">
+
+                                    <ng-container matColumnDef="CITYID">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.CityId}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.CITYID}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CityName">
+                                    <ng-container matColumnDef="CITYNAME">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> City Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CityName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CITYNAME}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="StateName">
+                                    <ng-container matColumnDef="STATENAME">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> State Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StateName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.STATENAME}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsDeleted">
+                                    <ng-container matColumnDef="ISDELETED">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsDeleted"
+                                            <mat-icon *ngIf="!element.ISDELETED"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="element.IsDeleted"
+                                            <mat-icon *ngIf="element.ISDELETED"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -181,8 +182,7 @@
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
                                             <mat-radio-button value='false' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
-                                            <mat-radio-button value='true' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button>
+
                                         </mat-radio-group>
                                     </div>
                                 </form>

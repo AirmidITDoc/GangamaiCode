@@ -43,9 +43,9 @@ import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
-import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
 import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
 import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
+import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
 
 
 
@@ -68,9 +68,9 @@ const routes: Routes = [
         OPCasepaperComponent,
         ViewCasepaperComponent,
         OPAdvanceComponent,
-        OPRefundofBillComponent,
-        OPAdvancePaymentComponent,
-        OutstandingPaymentComponent,
+         OPAdvancePaymentComponent,
+        // OutstandingPaymentComponent,
+        OPRefundofBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -4,6 +4,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-manufacture-master",
@@ -44,8 +45,9 @@ export class ManufactureMasterComponent implements OnInit {
         });
     }
     getmanufactureMasterList() {
+        var param = { ManufName: "%" };
         this._manufactureService
-            .getmanufactureMasterList()
+            .getmanufactureMasterList(param)
             .subscribe((Menu) => {
                 this.DSManufactureMasterList.data = Menu as ManufactureMaster[];
                 this.DSManufactureMasterList.sort = this.sort;
@@ -83,15 +85,31 @@ export class ManufactureMasterComponent implements OnInit {
                     .insertManufactureMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getmanufactureMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getmanufactureMasterList();
                     });
             } else {
                 var m_dataUpdate = {
                     updateManufactureMaster: {
                         manufId:
-                            this._manufactureService.myform.get(
-                                "ManufIdManufId"
-                            ).value,
+                            this._manufactureService.myform.get("ManufId")
+                                .value,
                         manufName: this._manufactureService.myform
                             .get("ManufName")
                             .value.trim(),
@@ -112,6 +130,23 @@ export class ManufactureMasterComponent implements OnInit {
                     .updateManufactureMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getmanufactureMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getmanufactureMasterList();
                     });
             }

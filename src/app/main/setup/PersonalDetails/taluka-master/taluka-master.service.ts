@@ -25,7 +25,6 @@ export class TalukaMasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {

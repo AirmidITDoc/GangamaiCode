@@ -63,7 +63,7 @@ const routes: Routes = [
         MatExpansionModule
     ],
     providers: [
-      BrowseIPAdvanceService,
+      // BrowseIPAdvanceService,
         DatePipe
     ],
     entryComponents: [

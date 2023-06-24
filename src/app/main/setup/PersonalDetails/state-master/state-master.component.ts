@@ -7,6 +7,7 @@ import { MatSort } from "@angular/material/sort";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-state-master",
@@ -113,7 +114,8 @@ export class StateMasterComponent implements OnInit {
                             .get("StateName")
                             .value.trim(),
                         countryId:
-                            this._stateService.myform.get("CountryId").value,
+                            this._stateService.myform.get("CountryId").value
+                                .CountryId,
 
                         addedBy: 1,
                         isDeleted: Boolean(
@@ -128,6 +130,24 @@ export class StateMasterComponent implements OnInit {
                     .stateMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getstateMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
+                        console.log(m_data);
                         this.getstateMasterList();
                     });
             } else {
@@ -138,7 +158,8 @@ export class StateMasterComponent implements OnInit {
                             .get("StateName")
                             .value.trim(),
                         countryId:
-                            this._stateService.myform.get("CountryId").value,
+                            this._stateService.myform.get("CountryId").value
+                                .CountryId,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._stateService.myform.get("IsDeleted").value
@@ -152,6 +173,23 @@ export class StateMasterComponent implements OnInit {
                     .stateMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getstateMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getstateMasterList();
                     });
             }

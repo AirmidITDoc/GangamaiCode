@@ -38,10 +38,10 @@ export class ManufactureMasterService {
         this.createManufactureForm();
     }
 
-    public getmanufactureMasterList() {
+    public getmanufactureMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_ManufactureMaster_by_Name",
-            { ManufName: "%" }
+            "Generic/GetByProc?procName=Rtrv_Manufacture_by_Name",
+            param
         );
     }
 

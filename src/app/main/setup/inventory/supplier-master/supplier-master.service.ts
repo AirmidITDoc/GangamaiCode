@@ -87,7 +87,7 @@ export class SupplierMasterService {
 
     public getSupplierMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_SupplierTypeMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_SupplierMasterList_by_Name",
             m_data
         );
     }
@@ -101,28 +101,28 @@ export class SupplierMasterService {
 
     public getCountryMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_CountryMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo",
             {}
         );
     }
 
     public getStateMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_StateMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo",
             {}
         );
     }
 
     public getCityMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_CityMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
             {}
         );
     }
 
     public getStoreMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_StoreNameForCombo",
             {}
         );
     }
@@ -141,14 +141,14 @@ export class SupplierMasterService {
 
     public getStateList(CityId) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_StateNameForCombo_Conditional",
+            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",
             { Id: CityId }
         );
     }
 
     public getCountryList(StateId) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_CountryNameForCombo_Conditional",
+            "Generic/GetByProc?procName=Retrieve_CountryMasterForCombo_Conditional",
             { Id: StateId }
         );
     }

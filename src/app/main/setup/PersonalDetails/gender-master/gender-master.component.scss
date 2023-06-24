@@ -17,21 +17,15 @@ app-gender-master {
     }
 
     .mat-column-GenderId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
-
-    .mat-column-GenderName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
-    }
-
-    .mat-column-AddedByName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+    }
+
+    .mat-column-GenderName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-IsDeleted {
@@ -44,9 +38,9 @@ app-gender-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         text-align: right;
         justify-content: right;
     }
@@ -60,11 +54,3 @@ app-gender-master {
         border-radius: 50%;
     }
 }
-
-// .button-row button{
-//     margin: 5px;
-// }
-// .mat-radio-group{
-//     margin: 7px;
-//     margin-bottom: 10px;
-// }

@@ -8,6 +8,7 @@ import { MatAccordion } from "@angular/material/expansion";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-store-master",
@@ -82,14 +83,7 @@ export class StoreMasterComponent implements OnInit {
     }
 
     getStoreMasterList() {
-        var m_data = {
-            StoreName:
-                this._StoreService.myformSearch
-                    .get("StoreNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._StoreService.myformSearch.get("IsDeletedSearch").value,
-        };
+        var m_data = { StoreName: "%" };
         this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
             this.DSStoreMasterList.data = Menu as StoreMaster[];
             this.DSStoreMasterList.sort = this.sort;
@@ -181,6 +175,23 @@ export class StoreMasterComponent implements OnInit {
                     .insertStoreMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getStoreMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getStoreMasterList();
                     });
             } else {
@@ -241,6 +252,23 @@ export class StoreMasterComponent implements OnInit {
                     .updateStoreMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getStoreMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getStoreMasterList();
                     });
             }

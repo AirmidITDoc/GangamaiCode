@@ -29,10 +29,14 @@ const appRoutes: Routes = [
         loadChildren: () =>
         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
-    {
-        path: "ip-addCharges",
-        // loadChildren: () => import("./browse-ipd-payment-receipt/ipd-browse-paymentreceipt.module").then((m) => m.IpdBrowsePaymentreceiptModule),
-    },
+    // {
+    //     path: "ip-addCharges",
+    //     loadChildren: () =>
+        
+    //     import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
+    //     // import("./browse-ipd-payment-receipt/ipd-browse-paymentreceipt.module").then((m) => m.IpdBrowsePaymentreceiptModule),
+        
+    // },
     {
         path: "refund",
         loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),
@@ -43,12 +47,12 @@ const appRoutes: Routes = [
          // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
            import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
-    // {
-    //     path: "ipd-browse-receipt",
-    //     loadChildren: () =>
-    //        // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-    //        import("./browse-ipdpayment-receipt/browse-paymentreceipt.module").then((m) => m.BrowsePaymentreceiptModule),
-    // },
+    {
+        path: "ipd-browse-receipt",
+        loadChildren: () =>
+           // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
+           import("./browse-ipdpayment-receipt/payment-receipt.module").then((m) => m.PaymentReceiptModule),
+    },
     {
         path: "discharge",
         loadChildren: () =>
@@ -69,12 +73,11 @@ const appRoutes: Routes = [
             // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
     },
     
-
-   
+       
     {
          path: "companysettlement", 
          loadChildren: () =>
-         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+         import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
     },
 
 //     {
@@ -82,6 +85,7 @@ const appRoutes: Routes = [
 //         loadChildren: () =>
 //            import("./pathology-view-report/pathology-view-report.module").then((m) => m.PathologyViewReportModule),
 //    }
+
 ];
 
 @NgModule({

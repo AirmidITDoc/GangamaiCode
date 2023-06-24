@@ -95,12 +95,8 @@ export class ItemMasterComponent implements OnInit {
 
     getItemMasterList() {
         var m_data = {
-            ItemName:
-                this._itemService.myformSearch
-                    .get("ItemNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._itemService.myformSearch.get("IsDeletedSearch").value,
+            ItemName: "%",
+            StoreId: 1,
         };
         this._itemService.getItemMasterList(m_data).subscribe(
             (Menu) => {

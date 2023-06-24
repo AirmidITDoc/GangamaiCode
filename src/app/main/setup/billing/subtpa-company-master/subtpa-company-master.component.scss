@@ -1,8 +1,8 @@
 app-subtpa-company-master {
     .mat-header-row {
-        width: 2000px;
-        max-width: 2000px;
-        min-width: 2000px;
+        width: 2050px;
+        max-width: 2050px;
+        min-width: 2050px;
         font-weight: bold;
     }
 
@@ -24,14 +24,14 @@ app-subtpa-company-master {
         min-width: 170px;
     }
     .mat-column-CompanyName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 320px;
+        max-width: 320px;
+        min-width: 320px;
     }
     .mat-column-Address {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
     }
     .mat-column-City {
         width: 100px;
@@ -59,9 +59,9 @@ app-subtpa-company-master {
         min-width: 100px;
     }
     .mat-column-AddedByName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
     }
 
     .mat-column-IsCancelledBy {
@@ -70,15 +70,15 @@ app-subtpa-company-master {
         min-width: 100px;
     }
     .mat-column-IsCancelled {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-IsCancelledDate {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-IsDeleted {

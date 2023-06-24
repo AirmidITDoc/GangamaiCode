@@ -6,6 +6,7 @@ import { MaritalstatusMasterService } from "./maritalstatus-master.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-maritalstatus-master",
@@ -88,6 +89,23 @@ export class MaritalstatusMasterComponent implements OnInit {
                     .insertMaritalStatusMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getmaritalstatusMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getmaritalstatusMasterList();
                     });
             } else {
@@ -113,6 +131,23 @@ export class MaritalstatusMasterComponent implements OnInit {
                     .updateMaritalStatusMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getmaritalstatusMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getmaritalstatusMasterList();
                     });
             }

@@ -18,30 +18,24 @@
 
                 <form [formGroup]="feedbackFormGroup">
 
-                    <div style="display:flex">
-                        <div style="margin-top:10px;font-size:20px;margin-left:6%;">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                        <mat-form-field appearance="outline" style="font-weight: bold;font-size: 20px;" fxFlex>
+                            <input name="PatientName" formControlName="PatientName" placeholder="Patient Name" matInput>
+                            <mat-error
+                                *ngIf="feedbackFormGroup.get('PatientName').invalid && feedbackFormGroup.get('PatientName').touched">
+                                Please enter Patient Name </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="font-weight: bold;font-size: 20px;" fxFlex>
+                            <mat-label>Mobile No</mat-label>
+                            <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile No" maxlength="10"
+                                required="required" type="number" matInput required>
+                            <mat-error class="error"
+                                *ngIf="feedbackFormGroup.get('MobileNo').invalid && feedbackFormGroup.get('MobileNo').touched">
+                                10
+                                digits Mobile number is
+                                required</mat-error>
 
-
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
-                                <mat-label style="width:200px;">Patient
-                                    Name :</mat-label>
-                                <mat-form-field appearance="outline">
-
-                                    <input matInput minlength="4" maxlength="100" formControlName="nameInput"
-                                        style="font-size:18px;width:900px;" placeholder="Enter your name here">
-
-                                </mat-form-field>
-
-                                <mat-label style="width:200px;">Mobile Number</mat-label>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <input name="MobileNo" formControlName="MobileNo"
-                                        style="font-size:18px;width:900px;" placeholder="Mobile Number" minlength="10"
-                                        maxlength="10" type="number">
-                                </mat-form-field>
-                            </div>
-
-
-                        </div>
+                        </mat-form-field>
                     </div>
 
                     <hr>
@@ -49,9 +43,9 @@
                     <div style="line-height:1.8;font-size: 20px;font-weight:200px;padding: 20px;">
                         We'd love to know about your experience at Gangamai Hospital.Filling out this short form can
                         help us improve our services and know more about how we provide the best for patients and
-                        visitors alike.<br>
+                        visitors alike.
                         Rate us on scale of 1 to 5 on the following aspects :
-                        <br>(1=extremely disliked & 5=extremely liked)
+                        (1=extremely disliked & 5=extremely liked)
                     </div>
                     <hr>
 
@@ -72,7 +66,7 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="recpRadio" name="recpRadio">
                             <mat-label>Reception Enquiry:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:300px;">1</mat-radio-button>
+                            <mat-radio-button value=" 1" style="padding-left:300px;">1</mat-radio-button>
                             <mat-radio-button value="2">2</mat-radio-button>
                             <mat-radio-button value="3">3</mat-radio-button>
                             <mat-radio-button value="4">4</mat-radio-button>
@@ -249,11 +243,11 @@
                         </mat-radio-group>
                     </div>
 
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px"
-                        fxLayoutAlign="space-between" style="padding:50px;font-size: 20px;height:200px">
-                        <mat-label style="width:300px;">Leave a comment</mat-label>
-                        <mat-form-field class=" comment" formControlName="commentText">
-                            <textarea matInput appearance="outline" placeholder=" Write your comment here.."></textarea>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px" style="padding:50px;">
+                        <mat-label style="font-size: 20px;width:200px;">Leave a comment :</mat-label>
+                        <mat-form-field class=" comment" style="font-size: 20px;width:800px;">
+                            <textarea matInput appearance="outline" formControlName="commentText"
+                                placeholder=" Write your comment here.."></textarea>
                         </mat-form-field>
                     </div>
 
@@ -269,6 +263,10 @@
         <hr>
         <p class="p" style="font-weight:bold;color: rgb(247, 97, 97);padding-bottom: 30px;"> Thank you for your time!
         </p>
+        <hr>
+        <div>Developers Area :
+            {{feedbackFormGroup.value|json}}
+        </div>
     </div>
 
 </div>

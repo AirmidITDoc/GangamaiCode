@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { DepartmentMasterService } from "./department-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-department-master",
@@ -44,11 +45,14 @@ export class DepartmentMasterComponent implements OnInit {
         });
     }
     getDepartmentMasterList() {
-        this._departmentService.getDepartmentMasterList().subscribe((Menu) => {
-            this.DSDepartmentMasterList.data = Menu as DepartmentMaster[];
-            this.DSDepartmentMasterList.sort = this.sort;
-            this.DSDepartmentMasterList.paginator = this.paginator;
-        });
+        var param = { DepartmentName: "%" };
+        this._departmentService
+            .getDepartmentMasterList(param)
+            .subscribe((Menu) => {
+                this.DSDepartmentMasterList.data = Menu as DepartmentMaster[];
+                this.DSDepartmentMasterList.sort = this.sort;
+                this.DSDepartmentMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {
@@ -78,6 +82,23 @@ export class DepartmentMasterComponent implements OnInit {
                     .departmentMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDepartmentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getDepartmentMasterList();
                     });
             } else {
@@ -103,6 +124,23 @@ export class DepartmentMasterComponent implements OnInit {
                     .departmentMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDepartmentMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getDepartmentMasterList();
                     });
             }

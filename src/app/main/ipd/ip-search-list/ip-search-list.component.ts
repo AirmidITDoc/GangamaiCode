@@ -552,6 +552,7 @@ debugger;
         DocNameID: contact.DocNameID,
       }
       // console.log(m_data);
+      debugger
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
        const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,

@@ -118,7 +118,7 @@ export class ServiceMasterComponent implements OnInit {
                         isRadiology:
                             this._serviceMasterService.myform.get("IsRadiology")
                                 .value,
-                        isDeleted:
+                        isActive:
                             this._serviceMasterService.myform.get("IsDeleted")
                                 .value,
                         printOrder:
@@ -202,7 +202,7 @@ export class ServiceMasterComponent implements OnInit {
                         isRadiology:
                             this._serviceMasterService.myform.get("IsRadiology")
                                 .value,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._serviceMasterService.myform.get(
                                     "IsDeleted"
@@ -366,7 +366,7 @@ export class Servicedetail {
     ServiceDetailId: number;
     ServiceId: number;
     TariffId: number;
-    CassId: number;
+    ClassId: number;
     ClassRate: number;
     EffectiveDate: Date;
     constructor(Servicedetail) {
@@ -374,7 +374,7 @@ export class Servicedetail {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";
             this.ServiceId = Servicedetail.ServiceId || "";
             this.TariffId = Servicedetail.TariffId || "";
-            this.CassId = Servicedetail.CassId || "";
+            this.ClassId = Servicedetail.ClassId || "";
             this.ClassRate = Servicedetail.ClassRate || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
         }

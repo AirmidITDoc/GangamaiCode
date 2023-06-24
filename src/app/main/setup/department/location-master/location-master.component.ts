@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { LocationMasterService } from "./location-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-location-master",
@@ -46,7 +47,8 @@ export class LocationMasterComponent implements OnInit {
     }
 
     getLocationMasterList() {
-        this._locationService.getLocationMasterList().subscribe((Menu) => {
+        var param = { LocationName: "%" };
+        this._locationService.getLocationMasterList(param).subscribe((Menu) => {
             this.DSLocationMasterList.data = Menu as LocationMaster[];
             this.DSLocationMasterList.sort = this.sort;
             this.DSLocationMasterList.paginator = this.paginator;
@@ -67,12 +69,7 @@ export class LocationMasterComponent implements OnInit {
                             .get("LocationName")
                             .value.trim(),
                         addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._locationService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                        isDeleted: 0,
                     },
                 };
 
@@ -80,6 +77,23 @@ export class LocationMasterComponent implements OnInit {
                     .locationMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getLocationMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getLocationMasterList();
                     });
             } else {
@@ -91,12 +105,7 @@ export class LocationMasterComponent implements OnInit {
                         locationName: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._locationService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                        isDeleted: 0,
                         updatedBy: 1,
                     },
                 };
@@ -105,6 +114,23 @@ export class LocationMasterComponent implements OnInit {
                     .locationMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getLocationMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getLocationMasterList();
                     });
             }
@@ -128,7 +154,6 @@ export class LocationMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

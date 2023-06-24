@@ -447,4 +447,27 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", param);
   }
 
+  public getRefundofBillServiceList(employee)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
+  }
+
+  public getRefundofBillDetailList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
+  }
+  public getRefundofBillOPDList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
+    }
+    public InsertOPSettlementPayment (employee){
+      // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
+       return this._httpClient.post("InPatient/IPSettlement", employee)
+    }
+
+    public getOPsettlementPrint(employee){
+      return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint ", employee)
+    }
+    
+  public getTemplates(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
 }

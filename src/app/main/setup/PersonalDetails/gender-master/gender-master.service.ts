@@ -25,9 +25,6 @@ export class GenderMasterService {
             GenderId: [""],
             GenderName: [""],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 

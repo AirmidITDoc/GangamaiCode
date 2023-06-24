@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar class="accent" style="height:70px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -83,7 +83,7 @@
                                             <ngx-mat-select-search [formControl]="doctorFilterCtrl"
                                                 [placeholderLabel]="'Search'"></ngx-mat-select-search>
                                         </mat-option>
-                                        <mat-option *ngFor="let element of filtereddoctor | async" [value]="element">
+                                        <mat-option *ngFor="let element of filtereddoctor" [value]="element">
                                             {{element.DoctorName}}
                                         </mat-option>
                                     </mat-select>

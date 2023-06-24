@@ -4,6 +4,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-type-master",
@@ -43,7 +44,8 @@ export class ItemTypeMasterComponent implements OnInit {
         });
     }
     getItemtypeMasterList() {
-        this._itemtypeService.getItemtypeMasterList().subscribe((Menu) => {
+        var param = { ItemTypeName: "%" };
+        this._itemtypeService.getItemtypeMasterList(param).subscribe((Menu) => {
             this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
             this.DSItemTypeMasterList.sort = this.sort;
             this.DSItemTypeMasterList.paginator = this.paginator;
@@ -77,6 +79,23 @@ export class ItemTypeMasterComponent implements OnInit {
                     .insertItemTypeMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getItemtypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getItemtypeMasterList();
                     });
             } else {
@@ -102,6 +121,23 @@ export class ItemTypeMasterComponent implements OnInit {
                     .updateItemTypeMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getItemtypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getItemtypeMasterList();
                     });
             }

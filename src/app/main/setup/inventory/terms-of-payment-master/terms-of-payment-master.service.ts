@@ -19,7 +19,7 @@ export class TermsOfPaymentMasterService {
 
     createtermsofpaymentForm(): FormGroup {
         return this._formBuilder.group({
-            ID: [""],
+            Id: [""],
             TermsOfPayment: [""],
             IsDeleted: ["false"],
             AddedBy: ["0"],
@@ -36,10 +36,10 @@ export class TermsOfPaymentMasterService {
         this.createtermsofpaymentForm();
     }
 
-    public getTermsofPaymentMasterList() {
+    public getTermsofPaymentMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_TermsOfPaymentMaster_by_Name",
-            { TermsOfPayment: "%" }
+            "Generic/GetByProc?procName=Rtrv_TermsOfPaymentList_by_Name",
+            param
         );
     }
 
