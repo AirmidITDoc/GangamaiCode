@@ -1,5 +1,4 @@
-#Ddashboard-project {
-
+#dashboard-project {
     .mat-display-1, .mat-typography .mat-display-1 {
         font: 300 25px/40px Muli, Helvetica Neue, Arial, sans-serif;
         letter-spacing: normal;
@@ -66,11 +65,11 @@
             }
         }
     }
-    // .fuse-widget-front {
-    //     height: fit-content;
-    //     max-height: fit-content;
-    //     min-height: fit-content;
-    // }
+    .fuse-widget-front {
+        height: fit-content;
+        max-height: fit-content;
+        min-height: fit-content;
+    }
 }
 
 .example-tree-invisible {
@@ -106,27 +105,25 @@
       }
   }
 
-//   .cards-grid {
-//     display: grid !important;
-//     width: 70%;
-//     @media (min-width: 426px) {
-//         width: 70%;
-//         grid-template-columns: auto auto auto !important;
-//     }
-//   }
-
   .cards-grid {
     display: grid !important;
     width: 100%;
     @media (min-width: 426px) {
-        width: 70%;
+        width: 100%;
         grid-template-columns: auto auto auto !important;
     }
   }
   
+  .table-grid {
+    width: 100%;
+    padding: 12px;
+    @media (min-width: 426px) {
+        width: 30%;
+    }
+  }
 
   .title-class {
-      font-size: 35px;
+      font-size: 50px;
       @media (min-width: 426px) and (max-width: 768px) {
         font-size: 24px;
       }
@@ -134,118 +131,263 @@
         font-size: 28px;
       }
 
-     
-   
   }
 
-  app-daily-dashboard{
+  .mat-column-DischargeCount, .mat-column-value {
+    @media (min-width: 100px) and (max-width: 1024px) {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+    }
+    @media (min-width: 1024px) and (max-width: 1440px) {
+        width: 160px;
+        max-width: 160px;
+        min-width: 160px;
+    }
+    
+}
 
-    button:disabled {
-        color: #FFFFFF !important;
-        background-color: #CCCCCC !important;
-        border-radius: 2px;
-        border: 1px solid #CCCCCC;
+.mat-column-TotalCount, .mat-column-name {
+    @media (min-width: 100px) and (max-width: 1024px) {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
-    
-    .header-container {
-        background-color: #039be5 !important;
-        height: 40px;
-        padding: 0 5px;
-        // align-items: center !important;
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        width: 160px;
+        max-width: 160px;
+        min-width: 160px;
     }
-    
-    // Bill Data
-    .mat-column-BillDate {
-        width:120px;
-        max-width:120px;
-        min-width:120px;
-        text-align:left;
-    }
-    
-    .mat-column-TotalBillAmount {
-        width:110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: left;
-    }
-    
-    .mat-column-DiscAmount {
-        width:110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: left;
-    }
-    .mat-column-NetAmount {
-        width:110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: left;
-    }
-    .mat-column-PaidAmount {
-        width:100px;
-        max-width:100px;
-        min-width:100px;
-        text-align:left;
-    }
-    .mat-column-BillBalAmount {
-        width:110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: left;
-    }
-    
-    .mat-column-Date {
-        width:110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: center;
-    }
-    .mat-column-SalesTotalAmount {
-        width:130px;
-        max-width:130px;
-        min-width:130px;
-        text-align: center;
-    }
+}
 
+.table-main-container {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 16px;
+}
 
-    .table-container{
+.mat-row {
+    cursor: pointer !important;
+}
 
-        .mat-header-row {
-            width: 410px;
-            max-width: 410px;
-            min-width: 410px;
-            min-height: 25px;     
-        }
+app-project-dashboard{
+
+    // .mat-column-Date {
+    //     width:140px;
+    //     max-width:140px;
+    //     min-width:140px;
+    // }
+    
+    // .mat-column-BillAmount {
+    //     width:170px;
+    //     max-width:170px;
+    //     min-width:170px;
+    //     text-align: center;
+    // }
+    
+    // .mat-column-PaidAmout {
+    //     width:170px;
+    //     max-width:170px;
+    //     min-width:170px;
+    //     text-align: center;
         
-        .mat-row {
-            width: 410px;
-            max-width: 410px;
-            min-width: 410px;
-            min-height: 25px;             
-        }
-
-    }
-
-    .table-container1{
-        .mat-header-row {
-            width: 400px;
-            max-width: 400px;
-            min-width: 400px;  
-            min-height: 25px;      
-        }
+    // }
+    // .mat-column-BalanceAmount {
+    //     width:170px;
+    //     max-width:170px;
+    //     min-width:170px;
+    //     text-align: center;
         
-        .mat-row {
-            width: 400px;
-            max-width: 400px;
-            min-width: 400px;  
-            min-height: 25px;             
-        }
+    // }
 
+//new
+
+.table-container{
+
+    .mat-header-row {
+        width: 692px;
+        max-width: 692px;
+        min-width: 692px;
+        min-height: 25px; 
+        color: white;    
+    }
+    
+    .mat-row {
+        width: 692px;
+        max-width: 692px;
+        min-width: 692px;
+        min-height: 25px;             
     }
 
     .mat-table{
         width: 100%;
         height: 330px !important;
     }
-   
+    .mat-column-RoomName {
+        width:300px;
+        max-width:300px;
+        min-width:300px;
+        text-align: left;
+    }
+    
+    .mat-column-Total {
+        width:110px;
+        max-width:110px;
+        min-width:110px;
+        text-align: center;
+    }
+    
+     .mat-column-Admitted {
+        width:110px;
+        max-width:110px;
+        min-width:110px;
+        text-align: center;
         }
+        
+        .mat-column-AvailableCnt {
+            width:110px;
+            max-width:110px;
+            min-width:110px;
+            text-align: center;
+        }
+        
+       
+    
+        
+
+}
+
+.table-container1{
+    .mat-table{
+        width: 100%;
+        height: 330px !important;
+    }
+    .mat-header-row {
+        width: 692px;
+        max-width: 692px;
+        min-width: 692px;
+        min-height: 25px; 
+        color: white;    
+    }
+    
+    .mat-row {
+        width: 692px;
+        max-width: 692px;
+        min-width: 692px;
+        min-height: 25px;             
+    }
+
+    .mat-column-DoctorName {
+        width:330px;
+        max-width:330px;
+        min-width:330px;
+        text-align: left;
+        }
+        
+        .mat-column-TotalCnt {
+            width:80px;
+            max-width:80px;
+            min-width:80px;
+            text-align: center;
+        }
+        .mat-column-WardTotalCnt {
+            width:100px;
+            max-width:100px;
+            min-width:100px;
+            text-align: center;
+        }
+        
+        .mat-column-NonWardTotalCnt {
+            width:120px;
+            max-width:120px;
+            min-width:120px;
+            text-align: center;
+        }
+        
+        
+       
+}
+
+
+
+
+.table-container2{
+    
+    .mat-header-row {
+        width: 310px;
+        max-width: 310px;
+        min-width: 310px;
+        min-height: 25px;  
+        color: white;    
+    }
+    
+    .mat-row {
+        width: 310px;
+        max-width: 310px;
+        min-width: 310px;
+        min-height: 25px;           
+    }
+
+    .mat-table{
+        width: 100%;
+        height: 200px!important
+        //height: 330px !important;
+    }
+    .mat-column-date {
+        width:200px;
+        max-width:200px;
+        min-width:200px;
+        text-align: left;
+    }
+    
+    .mat-column-count {
+        width:40px;
+        max-width:40px;
+        min-width:40px;
+        text-align: center;
+    }
+    
+
+}
+
+.table-container3{
+
+    .mat-header-row {
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        min-height: 25px;     
+        color: white;    
+    }
+    
+    .mat-row {
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        min-height: 25px;             
+    }
+
+    .mat-table{
+        width: 100%;
+        height: 350px !important;
+    }
+    .mat-column-date {
+        width:200px;
+        max-width:200px;
+        min-width:200px;
+        text-align: left;
+    }
+    
+    .mat-column-count {
+        width:40px;
+        max-width:40px;
+        min-width:40px;
+        text-align: center;
+    }
+    
+}
+
+
+
+   
+}

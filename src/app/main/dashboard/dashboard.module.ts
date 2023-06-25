@@ -29,7 +29,7 @@ import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.compo
 
 @NgModule({
   declarations: [
-    DailyDashboardComponent
+    DailyDashboardComponent,
   ],
   imports: [
     CommonModule,

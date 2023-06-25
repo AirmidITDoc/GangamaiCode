@@ -1,4 +1,4 @@
-<div id="Ddashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
 
     <!-- CENTER -->
     <div class="center" fusePerfectScrollbar>
@@ -9,13 +9,15 @@
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
                 <span class="mat-display-1 my-0 my-sm-12 welcome-message"
-                    [@animate]="{value:'*',params:{x:'50px'}}">Account Dashboard
+                    [@animate]="{value:'*',params:{x:'50px'}}">Welcome back, {{username}}!
                 </span>
 
                 <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
                     <mat-icon>menu</mat-icon>
                 </button>
             </div>
+
+       
         </div>
         <!-- / HEADER -->
 
@@ -24,18 +26,20 @@
             <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                 [@animateStagger]="{value:'50'}">
 
+                <div *ngIf="dashbardCardData.length == 0" fxLayout="row" fxLayout.xs="column" fxFlexFill
+                    fxLayoutAlign="center center">
+                    <mat-spinner [color]="white" [diameter]="30"></mat-spinner>
+                </div>
                 <!-- WIDGET 2 -->
-                <!-- <div fxLayout="row" class="cards-grid"> -->
-
-
+                <div fxLayout="row" class="cards-grid">
                     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
-                        fxFlex="100"   fxFlex.gt-xs="50" fxFlex.gt-md="20" *ngFor="let element of dashCardsData">
+                        fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100" *ngFor="let element of dashbardCardData">
 
                         <!-- Front -->
                         <div class="fuse-widget-front">
                             <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
                                 <!-- <div class="h3">{{widgets.widget2.title}}</div> -->
-                                <div class="h3">{{element.Title}}</div>
+                                <div class="h3" (click)="showOPDayGroupWiseSummary()">{{element.Title}}</div>
 
                                 <!-- <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="more">
                                 <mat-icon>more_vert</mat-icon>
@@ -93,13 +97,9 @@
                         <!-- / Back -->
 
                     </fuse-widget>
-                <!-- </div> -->
-                <!-- <div>
-
-                </div> 
-                <!-- / WIDGET 2 -->
+                </div>
+             
             </div>
-
           
         </div>
     </div>

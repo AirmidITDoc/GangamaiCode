@@ -44,7 +44,6 @@ import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
 import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
-import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
 import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
 
 
