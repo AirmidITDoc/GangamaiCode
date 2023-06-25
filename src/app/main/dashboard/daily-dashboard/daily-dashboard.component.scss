@@ -109,7 +109,7 @@
     display: grid !important;
     width: 100%;
     @media (min-width: 426px) {
-        width: 100%;
+        width: 70%;
         grid-template-columns: auto auto auto !important;
     }
   }
