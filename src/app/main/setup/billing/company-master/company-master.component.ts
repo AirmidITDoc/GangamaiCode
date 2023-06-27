@@ -151,7 +151,7 @@ export class CompanyMaster {
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-    AddedByName: string;
+   // AddedByName: string;
     /**
    * Constructor
    *
@@ -177,7 +177,7 @@ export class CompanyMaster {
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-            this.AddedByName = CompanyMaster.AddedByName || "";
+           // this.AddedByName = CompanyMaster.AddedByName || "";
         }
     }
 }

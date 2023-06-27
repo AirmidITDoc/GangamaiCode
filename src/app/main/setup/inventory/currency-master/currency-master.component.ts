@@ -74,6 +74,7 @@ export class CurrencyMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
                 // console.log(m_data);

@@ -113,7 +113,8 @@ export class SubGroupMasterComponent implements OnInit {
                 var m_data = {
                     subGroupMasterInsert: {
                         groupId:
-                            this._subgroupService.myform.get("GroupId").value,
+                            this._subgroupService.myform.get("GroupId").value
+                                .GroupId,
                         subGroupName: this._subgroupService.myform
                             .get("SubGroupName")
                             .value.trim(),
@@ -157,7 +158,8 @@ export class SubGroupMasterComponent implements OnInit {
                             this._subgroupService.myform.get("SubGroupId")
                                 .value,
                         groupId:
-                            this._subgroupService.myform.get("GroupId").value,
+                            this._subgroupService.myform.get("GroupId").value
+                                .GroupId,
                         subGroupName:
                             this._subgroupService.myform.get("SubGroupName")
                                 .value,

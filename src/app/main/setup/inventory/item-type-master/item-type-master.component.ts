@@ -72,6 +72,7 @@ export class ItemTypeMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
 

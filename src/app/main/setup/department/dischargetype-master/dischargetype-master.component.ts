@@ -113,8 +113,9 @@ export class DischargetypeMasterComponent implements OnInit {
                         dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
+                        isActive: 0,
                         addedBy: 1,
-                        isDeleted: 0,
+                        updatedBy: 1,
                     },
                 };
 
@@ -151,7 +152,7 @@ export class DischargetypeMasterComponent implements OnInit {
                         dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
-                        isDeleted: 0,
+                        isActive: 0,
                         updatedBy: 1,
                     },
                 };

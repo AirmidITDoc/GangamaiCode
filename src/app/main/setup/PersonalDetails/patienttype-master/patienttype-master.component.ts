@@ -73,7 +73,7 @@ export class PatienttypeMasterComponent implements OnInit {
                             .get("PatientType")
                             .value.trim(),
                         addedBy: 1,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
@@ -113,7 +113,7 @@ export class PatienttypeMasterComponent implements OnInit {
                         patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
@@ -153,7 +153,7 @@ export class PatienttypeMasterComponent implements OnInit {
         var m_data1 = {
             PatientTypeId: row.PatientTypeId,
             PatientType: row.PatientType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(m_data1);

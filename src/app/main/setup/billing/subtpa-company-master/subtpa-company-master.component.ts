@@ -133,7 +133,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                     subTpaCompanyMasterInsert: {
                         compTypeId:
                             this._subtpacompanyService.myform.get("CompTypeId")
-                                .value,
+                                .value.CompanyTypeId,
                         companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
@@ -169,7 +169,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                         isCancelledDate: "01/01/1900",
                     },
                 };
-
+                console.log(m_data);
                 this._subtpacompanyService
                     .subTpaCompanyMasterInsert(m_data)
                     .subscribe((data) => {
@@ -202,7 +202,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             ).value,
                         compTypeId:
                             this._subtpacompanyService.myform.get("CompTypeId")
-                                .value,
+                                .value.CompanyTypeId,
                         companyName: this._subtpacompanyService.myform
                             .get("CompanyName")
                             .value.trim(),
@@ -225,13 +225,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                             .get("FaxNo")
                             .value.trim(),
                         updatedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._subtpacompanyService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        isDeleted: 1,
 
                         isCancelled: false,
                         isCancelledBy: "0",

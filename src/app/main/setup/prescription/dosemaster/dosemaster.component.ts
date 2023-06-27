@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-dosemaster",
@@ -74,16 +75,29 @@ export class DosemasterComponent implements OnInit {
                         doseQtyPerDay:
                             this._DoseService.myForm.get("DoseQtyPerDay").value,
 
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._DoseService.myForm.get("IsDeleted").value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
                 this._DoseService.insertDoseMaster(m_data).subscribe((data) => {
                     this.msg = m_data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getDoseMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getDoseMasterList();
                 });
             } else {
@@ -97,21 +111,37 @@ export class DosemasterComponent implements OnInit {
                             .get("DoseNameInEnglish")
                             .value.trim(),
                         doseNameInMarathi: "",
-                        doseQtyPerDay:
-                            this._DoseService.myForm.get("DoseQtyPerDay").value,
-
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._DoseService.myForm.get("IsDeleted").value
                             )
                         ),
-                        updatedBy: 1,
+                        doseQtyPerDay:
+                            this._DoseService.myForm.get("DoseQtyPerDay").value,
+                        //  updatedBy: 1,
                     },
                 };
                 this._DoseService
                     .updateDoseMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDoseMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getDoseMasterList();
                     });
             }

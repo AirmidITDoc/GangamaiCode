@@ -125,12 +125,13 @@ export class ItemCategoryMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                         itemTypeId:
                             this._itemcategoryService.myform.get("ItemTypeID")
                                 .value,
                     },
                 };
-
+                console.log(m_data);
                 this._itemcategoryService
                     .insertItemCategoryMaster(m_data)
                     .subscribe((data) => {

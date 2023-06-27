@@ -7,6 +7,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-drugmaster",
@@ -151,17 +152,30 @@ export class DrugmasterComponent implements OnInit {
                         genericId:
                             this._drugService.myform.get("GenericId").value,
                         classId: this._drugService.myform.get("ClassId").value,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
 
                 this._drugService.insertDrugMaster(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getDrugMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getDrugMasterList();
                 });
             } else {
@@ -173,18 +187,35 @@ export class DrugmasterComponent implements OnInit {
                         genericId:
                             this._drugService.myform.get("GenericId").value,
                         classId: this._drugService.myform.get("ClassId").value,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
-                        updatedBy: 1,
+                        //  updatedBy: 1,
                     },
                 };
                 this._drugService
                     .updateDrugMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDrugMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getDrugMasterList();
                     });
             }

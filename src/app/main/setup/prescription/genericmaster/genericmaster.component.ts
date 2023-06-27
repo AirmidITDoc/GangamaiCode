@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-genericmaster",
@@ -61,19 +62,36 @@ export class GenericmasterComponent implements OnInit {
                         genericName: this._GenericService.myForm
                             .get("GenericName")
                             .value.trim(),
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
                 this._GenericService
                     .insertGenericMaster(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getGenericMasterList();
                     });
             } else {
@@ -85,19 +103,36 @@ export class GenericmasterComponent implements OnInit {
                             .get("GenericName")
                             .value.trim(),
 
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        //  updatedBy: 1,
                     },
                 };
                 this._GenericService
                     .updateGenericMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getGenericMasterList();
                     });
             }

@@ -37,7 +37,7 @@ export class CompanyMasterListComponent implements OnInit {
 
     constructor(
         public _companyService: CompanyMasterService,
-
+        public _parentComponent: CompanyMasterComponent,
         public dialogRef: MatDialogRef<CompanyMasterComponent>
     ) {}
 
@@ -206,7 +206,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 "success"
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    this.getCompanyMaster();
+                                    this._parentComponent.getCompanyMaster();
                                 }
                             });
                         } else {
@@ -216,7 +216,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 "error"
                             );
                         }
-                        this.getCompanyMaster();
+                        this._parentComponent.getCompanyMaster();
                     });
             } else {
                 var m_dataUpdate = {
@@ -275,7 +275,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 "success"
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    //  this.getCompanyMaster();
+                                    this._parentComponent.getCompanyMaster();
                                 }
                             });
                         } else {
@@ -285,7 +285,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 "error"
                             );
                         }
-                        //  this.getCompanyMaster();
+                        this._parentComponent.getCompanyMaster();
                     });
             }
             this.onClose();

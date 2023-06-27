@@ -112,14 +112,14 @@ export class BedMasterComponent implements OnInit {
             if (!this._bedService.myform.get("BedId").value) {
                 var m_data = {
                     bedMasterInsert: {
-                        bedName: this._bedService.myform
+                        bedName_1: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        roomId: this._bedService.myform.get("RoomId").value
-                            .RoomId,
-                        isAvailable: 1,
-                        addedBy: 1,
-                        isDeleted: 0,
+                        roomId_2:
+                            this._bedService.myform.get("RoomId").value.RoomId,
+                        isAvailible_3: 1,
+                        //addedBy: 1,
+                        isActive_4: 0,
                     },
                 };
 
@@ -143,15 +143,15 @@ export class BedMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     bedMasterUpdate: {
-                        bedID: this._bedService.myform.get("BedId").value,
-                        bedName: this._bedService.myform
+                        bedId_1: this._bedService.myform.get("BedId").value,
+                        bedName_2: this._bedService.myform
                             .get("BedName")
                             .value.trim(),
-                        roomId: this._bedService.myform.get("RoomId").value
-                            .RoomId,
-                        isAvailable: 1,
-                        isDeleted: 0,
-                        updatedBy: 1,
+                        roomId_3:
+                            this._bedService.myform.get("RoomId").value.RoomId,
+                        // isAvailable: 1,
+                        isActive_4: 0,
+                        //  updatedBy: 1,
                     },
                 };
 
