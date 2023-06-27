@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -16,6 +16,13 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { HttpClient } from "@angular/common/http";
 import { FuseNavigation } from "@fuse/types";
+import { AuthenticationService } from './core/services/authentication.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfigService } from './core/services/config.service';
+import { SpinnerService } from './core/services/spinner.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Idle } from 'idlejs/dist';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app',
@@ -25,7 +32,12 @@ import { FuseNavigation } from "@fuse/types";
 export class AppComponent implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
-
+    url: any;
+    isOffLine: boolean;
+    onlineEvent: Observable<Event>;
+    offlineEvent: Observable<Event>;
+    subscriptions: Subscription[] = [];
+    isLoading: boolean = true;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -41,6 +53,18 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {Platform} _platform
      * @param {TranslateService} _translateService
      */
+
+    idle = new Idle().whenNotInteractive().within(5).do(() => {
+        this.url = this.router.url;
+        // console.log('this.url==', this.url);
+        if (this.url !== '/auth/login') {
+          alert('You are being timed out due to inactivity. Please Log-In again.');
+          this.dialogRef ? this.dialogRef.closeAll() : '';
+          this.router.navigate(['auth/login'], { replaceUrl: true });
+        //   this.logoutService();
+        }
+      }).start();
+
     constructor(
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
@@ -50,10 +74,23 @@ export class AppComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private _platform: Platform,
-        private http: HttpClient
+        private http: HttpClient,
+
+        private authService: AuthenticationService,
+        private dialogRef: MatDialog,
+        private configService: ConfigService,
+        private globalEvent$: SpinnerService,
+        private ngxSpinner$: NgxSpinnerService,
+        private router: Router,
         
     ) {
-        // Get default navigation
+        this.onlineEvent = fromEvent(window, 'online');
+        this.offlineEvent = fromEvent(window, 'offline');
+        
+         // Prevent browser back button
+         this.authService.preventBackButton();
+        
+         // Get default navigation
         this.navigation = navigation;
 
         // Register the navigation to the service
@@ -124,6 +161,16 @@ export class AppComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+
+           //check connection
+        this.subscriptions.push(this.onlineEvent.subscribe(e => {
+            this.isOffLine = false;
+        }));
+  
+        this.subscriptions.push(this.offlineEvent.subscribe(e => {
+            this.isOffLine = true;  
+        }));
+
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -150,93 +197,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
-             this.http.post(`Generic/GetByProc?procName=SS_Rtrv_MenuInfo_Login_2`, {})
-            .subscribe((data: any[]) => {
 
-                var fn: FuseNavigation[] = [
-                    {
-                        id: "applications",
-                        title: "",
-                        translate: "",
-                        type: "group",
-                        icon: "apps",
-                        children: [],
-                    },
-                ];
+            this.authService.getNavigationData();
 
-                //1 get first nav
-                let nav = data.map((x) => x.menu_master_link_name);
-                var uniqueNav = nav.filter((x, i, a) => a.indexOf(x) == i);//setup
-
-                uniqueNav.map((firstNavName, index) => {
-                    let firstNav: FuseNavigation = {
-                        id: index.toString(),
-                        title: firstNavName,//setup
-                        type: "item",
-                    };
-
-                    //2 get all second nav
-                    let firstNavs = data.filter((m) => m.menu_master_link_name === firstNavName); //===setup
-                    var secondNavs = firstNavs.map((x) => x.menu_master_detail_link_name);//menu
-                    var secondNavsUnique = secondNavs.filter((x, i, a) => a.indexOf(x) == i);
-
-                    if (secondNavsUnique.length > 0) {
-                        firstNav.type = "collapsable";
-                        firstNav.icon = firstNavs[0].menu_master_icon;
-                        firstNav.children = [];
-
-                        secondNavsUnique.map((secondNavName, indexsub) => {
-                            let secondNav: FuseNavigation = {
-                                id: `${index}${indexsub}`,
-                                type: "item",
-                                title: secondNavName
-                            };
-                            //3 get all third nav
-                            let linkSubSubManuObj = firstNavs.filter((x) => x.menu_master_detail_link_name === secondNavName);
-                            let linkSubSubManu = linkSubSubManuObj
-                                .map((x) => x.menu_master_detail_detail_link_name)
-                                .filter((t) => t !== null);
-                            var linkSubSubManuUnique = linkSubSubManu.filter((x, i, a) => a.indexOf(x) == i);
-
-                            if (linkSubSubManuUnique.length > 0) {
-                                secondNav.type = "collapsable";
-                                secondNav.icon = linkSubSubManuObj[0].menu_master_icon;
-                                secondNav.children = [];
-
-                                linkSubSubManuUnique.map((xSubS, indexsubsub) => {
-                                    let thirdNav: FuseNavigation = {
-                                        id: `${index}${indexsub}${indexsubsub}`,
-                                        title: xSubS,
-                                        type: "item",
-                                    };
-                                    thirdNav.url = linkSubSubManuObj
-                                        .find(x => x.menu_master_detail_detail_link_name === xSubS)
-                                        .menu_master_detail_detail_action;
-                                    secondNav.children.push(thirdNav);
-                                });
-                            }
-                            else {
-                                secondNav.url = linkSubSubManuObj
-                                    .find(x => x.menu_master_detail_link_name === secondNav.title)
-                                    .menu_master_detail_action;
-                            }
-                            firstNav.children.push(secondNav);
-                        });
-                    }
-                    else {
-                        firstNav.url = data
-                            .find(x => x.menu_master_link_name === firstNav.title)
-                            .menu_master_action;
-                    }
-
-                    fn[0].children.push(firstNav);
-                });
-                this.navigation = fn;
-                // Register the navigation to the service
-                this._fuseNavigationService.register("main1", this.navigation);
-
-                // Set the main navigation as our current navigation
-                this._fuseNavigationService.setCurrentNavigation("main1");
+            this.globalEvent$.spinner.subscribe(x => {
+                if (x.toUpperCase() == 'SHOW') {
+                    this.ngxSpinner$.show();
+                }
+                else if (x.toUpperCase() == 'HIDE') {
+                    this.ngxSpinner$.hide();
+                }
             });
     }
 

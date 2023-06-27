@@ -160,7 +160,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     
     navigateToPharmacyDashboard() {
         // this.accountService.logout();
-        this.router.navigate(['/dashboard/Cashless-dashboard']);
+        this.router.navigate(['/dashboard/Pharmacy-dashboard']);
     }
     
     /**

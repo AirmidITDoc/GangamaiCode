@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
-import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
+// import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
 import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
 
 
@@ -219,39 +219,39 @@ private filterDoctor() {
     
     else if(m == "Payment") {
         
-        let data = {
-          RegNo: contact.RegId,
-          AdmissionID: contact.VisitId,
-          PatientName: contact.PatientName,
-          Doctorname: contact.Doctorname,
-          AdmDateTime: contact.AdmDateTime,
-          AgeYear: contact.AgeYear,
-          ClassName: contact.ClassName,
-          WardName:contact.RoomName,
-          BedName:contact.BedName,
-          IPDNo:contact.IPDNo,
-          TariffName: contact.TariffName,
-          TariffId: contact.TariffId,
-          PatientType:contact.PatientType,
-          VisitId:contact.VisitId,
-          opD_IPD_Type :contact.opD_IPD_Type,
-        };
-        this.advanceDataStored.storage = new SearchInforObj(data);
-        console.log( this.advanceDataStored.storage);
-        console.log(data);
-        const dialogRef = this._matDialog.open(OutstandingPaymentComponent,
-          {
-            maxWidth: "95%",
-            height: '65%',
-            width: '100%',
-            data : {
-              registerObj : data,
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed - Insert Action', result);
-          //  this.getRadiologytemplateMasterList();
-        });
+        // let data = {
+        //   RegNo: contact.RegId,
+        //   AdmissionID: contact.VisitId,
+        //   PatientName: contact.PatientName,
+        //   Doctorname: contact.Doctorname,
+        //   AdmDateTime: contact.AdmDateTime,
+        //   AgeYear: contact.AgeYear,
+        //   ClassName: contact.ClassName,
+        //   WardName:contact.RoomName,
+        //   BedName:contact.BedName,
+        //   IPDNo:contact.IPDNo,
+        //   TariffName: contact.TariffName,
+        //   TariffId: contact.TariffId,
+        //   PatientType:contact.PatientType,
+        //   VisitId:contact.VisitId,
+        //   opD_IPD_Type :contact.opD_IPD_Type,
+        // };
+        // this.advanceDataStored.storage = new SearchInforObj(data);
+        // console.log( this.advanceDataStored.storage);
+        // console.log(data);
+        // const dialogRef = this._matDialog.open(OutstandingPaymentComponent,
+        //   {
+        //     maxWidth: "95%",
+        //     height: '65%',
+        //     width: '100%',
+        //     data : {
+        //       registerObj : data,
+        //     }
+        //   });
+        // dialogRef.afterClosed().subscribe(result => {
+        //   console.log('The dialog was closed - Insert Action', result);
+        //   //  this.getRadiologytemplateMasterList();
+        // });
       }
     
     
