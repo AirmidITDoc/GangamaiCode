@@ -1,15 +1,15 @@
 app-dosemaster {
     .mat-header-row {
-        width: 800px;
-        max-width: 850px;
-        min-width: 850px;
+        width: 860px;
+        max-width: 860px;
+        min-width: 860px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 860px;
+        max-width: 860px;
+        min-width: 860px;
     }
 
     .mat-column-DoseId {
@@ -30,8 +30,8 @@ app-dosemaster {
     }
     .mat-column-DoseQtyPerDay {
         width: 100px;
-        max-width: 150px;
-        min-width: 150px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-AddedByName {

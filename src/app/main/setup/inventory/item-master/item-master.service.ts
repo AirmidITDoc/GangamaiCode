@@ -137,7 +137,7 @@ export class ItemMasterService {
 
     public getManufactureMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_ManufactureMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
             {}
         );
     }

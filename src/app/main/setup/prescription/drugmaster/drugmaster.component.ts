@@ -117,7 +117,8 @@ export class DrugmasterComponent implements OnInit {
         );
     }
     getDrugMasterList() {
-        this._drugService.getDrugMasterList().subscribe((Menu) => {
+        var param = { DrugName: "%" };
+        this._drugService.getDrugMasterList(param).subscribe((Menu) => {
             this.DSDrugMasterList.data = Menu as DrugMaster[];
             this.DSDrugMasterList.sort = this.sort;
             this.DSDrugMasterList.paginator = this.paginator;
@@ -150,8 +151,11 @@ export class DrugmasterComponent implements OnInit {
                             .get("DrugName")
                             .value.trim(),
                         genericId:
-                            this._drugService.myform.get("GenericId").value,
-                        classId: this._drugService.myform.get("ClassId").value,
+                            this._drugService.myform.get("GenericId").value
+                                .GenericId,
+                        classId:
+                            this._drugService.myform.get("ClassId").value
+                                .ClassId,
                         isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
@@ -185,8 +189,11 @@ export class DrugmasterComponent implements OnInit {
                         drugName:
                             this._drugService.myform.get("DrugName").value,
                         genericId:
-                            this._drugService.myform.get("GenericId").value,
-                        classId: this._drugService.myform.get("ClassId").value,
+                            this._drugService.myform.get("GenericId").value
+                                .GenericId,
+                        classId:
+                            this._drugService.myform.get("ClassId").value
+                                .ClassId,
                         isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value

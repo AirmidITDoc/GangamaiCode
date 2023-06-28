@@ -48,8 +48,9 @@ export class DosemasterComponent implements OnInit {
     }
 
     getDoseMasterList() {
+        var param = { DoseName: "%" };
         this._DoseService
-            .getDoseMasterList()
+            .getDoseMasterList(param)
             .subscribe(
                 (Menu) => (this.DSDoseMasterList.data = Menu as DoseMaster[])
             );

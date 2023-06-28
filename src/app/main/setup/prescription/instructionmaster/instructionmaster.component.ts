@@ -34,8 +34,9 @@ export class InstructionmasterComponent implements OnInit {
     }
 
     getInstructionMasterList() {
+        var param = { InstructionName: "%" };
         this._InstructionService
-            .getInstructionMasterList()
+            .getInstructionMasterList(param)
             .subscribe(
                 (Menu) =>
                     (this.DSInstructionMasterList.data =

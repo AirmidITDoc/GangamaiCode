@@ -128,7 +128,7 @@ export class ItemCategoryMasterComponent implements OnInit {
                         updatedBy: 1,
                         itemTypeId:
                             this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
+                                .value.ItemTypeId,
                     },
                 };
                 console.log(m_data);
@@ -175,7 +175,7 @@ export class ItemCategoryMasterComponent implements OnInit {
                         updatedBy: 1,
                         itemTypeId:
                             this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
+                                .value.ItemTypeId,
                     },
                 };
 

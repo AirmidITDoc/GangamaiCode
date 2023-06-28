@@ -96,7 +96,7 @@ export class ItemMasterComponent implements OnInit {
     getItemMasterList() {
         var m_data = {
             ItemName: "%",
-            StoreId: 1,
+            StoreID: 1,
         };
         this._itemService.getItemMasterList(m_data).subscribe(
             (Menu) => {

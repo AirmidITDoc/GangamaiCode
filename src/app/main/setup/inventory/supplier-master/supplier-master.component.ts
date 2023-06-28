@@ -80,8 +80,9 @@ export class SupplierMasterComponent implements OnInit {
     getSupplierMasterList() {
         var m_data = {
             SupplierName: "%",
-            StoreId: 1,
+            StoreId: 0,
         };
+        console.log(m_data);
         this._supplierService.getSupplierMasterList(m_data).subscribe(
             (Menu) => {
                 this.DSSupplierMaster.data = Menu as SupplierMaster[];
@@ -161,7 +162,7 @@ export class SupplierMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "60vh",
             width: "100%",
             height: "100%",
         });

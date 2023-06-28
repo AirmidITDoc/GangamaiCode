@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "app-genericmaster",
@@ -14,6 +16,9 @@ import Swal from "sweetalert2";
 export class GenericmasterComponent implements OnInit {
     GenericMasterList: any;
     msg: any;
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = [
         "GenericId",
@@ -41,12 +46,12 @@ export class GenericmasterComponent implements OnInit {
         });
     }
     getGenericMasterList() {
-        this._GenericService
-            .getGenericMasterList()
-            .subscribe(
-                (Menu) =>
-                    (this.DSGenericMasterList.data = Menu as GenericMaster[])
-            );
+        var param = { GenericName: "%" };
+        this._GenericService.getGenericMasterList(param).subscribe((Menu) => {
+            (this.DSGenericMasterList.data = Menu as GenericMaster[]),
+                (this.DSGenericMasterList.sort = this.sort),
+                (this.DSGenericMasterList.paginator = this.paginator);
+        });
     }
 
     onClear() {

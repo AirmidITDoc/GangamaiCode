@@ -117,7 +117,8 @@ export class VillageMasterComponent implements OnInit {
                             .get("VillageName")
                             .value.trim(),
                         talukaId:
-                            this._VillageService.myForm.get("TalukaId").value,
+                            this._VillageService.myForm.get("TalukaId").value
+                                .Taluka.Id,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -159,7 +160,8 @@ export class VillageMasterComponent implements OnInit {
                             .get("VillageName")
                             .value.trim(),
                         talukaId:
-                            this._VillageService.myForm.get("TalukaId").value,
+                            this._VillageService.myForm.get("TalukaId").value
+                                .Taluka.Id,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._VillageService.myForm.get("IsDeleted")

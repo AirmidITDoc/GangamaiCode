@@ -42,17 +42,17 @@ export class DrugmasterService {
         this.createDrugForm();
     }
 
-    public getDrugMasterList() {
+    public getDrugMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_DrugMasterList_by_Name",
-            { DrugName: "%" }
+            "Generic/GetByProc?procName=RetrieveDrugList",
+            param
         );
     }
 
     // Generic Master Combobox List
     public getGenericMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_GenericListForCombo",
+            "Generic/GetByProc?procName=RetrieveGenericMasterForCombo",
             {}
         );
     }
@@ -60,7 +60,7 @@ export class DrugmasterService {
     // Class Master Combobox List
     public getClassMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_ClassListForCombo",
+            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
             {}
         );
     }

@@ -19,10 +19,57 @@
                 Alphabets</span>
         </mat-form-field>
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="ContactPerson" placeholder="Enter ContactPerson"
+                [ngClass]="{ 'is-invalid': submitted && f.ContactPerson.errors }" formControlName="ContactPerson"
+                matInput>
+            <span class="error" *ngIf="f.ContactPerson.invalid && f.ContactPerson.touched">ContactPerson required only
+                Alphabets</span>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput>
             <mat-error>Please enter Address </mat-error>
         </mat-form-field>
 
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>City</mat-label>
+            <mat-select formControlName="CityId" placeholder="Bank" #singleSelect required
+                (selectionChange)="onChangeCityList($event.value.CityId)">
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="cityFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let element of filteredCity | async" [value]="element">
+                    {{element.CityName}}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="_supplierService.myform.get('CityId').invalid && _supplierService.myform.get('CityId').touched">
+                City Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>State Name</mat-label>
+            <mat-select formControlName="StateId" name="StateId" (selectionChange)="onChangeCountryList($event.value)">
+                <mat-option></mat-option>
+                <mat-option *ngFor="let m of StatecmbList" [value]="m">
+                    {{m.StateName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Country Name</mat-label>
+            <mat-select formControlName="CountryId">
+                <mat-option></mat-option>
+                <mat-option *ngFor="let g of CountrycmbList" [value]="g">
+                    {{g.CountryName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -46,80 +93,8 @@
     </div>
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select City Name" name="CityId" formControlName="CityId" required >
-                    <mat-option *ngFor="let M of CitycmbList" [value]="M.CityId">
-                        {{ M.CityName }}
-                    </mat-option>
-                </mat-select>
-                <mat-error>Please Select City Name </mat-error>
-            </mat-form-field> -->
 
-        <mat-form-field appearance="outline" fxFlex>
-            <mat-label>City</mat-label>
-            <mat-select formControlName="CityId" placeholder="Bank" #singleSelect required
-                (selectionChange)="onChangeCityList($event.value.CityId)">
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="cityFilterCtrl" [placeholderLabel]="'Search'"
-                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let element of filteredCity | async" [value]="element">
-                    {{element.CityName}}
-                </mat-option>
-            </mat-select>
-            <mat-error
-                *ngIf="_supplierService.myform.get('CityId').invalid && _supplierService.myform.get('CityId').touched">
-                City Name is required</mat-error>
-        </mat-form-field>
 
-        <!-- 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select State Name" name="StateId" formControlName="StateId" required >
-                    <mat-option *ngFor="let M of StatecmbList" [value]="M.StateId">
-                        {{ M.StateName }}
-                    </mat-option>
-                </mat-select>
-                <mat-error>Please Select State Name </mat-error>
-            </mat-form-field> -->
-
-        <mat-form-field appearance="outline" fxFlex>
-            <mat-label>State Name</mat-label>
-            <mat-select formControlName="StateId" name="StateId" (selectionChange)="onChangeCountryList($event.value)">
-                <mat-option></mat-option>
-                <mat-option *ngFor="let m of StatecmbList" [value]="m">
-                    {{m.StateName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select Country Name" name="CountryId" formControlName="CountryId" required>
-                    <mat-option *ngFor="let M of CountrycmbList" [value]="M.CountryId">
-                        {{ M.CountryName }}
-                    </mat-option>
-                </mat-select>
-                <mat-error>Please Select Country Name </mat-error>
-            </mat-form-field> -->
-
-        <mat-form-field appearance="outline" fxFlex>
-            <mat-label>Country Name</mat-label>
-            <mat-select formControlName="CountryId">
-                <mat-option></mat-option>
-                <mat-option *ngFor="let g of CountrycmbList" [value]="g">
-                    {{g.CountryName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="ContactPerson" placeholder="Enter ContactPerson"
-                [ngClass]="{ 'is-invalid': submitted && f.ContactPerson.errors }" formControlName="ContactPerson"
-                matInput>
-            <span class="error" *ngIf="f.ContactPerson.invalid && f.ContactPerson.touched">ContactPerson required only
-                Alphabets</span>
-        </mat-form-field>
 
 
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -211,7 +186,7 @@
 <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
     <div class="button-row">
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-            [disabled]="_supplierService.myform">Save</button>
+            [disabled]="_supplierService.myform.invalid">Save</button>
         <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
 
     </div>

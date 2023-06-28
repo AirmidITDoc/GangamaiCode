@@ -77,7 +77,7 @@ export class ItemClassMasterComponent implements OnInit {
                         updatedBy: 1,
                     },
                 };
-
+                console.log(m_data);
                 this._itemclassService
                     .insertItemClassMaster(m_data)
                     .subscribe((data) => {
@@ -152,6 +152,7 @@ export class ItemClassMasterComponent implements OnInit {
         var m_data = {
             ItemClassId: row.ItemClassId,
             ItemClassName: row.ItemClassName.trim(),
+            IsDeleted: row.IsDeleted,
             UpdatedBy: row.UpdatedBy,
         };
         this._itemclassService.populateForm(m_data);

@@ -79,7 +79,7 @@ export class PrefixMasterComponent implements OnInit {
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value
                             .SexID,
-                        addedBy: 1,
+                        // addedBy: 1,
                         isActive: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
@@ -128,7 +128,7 @@ export class PrefixMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                       
                     },
                 };
 

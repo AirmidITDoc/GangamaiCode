@@ -115,7 +115,6 @@ export class SupplierFormMasterComponent implements OnInit {
 
                 var m_data = {
                     insertSupplierMaster: {
-                        supplierId: "0", //|| this._supplierService.myform.get("SupplierId").value,
                         supplierName: this._supplierService.myform
                             .get("SupplierName")
                             .value.trim(),
@@ -127,12 +126,14 @@ export class SupplierFormMasterComponent implements OnInit {
                             this._supplierService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        cityId: this._supplierService.myform.get("CityId")
-                            .value,
+                        cityId: this._supplierService.myform.get("CityId").value
+                            .CityId,
                         stateId:
-                            this._supplierService.myform.get("StateId").value,
+                            this._supplierService.myform.get("StateId").value
+                                .StateId,
                         countryId:
-                            this._supplierService.myform.get("CountryId").value,
+                            this._supplierService.myform.get("CountryId").value
+                                .CountryId,
                         creditPeriod:
                             this._supplierService.myform
                                 .get("CreditPeriod")
@@ -181,6 +182,9 @@ export class SupplierFormMasterComponent implements OnInit {
                         gstNo: this._supplierService.myform
                             .get("GSTNo")
                             .value.trim(),
+                        supplierId:
+                            this._supplierService.myform.get("SupplierId")
+                                .value /*||"0",*/,
                         panNo: this._supplierService.myform
                             .get("PanNo")
                             .value.trim(),
@@ -192,7 +196,7 @@ export class SupplierFormMasterComponent implements OnInit {
                     .insertSupplierMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
-                        this.msg = data;
+                        console.log("hello from here 2" + data);
                     });
             } else {
                 var data3 = [];
@@ -223,12 +227,14 @@ export class SupplierFormMasterComponent implements OnInit {
                             this._supplierService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        cityId: this._supplierService.myform.get("CityId")
-                            .value,
+                        cityId: this._supplierService.myform.get("CityId").value
+                            .CityId,
                         stateId:
-                            this._supplierService.myform.get("StateId").value,
+                            this._supplierService.myform.get("StateId").value
+                                .StateId,
                         countryId:
-                            this._supplierService.myform.get("CountryId").value,
+                            this._supplierService.myform.get("CountryId").value
+                                .CountryId,
                         creditPeriod:
                             this._supplierService.myform
                                 .get("CreditPeriod")
@@ -255,9 +261,9 @@ export class SupplierFormMasterComponent implements OnInit {
                         termOfPayment:
                             this._supplierService.myform.get("TermOfPayment")
                                 .value || "0",
-                        taxNature:
-                            this._supplierService.myform.get("TaxNature")
-                                .value || "0",
+                        // taxNature:
+                        //     this._supplierService.myform.get("TaxNature")
+                        //         .value || "0",
                         currencyId:
                             this._supplierService.myform.get("CurrencyId")
                                 .value || "0",
@@ -292,7 +298,6 @@ export class SupplierFormMasterComponent implements OnInit {
                 this._supplierService
                     .updateSupplierMaster(m_dataUpdate)
                     .subscribe((data) => {
-                        this.msg = data;
                         this.msg = data;
                     });
             }

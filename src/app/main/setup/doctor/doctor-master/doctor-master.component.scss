@@ -4,15 +4,15 @@
 
 app-doctor-master {
     .mat-header-row {
-        width: 3000px;
-        max-width: 3000px;
-        min-width: 3000px;
+        width: 3100px;
+        max-width: 3100px;
+        min-width: 3100px;
         font-weight: bold;
     }
     .mat-row {
-        width: 3000px;
-        max-width: 3000px;
-        min-width: 3000px;
+        width: 3100px;
+        max-width: 3100px;
+        min-width: 3100px;
     }
 
     .mat-column-DoctorId {
@@ -128,24 +128,24 @@ app-doctor-master {
     }
 
     .mat-column-AddedByName {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-IsDeleted {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: center;
         justify-content: center;
     }
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }
