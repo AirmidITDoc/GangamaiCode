@@ -40,7 +40,7 @@ export class ParametermasterComponent implements OnInit {
         "IsPrintDisSummary",
         "MethodName",
         "ParaMultipleRange",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -59,7 +59,7 @@ export class ParametermasterComponent implements OnInit {
         this.getParameterMasterList();
     }
 
-      onSearchClear() {
+    onSearchClear() {
         this._ParameterService.myformSearch.reset({
             ParameterNameSearch: "",
             IsDeletedSearch: "2",
@@ -81,9 +81,6 @@ export class ParametermasterComponent implements OnInit {
                 this._ParameterService.myformSearch
                     .get("ParameterNameSearch")
                     .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._ParameterService.myformSearch.get("IsDeletedSearch")
-                    .value,
         };
         this._ParameterService.getParameterMasterList(m_data).subscribe(
             (Menu) => {
@@ -153,7 +150,7 @@ export class ParametermasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -177,7 +174,7 @@ export class PathparameterMaster {
     IsPrintDisSummary: boolean;
     MethodName: string;
     ParaMultipleRange: string;
-    AddedByName: string;
+
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -201,7 +198,7 @@ export class PathparameterMaster {
                 PathparameterMaster.IsPrintDisSummary || "false";
             this.ParaMultipleRange =
                 PathparameterMaster.ParaMultipleRange || "";
-            this.AddedByName = PathparameterMaster.AddedByName || "";
+
             this.IsDeletedSearch = PathparameterMaster.IsDeletedSearch || "";
         }
     }

@@ -18,20 +18,20 @@ app-parametermaster {
         min-width: 70px;
     }
     .mat-column-ParameterName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
     .mat-column-ParameterShortName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
 
     .mat-column-PrintParameterName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
     .mat-column-UnitName {
         width: 150px;
@@ -40,17 +40,17 @@ app-parametermaster {
     }
 
     .mat-column-MethodName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
     .mat-column-ParaMultipleRange {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
-    .mat-column-AddedByName {
+    .mat-column-AddedBy {
         width: 70px;
         max-width: 70px;
         min-width: 70px;
@@ -66,9 +66,9 @@ app-parametermaster {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

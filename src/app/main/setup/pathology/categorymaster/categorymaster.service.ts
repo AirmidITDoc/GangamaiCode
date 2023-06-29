@@ -23,25 +23,24 @@ export class CategorymasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 
     createSearchForm(): FormGroup {
-      return this._formBuilder.group({
-        CategoryNameSearch: [""],
-          IsDeletedSearch: ["2"],
-      });
-  }
+        return this._formBuilder.group({
+            CategoryNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
     initializeFormGroup() {
         this.createCategorymasterForm();
     }
 
-    public getCategoryMasterList() {
+    public getCategoryMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathCategoryMaster_by_Name",
-            { CategoryName: "%" }
+            "Generic/GetByProc?procName=Rtrv_PathCategoryList_by_Name",
+            param
         );
     }
 

@@ -24,7 +24,6 @@ export class UnitmasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 
@@ -39,10 +38,10 @@ export class UnitmasterService {
         this.createUnitmasterForm();
     }
 
-    public getUnitMasterList() {
+    public getUnitMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathUnitMaster_by_Name",
-            { UnitName: "%" }
+            "Generic/GetByProc?procName=Rtrv_PathUnitMaster_by_Name",
+            param
         );
     }
 

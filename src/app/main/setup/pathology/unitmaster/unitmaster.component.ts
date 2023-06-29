@@ -4,6 +4,7 @@ import { UnitmasterService } from "./unitmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-unitmaster",
@@ -23,7 +24,7 @@ export class UnitmasterComponent implements OnInit {
     displayedColumns: string[] = [
         "UnitId",
         "UnitName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -47,7 +48,8 @@ export class UnitmasterComponent implements OnInit {
     }
 
     getUnitMasterList() {
-        this._unitmasterService.getUnitMasterList().subscribe((Menu) => {
+        var param = { UnitName: "%" };
+        this._unitmasterService.getUnitMasterList(param).subscribe((Menu) => {
             this.DSUnitmasterList.data = Menu as PathunitMaster[];
             this.DSUnitmasterList.sort = this.sort;
             this.DSUnitmasterList.paginator = this.paginator;
@@ -81,6 +83,23 @@ export class UnitmasterComponent implements OnInit {
                     .insertUnitMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getUnitMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getUnitMasterList();
                     });
             } else {
@@ -104,6 +123,23 @@ export class UnitmasterComponent implements OnInit {
                     .updateUnitMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getUnitMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getUnitMasterList();
                     });
             }
@@ -127,7 +163,6 @@ export class PathunitMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -141,7 +176,6 @@ export class PathunitMaster {
             this.IsDeleted = PathunitMaster.IsDeleted || "false";
             this.AddedBy = PathunitMaster.AddedBy || "";
             this.UpdatedBy = PathunitMaster.UpdatedBy || "";
-            this.AddedByName = PathunitMaster.AddedByName || "";
         }
     }
 }

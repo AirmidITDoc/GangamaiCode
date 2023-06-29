@@ -8,6 +8,7 @@ import { DoctorMasterService } from "../doctor-master.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { takeUntil } from "rxjs/operators";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-new-doctor",
@@ -299,6 +300,22 @@ export class NewDoctorComponent implements OnInit {
                     .doctortMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
 
                 // this.notification.success("Record added successfully");
@@ -427,6 +444,22 @@ export class NewDoctorComponent implements OnInit {
                     .doctortMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
 
                 // this.notification.success("Record updated successfully");

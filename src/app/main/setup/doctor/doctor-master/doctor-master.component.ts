@@ -34,8 +34,10 @@ export class DoctorMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "DoctorId",
         "PrefixName",
-        "DoctorName",
-        "AgeYear",
+        "FirstName",
+        "MiddleName",
+        "LastName",
+        "DateofBirth",
         "Address",
         "City",
         "Pin",
@@ -50,7 +52,7 @@ export class DoctorMasterComponent implements OnInit {
         "MahRegNo",
         "MahRegDate",
         "RegDate",
-        "AddedByName",
+        "AddedBy",
         "IsConsultant",
         "IsRefDoc",
         "IsDeleted",
@@ -87,12 +89,8 @@ export class DoctorMasterComponent implements OnInit {
 
     getDoctorMasterList() {
         var m_data = {
-            FirstName:
-                this._doctorService.myformSearch
-                    .get("DoctorNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._doctorService.myformSearch.get("IsDeletedSearch").value,
+            F_Name: "%",
+            L_Name: "%",
         };
         this._doctorService.getDoctorMasterList(m_data).subscribe(
             (Menu) => {
@@ -202,7 +200,7 @@ export class DoctorMaster {
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
-    AddedByName: string;
+  
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -238,7 +236,7 @@ export class DoctorMaster {
             this.MahRegDate = DoctorMaster.MahRegDate || "";
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
-            this.AddedByName = DoctorMaster.AddedByName || "";
+          
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
         }

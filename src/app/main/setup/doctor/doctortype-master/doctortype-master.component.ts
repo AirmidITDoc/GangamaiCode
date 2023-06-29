@@ -31,11 +31,14 @@ export class DoctortypeMasterComponent implements OnInit {
     }
 
     getDoctortypeMasterList() {
-        this._doctortypeService.getDoctortypeMasterList().subscribe((Menu) => {
-            this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-            this.DSDoctorTypeMasterList.sort = this.sort;
-            this.DSDoctorTypeMasterList.paginator = this.paginator;
-        });
+        var param = { DoctorType: "%" };
+        this._doctortypeService
+            .getDoctortypeMasterList(param)
+            .subscribe((Menu) => {
+                this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
+                this.DSDoctorTypeMasterList.sort = this.sort;
+                this.DSDoctorTypeMasterList.paginator = this.paginator;
+            });
     }
     onSearch() {
         this.getDoctortypeMasterList();

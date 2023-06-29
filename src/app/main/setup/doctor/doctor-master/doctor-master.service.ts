@@ -112,7 +112,7 @@ export class DoctorMasterService {
 
     public getDoctorMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_Doctor_DoctorMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_DoctorMaster_List_Dtls",
             m_data
         );
     }

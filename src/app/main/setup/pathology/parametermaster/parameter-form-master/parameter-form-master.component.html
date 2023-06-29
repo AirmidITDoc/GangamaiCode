@@ -10,173 +10,199 @@
     </mat-toolbar>
 </div>
 
-  
+
 <form [formGroup]="_ParameterService.myform">
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="2px">
-    
-    <div fxFlex.gt-sm="40%" fxFlex >
 
-        <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
-            <input type="hidden" name="ParameterID" formControlName="ParameterID">
-              
-            <div>
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ParameterShortName" placeholder="Select ParameterShort Name"
-                 formControlName="ParameterShortName" [ngClass]="{ 'is-invalid': submitted && f.ParameterShortName.errors }" matInput >
-                 <span class="error" *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName Enter only Alphabets</span>
-            </mat-form-field>
+        <div fxFlex.gt-sm="40%" fxFlex>
+
+            <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
+                <input type="hidden" name="ParameterID" formControlName="ParameterID">
+
+                <div>
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <input name="ParameterShortName" placeholder="Select ParameterShort Name"
+                            formControlName="ParameterShortName"
+                            [ngClass]="{ 'is-invalid': submitted && f.ParameterShortName.errors }" matInput>
+                        <span class="error"
+                            *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName
+                            Enter only Alphabets</span>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <input name="ParameterName" placeholder="Select Parameter Name" formControlName="ParameterName"
+                            [ngClass]="{ 'is-invalid': submitted && f.ParameterName.errors }" matInput required>
+                        <span class="error" *ngIf="f.ParameterName.invalid && f.ParameterName.touched">ParameterName
+                            Enter only Alphabets</span>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <input name="PrintParameterName" placeholder="Select PrintParameterName"
+                            formControlName="PrintParameterName" matInput
+                            [ngClass]="{ 'is-invalid': submitted && f.PrintParameterName.errors }">
+                        <span class="error"
+                            *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName
+                            required Enter only Digits</span>
+                    </mat-form-field>
+                </div>
+
+
+                <div style="text-align: right;">
+                    <mat-slide-toggle name="IsPrintDisSummary" formControlName="IsPrintDisSummary"
+                        class="example-margin" style="align-content: center;">IsPrintDisSummary
+                    </mat-slide-toggle>
+
+                </div>
+                <mat-radio-group name="IsNumeric" formControlName="IsNumeric" value='false'
+                    aria-label="Select an option">
+                    <mat-radio-button class="mr-sm-12" fxFlex (click)="toggle()" value="1">IsNumeric</mat-radio-button>
+                    <mat-radio-button class="mr-sm-12" fxFlex (click)="toggle1()"
+                        value="2">IsDescriptive</mat-radio-button>
+                </mat-radio-group>
+
+
+                <hr>
             </div>
-          
-            <div>
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ParameterName" placeholder="Select Parameter Name" formControlName="ParameterName" [ngClass]="{ 'is-invalid': submitted && f.ParameterName.errors }" matInput required>
-                <span class="error" *ngIf="f.ParameterName.invalid && f.ParameterName.touched">ParameterName Enter only Alphabets</span>
-            </mat-form-field>
-            </div>
-          
-            <div>
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="PrintParameterName" placeholder="Select PrintParameterName" formControlName="PrintParameterName" matInput [ngClass]="{ 'is-invalid': submitted && f.PrintParameterName.errors }">
-                <span class="error" *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName required Enter only Digits</span>
-            </mat-form-field>
-            </div>
-        
-            
-        <div style="text-align: right;">
-            <mat-slide-toggle name="IsPrintDisSummary" formControlName="IsPrintDisSummary"  
-            class="example-margin" style="align-content: center;">IsPrintDisSummary
-            </mat-slide-toggle>
-          
         </div>
-             <mat-radio-group name="IsNumeric" formControlName="IsNumeric" value='false' aria-label="Select an option" >
-                <mat-radio-button  class="mr-sm-12" fxFlex (click)="toggle()"   value="1" >IsNumeric</mat-radio-button>
-                <mat-radio-button class="mr-sm-12" fxFlex (click)="toggle1()" value="2" >IsDescriptive</mat-radio-button>
-             </mat-radio-group>   
-             
 
-          <hr>
-        </div>
-    </div>   
-    
 
-    <div fxFlex.gt-sm="60%" fxFlex >
-           
-         <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="5px" > 
-           
-            <div  fxFlex.gt-sm="50%" fxFlex  >
-                <ng-container *ngIf="show">
-                <mat-card class="example-card" name="m1"  >
-                    <mat-card-header>
-                      <div mat-card-avatar class="example-header-image"></div>
-                      <mat-card-title>IsNumeric Info</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                    <div>
-                        <div>
-                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                <mat-select placeholder="Select unitName " name="UnitId" formControlName="UnitId" required>
-                                    <mat-option *ngFor="let M of UnitcmbList" [value]="M.UnitId">
-                                        {{ M.UnitName }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>Please Select Unit Name </mat-error>
-                            </mat-form-field>
+        <div fxFlex.gt-sm="60%" fxFlex>
 
-                        </div>
-                        <div>
-                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                <input name="MinValue" placeholder="Enetr MinValue" formControlName="MinValue" matInput >
-                                <mat-error>Please enter MinValue </mat-error>
-                            </mat-form-field>
-                            
-                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                <input name="Maxvalue" placeholder="Enter Maxvalue" formControlName="Maxvalue" matInput >
-                                <mat-error>Please enter Maxvalue </mat-error>
-                            </mat-form-field>
-                        </div>
-                                                
-                    <br/>
-                    </div>
-                    </mat-card-content>
-                  </mat-card>
-               
-                 </ng-container>
-            </div>
-            
-           
-            <ng-container *ngIf="show1">
-             <div  fxFlex.gt-sm="50%" fxFlex >                   
-                   
-                    <mat-card class="example-card" >
-                        <mat-card-header>
-                          <div mat-card-avatar class="example-header-image"></div>
-                          <mat-card-title>IsDescriptive Info</mat-card-title>
-                          </mat-card-header>
-                       <mat-card-content>
-                                                                                   
-                            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
-                                <div flex="50%">
-                                <input type="text" #txt placeholder="Enter Value To Add" name="ParaId" formControlName="ParaId" name="text1" multiple  matinput>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button mat-raised-button color="accent"  (click)="AddData(txt.value)">ADD Value</button>
+            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+                <div fxFlex.gt-sm="50%" fxFlex>
+                    <ng-container *ngIf="show">
+                        <mat-card class="example-card" name="m1">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"></div>
+                                <mat-card-title>IsNumeric Info</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <div>
+                                    <div>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <mat-select placeholder="Select unitName " name="UnitId"
+                                                formControlName="UnitId" required>
+                                                <mat-option *ngFor="let M of UnitcmbList" [value]="M.UnitId">
+                                                    {{ M.UnitName }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>Please Select Unit Name </mat-error>
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <input name="MinValue" placeholder="Enetr MinValue"
+                                                formControlName="MinValue" matInput>
+                                            <mat-error>Please enter MinValue </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <input name="Maxvalue" placeholder="Enter Maxvalue"
+                                                formControlName="Maxvalue" matInput>
+                                            <mat-error>Please enter Maxvalue </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <br />
                                 </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </ng-container>
+                </div>
+
+
+                <ng-container *ngIf="show1">
+                    <div fxFlex.gt-sm="50%" fxFlex>
+
+                        <mat-card class="example-card">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"></div>
+                                <mat-card-title>IsDescriptive Info</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+
+                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
+                                    <div flex="50%">
+                                        <input type="text" #txt placeholder="Enter Value To Add" name="ParaId"
+                                            formControlName="ParaId" name="text1" multiple matinput>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button mat-raised-button color="accent" (click)="AddData(txt.value)">ADD
+                                            Value</button>
+                                    </div>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              
-                               <div flex="50%">
-                                   
-                                <mat-list style="text-align: center;background: cornflowerblue;" formControlName="parameterValues" >
-                                    <div mat-subheader style="font-style: italic;font-weight: bold;" >ParameterValues</div>
-                                    <mat-list-item placeholder="ParameterValues" #txt *ngFor="let item of selectedItems" [ngValue]="parameterValue" style="background-color: rgb(245, 237, 237);">
-                                      <div mat-line>{{item}}</div>
-                                      <mat-divider></mat-divider> 
-                                    </mat-list-item>
-                                </mat-list>
+
+                                    <div flex="50%">
+
+                                        <mat-list style="text-align: center;background: cornflowerblue;"
+                                            formControlName="parameterValues">
+                                            <div mat-subheader style="font-style: italic;font-weight: bold;">
+                                                ParameterValues</div>
+                                            <mat-list-item placeholder="ParameterValues" #txt
+                                                *ngFor="let item of selectedItems" [ngValue]="parameterValue"
+                                                style="background-color: rgb(245, 237, 237);">
+                                                <div mat-line>{{item}}</div>
+                                                <mat-divider></mat-divider>
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </div>
                                 </div>
-                             </div>  
-                             <br/>
-                            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" >
-                            <div flex="50%">
-                                <hr> 
-                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <textarea name="DefaultValue" matInput rows="2" cols="15" placeholder="Enter Default Value" formControlName="DefaultValue" style="background-color: rgb(245, 237, 237);"
-                                     matInput [ngClass]="{ 'is-invalid': submitted && f.DefaultValue.errors }">
-                                    </textarea>                                                               
-                                    <span class="error" *ngIf="f.DefaultValue.invalid && f.DefaultValue.touched">DefaultValue required Enter only Alphabets</span>
-                                </mat-form-field>
-                            </div>  
-                            </div>
-                            
-                        </mat-card-content>
-                                            
-                    </mat-card>
-                     
-             </div>    
-            </ng-container> 
-            
-         </div>  
-            
+                                <br />
+                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
+                                    <div flex="50%">
+                                        <hr>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                            <textarea name="DefaultValue" matInput rows="2" cols="15"
+                                                placeholder="Enter Default Value" formControlName="DefaultValue"
+                                                style="background-color: rgb(245, 237, 237);" matInput
+                                                [ngClass]="{ 'is-invalid': submitted && f.DefaultValue.errors }">
+                                    </textarea>
+                                            <span class="error"
+                                                *ngIf="f.DefaultValue.invalid && f.DefaultValue.touched">DefaultValue
+                                                required Enter only Alphabets</span>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </mat-card-content>
+
+                        </mat-card>
+
+                    </div>
+                </ng-container>
+
+            </div>
+
+
+        </div>
 
     </div>
 
-    </div>
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" >
-    </div>
-    <div class="button-row">
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Save</button>
-       <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-        
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
     </div>
 
     <section class="example-section">
         <mat-slide-toggle class="example-margin" name="IsDeleted" formControlName="IsDeleted" value="true">
             IsActive
         </mat-slide-toggle>
-      </section>
-   
+    </section>
 
-</form> 
-  
-    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
 
+    <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Save</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+
+    </div>
+
+
+
+</form>
+
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

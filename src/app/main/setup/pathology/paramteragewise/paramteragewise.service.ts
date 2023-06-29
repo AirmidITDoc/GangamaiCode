@@ -36,7 +36,7 @@ export class ParamteragewiseService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            AgetypeSearch: [""],
+            ParameterIdSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -47,7 +47,7 @@ export class ParamteragewiseService {
 
     public getParameterAgeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathParameterAgewiseMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
             param
         );
     }
@@ -55,14 +55,14 @@ export class ParamteragewiseService {
     // Gender Master Combobox List
     public getGenderMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_GenderListForCombo",
+            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
             {}
         );
     }
 
     public getParameterMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_ParameterNameForCombo",
+            "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
             {}
         );
     }

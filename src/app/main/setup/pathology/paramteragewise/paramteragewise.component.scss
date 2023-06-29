@@ -1,15 +1,15 @@
-app-parameteragewise {
+app-paramteragewise {
     .mat-header-row {
-        width: 1200px;
-        max-width: 1200px;
-        min-width: 1200px;
+        width: 1100px;
+        max-width: 1100px;
+        min-width: 1100px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 1200px;
-        max-width: 1200px;
-        min-width: 1200px;
+        width: 1100px;
+        max-width: 1100px;
+        min-width: 1100px;
     }
 
     .mat-column-PathparaRangeId {
@@ -17,10 +17,11 @@ app-parameteragewise {
         max-width: 70px;
         min-width: 70px;
     }
-    .mat-column-ParameterName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+    .mat-column-ParaId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: center;
     }
     .mat-column-GenderName {
         width: 100px;
@@ -54,25 +55,25 @@ app-parameteragewise {
         max-width: 100px;
         min-width: 100px;
     }
-    .mat-column-AddedByName {
+    .mat-column-AddedBy {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
     }
 
     .mat-column-IsDeleted {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: center;
         justify-content: center;
     }
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }
