@@ -118,7 +118,7 @@ export class VillageMasterComponent implements OnInit {
                             .value.trim(),
                         talukaId:
                             this._VillageService.myForm.get("TalukaId").value
-                                .Taluka.Id,
+                                .TalukaId,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -128,6 +128,7 @@ export class VillageMasterComponent implements OnInit {
                         ),
                     },
                 };
+                console.log(m_data);
                 this._VillageService
                     .villageMasterInsert(m_data)
                     .subscribe((data) => {

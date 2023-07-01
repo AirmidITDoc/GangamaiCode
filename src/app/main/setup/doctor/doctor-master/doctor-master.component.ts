@@ -122,17 +122,17 @@ export class DoctorMasterComponent implements OnInit {
             IsRefDoc: JSON.stringify(row.IsRefDoc),
             IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
             DoctorTypeId: row.DoctorTypeId,
-            AgeYear: row.AgeYear.trim(),
-            AgeMonth: row.AgeMonth.trim(),
-            AgeDay: row.AgeDay.trim(),
-            PassportNo: row.PassportNo.trim(),
-            ESINO: row.ESINO.trim(),
-            RegNo: row.RegNo.trim(),
+            AgeYear: row.AgeYear,
+            AgeMonth: row.AgeMonth,
+            AgeDay: row.AgeDay,
+            PassportNo: row.PassportNo,
+            ESINO: row.ESINO,
+            RegNo: row.RegNo,
             RegDate: row.RegDate,
-            MahRegNo: row.MahRegNo.trim(),
+            MahRegNo: row.MahRegNo,
             MahRegDate: row.MahRegDate,
-            AddedByName: row.AddedByName.trim(),
-            RefDocHospitalName: row.RefDocHospitalName.trim(),
+            AddedBy: row.Addedby,
+            RefDocHospitalName: row.RefDocHospitalName,
             UpdatedBy: row.UpdatedBy,
         };
 
@@ -144,7 +144,7 @@ export class DoctorMasterComponent implements OnInit {
 
             {
                 maxWidth: "80vw",
-                maxHeight: "95vh",
+                maxHeight: "70vh",
                 width: "100%",
                 height: "100%",
             }
@@ -159,7 +159,7 @@ export class DoctorMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "70vh",
             width: "100%",
             height: "100%",
         });
@@ -200,7 +200,7 @@ export class DoctorMaster {
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
-  
+
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -236,7 +236,7 @@ export class DoctorMaster {
             this.MahRegDate = DoctorMaster.MahRegDate || "";
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
-          
+
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
         }

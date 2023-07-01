@@ -150,7 +150,7 @@ export class ItemMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "75vh",
             width: "100%",
             height: "100%",
         });
@@ -164,7 +164,7 @@ export class ItemMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "75vh",
             width: "100%",
             height: "100%",
         });

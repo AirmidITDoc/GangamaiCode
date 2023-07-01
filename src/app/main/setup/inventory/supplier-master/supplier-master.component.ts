@@ -80,7 +80,7 @@ export class SupplierMasterComponent implements OnInit {
     getSupplierMasterList() {
         var m_data = {
             SupplierName: "%",
-            StoreId: 0,
+            StoreID: 0,
         };
         console.log(m_data);
         this._supplierService.getSupplierMasterList(m_data).subscribe(

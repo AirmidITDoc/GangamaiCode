@@ -152,7 +152,8 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select StockUOMId" name="StockUOMId" formControlName="StockUOMId">
+                <mat-select placeholder="Select StockUOMId" name="StockUOMId" formControlName="StockUOMId"
+                    #singleSelect>
                     <mat-option *ngFor="let M of ItemUomcmbList" [value]="M.PurchaseUOMId">
                         {{ M.UnitofMeasurementName }}
                     </mat-option>

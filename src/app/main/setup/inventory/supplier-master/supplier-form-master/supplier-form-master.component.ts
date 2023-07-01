@@ -154,15 +154,15 @@ export class SupplierFormMasterComponent implements OnInit {
                             this._supplierService.myform
                                 .get("Email")
                                 .value.trim() || "%",
-                        modeOfPayment:
+                        modeofPayment:
                             this._supplierService.myform.get("ModeOfPayment")
                                 .value || "0",
-                        termOfPayment:
+                        termsofPayment:
                             this._supplierService.myform.get("TermOfPayment")
                                 .value || "0",
-                        taxNature:
-                            this._supplierService.myform.get("TaxNature")
-                                .value || "0",
+                        // taxNature:
+                        //     this._supplierService.myform.get("TaxNature")
+                        //         .value || "0",
                         currencyId:
                             this._supplierService.myform.get("CurrencyId")
                                 .value || "0",
@@ -184,7 +184,7 @@ export class SupplierFormMasterComponent implements OnInit {
                             .value.trim(),
                         supplierId:
                             this._supplierService.myform.get("SupplierId")
-                                .value /*||"0",*/,
+                                .value || "0",
                         panNo: this._supplierService.myform
                             .get("PanNo")
                             .value.trim(),
@@ -196,7 +196,22 @@ export class SupplierFormMasterComponent implements OnInit {
                     .insertSupplierMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
-                        console.log("hello from here 2" + data);
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
             } else {
                 var data3 = [];
@@ -255,10 +270,10 @@ export class SupplierFormMasterComponent implements OnInit {
                             this._supplierService.myform
                                 .get("Email")
                                 .value.trim() || "%",
-                        modeOfPayment:
+                        modeofPayment:
                             this._supplierService.myform.get("ModeOfPayment")
                                 .value || "0",
-                        termOfPayment:
+                        termsofPayment:
                             this._supplierService.myform.get("TermOfPayment")
                                 .value || "0",
                         // taxNature:
@@ -299,6 +314,22 @@ export class SupplierFormMasterComponent implements OnInit {
                     .updateSupplierMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClose();

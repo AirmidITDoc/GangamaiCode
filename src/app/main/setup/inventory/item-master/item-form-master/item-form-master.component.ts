@@ -72,10 +72,11 @@ export class ItemFormMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
-        this.getitemtypeNameMasterCombo();
+        //this.getitemtypeNameMasterCombo();
         this.getitemcategoryNameMasterCombo();
         this.getitemgenericNameMasterCombo();
         this.getitemunitofmeasureMasterCombo();
+        //   this.getStockUOMIDdMasterombo();
         this.getStoreNameMasterCombo();
         this.getManufactureNameMasterCombo();
         this.getCurrencyNameMasterCombo();

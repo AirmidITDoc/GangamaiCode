@@ -181,20 +181,19 @@ export class NewDoctorComponent implements OnInit {
         if (this._doctorService.myform.valid) {
             if (!this._doctorService.myform.get("DoctorId").value) {
                 var data2 = [];
-                for (var val of this._doctorService.myform.get("Departmentid")
-                    .value) {
-                    var data = {
-                        DepartmentId: val,
-                        DoctorId: 0,
-                    };
-                    data2.push(data);
-                }
+                // for (var val of this._doctorService.myform.get("Departmentid")
+                //     .value) {
+                var data = {
+                    doctorId: 0,
+                    departmentId:
+                        this._doctorService.myform.get("Departmentid").value
+                            .Departmentid,
+                };
+                data2.push(data);
+                //}
                 console.log(data2);
                 var m_data = {
                     insertDoctorMaster: {
-                        doctorId:
-                            "0" ||
-                            this._doctorService.myform.get("DoctorId").value,
                         prefixID:
                             this._doctorService.myform.get("PrefixID").value
                                 .PrefixID,
@@ -210,7 +209,8 @@ export class NewDoctorComponent implements OnInit {
                                 .get("LastName")
                                 .value.trim() || "%",
                         dateOfBirth:
-                            this._doctorService.myform.get("DateofBirth").value,
+                            this._doctorService.myform.get("DateofBirth")
+                                .value || "01/01/1900",
                         address:
                             this._doctorService.myform
                                 .get("Address")
@@ -231,7 +231,8 @@ export class NewDoctorComponent implements OnInit {
                             .get("Mobile")
                             .value.trim(),
                         genderId:
-                            this._doctorService.myform.get("GenderId").value,
+                            this._doctorService.myform.get("GenderId").value
+                                .GenderId,
                         education:
                             this._doctorService.myform
                                 .get("Education")
@@ -247,13 +248,15 @@ export class NewDoctorComponent implements OnInit {
                                 this._doctorService.myform.get("IsRefDoc").value
                             )
                         ),
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._doctorService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        doctorTypeId: 0, //his._doctorService.myform.get("DoctorTypeId")                 .value,
+                        doctorTypeId:
+                            this._doctorService.myform.get("DoctorTypeId").value
+                                .Id || 0,
                         ageYear:
                             this._doctorService.myform
                                 .get("AgeYear")
@@ -287,11 +290,13 @@ export class NewDoctorComponent implements OnInit {
                         mahRegDate:
                             this._doctorService.myform.get("MahRegDate")
                                 .value || "01/01/1900",
-                        addedBy: this.accountService.currentUserValue.user.id,
-                        refDocHospitalName:
-                            this._doctorService.myform
-                                .get("RefDocHospitalName")
-                                .value.trim() || "%",
+                        addedBy: 1,
+                        updatedBy: 1,
+                        isInHouseDoctor: true,
+                        isOnCallDoctor: true,
+                        doctorId:
+                            this._doctorService.myform.get("DoctorId").value ||
+                            "0",
                     },
                     assignDoctorDepartmentDet: data2,
                 };
@@ -317,123 +322,123 @@ export class NewDoctorComponent implements OnInit {
                             );
                         }
                     });
-
-                // this.notification.success("Record added successfully");
             } else {
                 var data3 = [];
-                for (var val of this._doctorService.myform.get("DepartmentId")
-                    .value) {
-                    var data4 = {
-                        DepartmentId: val,
-                        DoctorId:
-                            this._doctorService.myform.get("DoctorId").value,
-                    };
-                    data3.push(data4);
-                }
+                // for (var val of this._doctorService.myform.get("DepartmentId")
+                //     .value) {
+                var data4 = {
+                    departmentId:
+                        this._doctorService.myform.get("Departmentid").value
+                            .Departmentid || "0",
+                    doctorId:
+                        this._doctorService.myform.get("DoctorId").value || "0",
+                };
+                data3.push(data4);
+                //  }
                 var m_dataUpdate = {
                     updateDoctorMaster: {
-                        DoctorId:
+                        doctorId:
                             this._doctorService.myform.get("DoctorId").value ||
                             "0",
-                        PrefixID:
-                            this._doctorService.myform.get("PrefixID").value,
-                        FirstName: this._doctorService.myform
-                            .get("FirstName")
-                            .value.trim(),
-                        MiddleName:
+                        prefixID:
+                            this._doctorService.myform.get("PrefixID").value
+                                .PrefixID,
+                        firstName:
+                            this._doctorService.myform
+                                .get("FirstName")
+                                .value.trim() || "%",
+                        middleName:
                             this._doctorService.myform
                                 .get("MiddleName")
                                 .value.trim() || "%",
-                        LastName: this._doctorService.myform
-                            .get("LastName")
-                            .value.trim(),
-                        DateofBirth:
-                            this._doctorService.myform.get("DateofBirth").value,
-                        Address:
+                        lastName:
+                            this._doctorService.myform
+                                .get("LastName")
+                                .value.trim() || "%",
+                        dateOfBirth:
+                            this._doctorService.myform.get("DateofBirth")
+                                .value || "01/01/1900",
+                        address:
                             this._doctorService.myform
                                 .get("Address")
                                 .value.trim() || "%",
-                        City:
+                        city:
                             this._doctorService.myform
                                 .get("City")
                                 .value.trim() || "%",
-                        Pin:
+                        pin:
                             this._doctorService.myform
                                 .get("Pin")
                                 .value.trim() || "0",
-                        Phone:
+                        phone:
                             this._doctorService.myform
                                 .get("Phone")
                                 .value.trim() || "0",
-                        Mobile: this._doctorService.myform
-                            .get("Mobile")
-                            .value.trim(),
-                        GenderId:
-                            this._doctorService.myform.get("GenderId").value,
-                        Education:
+                        mobile:
+                            this._doctorService.myform
+                                .get("Mobile")
+                                .value.trim() || "0",
+                        genderID:
+                            this._doctorService.myform.get("GenderId").value
+                                .GenderId,
+                        education:
                             this._doctorService.myform
                                 .get("Education")
                                 .value.trim() || "%",
-                        IsConsultant: Boolean(
+                        isConsultant: Boolean(
                             JSON.parse(
                                 this._doctorService.myform.get("IsConsultant")
                                     .value
                             )
                         ),
-                        IsRefDoc: Boolean(
+                        isRefDoc: Boolean(
                             JSON.parse(
                                 this._doctorService.myform.get("IsRefDoc").value
                             )
                         ),
-                        IsDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._doctorService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        DoctorTypeId:
-                            this._doctorService.myform.get("DoctorTypeId")
-                                .value,
-                        AgeYear:
-                            this._doctorService.myform
-                                .get("AgeYear")
-                                .value.trim() || "0",
-                        AgeMonth:
-                            this._doctorService.myform
-                                .get("AgeMonth")
-                                .value.trim() || "0",
-                        AgeDay: this._doctorService.myform
-                            .get("AgeDay")
-                            .value.trim(),
-                        PassportNo:
-                            this._doctorService.myform
-                                .get("PassportNo")
-                                .value.trim() || "0",
-                        ESINO:
-                            this._doctorService.myform
-                                .get("ESINO")
-                                .value.trim() || "0",
-                        RegNo:
-                            this._doctorService.myform
-                                .get("RegNo")
-                                .value.trim() || "0",
-                        RegDate:
+                        doctorTypeId:
+                            this._doctorService.myform.get("DoctorTypeId").value
+                                .Id || 0,
+                        ageYear:
+                            this._doctorService.myform.get("AgeYear").value ||
+                            "0",
+                        ageMonth:
+                            this._doctorService.myform.get("AgeMonth").value ||
+                            "0",
+                        ageDay:
+                            this._doctorService.myform.get("AgeDay").value ||
+                            "0",
+                        passportNo:
+                            this._doctorService.myform.get("PassportNo")
+                                .value || "0",
+                        esino:
+                            this._doctorService.myform.get("ESINO").value ||
+                            "0",
+                        regNo:
+                            this._doctorService.myform.get("RegNo").value ||
+                            "0",
+                        regDate:
                             this._doctorService.myform.get("RegDate").value ||
-                            "01/01/1900", //"01/01/2018",
-                        MahRegNo:
+                            "01/01/1900",
+                        mahRegNo:
                             this._doctorService.myform.get("MahRegNo").value ||
                             "0",
-                        MahRegDate:
+                        mahRegDate:
                             this._doctorService.myform.get("MahRegDate")
-                                .value || "01/01/1900", //"01/01/2018",
-                        RefDocHospitalName:
-                            this._doctorService.myform
-                                .get("RefDocHospitalName")
-                                .value.trim() || "%",
-                        UpdatedBy: this.accountService.currentUserValue.user.id,
+                                .value || "01/01/1900",
+
+                        updatedBy: 1,
+                        isInHouseDoctor: true,
+                        isOnCallDoctor: true,
                     },
                     deleteAssignDoctorToDepartment: {
-                        DoctorId:
+                        doctorId:
                             this._doctorService.myform.get("DoctorId").value,
                     },
                     assignDoctorDepartmentDet: data3,
@@ -461,8 +466,6 @@ export class NewDoctorComponent implements OnInit {
                             );
                         }
                     });
-
-                // this.notification.success("Record updated successfully");
             }
             this.onClose();
         }

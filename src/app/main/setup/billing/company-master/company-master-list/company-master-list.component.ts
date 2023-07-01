@@ -37,7 +37,7 @@ export class CompanyMasterListComponent implements OnInit {
 
     constructor(
         public _companyService: CompanyMasterService,
-        public _parentComponent: CompanyMasterComponent,
+
         public dialogRef: MatDialogRef<CompanyMasterComponent>
     ) {}
 
@@ -121,33 +121,33 @@ export class CompanyMasterListComponent implements OnInit {
                 .setValue(this.TariffcmbList[0]);
         });
     }
-    getCompanyMaster() {
-        var data = {
-            compTypeId: this._companyService.myform.get("CompTypeId").value,
-            companyName: this._companyService.myform.get("CompanyName").value,
-            address: this._companyService.myform.get("Address").value,
-            city: this._companyService.myform.get("City").value,
-            pinNo: this._companyService.myform.get("PinNo").value,
-            phoneNo: this._companyService.myform.get("PhoneNo").value,
-            mobileNo: this._companyService.myform.get("MobileNo").value,
-            faxNo: this._companyService.myform.get("FaxNo").value,
-            tariffId: this._companyService.myform.get("TariffId").value,
-            isDeleted: Boolean(
-                JSON.parse(this._companyService.myform.get("IsDeleted").value)
-            ),
-            addedBy: 10,
-            updatedBy: 0,
-            isCancelled: false,
-            isCancelledBy: 0,
-            isCancelledDate: "01/01/1900",
-        };
-        this._companyService.getCompanyMaster(data).subscribe(
-            (Menu) => {
-                this.dataArray = Menu;
-            },
-            (error) => (this.isLoading = false)
-        );
-    }
+    // getCompanyMaster() {
+    //     var data = {
+    //         compTypeId: this._companyService.myform.get("CompTypeId").value,
+    //         companyName: this._companyService.myform.get("CompanyName").value,
+    //         address: this._companyService.myform.get("Address").value,
+    //         city: this._companyService.myform.get("City").value,
+    //         pinNo: this._companyService.myform.get("PinNo").value,
+    //         phoneNo: this._companyService.myform.get("PhoneNo").value,
+    //         mobileNo: this._companyService.myform.get("MobileNo").value,
+    //         faxNo: this._companyService.myform.get("FaxNo").value,
+    //         tariffId: this._companyService.myform.get("TariffId").value,
+    //         isDeleted: Boolean(
+    //             JSON.parse(this._companyService.myform.get("IsDeleted").value)
+    //         ),
+    //         addedBy: 10,
+    //         updatedBy: 0,
+    //         isCancelled: false,
+    //         isCancelledBy: 0,
+    //         isCancelledDate: "01/01/1900",
+    //     };
+    //     this._companyService.getCompanyMaster(data).subscribe(
+    //         (Menu) => {
+    //             this.dataArray = Menu;
+    //         },
+    //         (error) => (this.isLoading = false)
+    //     );
+    // }
 
     onSubmit() {
         if (this._companyService.myform.valid) {
@@ -206,7 +206,6 @@ export class CompanyMasterListComponent implements OnInit {
                                 "success"
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    this._parentComponent.getCompanyMaster();
                                 }
                             });
                         } else {
@@ -216,7 +215,6 @@ export class CompanyMasterListComponent implements OnInit {
                                 "error"
                             );
                         }
-                        this._parentComponent.getCompanyMaster();
                     });
             } else {
                 var m_dataUpdate = {
@@ -275,7 +273,6 @@ export class CompanyMasterListComponent implements OnInit {
                                 "success"
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    this._parentComponent.getCompanyMaster();
                                 }
                             });
                         } else {
@@ -285,7 +282,6 @@ export class CompanyMasterListComponent implements OnInit {
                                 "error"
                             );
                         }
-                        this._parentComponent.getCompanyMaster();
                     });
             }
             this.onClose();

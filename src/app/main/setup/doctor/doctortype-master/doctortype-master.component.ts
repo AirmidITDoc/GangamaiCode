@@ -105,7 +105,7 @@ export class DoctortypeMasterComponent implements OnInit {
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._doctortypeService.myform.get("IsDeleted")
-                                    .value
+                                    .value || 0
                             )
                         ),
                     },
