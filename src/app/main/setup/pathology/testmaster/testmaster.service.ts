@@ -39,7 +39,7 @@ export class TestmasterService {
             ParameterName: [""],
             IsDeleted: [""],
             UpdatedBy: [""],
-            AddedByName: [""],
+            AddedBy: [""],
             action: [""],
             parametertxt: [""],
             PTemplateId: [""],
@@ -60,7 +60,7 @@ export class TestmasterService {
     // get Test Master list
     public getTestMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathtestMaster_by_Name",
+            "Generic/GetByProc?procName=Retrieve_PathologyTestList",
             param
         );
     }
@@ -76,7 +76,7 @@ export class TestmasterService {
     // Cateogry Master Combobox List
     public getCategoryMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_CategoryMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_PathCategoryMasterForCombo",
             {}
         );
     }
@@ -84,7 +84,7 @@ export class TestmasterService {
     // Template Master Combobox List
     public getTemplateMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_PathTemplateMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_PathTemplateMasterForCombo",
             {}
         );
     }
@@ -92,7 +92,7 @@ export class TestmasterService {
     // Service Master Combobox List
     public getServiceMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_PathTestListForCombo",
             {}
         );
     }
@@ -108,7 +108,7 @@ export class TestmasterService {
     // Insert Perfix Master
     public insertPathologyTestMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyTestMasterSave",
+            "PathologyMaster/PathologyTestMasterSave",
             param
         );
     }
@@ -116,7 +116,7 @@ export class TestmasterService {
     // Update Perfix Master
     public updatePathologyTestMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyTestMasterUpdate",
+            "PathologyMaster/PathologyTestMasterUpdate",
             param
         );
     }

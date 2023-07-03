@@ -130,9 +130,9 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -182,8 +182,7 @@
                                                     title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.TestId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            // <button mat-icon-button (click)="onDeactive(row.TestId)"
-                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -205,20 +204,20 @@
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':DSTestMasterList!=null}"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(DSTestMasterList!=null && DSTestMasterList.data.length==0)}"></mat-footer-row>
-                             -->
-                                </mat-table>
-                                <!-- <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: top; background: white;">
-                            <mat-progress-spinner color="primary" mode="indeterminate">
-                            </mat-progress-spinner>
-                        </div>  -->
 
-                                <mat-card *ngIf="isLoading"
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':DSTestMasterList!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(DSTestMasterList!=null && DSTestMasterList.data.length==0)}"></mat-footer-row>
+
+                                </mat-table>
+
+
+                                <!-- <mat-card *ngIf="isLoading"
                                     style="display: flex; justify-content: center; align-items: center; background: white;">
                                     <mat-progress-spinner color="primary" mode="indeterminate">
                                     </mat-progress-spinner>
-                                </mat-card>
+                                </mat-card> -->
 
 
                             </div>

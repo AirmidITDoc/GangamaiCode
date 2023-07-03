@@ -46,14 +46,14 @@ export class CategorymasterService {
 
     public insertPathologyCategoryMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyCategoryMasterSave",
+            "PathologyMaster/PathologyCategoryMasterSave",
             param
         );
     }
 
     public updatePathologyCategoryMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyCategoryMasterUpdate",
+            "PathologyMaster/PathologyCategoryMasterUpdate",
             param
         );
     }

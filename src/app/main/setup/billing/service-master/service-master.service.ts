@@ -41,7 +41,6 @@ export class ServiceMasterService {
             IsDocEditable: ["0"],
             AddedBy: [""],
             UpdatedBy: [""],
-            AddedByName: [""],
 
             ServiceDetailId: [""],
             TariffId: [""],
@@ -60,10 +59,10 @@ export class ServiceMasterService {
         this.createServicemasterForm();
     }
 
-    public getServiceMasterList() {
+    public getServiceMasterList(param) {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_ServList",
-            { ServiceName: "%" }
+            param
         );
     }
 

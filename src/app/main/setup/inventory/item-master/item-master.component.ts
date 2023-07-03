@@ -31,7 +31,7 @@ export class ItemMasterComponent implements OnInit {
 
     displayedColumns: string[] = [
         "ItemID",
-        "ItemShortName",
+       // "ItemShortName",
         "ItemName",
         "ItemTypeName",
         "ItemCategoryName",
@@ -112,7 +112,7 @@ export class ItemMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             ItemID: row.ItemID,
-            ItemShortName: row.ItemShortName.trim(),
+          //  ItemShortName: row.ItemShortName.trim(),
             ItemName: row.ItemName.trim(),
             ItemTypeID: row.ItemTypeID,
             ItemCategoryId: row.ItemCategoryId,
@@ -176,7 +176,7 @@ export class ItemMasterComponent implements OnInit {
 }
 export class ItemMaster {
     ItemID: number;
-    ItemShortName: string;
+  //  ItemShortName: string;
     ItemName: string;
     ItemTypeID: number;
     ItemCategoryId: number;
@@ -218,7 +218,7 @@ export class ItemMaster {
     constructor(ItemMaster) {
         {
             this.ItemID = ItemMaster.ItemID || "";
-            this.ItemShortName = ItemMaster.ItemShortName || "";
+        //    this.ItemShortName = ItemMaster.ItemShortName || "";
             this.ItemName = ItemMaster.ItemName || "";
             this.ItemTypeID = ItemMaster.ItemTypeID || "";
             this.ItemCategoryId = ItemMaster.ItemCategoryId || "";

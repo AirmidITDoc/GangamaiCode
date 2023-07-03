@@ -389,13 +389,14 @@ export class ItemFormMasterComponent implements OnInit {
         if (this._itemService.myform.valid) {
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];
-                for (var val of this._itemService.myform.get("StoreId").value) {
-                    var data = {
-                        storeId: val,
-                        itemId: 0,
-                    };
-                    data2.push(data);
-                }
+                // for (var val of this._itemService.myform.get("StoreId").value) {
+                var data = {
+                    storeId:
+                        this._itemService.myform.get("StoreId").value.Storeid,
+                    itemId: 0,
+                };
+                data2.push(data);
+                // }
                 console.log(data2);
 
                 var m_data = {
@@ -409,18 +410,20 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ItemName")
                                 .value.trim() || "%",
                         itemTypeId:
-                            this._itemService.myform.get("ItemTypeID").value,
+                            this._itemService.myform.get("ItemTypeID").value
+                                .ItemTypeId,
                         itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId")
-                                .value,
-                        itemGenericNameId:
-                            this._itemService.myform.get("ItemGenericNameId")
-                                .value,
+                            this._itemService.myform.get("ItemCategoryId").value
+                                .ItemCategoryId,
+                        itemGenericNameId: 0,
+                        //    ||this._itemService.myform.get("ItemGenericNameId")
+                        //         .value.ItemGenericName,
                         itemClassId:
-                            this._itemService.myform.get("ItemClassId").value,
-                        purchaseUOMId:
-                            this._itemService.myform.get("PurchaseUOMId")
-                                .value || "0",
+                            this._itemService.myform.get("ItemClassId").value
+                                .ItemClassId,
+                        purchaseUOMId: 0,
+                        // || this._itemService.myform.get("PurchaseUOMId").value
+                        //     .UnitofMeasurementName ,
                         stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
@@ -429,8 +432,8 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ConversionFactor")
                                 .value.trim() || "%",
                         currencyId:
-                            this._itemService.myform.get("CurrencyId").value ||
-                            "0",
+                            this._itemService.myform.get("CurrencyId").value
+                                .CurrencyId || "0",
                         taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
                         isDeleted: Boolean(
@@ -438,7 +441,7 @@ export class ItemFormMasterComponent implements OnInit {
                                 this._itemService.myform.get("IsDeleted").value
                             )
                         ),
-                        addedby: 1,
+                        addedBy: 1,
                         isBatchRequired: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsBatchRequired")
@@ -466,8 +469,8 @@ export class ItemFormMasterComponent implements OnInit {
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
                         manufId:
-                            this._itemService.myform.get("ManufId").value ||
-                            "0",
+                            this._itemService.myform.get("ManufId").value
+                                .ManufId || "0",
                         isNarcotic: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNarcotic").value
@@ -515,8 +518,9 @@ export class ItemFormMasterComponent implements OnInit {
                         drugType: 0,
                         drugTypeName: "0",
                         itemCompnayId: 0,
-                        isCreatedBy: 1,
-                        itemID: this._itemService.myform.get("ItemID").value,
+                        isCreatedBy: "01/01/1900",
+                        itemID:
+                            this._itemService.myform.get("ItemID").value || 0,
                     },
                     insertAssignItemToStore: data2,
                 };
@@ -524,43 +528,60 @@ export class ItemFormMasterComponent implements OnInit {
 
                 this._itemService.insertItemMaster(m_data).subscribe((data) => {
                     this.msg = data;
+
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                 });
             } else {
                 var data3 = [];
-                for (var val of this._itemService.myform.get("StoreId").value) {
-                    var data4 = {
-                        storeId: val,
-                        itemId: this._itemService.myform.get("ItemID").value,
-                    };
-                    data3.push(data4);
-                }
+                // for (var val of this._itemService.myform.get("StoreId").value
+                //     .Storeid) {
+                var data4 = {
+                    storeId:
+                        this._itemService.myform.get("StoreId").value.Storeid,
+                    itemId: this._itemService.myform.get("ItemID").value,
+                };
+                data3.push(data4);
+                // }
                 console.log(data3);
 
                 var m_dataUpdate = {
                     updateItemMaster: {
                         itemID: this._itemService.myform.get("ItemID").value,
 
-                        itemShortName:
-                            this._itemService.myform
-                                .get("ItemShortName")
-                                .value.trim() || "%",
+                        // itemShortName:
+                        //     this._itemService.myform
+                        //         .get("ItemShortName")
+                        //         .value.trim() || "%",
                         itemName:
                             this._itemService.myform
                                 .get("ItemName")
                                 .value.trim() || "%",
                         itemTypeID:
-                            this._itemService.myform.get("ItemTypeID").value,
+                            this._itemService.myform.get("ItemTypeID").value
+                                .ItemTypeId,
                         itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId")
-                                .value,
-                        itemGenericNameId:
-                            this._itemService.myform.get("ItemGenericNameId")
-                                .value,
+                            this._itemService.myform.get("ItemCategoryId").value
+                                .ItemCategoryId,
+                        itemGenericNameId: 0,
+                        // ||this._itemService.myform.get("ItemGenericNameId")
+                        //     .value.ItemGenericName,
                         itemClassId:
-                            this._itemService.myform.get("ItemClassId").value,
-                        purchaseUOMId:
-                            this._itemService.myform.get("PurchaseUOMId")
-                                .value || "0",
+                            this._itemService.myform.get("ItemClassId").value
+                                .ItemClassId,
+                        purchaseUOMId: 0,
+                        // ||this._itemService.myform.get("PurchaseUOMId").value
+                        //         .UnitofMeasurementName
                         stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
@@ -569,8 +590,8 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ConversionFactor")
                                 .value.trim() || "0",
                         currencyId:
-                            this._itemService.myform.get("CurrencyId").value ||
-                            "0",
+                            this._itemService.myform.get("CurrencyId").value
+                                .CurrencyId || "0",
                         taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
                         isBatchRequired: Boolean(
@@ -612,8 +633,8 @@ export class ItemFormMasterComponent implements OnInit {
                             )
                         ),
                         manufId:
-                            this._itemService.myform.get("ManufId").value ||
-                            "0",
+                            this._itemService.myform.get("ManufId").value
+                                .ManufId || "0",
                         prodLocation:
                             this._itemService.myform
                                 .get("ProdLocation")
@@ -654,7 +675,7 @@ export class ItemFormMasterComponent implements OnInit {
                         drugType: 0,
                         drugTypeName: "0",
                         itemCompnayId: 0,
-                        isUpdatedBy: 1,
+                        isUpdatedBy: "01/01/1900",
                     },
                     deleteAssignItemToStore: {
                         itemId: this._itemService.myform.get("ItemID").value,
@@ -666,6 +687,22 @@ export class ItemFormMasterComponent implements OnInit {
                     .updateItemMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClose();

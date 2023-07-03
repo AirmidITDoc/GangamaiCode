@@ -46,11 +46,11 @@ export class UnitmasterService {
     }
 
     public insertUnitMaster(param) {
-        return this._httpClient.post("Pathology/UnitSave", param);
+        return this._httpClient.post("PathologyMaster/UnitSave", param);
     }
 
     public updateUnitMaster(param) {
-        return this._httpClient.post("Pathology/UnitUpdate", param);
+        return this._httpClient.post("PathologyMaster/UnitUpdate", param);
     }
 
     populateForm(param) {

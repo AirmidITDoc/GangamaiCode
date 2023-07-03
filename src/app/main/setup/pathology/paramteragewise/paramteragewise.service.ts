@@ -76,14 +76,14 @@ export class ParamteragewiseService {
 
     public insertParameterMasterAgeWise(param) {
         return this._httpClient.post(
-            "Pathology/ParameterAgeWiseMasterSave",
+            "PathologyMaster/ParameterAgeWiseMasterSave",
             param
         );
     }
 
     public updateParameterMasterAgeWise(param) {
         return this._httpClient.post(
-            "Pathology/ParameterAgeWiseMasterUpdate",
+            "PathologyMaster/ParameterAgeWiseMasterUpdate",
             param
         );
     }

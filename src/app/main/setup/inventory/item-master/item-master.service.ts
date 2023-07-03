@@ -20,13 +20,13 @@ export class ItemMasterService {
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
             ItemID: [""],
-            ItemShortName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
+            // ItemShortName: [
+            //     "",
+            //     [
+            //         Validators.required,
+            //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+            //     ],
+            // ],
             ItemName: [
                 "",
                 [

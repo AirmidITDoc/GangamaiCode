@@ -91,11 +91,11 @@ export class ParametermasterService {
     }
 
     public insertParameterMaster(param) {
-        return this._httpClient.post("Pathology/ParameterSave", param);
+        return this._httpClient.post("PathologyMaster/ParameterSave", param);
     }
 
     public updateParameterMaster(param) {
-        return this._httpClient.post("Pathology/ParameterUpdate", param);
+        return this._httpClient.post("PathologyMaster/ParameterUpdate", param);
     }
 
     //detail of Range Master
