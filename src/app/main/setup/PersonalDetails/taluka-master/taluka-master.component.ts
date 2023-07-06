@@ -59,6 +59,7 @@ export class TalukaMasterComponent implements OnInit {
             TalukaNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getTalukaMasterList();
     }
 
     private filterCity() {
@@ -84,7 +85,10 @@ export class TalukaMasterComponent implements OnInit {
 
     getTalukaMasterList() {
         var param = {
-            TalukaName: "%",
+            TalukaName:
+                this._TalukaService.myformSearch
+                    .get("TalukaNameSearch")
+                    .value.trim() || "%",
         };
         this._TalukaService.getTalukaMasterList(param).subscribe((Menu) => {
             this.DSTalukaMasterList.data = Menu as TalukaMaster[];

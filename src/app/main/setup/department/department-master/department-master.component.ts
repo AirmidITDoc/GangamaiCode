@@ -20,7 +20,7 @@ export class DepartmentMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "DepartmentId",
         "DepartmentName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,9 +43,15 @@ export class DepartmentMasterComponent implements OnInit {
             DepartmentNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDepartmentMasterList();
     }
     getDepartmentMasterList() {
-        var param = { DepartmentName: "%" };
+        var param = {
+            DepartmentName:
+                this._departmentService.myformSearch
+                    .get("DepartmentNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._departmentService
             .getDepartmentMasterList(param)
             .subscribe((Menu) => {
@@ -165,7 +171,6 @@ export class DepartmentMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

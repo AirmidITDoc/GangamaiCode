@@ -45,6 +45,7 @@ export class PrefixMasterComponent implements OnInit {
             PrefixNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getPrefixMasterList();
     }
 
     getGenderNameCombobox() {
@@ -128,7 +129,6 @@ export class PrefixMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                       
                     },
                 };
 

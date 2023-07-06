@@ -91,9 +91,9 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -151,9 +151,12 @@
                                             <mat-error>Please enter Bank Name </mat-error>
                                         </mat-form-field>
                                     </div>
+                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                        <mat-radio-button value='false' class="mr-sm-12"
+                                            fxFlex>IsActive</mat-radio-button>
 
-                                    <mat-slide-toggle name="IsDeleted" (change)="onChangeIsactive($event)" checked
-                                        formControlName="IsDeleted"> IsActive</mat-slide-toggle>
+                                    </mat-radio-group>
+
                                 </form>
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">

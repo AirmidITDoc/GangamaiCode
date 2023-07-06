@@ -31,10 +31,10 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         "PhoneNo",
         "MobileNo",
         "FaxNo",
-        "AddedByName",
-        "IsCancelledBy",
-        "IsCancelled",
-        "IsCancelledDate",
+        "AddedBy",
+        // "IsCancelledBy",
+        // "IsCancelled",
+        // "IsCancelledDate",
         "IsDeleted",
         "action",
     ];
@@ -71,6 +71,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             CompanyNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getSubtpacompanyMasterList();
     }
 
     get f() {
@@ -99,8 +100,14 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     }
 
     getSubtpacompanyMasterList() {
+        var param = {
+            CompanyName:
+                this._subtpacompanyService.myformSearch
+                    .get("CompanyNameSearch")
+                    .value.trim() || "%",
+        };
         this._subtpacompanyService
-            .getSubtpacompanyMasterList()
+            .getSubtpacompanyMasterList(param)
             .subscribe((Menu) => {
                 this.DSSubtpaCompanyMasterList.data =
                     Menu as SubtpacompanyMaster[];
@@ -271,7 +278,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             PhoneNo: row.PhoneNo.trim(),
             MobileNo: row.MobileNo.trim(),
             FaxNo: row.FaxNo.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
             IsCancelled: JSON.stringify(row.IsCancelled),
             IsCancelledBy: row.IsCancelledBy,

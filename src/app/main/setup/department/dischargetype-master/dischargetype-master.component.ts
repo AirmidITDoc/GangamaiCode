@@ -27,7 +27,7 @@ export class DischargetypeMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "DischargeTypeId",
         "DischargeTypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -51,7 +51,10 @@ export class DischargetypeMasterComponent implements OnInit {
 
     getdischargetypeMasterList() {
         var m_data = {
-            DischargeTypeName: "%",
+            DischargeTypeName:
+                this._dischargetypeService.myformSearch
+                    .get("DischargeTypeNameSearch")
+                    .value.trim() + "%" || "%",
         };
         this._dischargetypeService
             .getdischargetypeMasterList(m_data)
@@ -101,6 +104,7 @@ export class DischargetypeMasterComponent implements OnInit {
             DischargeTypeNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getdischargetypeMasterList();
     }
 
     onSubmit() {
@@ -189,7 +193,7 @@ export class DischargetypeMasterComponent implements OnInit {
         var m_data = {
             DischargeTypeId: row.DischargeTypeId,
             DischargeTypeName: row.DischargeTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._dischargetypeService.populateForm(m_data);

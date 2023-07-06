@@ -83,9 +83,16 @@ export class BedMasterComponent implements OnInit {
             BedNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getbedMasterList();
     }
     getbedMasterList() {
-        var param = { BedName: "%", WardId: 0 };
+        var param = {
+            BedName:
+                this._bedService.myformSearch
+                    .get("BedNameSearch")
+                    .value.trim() + "%" || "%",
+            WardId: 0,
+        };
 
         this._bedService.getbedMasterList(param).subscribe((Menu) => {
             this.DSBedMasterList.data = Menu as BedMaster[];
@@ -188,8 +195,8 @@ export class BedMasterComponent implements OnInit {
             BedId: row.BedId,
             BedName: row.BedName,
             RoomId: row.RoomId,
-            IsAvailable: JSON.stringify(row.IsAvailable),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsAvailable: JSON.stringify(row.IsAvailible),
+            IsActive: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._bedService.populateForm(m_data);

@@ -21,9 +21,8 @@ export class TariffMasterService {
             TariffId: [""],
             TariffName: [""],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {

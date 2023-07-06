@@ -20,7 +20,7 @@ export class ReligionMasterComponent implements OnInit {
         "ReligionId",
         "ReligionName",
         "IsDeleted",
-        "AddedByName",
+        "AddedBy",
         "action",
     ];
 
@@ -43,6 +43,7 @@ export class ReligionMasterComponent implements OnInit {
             ReligionNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getReligionMasterList();
     }
     getReligionMasterList() {
         var m_data = {

@@ -62,6 +62,7 @@ export class VillageMasterComponent implements OnInit {
             VillageNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getVillageMasterList();
     }
     private filterTaluka() {
         // debugger;

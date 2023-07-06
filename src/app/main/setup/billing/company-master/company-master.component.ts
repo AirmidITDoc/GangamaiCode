@@ -36,7 +36,7 @@ export class CompanyMasterComponent implements OnInit {
         "MobileNo",
         "FaxNo",
         "TariffName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -67,9 +67,15 @@ export class CompanyMasterComponent implements OnInit {
             CompanyNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCompanyMaster();
     }
     getCompanyMaster() {
-        var param = { CompanyName: "%" };
+        var param = {
+            CompanyName:
+                this._companyService.myformSearch
+                    .get("CompanyNameSearch")
+                    .value.trim() || "%",
+        };
         this._companyService.getCompanyMaster(param).subscribe(
             (Menu) => {
                 this.DSCompanyMasterList.data = Menu as CompanyMaster[];
@@ -151,7 +157,7 @@ export class CompanyMaster {
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-   // AddedByName: string;
+    // AddedByName: string;
     /**
    * Constructor
    *
@@ -177,7 +183,7 @@ export class CompanyMaster {
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-           // this.AddedByName = CompanyMaster.AddedByName || "";
+            // this.AddedByName = CompanyMaster.AddedByName || "";
         }
     }
 }

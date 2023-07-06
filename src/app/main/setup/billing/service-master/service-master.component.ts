@@ -66,13 +66,21 @@ export class ServiceMasterComponent implements OnInit {
             ServiceNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getServiceMasterList();
     }
     get f() {
         return this._serviceMasterService.myform.controls;
     }
 
     getServiceMasterList() {
-        var param = { ServiceName: "%", TariffId: 1, GroupId: 1 };
+        var param = {
+            ServiceName:
+                this._serviceMasterService.myformSearch
+                    .get("ServiceNameSearch")
+                    .value.trim() + "%" || "%",
+            TariffId: 1,
+            GroupId: 1,
+        };
         this._serviceMasterService.getServiceMasterList(param).subscribe(
             (Menu) => {
                 this.DSServiceMasterList.data = Menu as ServiceMaster[];

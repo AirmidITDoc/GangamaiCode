@@ -122,6 +122,52 @@ app-service-master {
         line-height: 20px;
         border-radius: 50%;
     }
+    .clearbutton {
+        padding-right: 5px;
+        padding-left: 5px;
+        float: right;
+        color: blue;
+        width: 27%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin: 5px;
+        font-size: 17px;
+        border: 1px solid #808080;
+        height: 40px;
+    }
+
+    .cleariconbutton {
+        font-size: 30px;
+        text-align: center;
+        margin: 10 10 10 10 px;
+        // margin-bottom: 35px;
+        // margin-right: 13px;
+
+        color: blue;
+    }
+
+    .searchButton {
+        padding-right: 5px;
+        padding-left: 5px;
+        float: right;
+        color: blue;
+        width: 27%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin: 5px;
+        font-size: 17px;
+        border: 1px solid #808080;
+        height: 40px;
+    }
+
+    .searchiconbutton {
+        font-size: 30px;
+        text-align: center;
+        margin: 10 10 10 10 px;
+        // margin-bottom: 35px;
+        // margin-right: 10px;
+        color: blue;
+    }
 }
 
 //sidebar

@@ -4,16 +4,16 @@
 
 app-ward-master {
     .mat-header-row {
-        width: 1000px;
-        max-width: 1000px;
-        min-width: 1000px;
+        width: 850px;
+        max-width: 850px;
+        min-width: 850px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 1000px;
-        max-width: 1000px;
-        min-width: 1000px;
+        width: 850px;
+        max-width: 850px;
+        min-width: 850px;
     }
 
     .mat-column-RoomId {
@@ -37,11 +37,11 @@ app-ward-master {
         max-width: 150px;
         min-width: 150px;
     }
-    .mat-column-AddedByName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-AddedByName {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
     .mat-column-IsAvailable {
         width: 100px;

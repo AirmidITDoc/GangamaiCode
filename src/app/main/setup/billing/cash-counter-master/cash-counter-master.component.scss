@@ -2,18 +2,18 @@
     padding: 10px !important;
 }
 
-app-cashcounter-master {
+app-cash-counter-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 900px;
+        max-width: 900px;
+        min-width: 900px;
     }
 
     .mat-column-CashCounterId {
@@ -56,9 +56,9 @@ app-cashcounter-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

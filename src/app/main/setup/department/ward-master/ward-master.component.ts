@@ -27,7 +27,7 @@ export class WardMasterComponent implements OnInit {
         "RoomName",
         "LocationName",
         "ClassName",
-        "AddedByName",
+
         "IsAvailable",
         "IsDeleted",
         "action",
@@ -75,6 +75,7 @@ export class WardMasterComponent implements OnInit {
             RoomNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getwardMasterList();
     }
     private filterLocation() {
         // debugger;
@@ -119,7 +120,12 @@ export class WardMasterComponent implements OnInit {
     }
 
     getwardMasterList() {
-        var param = { WardName: "%" };
+        var param = {
+            WardName:
+                this._wardService.myformSearch
+                    .get("RoomNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._wardService.getwardMasterList(param).subscribe((Menu) => {
             this.DSWardMasterList.data = Menu as WardMaster[];
             this.DSWardMasterList.sort = this.sort;
@@ -247,9 +253,9 @@ export class WardMasterComponent implements OnInit {
             RoomId: row.RoomId,
             RoomName: row.WardName,
             LocationId: row.LocationId,
-            IsAvailable: JSON.stringify(row.IsAvailable),
+            IsAvailable: JSON.stringify(row.IsAvailible),
             ClassId: row.ClassID,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._wardService.populateForm(m_data);

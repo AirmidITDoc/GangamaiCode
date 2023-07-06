@@ -31,7 +31,7 @@ export class StateMasterComponent implements OnInit {
         "StateId",
         "StateName",
         "CountryName",
-        "AddedByName",
+        //  "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -62,6 +62,7 @@ export class StateMasterComponent implements OnInit {
             StateNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getstateMasterList();
     }
     private filterCountry() {
         if (!this.CountrycmbList) {
@@ -85,7 +86,10 @@ export class StateMasterComponent implements OnInit {
 
     getstateMasterList() {
         var param = {
-            StateName: "%",
+            StateName:
+                this._stateService.myformSearch
+                    .get("StateNameSearch")
+                    .value.trim() || "%",
         };
         this._stateService.getstateMasterList(param).subscribe((Menu) => {
             this.DSStateMasterList.data = Menu as StateMaster[];
@@ -202,7 +206,8 @@ export class StateMasterComponent implements OnInit {
             StateId: row.StateId,
             StateName: row.StateName.trim(),
             CountryId: row.CountryId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            CountryName: row.CountryName.trim(),
+            IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._stateService.populateForm(m_data);
@@ -213,10 +218,10 @@ export class StateMaster {
     StateId: number;
     StateName: string;
     CountryId: number;
+    CountryName: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

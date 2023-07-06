@@ -26,7 +26,8 @@ export class CashCounterMasterComponent implements OnInit {
         "CashCounterName",
         "Prefix",
         "BillNo",
-        "AddedByName",
+        // "AddedBy",
+        "IsDeleted",
         "action",
     ];
 
@@ -46,9 +47,15 @@ export class CashCounterMasterComponent implements OnInit {
             CashCounterNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCashcounterMasterList();
     }
     getCashcounterMasterList() {
-        var param = { CashCounterName: "%" };
+        var param = {
+            CashCounterName:
+                this._cashcounterService.myformSearch
+                    .get("CashCounterNameSearch")
+                    .value.trim() || "%",
+        };
         this._cashcounterService
             .getCashcounterMasterList(param)
             .subscribe((Menu) => {
@@ -161,7 +168,7 @@ export class CashCounterMasterComponent implements OnInit {
             CashCounterName: row.CashCounterName,
             Prefix: row.Prefix,
             BillNo: row.BillNo,
-            // IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             // UpdatedBy: row.UpdatedBy,
         };
         this._cashcounterService.populateForm(m_data);
@@ -174,9 +181,8 @@ export class CashCounterMaster {
     Prefix: string;
     BillNo: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -190,9 +196,8 @@ export class CashCounterMaster {
             this.Prefix = CashCounterMaster.Prefix || "";
             this.BillNo = CashCounterMaster.BillNo || "";
             this.IsDeleted = CashCounterMaster.IsDeleted || "false";
-            this.AddedBy = CashCounterMaster.AddedBy || "";
-            this.UpdatedBy = CashCounterMaster.UpdatedBy || "";
-            this.AddedByName = CashCounterMaster.AddedByName || "";
+            //  this.AddedBy = CashCounterMaster.AddedBy || "";
+            // this.UpdatedBy = CashCounterMaster.UpdatedBy || "";
         }
     }
 }

@@ -78,11 +78,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <!-- <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
@@ -97,16 +97,15 @@
 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.TalukaId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            <!-- <button mat-icon-button [routerLink]="['/auth/menu-configure/menu-configure',row.menu_master_id]">
-                                        <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
-                                    </button> -->
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -121,7 +120,7 @@
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        [ngClass]="{'hide':DSPatientTypeMasterList!=null}"></mat-footer-row>
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
@@ -130,11 +129,11 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_PatientTypeService.myForm">
                                     <h3>{{_PatientTypeService.myForm.controls.PatientTypeId.value?"Modify Patient Type
                                         Master":"New Pateint Type Master"}}</h3>
-                                    <!-- <span><h3>{{_PrefixService.myform.controls.PrefixID.value?"Modify Prefix Master":"New Prefix Master"}}</h3></span> -->
+
 
                                     <input type="hidden" name="PatientTypeId" formControlName="PatientTypeId">
 

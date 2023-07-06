@@ -34,7 +34,7 @@ export class WardMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            WardNameSearch: [""],
+            RoomNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }

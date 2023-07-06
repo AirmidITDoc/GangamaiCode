@@ -1,15 +1,15 @@
 app-location-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
     }
 
     .mat-column-LocationId {
@@ -19,18 +19,18 @@ app-location-master {
     }
 
     .mat-column-LocationName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
-
-    .mat-column-AddedByName {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
     }
 
-    .mat-column-IsDeleted {
+    // .mat-column-AddedByName {
+    //     width: 200px;
+    //     max-width: 200px;
+    //     min-width: 200px;
+    // }
+
+    .mat-column-IsActive {
         width: 100px;
         max-width: 100px;
         min-width: 100px;

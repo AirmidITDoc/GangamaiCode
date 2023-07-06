@@ -24,7 +24,7 @@ export class CompanyTypeMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CompanyTypeId",
         "TypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -45,9 +45,15 @@ export class CompanyTypeMasterComponent implements OnInit {
             TypeNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCompanytypeMasterList();
     }
     getCompanytypeMasterList() {
-        var param = { TypeName: "%" };
+        var param = {
+            TypeName:
+                this._companytypeService.myformSearch
+                    .get("TypeNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._companytypeService
             .getCompanytypeMasterList(param)
             .subscribe((Menu) => {

@@ -1,4 +1,4 @@
-app-state-master {
+app-city-master {
     .mat-header-row {
         width: 800px;
         max-width: 800px;
@@ -19,22 +19,28 @@ app-state-master {
     }
 
     .mat-column-CITYNAME {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
 
     .mat-column-STATENAME {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
 
-    .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+    .mat-column-COUNTRYNAME {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
+
+    // .mat-column-AddedBy {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
     .mat-column-ISDELETED {
         width: 100px;
@@ -46,9 +52,9 @@ app-state-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

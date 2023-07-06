@@ -31,7 +31,7 @@ export class AreaMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "AreaId",
         "AreaName",
-        "CityName",
+        //  "CityName",
         "AddedBy",
         "IsDeleted",
         "action",
@@ -66,6 +66,7 @@ export class AreaMasterComponent implements OnInit {
             AreaNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getAreaMasterList();
     }
     private filterCity() {
         if (!this.CitycmbList) {
@@ -89,7 +90,10 @@ export class AreaMasterComponent implements OnInit {
 
     getAreaMasterList() {
         var param = {
-            AreaName: "%",
+            AreaName:
+                this._AreaService.myformSearch
+                    .get("AreaNameSearch")
+                    .value.trim() || "%",
         };
         this._AreaService.getAreaMasterList(param).subscribe((Menu) => {
             this.DSAreaMasterList.data = Menu as AreaMaster[];

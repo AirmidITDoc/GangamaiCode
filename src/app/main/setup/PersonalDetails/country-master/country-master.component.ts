@@ -42,9 +42,16 @@ export class CountryMasterComponent implements OnInit {
             CountryNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCountryMasterList();
     }
     getCountryMasterList() {
-        this._CountryService.getCountryMasterList().subscribe((Menu) => {
+        var param = {
+            CountryName:
+                this._CountryService.myformSearch
+                    .get("CountryNameSearch")
+                    .value.trim() || "%",
+        };
+        this._CountryService.getCountryMasterList(param).subscribe((Menu) => {
             this.DSCountryMasterList.data = Menu as CountryMaster[];
             this.DSCountryMasterList.sort = this.sort;
             this.DSCountryMasterList.paginator = this.paginator;

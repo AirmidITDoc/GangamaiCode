@@ -4,16 +4,16 @@
 
 app-group-master {
     .mat-header-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
+        width: 720px;
+        max-width: 720px;
+        min-width: 720px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 900px;
-        max-width: 900px;
-        min-width: 900px;
+        width: 720px;
+        max-width: 720px;
+        min-width: 720px;
     }
 
     .mat-column-GroupId {
@@ -33,27 +33,17 @@ app-group-master {
         min-width: 100px;
     }
     .mat-column-IsConsolidatedDR {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
-    .mat-column-PrintSeqNo {
         width: 120px;
         max-width: 120px;
-        min-width: 70px;
+        min-width: 120px;
     }
 
-    .mat-column-IsDeleted {
+    .mat-column-IsActive {
         width: 70px;
         max-width: 70px;
         min-width: 70px;
         text-align: center;
         justify-content: center;
-    }
-    .mat-column-AddedByName {
-        width: 120px;
-        max-width: 120px;
-        min-width: 70px;
     }
 
     .mat-column-action {
