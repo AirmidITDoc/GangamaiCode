@@ -22,7 +22,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "Id",
         "ModeOfPayment",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,9 +43,15 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             ModeOfPaymentSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getModeofpaymentMasterList();
     }
     getModeofpaymentMasterList() {
-        var param = { ModeOfPayment: "%" };
+        var param = {
+            ModeOfPayment:
+                this._modeofpaymentService.myformSearch
+                    .get("ModeOfPaymentSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._modeofpaymentService
             .getModeofpaymentMasterList(param)
             .subscribe((Menu) => {
@@ -164,7 +170,6 @@ export class ModeofpaymentMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -178,7 +183,6 @@ export class ModeofpaymentMaster {
             this.IsDeleted = ModeofpaymentMaster.IsDeleted || "false";
             this.AddedBy = ModeofpaymentMaster.AddedBy || "";
             this.UpdatedBy = ModeofpaymentMaster.UpdatedBy || "";
-            this.AddedByName = ModeofpaymentMaster.AddedByName || "";
         }
     }
 }

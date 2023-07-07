@@ -25,7 +25,7 @@ export class ItemCategoryMasterComponent implements OnInit {
         "ItemCategoryId",
         "ItemCategoryName",
         "ItemTypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -61,6 +61,7 @@ export class ItemCategoryMasterComponent implements OnInit {
             ItemCategoryNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getitemcategoryMasterList();
     }
     private filterItem() {
         if (!this.ItemTypecmbList) {
@@ -83,7 +84,12 @@ export class ItemCategoryMasterComponent implements OnInit {
     }
 
     getitemcategoryMasterList() {
-        var param = { ItemCategoryName: "%" };
+        var param = {
+            ItemCategoryName:
+                this._itemcategoryService.myformSearch
+                    .get("ItemCategoryNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._itemcategoryService
             .getitemcategoryMasterList(param)
             .subscribe((Menu) => {
@@ -226,7 +232,6 @@ export class ItemCategoryMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

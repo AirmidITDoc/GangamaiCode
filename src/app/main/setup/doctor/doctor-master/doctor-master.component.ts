@@ -76,6 +76,7 @@ export class DoctorMasterComponent implements OnInit {
             DoctorNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDoctorMasterList();
     }
 
     onClear() {
@@ -89,7 +90,10 @@ export class DoctorMasterComponent implements OnInit {
 
     getDoctorMasterList() {
         var m_data = {
-            F_Name: "%",
+            F_Name:
+                this._doctorService.myformSearch
+                    .get("DoctorNameSearch")
+                    .value.trim() + "%" || "%",
             L_Name: "%",
         };
         this._doctorService.getDoctorMasterList(m_data).subscribe(

@@ -9,17 +9,15 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Company Master
             </span>
-
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
-                style="margin-left: 1700px;">Add
-                <mat-icon color="Primary" title=" Add New Company ">add_to_photos</mat-icon>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
+                <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon>
             </button>
 
         </div>
     </mat-toolbar>
     <!-- / HEADER -->
-
-
 
     <!-- CONTENT -->
     <div class="content">
@@ -40,29 +38,28 @@
                         padding: 5px 10px 5px 10px; 
                     " fxLayoutGap="3px">
                             <form [formGroup]="_companyService.myformSearch">
-                                <!-- <div class="dialog-content-wrapper" fxLayout="column" fxLayout.gt-xs="row"> -->
-                                <mat-form-field class="mr-sm-12" style="width: 60%;" fxFlex>
-                                    <input matInput placeholder="Search --> Company Name" autocomplete="off"
-                                        name="CompanyNameSearch" formControlName="CompanyNameSearch" />
-                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="onSearchClear()">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Company Name" autocomplete="off"
+                                            name="CompanyNameSearch" formControlName="CompanyNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
 
-                                <mat-radio-group name="IsDeletedSearch" style="width: 35%;"
-                                    formControlName="IsDeletedSearch" value="2">
-                                    <mat-radio-button value="2">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                </mat-radio-group>
-                                <div style="width: 5%;">
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
                                         Search
                                     </button>
                                 </div>
-                                <!-- </div> -->
                             </form>
                         </div>
                         <div fxlayout="row">

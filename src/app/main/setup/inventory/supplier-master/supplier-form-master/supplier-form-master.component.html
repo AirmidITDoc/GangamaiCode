@@ -18,6 +18,7 @@
             <span class="error" *ngIf="f.SupplierName.invalid && f.SupplierName.touched">SupplierName is required only
                 Alphabets</span>
         </mat-form-field>
+
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="ContactPerson" placeholder="Enter ContactPerson"
                 [ngClass]="{ 'is-invalid': submitted && f.ContactPerson.errors }" formControlName="ContactPerson"
@@ -25,16 +26,13 @@
             <span class="error" *ngIf="f.ContactPerson.invalid && f.ContactPerson.touched">ContactPerson required only
                 Alphabets</span>
         </mat-form-field>
+
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput>
             <mat-error>Please enter Address </mat-error>
         </mat-form-field>
 
-    </div>
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-        <mat-form-field appearance="outline" fxFlex>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <mat-label>City</mat-label>
             <mat-select formControlName="CityId" placeholder="Bank" #singleSelect required
                 (selectionChange)="onChangeCityList($event.value.CityId)">
@@ -51,7 +49,13 @@
                 City Name is required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" fxFlex>
+
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <mat-label>State Name</mat-label>
             <mat-select formControlName="StateId" name="StateId" (selectionChange)="onChangeCountryList($event.value)">
                 <mat-option></mat-option>
@@ -61,7 +65,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" fxFlex>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <mat-label>Country Name</mat-label>
             <mat-select formControlName="CountryId">
                 <mat-option></mat-option>
@@ -70,9 +74,7 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-    </div>
 
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="Mobile" placeholder="Enter Mobile No."
                 [ngClass]="{ 'is-invalid': submitted && f.Mobile.errors }" formControlName="Mobile" matInput required>
@@ -84,18 +86,15 @@
                 formControlName="Phone" matInput>
             <span class="error" *ngIf="f.Phone.invalid && f.Phone.touched">Phone required only Digits</span>
         </mat-form-field>
+    </div>
+
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="Fax" placeholder="Select Fax" [ngClass]="{ 'is-invalid': submitted && f.Fax.errors }"
                 formControlName="Fax" matInput>
             <span class="error" *ngIf="f.Fax.invalid && f.Fax.touched">Fax required only Digits</span>
         </mat-form-field>
-
-    </div>
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-
 
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="Email" placeholder="Enter Email" [ngClass]="{ 'is-invalid': submitted && f.Email.errors }"
@@ -114,6 +113,7 @@
         </mat-form-field>
 
     </div>
+
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
             <input name="ModeOfPayment" placeholder="Enter ModeOfPayment"
@@ -144,51 +144,39 @@
     </div>
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        <div class="child-1" fxFlex="50%">
-            <div fxFlex="60%">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-select placeholder="Select StoreName" #txt formControlName="StoreId" multiple>
-                        <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
-                            {{M.StoreName}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
-            <div class="child-2" fxFlex="50%">
 
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="GSTNo" placeholder="Enter GSTNo" formControlName="GSTNo" matInput>
-                    <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
-                </mat-form-field>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <mat-select placeholder="Select StoreName" #txt formControlName="StoreId" multiple>
+                <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
+                    {{M.StoreName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="PanNo" placeholder="Enter PanNo" formControlName="PanNo" matInput>
-                    <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
-                </mat-form-field>
-            </div>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="GSTNo" placeholder="Enter GSTNo" formControlName="GSTNo" matInput>
+            <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
+        </mat-form-field>
 
-        </div>
+        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+            <input name="PanNo" placeholder="Enter PanNo" formControlName="PanNo" matInput>
+            <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
+        </mat-form-field>
 
     </div>
-
-    <hr>
     <div>
         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
             <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
             <!-- <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button> -->
         </mat-radio-group>
     </div>
-
-
 </form>
 
 <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
     <div class="button-row">
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
             [disabled]="_supplierService.myform.invalid">Save</button>
-        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-
+        <button mat-raised-button color="warn" (click)="onClose()">Close</button>
     </div>
 </div>
 <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

@@ -41,12 +41,18 @@ export class GenericmasterComponent implements OnInit {
 
     onSearchClear() {
         this._GenericService.myformSearch.reset({
-            PrefixNameSearch: "",
+            GenericNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getGenericMasterList();
     }
     getGenericMasterList() {
-        var param = { GenericName: "%" };
+        var param = {
+            GenericName:
+                this._GenericService.myformSearch
+                    .get("GenericNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._GenericService.getGenericMasterList(param).subscribe((Menu) => {
             (this.DSGenericMasterList.data = Menu as GenericMaster[]),
                 (this.DSGenericMasterList.sort = this.sort),

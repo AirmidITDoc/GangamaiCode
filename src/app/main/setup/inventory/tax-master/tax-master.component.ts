@@ -19,7 +19,7 @@ export class TaxMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "Id",
         "TaxNature",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -42,9 +42,15 @@ export class TaxMasterComponent implements OnInit {
             TaxNatureSearch: "",
             IsDeletedSearch: "2",
         });
+        this.gettaxMasterList();
     }
     gettaxMasterList() {
-        var param = { TaxNature: "%" };
+        var param = {
+            TaxNature:
+                this._taxmasterService.myformSearch
+                    .get("TaxNatureSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._taxmasterService.gettaxMasterList(param).subscribe((Menu) => {
             this.DSTaxMasterList.data = Menu as TaxMaster[];
             this.DSTaxMasterList.sort = this.sort;
@@ -147,7 +153,8 @@ export class TaxMasterComponent implements OnInit {
         var m_data = {
             Id: row.Id,
             TaxNature: row.TaxNature.trim(),
-            UpdatedBy: row.UpdatedBy,
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            // UpdatedBy: row.UpdatedBy,
         };
         this._taxmasterService.populateForm(m_data);
     }
@@ -158,7 +165,6 @@ export class TaxMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

@@ -22,7 +22,7 @@ export class DosemasterComponent implements OnInit {
         "DoseName",
         "DoseNameInEnglish",
         "DoseQtyPerDay",
-        "AddedByName",
+        //"AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -42,13 +42,19 @@ export class DosemasterComponent implements OnInit {
 
     onSearchClear() {
         this._DoseService.myformSearch.reset({
-            PrefixNameSearch: "",
+            DoseNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDoseMasterList();
     }
 
     getDoseMasterList() {
-        var param = { DoseName: "%" };
+        var param = {
+            DoseName:
+                this._DoseService.myformSearch
+                    .get("DoseNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._DoseService
             .getDoseMasterList(param)
             .subscribe(
@@ -155,7 +161,7 @@ export class DosemasterComponent implements OnInit {
             DoseName: row.DoseName.trim(),
             DoseNameInEnglish: row.DoseNameInEnglish.trim(),
             DoseQtyPerDay: row.DoseQtyPerDay,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
 

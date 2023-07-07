@@ -4,22 +4,22 @@
 
 app-currency-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
     }
 
     .mat-column-CurrencyId {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-CurrencyName {
@@ -28,10 +28,10 @@ app-currency-master {
         min-width: 200px;
     }
 
-    .mat-column-AddedByName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+    .mat-column-AddedBy {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
     .mat-column-IsDeleted {

@@ -487,7 +487,7 @@ export class NewDoctorComponent implements OnInit {
             Education: row.Education.trim(),
             IsConsultant: Boolean(JSON.stringify(row.IsConsultant)),
             IsRefDoc: Boolean(JSON.stringify(row.IsRefDoc)),
-            IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
+            IsDeleted: Boolean(JSON.stringify(row.IsActive)),
             DoctorTypeId: row.DoctorTypeId,
             AgeYear: row.AgeYear.trim(),
             AgeMonth: row.AgeMonth.trim(),

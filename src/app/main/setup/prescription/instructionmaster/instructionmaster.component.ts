@@ -19,8 +19,6 @@ export class InstructionmasterComponent implements OnInit {
     displayedColumns: string[] = [
         "InstructionId",
         "InstructionName",
-
-        "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -34,7 +32,12 @@ export class InstructionmasterComponent implements OnInit {
     }
 
     getInstructionMasterList() {
-        var param = { InstructionName: "%" };
+        var param = {
+            InstructionName:
+                this._InstructionService.myformSearch
+                    .get("InstructionNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._InstructionService
             .getInstructionMasterList(param)
             .subscribe(
@@ -52,6 +55,7 @@ export class InstructionmasterComponent implements OnInit {
             InstructionNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getInstructionMasterList();
     }
     onClear() {
         this._InstructionService.myForm.reset({ IsDeleted: "false" });
@@ -149,7 +153,7 @@ export class InstructionmasterComponent implements OnInit {
         var m_data1 = {
             InstructionId: row.InstructionId,
             InstructionName: row.InstructionName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(m_data1);
@@ -163,7 +167,6 @@ export class InstructionMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -178,7 +181,6 @@ export class InstructionMaster {
             this.IsDeleted = InstructionMaster.IsDeleted || "false";
             this.AddedBy = InstructionMaster.AddedBy || "";
             this.UpdatedBy = InstructionMaster.UpdatedBy || "";
-            this.AddedByName = InstructionMaster.AddedByName || "";
         }
     }
 }

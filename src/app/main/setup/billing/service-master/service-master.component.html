@@ -9,10 +9,10 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Service Master
             </span>
-
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
-                style="margin-left: 1700px;">Add
-                <mat-icon color="Primary" title=" Add New Service ">add_to_photos</mat-icon>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
+                <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon>
             </button>
 
         </div>
@@ -25,71 +25,6 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" style="background-color: white;
-        height:50%; margin-top: 8px;">
-
-            <!-- SIDEBAR CONTENT -->
-            <div class="sidebar-content">
-
-                <div class="card">
-
-                    <!-- SIDEBAR HEADER -->
-                    <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="height:30px;">
-
-                        <span class=" h5">Search Facility</span>
-
-                    </div>
-                    <!-- / SIDEBAR HEADER -->
-                    <!-- SIDEBAR CONTENT -->
-                    <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
-                        <div class="nav material2">
-                            <form [formGroup]="_serviceMasterService.myformSearch">
-                                <div fxLayout="column" fxLayoutAlign="start none">
-                                    <div style="margin-top: 30px;">
-                                        <mat-form-field class="mr-sm-12" appearance="outline" fxFlex>
-                                            <mat-label>Enter Service Name</mat-label>
-                                            <input matInput placeholder="Search --> Service Name" autocomplete="off"
-                                                name="ServiceNameSearch" formControlName="ServiceNameSearch" />
-                                            <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button> -->
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div style="margin-top: 30px;">
-                                        <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                            value="2" fxLayout="row" fxLayoutAlign="center center">
-                                            <mat-radio-button value="2">All</mat-radio-button><br>
-                                            <mat-radio-button mat-fab value="0">IsActive</mat-radio-button><br>
-                                            <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <!-- <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button> -->
-
-                                    <div style="margin-top: 30px;align-items: center;">
-                                        <button mat-raised-button (click)="onSearchClear()" class="clearbutton"
-                                            matTooltip="close">
-                                            <mat-icon class="cleariconbutton">close</mat-icon>
-                                        </button>&nbsp;
-                                        <button mat-raised-button class="searchButton" (click)="onSearch()"
-                                            matTooltip="search">
-                                            <mat-icon class="searchiconbutton">search</mat-icon>
-                                        </button>
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- / SIDEBAR CONTENT -->
-
-        </fuse-sidebar>
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
@@ -100,6 +35,38 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;"
+                            fxLayoutGap="3px">
+                            <form [formGroup]="_serviceMasterService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Service Name" autocomplete="off"
+                                            name="ServiceNameSearch" formControlName="ServiceNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+
                         <div style="width: 100%;">
                             <mat-table #table matSort [dataSource]="DSServiceMasterList"
                                 [@animateStagger]="{value:'50'}" style="overflow:auto">

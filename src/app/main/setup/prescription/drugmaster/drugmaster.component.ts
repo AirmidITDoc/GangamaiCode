@@ -40,7 +40,7 @@ export class DrugmasterComponent implements OnInit {
         "DrugName",
         "GenericName",
         "ClassName",
-        "AddedByName",
+        // "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -75,6 +75,7 @@ export class DrugmasterComponent implements OnInit {
             DrugNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDrugMasterList();
     }
     private filterClass() {
         if (!this.ClassmbList) {
@@ -117,7 +118,12 @@ export class DrugmasterComponent implements OnInit {
         );
     }
     getDrugMasterList() {
-        var param = { DrugName: "%" };
+        var param = {
+            DrugName:
+                this._drugService.myformSearch
+                    .get("DrugNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._drugService.getDrugMasterList(param).subscribe((Menu) => {
             this.DSDrugMasterList.data = Menu as DrugMaster[];
             this.DSDrugMasterList.sort = this.sort;
@@ -235,7 +241,7 @@ export class DrugmasterComponent implements OnInit {
             DrugName: row.DrugName.trim(),
             GenericId: row.GenericId,
             ClassId: row.ClassId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._drugService.populateForm(m_data);

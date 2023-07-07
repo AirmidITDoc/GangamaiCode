@@ -31,7 +31,12 @@ export class DoctortypeMasterComponent implements OnInit {
     }
 
     getDoctortypeMasterList() {
-        var param = { DoctorType: "%" };
+        var param = {
+            DoctorType:
+                this._doctortypeService.myformSearch
+                    .get("DoctorTypeSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._doctortypeService
             .getDoctortypeMasterList(param)
             .subscribe((Menu) => {
@@ -49,6 +54,7 @@ export class DoctortypeMasterComponent implements OnInit {
             DoctorTypeSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDoctortypeMasterList();
     }
     onClear() {
         this._doctortypeService.myform.reset({ IsDeleted: "false" });
@@ -141,7 +147,7 @@ export class DoctortypeMasterComponent implements OnInit {
         var m_data = {
             Id: row.Id,
             DoctorType: row.DoctorType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
         };
         this._doctortypeService.populateForm(m_data);
     }

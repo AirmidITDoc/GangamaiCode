@@ -14,39 +14,23 @@
     <div>
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ItemShortName" formControlName="ItemShortName"
-                    [ngClass]="{ 'is-invalid': submitted && f.ItemShortName.errors }"
-                    placeholder="Select ItemShort Name" matInput required>
-                <span class="error" *ngIf="f.ItemShortName.invalid && f.ItemShortName.touched">ItemShort Name is
-                    required Enter only Alphabets</span>
-            </mat-form-field> -->
 
-            <mat-form-field appearance="outline" fxFlex>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" matInput required>
                 <mat-error>Please enter HSNcode </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="ItemName" formControlName="ItemName"
                     [ngClass]="{ 'is-invalid': submitted && f.ItemName.errors }" placeholder="Enter Item Name" matInput
                     required>
                 <span class="error" *ngIf="f.ItemName.invalid && f.ItemName.touched">ItemName is required Enter only
                     Alphabets</span>
             </mat-form-field>
-        </div>
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <!-- <mat-form-field appearance="outline" fxFlex>
-            <mat-select placeholder="Select ItemType Name" name="ItemTypeID" formControlName="ItemTypeID" required>
-                <mat-option *ngFor="let M of ItemTypecmbList" [value]="M.ItemTypeID">
-                    {{ M.ItemTypeName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Please Select ItemType Name </mat-error>
-        </mat-form-field> -->
 
-            <mat-form-field appearance="outline" fxFlex>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>ItemType Name</mat-label>
                 <mat-select formControlName="ItemTypeID" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -59,17 +43,9 @@
                 </mat-select>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select ItemCategory Name" name="ItemCategoryId" formControlName="ItemCategoryId"
-                required>
-                <mat-option *ngFor="let M of ItemCategorycmbList" [value]="M.ItemCategoryId">
-                    {{ M.ItemCategoryName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Please Select ItemCategoryName </mat-error>
-        </mat-form-field> -->
 
-            <mat-form-field appearance="outline" fxFlex>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>ItemCategory Name</mat-label>
                 <mat-select formControlName="ItemCategoryId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -82,17 +58,11 @@
                 </mat-select>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select ItemGeneric Name" name="ItemGenericNameId"
-                formControlName="ItemGenericNameId" required>
-                <mat-option *ngFor="let M of ItemGenericcmbList" [value]="M.ItemGenericNameId">
-                    {{ M.ItemGenericName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Please Select ItemGenericName</mat-error>
-        </mat-form-field> -->
+        </div>
 
-            <mat-form-field appearance="outline" fxFlex>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>ItemGeneric Name</mat-label>
                 <mat-select formControlName="ItemGenericNameId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -105,16 +75,9 @@
                 </mat-select>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select ItemClass Name" name="ItemClassId" formControlName="ItemClassId" required>
-                <mat-option *ngFor="let M of ItemClasscmbList" [value]="M.ItemClassId">
-                    {{ M.ItemClassName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Select Item ClassName</mat-error>
-        </mat-form-field> -->
 
-            <mat-form-field appearance="outline" fxFlex>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>ItemClassName</mat-label>
                 <mat-select formControlName="ItemClassId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -126,19 +89,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>
 
-        <div>
-
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select UnitofMeasurement" name="PurchaseUOMId" formControlName="PurchaseUOMId">
-                <mat-option *ngFor="let M of ItemUomcmbList" [value]="M.PurchaseUOMId">
-                    {{ M.UnitofMeasurementName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Select UnitofMeasurementName</mat-error>
-        </mat-form-field> -->
-            <mat-form-field appearance="outline" fxFlex>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>UnitofMeasurement Name</mat-label>
                 <mat-select formControlName="PurchaseUOMId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -160,17 +112,11 @@
                 </mat-select>
                 <mat-error>Select UnitofMeasurementName</mat-error>
             </mat-form-field>
+        </div>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select Currency" name="CurrencyId" formControlName="CurrencyId">
-                <mat-option *ngFor="let M of CurrencycmbList" [value]="M.CurrencyId">
-                    {{ M.CurrencyName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Select Currency</mat-error>
-        </mat-form-field> -->
+        <div>
 
-            <mat-form-field appearance="outline" fxFlex>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>Currency Name</mat-label>
                 <mat-select formControlName="CurrencyId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -191,10 +137,6 @@
                     required Enter only Digits</span>
             </mat-form-field>
 
-        </div>
-
-        <div>
-
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="CGST" placeholder="Enter CGST" [ngClass]="{ 'is-invalid': submitted && f.CGST.errors }"
                     formControlName="CGST" matInput>
@@ -205,6 +147,11 @@
                     formControlName="SGST" matInput>
                 <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
             </mat-form-field>
+
+        </div>
+
+        <div>
+
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="IGST" placeholder="Enter IGST" [ngClass]="{ 'is-invalid': submitted && f.IGST.errors }"
                     formControlName="IGST" matInput>
@@ -217,8 +164,7 @@
                 <span class="error" *ngIf="f.TaxPer.invalid && f.TaxPer.touched">TaxPer is required Enter only
                     Number</span>
             </mat-form-field>
-        </div>
-        <div>
+
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty"
                     [ngClass]="{ 'is-invalid': submitted && f.MinQty.errors }" matInput>
@@ -232,7 +178,9 @@
                 <span class="error" *ngIf="f.MaxQty.invalid && f.MaxQty.touched">MaxQty is required Enter only
                     Number</span>
             </mat-form-field>
+        </div>
 
+        <div>
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder"
                     [ngClass]="{ 'is-invalid': submitted && f.ReOrder.errors }" matInput>
@@ -240,17 +188,9 @@
                     Number</span>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <mat-select placeholder="Select ManufName" name="ManufId" formControlName="ManufId" >
-                <mat-option *ngFor="let M of ManufacurecmbList" [value]="M.ManufId">
-                    {{ M.ManufName }}
-                </mat-option>
-            </mat-select>
-            <mat-error>Please Select ManufName</mat-error>
-        </mat-form-field> -->
 
 
-            <mat-form-field appearance="outline" fxFlex>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                 <mat-label>Manufacture Name</mat-label>
                 <mat-select formControlName="ManufId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -263,76 +203,56 @@
                 </mat-select>
             </mat-form-field>
 
-        </div>
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-            <div fxFlex="50%">
-                <div class="child-1" fxFlex="50%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select  placeholder="Select Store Name" #txt name="StoreId" formControlName="StoreId" required multiple>
-                    <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
-                        {{ M.StoreName }}
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <mat-label>Store Name</mat-label>
+                <mat-select formControlName="StoreId" placeholder="Bank" #singleSelect>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="storeFilterCtrl" [placeholderLabel]="'Search'"
+                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let element of filteredStore | async" [value]="element">
+                        {{element.StoreName}}
                     </mat-option>
                 </mat-select>
-                <mat-error>Please Select Store Name </mat-error>
-                </mat-form-field> -->
+            </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Store Name</mat-label>
-                        <mat-select formControlName="StoreId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="storeFilterCtrl" [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredStore | async" [value]="element">
-                                {{element.StoreName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <input name="ProdLocation" placeholder="Enter ProdLocation"
+                    [ngClass]="{ 'is-invalid': submitted && f.ItemName.errors }" formControlName="ProdLocation"
+                    matInput>
 
-                </div>
+                <mat-error>Please enter ProdLocation </mat-error>
+            </mat-form-field>
 
-                <div class="child-2" fxFlex="50%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <input name="ProdLocation" placeholder="Enter ProdLocation"
-                            [ngClass]="{ 'is-invalid': submitted && f.ItemName.errors }" formControlName="ProdLocation"
-                            matInput>
-
-                        <mat-error>Please enter ProdLocation </mat-error>
-                    </mat-form-field>
-                </div>
-
-            </div>
         </div>
-
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <div class="child-1" fxFlex="1 0 auto">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsBatchRequired" formControlName="IsBatchRequired"
+                    <mat-radio-button class="example-margin" name="IsBatchRequired" formControlName="IsBatchRequired"
                         value='true'>
-                        IsBatchRequired</mat-checkbox>
+                        IsBatchRequired</mat-radio-button>
                 </section>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsScheduleX" formControlName="IsScheduleX" value='true'>
-                        IsScheduleX</mat-checkbox>
+                    <mat-radio-button class="example-margin" name="IsScheduleX" formControlName="IsScheduleX"
+                        value='true'>
+                        IsScheduleX</mat-radio-button>
                 </section>
             </div>
 
             <div class="child-2" fxFlex="1 0 auto">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsHighRisk" formControlName="IsHighRisk"
+                    <mat-radio-button class="example-margin" name="IsHighRisk" formControlName="IsHighRisk"
                         value='true'>IsHighRisk
-                    </mat-checkbox>
+                    </mat-radio-button>
                 </section>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsLASA" formControlName="IsLASA" value='true'>IsLASA
-                    </mat-checkbox>
+                    <mat-radio-button class="example-margin" name="IsLASA" formControlName="IsLASA" value='true'>IsLASA
+                    </mat-radio-button>
                 </section>
                 &nbsp;&nbsp;&nbsp;
 
@@ -341,30 +261,31 @@
             <div class="child-3" fxFlex="1 1 auto">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsScheduleH" formControlName="IsScheduleH" value='true'>
-                        IsScheduleH</mat-checkbox>
+                    <mat-radio-button class="example-margin" name="IsScheduleH" formControlName="IsScheduleH"
+                        value='true'>
+                        IsScheduleH</mat-radio-button>
                 </section>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsNursingFlag" formControlName="IsNursingFlag"
+                    <mat-radio-button class="example-margin" name="IsNursingFlag" formControlName="IsNursingFlag"
                         value='true'>
-                        IsNursingFlag</mat-checkbox>
+                        IsNursingFlag</mat-radio-button>
                 </section>
             </div>
-            <div class="child-3" fxFlex="1 1 auto">
+            <div class="child-4" fxFlex="1 1 auto">
 
                 &nbsp;&nbsp;&nbsp;
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsH1Drug" formControlName="IsH1Drug"
+                    <mat-radio-button class="example-margin" name="IsH1Drug" formControlName="IsH1Drug"
                         value='true'>IsH1Drug
-                    </mat-checkbox>
+                    </mat-radio-button>
                 </section>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" name="IsEmgerency" formControlName="IsEmgerency"
+                    <mat-radio-button class="example-margin" name="IsEmgerency" formControlName="IsEmgerency"
                         value='true'>IsEmgerency
-                    </mat-checkbox>
+                    </mat-radio-button>
                 </section>
 
             </div>
@@ -372,7 +293,7 @@
 
         </div>
 
-        <hr>
+
         <div>
             <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
                 <mat-radio-button value='true' class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
@@ -381,13 +302,12 @@
 
     </div>
 </form>
-<hr>
+
 <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
     <div class="button-row">
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
             [disabled]="_itemService.myform.invalid">Save</button>
-        <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+        <button mat-raised-button color="warn" (click)="onClose()">Close</button>
 
     </div>
 </div>
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
