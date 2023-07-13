@@ -43,11 +43,20 @@
                                         <input matInput placeholder="Search --> Area Name" autocomplete="off"
                                             name="AreaNameSearch" formControlName="AreaNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" matTooltip="close">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
-
+                                    <!-- <div style="margin-top: 10px;">
+                                        <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                            matTooltip="close">
+                                            <mat-icon class="cleariconbutton">close</mat-icon>
+                                        </button>&nbsp;
+                                        <button mat-raised-button class="searchButton" (click)="getVisitList()"
+                                            matTooltip="search">
+                                            <mat-icon class="searchiconbutton">search</mat-icon>
+                                        </button>
+                                    </div> -->
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
@@ -55,7 +64,8 @@
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center"
+                                        matTooltip="search">
                                         <mat-icon>search</mat-icon>
                                         Search
                                     </button>
@@ -81,12 +91,12 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CityName">
+                                    <!-- <ng-container matColumnDef="CityName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> City Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CityName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
@@ -146,7 +156,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_AreaService.myform">
                                     <h3>{{_AreaService.myform.controls.AreaId.value?"Modify Area Master":"New Area
                                         Master"}}</h3>
@@ -162,7 +172,7 @@
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>City Name</mat-label>
                                             <mat-select formControlName="CityId" placeholder="Bank" #singleSelect
                                                 required>
@@ -179,6 +189,8 @@
                                         </mat-form-field>
 
                                     </div>
+
+
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
                                             <mat-radio-button value='false' class="mr-sm-12"

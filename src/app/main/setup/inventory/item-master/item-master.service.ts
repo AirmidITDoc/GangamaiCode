@@ -20,13 +20,13 @@ export class ItemMasterService {
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
             ItemID: [""],
-            ItemShortName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
+            // ItemShortName: [
+            //     "",
+            //     [
+            //         Validators.required,
+            //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+            //     ],
+            // ],
             ItemName: [
                 "",
                 [
@@ -137,7 +137,7 @@ export class ItemMasterService {
 
     public getManufactureMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_ManufactureMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
             {}
         );
     }

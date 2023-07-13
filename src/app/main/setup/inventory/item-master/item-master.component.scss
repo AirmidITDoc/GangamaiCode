@@ -17,15 +17,15 @@ app-item-master {
         min-width: 70px;
     }
 
-    .mat-column-ItemShortName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-    }
+    // .mat-column-ItemShortName {
+    //     width: 200px;
+    //     max-width: 200px;
+    //     min-width: 200px;
+    // }
     .mat-column-ItemName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
     }
     .mat-column-ItemTypeName {
         width: 100px;
@@ -66,15 +66,15 @@ app-item-master {
         min-width: 120px;
     }
 
-    .mat-column-CurrencyId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+    .mat-column-CurrencyName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
     .mat-column-TaxPer {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
     }
 
     .mat-column-IsBatchRequired {

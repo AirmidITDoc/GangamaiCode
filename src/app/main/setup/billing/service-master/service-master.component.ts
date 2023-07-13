@@ -27,15 +27,21 @@ export class ServiceMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ServiceId",
         "ServiceName",
+        "ServiceShortDesc",
         "GroupName",
         "PrintOrder",
-        "SubGroupName",
-        "FirstName",
+        "Price",
+        "DoctorId",
+        "IsDocEditable",
+        "TariffId",
+        "SubGroupId",
         "EmgAmt",
         "EmgPer",
-        "AddedByName",
+        // "AddedByName",
         "IsEditable",
         "CreditedtoDoctor",
+        "IsPathology",
+        "IsRadiology",
         "IsDeleted",
         "action",
     ];
@@ -51,22 +57,31 @@ export class ServiceMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getServiceMasterList();
     }
-    // onSearch() {
-    //     this.getServiceMasterList();
-    // }
+    onSearch() {
+        this.getServiceMasterList();
+    }
 
-    // onSearchClear() {
-    //     this._serviceMasterService.myformSearch.reset({
-    //         ServiceNameSearch: "",
-    //         IsDeletedSearch: "2",
-    //     });
-    // }
+    onSearchClear() {
+        this._serviceMasterService.myformSearch.reset({
+            ServiceNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+        this.getServiceMasterList();
+    }
     get f() {
         return this._serviceMasterService.myform.controls;
     }
 
     getServiceMasterList() {
-        this._serviceMasterService.getServiceMasterList().subscribe(
+        var param = {
+            ServiceName:
+                this._serviceMasterService.myformSearch
+                    .get("ServiceNameSearch")
+                    .value.trim() + "%" || "%",
+            TariffId: 1,
+            GroupId: 1,
+        };
+        this._serviceMasterService.getServiceMasterList(param).subscribe(
             (Menu) => {
                 this.DSServiceMasterList.data = Menu as ServiceMaster[];
                 this.isLoading = false;

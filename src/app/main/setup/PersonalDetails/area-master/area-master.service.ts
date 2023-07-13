@@ -41,7 +41,8 @@ export class AreaMasterService {
 
     public getAreaMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_AreaName_by_Name",param
+            "Generic/GetByProc?procName=Rtrv_AreaName_by_Name",
+            param
         );
     }
 

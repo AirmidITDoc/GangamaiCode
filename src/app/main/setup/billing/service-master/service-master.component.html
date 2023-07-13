@@ -1,24 +1,25 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Service Master
-                </span>
-            </div>
-        </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
 
-    </div>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Service Master
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
+                <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon>
+            </button>
+
+        </div>
+    </mat-toolbar>
     <!-- / HEADER -->
+
+
 
     <!-- CONTENT -->
     <div class="content">
@@ -33,7 +34,39 @@
 
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="80%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px;"
+                            fxLayoutGap="3px">
+                            <form [formGroup]="_serviceMasterService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Service Name" autocomplete="off"
+                                            name="ServiceNameSearch" formControlName="ServiceNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+
                         <div style="width: 100%;">
                             <mat-table #table matSort [dataSource]="DSServiceMasterList"
                                 [@animateStagger]="{value:'50'}" style="overflow:auto">
@@ -51,6 +84,13 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="ServiceShortDesc">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ServiceShortDesc
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceShortDesc}}
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="GroupName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>GroupName
                                     </mat-header-cell>
@@ -65,16 +105,11 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="SubGroupName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> SubGroupName </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SubGroupName}}
-                                    </mat-cell>
+                                <ng-container matColumnDef="Price">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Price}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="FirstName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.FirstName}} </mat-cell>
-                                </ng-container>
                                 <ng-container matColumnDef="EmgAmt">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> EAmt </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.EmgAmt}} </mat-cell>
@@ -84,11 +119,32 @@
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.EmgPer}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="AddedByName">
+                                <ng-container matColumnDef="DoctorId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>DoctorId</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.DoctorId}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="IsDocEditable">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsDocEditable</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsDocEditable}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="TariffId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>TariffId</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TariffId}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="SubGroupId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>SubGroupId</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SubGroupId}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <!-- <ng-container matColumnDef="AddedByName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
 
                                 <ng-container matColumnDef="IsEditable">
@@ -113,6 +169,17 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="IsPathology">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsPathology </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsPathology}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsRadiology">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>IsRadiology</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsRadiology}}
+                                    </mat-cell>
+                                </ng-container>
 
                                 <ng-container matColumnDef="IsDeleted">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
@@ -127,7 +194,8 @@
 
 
                                 <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                        Action </mat-header-cell>
                                     <mat-cell *matCellDef="let row">
                                         <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                 title="Edit Menu">launch</mat-icon></button>
@@ -156,26 +224,21 @@
                                 <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':DSServiceMasterList!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(DSServiceMasterList!=null && DSServiceMasterList.data.length==0)}"></mat-footer-row>
+
                             </mat-table>
 
 
-                            <mat-card *ngIf="isLoading"
-                                style="display: flex; justify-content: center; align-items: center; background: white;">
-                                <mat-progress-spinner color="primary" mode="indeterminate">
-                                </mat-progress-spinner>
-                            </mat-card>
 
 
                         </div>
                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                             showFirstLastButtons></mat-paginator>
                     </div>
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
-                        <button mat-raised-button color="pine" (click)="onAdd()">Add
-                            <mat-icon>add_to_photos</mat-icon>
-                        </button>
 
-                    </div>
 
                 </div>
             </div>

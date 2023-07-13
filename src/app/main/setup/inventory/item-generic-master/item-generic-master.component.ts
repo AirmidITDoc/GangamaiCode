@@ -42,9 +42,17 @@ export class ItemGenericMasterComponent implements OnInit {
             ItemGenericNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getitemgenericMasterList();
     }
     getitemgenericMasterList() {
-        var param = { ItemId: 0, ItemGenericId: 0 };
+        var param = {
+            ItemId: 0,
+            ItemGenericId: 0,
+            ItemGenericName:
+                this._itemgenericService.myformSearch
+                    .get("ItemGenericNameSearch")
+                    .value.trim() + "%" || "%",
+        };
 
         this._itemgenericService
             .getitemgenericMasterList(param)
@@ -77,6 +85,7 @@ export class ItemGenericMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
 

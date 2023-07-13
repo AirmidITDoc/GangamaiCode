@@ -1,8 +1,8 @@
 app-dosemaster {
     .mat-header-row {
         width: 800px;
-        max-width: 850px;
-        min-width: 850px;
+        max-width: 800px;
+        min-width: 800px;
         font-weight: bold;
     }
 
@@ -13,9 +13,9 @@ app-dosemaster {
     }
 
     .mat-column-DoseId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-DoseName {
@@ -24,21 +24,21 @@ app-dosemaster {
         min-width: 150px;
     }
     .mat-column-DoseNameInEnglish {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 160px;
+        max-width: 160px;
+        min-width: 160px;
     }
     .mat-column-DoseQtyPerDay {
         width: 100px;
-        max-width: 150px;
-        min-width: 150px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
-    .mat-column-AddedByName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
+    // .mat-column-AddedByName {
+    //     width: 150px;
+    //     max-width: 150px;
+    //     min-width: 150px;
+    // }
     .mat-column-IsDeleted {
         width: 100px;
         max-width: 100px;
@@ -49,9 +49,9 @@ app-dosemaster {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         text-align: right;
         justify-content: right;
     }

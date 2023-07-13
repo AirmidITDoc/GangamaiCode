@@ -91,14 +91,15 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <!-- <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
@@ -138,7 +139,7 @@
 
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_billingClassService.myform">
                                     <h3>{{_billingClassService.myform.controls.ClassId.value?"Modify Class Master":"New
                                         Class
@@ -156,7 +157,7 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
+                                            <mat-radio-button value='true' class="mr-sm-12"
                                                 fxFlex>IsActive</mat-radio-button>
 
                                         </mat-radio-group>

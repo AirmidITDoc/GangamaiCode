@@ -23,7 +23,7 @@ export class CurrencyMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CurrencyId",
         "CurrencyName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -44,9 +44,15 @@ export class CurrencyMasterComponent implements OnInit {
             CurrencyNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCurrencyMasterList();
     }
     getCurrencyMasterList() {
-        var param = { CurrencyName: "%" };
+        var param = {
+            CurrencyName:
+                this._currencyService.myformSearch
+                    .get("CurrencyNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._currencyService.getCurrencyMasterList(param).subscribe((Menu) => {
             this.DSCurrencyMasterList.data = Menu as CurrencyMaster[];
             this.DSCurrencyMasterList.sort = this.sort;
@@ -74,6 +80,7 @@ export class CurrencyMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
                 // console.log(m_data);
@@ -163,7 +170,6 @@ export class CurrencyMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -177,7 +183,6 @@ export class CurrencyMaster {
             this.IsDeleted = CurrencyMaster.IsDeleted || "false";
             this.AddedBy = CurrencyMaster.AddedBy || "";
             this.UpdatedBy = CurrencyMaster.UpdatedBy || "";
-            this.AddedByName = CurrencyMaster.AddedByName || "";
         }
     }
 }

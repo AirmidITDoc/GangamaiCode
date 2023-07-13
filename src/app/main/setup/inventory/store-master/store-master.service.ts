@@ -68,11 +68,11 @@ export class StoreMasterService {
     }
 
     public insertStoreMaster(param) {
-        return this._httpClient.post("/api/Inventory/StoreSave", param);
+        return this._httpClient.post("Inventory/StoreSave", param);
     }
 
     public updateStoreMaster(param) {
-        return this._httpClient.post("/api/Inventory/StoreUpdate", param);
+        return this._httpClient.post("Inventory/StoreUpdate", param);
     }
 
     populateForm(param) {

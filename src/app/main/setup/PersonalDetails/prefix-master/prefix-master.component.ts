@@ -45,6 +45,7 @@ export class PrefixMasterComponent implements OnInit {
             PrefixNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getPrefixMasterList();
     }
 
     getGenderNameCombobox() {
@@ -79,8 +80,8 @@ export class PrefixMasterComponent implements OnInit {
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value
                             .SexID,
-                        addedBy: 1,
-                        isDeleted: Boolean(
+                        // addedBy: 1,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
                                     .value
@@ -122,13 +123,12 @@ export class PrefixMasterComponent implements OnInit {
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value
                             .SexID,
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
                     },
                 };
 
@@ -170,7 +170,7 @@ export class PrefixMasterComponent implements OnInit {
             PrefixID: row.PrefixID,
             PrefixName: row.PrefixName,
             SexID: row.SexID,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._PrefixService.populateForm(m_data);

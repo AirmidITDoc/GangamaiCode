@@ -29,7 +29,6 @@ export class PatienttypeMasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 

@@ -20,7 +20,7 @@ export class ManufactureMasterComponent implements OnInit {
         "ManufId",
         "ManufName",
         "ManufShortName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,9 +43,15 @@ export class ManufactureMasterComponent implements OnInit {
             ManufNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getmanufactureMasterList();
     }
     getmanufactureMasterList() {
-        var param = { ManufName: "%" };
+        var param = {
+            ManufName:
+                this._manufactureService.myformSearch
+                    .get("ManufNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._manufactureService
             .getmanufactureMasterList(param)
             .subscribe((Menu) => {
@@ -159,6 +165,7 @@ export class ManufactureMasterComponent implements OnInit {
             ManufId: row.ManufId,
             ManufName: row.ManufName.trim(),
             ManufShortName: row.ManufShortName.trim(),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._manufactureService.populateForm(m_data);
@@ -171,7 +178,6 @@ export class ManufactureMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

@@ -36,10 +36,10 @@ export class CountryMasterService {
         this.createCountryForm();
     }
 
-    public getCountryMasterList() {
+    public getCountryMasterList(param) {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_CountryNameList_by_Name",
-            { CountryName: "%" }
+            param
         );
     }
 

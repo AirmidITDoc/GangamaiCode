@@ -26,7 +26,6 @@ export class CashCounterMasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {

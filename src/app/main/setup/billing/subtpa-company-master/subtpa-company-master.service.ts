@@ -77,10 +77,10 @@ export class SubtpaCompanyMasterService {
         this.createsubtpacompanyForm();
     }
 
-    public getSubtpacompanyMasterList() {
+    public getSubtpacompanyMasterList(param) {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_M_SubTPACompanyMasterList_by_Name",
-            { CompanyName: "%" }
+            param
         );
     }
     public getCompanytypeCombobox() {

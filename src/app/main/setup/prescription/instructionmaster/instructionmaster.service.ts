@@ -29,7 +29,7 @@ export class InstructionmasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          InstructionNameSearch: [""],
+            InstructionNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -37,10 +37,10 @@ export class InstructionmasterService {
         this.createInstructionForm();
     }
 
-    public getInstructionMasterList() {
+    public getInstructionMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_InstructionMaster_by_Name",
-            { InstructionName: "%" }
+            "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMasterList_by_Name",
+            param
         );
     }
 

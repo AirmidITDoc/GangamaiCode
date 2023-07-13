@@ -72,10 +72,11 @@ export class ItemFormMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
-        this.getitemtypeNameMasterCombo();
+        //this.getitemtypeNameMasterCombo();
         this.getitemcategoryNameMasterCombo();
         this.getitemgenericNameMasterCombo();
         this.getitemunitofmeasureMasterCombo();
+        //   this.getStockUOMIDdMasterombo();
         this.getStoreNameMasterCombo();
         this.getManufactureNameMasterCombo();
         this.getCurrencyNameMasterCombo();
@@ -388,13 +389,14 @@ export class ItemFormMasterComponent implements OnInit {
         if (this._itemService.myform.valid) {
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];
-                for (var val of this._itemService.myform.get("StoreId").value) {
-                    var data = {
-                        StoreId: val,
-                        ItemId: 0,
-                    };
-                    data2.push(data);
-                }
+                // for (var val of this._itemService.myform.get("StoreId").value) {
+                var data = {
+                    storeId:
+                        this._itemService.myform.get("StoreId").value.Storeid,
+                    itemId: 0,
+                };
+                data2.push(data);
+                // }
                 console.log(data2);
 
                 var m_data = {
@@ -408,18 +410,20 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ItemName")
                                 .value.trim() || "%",
                         itemTypeId:
-                            this._itemService.myform.get("ItemTypeID").value,
+                            this._itemService.myform.get("ItemTypeID").value
+                                .ItemTypeId,
                         itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId")
-                                .value,
-                        itemGenericNameId:
-                            this._itemService.myform.get("ItemGenericNameId")
-                                .value,
+                            this._itemService.myform.get("ItemCategoryId").value
+                                .ItemCategoryId,
+                        itemGenericNameId: 0,
+                        //    ||this._itemService.myform.get("ItemGenericNameId")
+                        //         .value.ItemGenericName,
                         itemClassId:
-                            this._itemService.myform.get("ItemClassId").value,
-                        purchaseUOMId:
-                            this._itemService.myform.get("PurchaseUOMId")
-                                .value || "0",
+                            this._itemService.myform.get("ItemClassId").value
+                                .ItemClassId,
+                        purchaseUOMId: 0,
+                        // || this._itemService.myform.get("PurchaseUOMId").value
+                        //     .UnitofMeasurementName ,
                         stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
@@ -428,8 +432,8 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ConversionFactor")
                                 .value.trim() || "%",
                         currencyId:
-                            this._itemService.myform.get("CurrencyId").value ||
-                            "0",
+                            this._itemService.myform.get("CurrencyId").value
+                                .CurrencyId || "0",
                         taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
                         isDeleted: Boolean(
@@ -437,7 +441,7 @@ export class ItemFormMasterComponent implements OnInit {
                                 this._itemService.myform.get("IsDeleted").value
                             )
                         ),
-                        Addedby: 1,
+                        addedBy: 1,
                         isBatchRequired: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsBatchRequired")
@@ -451,12 +455,12 @@ export class ItemFormMasterComponent implements OnInit {
                         reorder:
                             this._itemService.myform.get("ReOrder").value ||
                             "0",
-                        isNursingFlag: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsNursingFlag")
-                                    .value
-                            )
-                        ),
+                        // isNursingFlag: Boolean(
+                        //     JSON.parse(
+                        //         this._itemService.myform.get("IsNursingFlag")
+                        //             .value
+                        //     )
+                        // ),
                         hsNcode:
                             this._itemService.myform
                                 .get("HSNcode")
@@ -464,14 +468,15 @@ export class ItemFormMasterComponent implements OnInit {
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
+                        manufId:
+                            this._itemService.myform.get("ManufId").value
+                                .ManufId || "0",
                         isNarcotic: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsNarcotic").value
                             )
                         ),
-                        manufId:
-                            this._itemService.myform.get("ManufId").value ||
-                            "0",
+
                         prodLocation:
                             this._itemService.myform
                                 .get("ProdLocation")
@@ -509,53 +514,74 @@ export class ItemFormMasterComponent implements OnInit {
                                     .value
                             )
                         ),
-                        itemID: "0", //|| this._itemService.myform.get("ItemID").value,
+
                         drugType: 0,
                         drugTypeName: "0",
                         itemCompnayId: 0,
-                        isCreatedBy: 1,
+                        isCreatedBy: "01/01/1900",
+                        itemID:
+                            this._itemService.myform.get("ItemID").value || 0,
                     },
                     insertAssignItemToStore: data2,
                 };
+                console.log(m_data);
 
                 this._itemService.insertItemMaster(m_data).subscribe((data) => {
                     this.msg = data;
+
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                 });
             } else {
                 var data3 = [];
-                for (var val of this._itemService.myform.get("StoreId").value) {
-                    var data4 = {
-                        StoreId: val,
-                        ItemId: this._itemService.myform.get("ItemID").value,
-                    };
-                    data3.push(data4);
-                }
+                // for (var val of this._itemService.myform.get("StoreId").value
+                //     .Storeid) {
+                var data4 = {
+                    storeId:
+                        this._itemService.myform.get("StoreId").value.Storeid,
+                    itemId: this._itemService.myform.get("ItemID").value,
+                };
+                data3.push(data4);
+                // }
+                console.log(data3);
 
                 var m_dataUpdate = {
                     updateItemMaster: {
                         itemID: this._itemService.myform.get("ItemID").value,
 
+                        // itemShortName:
+                        //     this._itemService.myform
+                        //         .get("ItemShortName")
+                        //         .value.trim() || "%",
                         itemName:
                             this._itemService.myform
                                 .get("ItemName")
                                 .value.trim() || "%",
-                        itemShortName:
-                            this._itemService.myform
-                                .get("ItemShortName")
-                                .value.trim() || "%",
                         itemTypeID:
-                            this._itemService.myform.get("ItemTypeID").value,
+                            this._itemService.myform.get("ItemTypeID").value
+                                .ItemTypeId,
                         itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId")
-                                .value,
-                        itemGenericNameId:
-                            this._itemService.myform.get("ItemGenericNameId")
-                                .value,
+                            this._itemService.myform.get("ItemCategoryId").value
+                                .ItemCategoryId,
+                        itemGenericNameId: 0,
+                        // ||this._itemService.myform.get("ItemGenericNameId")
+                        //     .value.ItemGenericName,
                         itemClassId:
-                            this._itemService.myform.get("ItemClassId").value,
-                        purchaseUOMId:
-                            this._itemService.myform.get("PurchaseUOMId")
-                                .value || "0",
+                            this._itemService.myform.get("ItemClassId").value
+                                .ItemClassId,
+                        purchaseUOMId: 0,
+                        // ||this._itemService.myform.get("PurchaseUOMId").value
+                        //         .UnitofMeasurementName
                         stockUOMId:
                             this._itemService.myform.get("StockUOMId").value ||
                             "0",
@@ -564,22 +590,23 @@ export class ItemFormMasterComponent implements OnInit {
                                 .get("ConversionFactor")
                                 .value.trim() || "0",
                         currencyId:
-                            this._itemService.myform.get("CurrencyId").value ||
-                            "0",
+                            this._itemService.myform.get("CurrencyId").value
+                                .CurrencyId || "0",
                         taxPer:
                             this._itemService.myform.get("TaxPer").value || "0",
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        UpdatedBy: 1, // this.accountService.currentUserValue.user.id,
                         isBatchRequired: Boolean(
                             JSON.parse(
                                 this._itemService.myform.get("IsBatchRequired")
                                     .value
                             )
                         ),
+                        isDeleted: Boolean(
+                            JSON.parse(
+                                this._itemService.myform.get("IsDeleted").value
+                            )
+                        ),
+                        upDatedBy: 1, // this.accountService.currentUserValue.user.id,
+
                         minQty:
                             this._itemService.myform.get("MinQty").value || "0",
                         maxQty:
@@ -606,8 +633,8 @@ export class ItemFormMasterComponent implements OnInit {
                             )
                         ),
                         manufId:
-                            this._itemService.myform.get("ManufId").value ||
-                            "0",
+                            this._itemService.myform.get("ManufId").value
+                                .ManufId || "0",
                         prodLocation:
                             this._itemService.myform
                                 .get("ProdLocation")
@@ -645,9 +672,13 @@ export class ItemFormMasterComponent implements OnInit {
                                     .value
                             )
                         ),
+                        drugType: 0,
+                        drugTypeName: "0",
+                        itemCompnayId: 0,
+                        isUpdatedBy: "01/01/1900",
                     },
                     deleteAssignItemToStore: {
-                        ItemId: this._itemService.myform.get("ItemID").value,
+                        itemId: this._itemService.myform.get("ItemID").value,
                     },
                     insertAssignItemToStore: data3,
                 };
@@ -656,6 +687,22 @@ export class ItemFormMasterComponent implements OnInit {
                     .updateItemMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClose();

@@ -27,7 +27,7 @@ export class WardMasterComponent implements OnInit {
         "RoomName",
         "LocationName",
         "ClassName",
-        "AddedByName",
+
         "IsAvailable",
         "IsDeleted",
         "action",
@@ -75,6 +75,7 @@ export class WardMasterComponent implements OnInit {
             RoomNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getwardMasterList();
     }
     private filterLocation() {
         // debugger;
@@ -119,7 +120,12 @@ export class WardMasterComponent implements OnInit {
     }
 
     getwardMasterList() {
-        var param = { WardName: "%" };
+        var param = {
+            WardName:
+                this._wardService.myformSearch
+                    .get("RoomNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._wardService.getwardMasterList(param).subscribe((Menu) => {
             this.DSWardMasterList.data = Menu as WardMaster[];
             this.DSWardMasterList.sort = this.sort;
@@ -157,26 +163,27 @@ export class WardMasterComponent implements OnInit {
             if (!this._wardService.myform.get("RoomId").value) {
                 var m_data = {
                     wardMasterInsert: {
-                        roomName: this._wardService.myform
+                        roomName_1: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        roomType: "1",
-                        locationId:
+                        roomType_2: "1",
+                        locationId_3:
                             this._wardService.myform.get("LocationId").value
                                 .LocationId,
-                        isAvailable: Boolean(
+                        isAvailible_4: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsAvailable")
                                     .value
                             )
                         ),
-                        addedBy: 1,
-                        isDeleted: 0,
+                        //  addedBy: 1,
+                        isActive_5: 0,
                         classId:
                             this._wardService.myform.get("ClassId").value
                                 .ClassId,
                     },
                 };
+
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
@@ -197,18 +204,18 @@ export class WardMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     wardMasterUpdate: {
-                        roomID: this._wardService.myform.get("RoomId").value,
-                        roomName: this._wardService.myform
+                        roomId_1: this._wardService.myform.get("RoomId").value,
+                        roomName_2: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        roomType: "1",
-                        locationId:
+                        roomType_3: "1",
+                        locationId_4:
                             this._wardService.myform.get("LocationId").value
                                 .LocationId,
-                        isAvailable: 1,
-                        isDeleted: 0,
-                        updatedBy: 1,
-                        classId:
+                        //    isAvailable: 1,
+                        isActive_5: 0,
+                        //  updatedBy: 1,
+                        classID:
                             this._wardService.myform.get("ClassId").value
                                 .ClassId,
                     },
@@ -246,9 +253,9 @@ export class WardMasterComponent implements OnInit {
             RoomId: row.RoomId,
             RoomName: row.WardName,
             LocationId: row.LocationId,
-            IsAvailable: JSON.stringify(row.IsAvailable),
+            IsAvailable: JSON.stringify(row.IsAvailible),
             ClassId: row.ClassID,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._wardService.populateForm(m_data);

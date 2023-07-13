@@ -19,7 +19,7 @@ export class ItemTypeMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ItemTypeId",
         "ItemTypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -42,9 +42,15 @@ export class ItemTypeMasterComponent implements OnInit {
             ItemTypeNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getItemtypeMasterList();
     }
     getItemtypeMasterList() {
-        var param = { ItemTypeName: "%" };
+        var param = {
+            ItemTypeName:
+                this._itemtypeService.myformSearch
+                    .get("ItemTypeNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._itemtypeService.getItemtypeMasterList(param).subscribe((Menu) => {
             this.DSItemTypeMasterList.data = Menu as ItemTypeMaster[];
             this.DSItemTypeMasterList.sort = this.sort;
@@ -72,6 +78,7 @@ export class ItemTypeMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
 
@@ -149,6 +156,7 @@ export class ItemTypeMasterComponent implements OnInit {
         var m_data = {
             ItemTypeId: row.ItemTypeId,
             ItemTypeName: row.ItemTypeName.trim(),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._itemtypeService.populateForm(m_data);

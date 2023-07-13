@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-categorymaster",
@@ -21,7 +22,7 @@ export class CategorymasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CategoryId",
         "CategoryName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -45,8 +46,9 @@ export class CategorymasterComponent implements OnInit {
     }
 
     getCategoryMasterList() {
+        var param = { CategoryName: "%" };
         this._categorymasterService
-            .getCategoryMasterList()
+            .getCategoryMasterList(param)
             .subscribe((Menu) => {
                 this.DSCategoryMasterList.data = Menu as CategoryMaster[];
                 this.DSCategoryMasterList.sort = this.sort;
@@ -82,6 +84,23 @@ export class CategorymasterComponent implements OnInit {
                     .insertPathologyCategoryMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCategoryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getCategoryMasterList();
                     });
             } else {
@@ -109,6 +128,23 @@ export class CategorymasterComponent implements OnInit {
                     .updatePathologyCategoryMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCategoryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCategoryMasterList();
                     });
             }
@@ -132,7 +168,6 @@ export class CategoryMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -146,7 +181,6 @@ export class CategoryMaster {
             this.IsDeleted = CategoryMaster.IsDeleted || "false";
             this.AddedBy = CategoryMaster.AddedBy || "";
             this.UpdatedBy = CategoryMaster.UpdatedBy || "";
-            this.AddedByName = CategoryMaster.AddedByName || "";
         }
     }
 }

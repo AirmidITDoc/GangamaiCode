@@ -44,8 +44,8 @@
                             <form [formGroup]="_ParameterageService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Age type" autocomplete="off"
-                                            name="AgetypeSearch" formControlName="AgetypeSearch" />
+                                        <input matInput placeholder="Search --> Parameter Id" autocomplete="off"
+                                            name="ParameterIdSearch" formControlName="ParameterIdSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -80,10 +80,10 @@
                                     </ng-container>
 
 
-                                    <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ParameterName
+                                    <ng-container matColumnDef="ParaId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Parameter Id
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParameterName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParaId}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="GenderName">
@@ -134,9 +134,9 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby}}
                                         </mat-cell>
                                     </ng-container>
 

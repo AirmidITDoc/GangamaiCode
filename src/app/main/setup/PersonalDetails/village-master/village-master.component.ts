@@ -62,6 +62,7 @@ export class VillageMasterComponent implements OnInit {
             VillageNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getVillageMasterList();
     }
     private filterTaluka() {
         // debugger;
@@ -117,7 +118,8 @@ export class VillageMasterComponent implements OnInit {
                             .get("VillageName")
                             .value.trim(),
                         talukaId:
-                            this._VillageService.myForm.get("TalukaId").value,
+                            this._VillageService.myForm.get("TalukaId").value
+                                .TalukaId,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -127,6 +129,7 @@ export class VillageMasterComponent implements OnInit {
                         ),
                     },
                 };
+                console.log(m_data);
                 this._VillageService
                     .villageMasterInsert(m_data)
                     .subscribe((data) => {
@@ -159,7 +162,8 @@ export class VillageMasterComponent implements OnInit {
                             .get("VillageName")
                             .value.trim(),
                         talukaId:
-                            this._VillageService.myForm.get("TalukaId").value,
+                            this._VillageService.myForm.get("TalukaId").value
+                                .Taluka.Id,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._VillageService.myForm.get("IsDeleted")

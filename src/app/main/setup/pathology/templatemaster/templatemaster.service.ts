@@ -54,7 +54,7 @@ export class TemplatemasterService {
     // Insert Perfix Master
     public insertTemplateMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyTemplateMasterSave",
+            "PathologyMaster/PathologyTemplateMasterSave",
             param
         );
     }
@@ -62,7 +62,7 @@ export class TemplatemasterService {
     // Update Perfix Master
     public updateTemplateMaster(param) {
         return this._httpClient.post(
-            "Pathology/PathologyTemplateMasterUpdate",
+            "PathologyMaster/PathologyTemplateMasterUpdate",
             param
         );
     }

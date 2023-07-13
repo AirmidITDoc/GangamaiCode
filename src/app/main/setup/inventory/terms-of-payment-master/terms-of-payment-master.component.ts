@@ -21,7 +21,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "Id",
         "TermsOfPayment",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -44,9 +44,15 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             TermsOfPaymentSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getTermsofPaymentMasterList();
     }
     getTermsofPaymentMasterList() {
-        var param = { TermsOfPayment: "%" };
+        var param = {
+            TermsOfPayment:
+                this._termsofpaymentService.myformSearch
+                    .get("TermsOfPaymentSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._termsofpaymentService
             .getTermsofPaymentMasterList(param)
             .subscribe((Menu) => {

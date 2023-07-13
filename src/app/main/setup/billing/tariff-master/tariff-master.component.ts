@@ -23,7 +23,7 @@ export class TariffMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "TariffId",
         "TariffName",
-        "AddedByName",
+
         "IsDeleted",
         "action",
     ];
@@ -44,9 +44,15 @@ export class TariffMasterComponent implements OnInit {
             TariffNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getTariffMasterList();
     }
     getTariffMasterList() {
-        var param = { TariffName: "%" };
+        var param = {
+            TariffName:
+                this._tariffService.myformSearch
+                    .get("TariffNameSearch")
+                    .value.trim() || "%",
+        };
         this._tariffService.getTariffMasterList(param).subscribe((Menu) => {
             this.DSTariffMasterList.data = Menu as TariffMaster[];
             this.DSTariffMasterList.sort = this.sort;
@@ -146,8 +152,8 @@ export class TariffMasterComponent implements OnInit {
         var m_data = {
             TariffId: row.tariffId,
             TariffName: row.tariffName.trim(),
-            IsDeleted: JSON.stringify(row.isActive),
-            UpdatedBy: row.UpdatedBy,
+            IsDeleted: JSON.stringify(row.IsActive),
+            //  UpdatedBy: row.UpdatedBy,
         };
         this._tariffService.populateForm(m_data);
     }
@@ -157,9 +163,8 @@ export class TariffMaster {
     TariffId: number;
     TariffName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -171,9 +176,8 @@ export class TariffMaster {
             this.TariffId = TariffMaster.TariffId || "";
             this.TariffName = TariffMaster.TariffName || "";
             this.IsDeleted = TariffMaster.IsDeleted || "false";
-            this.AddedBy = TariffMaster.AddedBy || "";
-            this.UpdatedBy = TariffMaster.UpdatedBy || "";
-            this.AddedByName = TariffMaster.AddedByName || "";
+            // this.AddedBy = TariffMaster.AddedBy || "";
+            // this.UpdatedBy = TariffMaster.UpdatedBy || "";
         }
     }
 }

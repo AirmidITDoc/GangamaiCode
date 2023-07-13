@@ -22,9 +22,11 @@ export class CityMasterService {
             CityName: [""],
             StateId: [""],
             StateName: [""],
+            CountryId: [""],
+            CountryName: [""],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {

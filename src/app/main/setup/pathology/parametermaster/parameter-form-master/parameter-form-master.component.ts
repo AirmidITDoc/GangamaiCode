@@ -14,6 +14,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { takeUntil } from "rxjs/operators";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-parameter-form-master",
@@ -226,7 +227,22 @@ export class ParameterFormMasterComponent implements OnInit {
                     .insertParameterMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
-                        this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
             } else {
                 if (this._ParameterService.myform.get("IsNumeric").value == 2) {
@@ -320,6 +336,22 @@ export class ParameterFormMasterComponent implements OnInit {
                     .updateParameterMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClear();

@@ -28,7 +28,7 @@ export class SubGroupMasterComponent implements OnInit {
         "SubGroupId",
         "SubGroupName",
         "GroupName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -62,6 +62,7 @@ export class SubGroupMasterComponent implements OnInit {
             SubGroupNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getSubgroupMasterList();
     }
     private filterGroupname() {
         // debugger;
@@ -85,7 +86,12 @@ export class SubGroupMasterComponent implements OnInit {
     }
 
     getSubgroupMasterList() {
-        var param = { SubGroupName: "%" };
+        var param = {
+            SubGroupName:
+                this._subgroupService.myformSearch
+                    .get("SubGroupNameSearch")
+                    .value.trim() || "%",
+        };
         this._subgroupService.getSubgroupMasterList(param).subscribe((Menu) => {
             this.DSSubGroupMasterList.data = Menu as SubGroupMaster[];
             this.DSSubGroupMasterList.sort = this.sort;
@@ -113,7 +119,8 @@ export class SubGroupMasterComponent implements OnInit {
                 var m_data = {
                     subGroupMasterInsert: {
                         groupId:
-                            this._subgroupService.myform.get("GroupId").value,
+                            this._subgroupService.myform.get("GroupId").value
+                                .GroupId,
                         subGroupName: this._subgroupService.myform
                             .get("SubGroupName")
                             .value.trim(),
@@ -157,7 +164,8 @@ export class SubGroupMasterComponent implements OnInit {
                             this._subgroupService.myform.get("SubGroupId")
                                 .value,
                         groupId:
-                            this._subgroupService.myform.get("GroupId").value,
+                            this._subgroupService.myform.get("GroupId").value
+                                .GroupId,
                         subGroupName:
                             this._subgroupService.myform.get("SubGroupName")
                                 .value,
@@ -204,6 +212,7 @@ export class SubGroupMasterComponent implements OnInit {
             SubGroupId: row.SubGroupId,
             SubGroupName: row.SubGroupName.trim(),
             GroupId: row.GroupId,
+            GroupName: row.GroupName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -215,10 +224,10 @@ export class SubGroupMaster {
     SubGroupId: number;
     SubGroupName: string;
     GroupId: number;
+    GroupName: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -233,7 +242,6 @@ export class SubGroupMaster {
             this.IsDeleted = SubGroupMaster.IsDeleted || "false";
             this.AddedBy = SubGroupMaster.AddedBy || "";
             this.UpdatedBy = SubGroupMaster.UpdatedBy || "";
-            this.AddedByName = SubGroupMaster.AddedByName || "";
         }
     }
 }

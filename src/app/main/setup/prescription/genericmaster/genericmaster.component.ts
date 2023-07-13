@@ -1,7 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "app-genericmaster",
@@ -13,6 +16,9 @@ import { fuseAnimations } from "@fuse/animations";
 export class GenericmasterComponent implements OnInit {
     GenericMasterList: any;
     msg: any;
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = [
         "GenericId",
@@ -35,17 +41,23 @@ export class GenericmasterComponent implements OnInit {
 
     onSearchClear() {
         this._GenericService.myformSearch.reset({
-            PrefixNameSearch: "",
+            GenericNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getGenericMasterList();
     }
     getGenericMasterList() {
-        this._GenericService
-            .getGenericMasterList()
-            .subscribe(
-                (Menu) =>
-                    (this.DSGenericMasterList.data = Menu as GenericMaster[])
-            );
+        var param = {
+            GenericName:
+                this._GenericService.myformSearch
+                    .get("GenericNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._GenericService.getGenericMasterList(param).subscribe((Menu) => {
+            (this.DSGenericMasterList.data = Menu as GenericMaster[]),
+                (this.DSGenericMasterList.sort = this.sort),
+                (this.DSGenericMasterList.paginator = this.paginator);
+        });
     }
 
     onClear() {
@@ -61,19 +73,36 @@ export class GenericmasterComponent implements OnInit {
                         genericName: this._GenericService.myForm
                             .get("GenericName")
                             .value.trim(),
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
                 this._GenericService
                     .insertGenericMaster(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getGenericMasterList();
                     });
             } else {
@@ -85,19 +114,36 @@ export class GenericmasterComponent implements OnInit {
                             .get("GenericName")
                             .value.trim(),
 
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._GenericService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        //  updatedBy: 1,
                     },
                 };
                 this._GenericService
                     .updateGenericMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getGenericMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getGenericMasterList();
                     });
             }

@@ -44,7 +44,7 @@ export class SupplierMasterComponent implements OnInit {
         "Email",
         "GSTNo",
         "PanNo",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -66,6 +66,7 @@ export class SupplierMasterComponent implements OnInit {
             SupplierNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getSupplierMasterList();
     }
 
     onClear() {
@@ -79,9 +80,13 @@ export class SupplierMasterComponent implements OnInit {
 
     getSupplierMasterList() {
         var m_data = {
-            SupplierName: "%",
-            StoreId: 1,
+            SupplierName:
+                this._supplierService.myformSearch
+                    .get("SupplierNameSearch")
+                    .value.trim() + "%" || "%",
+            StoreID: 0,
         };
+        console.log(m_data);
         this._supplierService.getSupplierMasterList(m_data).subscribe(
             (Menu) => {
                 this.DSSupplierMaster.data = Menu as SupplierMaster[];
@@ -147,7 +152,7 @@ export class SupplierMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "50vh",
             width: "100%",
             height: "100%",
         });
@@ -161,7 +166,7 @@ export class SupplierMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "50vh",
             width: "100%",
             height: "100%",
         });
@@ -195,7 +200,7 @@ export class SupplierMaster {
     UpdatedBy: Number;
     GSTNo: String;
     PanNo: String;
-    AddedByName: number;
+
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -226,7 +231,7 @@ export class SupplierMaster {
             this.UpdatedBy = SupplierMaster.UpdatedBy || "";
             this.GSTNo = SupplierMaster.GSTNo || "";
             this.PanNo = SupplierMaster.PanNo || "";
-            this.AddedByName = SupplierMaster.AddedByName || "";
+
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
         }
     }

@@ -24,7 +24,7 @@ export class BankMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "BankId",
         "BankName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -46,6 +46,7 @@ export class BankMasterComponent implements OnInit {
             BankNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getBankMasterList();
     }
     IsActiveStatus: any;
     onChangeIsactive(SiderOption) {
@@ -55,7 +56,10 @@ export class BankMasterComponent implements OnInit {
 
     getBankMasterList() {
         var param = {
-            BankName: "%",
+            BankName:
+                this._bankService.myformSearch
+                    .get("BankNameSearch")
+                    .value.trim() + "%" || "%",
         };
         this._bankService.getBankMasterList(param).subscribe((Menu) => {
             this.DSBankMasterList.data = Menu as BankMaster[];
@@ -159,7 +163,6 @@ export class BankMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -173,7 +176,6 @@ export class BankMaster {
             this.IsDeleted = BankMaster.IsDeleted || "false";
             this.AddedBy = BankMaster.AddedBy || "";
             this.UpdatedBy = BankMaster.UpdatedBy || "";
-            this.AddedByName = BankMaster.AddedByName || "";
         }
     }
 }

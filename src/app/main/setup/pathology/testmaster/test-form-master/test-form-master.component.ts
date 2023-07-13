@@ -6,6 +6,7 @@ import { TestmasterComponent } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-test-form-master",
@@ -302,6 +303,22 @@ export class TestFormMasterComponent implements OnInit {
                     .insertPathologyTestMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
             } else {
                 var m_dataUpdate = {
@@ -369,6 +386,22 @@ export class TestFormMasterComponent implements OnInit {
                     .updatePathologyTestMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClose();

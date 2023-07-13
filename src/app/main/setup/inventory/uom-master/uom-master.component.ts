@@ -42,9 +42,15 @@ export class UomMasterComponent implements OnInit {
             UnitofMeasurementSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getUnitofmeasurementMasterList();
     }
     getUnitofmeasurementMasterList() {
-        var param = { UnitofMeasurmentName: "%" };
+        var param = {
+            UnitofMeasurmentName:
+                this._unitofmeasurementService.myformSearch
+                    .get("UnitofMeasurementSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._unitofmeasurementService
             .getUnitofmeasurementMasterList(param)
             .subscribe((Menu) => {
@@ -81,6 +87,7 @@ export class UomMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
 
@@ -161,6 +168,7 @@ export class UomMasterComponent implements OnInit {
         var m_data = {
             UnitofMeasurementId: row.UnitofMeasurementId,
             UnitofMeasurementName: row.UnitofMeasurementName,
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._unitofmeasurementService.populateForm(m_data);

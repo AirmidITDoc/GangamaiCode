@@ -49,7 +49,7 @@ export class StoreMasterComponent implements OnInit {
         "IssueToDeptNo",
         "ReturnFromDeptNoPrefix",
         "ReturnFromDeptNo",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -71,6 +71,7 @@ export class StoreMasterComponent implements OnInit {
             StoreNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getStoreMasterList();
     }
 
     onClear() {
@@ -83,7 +84,12 @@ export class StoreMasterComponent implements OnInit {
     }
 
     getStoreMasterList() {
-        var m_data = { StoreName: "%" };
+        var m_data = {
+            StoreName:
+                this._StoreService.myformSearch
+                    .get("StoreNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
             this.DSStoreMasterList.data = Menu as StoreMaster[];
             this.DSStoreMasterList.sort = this.sort;
@@ -301,7 +307,7 @@ export class StoreMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -315,7 +321,7 @@ export class StoreMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -344,7 +350,7 @@ export class StoreMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
+   
     IsDeletedSearch: number;
 
     /**
@@ -373,7 +379,7 @@ export class StoreMaster {
             this.IsDeleted = StoreMaster.IsDeleted || "false";
             this.AddedBy = StoreMaster.AddedBy || "";
             this.UpdatedBy = StoreMaster.UpdatedBy || "";
-            this.AddedByName = StoreMaster.AddedByName || "";
+           
             this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
         }
     }

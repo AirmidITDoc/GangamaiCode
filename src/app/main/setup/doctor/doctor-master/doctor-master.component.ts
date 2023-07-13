@@ -34,8 +34,10 @@ export class DoctorMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "DoctorId",
         "PrefixName",
-        "DoctorName",
-        "AgeYear",
+        "FirstName",
+        "MiddleName",
+        "LastName",
+        "DateofBirth",
         "Address",
         "City",
         "Pin",
@@ -50,7 +52,7 @@ export class DoctorMasterComponent implements OnInit {
         "MahRegNo",
         "MahRegDate",
         "RegDate",
-        "AddedByName",
+        "AddedBy",
         "IsConsultant",
         "IsRefDoc",
         "IsDeleted",
@@ -74,6 +76,7 @@ export class DoctorMasterComponent implements OnInit {
             DoctorNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDoctorMasterList();
     }
 
     onClear() {
@@ -87,12 +90,11 @@ export class DoctorMasterComponent implements OnInit {
 
     getDoctorMasterList() {
         var m_data = {
-            FirstName:
+            F_Name:
                 this._doctorService.myformSearch
                     .get("DoctorNameSearch")
                     .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._doctorService.myformSearch.get("IsDeletedSearch").value,
+            L_Name: "%",
         };
         this._doctorService.getDoctorMasterList(m_data).subscribe(
             (Menu) => {
@@ -124,17 +126,17 @@ export class DoctorMasterComponent implements OnInit {
             IsRefDoc: JSON.stringify(row.IsRefDoc),
             IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
             DoctorTypeId: row.DoctorTypeId,
-            AgeYear: row.AgeYear.trim(),
-            AgeMonth: row.AgeMonth.trim(),
-            AgeDay: row.AgeDay.trim(),
-            PassportNo: row.PassportNo.trim(),
-            ESINO: row.ESINO.trim(),
-            RegNo: row.RegNo.trim(),
+            AgeYear: row.AgeYear,
+            AgeMonth: row.AgeMonth,
+            AgeDay: row.AgeDay,
+            PassportNo: row.PassportNo,
+            ESINO: row.ESINO,
+            RegNo: row.RegNo,
             RegDate: row.RegDate,
-            MahRegNo: row.MahRegNo.trim(),
+            MahRegNo: row.MahRegNo,
             MahRegDate: row.MahRegDate,
-            AddedByName: row.AddedByName.trim(),
-            RefDocHospitalName: row.RefDocHospitalName.trim(),
+            AddedBy: row.Addedby,
+            RefDocHospitalName: row.RefDocHospitalName,
             UpdatedBy: row.UpdatedBy,
         };
 
@@ -146,7 +148,7 @@ export class DoctorMasterComponent implements OnInit {
 
             {
                 maxWidth: "80vw",
-                maxHeight: "95vh",
+                maxHeight: "70vh",
                 width: "100%",
                 height: "100%",
             }
@@ -161,7 +163,7 @@ export class DoctorMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "70vh",
             width: "100%",
             height: "100%",
         });
@@ -202,7 +204,7 @@ export class DoctorMaster {
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
-    AddedByName: string;
+
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -238,7 +240,7 @@ export class DoctorMaster {
             this.MahRegDate = DoctorMaster.MahRegDate || "";
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
-            this.AddedByName = DoctorMaster.AddedByName || "";
+
             this.RefDocHospitalName = DoctorMaster.RefDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
         }

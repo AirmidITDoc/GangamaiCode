@@ -2,16 +2,16 @@
     padding: 10px !important;
 }
 .mat-header-row {
-    width: 850px;
-    max-width: 850px;
-    min-width: 850px;
+    width: 650px;
+    max-width: 650px;
+    min-width: 650px;
     font-weight: bold;
 }
 
 .mat-row {
-    width: 850px;
-    max-width: 850px;
-    min-width: 850px;
+    width: 650px;
+    max-width: 650px;
+    min-width: 650px;
 }
 
 .mat-column-ReligionId {
@@ -21,21 +21,21 @@
 }
 
 .mat-column-ReligionName {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
 }
 
-.mat-column-AddedByName {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+.mat-column-AddedBy {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
 }
 
 .mat-column-IsDeleted {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: center;
     justify-content: center;
 }

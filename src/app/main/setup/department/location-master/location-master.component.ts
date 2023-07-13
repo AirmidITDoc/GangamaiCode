@@ -20,7 +20,7 @@ export class LocationMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "LocationId",
         "LocationName",
-        "AddedByName",
+
         "IsDeleted",
         "action",
     ];
@@ -41,13 +41,19 @@ export class LocationMasterComponent implements OnInit {
 
     onSearchClear() {
         this._locationService.myformSearch.reset({
-            StateNameSearch: "",
+            LocationNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getLocationMasterList();
     }
 
     getLocationMasterList() {
-        var param = { LocationName: "%" };
+        var param = {
+            LocationName:
+                this._locationService.myformSearch
+                    .get("LocationNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._locationService.getLocationMasterList(param).subscribe((Menu) => {
             this.DSLocationMasterList.data = Menu as LocationMaster[];
             this.DSLocationMasterList.sort = this.sort;
@@ -65,11 +71,11 @@ export class LocationMasterComponent implements OnInit {
             if (!this._locationService.myform.get("LocationId").value) {
                 var m_data = {
                     locationMasterInsert: {
-                        locationName: this._locationService.myform
+                        locatioName_1: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-                        addedBy: 1,
-                        isDeleted: 0,
+                        //  addedBy: 1,
+                        isActive_2: 1,
                     },
                 };
 
@@ -99,14 +105,14 @@ export class LocationMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     locationMasterUpdate: {
-                        locationID:
+                        locationId_1:
                             this._locationService.myform.get("LocationId")
                                 .value,
-                        locationName: this._locationService.myform
+                        locationName_2: this._locationService.myform
                             .get("LocationName")
                             .value.trim(),
-                        isDeleted: 0,
-                        updatedBy: 1,
+                        isActive_3: 1,
+                        // updatedBy: 1,
                     },
                 };
 
@@ -142,8 +148,7 @@ export class LocationMasterComponent implements OnInit {
         var m_data = {
             LocationId: row.LocationId,
             LocationName: row.LocationName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
+            IsDeleted: JSON.stringify(row.IsActive),
         };
         this._locationService.populateForm(m_data);
     }
@@ -152,8 +157,8 @@ export class LocationMaster {
     LocationId: number;
     LocationName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+    // AddedBy: number;
+    // UpdatedBy: number;
 
     /**
      * Constructor
@@ -165,8 +170,8 @@ export class LocationMaster {
             this.LocationId = LocationMaster.LocationId || "";
             this.LocationName = LocationMaster.LocationName || "";
             this.IsDeleted = LocationMaster.IsDeleted || "false";
-            this.AddedBy = LocationMaster.AddedBy || "";
-            this.UpdatedBy = LocationMaster.UpdatedBy || "";
+            // this.AddedBy = LocationMaster.AddedBy || "";
+            // this.UpdatedBy = LocationMaster.UpdatedBy || "";
         }
     }
 }
