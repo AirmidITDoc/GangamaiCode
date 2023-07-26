@@ -1,4 +1,4 @@
-app-itemgeneric-master {
+app-item-generic-master {
     .mat-header-row {
         width: 800px;
         max-width: 800px;
@@ -13,15 +13,15 @@ app-itemgeneric-master {
     }
 
     .mat-column-ItemGenericNameId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-ItemGenericName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
+        width: 350px;
+        max-width: 350px;
+        min-width: 350px;
     }
 
     .mat-column-AddedByName {
@@ -40,9 +40,9 @@ app-itemgeneric-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

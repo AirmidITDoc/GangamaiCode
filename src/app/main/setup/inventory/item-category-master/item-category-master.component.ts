@@ -7,6 +7,7 @@ import { MatSort } from "@angular/material/sort";
 import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-category-master",
@@ -24,7 +25,7 @@ export class ItemCategoryMasterComponent implements OnInit {
         "ItemCategoryId",
         "ItemCategoryName",
         "ItemTypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -60,6 +61,7 @@ export class ItemCategoryMasterComponent implements OnInit {
             ItemCategoryNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getitemcategoryMasterList();
     }
     private filterItem() {
         if (!this.ItemTypecmbList) {
@@ -82,8 +84,14 @@ export class ItemCategoryMasterComponent implements OnInit {
     }
 
     getitemcategoryMasterList() {
+        var param = {
+            ItemCategoryName:
+                this._itemcategoryService.myformSearch
+                    .get("ItemCategoryNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._itemcategoryService
-            .getitemcategoryMasterList()
+            .getitemcategoryMasterList(param)
             .subscribe((Menu) => {
                 this.DSItemCategoryMasterList.data =
                     Menu as ItemCategoryMaster[];
@@ -123,16 +131,34 @@ export class ItemCategoryMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                         itemTypeId:
                             this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
+                                .value.ItemTypeId,
                     },
                 };
-
+                console.log(m_data);
                 this._itemcategoryService
                     .insertItemCategoryMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemcategoryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getitemcategoryMasterList();
                     });
             } else {
@@ -155,7 +181,7 @@ export class ItemCategoryMasterComponent implements OnInit {
                         updatedBy: 1,
                         itemTypeId:
                             this._itemcategoryService.myform.get("ItemTypeID")
-                                .value,
+                                .value.ItemTypeId,
                     },
                 };
 
@@ -163,6 +189,23 @@ export class ItemCategoryMasterComponent implements OnInit {
                     .updateItemCategoryMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemcategoryMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getitemcategoryMasterList();
                     });
             }
@@ -189,7 +232,6 @@ export class ItemCategoryMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

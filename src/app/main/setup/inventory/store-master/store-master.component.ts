@@ -8,6 +8,7 @@ import { MatAccordion } from "@angular/material/expansion";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-store-master",
@@ -48,7 +49,7 @@ export class StoreMasterComponent implements OnInit {
         "IssueToDeptNo",
         "ReturnFromDeptNoPrefix",
         "ReturnFromDeptNo",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -70,6 +71,7 @@ export class StoreMasterComponent implements OnInit {
             StoreNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getStoreMasterList();
     }
 
     onClear() {
@@ -87,8 +89,6 @@ export class StoreMasterComponent implements OnInit {
                 this._StoreService.myformSearch
                     .get("StoreNameSearch")
                     .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._StoreService.myformSearch.get("IsDeletedSearch").value,
         };
         this._StoreService.getStoreMasterList(m_data).subscribe((Menu) => {
             this.DSStoreMasterList.data = Menu as StoreMaster[];
@@ -181,6 +181,23 @@ export class StoreMasterComponent implements OnInit {
                     .insertStoreMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getStoreMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getStoreMasterList();
                     });
             } else {
@@ -241,6 +258,23 @@ export class StoreMasterComponent implements OnInit {
                     .updateStoreMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getStoreMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getStoreMasterList();
                     });
             }
@@ -273,7 +307,7 @@ export class StoreMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -287,7 +321,7 @@ export class StoreMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(StoreFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "55vh",
             width: "100%",
             height: "100%",
         });
@@ -316,7 +350,7 @@ export class StoreMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
+   
     IsDeletedSearch: number;
 
     /**
@@ -345,7 +379,7 @@ export class StoreMaster {
             this.IsDeleted = StoreMaster.IsDeleted || "false";
             this.AddedBy = StoreMaster.AddedBy || "";
             this.UpdatedBy = StoreMaster.UpdatedBy || "";
-            this.AddedByName = StoreMaster.AddedByName || "";
+           
             this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
         }
     }

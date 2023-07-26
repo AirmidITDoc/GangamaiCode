@@ -1,23 +1,22 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Supplier Master
-                </span>
-            </div>
-        </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
 
-    </div>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Supplier Master
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
+                <mat-icon color="Primary" title=" Add New Supplier ">add_to_photos</mat-icon>
+            </button>
+
+        </div>
+    </mat-toolbar>
     <!-- / HEADER -->
 
     <!-- CONTENT -->
@@ -33,7 +32,7 @@
 
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="90%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style="
                     background-color: white;
                     padding: 5px 10px 5px 10px;
@@ -129,9 +128,9 @@
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PanNo}} </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -148,15 +147,15 @@
 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.SupplierId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            // <button mat-icon-button (click)="onDeactive(row.SupplierId)"
-                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -193,13 +192,7 @@
                                 showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
-                        <button mat-raised-button color="pine" (click)="onAdd()">Add
-                            <mat-icon>add_to_photos</mat-icon>
 
-                        </button>
-
-                    </div>
 
                 </div>
             </div>

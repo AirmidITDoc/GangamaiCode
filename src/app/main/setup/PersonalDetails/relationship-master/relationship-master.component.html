@@ -81,9 +81,9 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -100,7 +100,8 @@
 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
@@ -128,7 +129,7 @@
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        [ngClass]="{'hide':DSRelationshipMasterList!=null}"></mat-footer-row>
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
@@ -139,7 +140,7 @@
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div fxlayout="row">
                             <div class="dialog-content-wrapper">
-                                <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                                <div mat-dialog-content class="p-24 pb-0 m-0">
                                     <form [formGroup]="_relationshipService.myform">
                                         <h3>{{_relationshipService.myform.controls.RelationshipId.value?"Modify
                                             Relationship Master":"New Relationship Master"}}

@@ -22,7 +22,7 @@ export class MaritalstatusMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "MaritalStatusId",
         "MaritalStatusName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,6 +43,7 @@ export class MaritalstatusMasterComponent implements OnInit {
             MaritalStatusNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getmaritalstatusMasterList();
     }
     onSearch() {
         this.getmaritalstatusMasterList();
@@ -50,7 +51,16 @@ export class MaritalstatusMasterComponent implements OnInit {
 
     getmaritalstatusMasterList() {
         var m_data = {
-            MaritalStatusName: "%",
+            MaritalStatusName:
+                this._maritalService.myformSearch
+                    .get("MaritalStatusNameSearch")
+                    .value.trim() || "%",
+            // IsDeleted: Boolean(
+            //     JSON.parse(
+            //         this._maritalService.myformSearch.get("IsDeletedSearch")
+            //             .value
+            //     )
+            // ),
         };
         this._maritalService
             .getmaritalstatusMasterList(m_data)
@@ -171,7 +181,6 @@ export class MaritalStatusMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

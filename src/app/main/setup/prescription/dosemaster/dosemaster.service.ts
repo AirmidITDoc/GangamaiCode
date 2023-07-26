@@ -42,10 +42,10 @@ export class DosemasterService {
         this.createDoseForm();
     }
 
-    public getDoseMasterList() {
+    public getDoseMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_DoseNameList_by_Name",
-            { DoseName: "%" }
+            "Generic/GetByProc?procName=Rtrv_M_DoseMasterList_by_Name",
+            param
         );
     }
 

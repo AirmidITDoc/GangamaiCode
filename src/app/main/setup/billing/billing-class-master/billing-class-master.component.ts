@@ -24,7 +24,7 @@ export class BillingClassMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ClassId",
         "ClassName",
-        "AddedByName",
+
         "IsDeleted",
         "action",
     ];
@@ -45,10 +45,14 @@ export class BillingClassMasterComponent implements OnInit {
             ClassNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getClassMasterList();
     }
     getClassMasterList() {
         var param = {
-            ClassName: "%",
+            ClassName:
+                this._billingClassService.myformSearch
+                    .get("ClassNameSearch")
+                    .value.trim() || "%",
         };
         this._billingClassService
             .getClassMasterList(param)
@@ -156,7 +160,7 @@ export class BillingClassMasterComponent implements OnInit {
         var m_data = {
             ClassId: row.ClassId,
             ClassName: row.ClassName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
         };
         this._billingClassService.populateForm(m_data);
     }
@@ -165,9 +169,6 @@ export class BillingClassMaster {
     ClassId: number;
     ClassName: string;
     IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -179,9 +180,6 @@ export class BillingClassMaster {
             this.ClassId = BillingClassMaster.ClassId || "";
             this.ClassName = BillingClassMaster.ClassName || "";
             this.IsDeleted = BillingClassMaster.IsDeleted || "false";
-            this.AddedBy = BillingClassMaster.AddedBy || "";
-            this.UpdatedBy = BillingClassMaster.UpdatedBy || "";
-            this.AddedByName = BillingClassMaster.AddedByName || "";
         }
     }
 }

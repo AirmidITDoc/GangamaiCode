@@ -23,10 +23,9 @@ export class BedMasterService {
             RoomId: [""],
             RoomName: [""],
             IsAvailable: ["1"],
-            IsDeleted: ["false"],
+            IsActive: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -39,16 +38,16 @@ export class BedMasterService {
         this.createBedForm();
     }
 
-    public getbedMasterList() {
+    public getbedMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_BedMaster_by_Name",
-            { BedName: "%" }
+            "Generic/GetByProc?procName=Rtrv_BedMasterList_1",
+            param
         );
     }
 
     public getWardMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_rtrv_WardMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_RoomMasterForCombo",
             {}
         );
     }

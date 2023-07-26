@@ -26,9 +26,9 @@ export class GroupMasterComponent implements OnInit {
         "GroupName",
         "Isconsolidated",
         "IsConsolidatedDR",
-        "PrintSeqNo",
-        "AddedByName",
-        "IsDeleted",
+        //  "PrintSeqNo",
+
+        "IsActive",
         "action",
     ];
 
@@ -48,6 +48,7 @@ export class GroupMasterComponent implements OnInit {
             GroupNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getGroupMasterList();
     }
     get f() {
         return this._groupService.myform.controls;
@@ -55,7 +56,10 @@ export class GroupMasterComponent implements OnInit {
 
     getGroupMasterList() {
         var param = {
-            GroupName: "%",
+            GroupName:
+                this._groupService.myformSearch
+                    .get("GroupNameSearch")
+                    .value.trim() || "%",
         };
         this._groupService.getGroupMasterList(param).subscribe((Menu) => {
             this.DSGroupMasterList.data = Menu as GroupMaster[];
@@ -93,11 +97,11 @@ export class GroupMasterComponent implements OnInit {
 
                         isActive: Boolean(
                             JSON.parse(
-                                this._groupService.myform.get("IsDeleted").value
+                                this._groupService.myform.get("IsActive").value
                             )
                         ),
-                        PrintSeqNo:
-                            this._groupService.myform.get("PrintSeqNo").value,
+                        // PrintSeqNo:
+                        //     this._groupService.myform.get("PrintSeqNo").value,
                     },
                 };
 
@@ -147,11 +151,11 @@ export class GroupMasterComponent implements OnInit {
 
                         isActive: Boolean(
                             JSON.parse(
-                                this._groupService.myform.get("IsDeleted").value
+                                this._groupService.myform.get("IsActive").value
                             )
                         ),
-                        PrintSeqNo:
-                            this._groupService.myform.get("PrintSeqNo").value,
+                        // PrintSeqNo:
+                        //     this._groupService.myform.get("PrintSeqNo").value,
                     },
                 };
 
@@ -186,10 +190,10 @@ export class GroupMasterComponent implements OnInit {
         var m_data = {
             GroupId: row.GroupId,
             GroupName: row.GroupName.trim(),
-            Isconsolidated: JSON.stringify(row.Isconsolidated),
+            Isconsolidated: JSON.stringify(row.IsConsolidated),
             IsConsolidatedDR: JSON.stringify(row.IsConsolidatedDR),
-            PrintSeqNo: row.PrintSeqNo,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            //  PrintSeqNo: row.PrintSeqNo,
+            IsActive: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._groupService.populateForm(m_data);
@@ -202,10 +206,9 @@ export class GroupMaster {
     Isconsolidated: boolean;
     IsConsolidatedDR: boolean;
     PrintSeqNo: Number;
-    IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -219,10 +222,9 @@ export class GroupMaster {
             this.Isconsolidated = GroupMaster.Isconsolidated || "false";
             this.IsConsolidatedDR = GroupMaster.IsConsolidatedDR || "false";
             this.PrintSeqNo = GroupMaster.PrintSeqNo || "";
-            this.IsDeleted = GroupMaster.IsDeleted || "false";
+            this.IsActive = GroupMaster.IsActive || "false";
             this.AddedBy = GroupMaster.AddedBy || "";
             this.UpdatedBy = GroupMaster.UpdatedBy || "";
-            this.AddedByName = GroupMaster.AddedByName || "";
         }
     }
 }

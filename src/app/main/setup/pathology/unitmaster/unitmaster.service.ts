@@ -24,7 +24,6 @@ export class UnitmasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
 
@@ -39,19 +38,19 @@ export class UnitmasterService {
         this.createUnitmasterForm();
     }
 
-    public getUnitMasterList() {
+    public getUnitMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathUnitMaster_by_Name",
-            { UnitName: "%" }
+            "Generic/GetByProc?procName=Rtrv_PathUnitMaster_by_Name",
+            param
         );
     }
 
     public insertUnitMaster(param) {
-        return this._httpClient.post("Pathology/UnitSave", param);
+        return this._httpClient.post("PathologyMaster/UnitSave", param);
     }
 
     public updateUnitMaster(param) {
-        return this._httpClient.post("Pathology/UnitUpdate", param);
+        return this._httpClient.post("PathologyMaster/UnitUpdate", param);
     }
 
     populateForm(param) {

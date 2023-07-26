@@ -55,7 +55,7 @@ export class StoreMasterService {
     public getStoreMasterList(m_data) {
         //return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Inventory_StoreMaster_by_Name", {StoreName:"%"})
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_Inventory_StoreMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_StoreMaster_by_Name",
             m_data
         );
     }
@@ -68,11 +68,11 @@ export class StoreMasterService {
     }
 
     public insertStoreMaster(param) {
-        return this._httpClient.post("/api/Inventory/StoreSave", param);
+        return this._httpClient.post("Inventory/StoreSave", param);
     }
 
     public updateStoreMaster(param) {
-        return this._httpClient.post("/api/Inventory/StoreUpdate", param);
+        return this._httpClient.post("Inventory/StoreUpdate", param);
     }
 
     populateForm(param) {

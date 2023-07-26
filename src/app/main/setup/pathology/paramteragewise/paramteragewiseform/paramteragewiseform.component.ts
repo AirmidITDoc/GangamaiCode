@@ -12,6 +12,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ParamteragewiseService } from "../paramteragewise.service";
 import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-paramteragewiseform",
@@ -185,6 +186,22 @@ export class ParamteragewiseformComponent implements OnInit {
                     .insertParameterMasterAgeWise(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                     });
             } else {
                 var m_dataUpdate = {
@@ -228,6 +245,22 @@ export class ParamteragewiseformComponent implements OnInit {
                     .updateParameterMasterAgeWise(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                     });
             }
             this.onClear();

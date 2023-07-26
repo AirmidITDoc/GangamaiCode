@@ -42,7 +42,7 @@ export class TestmasterComponent implements OnInit {
         "SuggestionNote",
         "FootNote",
         "ServiceName",
-        "AddedByName",
+        "AddedBy",
         "IsTemplateTest",
         "IsCategoryPrint",
         "IsPrintTestName",
@@ -80,12 +80,7 @@ export class TestmasterComponent implements OnInit {
 
     getTestMasterList() {
         var m_data = {
-            TestName:
-                this._TestService.myformSearch
-                    .get("TestNameSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._TestService.myformSearch.get("IsDeletedSearch").value,
+            ServiceName: "%",
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
@@ -307,7 +302,7 @@ export class TestMaster {
     IsPrintTestName: boolean;
     IsDeleted: boolean;
     UpdatedBy: number;
-    AddedByName: string;
+    AddedBy: number;
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -331,7 +326,7 @@ export class TestMaster {
             this.IsCategoryPrint = TestMaster.IsCategoryPrint || "false";
             this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
             this.UpdatedBy = TestMaster.UpdatedBy || "";
-            this.AddedByName = TestMaster.AddedByName || "";
+            this.AddedBy = TestMaster.AddedBy || "";
             this.IsDeletedSearch = TestMaster.IsDeletedSearch || "";
         }
     }

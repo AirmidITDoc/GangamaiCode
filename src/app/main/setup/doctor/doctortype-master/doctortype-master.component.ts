@@ -4,6 +4,7 @@ import { DoctortypeMasterService } from "./doctortype-master.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-doctortype-master",
@@ -30,11 +31,19 @@ export class DoctortypeMasterComponent implements OnInit {
     }
 
     getDoctortypeMasterList() {
-        this._doctortypeService.getDoctortypeMasterList().subscribe((Menu) => {
-            this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-            this.DSDoctorTypeMasterList.sort = this.sort;
-            this.DSDoctorTypeMasterList.paginator = this.paginator;
-        });
+        var param = {
+            DoctorType:
+                this._doctortypeService.myformSearch
+                    .get("DoctorTypeSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._doctortypeService
+            .getDoctortypeMasterList(param)
+            .subscribe((Menu) => {
+                this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
+                this.DSDoctorTypeMasterList.sort = this.sort;
+                this.DSDoctorTypeMasterList.paginator = this.paginator;
+            });
     }
     onSearch() {
         this.getDoctortypeMasterList();
@@ -45,6 +54,7 @@ export class DoctortypeMasterComponent implements OnInit {
             DoctorTypeSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDoctortypeMasterList();
     }
     onClear() {
         this._doctortypeService.myform.reset({ IsDeleted: "false" });
@@ -72,6 +82,23 @@ export class DoctortypeMasterComponent implements OnInit {
                     .doctortTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDoctortypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getDoctortypeMasterList();
                     });
             } else {
@@ -84,7 +111,7 @@ export class DoctortypeMasterComponent implements OnInit {
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._doctortypeService.myform.get("IsDeleted")
-                                    .value
+                                    .value || 0
                             )
                         ),
                     },
@@ -93,6 +120,23 @@ export class DoctortypeMasterComponent implements OnInit {
                     .doctorTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDoctortypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getDoctortypeMasterList();
                     });
             }
@@ -103,7 +147,7 @@ export class DoctortypeMasterComponent implements OnInit {
         var m_data = {
             Id: row.Id,
             DoctorType: row.DoctorType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
         };
         this._doctortypeService.populateForm(m_data);
     }

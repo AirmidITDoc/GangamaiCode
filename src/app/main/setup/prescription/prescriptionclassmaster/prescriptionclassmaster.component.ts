@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-prescriptionclassmaster",
@@ -85,6 +86,23 @@ export class PrescriptionclassmasterComponent implements OnInit {
                     .prescriptionTemplateMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrescriptionclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getPrescriptionclassMasterList();
                     });
             } else {
@@ -114,6 +132,23 @@ export class PrescriptionclassmasterComponent implements OnInit {
                     .prescriptionTemplateMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getPrescriptionclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getPrescriptionclassMasterList();
                     });
             }

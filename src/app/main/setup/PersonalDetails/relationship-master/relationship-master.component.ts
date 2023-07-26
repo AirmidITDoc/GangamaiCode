@@ -18,7 +18,7 @@ export class RelationshipMasterComponent implements OnInit {
         "RelationshipId",
         "RelationshipName",
         "IsDeleted",
-        "AddedByName",
+        "AddedBy",
         "action",
     ];
 
@@ -36,6 +36,7 @@ export class RelationshipMasterComponent implements OnInit {
             RelationshipNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getrelationshipMasterList();
     }
 
     ngOnInit(): void {
@@ -44,7 +45,10 @@ export class RelationshipMasterComponent implements OnInit {
 
     getrelationshipMasterList() {
         var m_data = {
-            RelativeName: "%",
+            RelativeName:
+                this._relationshipService.myformSearch
+                    .get("RelationshipNameSearch")
+                    .value.trim() || "%",
         };
 
         this._relationshipService
@@ -178,7 +182,6 @@ export class RelationshipMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

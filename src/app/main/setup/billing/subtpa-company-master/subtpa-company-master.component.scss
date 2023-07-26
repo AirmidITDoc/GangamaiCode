@@ -1,15 +1,15 @@
 app-subtpa-company-master {
     .mat-header-row {
-        width: 2050px;
-        max-width: 2050px;
-        min-width: 2050px;
+        width: 1450px;
+        max-width: 1450px;
+        min-width: 1450px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 2000px;
-        max-width: 2000px;
-        min-width: 2000px;
+        width: 1450px;
+        max-width: 1450px;
+        min-width: 1450px;
     }
 
     .mat-column-SubCompanyId {
@@ -19,9 +19,9 @@ app-subtpa-company-master {
     }
 
     .mat-column-TypeName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
     .mat-column-CompanyName {
         width: 320px;
@@ -29,9 +29,9 @@ app-subtpa-company-master {
         min-width: 320px;
     }
     .mat-column-Address {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
     }
     .mat-column-City {
         width: 100px;
@@ -58,42 +58,42 @@ app-subtpa-company-master {
         max-width: 100px;
         min-width: 100px;
     }
-    .mat-column-AddedByName {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+    .mat-column-AddedBy {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
     }
 
-    .mat-column-IsCancelledBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-IsCancelled {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-IsCancelledBy {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
+    // .mat-column-IsCancelled {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
-    .mat-column-IsCancelledDate {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-IsCancelledDate {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
     .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: center;
         justify-content: center;
     }
 
     .mat-column-action {
         // color: white !important;
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

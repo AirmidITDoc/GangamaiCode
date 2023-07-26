@@ -96,21 +96,22 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsDeleted"
+                                            <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="element.IsDeleted"
+                                            <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName">
+                                    <!-- <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
@@ -149,7 +150,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_drugService.myform">
                                     <h3>{{_drugService.myform.controls.DrugId.value?"Modify Prefix Master":"New Prefix
                                         Master"}}</h3>
@@ -166,7 +167,7 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>GenericName</mat-label>
                                             <mat-select formControlName="GenericId" placeholder="Bank" #singleSelect
                                                 required>
@@ -186,7 +187,7 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>Class Name</mat-label>
                                             <mat-select formControlName="ClassId" placeholder="Bank" #singleSelect
                                                 required>
@@ -205,9 +206,9 @@
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
-                                                fxFlex>IsActive</mat-radio-button>
                                             <mat-radio-button value='true' class="mr-sm-12"
+                                                fxFlex>IsActive</mat-radio-button>
+                                            <mat-radio-button value='false' class="mr-sm-12"
                                                 fxFlex>IsDeactive</mat-radio-button>
                                         </mat-radio-group>
                                     </div>

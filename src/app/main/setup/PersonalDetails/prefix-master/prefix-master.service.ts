@@ -33,7 +33,6 @@ export class PrefixMasterService {
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     initializeFormGroup() {
@@ -63,5 +62,8 @@ export class PrefixMasterService {
     // Update Perfix Master
     public updatePrefixMaster(Param) {
         return this._httpClient.post("PersonalDetails/PrefixUpdate", Param);
+    }
+    populateForm(param) {
+        this.myform.patchValue(param);
     }
 }

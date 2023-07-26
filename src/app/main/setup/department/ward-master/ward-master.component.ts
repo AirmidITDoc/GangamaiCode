@@ -7,6 +7,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { WardMasterService } from "./ward-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-ward-master",
@@ -26,7 +27,7 @@ export class WardMasterComponent implements OnInit {
         "RoomName",
         "LocationName",
         "ClassName",
-        "AddedByName",
+
         "IsAvailable",
         "IsDeleted",
         "action",
@@ -74,6 +75,7 @@ export class WardMasterComponent implements OnInit {
             RoomNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getwardMasterList();
     }
     private filterLocation() {
         // debugger;
@@ -118,7 +120,13 @@ export class WardMasterComponent implements OnInit {
     }
 
     getwardMasterList() {
-        this._wardService.getwardMasterList().subscribe((Menu) => {
+        var param = {
+            WardName:
+                this._wardService.myformSearch
+                    .get("RoomNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._wardService.getwardMasterList(param).subscribe((Menu) => {
             this.DSWardMasterList.data = Menu as WardMaster[];
             this.DSWardMasterList.sort = this.sort;
             this.DSWardMasterList.paginator = this.paginator;
@@ -155,60 +163,84 @@ export class WardMasterComponent implements OnInit {
             if (!this._wardService.myform.get("RoomId").value) {
                 var m_data = {
                     wardMasterInsert: {
-                        roomName: this._wardService.myform
+                        roomName_1: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        roomType: "1",
-                        locationId:
-                            this._wardService.myform.get("LocationId").value,
-                        isAvailable: Boolean(
+                        roomType_2: "1",
+                        locationId_3:
+                            this._wardService.myform.get("LocationId").value
+                                .LocationId,
+                        isAvailible_4: Boolean(
                             JSON.parse(
                                 this._wardService.myform.get("IsAvailable")
                                     .value
                             )
                         ),
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        classId: this._wardService.myform.get("ClassId").value,
+                        //  addedBy: 1,
+                        isActive_5: 0,
+                        classId:
+                            this._wardService.myform.get("ClassId").value
+                                .ClassId,
                     },
                 };
+
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getwardMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getwardMasterList();
                 });
             } else {
                 var m_dataUpdate = {
                     wardMasterUpdate: {
-                        roomID: this._wardService.myform.get("RoomId").value,
-                        roomName: this._wardService.myform
+                        roomId_1: this._wardService.myform.get("RoomId").value,
+                        roomName_2: this._wardService.myform
                             .get("RoomName")
                             .value.trim(),
-                        roomType: "1",
-                        locationId:
-                            this._wardService.myform.get("LocationId").value,
-                        isAvailable: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsAvailable")
-                                    .value
-                            )
-                        ),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        updatedBy: 1,
-                        classId: this._wardService.myform.get("ClassId").value,
+                        roomType_3: "1",
+                        locationId_4:
+                            this._wardService.myform.get("LocationId").value
+                                .LocationId,
+                        //    isAvailable: 1,
+                        isActive_5: 0,
+                        //  updatedBy: 1,
+                        classID:
+                            this._wardService.myform.get("ClassId").value
+                                .ClassId,
                     },
                 };
                 this._wardService
                     .wardMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getwardMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getwardMasterList();
                     });
             }
@@ -219,11 +251,11 @@ export class WardMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             RoomId: row.RoomId,
-            RoomName: row.RoomName.trim(),
+            RoomName: row.WardName,
             LocationId: row.LocationId,
-            IsAvailable: JSON.stringify(row.IsAvailable),
+            IsAvailable: JSON.stringify(row.IsAvailible),
             ClassId: row.ClassID,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._wardService.populateForm(m_data);

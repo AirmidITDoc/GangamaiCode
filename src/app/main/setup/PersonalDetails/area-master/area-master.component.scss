@@ -1,15 +1,15 @@
 app-area-master {
     .mat-header-row {
-        width: 850px;
-        max-width: 850px;
-        min-width: 850px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 850px;
-        max-width: 850px;
-        min-width: 850px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
     }
 
     .mat-column-AreaId {
@@ -24,11 +24,11 @@ app-area-master {
         min-width: 300px;
     }
 
-    .mat-column-CityName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-CityName {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
     .mat-column-AddedBy {
         width: 100px;

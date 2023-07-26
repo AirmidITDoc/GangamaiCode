@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 export class TaxMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-    
+
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
@@ -28,7 +28,7 @@ export class TaxMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          TaxNatureSearch: [""],
+            TaxNatureSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -36,10 +36,10 @@ export class TaxMasterService {
         this.createTaxMasterForm();
     }
 
-    public gettaxMasterList() {
+    public gettaxMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_TaxNatureMaster_by_Name",
-            { TaxNature: "%" }
+            "Generic/GetByProc?procName=Rtrv_TaxNature_by_Name",
+            param
         );
     }
 

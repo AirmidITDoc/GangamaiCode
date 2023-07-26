@@ -95,7 +95,8 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)">
@@ -104,9 +105,7 @@
                                             <button mat-icon-button (click)="onDeactive(row.BankId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button [routerLink]="['/auth/menu-configure/menu-configure',row.menu_master_id]">
-                            <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
-                        </button> -->
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -121,7 +120,7 @@
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}">
+                                        [ngClass]="{'hide':DSCountryMasterList!=null}">
                                     </mat-footer-row>
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
@@ -131,7 +130,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+                            <div mat-dialog-content class="p-24 pb-0 m-0">
                                 <form [formGroup]="_CountryService.myform">
                                     <h3>{{_CountryService.myform.controls.CountryId.value?"Modify Country Master":"New
                                         Country Master"}}

@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { DischargetypeMasterService } from "./dischargetype-master.service";
 import { MatAccordion } from "@angular/material/expansion";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-dischargetype-master",
@@ -26,7 +27,7 @@ export class DischargetypeMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "DischargeTypeId",
         "DischargeTypeName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -54,9 +55,6 @@ export class DischargetypeMasterComponent implements OnInit {
                 this._dischargetypeService.myformSearch
                     .get("DischargeTypeNameSearch")
                     .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._dischargetypeService.myformSearch.get("IsDeletedSearch")
-                    .value,
         };
         this._dischargetypeService
             .getdischargetypeMasterList(m_data)
@@ -106,6 +104,7 @@ export class DischargetypeMasterComponent implements OnInit {
             DischargeTypeNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getdischargetypeMasterList();
     }
 
     onSubmit() {
@@ -118,14 +117,9 @@ export class DischargetypeMasterComponent implements OnInit {
                         dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
+                        isActive: 0,
                         addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._dischargetypeService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        updatedBy: 1,
                     },
                 };
 
@@ -133,6 +127,23 @@ export class DischargetypeMasterComponent implements OnInit {
                     .dischargeTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getdischargetypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getdischargetypeMasterList();
                     });
             } else {
@@ -145,13 +156,7 @@ export class DischargetypeMasterComponent implements OnInit {
                         dischargeTypeName: this._dischargetypeService.myform
                             .get("DischargeTypeName")
                             .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._dischargetypeService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        isActive: 0,
                         updatedBy: 1,
                     },
                 };
@@ -160,6 +165,23 @@ export class DischargetypeMasterComponent implements OnInit {
                     .dischargeTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getdischargetypeMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getdischargetypeMasterList();
                     });
             }
@@ -171,7 +193,7 @@ export class DischargetypeMasterComponent implements OnInit {
         var m_data = {
             DischargeTypeId: row.DischargeTypeId,
             DischargeTypeName: row.DischargeTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._dischargetypeService.populateForm(m_data);

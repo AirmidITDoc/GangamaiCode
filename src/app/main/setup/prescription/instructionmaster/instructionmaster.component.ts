@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { InstructionmasterService } from "./instructionmaster.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-instructionmaster",
@@ -18,8 +19,6 @@ export class InstructionmasterComponent implements OnInit {
     displayedColumns: string[] = [
         "InstructionId",
         "InstructionName",
-
-        "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -33,8 +32,14 @@ export class InstructionmasterComponent implements OnInit {
     }
 
     getInstructionMasterList() {
+        var param = {
+            InstructionName:
+                this._InstructionService.myformSearch
+                    .get("InstructionNameSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._InstructionService
-            .getInstructionMasterList()
+            .getInstructionMasterList(param)
             .subscribe(
                 (Menu) =>
                     (this.DSInstructionMasterList.data =
@@ -50,6 +55,7 @@ export class InstructionmasterComponent implements OnInit {
             InstructionNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getInstructionMasterList();
     }
     onClear() {
         this._InstructionService.myForm.reset({ IsDeleted: "false" });
@@ -65,19 +71,36 @@ export class InstructionmasterComponent implements OnInit {
                             .get("InstructionName")
                             .value.trim(),
 
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._InstructionService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
                 this._InstructionService
                     .insertInstructionMaster(m_data)
                     .subscribe((data) => {
                         this.msg = m_data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getInstructionMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getInstructionMasterList();
                     });
             } else {
@@ -90,19 +113,36 @@ export class InstructionmasterComponent implements OnInit {
                             .get("InstructionName")
                             .value.trim(),
 
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._InstructionService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: 1,
+                        // updatedBy: 1,
                     },
                 };
                 this._InstructionService
                     .updateInstructionMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getInstructionMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getInstructionMasterList();
                     });
             }
@@ -113,7 +153,7 @@ export class InstructionmasterComponent implements OnInit {
         var m_data1 = {
             InstructionId: row.InstructionId,
             InstructionName: row.InstructionName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(m_data1);
@@ -127,7 +167,6 @@ export class InstructionMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -142,7 +181,6 @@ export class InstructionMaster {
             this.IsDeleted = InstructionMaster.IsDeleted || "false";
             this.AddedBy = InstructionMaster.AddedBy || "";
             this.UpdatedBy = InstructionMaster.UpdatedBy || "";
-            this.AddedByName = InstructionMaster.AddedByName || "";
         }
     }
 }

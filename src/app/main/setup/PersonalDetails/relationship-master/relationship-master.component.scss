@@ -4,9 +4,9 @@
 
 app-relationship-master {
     .mat-header-row {
-        width: 80px;
-        max-width: 850px;
-        min-width: 850px;
+        width: 800px;
+        max-width: 800px;
+        min-width: 800px;
         font-weight: bold;
     }
 
@@ -23,15 +23,15 @@ app-relationship-master {
     }
 
     .mat-column-RelationshipName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
-
-    .mat-column-AddedByName {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
+    }
+
+    .mat-column-AddedBy {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-IsDeleted {

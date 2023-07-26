@@ -46,6 +46,7 @@ export class GenderMasterComponent implements OnInit {
             GenderNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getGenderMasterList();
     }
 
     getGenderMasterList() {
@@ -70,7 +71,12 @@ export class GenderMasterComponent implements OnInit {
                         genderName: this._GenderService.myform
                             .get("GenderName")
                             .value.trim(),
-                        isActive: 1,
+                        isActive: Boolean(
+                            JSON.parse(
+                                this._GenderService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
                     },
                 };
                 console.log(m_data);
@@ -105,7 +111,12 @@ export class GenderMasterComponent implements OnInit {
                         genderName: this._GenderService.myform
                             .get("GenderName")
                             .value.trim(),
-                        isActive: 1,
+                        isActive: Boolean(
+                            JSON.parse(
+                                this._GenderService.myform.get("IsDeleted")
+                                    .value
+                            )
+                        ),
                     },
                 };
 
@@ -141,7 +152,7 @@ export class GenderMasterComponent implements OnInit {
         var m_data = {
             GenderId: row.GenderId,
             GenderName: row.GenderName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
         };
         this._GenderService.populateForm(m_data);
     }

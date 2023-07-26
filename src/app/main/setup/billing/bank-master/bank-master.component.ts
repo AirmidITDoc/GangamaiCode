@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { BankMasterService } from "./bank-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-bank-master",
@@ -23,7 +24,7 @@ export class BankMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "BankId",
         "BankName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -45,6 +46,7 @@ export class BankMasterComponent implements OnInit {
             BankNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getBankMasterList();
     }
     IsActiveStatus: any;
     onChangeIsactive(SiderOption) {
@@ -54,7 +56,10 @@ export class BankMasterComponent implements OnInit {
 
     getBankMasterList() {
         var param = {
-            BankName: "%",
+            BankName:
+                this._bankService.myformSearch
+                    .get("BankNameSearch")
+                    .value.trim() + "%" || "%",
         };
         this._bankService.getBankMasterList(param).subscribe((Menu) => {
             this.DSBankMasterList.data = Menu as BankMaster[];
@@ -86,6 +91,19 @@ export class BankMasterComponent implements OnInit {
                 console.log(m_data);
                 this._bankService.bankMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getBankMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getBankMasterList();
                 });
             } else {
@@ -105,6 +123,23 @@ export class BankMasterComponent implements OnInit {
                     .bankMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getBankMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getBankMasterList();
                     });
             }
@@ -128,7 +163,6 @@ export class BankMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -142,7 +176,6 @@ export class BankMaster {
             this.IsDeleted = BankMaster.IsDeleted || "false";
             this.AddedBy = BankMaster.AddedBy || "";
             this.UpdatedBy = BankMaster.UpdatedBy || "";
-            this.AddedByName = BankMaster.AddedByName || "";
         }
     }
 }

@@ -4,6 +4,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-uom-master",
@@ -18,7 +19,7 @@ export class UomMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "UnitofMeasurementId",
         "UnitofMeasurementName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -41,10 +42,17 @@ export class UomMasterComponent implements OnInit {
             UnitofMeasurementSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getUnitofmeasurementMasterList();
     }
     getUnitofmeasurementMasterList() {
+        var param = {
+            UnitofMeasurmentName:
+                this._unitofmeasurementService.myformSearch
+                    .get("UnitofMeasurementSearch")
+                    .value.trim() + "%" || "%",
+        };
         this._unitofmeasurementService
-            .getUnitofmeasurementMasterList()
+            .getUnitofmeasurementMasterList(param)
             .subscribe((Menu) => {
                 this.DSUnitofmeasurementList.data =
                     Menu as UnitofmeasurementMaster[];
@@ -79,6 +87,7 @@ export class UomMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
 
@@ -86,6 +95,23 @@ export class UomMasterComponent implements OnInit {
                     .insertUnitofMeasurementMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getUnitofmeasurementMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getUnitofmeasurementMasterList();
                     });
             } else {
@@ -114,6 +140,23 @@ export class UomMasterComponent implements OnInit {
                     .updateUnitofMeasurementMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getUnitofmeasurementMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getUnitofmeasurementMasterList();
                     });
             }
@@ -124,7 +167,8 @@ export class UomMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             UnitofMeasurementId: row.UnitofMeasurementId,
-            UnitofMeasurementName: row.UnitofMeasurementName.trim(),
+            UnitofMeasurementName: row.UnitofMeasurementName,
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._unitofmeasurementService.populateForm(m_data);
@@ -136,7 +180,6 @@ export class UnitofmeasurementMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor

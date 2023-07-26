@@ -19,11 +19,15 @@ app-maritalstatus-master {
     }
 
     .mat-column-MaritalStatusName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
-
+    .mat-column-AddedBy {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
     .mat-column-IsDeleted {
         width: 100px;
         max-width: 100px;

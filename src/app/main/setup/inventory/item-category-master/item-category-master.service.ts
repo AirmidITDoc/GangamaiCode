@@ -30,7 +30,7 @@ export class ItemCategoryMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          ItemCategoryNameSearch: [""],
+            ItemCategoryNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -38,16 +38,16 @@ export class ItemCategoryMasterService {
         this.createItemCategoryForm();
     }
 
-    public getitemcategoryMasterList() {
+    public getitemcategoryMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_ItemCategoryMaster_by_Name",
-            { ItemCategoryName: "%" }
+            "Generic/GetByProc?procName=Rtrv_ItemCategoryMaster_by_Name",
+            param
         );
     }
 
     public getItemTypeMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Retrieve_ItemTypeMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
             {}
         );
     }

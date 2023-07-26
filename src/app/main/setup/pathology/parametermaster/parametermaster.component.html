@@ -109,7 +109,7 @@
 
                                     <ng-container matColumnDef="IsNumeric">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsNumeric}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsNumericParameter}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -132,9 +132,9 @@
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParaMultipleRange}}
                                         </mat-cell>
                                     </ng-container>
-                                    <ng-container matColumnDef="AddedByName">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -158,8 +158,7 @@
                                                     title="Edit Menu">launch</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.SupplierId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.ParameterID)"
-                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
+
                                         </mat-cell>
                                     </ng-container>
 

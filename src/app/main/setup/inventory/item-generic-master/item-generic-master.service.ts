@@ -36,10 +36,10 @@ export class ItemGenericMasterService {
         this.createItemgenericForm();
     }
 
-    public getitemgenericMasterList() {
+    public getitemgenericMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_ItemGenericNameMaster_by_Name",
-            { ItemGenericName: "%" }
+            "Generic/GetByProc?procName=Retrieve_Item_Generic_ByName",
+            param
         );
     }
 

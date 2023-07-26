@@ -1,14 +1,14 @@
 app-item-master {
     .mat-header-row {
-        width: 2600px;
-        max-width: 2600px;
-        min-width: 2600px;
+        width: 3100px;
+        max-width: 3100px;
+        min-width: 3100px;
         font-weight: bold;
     }
     .mat-row {
-        width: 2600px;
-        max-width: 2600px;
-        min-width: 2600px;
+        width: 3100px;
+        max-width: 3100px;
+        min-width: 3100px;
     }
 
     .mat-column-ItemID {
@@ -17,20 +17,20 @@ app-item-master {
         min-width: 70px;
     }
 
-    .mat-column-ItemShortName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-ItemShortName {
+    //     width: 200px;
+    //     max-width: 200px;
+    //     min-width: 200px;
+    // }
     .mat-column-ItemName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
     }
     .mat-column-ItemTypeName {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
     .mat-column-ItemCategoryName {
         width: 100px;
@@ -38,9 +38,9 @@ app-item-master {
         min-width: 100px;
     }
     .mat-column-ItemGenericName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 270px;
+        max-width: 270px;
+        min-width: 270px;
     }
     .mat-column-ItemClassName {
         width: 100px;
@@ -66,15 +66,15 @@ app-item-master {
         min-width: 120px;
     }
 
-    .mat-column-CurrencyId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+    .mat-column-CurrencyName {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
     .mat-column-TaxPer {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
     }
 
     .mat-column-IsBatchRequired {
@@ -102,9 +102,9 @@ app-item-master {
     }
 
     .mat-column-IsNursingFlag {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-HSNcode {
@@ -200,9 +200,9 @@ app-item-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

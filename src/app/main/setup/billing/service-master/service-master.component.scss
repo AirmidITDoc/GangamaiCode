@@ -1,14 +1,14 @@
 app-service-master {
     .mat-header-row {
-        width: 1200px;
-        max-width: 1200px;
-        min-width: 1200px;
+        width: 1800px;
+        max-width: 1800px;
+        min-width: 1800px;
         font-weight: bold;
     }
     .mat-row {
-        width: 1200px;
-        max-width: 1200px;
-        min-width: 1200px;
+        width: 1800px;
+        max-width: 1800px;
+        min-width: 1800px;
     }
 
     .mat-column-ServiceId {
@@ -20,12 +20,38 @@ app-service-master {
     .mat-column-ServiceName {
         width: 250px;
         max-width: 250px;
-        min-width: 120px;
+        min-width: 250px;
+    }
+
+    .mat-column-ServiceShortDesc {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
     }
     .mat-column-GroupName {
         width: 150px;
         max-width: 150px;
         min-width: 150px;
+    }
+    .mat-column-DoctorId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-IsDocEditable {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-TariffId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+    }
+    .mat-column-SubGroupId {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
     }
     .mat-column-IsEditable {
         width: 70px;
@@ -37,21 +63,20 @@ app-service-master {
         max-width: 110px;
         min-width: 110px;
     }
-    .mat-column-PrintOrder {
+    .mat-column-IsPathology {
         width: 70px;
         max-width: 70px;
         min-width: 70px;
     }
-    .mat-column-SubGroupName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+    .mat-column-IsRadiology {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
     }
-
-    .mat-column-FirstName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+    .mat-column-PrintOrder {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
     }
 
     .mat-column-EmgAmt {
@@ -66,10 +91,10 @@ app-service-master {
         min-width: 70px;
     }
 
-    .mat-column-AddedByName {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
+    .mat-column-Price {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
     }
 
     .mat-column-IsDeleted {
@@ -82,9 +107,9 @@ app-service-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }
@@ -96,6 +121,52 @@ app-service-master {
         flex-shrink: 0;
         line-height: 20px;
         border-radius: 50%;
+    }
+    .clearbutton {
+        padding-right: 5px;
+        padding-left: 5px;
+        float: right;
+        color: blue;
+        width: 27%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin: 5px;
+        font-size: 17px;
+        border: 1px solid #808080;
+        height: 40px;
+    }
+
+    .cleariconbutton {
+        font-size: 30px;
+        text-align: center;
+        margin: 10 10 10 10 px;
+        // margin-bottom: 35px;
+        // margin-right: 13px;
+
+        color: blue;
+    }
+
+    .searchButton {
+        padding-right: 5px;
+        padding-left: 5px;
+        float: right;
+        color: blue;
+        width: 27%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin: 5px;
+        font-size: 17px;
+        border: 1px solid #808080;
+        height: 40px;
+    }
+
+    .searchiconbutton {
+        font-size: 30px;
+        text-align: center;
+        margin: 10 10 10 10 px;
+        // margin-bottom: 35px;
+        // margin-right: 10px;
+        color: blue;
     }
 }
 

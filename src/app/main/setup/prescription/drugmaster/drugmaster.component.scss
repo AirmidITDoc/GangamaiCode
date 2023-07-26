@@ -1,15 +1,15 @@
-app-drug-master {
+app-drugmaster {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
     }
 
     .mat-column-DrugId {
@@ -34,11 +34,11 @@ app-drug-master {
         max-width: 100px;
         min-width: 100px;
     }
-    .mat-column-AddedByName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+    // .mat-column-AddedByName {
+    //     width: 100px;
+    //     max-width: 100px;
+    //     min-width: 100px;
+    // }
 
     .mat-column-IsDeleted {
         width: 100px;
@@ -50,9 +50,9 @@ app-drug-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }
@@ -66,4 +66,3 @@ app-drug-master {
         border-radius: 50%;
     }
 }
-

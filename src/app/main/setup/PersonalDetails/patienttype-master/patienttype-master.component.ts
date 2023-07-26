@@ -21,7 +21,7 @@ export class PatienttypeMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "PatientTypeId",
         "PatientType",
-        "AddedByName",
+        //   "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -44,13 +44,20 @@ export class PatienttypeMasterComponent implements OnInit {
             PatientTypeSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getPatientTypeMasterList();
     }
     ngOnInit(): void {
         this.getPatientTypeMasterList();
     }
     getPatientTypeMasterList() {
+        var param = {
+            PatientType:
+                this._PatientTypeService.myformSearch
+                    .get("PatientTypeSearch")
+                    .value.trim() || "%",
+        };
         this._PatientTypeService
-            .getPatientTypeMasterList()
+            .getPatientTypeMasterList(param)
             .subscribe(
                 (Menu) =>
                     (this.DSPatientTypeMasterList.data =
@@ -71,8 +78,8 @@ export class PatienttypeMasterComponent implements OnInit {
                         patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        addedBy: this.accountService.currentUserValue.user.id,
-                        isDeleted: Boolean(
+                        addedBy: 1,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
@@ -103,7 +110,6 @@ export class PatienttypeMasterComponent implements OnInit {
                         }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record added successfully");
             } else {
                 var m_dataUpdate = {
                     patientTypeMasterUpdate: {
@@ -113,13 +119,13 @@ export class PatienttypeMasterComponent implements OnInit {
                         patientType: this._PatientTypeService.myForm
                             .get("PatientType")
                             .value.trim(),
-                        isDeleted: Boolean(
+                        isActive: Boolean(
                             JSON.parse(
                                 this._PatientTypeService.myForm.get("IsDeleted")
                                     .value
                             )
                         ),
-                        updatedBy: this.accountService.currentUserValue.user.id,
+                        updatedBy: 1,
                     },
                 };
                 this._PatientTypeService
@@ -145,7 +151,6 @@ export class PatienttypeMasterComponent implements OnInit {
                         }
                         this.getPatientTypeMasterList();
                     });
-                this.notification.success("Record updated successfully");
             }
             this.onClear();
         }
@@ -154,7 +159,7 @@ export class PatienttypeMasterComponent implements OnInit {
         var m_data1 = {
             PatientTypeId: row.PatientTypeId,
             PatientType: row.PatientType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         console.log(m_data1);
@@ -168,7 +173,6 @@ export class PatientTypeMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -182,7 +186,6 @@ export class PatientTypeMaster {
             this.IsDeleted = PatientTypeMaster.IsDeleted || "false";
             this.AddedBy = PatientTypeMaster.AddedBy || "";
             this.UpdatedBy = PatientTypeMaster.UpdatedBy || "";
-            this.AddedByName = PatientTypeMaster.AddedByName || "";
         }
     }
 }

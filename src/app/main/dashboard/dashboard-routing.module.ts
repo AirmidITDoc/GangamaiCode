@@ -4,6 +4,7 @@ import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.compo
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
+import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 
 const routes: Routes = [
   {
@@ -29,7 +30,12 @@ const routes: Routes = [
   {
     path: 'Cashless-dashboard',
     component: CashlessDashboardComponent
+  },
+  {
+    path: 'Pharmacy-dashboard',
+    component: PharmacyDashboardComponent
   }
+
 ];
 
 @NgModule({

@@ -23,7 +23,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ConcessionId",
         "ConcessionReasonName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -47,10 +47,16 @@ export class ConcessionReasonMasterComponent implements OnInit {
             ConcessionReasonNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getConcessionreasonMasterList();
     }
 
     getConcessionreasonMasterList() {
-        var param = { ConcessionReasonName: "%" };
+        var param = {
+            ConcessionReasonName:
+                this._consessionreasonService.myformSearch
+                    .get("ConcessionReasonNameSearch")
+                    .value.trim() || "%",
+        };
         this._consessionreasonService
             .getConcessionreasonMasterList(param)
             .subscribe((Menu) => {
@@ -176,7 +182,6 @@ export class ConcessionReasonMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -191,7 +196,6 @@ export class ConcessionReasonMaster {
             this.IsDeleted = ConcessionReasonMaster.IsDeleted || "false";
             this.AddedBy = ConcessionReasonMaster.AddedBy || "";
             this.UpdatedBy = ConcessionReasonMaster.UpdatedBy || "";
-            this.AddedByName = ConcessionReasonMaster.AddedByName || "";
         }
     }
 }

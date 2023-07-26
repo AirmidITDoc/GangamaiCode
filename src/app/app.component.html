@@ -1,4 +1,5 @@
 <!-- PROGRESS BAR -->
+<app-internet-connection *ngIf="isOffLine" [isLoading]="isLoading" [isOffLine]="isOffLine"></app-internet-connection>
 <fuse-progress-bar></fuse-progress-bar>
 <!-- / PROGRESS BAR -->
 
@@ -27,12 +28,15 @@
 <!-- / HORIZONTAL LAYOUT 1 -->
 
 <!-- THEME OPTIONS PANEL -->
-<button mat-icon-button class="warn mat-elevation-z2 theme-options-button"
+<!-- <button mat-icon-button class="warn mat-elevation-z2 theme-options-button"
     (click)="toggleSidebarOpen('themeOptionsPanel')">
     <mat-icon>settings</mat-icon>
-</button>
+</button> -->
 
 <fuse-sidebar name="themeOptionsPanel" class="theme-options-sidebar" position="right" [invisibleOverlay]="true">
     <fuse-theme-options></fuse-theme-options>
 </fuse-sidebar>
 <!-- / THEME OPTIONS PANEL -->
+<!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Work in progress... </p>
+  </ngx-spinner> -->

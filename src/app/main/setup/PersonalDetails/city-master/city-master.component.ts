@@ -30,8 +30,11 @@ export class CityMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CITYID",
         "CITYNAME",
+        //"STATEID",
         "STATENAME",
-        "AddedBy",
+        //  "COUNTRYID",
+        "COUNTRYNAME",
+        // "AddedBy",
         "ISDELETED",
         "action",
     ];
@@ -62,6 +65,7 @@ export class CityMasterComponent implements OnInit {
             CityNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCityMasterList();
     }
     private filterState() {
         if (!this.StatecmbList) {
@@ -84,7 +88,18 @@ export class CityMasterComponent implements OnInit {
     }
 
     getCityMasterList() {
-        var param = { CityName: "%" };
+        var param = {
+            CityName:
+                this._cityService.myformSearch
+                    .get("CityNameSearch")
+                    .value.trim() || "%",
+            // IsDeleted:
+            //     Boolean(
+            //         JSON.parse(
+            //             this._cityService.myform.get("IsDeletedSearch").value
+            //         )
+            //     ) || 1,
+        };
         this._cityService.getCityMasterList(param).subscribe((Menu) => {
             this.DSCityMasterList.data = Menu as CityMaster[];
             this.DSCityMasterList.sort = this.sort;
@@ -191,7 +206,10 @@ export class CityMasterComponent implements OnInit {
         var m_data = {
             CityId: row.CITYID,
             CityName: row.CITYNAME,
-            StateId: row.STATEID,
+            //  StateId: row.STATEID,
+            StateName: row.STATENAME,
+            // CountryId: row.COUNTRYID,
+            //  CountryName: row.COUNTRYNAME,
             IsDeleted: JSON.stringify(row.ISDELETED),
             UpdatedBy: row.UpdatedBy,
         };
@@ -203,6 +221,9 @@ export class CityMaster {
     CityId: number;
     CityName: string;
     StateId: number;
+    StateName: string;
+    CountryId: number;
+    CountryName: string;
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
@@ -217,6 +238,9 @@ export class CityMaster {
             this.CityId = CityMaster.CityId || "";
             this.CityName = CityMaster.CityName || "";
             this.StateId = CityMaster.StateId || "";
+            this.StateName = CityMaster.StateName || "";
+            this.CountryId = CityMaster.CountryId || "";
+            this.CountryName = CityMaster.CountryName || "";
             this.IsDeleted = CityMaster.IsDeleted || "false";
             this.AddedBy = CityMaster.AddedBy || "";
             this.UpdatedBy = CityMaster.UpdatedBy || "";

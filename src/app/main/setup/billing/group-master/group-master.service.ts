@@ -21,12 +21,11 @@ export class GroupMasterService {
             GroupId: [""],
             GroupName: ["", Validators.required],
             PrintSeqNo: ["", Validators.pattern("[0-9]+")],
-            Isconsolidated: [""],
-            IsConsolidatedDR: [""],
-            IsDeleted: ["false"],
+            Isconsolidated: ["false"],
+            IsConsolidatedDR: ["false"],
+            IsActive: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {

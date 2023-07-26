@@ -32,7 +32,7 @@ export class ParamteragewiseComponent implements OnInit {
 
     displayedColumns: string[] = [
         "PathparaRangeId",
-        "ParameterName",
+        "ParaId",
         "GenderName",
         "MinAge",
         "MaxAge",
@@ -40,7 +40,7 @@ export class ParamteragewiseComponent implements OnInit {
         "MinValue",
         "MaxValue",
         "IsDeleted",
-        "AddedByName",
+        "AddedBy",
         "action",
     ];
 
@@ -61,7 +61,7 @@ export class ParamteragewiseComponent implements OnInit {
 
     onSearchClear() {
         this._ParameterageService.myformSearch.reset({
-            AgetypeSearch: "",
+            ParameterIdSearch: "",
             IsDeletedSearch: "2",
         });
     }
@@ -77,13 +77,9 @@ export class ParamteragewiseComponent implements OnInit {
 
     getParameterAgeMasterList() {
         var m_data = {
-            AgeType:
-                this._ParameterageService.myformSearch
-                    .get("AgetypeSearch")
-                    .value.trim() + "%" || "%",
-            p_IsDeleted:
-                this._ParameterageService.myformSearch.get("IsDeletedSearch")
-                    .value,
+            ParameterId:
+                this._ParameterageService.myformSearch.get("ParameterIdSearch")
+                    .value || 1,
         };
         this._ParameterageService.getParameterAgeMasterList(m_data).subscribe(
             (Menu) => {
@@ -178,8 +174,7 @@ export class PathparameterAgeWiseMaster {
     IsDeleted: boolean;
     Addedby: Number;
     Updatedby: Number;
-    AddedByName: string;
-    IsDeletedSearch: number;
+
     /**
      * Constructor
      *
@@ -200,9 +195,6 @@ export class PathparameterAgeWiseMaster {
             this.IsDeleted = PathparameterAgeWiseMaster.IsDeleted || "false";
             this.Addedby = PathparameterAgeWiseMaster.AddedBy || "";
             this.Updatedby = PathparameterAgeWiseMaster.UpdatedBy || "";
-            this.AddedByName = PathparameterAgeWiseMaster.AddedByName || "";
-            this.IsDeletedSearch =
-                PathparameterAgeWiseMaster.IsDeletedSearch || "";
         }
     }
 }

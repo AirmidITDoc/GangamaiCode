@@ -1,146 +1,179 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class ItemMasterService {
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
-  myform: FormGroup;
-  myformSearch: FormGroup;
+    constructor(
+        private _httpClient: HttpClient,
+        private _formBuilder: FormBuilder
+    ) {
+        this.myform = this.createItemmasterForm();
+        this.myformSearch = this.createSearchForm();
+    }
 
-  constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
-    this.myform=this.createItemmasterForm();
-    this.myformSearch=this.createSearchForm();
-  }
+    createItemmasterForm(): FormGroup {
+        return this._formBuilder.group({
+            ItemID: [""],
+            // ItemShortName: [
+            //     "",
+            //     [
+            //         Validators.required,
+            //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+            //     ],
+            // ],
+            ItemName: [
+                "",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                ],
+            ],
+            ItemTypeID: ["", Validators.required],
+            ItemTypeName: [""],
+            ItemCategoryId: ["", Validators.required],
+            ItemCategoryName: [""],
+            ItemGenericNameId: ["", Validators.required],
+            ItemGenericName: [""],
+            ItemClassId: ["", Validators.required],
+            ItemClassName: [""],
+            PurchaseUOMId: [""],
+            UnitofMeasurementName: [""],
+            StockUOMId: [""],
+            ConversionFactor: ["", Validators.pattern("[0-9]+")],
+            CurrencyId: [""],
+            CurrencyName: [""],
+            TaxPer: ["", [Validators.required, Validators.pattern("[0-9]+")]],
+            IsBatchRequired: ["true"],
+            MinQty: ["", Validators.pattern("[0-9]+")],
+            MaxQty: ["", Validators.pattern("[0-9]+")],
+            ReOrder: ["", Validators.pattern("[0-9]+")],
+            IsNursingFlag: ["true"],
+            HSNcode: ["", Validators.required],
+            CGST: ["", Validators.pattern("[0-9]+")],
+            SGST: ["", Validators.pattern("[0-9]+")],
+            IGST: ["", Validators.pattern("[0-9]+")],
+            IsNarcotic: ["true"],
+            ManufId: [""],
+            ManufName: [""],
+            ProdLocation: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+            IsH1Drug: ["true"],
+            IsScheduleH: ["true"],
+            IsHighRisk: ["true"],
+            IsScheduleX: ["true"],
+            IsLASA: ["true"],
+            IsEmgerency: ["true"],
+            AddedByName: [""],
+            IsDeleted: ["false"],
+            action: [""],
+            StoreId: ["", Validators.required],
+        });
+    }
 
-  createItemmasterForm(): FormGroup {
-    return this._formBuilder.group({
-      
-      ItemID:[''],
-      ItemShortName:['',[Validators.required,Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-      ItemName:['',[Validators.required,Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-      ItemTypeID:['',Validators.required],
-      ItemTypeName:[''],
-      ItemCategoryId:['',Validators.required],
-      ItemCategoryName:[''],
-      ItemGenericNameId:['',Validators.required],
-      ItemGenericName:[''],
-      ItemClassId:['',Validators.required],
-      ItemClassName:[''], 
-      PurchaseUOMId:[''],
-      UnitofMeasurementName:[''],
-      StockUOMId:[''],
-      ConversionFactor: ['',Validators.pattern("[0-9]+")],
-      CurrencyId: [''],
-      CurrencyName:[''],
-      TaxPer: ['',[Validators.required,Validators.pattern("[0-9]+")]],
-      IsBatchRequired:['true'],
-      MinQty:['',Validators.pattern("[0-9]+")],
-      MaxQty:['',Validators.pattern("[0-9]+")],
-      ReOrder:['',Validators.pattern("[0-9]+")],
-      IsNursingFlag:['true'],
-      HSNcode:['',Validators.required],
-      CGST:['',Validators.pattern("[0-9]+")],
-      SGST:['',Validators.pattern("[0-9]+")],
-      IGST:['',Validators.pattern("[0-9]+")],
-      IsNarcotic:['true'],
-      ManufId:[''],
-      ManufName:[''],
-      ProdLocation:['',[Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-      IsH1Drug:['true'],
-      IsScheduleH:['true'],
-      IsHighRisk:['true'],
-      IsScheduleX:['true'],
-      IsLASA:['true'],
-      IsEmgerency:['true'],
-      AddedByName:[''],
-      IsDeleted:['false'],
-      action:[''],
-      StoreId:['',Validators.required],
-       
-    });
-  }
+    initializeFormGroup() {
+        this.createItemmasterForm();
+    }
 
-  initializeFormGroup() {
-    this.createItemmasterForm();
-  }
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            ItemNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      ItemNameSearch: [''],
-      IsDeletedSearch: ['2'],
-    });
-  }
+    public getItemMasterList(param) {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Rtrv_ItemMaster_by_Name",
+            param
+        );
+    }
 
-  
- 
-  public getItemMasterList(param) {
-  
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Inventory_ItemMaster_by_Name",param)
-  }
+    public deactivateTheStatus(param) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + param,
+            {}
+        );
+    }
 
-  public deactivateTheStatus(param) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query="+param, {})
-  }
-  
-  
-  public getitemtypeMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ItemTypeMasterForCombo", {})
-  }
+    public getitemtypeMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
+            {}
+        );
+    }
 
-  public getitemclassMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ItemClassMasterForCombo", {})
-  }
+    public getitemclassMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_ItemClassForCombo",
+            {}
+        );
+    }
 
-  
-  public getitemcategoryMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ItemCategoryMasterForCombo", {})
-  }
+    public getitemcategoryMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_ItemCategoryMasterForCombo",
+            {}
+        );
+    }
 
+    public getitemgenericMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",
+            {}
+        );
+    }
 
-  public getitemgenericMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ItemGenericNameMasterForCombo", {})
-  }
+    public getunitofMeasurementMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_UnitOfMeasurmentNameForCombo",
+            {}
+        );
+    }
 
-  
-  public getunitofMeasurementMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_UnitofMeasurementMasterForCombo", {})
-  }
+    public getManufactureMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
+            {}
+        );
+    }
 
-  public getManufactureMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ManufactureMasterForCombo", {})
-  }
+    public getStoreMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=RetrieveStoerMasterForCombo",
+            {}
+        );
+    }
 
-  public getStoreMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
-  }
+    public getCurrencyMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_CurrencyForCombo",
+            {}
+        );
+    }
 
-  public getCurrencyMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_M_CurrencyMasterForCombo", {})
-  }
+    //insert update of item master
+    public insertItemMaster(param) {
+        return this._httpClient.post("Inventory/ItemMasterSave", param);
+    }
 
-  //insert update of item master
-  public insertItemMaster(param) {
-    return this._httpClient.post("Inventory/ItemMasterSave", param);
-  }
-  
-  public updateItemMaster(param) {
-    return this._httpClient.post("Inventory/ItemMasterUpdate", param);
-  }
+    public updateItemMaster(param) {
+        return this._httpClient.post("Inventory/ItemMasterUpdate", param);
+    }
 
-  public InsertAssignItemToStore(param) {
-    return this._httpClient.post("Inventory/ItemMasterSave", param);
-  }
-  
-  public DeleteAssignItemToStore(param) {
-    return this._httpClient.post("Inventory/ItemMasterUpdate", param);
-  }
+    public InsertAssignItemToStore(param) {
+        return this._httpClient.post("Inventory/ItemMasterSave", param);
+    }
 
+    public DeleteAssignItemToStore(param) {
+        return this._httpClient.post("Inventory/ItemMasterUpdate", param);
+    }
 
-  populateForm(param) {
-    this.myform.patchValue(param);
-  }
+    populateForm(param) {
+        this.myform.patchValue(param);
+    }
 }
-

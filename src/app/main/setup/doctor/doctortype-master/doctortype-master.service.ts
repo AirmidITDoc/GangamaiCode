@@ -35,10 +35,10 @@ export class DoctortypeMasterService {
         this.createDoctortypeForm();
     }
 
-    public getDoctortypeMasterList() {
+    public getDoctortypeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DoctortypeMaster_by_Name",
-            { DoctorType: "%" }
+            "Generic/GetByProc?procName=Rtrv_DoctorTypeMasteList_by_Name",param
+           
         );
     }
 

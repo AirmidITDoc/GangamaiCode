@@ -1,36 +1,36 @@
 app-location-master {
     .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
         font-weight: bold;
     }
 
     .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
+        width: 600px;
+        max-width: 600px;
+        min-width: 600px;
     }
 
     .mat-column-LocationId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
-
-    .mat-column-LocationName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
-    }
-
-    .mat-column-AddedByName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
     }
 
-    .mat-column-IsDeleted {
+    .mat-column-LocationName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
+
+    // .mat-column-AddedByName {
+    //     width: 200px;
+    //     max-width: 200px;
+    //     min-width: 200px;
+    // }
+
+    .mat-column-IsActive {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
@@ -40,9 +40,9 @@ app-location-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content: right;
     }

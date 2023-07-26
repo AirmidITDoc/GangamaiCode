@@ -7,6 +7,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-drugmaster",
@@ -39,7 +40,7 @@ export class DrugmasterComponent implements OnInit {
         "DrugName",
         "GenericName",
         "ClassName",
-        "AddedByName",
+        // "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -74,6 +75,7 @@ export class DrugmasterComponent implements OnInit {
             DrugNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getDrugMasterList();
     }
     private filterClass() {
         if (!this.ClassmbList) {
@@ -116,7 +118,13 @@ export class DrugmasterComponent implements OnInit {
         );
     }
     getDrugMasterList() {
-        this._drugService.getDrugMasterList().subscribe((Menu) => {
+        var param = {
+            DrugName:
+                this._drugService.myformSearch
+                    .get("DrugNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._drugService.getDrugMasterList(param).subscribe((Menu) => {
             this.DSDrugMasterList.data = Menu as DrugMaster[];
             this.DSDrugMasterList.sort = this.sort;
             this.DSDrugMasterList.paginator = this.paginator;
@@ -149,19 +157,35 @@ export class DrugmasterComponent implements OnInit {
                             .get("DrugName")
                             .value.trim(),
                         genericId:
-                            this._drugService.myform.get("GenericId").value,
-                        classId: this._drugService.myform.get("ClassId").value,
-                        isDeleted: Boolean(
+                            this._drugService.myform.get("GenericId").value
+                                .GenericId,
+                        classId:
+                            this._drugService.myform.get("ClassId").value
+                                .ClassId,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
-                        addedBy: 1,
+                        // addedBy: 1,
                     },
                 };
 
                 this._drugService.insertDrugMaster(m_data).subscribe((data) => {
                     this.msg = data;
+                    if (data) {
+                        Swal.fire(
+                            "Saved !",
+                            "Record saved Successfully !",
+                            "success"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                this.getDrugMasterList();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error !", "Appoinment not saved", "error");
+                    }
                     this.getDrugMasterList();
                 });
             } else {
@@ -171,20 +195,40 @@ export class DrugmasterComponent implements OnInit {
                         drugName:
                             this._drugService.myform.get("DrugName").value,
                         genericId:
-                            this._drugService.myform.get("GenericId").value,
-                        classId: this._drugService.myform.get("ClassId").value,
-                        isDeleted: Boolean(
+                            this._drugService.myform.get("GenericId").value
+                                .GenericId,
+                        classId:
+                            this._drugService.myform.get("ClassId").value
+                                .ClassId,
+                        isActive: Boolean(
                             JSON.parse(
                                 this._drugService.myform.get("IsDeleted").value
                             )
                         ),
-                        updatedBy: 1,
+                        //  updatedBy: 1,
                     },
                 };
                 this._drugService
                     .updateDrugMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getDrugMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getDrugMasterList();
                     });
             }
@@ -197,7 +241,7 @@ export class DrugmasterComponent implements OnInit {
             DrugName: row.DrugName.trim(),
             GenericId: row.GenericId,
             ClassId: row.ClassId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.IsActive),
             UpdatedBy: row.UpdatedBy,
         };
         this._drugService.populateForm(m_data);

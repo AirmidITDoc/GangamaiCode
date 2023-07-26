@@ -28,7 +28,7 @@ export class DepartmentMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          DepartmentName: [""],
+            DepartmentNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
@@ -36,10 +36,10 @@ export class DepartmentMasterService {
         this.createDepartmentForm();
     }
 
-    public getDepartmentMasterList() {
+    public getDepartmentMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_DepartmentMaster_by_Name",
-            { DepartmentName: "%" }
+            "Generic/GetByProc?procName=Rtrv_DepartmentMaster_by_Name",
+            param
         );
     }
 

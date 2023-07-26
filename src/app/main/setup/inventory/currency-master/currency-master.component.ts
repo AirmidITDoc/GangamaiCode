@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { CurrencymasterService } from "./currencymaster.service";
 import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-currency-master",
@@ -22,7 +23,7 @@ export class CurrencyMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "CurrencyId",
         "CurrencyName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -43,9 +44,16 @@ export class CurrencyMasterComponent implements OnInit {
             CurrencyNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCurrencyMasterList();
     }
     getCurrencyMasterList() {
-        this._currencyService.getCurrencyMasterList().subscribe((Menu) => {
+        var param = {
+            CurrencyName:
+                this._currencyService.myformSearch
+                    .get("CurrencyNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._currencyService.getCurrencyMasterList(param).subscribe((Menu) => {
             this.DSCurrencyMasterList.data = Menu as CurrencyMaster[];
             this.DSCurrencyMasterList.sort = this.sort;
             this.DSCurrencyMasterList.paginator = this.paginator;
@@ -72,6 +80,7 @@ export class CurrencyMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
                 // console.log(m_data);
@@ -79,6 +88,23 @@ export class CurrencyMasterComponent implements OnInit {
                     .insertCurrencyMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCurrencyMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getCurrencyMasterList();
                     });
             } else {
@@ -103,6 +129,23 @@ export class CurrencyMasterComponent implements OnInit {
                     .updateCurrencyMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getCurrencyMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getCurrencyMasterList();
                     });
             }
@@ -127,7 +170,6 @@ export class CurrencyMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
@@ -141,7 +183,6 @@ export class CurrencyMaster {
             this.IsDeleted = CurrencyMaster.IsDeleted || "false";
             this.AddedBy = CurrencyMaster.AddedBy || "";
             this.UpdatedBy = CurrencyMaster.UpdatedBy || "";
-            this.AddedByName = CurrencyMaster.AddedByName || "";
         }
     }
 }

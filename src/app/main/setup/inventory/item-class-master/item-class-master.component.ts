@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ItemClassMasterService } from "./item-class-master.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-item-class-master",
@@ -18,7 +19,7 @@ export class ItemClassMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "ItemClassId",
         "ItemClassName",
-        "AddedByName",
+        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -41,13 +42,22 @@ export class ItemClassMasterComponent implements OnInit {
             ItemClassNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getitemclassMasterList();
     }
     getitemclassMasterList() {
-        this._itemclassService.getitemclassMasterList().subscribe((Menu) => {
-            this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
-            this.DSItemClassMasterList.sort = this.sort;
-            this.DSItemClassMasterList.paginator = this.paginator;
-        });
+        var param = {
+            ItemClassName:
+                this._itemclassService.myformSearch
+                    .get("ItemClassNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._itemclassService
+            .getitemclassMasterList(param)
+            .subscribe((Menu) => {
+                this.DSItemClassMasterList.data = Menu as ItemClassMaster[];
+                this.DSItemClassMasterList.sort = this.sort;
+                this.DSItemClassMasterList.paginator = this.paginator;
+            });
     }
 
     onClear() {
@@ -70,13 +80,31 @@ export class ItemClassMasterComponent implements OnInit {
                             )
                         ),
                         addedBy: 1,
+                        updatedBy: 1,
                     },
                 };
-
+                console.log(m_data);
                 this._itemclassService
                     .insertItemClassMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Saved !",
+                                "Record saved Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not saved",
+                                "error"
+                            );
+                        }
                         this.getitemclassMasterList();
                     });
             } else {
@@ -102,6 +130,23 @@ export class ItemClassMasterComponent implements OnInit {
                     .updateItemClassMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            Swal.fire(
+                                "Updated !",
+                                "Record updated Successfully !",
+                                "success"
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.getitemclassMasterList();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                "Error !",
+                                "Appoinment not updated",
+                                "error"
+                            );
+                        }
                         this.getitemclassMasterList();
                     });
             }
@@ -113,6 +158,7 @@ export class ItemClassMasterComponent implements OnInit {
         var m_data = {
             ItemClassId: row.ItemClassId,
             ItemClassName: row.ItemClassName.trim(),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._itemclassService.populateForm(m_data);
@@ -124,7 +170,6 @@ export class ItemClassMaster {
     IsDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    AddedByName: string;
 
     /**
      * Constructor
