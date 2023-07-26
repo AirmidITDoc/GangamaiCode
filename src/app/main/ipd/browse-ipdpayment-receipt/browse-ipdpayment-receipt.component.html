@@ -28,7 +28,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -110,7 +110,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'5'}" style="overflow:auto;height: 650px !important;">
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'5'}" style="overflow:auto;height:700px !important;">
                                     <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>

@@ -65,6 +65,7 @@
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSCategoryMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>

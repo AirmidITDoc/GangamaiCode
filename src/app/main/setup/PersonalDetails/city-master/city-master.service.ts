@@ -47,7 +47,7 @@ export class CityMasterService {
 
     public getStateMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo ",
+            "Generic/GetByProc?procName=Retrieve_StateMaster ",
             {}
         );
     }

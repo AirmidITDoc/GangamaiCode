@@ -1,1 +1,143 @@
-<p>radiology-template-master works!</p>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Radiology Template Master
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="90%" fxFlex>
+
+                        <!-- <div class="example-loading-shade" *ngIf="isLoading || isRateLimitReached">
+                            <mat-spinner [diameter]="60" color="primary" *ngIf="isLoading"></mat-spinner>
+                            <div class="example-rate-limit-reached" *ngIf="isRateLimitReached"></div>
+                        </div> -->
+
+                        <div style="width: 100%;">
+                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                            style="overflow:auto" >
+                         
+        
+                            <ng-container matColumnDef="TemplateId">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TempId
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.TemplateId}}
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="TemplateName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TemplateName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.TemplateName}}
+                                </mat-cell>
+                            </ng-container>
+        
+                            
+                            <ng-container matColumnDef="TemplateDesc"  >
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TemplateDesc</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.TemplateDesc}}
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="IsDeleted"  >
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsDeleted
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.IsDeleted}}
+                                </mat-cell>
+                            </ng-container>
+                            
+                            <!-- <ng-container matColumnDef="buttons" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <div fxFlex="row" fxLayoutAlign="center center">
+                                        <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                            (click)="$event.stopPropagation();">
+                                            <mat-icon class="secondary-text">more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #moreMenu="matMenu">
+                                            <ng-container *ngFor="let m of menuActions, let i=index">
+                                                
+                                                <button mat-menu-item aria-label="remove" (click)="getRecord(contact,m)">
+                                                    <span>{{m}}</span>
+                                                </button>
+                                            </ng-container>
+                                        </mat-menu>
+                                    </div>
+                                </mat-cell>
+                            </ng-container> -->
+        
+                            <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button mat-icon-button (click)="getRecord(contact,m)"><mat-icon title="Edit Menu">launch</mat-icon></button>
+                                    <!-- <button mat-icon-button (click)="onDeactive(row.TemplateId)" color="warn"><mat-icon>delete_outline</mat-icon></button>    -->
+                                    <button mat-icon-button (click)="OnPrintPop(row.TemplateId)" color="warn"><mat-icon>delete_outline</mat-icon></button>   
+                                    <button mat-menu-item (click)="PrintData(row.TemplateId)" aria-label="remove">
+                                        <mat-icon>print icon</mat-icon>
+                                    </button>    
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container> 
+        
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+        
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+                        </div>
+                    </div>
+                    <div fxFlex.gt-sm="10%" fxFlex style="background-color: white;">
+                        <button mat-raised-button color="primary" (click)="onAdd()"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

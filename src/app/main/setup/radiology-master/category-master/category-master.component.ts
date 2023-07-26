@@ -35,6 +35,7 @@ export class CategoryMasterComponent implements OnInit {
     ngOnInit(): void {
         this.getCategoryMasterList();
     }
+    
     onSearch() {
         this.getCategoryMasterList();
     }
@@ -46,10 +47,14 @@ export class CategoryMasterComponent implements OnInit {
         });
     }
     getCategoryMasterList() {
-        this._categoryService.getCategoryMasterList().subscribe((Menu) => {
+        var m ={
+            CategoryName: this._categoryService.myformSearch.get('CategoryNameSearch').value + '%' || '%'
+        };
+        this._categoryService.getCategoryMasterList(m).subscribe((Menu) => {
             this.DSCategoryMasterList.data = Menu as CategoryMaster[];
             this.DSCategoryMasterList.sort = this.sort;
             this.DSCategoryMasterList.paginator = this.paginator;
+            console.log(this.DSCategoryMasterList.data );
         });
     }
 

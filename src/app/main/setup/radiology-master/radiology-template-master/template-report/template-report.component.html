@@ -1,0 +1,34 @@
+<!-- <button 
+printSectionId="invoice"
+ngxPrint
+>Print</button> -->
+<button mat-raised-button color="primary" (click)="print('invoice')">Print</button>
+<button mat-raised-button color="primary" (click)="onprint()">Print 2</button>
+
+<!-- <body onload="javascript:window.print()"> -->
+
+<div id="invoice" class="compact page-layout blank" fxLayout="row">
+        <div class="invoice-container">
+                <div class="card" *ngFor="let m of reportdata">
+                        <div class="header">
+                                
+                        <div class="invoice-date" [innerHtml]="m.TemplateName"> </div>
+                               
+                        </div>
+                        <div class="content" [innerHtml]="m.TemplateDesc">
+                        </div>
+                        <div class="footer">
+                                <div class="note">Please pay within 15 days. Thank you for your business.</div>
+                                <div class="small-note">
+                                        In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque
+                                        scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit
+                                        quam at leo commodo, a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia.
+                                        Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero
+                                        tincidunt lacinia et eget eros.
+                                </div>
+                        </div>
+                        
+                </div>
+        </div>
+</div>
+<!-- </body> -->

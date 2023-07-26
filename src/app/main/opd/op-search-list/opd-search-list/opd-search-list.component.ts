@@ -15,8 +15,8 @@ import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
-import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
 import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
+import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
 
 
 @Component({

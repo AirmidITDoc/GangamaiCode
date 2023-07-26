@@ -350,6 +350,7 @@
                         </div>
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                             style="overflow:auto;" class="mat-data-table">
+                            
                             <ng-container matColumnDef="checkbox" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                     <span class="material-icons" (click)="getChargesList()">

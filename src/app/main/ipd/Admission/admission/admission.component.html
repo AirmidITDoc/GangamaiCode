@@ -13,7 +13,7 @@
             </span>
 
             <button mat-raised-button (click)="addNewAdmission()" fxLayoutAlign="center center"
-                style="margin-left: 1400px;">
+                style="margin-left: 1600px;">
                 <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
             </button>
         </div>
@@ -31,7 +31,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -132,7 +132,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinnermatTableExporter #exportDirective="matTableExporter" [hiddenColumns]="[14]" -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="table1">
 
                                     <ng-container matColumnDef="RegNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg
