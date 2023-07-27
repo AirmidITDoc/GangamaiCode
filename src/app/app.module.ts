@@ -31,6 +31,7 @@ import { CertificateComponent } from './main/Mrd/certificate/certificate.compone
 import { M } from '@angular/cdk/keycodes';
 import { TestingComponent } from './main/testing/testing.component';
 import { AppConfigModule } from './app-config.module';
+import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
 
 
 const appRoutes: Routes = [
@@ -123,10 +124,7 @@ class PickDateAdapter extends NativeDateAdapter {
 @NgModule({
     declarations: [
         AppComponent,
-        TestingComponent,
-                // CertificateComponent,
-
-
+        InternetConnectionComponent,
     ],
     imports: [
         BrowserModule,
