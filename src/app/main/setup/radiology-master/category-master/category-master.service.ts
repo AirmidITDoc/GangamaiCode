@@ -36,11 +36,9 @@ export class CategoryMasterService {
         this.createCategoryForm();
     }
 
-    public getCategoryMasterList() {
+    public getCategoryMasterList(emp) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_Radiology_CategoryMaster_by_Name",
-            { CategoryName: "%" }
-        );
+            "Generic/GetByProc?procName=Rtrv_Radiology_CategoryMaster_by_Name",emp);
     }
 
     public insertCategoryMaster(employee) {

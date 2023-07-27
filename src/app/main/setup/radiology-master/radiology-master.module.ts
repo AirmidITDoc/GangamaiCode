@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CategoryMasterComponent } from "./category-master/category-master.component";
-import { RadiologyTemplateMasterComponent } from "./radiology-template-master/radiology-template-master.component";
-import { RadiologyTestMasterComponent } from "./radiology-test-master/radiology-test-master.component";
 import { RouterModule, Routes } from "@angular/router";
 
 const appRoutes: Routes = [
@@ -18,13 +16,13 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import(
                 "./radiology-template-master/radiology-template-master.module"
-            ).then((m) => m.RadiologyTemplateMasterModule),
+            ).then((m) => m.RadiologytemplateMasterModule),
     },
     {
         path: "radiology-test-master",
         loadChildren: () =>
             import("./radiology-test-master/radiology-test-master.module").then(
-                (m) => m.RadiologyTestMasterModule
+                (m) => m.RadiologytestMasterModule
             ),
     },
 ];

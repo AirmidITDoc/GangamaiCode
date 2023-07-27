@@ -855,7 +855,6 @@ debugger;
     };
     let IsSubmit = {
       "submitDataPay": submitDataPay,
-      // "submitDataAdvancePay":ipAdvanceInsert,
       "IsSubmitFlag": true
     }
     console.log(IsSubmit);

@@ -45,6 +45,9 @@ import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casep
 import { OPAdvanceComponent } from './op-advance/op-advance.component';
 import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
 import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
+import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
 
 
 
@@ -68,8 +71,9 @@ const routes: Routes = [
         ViewCasepaperComponent,
         OPAdvanceComponent,
          OPAdvancePaymentComponent,
-        // OutstandingPaymentComponent,
-        OPRefundofBillComponent
+         OPRefundofBillComponent,
+        SchduleTreeComponent,
+        OutstandingPaymentComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -111,8 +115,8 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatAutocompleteModule,
         MatChipsModule,
-        MatTooltipModule
-        
+        MatTooltipModule,
+        MatTreeModule,
         
     ],
     providers: [

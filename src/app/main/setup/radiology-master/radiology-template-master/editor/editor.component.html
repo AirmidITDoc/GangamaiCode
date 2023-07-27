@@ -1,0 +1,126 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>{{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
+                Radiology Template Master"}}</h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>
+<div class="content-card">
+    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+        <form  style="width: 100%;">
+            <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                    <!-- ================================ LABEL HEADER  -->
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                            <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
+                            </h3>
+                        </div>
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                        style="align-items: baseline;">
+
+                        <span class="label" >Reg No :</span>
+                        <span class="data_input" >{{selectedAdvanceObj.RegNo}}</span> 
+
+                        <span class="label"> Patient Name : </span>
+                        <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
+
+                        <span class="label">Doctor Name : </span>
+                        <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
+
+                        <!-- <span class="label">Age(Y) :</span>
+                        <span class="data_input">{{selectedAdvanceObj.AgeYear}}
+                        </span> -->
+
+                        <!-- <span class="label">Room Name : </span>
+                        <span class="data_input">{{selectedAdvanceObj.WardName}} 
+                         
+                        </span>--> 
+
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                        </app-common-date>
+                    </div>
+                    </mat-card>
+                    <!-- ================================ LABEL HEADER  -->
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<div mat-dialog-content style="padding: 5px; margin-left: 5px;margin-right: 5px;">
+    <form [formGroup]="_radiologytemplateService.myform">
+        <input type="hidden" name="TemplateId" formControlName="TemplateId">
+
+        <div fxLayout="column" fxLayout.gt-xs="row">
+            <mat-form-field appearance="outline" fxFlex="40%" style="align-items: flex-end;">
+                <mat-label>Template Name</mat-label>
+                <mat-select formControlName="TemplateId" name="TemplateId">
+                  <mat-option></mat-option>
+                  <mat-option *ngFor="let m of templatelist" [value]="m">
+                    {{m.TemplateName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+
+        <!-- <div fxLayout="column" fxLayout.gt-xs="row">
+             <div class="editor"> 
+                <ejs-richtexteditor id='defaultRTE' [toolbarSettings]='tools' formControlName="TemplateDesc">
+                </ejs-richtexteditor> 
+             </div> 
+         </div> --> 
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div class="editor">
+                <angular-editor  name="editor" placeholder="'Enter text here...'" formControlName="TemplateDesc"></angular-editor>
+                <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
+            </div>
+        </div>
+        <div fxLayout="column" fxLayout.gt-xs="row">
+
+
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Suggatation Note </mat-label>
+                <input name="Suggatationnote" formControlName="Suggatationnote" placeholder="Suggatation Note" matInput >
+                
+              </mat-form-field>
+
+              
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Doctor Name</mat-label>
+                <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [formControl]="DoctorFilterCtrl" [placeholderLabel]="'Search'"
+                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let element of filtereddoctor | async" [value]="element">
+                    {{element.Doctorname}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+        <br/>
+        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- <div fxLayout="column" fxLayout.gt-xs="row">
+                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                    <mat-radio-button value='false'fxFlex>IsActive</mat-radio-button>
+                    <mat-radio-button value='true'fxFlex>IsDeactive</mat-radio-button>
+                </mat-radio-group>
+            </div> -->
+            <div class="button-row" fxLayout="row" style="align-items: flex-end;">
+                <button mat-raised-button color="primary" style="margin: 5px;" (click)="onPrint()">Print</button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                    [disabled]="_radiologytemplateService.myform.invalid">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
