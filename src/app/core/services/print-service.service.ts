@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-const jsPDF = require("jspdf");
-require("jspdf-autotable");
+// const jsPDF = require("jspdf");
+// require("jspdf-autotable");
 // import * as $ from 'jquery';
 // PDF package
 // import pdfMake from 'pdfmake/build/pdfmake';
