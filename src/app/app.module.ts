@@ -93,6 +93,11 @@ const appRoutes: Routes = [
             import("./main/administration/administration.module" ).then((m) => m.AdministrationModule),
     },
     {
+        path: "otmanagement",
+        loadChildren: () =>
+            import("./main/otmanagement/otmanagement.module").then((m) => m.OtmanagementModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
     }

@@ -35,18 +35,11 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
-import { OPSearhlistService } from './op-searhlist.service';
-import { OPBillingComponent } from './op-billing/op-billing.component';
-import { SharedModule } from 'app/main/shared/shared.module';
-import { SearchPageComponent } from './search-page/search-page.component';
-import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
-import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
-import { OPAdvanceComponent } from './op-advance/op-advance.component';
-import { OPAdvancePaymentComponent } from './op-advance-payment/op-advance-payment.component';
-import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.component';
-import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component';
+
 import { MatTreeModule } from '@angular/material/tree';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { OTManagementServiceService } from '../ot-management-service.service';
+import { OTNoteComponent } from './ot-note.component';
 // import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
 
 
@@ -55,25 +48,13 @@ import { MatTreeModule } from '@angular/material/tree';
 const routes: Routes = [
     {
         path: '**',
-        component: OpdSearchListComponent,
+        component: OTNoteComponent,
     },
-    {
-        path: 'new-OpdBilling',
-        // component: OpBillingComponent,
-    },
+   
 ];
 @NgModule({
     declarations: [
-        OpdSearchListComponent,
-        OPBillingComponent,
-        SearchPageComponent,
-        OPCasepaperComponent,
-        ViewCasepaperComponent,
-        OPAdvanceComponent,
-         OPAdvancePaymentComponent,
-         OPRefundofBillComponent,
-        SchduleTreeComponent,
-        // OutstandingPaymentComponent
+      OTNoteComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -120,14 +101,12 @@ const routes: Routes = [
         
     ],
     providers: [
-        OPSearhlistService,
-        NotificationServiceService ,
-        DatePipe
+      OTManagementServiceService,
+              
     ],
     entryComponents: [
-        OpdSearchListComponent
-        // CasePaperComponent
+      OTNoteComponent
+        
     ]
 })
-export class opseachlistModule {
-} 
+export class OTNoteModule { }

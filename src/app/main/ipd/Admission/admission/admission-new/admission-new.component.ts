@@ -1003,6 +1003,7 @@ export class AdmissionNewComponent implements OnInit {
       if (result) {
         this.registerObj = result as AdmissionPersonlModel;
         this.setDropdownObjs();
+        this._matDialog.closeAll();
       }
       //this.getRegistrationList();
     });

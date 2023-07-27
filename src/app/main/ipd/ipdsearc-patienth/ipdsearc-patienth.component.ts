@@ -263,6 +263,7 @@ export class IPDSearcPatienthComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
+        this._matDialog.closeAll();
       });
     // if (contact) this.dialogRef.close(PatInforObj);
   }

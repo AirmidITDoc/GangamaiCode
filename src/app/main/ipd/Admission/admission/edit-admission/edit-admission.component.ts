@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AdmissionService } from '../admission.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -67,7 +67,7 @@ export class EditAdmissionComponent implements OnInit {
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    // public dialogRef: MatDialogRef<ListComponent>,
+    public dialogRef: MatDialogRef<EditAdmissionComponent>,
     private router: Router,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored) { }
@@ -381,7 +381,7 @@ debugger;
   }
 
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   onSubmit() {

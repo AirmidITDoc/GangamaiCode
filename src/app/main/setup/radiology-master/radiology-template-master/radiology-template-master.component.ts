@@ -12,9 +12,10 @@ import { EditorComponent } from './editor/editor.component';
 import { RadiologyTemplateFormComponent } from './radiology-template-form/radiology-template-form.component';
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
 import { TemplateReportComponent } from './template-report/template-report.component';
-import { RadioPatientList } from '../radiology/radiologyorder-list/radiologyorder-list.component';
+// import { RadioPatientList } from '../radiology/radiologyorder-list/radiologyorder-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 
 @Component({
   selector: 'app-radiology-template-master',
@@ -86,7 +87,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
      }
     console.log(m_data);
     this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(Menu => {
-      this.dataSource.data = Menu as RadiologytemplateMaster[];
+      this.dataSource.data = Menu as RadioPatientList[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';

@@ -13,8 +13,7 @@ import { TemplateReportComponent } from 'app/main/setup/pathology/templatemaster
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { RadioPatientList } from '../../radiology/radiologyorder-list/radiologyorder-list.component';
-import { RadiologytemplateMaster } from '../radiology-template-master.component';
+import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 
 @Component({
   selector: 'app-radiology-template-form',
@@ -99,7 +98,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
   //   ['text_color', 'background_color'],
   //   ['align_left', 'align_center', 'align_right', 'align_justify'],
   // ];
-  dataSource = new MatTableDataSource<RadioPatientList>();
+  dataSource = new MatTableDataSource<RadiologytemplateMaster>();
   constructor(public _radiologytemplateService: RadiologyTemplateMasterService,
     private accountService: AuthenticationService,
     public notification:NotificationServiceService,
@@ -262,4 +261,55 @@ export class RadiologyTemplateFormComponent implements OnInit {
     popupWin.document.close();
   }
 
+}
+
+
+export class RadiologytemplateMaster {
+
+  TemplateId: Date;
+  TemplateName: Date;
+  TemplateDesc: any;
+  IsDeleted: String;
+
+  RadDate: Date;
+  RadTime: Date;
+  RegNo: any;
+  PatientName: String;
+  PatientType: number;
+  TestName:String;
+  ConsultantDoctor: any;
+  CategoryName:String;
+  AgeYear:number;
+  GenderName:String;
+  PBillNo: number;
+  
+  
+
+
+  /**
+   * Constructor
+   *
+   * @param RadiologytemplateMaster
+   */
+  constructor(RadiologytemplateMaster) {
+      {
+          
+          this.TemplateId = RadiologytemplateMaster.TemplateId || '';
+          this.TemplateName = RadiologytemplateMaster.TemplateName;
+          this.TemplateDesc = RadiologytemplateMaster.TemplateDesc;
+          this.IsDeleted= RadiologytemplateMaster.IsDeleted;
+
+          this.RadDate = RadiologytemplateMaster.RadDate || '';
+          this.RadTime = RadiologytemplateMaster.RadTime;
+          this.RegNo = RadiologytemplateMaster.RegNo;
+          this.PatientName= RadiologytemplateMaster.PatientName;
+          this.PBillNo= RadiologytemplateMaster.PBillNo;
+          this.PatientType = RadiologytemplateMaster.PatientType || '0';
+          this.ConsultantDoctor = RadiologytemplateMaster.ConsultantDoctor || '';
+          this.TestName = RadiologytemplateMaster.TestName || '0';
+          this.CategoryName = RadiologytemplateMaster.CategoryName || '';
+          this.AgeYear= RadiologytemplateMaster.AgeYear;
+          this.GenderName= RadiologytemplateMaster.GenderName;
+      }
+  }
 }
