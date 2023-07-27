@@ -160,7 +160,7 @@ export class AppComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
 
            //check connection
         this.subscriptions.push(this.onlineEvent.subscribe(e => {
@@ -198,7 +198,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
 
-            this.authService.getNavigationData();
+            await this.authService.getNavigationData();
 
             this.globalEvent$.spinner.subscribe(x => {
                 if (x.toUpperCase() == 'SHOW') {
