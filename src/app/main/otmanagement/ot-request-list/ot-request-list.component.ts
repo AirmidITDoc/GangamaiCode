@@ -65,7 +65,7 @@ export class OTRequestListComponent implements OnInit {
     // private _IpSearchListService: IpSearchListService,
     private _ActRoute: Router,
     public _OtManagementService: OTManagementServiceService,
-    public dialogRef: MatDialogRef<OTRequestListComponent>,
+    // public dialogRef: MatDialogRef<OTRequestListComponent>,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
@@ -240,7 +240,7 @@ export class OTRequestListComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
 
     });
-    if (contact) this.dialogRef.close(PatInforObj);
+    // if (contact) this.dialogRef.close(PatInforObj);
   }
 
 

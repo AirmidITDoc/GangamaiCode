@@ -45,8 +45,8 @@
                                   <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date">
+                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="onShow($event)">
+                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -54,37 +54,40 @@
                         
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Receipt No</mat-label>
-                                    <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
+                                    <input name="ReceiptNo" formControlName="ReceiptNo" matInput (keyup)="onShow($event)">
                                 </mat-form-field>
         
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Bill No</mat-label>
-                                    <input name="PBillNo" formControlName="PBillNo" matInput>
+                                    <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow($event)">
                                 </mat-form-field>
         
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow($event)">
                                 </mat-form-field>
                                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="onShow($event)">
                                 </mat-form-field>
                              
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
                                 </mat-form-field>
                                                     
                               
-                                <div >
-                                    <button mat-raised-button (click)="onShow($event)">Show</button>
-                                    <button mat-raised-button (click)="onClear()">Clear</button>
-                                    <!-- <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="_CountryService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+                                <div style="margin-top: 10px;">
+                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                        matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>&nbsp;
+                                    <button mat-raised-button class="searchButton" (click)="onShow($event)"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
                                 </div>
-        
                             </div>
                         </form>
                     </div>

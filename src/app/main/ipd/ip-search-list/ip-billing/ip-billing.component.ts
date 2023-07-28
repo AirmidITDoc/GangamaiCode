@@ -130,7 +130,8 @@ export class IPBillingComponent implements OnInit {
    @ViewChild(MatAccordion) accordion: MatAccordion;
    @ViewChild('drawer') public drawer: MatDrawer;
  
- 
+   ConShow: boolean = false;
+   
    isLoading: String = '';
    selectedAdvanceObj: AdvanceDetailObj;
    isFilteredDateDisabled: boolean = false;
@@ -538,15 +539,19 @@ export class IPBillingComponent implements OnInit {
    }
  
    getNetAmount() {
-     this.netPaybleAmt = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
-     // this.netPaybleAmt = parseInt(this.netPaybleAmt);
-     // this.ConAmt = parseInt(this.netPaybleAmt);
-     this.FinalAmountpay = this.netPaybleAmt.toString();
- 
-     console.log(this.FinalAmountpay);
-   //  Swal.fire("Final Amount is",this.FinalAmountpay +"And DiscAmount is" +this.concessionAmtOfNetAmt);
-   //  Swal.fire("DiscAmount",this.concessionAmtOfNetAmt);
- 
+
+    debugger
+
+    let amt=this.registeredForm.get('FinalAmount').value
+
+     let Tot = parseInt(amt) - parseInt(this.concessionAmtOfNetAmt);
+
+    //  this.netPaybleAmt = amt - parseInt(this.concessionAmtOfNetAmt);
+    
+      this.netPaybleAmt = Tot.toString();
+
+     
+   
      if (this.concessionAmtOfNetAmt > 0) {
        this.registeredForm.get('ConcessionId').reset();
        this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
@@ -555,6 +560,13 @@ export class IPBillingComponent implements OnInit {
        this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();;
        this.registeredForm.get('FinalAmountpay').setValue(this.FinalAmountpay);
        this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+       this.ConShow=true;
+
+       if(this.concessionAmtOfNetAmt>0)
+       {
+        this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt) -  parseInt(this.concessionAmtOfNetAmt);
+
+       }
      }
      if (this.concessionAmtOfNetAmt <= 0) {
        this.registeredForm.get('ConcessionId').reset();
@@ -562,6 +574,9 @@ export class IPBillingComponent implements OnInit {
        this.registeredForm.get('ConcessionId').disable;
        this.Consession = true;
        this.FinalAmountpay = this.totalAmtOfNetAmt;
+
+
+       this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt);
      }
  
    }
@@ -596,9 +611,8 @@ export class IPBillingComponent implements OnInit {
      if (Percentage) {
        let discAmt = (this.netPaybleAmt * parseInt(Percentage)) / 100;
        this.Adminper = discAmt.toString();
-       this.Adminamt = (this.netPaybleAmt - discAmt).toString();
-       console.log(this.Adminper);
-       console.log(this.Adminamt);
+       this.Adminamt = Math.round(this.netPaybleAmt - discAmt).toString();
+     
      }
  
  
@@ -1415,7 +1429,8 @@ export class IPBillingComponent implements OnInit {
          if (response) {
            Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
              if (result.isConfirmed) {
-               // this.getChargesList();
+               console.log(response)
+               console.log(result)
                this._matDialog.closeAll();
  
               //  this.getPrintDraft(response);
@@ -1434,8 +1449,6 @@ export class IPBillingComponent implements OnInit {
    }
  
    onSaveEntry() {
- 
- 
  
      if (this.registeredForm.get("DoctorID").value) {
        this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
@@ -1968,8 +1981,7 @@ export class IPBillingComponent implements OnInit {
    }
  
    onClose() {
-     debugger;
- 
+    this._matDialog.closeAll();
  
    }
  

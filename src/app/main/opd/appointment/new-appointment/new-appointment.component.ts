@@ -928,40 +928,40 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   
-  searchPatientList() {
-    debugger;
-    this.dialogRef.close();
-    var m_data = {
-      "RegAppoint":0
-    }
-    const dialogRef = this._matDialog.open(SearchPageComponent,
-      {
-        maxWidth: "90%",
-        height: "530px !important ", width: '100%',
-        data : {
-          registerObj : m_data,
-        }
-      });
+  // searchPatientList() {
+  //   debugger;
+  //   this.dialogRef.close();
+  //   var m_data = {
+  //     "RegAppoint":0
+  //   }
+  //   const dialogRef = this._matDialog.open(SearchPageComponent,
+  //     {
+  //       maxWidth: "90%",
+  //       height: "530px !important ", width: '100%',
+  //       data : {
+  //         registerObj : m_data,
+  //       }
+  //     });
 
-    dialogRef.afterClosed().subscribe(result => {
+  //   dialogRef.afterClosed().subscribe(result => {
       
-      if (result) {
-        this.registerObj1 = result as OPIPPatientModel;
-        if (result) {
-          this.PatientName = this.registerObj1.PatientName;
-          this.OPIP = this.registerObj1.IP_OP_Number;
-          this.AgeYear = this.registerObj1.AgeYear;
-          this.classname = this.registerObj1.ClassName;
-          this.tariffname = this.registerObj1.TariffName;
-          this.ipno = this.registerObj1.IPNumber;
-          this.Bedname = this.registerObj1.Bedname;
-          this.wardname = this.registerObj1.WardId;
-          this.Adm_Vit_ID = this.registerObj1.Adm_Vit_ID;
-        }
-      }
-      // console.log(this.registerObj);
-    });
-  }
+  //     if (result) {
+  //       this.registerObj1 = result as OPIPPatientModel;
+  //       if (result) {
+  //         this.PatientName = this.registerObj1.PatientName;
+  //         this.OPIP = this.registerObj1.IP_OP_Number;
+  //         this.AgeYear = this.registerObj1.AgeYear;
+  //         this.classname = this.registerObj1.ClassName;
+  //         this.tariffname = this.registerObj1.TariffName;
+  //         this.ipno = this.registerObj1.IPNumber;
+  //         this.Bedname = this.registerObj1.Bedname;
+  //         this.wardname = this.registerObj1.WardId;
+  //         this.Adm_Vit_ID = this.registerObj1.Adm_Vit_ID;
+  //       }
+  //     }
+  //     // console.log(this.registerObj);
+  //   });
+  // }
 
   openChanged(event) {
     this.isOpen = event;

@@ -217,10 +217,11 @@ export class IPDSearcPatienthComponent implements OnInit {
 
   onEdit(contact) {
     debugger;
+    console.log(contact)
     let PatInforObj = {};
     PatInforObj['PatientName'] = contact.PatientName,
 
-    PatInforObj['AdmissionID'] = contact.AdmissionID,
+    PatInforObj['AdmissionID'] = contact.Adm_Vit_ID,
     PatInforObj['AdmissionDate'] = contact.DOA,
     PatInforObj['HospitalId'] = contact.HospitalID,
     PatInforObj['TariffId'] = contact.TariffId,
@@ -263,7 +264,7 @@ export class IPDSearcPatienthComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        this._matDialog.closeAll();
+        this.dialogRef.close();
       });
     // if (contact) this.dialogRef.close(PatInforObj);
   }

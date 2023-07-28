@@ -112,7 +112,7 @@ export class OTNoteComponent implements OnInit {
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<OTNoteComponent>,
+    // public dialogRef: MatDialogRef<OTNoteComponent>,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
@@ -205,7 +205,7 @@ export class OTNoteComponent implements OnInit {
 
   closeDialog() {
     console.log("closed")
-    this.dialogRef.close();
+    // this.dialogRef.close();
     // this.personalFormGroup.reset();
   }
   createOtCathlabForm() {
@@ -532,7 +532,7 @@ export class OTNoteComponent implements OnInit {
   }
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 

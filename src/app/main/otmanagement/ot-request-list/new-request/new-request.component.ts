@@ -113,7 +113,7 @@ export class NewRequestComponent implements OnInit {
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
-    public _matDialog: MatDialog,
+    // public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewRequestComponent>,
     public datePipe: DatePipe,
@@ -623,7 +623,7 @@ export class NewRequestComponent implements OnInit {
             this._OtManagementService
             Swal.fire('Congratulations !', 'OT Request  Data save Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                this._matDialog.closeAll();
+                // this._matDialog.closeAll();
               }
             });
           } else {
@@ -661,7 +661,7 @@ export class NewRequestComponent implements OnInit {
           if (response) {
             Swal.fire('Congratulations !', 'OT Request Data Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                this._matDialog.closeAll();
+                // this._matDialog.closeAll();
               }
             });
           } else {

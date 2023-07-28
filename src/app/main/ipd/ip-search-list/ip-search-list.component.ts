@@ -596,7 +596,7 @@ debugger;
       const dialogRef = this._matDialog.open(IPBillingComponent,
         {
 
-          maxWidth: "110vw",
+          maxWidth: "120vw",
           height: '890px',    //maxHeight: "170vh",
           // width: '100%',
         });

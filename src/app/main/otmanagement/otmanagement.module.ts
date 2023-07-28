@@ -17,7 +17,7 @@ const appRoutes: Routes = [
     path: "otrequest",
     // component:OTRequestListComponent
     loadChildren: () => import("./ot-request-list/ot-requestlist.module").then((m) => m.OTRequestlistModule),
-  },
+  }
 
 ];
 

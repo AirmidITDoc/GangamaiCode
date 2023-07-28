@@ -1002,7 +1002,7 @@ export class AdmissionNewComponent implements OnInit {
       // console.log('The dialog was closed - Insert Action', result);
       if (result) {
         this.registerObj = result as AdmissionPersonlModel;
-        this.setDropdownObjs();
+        // this.setDropdownObjs();
         this._matDialog.closeAll();
       }
       //this.getRegistrationList();
