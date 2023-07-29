@@ -1,0 +1,49 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" >
+
+    <!-- HEADER -->
+
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center" >
+        <!-- <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button> -->
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
+      </mat-icon>
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
+       Bed Transfer
+      </span>
+    </div> 
+
+           
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon">
+        <button mat-raised-button (click)="bedTransfer()" fxLayoutAlign="center center">
+            <mat-icon color="warn" title="Bed Transfer Form">how_to_reg</mat-icon>
+        </button>
+       
+     
+    </div>
+
+  
+  </mat-toolbar>
+
+
+    <!-- / HEADER -->
+
+    <!-- SELECTED BAR -->
+    <!-- <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> -->
+    <!-- / SELECTED BAR -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- CENTER -->
+        <div class="center p-12 pb-56">
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT-->
+
+</div>

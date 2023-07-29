@@ -1,62 +1,70 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DatePipe } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatStepperModule } from '@angular/material/stepper';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatSidenavModule } from '@angular/material/sidenav';
+
+
+import { NotificationServiceService } from 'app/core/notification-service.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatListModule } from '@angular/material/list';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatList, MatListModule } from '@angular/material/list';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { OTRequestListComponent } from './ot-request-list.component';
-import { NewRequestComponent } from './new-request/new-request.component';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { MatTreeModule } from '@angular/material/tree';
+
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { NursingstationService } from '../nursingstation.service';
+import { PatientWiseMaterialconsumptionComponent } from './patient-wise-materialconsumption.component';
+import { NewPatientConsumpionComponent } from './new-patient-consumpion/new-patient-consumpion.component';
 
 
 const routes: Routes = [
+    // {
+    //     path: 'new-appointment',
+    //     component:IPSearchListComponent,
+    // },
     {
         path: '**',
-        component: OTRequestListComponent,
+        component: PatientWiseMaterialconsumptionComponent,
     }
-   
+
 ];
 @NgModule({
     declarations: [
-      OTRequestListComponent,
-      NewRequestComponent
+      PatientWiseMaterialconsumptionComponent,
+      NewPatientConsumpionComponent
     ],
     imports: [
         RouterModule.forChild(routes),
-        
+        CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -74,36 +82,37 @@ const routes: Routes = [
         MatTabsModule,
         MatCardModule,
         MatDividerModule,
-        MatProgressSpinnerModule,
+        MatDialogModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatDialogModule,
-        MatStepperModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
         // WebcamModule,
         ReactiveFormsModule,
+        MatAutocompleteModule,
         MatSidenavModule,
         MatExpansionModule,
-        FuseSidebarModule,
-        MatDialogModule,
         MatGridListModule,
         MatSnackBarModule,
-        MatSlideToggleModule , 
+        MatSlideToggleModule,
         MatListModule,
         SharedModule,
+        MatStepperModule,
         NgxMatSelectSearchModule,
-        MatAutocompleteModule,
-        MatChipsModule,
-        MatTooltipModule,
-        MatTreeModule,
+        MatDatepickerModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
+         MatTooltipModule
         
     ],
     providers: [
-      OTManagementServiceService       
+      NursingstationService
+        // DatePipe,
+        
     ],
     entryComponents: [
-      OTRequestListComponent
+      PatientWiseMaterialconsumptionComponent
         
     ]
 })
-export class OTRequestlistModule { }
+export class PatientwiseMaterialConsumptionModule { }

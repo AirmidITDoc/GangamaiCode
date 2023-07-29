@@ -78,7 +78,7 @@ export class IPBillingComponent implements OnInit {
    b_qty = '1';
    b_totalAmount = '0';
    b_netAmount = '0';
-   FinalAmountpay ='0';
+   FinalAmountpay =0;
    b_disAmount = '0';
    b_DoctorName = '';
    b_traiffId = '';
@@ -264,7 +264,7 @@ export class IPBillingComponent implements OnInit {
        ConcessionId: [],
        TotalAmt: [0],
        concessionAmt: [0],
-       FinalAmount: [0],
+       FinalAmount: '',
        ClassId: [],
        Percentage: [Validators.pattern("^[0-9]*$")],
        AdminCharges: [0],
@@ -534,7 +534,8 @@ export class IPBillingComponent implements OnInit {
      let netAmt;
      netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
      this.totalAmtOfNetAmt = netAmt;
-     this.netPaybleAmt = netAmt;
+    //  this.netPaybleAmt = netAmt;
+     this.registeredForm.get('TotalAmount').setValue(netAmt);
      return netAmt;
    }
  
@@ -548,7 +549,7 @@ export class IPBillingComponent implements OnInit {
 
     //  this.netPaybleAmt = amt - parseInt(this.concessionAmtOfNetAmt);
     
-      this.netPaybleAmt = Tot.toString();
+      this.netPaybleAmt = Tot;
 
      
    
@@ -557,16 +558,18 @@ export class IPBillingComponent implements OnInit {
        this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
        this.registeredForm.get('ConcessionId').enable;
        this.Consession = false;
-       this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();;
+
+       this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)
        this.registeredForm.get('FinalAmountpay').setValue(this.FinalAmountpay);
        this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+       this.registeredForm.get('TotalAmount').setValue(this.FinalAmountpay);
        this.ConShow=true;
 
-       if(this.concessionAmtOfNetAmt>0)
-       {
-        this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt) -  parseInt(this.concessionAmtOfNetAmt);
+      //  if(this.concessionAmtOfNetAmt>0)
+      //  {
+      //   this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt) -  parseInt(this.concessionAmtOfNetAmt);
 
-       }
+      //  }
      }
      if (this.concessionAmtOfNetAmt <= 0) {
        this.registeredForm.get('ConcessionId').reset();
@@ -610,9 +613,13 @@ export class IPBillingComponent implements OnInit {
      let Percentage = this.registeredForm.get('Percentage').value;
      if (Percentage) {
        let discAmt = (this.netPaybleAmt * parseInt(Percentage)) / 100;
-       this.Adminper = discAmt.toString();
-       this.Adminamt = Math.round(this.netPaybleAmt - discAmt).toString();
-     
+       this.Adminamt = discAmt;
+           this.netPaybleAmt= Math.round(this.totalAmtOfNetAmt- this.Adminamt);
+           this.registeredForm.get('FinalAmount').setValue(this.netPaybleAmt);
+     }
+     else{
+      this.netPaybleAmt= this.totalAmtOfNetAmt;
+      this.registeredForm.get('FinalAmount').setValue(this.netPaybleAmt);
      }
  
  
@@ -1035,7 +1042,7 @@ export class IPBillingComponent implements OnInit {
        this.isLoading = 'submit';
  
        if (this.concessionAmtOfNetAmt > 0) {
-         this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();
+         this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
          // console.log(this.FinalAmountpay);
          this.ConcessionId = this.registeredForm.get('ConcessionId').value.ConcessionId;
        } else {
@@ -1350,7 +1357,7 @@ export class IPBillingComponent implements OnInit {
        this.chargeslist =this.dataSource;
      
        if (this.concessionAmtOfNetAmt > 0) {
-         this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();
+         this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
          // console.log(this.FinalAmountpay);
          this.ConcessionId = this.registeredForm.get('ConcessionId').value.ConcessionId;
        } else {

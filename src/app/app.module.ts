@@ -139,13 +139,6 @@ class PickDateAdapter extends NativeDateAdapter {
         RouterModule.forRoot(appRoutes),
 
         TranslateModule.forRoot(),
-
-        // InMemoryWebApiModule.forRoot(FakeDbService, {
-        //     delay: 0,
-        //     passThruUnknownUrl: true,    
-        // }),
-
-        // Material moment date module
         MatMomentDateModule,
         MatDatepickerModule,
         MatNativeDateModule,

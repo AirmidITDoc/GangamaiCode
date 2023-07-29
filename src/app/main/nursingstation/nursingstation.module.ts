@@ -1,139 +1,79 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRippleModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { FuseSharedModule } from '@fuse/shared.module';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { CommonModule, DatePipe } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
 
 
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+const approtes: Routes = [
+{
+  path: "bedtransfer",
+  loadChildren: () => import("./bed-transfer/bed-transfer.module").then((m)=>m.BedTransferModule), 
+ 
+ 
+},
+{
+  path:"prescriptionreturn",
+  loadChildren: () => import("./prescription-return/prescription-return.module").then((m)=>m.PrescriptionReturnModule), 
+},
+{
+  path:"prescription",
+  loadChildren: () => import("./pahrmacy-summary/pharmacy-summary.module").then((m)=>m.PharmacySummaryModule), 
+},
+{
+  path:"requestforlabtest",
+  loadChildren: () => import("./lanrequest-pathradio/labrequest.module").then((m)=>m.LabrequestModule), 
+},
 
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { MatExpansionModule } from '@angular/material/expansion';
 
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+// {
+//   path: "dialysis",
+//   loadChildren: () => import("./dialysis/dialysis.module").then((m)=>m.DialysisModule), 
+// },
+// {
+//   path:"dialysissms",
+//   loadChildren: () => import("./dialysis-sms/dialysis-sms.module").then((m)=>m.DialysisSmsModule), 
+// },
+{
+  path:"patientrefvisit",
+  loadChildren: () => import("./patient-vist/patientvisit.module").then((m)=>m.PatientvisitModule), 
+},
+// {
+//   path:"multiplesms",
+//   loadChildren: () => import("./send-multiple-sms/send-multiple-sms.module").then((m)=>m.SendMultipleSmsModule), 
+// },
 
-import { MatList, MatListModule } from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+{
+  path: "pharmacysummary",
+  loadChildren: () => import("./pahrmacy-summary/pharmacy-summary.module").then((m)=>m.PharmacySummaryModule), 
+},
+{
+  path:"patientwisematerialconsumption",
+  loadChildren: () => import("./patient-wise-materialconsumption/patientwise-material-consumption.module").then((m)=>m.PatientwiseMaterialConsumptionModule), 
+}
+// {
+//   path:"doctornote",
+//   loadChildren: () => import("./doctor-note/doctor-note.module").then((m)=>m.DoctorNoteModule), 
+// },
+// {
+//   path:"nursingnote",
+//   loadChildren: () => import("./nursing-note/nursing-note.module").then((m)=>m.NursingNoteModule), 
+// },
 
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatTabsModule } from '@angular/material/tabs';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatChipsModule } from '@angular/material/chips';
-import { SharedModule } from 'app/main/shared/shared.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { NursingstationService } from './nursingstation.service';
-
-const routes: Routes = [
-  //   {
-  //       path: 'requestforlabtest',
-  //       component:LanrequestPathradioComponent,
-  //   },
-  //   {
-  //       path: 'patientrefvisit',
-  //       component: PatientVistComponent,
-  //   },
-  //   {
-  //     path: 'patientwisematerialconsumption',
-  //     component: PatientWiseMaterialconsumptionComponent,
-  // },
-  // {
-  //     path: "bedtransfer",
-  //    component:SchduleComponent,
-  //   },  
-
-  //   {
-  //     path: "pharmacysummary",
-  //     component:PahrmacySummaryComponent,
-  //   },
+// {
+//   path: "doctornote",
+//   component:DoctorNoteComponent
+// },
+// {
+//   path: "nursingnote",
+//   component:NursingNoteComponent
+// },
 
 ];
 @NgModule({
-    declarations: [
-      // PatientVistComponent,
-      // NewLabrequestComponent,
-      // LanrequestPathradioComponent,
-      // PatientWiseMaterialconsumptionComponent,
-      // NewPatientConsumpionComponent,
-      // PahrmacySummaryComponent,
-      // BedTransferComponent,
-      // NewBedtransferComponent,
-      // SchduleComponent,
-      // PrescriptionReturnComponent
-     
-    ],
-    imports: [
-        RouterModule.forChild(routes),
-        CommonModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        MatDividerModule,
-        MatDialogModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        MatChipsModule,
-        MatProgressSpinnerModule,
-        // WebcamModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSidenavModule,
-        MatExpansionModule,
-        MatGridListModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        MatListModule,
-        SharedModule,
-        MatStepperModule,
-        NgxMatSelectSearchModule,
-        MatDatepickerModule,
-        //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule
-        
-    ],
-    providers: [
-      NursingstationService,
-        DatePipe,
-        NotificationServiceService
-    ],
-    entryComponents: [
-      // PatientVistComponent,
-        // NotificationServiceService
-    ]
+  declarations: [
+    
+  ],
+  imports: [
+    RouterModule.forChild(approtes),
+  ]
 })
 export class NursingstationModule { }

@@ -1,0 +1,47 @@
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+.p-12 {
+    padding: 7px !important;
+}
+
+
+
+
+.page-layout.simple.inner-sidebar > .header {
+    height: 60px;
+    min-height: 35px;
+    max-height: 50px;
+}
+
+.hover-width {
+    width: fit-content;
+    // height: 20px;
+    // overflow: hidden;
+}
+
+.logo {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar{
+    justify-content: space-between;
+}
+.icon{
+    padding-right: 1rem;
+}
+
+.left-icon{
+    color:white;
+}
+
+h1, .h1 {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+.logo-text {
+    margin-right: 10px;
+}

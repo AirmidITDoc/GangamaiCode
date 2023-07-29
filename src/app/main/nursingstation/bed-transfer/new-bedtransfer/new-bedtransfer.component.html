@@ -1,0 +1,151 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar">
+    <div class="center" fusePerfectScrollbar style="overflow: auto;">
+      <!-- <mat-toolbar  style="background-color:  #039be5 !important; height:50px; justify-content: space-between;width: 100%;" >
+        <div fxLayout="row"  fxLayout="row" fxLayoutAlign="space-between center" >
+       
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        <h3>Registration </h3>
+      </span>
+      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="width: 10%;float: right;">
+        <mat-icon>close</mat-icon>
+      </button>
+      </div>
+      
+      </mat-toolbar> -->
+      <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+          <h3>Bed Transfer </h3>
+          <button mat-icon-button tabIndex="-1" aria-label="Close dialog" (click)="onClose()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-toolbar-row>
+      </mat-toolbar>
+  
+      <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
+        <div class="dialog-content-wrapper">
+  
+  
+  
+          <br>
+  
+  
+          <form>
+  
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Registration No</mat-label>
+                <input name="RegNo" formControlName="RegNo" placeholder="RegNo" matInput>
+  
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Patient Name</mat-label>
+                <input name="PatientName" formControlName="PatientName" placeholder="PatientName" matInput>
+  
+              </mat-form-field>
+  
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Doctor Name</mat-label>
+                <input name="Doctorname" formControlName="Doctorname" placeholder="Doctor name" matInput>
+  
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Admission Id</mat-label>
+                <input name="AdmissionId" formControlName="AdmissionId" placeholder="Admission" matInput>
+  
+              </mat-form-field>
+  
+            </div>
+  
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Adm date</mat-label>
+                <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
+                  [readonly]="true">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+  
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Ward Name</mat-label>
+                <input name="WardName" formControlName="WardName" placeholder="Ward name" matInput>
+  
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Traiff Name</mat-label>
+                <input name="TraiffName" formControlName="TraiffName" placeholder="TraiffName" matInput>
+  
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Bed No</mat-label>
+                <input name="BedNo" formControlName="BedNo" placeholder="BedNo" matInput>
+  
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Bed Class</mat-label>
+                <input name="BedClass" formControlName="BedClass" placeholder="BedClass" matInput>
+  
+              </mat-form-field>
+  
+            </div>
+            <br> <br>
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
+              style=" height: 35px;background-color:#33b5e5">
+              <span style="font-size:18px; font-weight: 500; color:white;padding:7px;">Bed Details</span>
+  
+            </div>
+            <br>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+  
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Ward Name</mat-label>
+                <mat-select formControlName="WardName">
+                  <mat-option>
+  
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Class Name</mat-label>
+                <mat-select formControlName="BedName">
+                  <mat-option>
+  
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Remark</mat-label>
+                <input name="Remark" formControlName="Remark" placeholder="Remark" matInput>
+  
+              </mat-form-field>
+            </div>
+  
+  
+  
+            <div class="footer-navigation-container" fxLayout.gt-xs="row" style="margin-top: 10px;">
+  
+              <div style="float: right;margin-top: 30px;">
+  
+                <button class="next-btn" color="accent" style="border-radius: 16px;">Save</button>
+  
+  
+                <button class="footer-btn">Cancel</button>
+  
+              </div>
+              <!-- </div> -->
+  
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+  </div>

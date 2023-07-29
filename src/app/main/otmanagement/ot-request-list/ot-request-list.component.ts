@@ -66,7 +66,7 @@ export class OTRequestListComponent implements OnInit {
     private _ActRoute: Router,
     public _OtManagementService: OTManagementServiceService,
     // public dialogRef: MatDialogRef<OTRequestListComponent>,
-    public datePipe: DatePipe,
+    // public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
@@ -81,8 +81,8 @@ export class OTRequestListComponent implements OnInit {
       
       "F_Name": this.searchFormGroup.get('F_Name').value || "%",
       "L_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "From_Dt":'2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "To_Dt":'2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
     
   } 
@@ -125,8 +125,8 @@ export class OTRequestListComponent implements OnInit {
     var m_data = {
       "F_Name": (this.searchFormGroup.get('F_Name').value).trim() + '%' || "%",
       "L_Name": (this.searchFormGroup.get('L_Name').value).trim() + '%' || "%",
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "From_Dt": '2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "To_Dt":'2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
     }
     console.log(m_data);
