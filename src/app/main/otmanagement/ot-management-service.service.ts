@@ -156,4 +156,7 @@ export class OTManagementServiceService {
   public RequestUpdate(employee){
     return this._httpClient.post("InPatient/OTBookingInsert", employee);
   }
+  public populateFormpersonal(employee){
+    this.otreservationFormGroup.patchValue(employee);
+  }
 }

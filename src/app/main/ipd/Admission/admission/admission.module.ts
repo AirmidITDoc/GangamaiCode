@@ -43,8 +43,6 @@ import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tp
 import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { IPDSearcPatienthComponent } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 
-//import { ViewIPDBillComponent } from './ipd-bil-browse-list/view-ipdbill/view-ipdbill.component';
-
 const routes: Routes = [
   { 
       path: '**', 

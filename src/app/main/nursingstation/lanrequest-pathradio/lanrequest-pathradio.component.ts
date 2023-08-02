@@ -79,9 +79,9 @@ dataarray:{}
 
     var m_data = {
     
-      "FromDate": '2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd ") || '2022-03-28 00:00:00.000',
-      "ToDate": '2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd") || '2022-03-28 00:00:00.000',
-      "Reg_No": (this.searchFormGroup.get("Reg_No").value) || 0
+      // "FromDate": '2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd ") || '2022-03-28 00:00:00.000',
+      // "ToDate": '2022-03-28 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd") || '2022-03-28 00:00:00.000',
+      // "Reg_No": (this.searchFormGroup.get("Reg_No").value) || 0
     }
     this.Data1=m_data;
     this._nursingStationService.getLabRequestList(this.Data1).subscribe(Visit => {

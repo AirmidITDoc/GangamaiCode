@@ -1,23 +1,25 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import Swal from 'sweetalert2';
-import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
+import { OTReservationDetail } from '../ot-reservation.component';
 import { ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OTManagementServiceService } from '../../ot-management-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { OTNoteComponent } from '../../ot-note/ot-note.component';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-ot-note',
-  templateUrl: './ot-note.component.html',
-  styleUrls: ['./ot-note.component.scss']
+  selector: 'app-new-reservation',
+  templateUrl: './new-reservation.component.html',
+  styleUrls: ['./new-reservation.component.scss']
 })
-export class OTNoteComponent implements OnInit {
+export class NewReservationComponent implements OnInit {
 
+ 
   personalFormGroup: FormGroup;
 
   submitted = false;
@@ -32,10 +34,9 @@ export class OTNoteComponent implements OnInit {
   Doctor2List: any = [];
   SurgeryList: any = [];
   OTtableList: any = [];
-  CategoryList:any=[];
   Anesthestishdoclist1: any = [];
   Anesthestishdoclist2: any = [];
-  Today: Date=new Date();
+  Today:Date =new Date();
   registerObj = new OPIPPatientModel({});
   isLoading: string = '';
   Prefix: any;
@@ -46,9 +47,7 @@ export class OTNoteComponent implements OnInit {
   IsPathRad: any;
   PatientName: any = '';
   OPIP: any = '';
-  
   Bedname: any = '';
-
   wardname: any = '';
   classname: any = '';
   tariffname: any = '';
@@ -86,18 +85,13 @@ export class OTNoteComponent implements OnInit {
 
 
 
-  //AnesthDoct filter
+  //area filter
   public AnesthDoctFilterCtrl1: FormControl = new FormControl();
   public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
 
-  //Category filter
-  public CategoryFilterCtrl1: FormControl = new FormControl();
-  public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //AnesthDoct filter
+  //area filter
   public AnesthDoctFilterCtrl2: FormControl = new FormControl();
   public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -111,7 +105,7 @@ export class OTNoteComponent implements OnInit {
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<OtNotesComponent>,
+    // public dialogRef: MatDialogRef<NewreservationComponent>,
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
@@ -135,7 +129,6 @@ export class OTNoteComponent implements OnInit {
     this.getDoctorList();
     this.getDoctor1List();
     this.getDoctor2List();
-    this.getCategoryList();
     this.getAnesthestishDoctorList1();
     this.getAnesthestishDoctorList2();
     // this.addEmptyRow();
@@ -151,10 +144,10 @@ export class OTNoteComponent implements OnInit {
       this.ipno = this.selectedAdvanceObj.IPNumber;
       this.Bedname = this.selectedAdvanceObj.Bedname;
       this.wardname = this.selectedAdvanceObj.WardId;
-      // this.Adm_Vit_ID = this.selectedAdvanceObj.OP_IP_ID;
+      this.Adm_Vit_ID = this.selectedAdvanceObj.OP_IP_ID;
     }
     console.log(this.selectedAdvanceObj);
-    
+  
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -180,13 +173,6 @@ export class OTNoteComponent implements OnInit {
         this.filterAnesthDoctor1();
       });
 
-      
-    this.CategoryFilterCtrl1.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCategory();
-    });
-
     this.AnesthDoctFilterCtrl2.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -203,7 +189,7 @@ export class OTNoteComponent implements OnInit {
   }
 
   closeDialog() {
-    console.log("closed")
+    
     // this.dialogRef.close();
     // this.personalFormGroup.reset();
   }
@@ -230,12 +216,6 @@ export class OTNoteComponent implements OnInit {
       Instruction: '',
       IsAddedBy: '',
       OTBookingID: '',
-      Assistantscrub:'',
-      Circulatingstaff:'',
-      AnathesticNAme:'',
-      OtNote:'',
-      Extra:'',
-      Pre:''
 
     });
   }
@@ -383,30 +363,6 @@ export class OTNoteComponent implements OnInit {
 
 
   }
-
-  
-  // area filter code  
-  private filterCategory() {
-
-    if (!this.CategoryList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.CategoryFilterCtrl1.value;
-    if (!search) {
-      this.filteredCategory.next(this.CategoryList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCategory.next(
-      this.CategoryList.filter(bank => bank.SurgeryCategoryName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
   ngOnDestroys() {
     // this.isAlive = false;
   }
@@ -489,18 +445,31 @@ export class OTNoteComponent implements OnInit {
     })
   }
 
-  
-  getCategoryList() {
-    this._OtManagementService.getCategoryCombo().subscribe(data => {
-      this.CategoryList = data;
-      console.log(data);
-      this.filteredCategory.next(this.CategoryList.slice());
+Otnote(){
 
-    })
-  }
+  const dialogRef = this._matDialog.open(OTNoteComponent,
+      {
+        maxWidth: "85%",
+        height: "430px !important ", width: '100%',
+      });
 
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed - Insert Action', result);
+      });
+}
 
+OPreOPrativenote(){
 
+  // const dialogRef = this._matDialog.open(PrepostotnoteComponent,
+  //     {
+  //       maxWidth: "85%",
+  //       height: "530px !important ", width: '100%',
+  //     });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // console.log('The dialog was closed - Insert Action', result);
+  //     });
+}
 
   searchPatientList() {
     // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
@@ -553,9 +522,9 @@ export class OTNoteComponent implements OnInit {
             "opDate":this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
             "opTime":this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
             "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-            "otTableID":1,// this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-            "surgeonId": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-            "surgeonId1": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
+            "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
+            "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
+            "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
             "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
             "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
             "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
@@ -573,7 +542,7 @@ export class OTNoteComponent implements OnInit {
         this._OtManagementService.ReservationInsert(m_data).subscribe(response => {
           if (response) {
             this._OtManagementService
-            Swal.fire('Congratulations !', 'OT Note  Data save Successfully !', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'OT Reservation  Data save Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
                 //  this.addEmptyRow();
@@ -581,7 +550,7 @@ export class OTNoteComponent implements OnInit {
               }
             });
           } else {
-            Swal.fire('Error !', 'Ot Note Data  not saved', 'error');
+            Swal.fire('Error !', 'Ot Reservation Data  not saved', 'error');
           }
 
         });
@@ -615,13 +584,13 @@ export class OTNoteComponent implements OnInit {
         console.log(m_data1);
         this._OtManagementService.ReservationUpdate(m_data1).subscribe(response => {
           if (response) {
-            Swal.fire('Congratulations !', 'OT NOTE Data Updated Successfully !', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'Reservation Data Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
               }
             });
           } else {
-            Swal.fire('Error !', 'OT Note Data  not saved', 'error');
+            Swal.fire('Error !', 'Reservation Data  not saved', 'error');
           }
 
         });

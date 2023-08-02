@@ -84,7 +84,7 @@ Advavilableamt:any;
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log();
+      console.log(this.selectedAdvanceObj);
     }
 
     let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
@@ -92,10 +92,10 @@ Advavilableamt:any;
   }
 
   getAdvanceList() {
-    // debugger;
+    debugger;
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "AdmissionID": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || 0,
+      "AdmissionID": this.selectedAdvanceObj.AdmissionID// this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || 0,
     }
     // this.isLoadingStr = 'loading';
     console.log(m_data);
@@ -218,7 +218,7 @@ debugger;
           };
         console.log(submitData);
           this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-            
+            debugger
             if (response) {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {

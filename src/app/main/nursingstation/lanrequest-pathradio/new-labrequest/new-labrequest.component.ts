@@ -67,8 +67,8 @@ displayedColumns1 = [
 ];
 @Output() showClicked = new EventEmitter();
   displayedColumns = [
-    'ServiceName',
-    'Price'
+    // 'ServiceName',
+    // 'Price'
     // 'action'
   ];
 

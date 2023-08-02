@@ -206,6 +206,8 @@ export class NursingstationService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
   }
 
-
+  public getPrescriptionReturnList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard", employee)
+  }
 
 }

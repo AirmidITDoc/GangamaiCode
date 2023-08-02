@@ -42,8 +42,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NursingstationService } from '../nursingstation.service';
-import { PrescriptionReturnComponent } from './prescription-return.component';
-import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
+import { NursingNoteComponent } from './nursing-note.component';
+
+
 
 const routes: Routes = [
     // {
@@ -52,14 +53,13 @@ const routes: Routes = [
     // },
     {
         path: '**',
-        component: PrescriptionReturnComponent,
+        component: NursingNoteComponent,
     }
 
 ];
 @NgModule({
     declarations: [
-      PrescriptionReturnComponent,
-      NewPrescriptionreturnComponent
+      NursingNoteComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -110,8 +110,8 @@ const routes: Routes = [
         
     ],
     entryComponents: [
-      PrescriptionReturnComponent
+      NursingNoteComponent
         
     ]
 })
-export class PrescriptionReturnModule { }
+export class NursingNoteModule { }

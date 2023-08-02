@@ -96,7 +96,7 @@ const appRoutes: Routes = [
     {
         path: "otmanagement",
         loadChildren: () =>
-            import("./main/otmanagement/otmanagement.module").then((m) => m.OtmanagementModule),
+            import("./main/otmanagement/ot-management.module").then((m) => m.OTManagementModule),
     },
     {
         path: '**',
