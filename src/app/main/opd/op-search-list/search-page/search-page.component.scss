@@ -89,16 +89,16 @@ app-search-page {
 app-search-page{
     .mat-header-row {
         width: 100%;
-        max-width: 1700px;
-        min-width: 1700px;   
+        max-width: 1200px;
+        min-width: 1200px;   
         font-weight: bold;   
         min-height: 25px;        
     }
     
     .mat-row {
         width: 100%;
-        max-width: 1700px;
-        min-width: 1700px;   
+        max-width: 1200px;
+        min-width: 1200px;   
         min-height: 25px;                 
     }    
     
@@ -115,9 +115,9 @@ app-search-page{
     }
 
     .mat-column-PatientName {
-        width: 280px;
-        max-width: 280px;
-        min-width: 280px;
+        width: 380px;
+        max-width: 380px;
+        min-width: 380px;
         text-align: center;
     }
     

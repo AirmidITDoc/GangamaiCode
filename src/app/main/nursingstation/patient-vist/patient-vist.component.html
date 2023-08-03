@@ -29,23 +29,23 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                     &nbsp;
-                    <mat-form-field appearance="outline"  style="width:70px;">
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg No</mat-label>
                         <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput>
                     </mat-form-field> &nbsp;
 
-                    <mat-form-field appearance="outline" style="width:80px;">
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>IPDNo </mat-label>
                         <input name="IPDNo" formControlName="IPDNo" placeholder="EnterIPDNo" matInput>
                     </mat-form-field> &nbsp;
                    
 
-                    <mat-form-field appearance="outline" >
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>First Name</mat-label>
                         <input name="FirstName" formControlName="FirstName" placeholder="Enter First Name" matInput>
                     </mat-form-field> &nbsp;
 
-                    <mat-form-field appearance="outline" fxFlex style="width:100px;">
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Last Name</mat-label>
                         <input name="LastName" formControlName="LastName" placeholder="Enter Last Name" matInput>
                     </mat-form-field> &nbsp;
@@ -101,7 +101,7 @@
                 </button>
 
             </div>
-            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
                 <ng-container matColumnDef="Adm_Vit_ID">

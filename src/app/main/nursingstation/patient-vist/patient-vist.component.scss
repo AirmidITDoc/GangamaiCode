@@ -1,12 +1,14 @@
 @import "src/@fuse/scss/fuse";
+
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
 }
-app-patientrefvisit {
+
+app-patient-vist {
     display: flex;
     flex: 1 1 auto;
     width: 100%;
-    
+
     .mat-table {
         height: 530px !important;
         width: 98%;
@@ -30,15 +32,15 @@ app-patientrefvisit {
         .mat-row {
             position: relative;
             cursor: pointer;
-           
+
             .mat-cell {
                 min-width: 0;
-                white-space: nowrap; 
+                white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis; 
+                text-overflow: ellipsis;
                 overflow: hidden !important;
-              //  display: inline-block;
-                
+                //  display: inline-block;
+
                 &.mat-column-detail-button {
                     flex: 0 1 auto;
 
@@ -50,63 +52,69 @@ app-patientrefvisit {
         }
     }
 }
+
 .active-icon {
     border-radius: 50%;
 }
+
 .p-sm-24 {
     padding: 10px !important;
 }
-.search-btn{
-    text-align: center; 
-    color:white ;
+
+.search-btn {
+    text-align: center;
+    color: white;
     border-radius: 16px;
-    border: 1px solid #039be5 ;
+    border: 1px solid #039be5;
     background-color: blue;
-  }
+}
 
- .search-btn:disabled {
-   color: white;
-   background-color: #c5c5e3 !important;
-   border-radius: 2px;
-   border: 1px solid  #b7e6fd ;
-  }
+.search-btn:disabled {
+    color: white;
+    background-color: #c5c5e3 !important;
+    border-radius: 2px;
+    border: 1px solid #b7e6fd;
+}
 
 
-  .search-btn:hover{
-   background-color:#039be5 ;
-  color: white;
-   }
-   .backgroundBlur{
+.search-btn:hover {
+    background-color: #039be5;
+    color: white;
+}
+
+.backgroundBlur {
     text-align: center;
     background-color: #818181;
     position: absolute;
     z-index: 1000;
     height: 200px;
     opacity: 0.5;
-     width: 100%;  
-    
+    width: 100%;
+
 }
-app-patientrefvisit{
+
+app-patient-vist {
     .mat-header-row {
         width: 100%;
-        max-width: 1500px;
-        min-width: 1500px;   
-        font-weight: bold;   
-        min-height: 25px;        
+        max-width: 1900px;
+        min-width: 1900px;
+        font-weight: bold;
+        min-height: 25px;
     }
-    
+
     .mat-row {
         width: 100%;
-        max-width: 1500px;
-        min-width: 1500px;   
-        min-height: 25px;                 
-    }    
-    
+        max-width: 1900px;
+        min-width: 1900px;
+        min-height: 25px;
+    }
+
     .mat-column-Adm_Vit_ID {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
     }
+
     .mat-column-RegId {
         width: 62px;
         max-width: 62px;
@@ -114,87 +122,111 @@ app-patientrefvisit{
     }
 
     .mat-column-PatientName {
-        width: 280px;
-        max-width: 280px;
-        min-width: 280px;
-        text-align: center;
-            white-space: nowrap; 
-            overflow: hidden;
-            text-overflow: ellipsis; 
-            overflow: hidden !important;
+        width: 350px;
+        max-width: 350px;
+        min-width: 350px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        justify-content: left;
     }
-    
-   
+
+
     .mat-column-RegNoWithPrefix {
-        width: 130px;
-        max-width: 130px;
-        min-width: 130px;
-        text-align: center;
-        
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+        justify-content: left;
     }
+
     .mat-column-AgeYear {
-     
-        width:70px;
-        max-width:70px;
-        min-width:70px;
+
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: center;
-        
+
     }
+
     .mat-column-IP_OP_Number {
         width: 140px;
         max-width: 140px;
         min-width: 140px;
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        justify-content: left;
     }
+
     .mat-column-Adm_DoctorName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-        text-align: center;
-        
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        text-align: left;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        justify-content: left;
     }
+
     .mat-column-ClassName {
         width: 100px;
-        max-width:100px;
+        max-width: 100px;
         min-width: 100px;
-        text-align: center;
-        
+        text-align: left;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        justify-content: left;
     }
+
     .mat-column-TariffName {
         width: 110px;
-        max-width:110px;
-        min-width:110px;
-        text-align: center;
-        
+        max-width: 110px;
+        min-width: 110px;
+        text-align: left;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        justify-content: left;
     }
+
     .mat-column-CompanyName {
         width: 265px;
         max-width: 265px;
         min-width: 265px;
-        text-align: center;
-        white-space: nowrap; 
+        text-align: left;
+        white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; 
+        text-overflow: ellipsis;
         overflow: hidden !important;
-        justify-content: center;
+        justify-content: left;
     }
+
     .mat-column-IPNumber {
         width: 75px;
         max-width: 75px;
         min-width: 75px;
-        text-align: center;
-        
+        text-align: left;
+
     }
-    
+
     .mat-column-action {
         // color: white !important;
-        width:100px;
-        max-width:100px;
+        width: 100px;
+        max-width: 100px;
         min-width: 100px;
         // text-align: right;
-        justify-content:right;
+        justify-content: right;
     }
+
     .mat-icon-button {
         padding: 0;
         min-width: 0;
@@ -204,14 +236,14 @@ app-patientrefvisit{
         line-height: 20px;
         border-radius: 50%;
     }
-    
-  
+
+
     .header-container {
         background-color: #039be5 !important;
         height: 40px;
         padding: 0 15px;
         align-items: center !important;
-      
+
     }
 
 
@@ -221,38 +253,40 @@ app-patientrefvisit{
         font-size: 16px;
         font-weight: 700px;
         padding: 10px;
-        color:  rgb(247, 97, 97);
+        color: rgb(247, 97, 97);
         border-radius: 16px;
-        background-color:white;
+        background-color: white;
         border-color: rgb(247, 97, 97);
         cursor: pointer;
     }
-    .footer-btn:hover{
+
+    .footer-btn:hover {
         background-color: rgb(247, 97, 97);
         color: white;
-       
+
     }
-    .search-btn{
-        text-align: center; 
-        color:white ;
+
+    .search-btn {
+        text-align: center;
+        color: white;
         border-radius: 16px;
-        border: 1px solid #039be5 ;
+        border: 1px solid #039be5;
         background-color: blue;
-      }
-  
-     .search-btn:disabled {
-       color: white;
-       background-color: #c5c5e3 !important;
-       border-radius: 2px;
-       border: 1px solid  #b7e6fd ;
-      }
-  
-  
-      .search-btn:hover{
-       background-color:#039be5 ;
-      color: white;
-       }
-       
+    }
+
+    .search-btn:disabled {
+        color: white;
+        background-color: #c5c5e3 !important;
+        border-radius: 2px;
+        border: 1px solid #b7e6fd;
+    }
+
+
+    .search-btn:hover {
+        background-color: #039be5;
+        color: white;
+    }
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -261,19 +295,19 @@ app-patientrefvisit{
         padding: 10px 20px;
         color: white;
         font-size: 20px;
-        background: linear-gradient(to right ,rgb(30, 40, 223), rgb(238, 69, 233));
+        background: linear-gradient(to right, rgb(30, 40, 223), rgb(238, 69, 233));
     }
 
-    .backgroundBlur{
+    .backgroundBlur {
         text-align: center;
         background-color: #818181;
         position: absolute;
         z-index: 1000;
         height: 470px;
         opacity: 0.5;
-         width: 100%;  
+        width: 100%;
     }
-    
+
     .spinner-border {
         display: inline-block;
         width: 2rem;
@@ -282,55 +316,55 @@ app-patientrefvisit{
         border: .25em solid currentColor;
         border-right-color: transparent;
         border-radius: 50%;
-         -webkit-animation: .75s linear infinite spinner-border;
-         animation: .75s linear infinite spinner-border;
-    
-      
-    
-    //spinner width
-        color:blue;
-        border-width:10px; 
-        margin: auto; 
+        -webkit-animation: .75s linear infinite spinner-border;
+        animation: .75s linear infinite spinner-border;
+
+
+
+        //spinner width
+        color: blue;
+        border-width: 10px;
+        margin: auto;
         width: 80px;
-        height: 80px; 
+        height: 80px;
         margin-top: 140px;
         text-align: center;
         margin-right: 280px;
     }
-    
+
     .spinner-border-sm {
         width: 1rem;
         height: 1rem;
         border-width: .2em
     }
-    
+
     @-webkit-keyframes spinner-grow {
         0% {
             -webkit-transform: scale(0);
             transform: scale(0)
         }
-    
+
         50% {
             opacity: 1;
             -webkit-transform: none;
             transform: none
         }
     }
-    
+
     @keyframes spinner-grow {
         0% {
             -webkit-transform: scale(0);
             transform: scale(0)
         }
-    
+
         50% {
             opacity: 1;
             -webkit-transform: none;
             transform: none
         }
     }
-    
-    
+
+
     .spinner-grow {
         display: inline-block;
         width: 2rem;
@@ -339,40 +373,42 @@ app-patientrefvisit{
         background-color: currentColor;
         border-radius: 50%;
         opacity: 0;
-       // -webkit-animation: .75s linear infinite spinner-grow;
+        // -webkit-animation: .75s linear infinite spinner-grow;
         //animation: .75s linear infinite spinner-grow
         -webkit-animation: 0.5s linear infinite spinner-grow;
         animation: loading 0.5s linear infinite;
     }
-    
+
     .spinner-grow-sm {
         width: 1rem;
         height: 1rem
     }
-    
+
     @media (prefers-reduced-motion:reduce) {
-        .spinner-border, .spinner-grow {
+
+        .spinner-border,
+        .spinner-grow {
             -webkit-animation-duration: 0.2s;
             //animation-duration: 1.5s
             animation-duration: 0.2s;
         }
     }
-    
-    
-    
+
+
+
     @-webkit-keyframes spinner-border {
         to {
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg)
         }
     }
-    
+
     @keyframes spinner-border {
         to {
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg)
         }
     }
-    
-   
+
+
 }

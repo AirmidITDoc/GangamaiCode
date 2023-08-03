@@ -52,21 +52,21 @@
                    
 
                     <mat-radio-group aria-label="Select an option" style="width:15%;padding-left:10px;padding:10px;"
-                        formControlName="PatientType" (change)="getOPIPPatientList()">PatientType
+                        formControlName="PatientType" (change)="getSearchList()">PatientType
                         <mat-radio-button value="1" [checked]="true"> IP </mat-radio-button>
                         <mat-radio-button value="0" > OP</mat-radio-button>
                     </mat-radio-group>
 
                     
                     <mat-radio-group aria-label="Select an option" style="width:20%;padding-left:10px;padding-top: 10px;"
-                        formControlName="patientstatus" (change)="getOPIPPatientList()">patientstatus
+                        formControlName="patientstatus" (change)="getSearchList()">patientstatus
                         <mat-radio-button value="1" [checked]="true"> Admitted </mat-radio-button>
                         <mat-radio-button value="0" > Dischared</mat-radio-button>
                     </mat-radio-group>
                     
                     <button Class="search-btn " mat-raised-button
                         style="border-radius: 16px; background-color:#039be5 ;color: white;margin-top: 3px;"
-                        (click)="getOPIPPatientList()">Show
+                        (click)="getSearchList()">Show
                         <mat-icon>search</mat-icon>
                     </button>&nbsp;
                     <button class="footer-btn" (click)="onClear()" style="margin-top: 4px;">clear</button>&nbsp;&nbsp;

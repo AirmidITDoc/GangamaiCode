@@ -65,6 +65,7 @@ export class NewRegistrationComponent implements OnInit {
   isLinear = true;
   isLoading: string = '';
   Prefix :any;
+  RegId:any;
 snackmessage:any;
 
 isDisabled: boolean = false;
@@ -119,10 +120,7 @@ isDisabled: boolean = false;
 
   
   ngOnInit(): void {
-    // this.toastr.success('Hello world!', 'Toastr fun!');
-
-    // this.myFunction("Welcome");
-     
+   this.RegId=0;
 
   console.log(this.data)
    this.personalFormGroup = this.createPesonalForm();
@@ -175,22 +173,24 @@ isDisabled: boolean = false;
         // this.IsSave="false";
         // this.IsSaveupdate='false';
         this.registerObj=this.data.registerObj;
-      
-        console.log( this.registerObj);
+        this.RegId= this.registerObj.RegId;
+        // console.log( this.registerObj);
         this.isDisabled=true
           // this.AdmissionID = this.data.PatObj.AdmissionID;
           this.Prefix=this.data.registerObj.PrefixID;
-          // this.PatientName=this.data.PatObj.PatientName;
-          // this.AdmissionDate=this.data.PatObj.AdmissionDate;
-          // this.RelativeName= this.data.PatObj.RelativeName;
-          // this.RelativeAddress= this.data.PatObj.RelativeAddress;
-          // this.RelatvieMobileNo= this.data.PatObj.RelatvieMobileNo;
+         
           this.setDropdownObjs1();
       }
 
      
 
   }
+
+
+  
+  get f() {
+    return this.personalFormGroup.controls;
+}
 
   closeDialog() {
     console.log("closed")
@@ -283,7 +283,7 @@ console.log
    
   }
 
-  get f() { return this._registerService.mySaveForm.controls }
+  // get f() { return this._registerService.mySaveForm.controls }
 
   // prefix filter
   private filterPrefix() {
@@ -535,11 +535,16 @@ console.log
 
 
   searchRegList() {
-
+    var m_data = {
+      "RegAppoint": 1
+    }
     const dialogRef = this._matDialog.open(SearchPageComponent,
       {
         maxWidth: "90vw",
-        maxHeight: "85vh", width: '100%', height: "100%"
+        maxHeight: "85vh", width: '100%', height: "100%",
+        data: {
+          registerObj: m_data,
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -547,6 +552,7 @@ console.log
         
         this.registerObj = result as RegInsert;
         this.setDropdownObjs1();
+        
       }
       //this.getRegistrationList();
     });
@@ -665,23 +671,20 @@ console.log
       console.log(m_data);
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
-          this.myFunction("Register Data save Successfully !");
-        
+          // this.myFunction("Register Data save Successfully !");
+        // setTimeout(() => {
+        //      this._matDialog.closeAll();
+        //   }, 1000);
 
-          setTimeout(() => {
-             this._matDialog.closeAll();
-          }, 1000);
-
-
-          // Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
-          //   if (result.isConfirmed) {
-          //     this._matDialog.closeAll();
+          Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this._matDialog.closeAll();
               
-          //   }
-          // });
+            }
+          });
         } else {
-          this.myFunction("Register Data  not saved', 'error !");
-          // Swal.fire('Error !', 'Register Data  not saved', 'error');
+          // this.myFunction("Register Data  not saved', 'error !");
+          Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
       });
     }
@@ -719,14 +722,16 @@ console.log
       }
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
-          this.myFunction("Register Data Updated Successfully !");
-                  
-          setTimeout(() => {
-             this._matDialog.closeAll();
-          }, 1000);
+          Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this._matDialog.closeAll();
+              
+            }
+          });
+        }
 
-        } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
+         else {
+          Swal.fire('Error !', 'Register Data  not Updated', 'error');
         }
 
       });

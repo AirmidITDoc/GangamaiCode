@@ -442,4 +442,8 @@ public getOPIPPatientList(employee) {
 getregisterListByRegId(employee){
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
 }
+
+getRegdata(employee){
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RegistrationByRegId", employee)
+}
 }

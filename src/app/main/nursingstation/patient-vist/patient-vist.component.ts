@@ -80,19 +80,19 @@ export class PatientVistComponent implements OnInit {
    
     var m_data = {
       "OP_IP_Type":1,
-      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value).trim() + '%' || '%',
-      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value).trim() + '%'  || '%',
+      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value+ '%' || '%',
+      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%'  || '%',
       "Reg_No": this._NursingStationService.myFilterform.get("RegNo").value || 0,
       "From_Dt" : '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
       "To_Dt" :  '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag":1,
-      "IPNumber":0
+      "AdmDisFlag":1
+      // "IPNumber":0
        }
     
        console.log(m_data);
         this.sIsLoading = 'loading-data';
-        this._NursingStationService.getOPIPPatientList(m_data).subscribe(Visit => {
-          console.log(this.dataSource.data);
+        this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit => {
+          
           this.dataSource.data = Visit as OPIPPatientModel[];
           this.dataSource.sort =this.sort;
           this.dataSource.paginator=this.paginator;
@@ -138,7 +138,7 @@ export class PatientVistComponent implements OnInit {
       console.log(m_data);
       setTimeout(() => {
         this.sIsLoading = 'loading-data';
-        this._NursingStationService.getOPIPPatientList(m_data).subscribe(Visit=> {
+        this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit=> {
           console.log(this.dataSource.data);
           this.dataSource.data = Visit as OPIPPatientModel[];
           this.dataSource.sort =this.sort;

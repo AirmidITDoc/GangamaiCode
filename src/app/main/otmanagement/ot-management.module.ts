@@ -49,7 +49,12 @@ const approutes : Routes =[
     path: "listofreservation",
     loadChildren: () =>
     import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
-        // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
+       
+},
+{
+  // path:"",
+  // loadChildren: () =>
+  //   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
 }
 ];
 

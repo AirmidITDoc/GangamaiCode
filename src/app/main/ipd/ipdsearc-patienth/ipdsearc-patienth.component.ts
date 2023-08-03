@@ -14,6 +14,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { AdmissionNewComponent } from '../Admission/admission/admission-new/admission-new.component';
+import Swal from 'sweetalert2';
+import { AdmissionPersonlModel, RegInsert } from '../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-ipdsearc-patienth',
@@ -32,13 +34,16 @@ export class IPDSearcPatienthComponent implements OnInit {
     this.step = index;
   }
   Range: boolean = true;
-  OP_IP_Type:any;
+  OP_IP_Type: any;
   PatientType: any = 1;
   Fromdate: any;
   Todate: any;
   msg: any;
   SearchName: string;
+  filteredOptions: any;
+  noOptionFound: boolean = false;
   screenFromString = 'OP-billing';
+
   displayedColumns: string[] = [
 
 
@@ -81,10 +86,10 @@ export class IPDSearcPatienthComponent implements OnInit {
     // public _NursingStationService: NursingStationService,
     public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
-        public _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<IPDSearcPatienthComponent>,
+    public dialog: MatDialogRef<IPDSearcPatienthComponent>
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +97,7 @@ export class IPDSearcPatienthComponent implements OnInit {
 
     debugger;
     this.sIsLoading = 'loading-data';
-      
+
     var m_data = {
       "OP_IP_Type": 1,
       "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value).trim() + '%' || '%',
@@ -119,7 +124,9 @@ export class IPDSearcPatienthComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
-    
+
+    // this.getSearchList();
+
     // if (this.PatientType) {
     //   this._AdmissionService.myFilterform.get('start').value.enable();
     //   this._AdmissionService.myFilterform.get('end').value.enable();
@@ -139,25 +146,25 @@ export class IPDSearcPatienthComponent implements OnInit {
     debugger;
     this.sIsLoading = 'loading-data';
     this.PatientType = this._AdmissionService.myFilterform.get("PatientType").value;
-    
+
     console.log(this.PatientType);
 
-    if (this.PatientType !="0") {
+    if (this.PatientType != "0") {
       this.Fromdate = '01/01/1900';
       this.Todate = '01/01/1900';
       this._AdmissionService.myFilterform.get('start').value.disable;
       this._AdmissionService.myFilterform.get('end').value.disable;
       this.Range = true;
-      this.OP_IP_Type=1;
+      this.OP_IP_Type = 1;
     }
     else {
       this.Fromdate = this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000");
       this.Todate = this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000");
-    
+
       this._AdmissionService.myFilterform.get('start').value.enable;
       this._AdmissionService.myFilterform.get('end').value.enable;
       this.Range = false;
-      this.OP_IP_Type=0;
+      this.OP_IP_Type = 0;
     }
 
     var m_data = {
@@ -189,6 +196,36 @@ export class IPDSearcPatienthComponent implements OnInit {
   }
 
 
+
+
+
+
+  getSearchList() {
+    var m_data = {
+      "F_Name": `${this._AdmissionService.myFilterform.get('RegId').value}%`,
+      "L_Name": '%',
+      "Reg_No": '0',
+      "From_Dt": '01/01/1900',
+      "To_Dt": '01/01/1900',
+      "MobileNo": '%'
+    }
+    if (this._AdmissionService.myFilterform.get('RegId').value.length >= 1) {
+      this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+        // debugger;
+
+        this.filteredOptions = resData;
+        console.log(resData);
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
+  }
+
   onClear() {
     this._AdmissionService.myFilterform.get('FirstName').reset();
     this._AdmissionService.myFilterform.get('LastName').reset();
@@ -211,61 +248,69 @@ export class IPDSearcPatienthComponent implements OnInit {
 
   onClose() {
     // this._NursingStationService.mySaveForm.reset();
-    this.dialogRef.close();
+    this.dialog.close();
   }
 
 
   onEdit(contact) {
     debugger;
     console.log(contact)
-    let PatInforObj = {};
-    PatInforObj['PatientName'] = contact.PatientName,
+    var m_data = {
+      "RegNo":contact.RegNo,
+      "RegId":contact.RegId,
+      "PrefixID":contact.PrefixID,
+      "PrefixName":contact.PrefixName,
+      "FirstName":contact.FirstName,
+      "MiddleName":contact.MiddleName,
+      "LastName":contact.LastName,
+      "PatientName":contact.PatientName,
+      "DateofBirth":contact.DateofBirth,
+      "MaritalStatusId":contact.MaritalStatusId,
+      "AadharCardNo":contact.AadharCardNo,
+      "Age":contact.Age,
+      "AgeDay":contact.AgeDay,
+      "AgeMonth":contact.AgeMonth,
+      "AgeYear":contact.AgeYear,
+      "Address":contact.Address,
+      "AreaId":contact.AreaId,
+      "City":contact.City,
+      "CityId":contact.CityId,
+      "StateId":contact.StateId,
+      "CountryId":contact.CountryId,
+      "PhoneNo":contact.PhoneNo,
+      "MobileNo":contact.MobileNo,
+      "GenderId":contact.GenderId,
+      "GenderName":contact.GenderName,
+      "ReligionId":contact.ReligionId,
+      "IsCharity":0,
+      "PinNo":contact.PinNo,
+      "RegDate":contact.RegDate,
+      "RegNoWithPrefix":contact.RegNoWithPrefix,
+      "ClassId":0,
+      "RoomId":0,
+      "BedId":0
+    }
 
-    PatInforObj['AdmissionID'] = contact.Adm_Vit_ID,
-    PatInforObj['AdmissionDate'] = contact.DOA,
-    PatInforObj['HospitalId'] = contact.HospitalID,
-    PatInforObj['TariffId'] = contact.TariffId,
-    PatInforObj['CityId'] = contact.CityId,
-    PatInforObj['PatientTypeID'] = contact.PatientTypeID,
-
-    PatInforObj['Departmentid'] = contact.DepartmentId,
-    PatInforObj['DoctorId'] = contact.DocNameID,
-    PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID ,
-    PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
-
-    PatInforObj['CompanyId'] = contact.CompanyId,
-    PatInforObj['SubCompanyId'] = contact.SubTpaComId,
-    PatInforObj['IsMLC'] = contact.IsMLC,
-    PatInforObj['RelativeName'] = contact.RelativeName,
-    PatInforObj['RelativeAddress'] = contact.RelativeAddress,
-    PatInforObj['RelationshipId'] = contact.RelationshipId,
-    PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
-    PatInforObj['PatientType'] = contact.PatientType,
-    PatInforObj ['TariffName'] = contact.TariffName
+    console.log(m_data);
+    // this._AdmissionService.populateFormpersonal(m_data);
+    this.advanceDataStored.storage = new AdmissionPersonlModel(m_data);
     
-
-    console.log(PatInforObj);
-    // this.advanceDataStored.storage = new Editdetail(PatInforObj);
-
-    this.advanceDataStored.storage = new AdvanceDetailObj(PatInforObj);
-
-    this._AdmissionService.populateForm2(PatInforObj);
-
-   
-      const dialogRef = this._matDialog.open(EditAdmissionComponent,
-        {
-          maxWidth: '85vw',
-      
-          height: '580px',width: '100%', 
-          data: {
-            PatObj: PatInforObj 
-          }
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.dialogRef.close();
+    const dialogRef = this._matDialog.open(AdmissionNewComponent,
+      {
+        maxWidth: "90vw",
+        // maxHeight: "95vh", 
+        height: '780px',
+        width: '100%',
+        data: {
+          PatObj: m_data 
+        }
       });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Swal.fire('Close');
+      console.log('The dialog was closed - Insert Action', result);
+      this.dialog.close();
+    });
     // if (contact) this.dialogRef.close(PatInforObj);
   }
 
@@ -294,8 +339,8 @@ export class OPIPPatientModel {
   Bedname: any;
   TariffId: any;
   ClassId: any;
-  OP_IP_ID:any;
-RegNo:number;
+  OP_IP_ID: any;
+  RegNo: number;
   /**
 * Constructor
 *
@@ -321,7 +366,7 @@ RegNo:number;
       this.WardId = OPIPPatientModel.WardId || '';
       this.BedId = OPIPPatientModel.BedId || '';
       this.IsPharClearance = OPIPPatientModel.IsPharClearance || '';
-      this.RegNo=OPIPPatientModel.RegNo || 0;
+      this.RegNo = OPIPPatientModel.RegNo || 0;
       this.Bedname = OPIPPatientModel.Bedname || '';
       this.WardId = OPIPPatientModel.WardId || '';
       this.PatientType = OPIPPatientModel.PatientType || '';

@@ -1,27 +1,24 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Admission, AdmissionPersonlModel, Bed } from '../admission.component';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { MatStepper } from '@angular/material/stepper';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { AdmissionService } from '../admission.service';
 import { takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { Admission, AdmissionPersonlModel, Bed } from '../admission.component';
-import { fuseAnimations } from '@fuse/animations';
 import { IPDSearcPatienthComponent } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-admission-new',
-  templateUrl: './admission-new.component.html',
-  styleUrls: ['./admission-new.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  selector: 'app-new-admission',
+  templateUrl: './new-admission.component.html',
+  styleUrls: ['./new-admission.component.scss']
 })
-export class AdmissionNewComponent implements OnInit {
+export class NewAdmissionComponent implements OnInit {
 
   isAlive = false;
   savedValue: number = null;
@@ -158,7 +155,7 @@ export class AdmissionNewComponent implements OnInit {
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
-    public dialogRef: MatDialogRef<AdmissionNewComponent>,
+    public dialogRef: MatDialogRef<NewAdmissionComponent>,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -170,7 +167,7 @@ export class AdmissionNewComponent implements OnInit {
 
   ngOnInit(): void {
     
-
+  
     this.isAlive = true;
     // this.personalFormGroup = this.createPesonalForm();
     // this.hospitalFormGroup = this.createHospitalForm();
@@ -178,16 +175,16 @@ export class AdmissionNewComponent implements OnInit {
     // this.otherFormGroup = this.otherForm();
 
     this.personalFormGroup = this.createPesonalForm();
-    this.personalFormGroup.markAllAsTouched();
+    // this.personalFormGroup.markAllAsTouched();
 
     this.hospitalFormGroup = this.createHospitalForm();
-    this.hospitalFormGroup.markAllAsTouched();
+    // this.hospitalFormGroup.markAllAsTouched();
     
     this.wardFormGroup = this.wardForm();
-    this.wardFormGroup.markAllAsTouched();
+    // this.wardFormGroup.markAllAsTouched();
     
     this.otherFormGroup = this.otherForm();
-    this.otherFormGroup.markAllAsTouched()
+    // this.otherFormGroup.markAllAsTouched()
 
 
     this.searchFormGroup = this.createSearchForm();
@@ -307,12 +304,13 @@ export class AdmissionNewComponent implements OnInit {
 
       if (this.data) {
 
-        this.registerObj = this.data.registerObj;
+        this.registerObj = this.data.PatObj;
   
         console.log(this.registerObj);
   
-        // this.setDropdownObjs1();
+        this.setDropdownObjs();
       }
+  
   }
 
   private filterPrefix() {
@@ -795,10 +793,7 @@ export class AdmissionNewComponent implements OnInit {
     this.personalFormGroup.updateValueAndValidity();
   }
 
-  setGenderObj() {
-
-  }
-
+ 
 
   onChangeReg(event) {
     if (event.value == 'registration') {

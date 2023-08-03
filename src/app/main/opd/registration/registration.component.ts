@@ -161,7 +161,7 @@ onEdit(row){
     console.log(m_data);
     this._registrationService.populateFormpersonal(m_data);
     
-    const dialogRef = this._matDialog.open(EditRegistrationComponent, 
+    const dialogRef = this._matDialog.open(NewRegistrationComponent, 
       {   maxWidth: "85vw",
           height: '550px',
           width: '100%',
