@@ -83,7 +83,7 @@ export class AppointmentComponent implements OnInit {
         public _matDialog: MatDialog,
         public datePipe: DatePipe // private advanceDataStored: AdvanceDataStored
     ) {
-        this.getVisitList();
+        // this.getVisitList();
     }
 
     ngOnInit(): void {
@@ -144,11 +144,9 @@ export class AppointmentComponent implements OnInit {
                 .subscribe(
                     (Visit) => {
                         this.dataSource.data = Visit as VisitMaster[];
-                        // console.log(this.dataSource.data);
                         this.dataSource.sort = this.sort;
                         this.dataSource.paginator = this.paginator;
                         this.sIsLoading = "";
-                        // console.log(this.dataSource.data);
                     },
                     (error) => {
                         this.sIsLoading = "";
@@ -164,8 +162,8 @@ export class AppointmentComponent implements OnInit {
 
     onClear() {
         this._AppointmentSreviceService.myFilterform.reset({
-            start: [],
-            end: [],
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
         });
     }
 
