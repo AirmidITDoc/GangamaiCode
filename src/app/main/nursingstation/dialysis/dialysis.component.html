@@ -1,0 +1,1996 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent"
+        style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+        <div fxLayout="row">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
+                style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Clinical Care Chart
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
+            <button mat-raised-button (click)="newCreateUser()">
+                <mat-icon color="warn" title="New User">how_to_reg</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div>
+
+        <table>
+            <tr>
+             <td><mat-label>Patient Name:</mat-label></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             
+              <td><app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)">
+               </app-common-date>
+              </td>
+            </tr>
+            <tr>
+            <td><mat-label>MR No:</mat-label></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <td><app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)">
+               </app-common-date>
+             </td>
+            </tr>
+            <tr>
+                <td><mat-label> Department:</mat-label></td>
+            </tr><br>
+
+            <tr>
+                <td><mat-label>Dr. Name:</mat-label></td>
+            </tr><br>
+
+            <tr>
+                <td><mat-label> Age:</mat-label></td>
+            </tr>
+            
+          </table>
+          
+        
+        <mat-tab-group>
+
+            <mat-tab label="Pain Assessment">
+
+               
+                <div class="content">
+                    <div class="center " style="background-color:#ffffff;">
+                        <div layout="row" layout-xs="column" fxLayout="column" >
+                                    <div fxFlexFill  fxLayout="column" fxLayout.gt-xs="row">
+                                       
+                                          <div>
+                                            <label>Assessment List </label>
+                                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                           
+                                            <label>Death Rate =</label>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Daily Weight </mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                            </mat-form-field>   
+                                          </div>
+                                         </div>
+                         </div>
+                    </div>
+                        
+                </div>
+     
+                <div class="table8">
+                <section  tabindex="0">
+                    <table mat-table [dataSource]="dataSource8">
+
+                        
+                        <ng-container matColumnDef="GivenDate" sticky>
+                            <th mat-header-cell *matHeaderCellDef> Given Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.GivenDate}} </td>
+                        </ng-container>
+
+                
+                        <ng-container matColumnDef="GivenTime">
+                            <th mat-header-cell *matHeaderCellDef> Given Time </th>
+                            <td mat-cell *matCellDef="let element"> {{element.GivenTime}} </td>
+                        </ng-container>
+                       
+                        <ng-container matColumnDef="PainAssessment">
+                            <th mat-header-cell *matHeaderCellDef> Pain Assessment </th>
+                            <td mat-cell *matCellDef="let element"> {{element.PainAssessment}} </td>
+                        </ng-container>
+
+                       <ng-container matColumnDef="Date">
+                            <th mat-header-cell *matHeaderCellDef> Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="EmployeeName">
+                            <th mat-header-cell *matHeaderCellDef> Employee Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.EmployeeName}} </td>
+                        </ng-container>
+                     
+                        <ng-container matColumnDef="star" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon>more_vert</mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns8"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
+                    </table>
+                    </section>
+                    </div>
+          
+                    <div class="img">
+                        <label > Patient Pain Assessment</label><br><br>
+                        <img src="assets/images/logos/pain.jpeg" width="50%" height="350%"><br>
+
+                          <mat-slider >
+                            <input matSliderThumb>
+                          </mat-slider>
+                    </div>
+                  
+
+                <button mat-raised-button fxFlex="15%" (click)="($event)">Reporte Medication Error </button>
+                <button mat-raised-button fxFlex="15%" (click)="($event)">Phlebits</button>
+                <button mat-raised-button fxFlex="15%" (click)="($event)">Initial Nursing Assessment</button>
+              
+            </mat-tab>
+
+            <mat-tab label="Vitals">
+            <div>
+                <section class="example-container mat-elevation-z8" tabindex="0">
+                    <table mat-table [dataSource]="dataSource">
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Date" sticky>
+                            <th mat-header-cell *matHeaderCellDef> Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                        </ng-container>
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="Time">
+                            <th mat-header-cell *matHeaderCellDef> Time </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Time}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="Temperature">
+                            <th mat-header-cell *matHeaderCellDef> Temperature </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Temperature}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Pulse">
+                            <th mat-header-cell *matHeaderCellDef> Pulse </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Pulse}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Respiration">
+                            <th mat-header-cell *matHeaderCellDef> Respiration </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Respiration}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="BP">
+                            <th mat-header-cell *matHeaderCellDef> BP </th>
+                            <td mat-cell *matCellDef="let element"> {{element.BP}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="MewsScore">
+                            <th mat-header-cell *matHeaderCellDef> MewsScore </th>
+                            <td mat-cell *matCellDef="let element"> {{element.MewsScore}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="AVPU">
+                            <th mat-header-cell *matHeaderCellDef> AVPU </th>
+                            <td mat-cell *matCellDef="let element"> {{element.AVPU}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="TakenBy">
+                            <th mat-header-cell *matHeaderCellDef> TakenBy </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TakenBy}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="cvp">
+                            <th mat-header-cell *matHeaderCellDef> cvp </th>
+                            <td mat-cell *matCellDef="let element"> {{element.cvp}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Arterial_bp">
+                            <th mat-header-cell *matHeaderCellDef> Arterial_bp </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Arterial_bp}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="PA_Prassure">
+                            <th mat-header-cell *matHeaderCellDef> PA_Prassure </th>
+                            <td mat-cell *matCellDef="let element"> {{element.PA_Prassure}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Abdominal">
+                            <th mat-header-cell *matHeaderCellDef> Abdominal </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Abdominal}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Brady">
+                            <th mat-header-cell *matHeaderCellDef> Brady </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Brady}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Apnea">
+                            <th mat-header-cell *matHeaderCellDef> Apnea </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Apnea}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Desaturation">
+                            <th mat-header-cell *matHeaderCellDef> Desaturation </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Desaturation}} </td>
+                        </ng-container>
+
+                        <!-- Star Column -->
+                        <ng-container matColumnDef="star" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon>more_vert</mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                        </section><br>
+                    
+                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Temperature(F)</mat-label>
+                                <input name="Temperature" formControlName="Temperature" matInput (click)="getIndentID()">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Pulse</mat-label>
+                                <input name="Pulse" formControlName="Pulse" matInput (click)="getIndentID()">
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Respiration</mat-label>
+                                <input name="Respiration" formControlName="Respiration" matInput  (click)="getIndentID()">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Blood Pressure</mat-label>
+                                <input name="Blood_Pressure" formControlName="Blood_Pressure" matInput  (click)="getIndentID()">
+                            </mat-form-field>
+
+                        </div><br>
+
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="1">Alert</mat-radio-button>
+                            <mat-radio-button value="2">Response to Voice</mat-radio-button>
+                            <mat-radio-button value="3">Pain</mat-radio-button>
+                            <mat-radio-button value="4">Unresponsive</mat-radio-button>
+                        </mat-radio-group><br><br>
+                    
+                <form [formGroup]="" style="padding: 6px 6px 5px 5px;">
+                    <div class="content">
+                        <div class="center " style="background-color:#ffffff;">
+                            <div layout="row" layout-xs="column" fxLayout="column">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> CVP</mat-label>
+                                        <input name="CVP" formControlName="CVP" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Peep</mat-label>
+                                        <input name="Peep" formControlName="Peep" matInput>
+                                    </mat-form-field>
+                                   <h2 fxFlex>Suction</h2>
+                                </div>
+
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Arterial Blood Pressure</mat-label>
+                                        <input name="Arterial_Blood_Pressure" formControlName="Arterial_Blood_Pressure" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Pressure Reading</mat-label>
+                                        <input name="Pressure_Reading" formControlName="Pressure_Reading" matInput>
+                                    </mat-form-field>
+
+                                    <section class="example-section" fxFlex>
+                                        <mat-checkbox class="example-margin" formControlName="Oral" [(ngModel)]="Oral">Oral</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox class="example-margin" formControlName="ETT"  [(ngModel)]="ETT">ETT</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox class="example-margin" formControlName="Tracheostomy" [(ngModel)]="Tracheostomy">Tracheostomy</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox class="example-margin" formControlName="Nasal" [(ngModel)]="Nasal">Nasal</mat-checkbox>
+                                    </section>
+
+                                
+                                </div>
+
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Brady</mat-label>
+                                        <input name="Brady" formControlName="Brady" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Apnea</mat-label>
+                                        <input name="Apnea" formControlName="Apnea" matInput>
+                                    </mat-form-field>
+                                    <h2>Saturation</h2>
+                                </div>
+
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Abdominal Girth</mat-label>
+                                        <input name="Abdominal_Girth" formControlName="Abdominal_Girth" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Desaturation</mat-label>
+                                        <input name="Desaturation" formControlName="Desaturation" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22%">
+                                        <mat-label> Saturation With o2</mat-label>
+                                        <input name="Saturation_With_o2" formControlName="Saturation_With_o2" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22%">
+                                        <mat-label>Saturation WithOut o2</mat-label>
+                                        <input name="Saturation_WithOut_o2" formControlName="Saturation_WithOut_o2" matInput>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Pao2</mat-label>
+                                        <input name="Pao2" formControlName="Pao2" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label> Fio2</mat-label>
+                                        <input name="Fio2" formControlName="Fio2" matInput>
+                                    </mat-form-field>
+                                
+                                    <button mat-raised-button formControlName="PF_Ratio" fxFlex="15%" (click)="($event)">P:F Ratio</button>
+                                    <button mat-raised-button formControlName="Care_And_Position" fxFlex="15%" (click)="($event)">Care And Position</button>
+                                    <button mat-raised-button formControlName="Print_PF_Ratio" fxFlex="15%" (click)="($event)">Print P:F Ratio</button>
+                                </div>
+
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <button mat-raised-button formControlName="Reset"  (click)="($event)">Reset</button>
+                                    <button mat-raised-button formControlName="Save" (click)="($event)">Save</button>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </mat-tab>
+
+            <mat-tab label="Sugar Level">
+                <div>
+                    <section class="example-container mat-elevation-z8" tabindex="0">
+                        <table mat-table [dataSource]="dataSource1">
+    
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="Date" sticky>
+                                <th mat-header-cell *matHeaderCellDef> Date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                            </ng-container>
+    
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="Time">
+                                <th mat-header-cell *matHeaderCellDef> Time </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Time}} </td>
+                            </ng-container>
+    
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="BSL">
+                                <th mat-header-cell *matHeaderCellDef> BSL </th>
+                                <td mat-cell *matCellDef="let element"> {{element.BSL}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Urine">
+                                <th mat-header-cell *matHeaderCellDef> Urine </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Urine}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="UrinKetone">
+                                <th mat-header-cell *matHeaderCellDef> UrinKetone </th>
+                                <td mat-cell *matCellDef="let element"> {{element.UrinKetone}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Bodies">
+                                <th mat-header-cell *matHeaderCellDef> Bodies </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Bodies}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="InFormTo">
+                                <th mat-header-cell *matHeaderCellDef> InFormTo </th>
+                                <td mat-cell *matCellDef="let element"> {{element.InFormTo}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="InformedBy">
+                                <th mat-header-cell *matHeaderCellDef> InformedBy </th>
+                                <td mat-cell *matCellDef="let element"> {{element.InformedBy}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Injuction">
+                                <th mat-header-cell *matHeaderCellDef> Injuction </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Injuction}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Tablet">
+                                <th mat-header-cell *matHeaderCellDef> Tablet </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Tablet}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="GivenDate">
+                                <th mat-header-cell *matHeaderCellDef> GivenDate </th>
+                                <td mat-cell *matCellDef="let element"> {{element.GivenDate}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="GivenTime">
+                                <th mat-header-cell *matHeaderCellDef> GivenTime </th>
+                                <td mat-cell *matCellDef="let element"> {{element.GivenTime}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="GivenBy">
+                                <th mat-header-cell *matHeaderCellDef> GivenBy </th>
+                                <td mat-cell *matCellDef="let element"> {{element.GivenBy}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="BSLId">
+                                <th mat-header-cell *matHeaderCellDef> BSLId </th>
+                                <td mat-cell *matCellDef="let element"> {{element.BSLId}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="doseinj">
+                                <th mat-header-cell *matHeaderCellDef> doseinj </th>
+                                <td mat-cell *matCellDef="let element"> {{element.doseinj}} </td>
+                            </ng-container>
+    
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="dosetab">
+                                <th mat-header-cell *matHeaderCellDef> dosetab </th>
+                                <td mat-cell *matCellDef="let element"> {{element.dosetab}} </td>
+                            </ng-container>
+                              <!-- Symbol Column -->
+                              <ng-container matColumnDef="intakemode">
+                                <th mat-header-cell *matHeaderCellDef>   intakemode </th>
+                                <td mat-cell *matCellDef="let element"> {{element.  intakemode}} </td>
+                            </ng-container>
+                              <!-- Symbol Column -->
+                              <ng-container matColumnDef="rmo">
+                                <th mat-header-cell *matHeaderCellDef> rmo </th>
+                                <td mat-cell *matCellDef="let element"> {{element.rmo}} </td>
+                            </ng-container>
+                          
+                            <!-- Star Column -->
+                            <ng-container matColumnDef="star" stickyEnd>
+                                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-icon>more_vert</mat-icon>
+                                </td>
+                            </ng-container>
+    
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+                        </table>
+                            </section><br>
+                        
+                            <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>BSL</mat-label>
+                                    <input name="BSL" formControlName="BSL" matInput (click)="getIndentID()">
+                                </mat-form-field>
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Urine Sugar</mat-label>
+                                    <input name="Urine_Sugar" formControlName="Urine_Sugar" matInput (click)="getIndentID()">
+                                </mat-form-field>
+    
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Urine Ketone</mat-label>
+                                    <input name="Urine_Sugar" formControlName="Respiration" matInput  (click)="getIndentID()">
+                                </mat-form-field>
+    
+                            </div><br>
+    
+                    <form [formGroup]="" style="padding: 6px 6px 5px 5px;">
+                        <div class="content">
+                            <div class="center " style="background-color:#ffffff;">
+                                <div layout="row" layout-xs="column" fxLayout="column">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Bodies</mat-label>
+                                            <input name="Bodies" formControlName="Bodies" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Intake Mode</mat-label>
+                                            <mat-select   formControlName="Intake_Mode" required >
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of StoreList"   [value]="m">
+                                                    {{m.StoreName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Roported To RMO</mat-label>
+                                            <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                        </mat-form-field>
+                                       
+                                    </div>
+    
+
+                                   <Mat-label>To Be Filled By RMO : </Mat-label>
+                                    <hr>
+    
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                       
+                                        <Mat-label>Doctor / Consultant Info : </Mat-label>&nbsp;&nbsp;
+                
+                                        <hr>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Informed To</mat-label>
+                                            <input name="Informed_To" formControlName="Informed_To" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Informed By</mat-label>
+                                            <input name="Informed_By" formControlName="Informed_By" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                       
+                                        <Mat-label>Injection / Tablet: </Mat-label>&nbsp;&nbsp;
+                                        <hr>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Injection</mat-label>
+                                            <input name="Injection" formControlName="Injection" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Injection Dose</mat-label>
+                                            <input name="Injection_Dose" formControlName="Injection_Dose" matInput>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                       
+                                        <Mat-label></Mat-label>&nbsp;&nbsp;
+                                        <hr>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Tablet </mat-label>
+                                            <input name="Tablet" formControlName="Tablet" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="33%">
+                                            <mat-label>Tablet Dose</mat-label>
+                                            <input name="Tablet_Dose" formControlName="Tablet_Dose" matInput>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                       
+                                        <app-common-date [screenFrom]="screenFromString"
+                                            (dateTimeEventEmitter)="getDateTime($event)">
+                                        </app-common-date>
+                                       
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button mat-raised-button formControlName="Reset"  (click)="($event)">Reset</button>
+                                        <button mat-raised-button formControlName="Update" (click)="($event)">Update</button>
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+            </mat-tab>
+
+            <mat-tab label="Oxygen/Ventilation">
+                <div>
+                <br><br>
+                            <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
+                                <mat-form-field appearance="outline" fxFlex="66%">
+                                    <mat-label>Mode</mat-label>
+                                    <mat-select   formControlName="Mode" required >
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of StoreList"   [value]="m">
+                                            {{m.StoreName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div><br>
+    
+                        <div class="content">
+                            <div class="center " style="background-color:#ffffff;">
+                                <div layout="row" layout-xs="column" fxLayout="column">
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Tidol V (ml)</mat-label>
+                                            <input name="Bodies" formControlName="Tidol" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Set Rate(Per Min)</mat-label>
+                                            <input name="Set_Rate" formControlName="Set_Rate" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>IPAP</mat-label>
+                                            <input name="IPAP" formControlName="IPAP" matInput>
+                                        </mat-form-field>  
+                                    </div>
+    
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Minute V (lit./min)</mat-label>
+                                            <input name="Minute" formControlName="Minute" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Rate Total</mat-label>
+                                            <input name="Rate_Total" formControlName="Rate_Total" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>EPAP</mat-label>
+                                            <input name="EPAP" formControlName="EPAP" matInput>
+                                        </mat-form-field>  
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Peep (cm)</mat-label>
+                                            <input name="Peep" formControlName="Peep" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PC</mat-label>
+                                            <input name="PC" formControlName="PC" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>% MV</mat-label>
+                                            <input name="MV" formControlName="MV" matInput>
+                                        </mat-form-field>  
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Pr.Sup.(cm)</mat-label>
+                                            <input name="Sup" formControlName="Sup" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>fiO2</mat-label>
+                                            <input name="fiO2" formControlName="fiO2" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>I:E</mat-label>
+                                            <input name="IE" formControlName="IE" matInput>
+                                        </mat-form-field>  
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Oxygen Rate Per Min</mat-label>
+                                            <input name="Oxygen" formControlName="Oxygen" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Saturation With O2</mat-label>
+                                            <input name="Saturation_With_O2" formControlName="Saturation_With_O2" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Flow Trigger</mat-label>
+                                            <input name="Flow_Trigger" formControlName="Flow_Trigger" matInput>
+                                        </mat-form-field>  
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Bodies" formControlName="Bodies" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                        </mat-form-field>  
+                                        <button mat-raised-button fxFlex="7%" (click)="($event)">Oxygen Start</button>
+                                    </div>
+                                    
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Bodies" formControlName="Bodies" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>00</mat-label>
+                                            <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                        </mat-form-field>  
+                                        <button mat-raised-button fxFlex="7%" (click)="($event)">Ventilation Start</button>
+                                    </div> 
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <button mat-raised-button  formControlName="Reset" (click)="($event)">Reset</button>
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </mat-tab>
+
+            <mat-tab label="Succion/Saturation">
+
+            <div class="table2">
+                        <table mat-table  [dataSource]="dataSource2"  class="example-container1 mat-elevation-z8">
+
+                            <!--- Note that these columns can be defined in any order.
+                                  The actual rendered columns are set as a property on the row definition" -->
+                          
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="Date">
+                              <th mat-header-cell *matHeaderCellDef> Date </th>
+                              <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                            </ng-container>
+                          
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="Time">
+                              <th mat-header-cell *matHeaderCellDef> Time </th>
+                              <td mat-cell *matCellDef="let element"> {{element.Time}} </td>
+                            </ng-container>
+                          
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="Oral">
+                              <th mat-header-cell *matHeaderCellDef> Oral </th>
+                              <td mat-cell *matCellDef="let element"> {{element.Oral}} </td>
+                            </ng-container>
+                          
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Tracheostomy">
+                              <th mat-header-cell *matHeaderCellDef> Tracheostomy </th>
+                              <td mat-cell *matCellDef="let element"> {{element.Tracheostomy}} </td>
+                            </ng-container>
+
+                             <!-- Symbol Column -->
+                             <ng-container matColumnDef="Saturation_witho2">
+                                <th mat-header-cell *matHeaderCellDef> Saturation_witho2 </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Saturation_witho2}} </td>
+                              </ng-container>
+
+                               <!-- Symbol Column -->
+                            <ng-container matColumnDef="Saturation_withouto2">
+                                <th mat-header-cell *matHeaderCellDef> Saturation_withouto2 </th>
+                                <td mat-cell *matCellDef="let element"> {{element.Saturation_withouto2}} </td>
+                              </ng-container>
+                          
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                          </table>
+                          
+                        </div>
+            </mat-tab>
+
+            <mat-tab label="Input/Output">
+
+                <div class="table3">
+                 <table mat-table  [dataSource]="dataSource3"  class="example-container1 mat-elevation-z8">
+
+                    <ng-container matColumnDef="Date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                    </ng-container>
+                   
+                    <ng-container matColumnDef="Time">
+                      <th mat-header-cell *matHeaderCellDef> Time </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Time}} </td>
+                    </ng-container>
+                     
+                    <ng-container matColumnDef="IV">
+                      <th mat-header-cell *matHeaderCellDef> IV</th>
+                      <td mat-cell *matCellDef="let element"> {{element.IV}} </td>
+                    </ng-container>
+                  
+                
+                    <ng-container matColumnDef="INFUSIONS">
+                      <th mat-header-cell *matHeaderCellDef> INFUSIONS </th>
+                      <td mat-cell *matCellDef="let element"> {{element.INFUSIONS}} </td>
+                    </ng-container>
+
+                 
+                     <ng-container matColumnDef="BOLUSES">
+                        <th mat-header-cell *matHeaderCellDef> BOLUSES </th>
+                        <td mat-cell *matCellDef="let element"> {{element.BOLUSES}} </td>
+                      </ng-container>
+
+                    <ng-container matColumnDef="PERORAL">
+                        <th mat-header-cell *matHeaderCellDef> PERORAL </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERORAL}} </td>
+                      </ng-container>
+                  
+                    <ng-container matColumnDef="PERRT">
+                        <th mat-header-cell *matHeaderCellDef> PERRT </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERRT}} </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="PERJT">
+                        <th mat-header-cell *matHeaderCellDef> PERJT </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERJT}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="INTAKEOther">
+                        <th mat-header-cell *matHeaderCellDef> INTAKEOther </th>
+                        <td mat-cell *matCellDef="let element"> {{element.INTAKEOther}} </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="URINE">
+                        <th mat-header-cell *matHeaderCellDef> URINE </th>
+                        <td mat-cell *matCellDef="let element"> {{element.URINE}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="DRANGE">
+                        <th mat-header-cell *matHeaderCellDef> DRANGE </th>
+                        <td mat-cell *matCellDef="let element"> {{element.DRANGE}} </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="Stool">
+                        <th mat-header-cell *matHeaderCellDef> Stool </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Stool}} </td>
+                      </ng-container>
+
+                     <ng-container matColumnDef="OUTTAKEOther">
+                        <th mat-header-cell *matHeaderCellDef> OUTTAKEOther </th>
+                        <td mat-cell *matCellDef="let element"> {{element.OUTTAKEOther}} </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="IVDetails">
+                        <th mat-header-cell *matHeaderCellDef> IVDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.IVDetails}} </td>
+                      </ng-container>
+
+                      <!-- <ng-container matColumnDef="INFUSIONSDetails ">
+                        <th mat-header-cell *matHeaderCellDef> INFUSIONSDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.INFUSIONSDetails}} </td>
+                      </ng-container>
+                 -->
+                   <ng-container matColumnDef="BOLUSESDetails">
+                        <th mat-header-cell *matHeaderCellDef> BOLUSESDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.BOLUSESDetails}} </td>
+                      </ng-container> 
+                  
+
+                      <ng-container matColumnDef="PERORALDetails">
+                        <th mat-header-cell *matHeaderCellDef> PERORALDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERORALDetails}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="PERRTDetails">
+                        <th mat-header-cell *matHeaderCellDef> PERRTDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERRTDetails}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="PERJTDetails">
+                        <th mat-header-cell *matHeaderCellDef> PERJTDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.PERJTDetails}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="INTAKEOtherDetails">
+                        <th mat-header-cell *matHeaderCellDef> INTAKEOtherDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.INTAKEOtherDetails}} </td>
+                      </ng-container> 
+                      
+                      <ng-container matColumnDef="UrinDetails">
+                        <th mat-header-cell *matHeaderCellDef> UrinDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.UrinDetails}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="DRANGEDetails">
+                        <th mat-header-cell *matHeaderCellDef> DRANGEDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.DRANGEDetails}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="StoolDetails">
+                        <th mat-header-cell *matHeaderCellDef> StoolDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.StoolDetails}} </td>
+                      </ng-container>
+
+                      
+                      <ng-container matColumnDef="OUTTAKEOtherDetails">
+                        <th mat-header-cell *matHeaderCellDef> OUTTAKEOtherDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.OUTTAKEOtherDetails}} </td>
+                      </ng-container>
+
+                      
+                      <ng-container matColumnDef="intakeid">
+                        <th mat-header-cell *matHeaderCellDef> intakeid </th>
+                        <td mat-cell *matCellDef="let element"> {{element.intakeid}} </td>
+                      </ng-container>
+
+                      
+                      <ng-container matColumnDef="intakepd">
+                        <th mat-header-cell *matHeaderCellDef> intakepd </th>
+                        <td mat-cell *matCellDef="let element"> {{element.intakepd}} </td>
+                      </ng-container>
+
+                      
+                      <ng-container matColumnDef="intakepdDetails">
+                        <th mat-header-cell *matHeaderCellDef> intakepdDetails </th>
+                        <td mat-cell *matCellDef="let element"> {{element.intakepdDetails}} </td>
+                      </ng-container> 
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+                  </table>
+                </div><br>
+                <form [formGroup]="" style="padding: 6px 6px 5px 5px;" >
+                    <mat-tab-group mat-stretch-tabs="false"  mat-align-tabs="center">
+                        <mat-tab  appearance="outline"  label="INPUT">
+
+                            <div class="content">
+                                <div class="center " style="background-color:#ffffff;">
+                                    <div layout="row" layout-xs="column" fxLayout="column">
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>IV</mat-label>
+                                                <input name="IV" formControlName="IV" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre Oral</mat-label>
+                                                <input name="Pre_Oral" formControlName="Pre_Oral" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+        
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre JT</mat-label>
+                                                <input name="Pre_JT" formControlName="Pre_JT" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre RT</mat-label>
+                                                <input name="Pre_RT" formControlName="Pre_RT" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Infusions</mat-label>
+                                                <input name="Infusions" formControlName="Infusions" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Boluses</mat-label>
+                                                <input name="Boluses" formControlName="Boluses" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Other</mat-label>
+                                                <input name="Other" formControlName="Other" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>PD/HD</mat-label>
+                                                <input name="PD_HD" formControlName="PD_HD" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div><br>
+    
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <button mat-raised-button (click)="($event)">View All</button>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab  appearance="outline"  label="OUTPUT">
+
+                            <div class="content">
+                                <div class="center " style="background-color:#ffffff;">
+                                    <div layout="row" layout-xs="column" fxLayout="column">
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Urine</mat-label>
+                                                <input name="Urine" formControlName="Urine" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>NG Aspiratic</mat-label>
+                                                <input name="NG_Aspiratic" formControlName="NG_Aspiratic" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+        
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Drange</mat-label>
+                                                <input name="Drange" formControlName="Drange" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Other</mat-label>
+                                                <input name="Other" formControlName="Other" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Stool</mat-label>
+                                                <input name="Stool" formControlName="Stool" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>PD/HD</mat-label>
+                                                <input name="PD_HD" formControlName="PD_HD" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div><br>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <button mat-raised-button (click)="($event)">View All</button>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab  appearance="outline"  label="BOTH">
+                            <h2>Input</h2>
+                            <div class="content">
+                                <div class="center " style="background-color:#ffffff;">
+                                    <div layout="row" layout-xs="column" fxLayout="column">
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>IV</mat-label>
+                                                <input name="IV" formControlName="IV" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre Oral</mat-label>
+                                                <input name="Pre_Oral" formControlName="Pre_Oral" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+        
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre JT</mat-label>
+                                                <input name="Pre_JT" formControlName="Pre_JT" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Pre RT</mat-label>
+                                                <input name="Pre_RT" formControlName="Pre_RT" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Infusions</mat-label>
+                                                <input name="Infusions" formControlName="Infusions" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Boluses</mat-label>
+                                                <input name="Boluses" formControlName="Boluses" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Other</mat-label>
+                                                <input name="Other" formControlName="Other" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>PD/HD</mat-label>
+                                                <input name="PD_HD" formControlName="PD_HD" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>Output</h2>
+
+                            <div class="content">
+                                <div class="center " style="background-color:#ffffff;">
+                                    <div layout="row" layout-xs="column" fxLayout="column">
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Urine</mat-label>
+                                                <input name="Urine" formControlName="Urine" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>NG Aspiratic</mat-label>
+                                                <input name="NG_Aspiratic" formControlName="NG_Aspiratic" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+        
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Drange</mat-label>
+                                                <input name="Drange" formControlName="Drange" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Other</mat-label>
+                                                <input name="Other" formControlName="Other" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Stool</mat-label>
+                                                <input name="Stool" formControlName="Stool" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>PD/HD</mat-label>
+                                                <input name="PD_HD" formControlName="PD_HD" matInput>
+                                            </mat-form-field>  
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>  
+                                        </div>
+    
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <button mat-raised-button (click)="($event)">View All</button>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </mat-tab>
+
+            <mat-tab label="Human Body"><br>
+             <form [formGroup]="" style="padding: 6px 6px 5px 5px;">  
+                <section class="example-section">
+                    <mat-checkbox class="example-margin" formControlName="CVP" [(ngModel)]="CVP">Central Venous Pressure (CVP)</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin"  formControlName="ETT" [(ngModel)]="ETT">ENDOTRACHEAL TUBE (ETT)</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="RT" [(ngModel)]="RT">RT</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="RH_Intracath" [(ngModel)]="RH_Intracath">R.H Intracath</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="LH_Intracath" [(ngModel)]="LH_Intracath">L.H.Intracath</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="Foleys_Cathater" [(ngModel)]="Foleys_Cathater">Foleys Cathater</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="RL_Intracath" [(ngModel)]="RL_Intracath">R.L. Intracath</mat-checkbox><br><br>
+                    <mat-checkbox class="example-margin" formControlName="LL_Intracath"  [(ngModel)]="LL_Intracath">L.L. Intracath</mat-checkbox>
+                </section>
+             </form> 
+            </mat-tab>
+
+            <mat-tab label="Nursing Note">
+                <form [formGroup]="" style="padding: 6px 6px 5px 5px;">
+                 <h3>Nursing Note</h3>
+                 <section class="example-section">
+                    <mat-radio-group [(ngModel)]="labelPosition">
+                      <mat-radio-button  formControlName="All" class="example-margin" value="All">All</mat-radio-button>
+                      <mat-radio-button  formControlName="Doctor" class="example-margin" value="Doctor">Doctor</mat-radio-button>
+                      <mat-radio-button  formControlName="Nursing" class="example-margin" value="Nursing">Nursing</mat-radio-button>
+                    </mat-radio-group>
+                  </section>
+                 </form>
+                  <section class="example-container mat-elevation-z8" tabindex="0">
+                    <table mat-table [dataSource]="dataSource4">
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="AddedDate" sticky>
+                            <th mat-header-cell *matHeaderCellDef> Added Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.AddedDate}} </td>
+                        </ng-container>
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="AddedTime">
+                            <th mat-header-cell *matHeaderCellDef>Added Time </th>
+                            <td mat-cell *matCellDef="let element"> {{element.AddedTime}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="UserName">
+                            <th mat-header-cell *matHeaderCellDef> User Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.UserName}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Message">
+                            <th mat-header-cell *matHeaderCellDef> Message </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Message}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="SpecialNote">
+                            <th mat-header-cell *matHeaderCellDef> Special Note </th>
+                            <td mat-cell *matCellDef="let element"> {{element.SpecialNote}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="ordersheetLd">
+                            <th mat-header-cell *matHeaderCellDef> ordersheetLd </th>
+                            <td mat-cell *matCellDef="let element"> {{element.ordersheetLd}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="DoctorId">
+                            <th mat-header-cell *matHeaderCellDef> DoctorId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.DoctorId}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="PatientId">
+                            <th mat-header-cell *matHeaderCellDef> PatientId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.PatientId}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="UserId">
+                            <th mat-header-cell *matHeaderCellDef> UserId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.UserId}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="AddimissionId">
+                            <th mat-header-cell *matHeaderCellDef> AddimissionId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.AddimissionId}} </td>
+                        </ng-container>
+
+                        <!-- Star Column -->
+                        <ng-container matColumnDef="star" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon>more_vert</mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
+                    </table>
+                        </section>
+
+            </mat-tab>
+
+            <mat-tab label="Charges">
+
+                <div class="table4">
+                    <table mat-table  [dataSource]="dataSource5"  class="example-container1 mat-elevation-z8">
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+                      
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="Date">
+                          <th mat-header-cell *matHeaderCellDef> Date </th>
+                          <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                        </ng-container>
+                      
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="ServiceName">
+                          <th mat-header-cell *matHeaderCellDef> Service Name </th>
+                          <td mat-cell *matCellDef="let element"> {{element.ServiceName}} </td>
+                        </ng-container>
+                      
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="Rate">
+                          <th mat-header-cell *matHeaderCellDef> Rate </th>
+                          <td mat-cell *matCellDef="let element"> {{element.Rate}} </td>
+                        </ng-container>
+                      
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="Quantity">
+                          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                          <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                        </ng-container>
+
+                         <!-- Symbol Column -->
+                         <ng-container matColumnDef="TotalAmount">
+                            <th mat-header-cell *matHeaderCellDef> Total Amount </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalAmount}} </td>
+                          </ng-container>
+
+                           <!-- Symbol Column -->
+                        <ng-container matColumnDef="NetAmount">
+                            <th mat-header-cell *matHeaderCellDef> Net Amount </th>
+                            <td mat-cell *matCellDef="let element"> {{element.NetAmount}} </td>
+                          </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>
+                      </table>
+                    </div><br><br>
+                    <form [formGroup]="" style="padding: 6px 6px 5px 5px;">
+                          <div class="content">
+                                <div class="center " style="background-color:#ffffff;">
+                                    <div layout="row" layout-xs="column" fxLayout="column">
+    
+                                        
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-label>Number</mat-label>
+                                                <input type="text"
+                                                       placeholder="Pick one"
+                                                       aria-label="Number"
+                                                       matInput
+                                                       formControlName="Number"
+                                                       [matAutocomplete]="auto">
+                                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                    {{option}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="15%">
+                                                <mat-label>Qty</mat-label>
+                                                <input name="Qty" formControlName="Qty" matInput>
+                                            </mat-form-field>
+                                    
+                                            <button mat-raised-button (click)="($event)">Add</button>
+                                        </div>
+    
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                            <div class="table4">
+                                <table mat-table  [dataSource]="dataSource6"  class="example-container1 mat-elevation-z8">
+            
+                                    <!--- Note that these columns can be defined in any order.
+                                          The actual rendered columns are set as a property on the row definition" -->
+                                  
+                                    <!-- Position Column -->
+                                    <ng-container matColumnDef="Actions">
+                                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                                    </ng-container>
+                                  
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="ServiceName">
+                                      <th mat-header-cell *matHeaderCellDef> Service Name </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.ServiceName}} </td>
+                                    </ng-container>
+                                  
+                                    <!-- Symbol Column -->
+                                    <ng-container matColumnDef="Quantity">
+                                      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                                    </ng-container>
+            
+                                       <!-- Symbol Column -->
+                                    <ng-container matColumnDef="DoctorName">
+                                        <th mat-header-cell *matHeaderCellDef>Doctor Name</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.DoctorName}} </td>
+                                      </ng-container>
+                                  
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
+                                  </table>
+                                </div>
+            </mat-tab>
+
+            <mat-tab label="Apache Score">
+
+                <div class="table7">
+                    <table mat-table  [dataSource]="dataSource7"  class="example-container1 mat-elevation-z8">
+   
+                       <ng-container matColumnDef="GivenDateTime">
+                         <th mat-header-cell *matHeaderCellDef> Given Date Time</th>
+                         <td mat-cell *matCellDef="let element"> {{element.GivenDateTime}} </td>
+                       </ng-container>
+                      
+                        <ng-container matColumnDef="DateTime">
+                         <th mat-header-cell *matHeaderCellDef> Date Time </th>
+                         <td mat-cell *matCellDef="let element"> {{element.DateTime}} </td>
+                       </ng-container>
+                        
+                       <ng-container matColumnDef="Temperature">
+                         <th mat-header-cell *matHeaderCellDef> Temperature</th>
+                         <td mat-cell *matCellDef="let element"> {{element.Temperature}} </td>
+                       </ng-container>
+                     
+                       <ng-container matColumnDef="Pulse">
+                         <th mat-header-cell *matHeaderCellDef> Pulse </th>
+                         <td mat-cell *matCellDef="let element"> {{element.Pulse}} </td>
+                       </ng-container> 
+   
+                       <ng-container matColumnDef="Respiration">
+                           <th mat-header-cell *matHeaderCellDef> Respiration </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Respiration}} </td>
+                         </ng-container>
+   
+                       <ng-container matColumnDef="BP">
+                           <th mat-header-cell *matHeaderCellDef> BP </th>
+                           <td mat-cell *matCellDef="let element"> {{element.BP}} </td>
+                         </ng-container>
+                     
+                       <ng-container matColumnDef="TakenBy">
+                           <th mat-header-cell *matHeaderCellDef> Taken By </th>
+                           <td mat-cell *matCellDef="let element"> {{element.TakenBy}} </td>
+                         </ng-container>
+                   
+                       <ng-container matColumnDef="TakenByName">
+                           <th mat-header-cell *matHeaderCellDef> Taken By Name </th>
+                           <td mat-cell *matCellDef="let element"> {{element.TakenByName}} </td>
+                         </ng-container>
+   
+                        <ng-container matColumnDef="AddedBy">
+                           <th mat-header-cell *matHeaderCellDef> Added By </th>
+                           <td mat-cell *matCellDef="let element"> {{element.AddedBy}} </td>
+                         </ng-container>
+                   
+                       <ng-container matColumnDef="UpdatedBy">
+                           <th mat-header-cell *matHeaderCellDef> Updated By </th>
+                           <td mat-cell *matCellDef="let element"> {{element.UpdatedBy}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="MewsScore">
+                           <th mat-header-cell *matHeaderCellDef> Mews Score </th>
+                           <td mat-cell *matCellDef="let element"> {{element.MewsScore}} </td>
+                         </ng-container>
+                   
+                       <ng-container matColumnDef="CVP">
+                           <th mat-header-cell *matHeaderCellDef> CVP </th>
+                           <td mat-cell *matCellDef="let element"> {{element.CVP}} </td>
+                         </ng-container>
+   
+                        <ng-container matColumnDef="GCS">
+                           <th mat-header-cell *matHeaderCellDef> GCS </th>
+                           <td mat-cell *matCellDef="let element"> {{element.GCS}} </td>
+                         </ng-container>
+                   
+                       <ng-container matColumnDef="AVPU">
+                           <th mat-header-cell *matHeaderCellDef> AVPU </th>
+                           <td mat-cell *matCellDef="let element"> {{element.AVPU}} </td>
+                         </ng-container>
+   
+                      <ng-container matColumnDef="Temprectal">
+                           <th mat-header-cell *matHeaderCellDef> Temprectal </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Temprectal}} </td>
+                         </ng-container> 
+                     
+   
+                         <ng-container matColumnDef="MeanArtirial">
+                           <th mat-header-cell *matHeaderCellDef> Mean Artirial </th>
+                           <td mat-cell *matCellDef="let element"> {{element.MeanArtirial}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="Oxigenation">
+                           <th mat-header-cell *matHeaderCellDef> Oxigenation </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Oxigenation}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="Artirial">
+                           <th mat-header-cell *matHeaderCellDef> Artirial </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Artirial}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="GCSScore">
+                           <th mat-header-cell *matHeaderCellDef> GCSScore </th>
+                           <td mat-cell *matCellDef="let element"> {{element.GCSScore}} </td>
+                         </ng-container> 
+                         
+                         <ng-container matColumnDef="Serum">
+                           <th mat-header-cell *matHeaderCellDef> Serum </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Serum}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="Serumssodium">
+                           <th mat-header-cell *matHeaderCellDef> Serumssodium </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Serumssodium}} </td>
+                         </ng-container>
+   
+                         <ng-container matColumnDef="SerumPotassium">
+                           <th mat-header-cell *matHeaderCellDef> SerumPotassium </th>
+                           <td mat-cell *matCellDef="let element"> {{element.SerumPotassium}} </td>
+                         </ng-container>
+   
+                         
+                         <ng-container matColumnDef="Hematocrit">
+                           <th mat-header-cell *matHeaderCellDef> Hematocrit </th>
+                           <td mat-cell *matCellDef="let element"> {{element.Hematocrit}} </td>
+                         </ng-container>
+   
+                         
+                         <ng-container matColumnDef="WhiteBloodCount">
+                           <th mat-header-cell *matHeaderCellDef> WhiteBloodCount </th>
+                           <td mat-cell *matCellDef="let element"> {{element.WhiteBloodCount}} </td>
+                         </ng-container>
+   
+                         
+                         <ng-container matColumnDef="eyeopening">
+                           <th mat-header-cell *matHeaderCellDef> eyeopening </th>
+                           <td mat-cell *matCellDef="let element"> {{element.eyeopening}} </td>
+                         </ng-container>
+   
+                         
+                         <ng-container matColumnDef="verbleresponce">
+                           <th mat-header-cell *matHeaderCellDef> verbleresponce </th>
+                           <td mat-cell *matCellDef="let element"> {{element.verbleresponce}} </td>
+                         </ng-container> 
+
+                         <ng-container matColumnDef="Motorresponce">
+                            <th mat-header-cell *matHeaderCellDef> Motorresponce </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Motorresponce}} </td>
+                          </ng-container>
+    
+                          
+                          <ng-container matColumnDef="cronic">
+                            <th mat-header-cell *matHeaderCellDef> cronic </th>
+                            <td mat-cell *matCellDef="let element"> {{element.cronic}} </td>
+                          </ng-container> 
+
+                          <ng-container matColumnDef="TPRICUID">
+                            <th mat-header-cell *matHeaderCellDef> TPRICUID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TPRICUID}} </td>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="AddimissionId">
+                            <th mat-header-cell *matHeaderCellDef> AddimissionId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.AddimissionId}} </td>
+                          </ng-container> 
+   
+   
+                       <tr mat-header-row *matHeaderRowDef="displayedColumns7"></tr>
+                       <tr mat-row *matRowDef="let row; columns: displayedColumns7;"></tr>
+                     </table>
+                   </div>
+
+                <section>
+                    <div class="example-button-row">
+                      <div class="example-flex-container">
+                        <div class="example-button-container">
+                            <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+                              <mat-icon>A</mat-icon>
+                            </button>
+                          </div>
+
+                          <form [formGroup]="" style="padding: 6px 6px 5px 5px;">
+                          <div class="content">
+                            <div class="center " style="background-color:#ffffff;">
+                                <div layout="row" layout-xs="column" fxLayout="column">
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Pulse</mat-label>
+                                            <input name="Pulse" formControlName="Pulse" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Respiration</mat-label>
+                                            <input name="Respiration" formControlName="Respiration" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Temp. Rectal(C)</mat-label>
+                                            <input name="Temp_Rectal" formControlName="Temp_Rectal" matInput>
+                                        </mat-form-field>  
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Mean Arterial Pressure</mat-label>
+                                            <input name="Mean_Arterial_Pressure" formControlName="Mean_Arterial_Pressure" matInput>
+                                        </mat-form-field>  
+                                    </div>
+    
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Arterial PH</mat-label>
+                                            <input name="Arterial_PH" formControlName="Arterial_PH" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Oxygenation</mat-label>
+                                            <input name="Oxygenation" formControlName="Oxygenation" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Serum HCO3</mat-label>
+                                            <input name="Serum_HCO3" formControlName="Serum_HCO3" matInput>
+                                        </mat-form-field>  
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>WBC</mat-label>
+                                            <input name="WBC" formControlName="WBC" matInput>
+                                        </mat-form-field>  
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Hematocrit</mat-label>
+                                            <input name="Hematocrit" formControlName="Hematocrit" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Serum Creatinine</mat-label>
+                                            <input name="Serum_Creatinine" formControlName="Serum_Creatinine" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Serum Potassium</mat-label>
+                                            <input name="Serum_Potassium" formControlName="Serum_Potassium" matInput>
+                                        </mat-form-field>  
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Serum Sodium</mat-label>
+                                            <input name="Serum_Sodium" formControlName="Serum_Sodium" matInput>
+                                        </mat-form-field>  
+                                    </div>
+         
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                          <div class="example-button-container">
+                            <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+                              <mat-icon>B</mat-icon>
+                            </button>
+                          </div>
+                         
+                        <div class="content">
+                            <div class="center " style="background-color:#ffffff;">
+                                <div layout="row" layout-xs="column" fxLayout="column">
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="20%">
+                                        <section class="example-section">
+                                            <label class="example-margin">Eye Opening Response:</label>
+                                            <mat-radio-group [(ngModel)]="labelPosition"><br>
+                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before">Pain(2)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="after1">  Verbal Stimuli(3)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before2">Spontaneous(4)</mat-radio-button>
+                                            </mat-radio-group>
+                                        </section>
+
+                                        <section class="example-section">
+                                            <label class="example-margin">Verbal Response:</label>
+                                            <mat-radio-group [(ngModel)]="labelPosition"><br>
+                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before">Incoherent (2)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="after1"> Inappropriate Words (3)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before2">Confused (4)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before2">Oriented (5)</mat-radio-button>
+                                            </mat-radio-group>
+                                        </section>
+
+                                        <section class="example-section">
+                                            <label class="example-margin">Motor Response:</label>
+                                            <mat-radio-group [(ngModel)]="labelPosition"><br>
+                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before">Extension To Pain or Decerebrate (2)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="after1">Flexion To Pain Or Decorticate (3)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before2">Withdraws From Pain (4)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="befor3">Localizes Pain (5)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="befor42">Obeys Commands (6)</mat-radio-button>
+                                            </mat-radio-group>
+                                        </section>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div> 
+                       
+                         <div class="example-button-container">
+                          <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+                            <mat-icon>C</mat-icon>
+                          </button>
+                        </div>
+
+                        <div class="content">
+                            <div class="center " style="background-color:#ffffff;">
+                                <div layout="row" layout-xs="column" fxLayout="column">
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10%">
+                                        <section class="example-section">
+                                            <label class="example-margin">Chronic Health Points:</label>
+                                            <p>If the patient has a history of severe order system insufficiency or is immunocompromised assign points as following :</p>
+                                            <mat-radio-group [(ngModel)]="labelPosition">
+                                            <mat-radio-button class="example-margin" value="after">For Elective Postoperative Patients (2)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="before">For Non Operation / Emergency (5)</mat-radio-button><br>
+                                            <mat-radio-button class="example-margin" value="after1">None (0)</mat-radio-button><br>
+                                            </mat-radio-group>
+                                        </section>
+                                         
+                                          <div>
+                                            <label>Total GCS = </label>
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label> Total GCS </mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput><br>
+                                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>Death Rate =</label>
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Death Rate</mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                            </mat-form-field>  
+                                          </div>
+                                         </div><br>
+
+                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <label>Apache Score: </label>
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>A</mat-label>
+                                                <input name="Bodies" formControlName="Bodies" matInput>
+                                            </mat-form-field>+
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>B</mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                            </mat-form-field>+
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>C</mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                            </mat-form-field> =
+                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-label>Apache Score</mat-label>
+                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                            </mat-form-field>  
+                                        </div>
+
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <button mat-raised-button (click)="($event)">Reset</button>
+                                            <button mat-raised-button (click)="($event)">Add</button>
+                                        </div>
+
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </section>
+            </mat-tab>
+
+            <mat-tab label="PEWS">
+
+                  <div class="content">
+                    <div class="center " style="background-color:#ffffff;">
+                        <div layout="row" layout-xs="column" fxLayout="column">
+                         <label>Behavior Score:</label><br>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
+                                <section class="example-section">
+                                    <label class="example-margin">0</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked1">Playing / Appropriate</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">1</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked2">Sleeping</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">2</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked3">Irritable</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">3</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked4">Reduced Response To Pain</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked">Lethargic / Confused</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                            </div><br><br>
+
+                            <label>Cardiovascular Score:</label><br>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
+                                <section class="example-section">
+                                    <label class="example-margin">0</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked5">Pink</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked6">Capillary Refill 1-2 sec</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">1</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked7">Pale or Dusky</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked8">Capillary Refill 3 sec</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">2</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked9">Grey Or Cyanotic</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked11">Capillary Refill 4 sec</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked22">Tachycardia of 20 Above Normal Rate</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">3</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked33">Gray Ccyanotic and Molted</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked44">Capillary Refill 5 sec and Above</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked55">Tachycardia of 30 Above Normal Rate</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked66">Bradcardia</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                            </div><br><br>
+                            
+                            <label>Respiratory Score:</label><br>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
+                                <section class="example-section">
+                                    <label class="example-margin">0</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked77">With Normal Parameters</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">1</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked88">> 10 Normal Parameters</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked99"> Using Accessory Muscles</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked111"> 30 + %Fio2 Or 3 + Liters / min</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">2</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked222">> 20 Normal Parameters</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked333">Retractions</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked444">40 + %Fio2 Or 6 + Liters/min</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                                  <section class="example-section">
+                                    <label class="example-margin">3</label><br><br>
+                                    <section class="example-section">
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked555">b>= Normal Parameters With Retractions</mat-checkbox><br>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="checked666">50 + %Fio2 Or 8 + Liters / min</mat-checkbox>
+                                      </section>
+                                  </section>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+
+</div>

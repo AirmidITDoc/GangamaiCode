@@ -1,0 +1,80 @@
+app-grn-return {
+    .table1 {
+      height: 600px !important;
+      width: 1700px;
+    }
+
+    .table2 {
+      height: 600px !important;
+      width: 2000px;
+    }
+  
+    .mat-header-row {
+      width:200;
+      //max-width: 1600px;
+      min-width: 1000px;
+      min-height: 30px;
+      background-color: blue;
+    }
+  
+    .mat-row {
+      width: 100%;
+      //max-width: 1600px;
+      min-width: 1400px;
+      min-height: 30px;
+     
+    }
+  
+    .mat-column-GRNReturnNo {
+      width: 130px;
+      max-width: 130px;
+      min-width: 130px;
+      text-align: left;
+  
+    }
+
+    .mat-column-GRNReturnDate {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
+      text-align: left;
+  
+    }
+  
+    .mat-column-StoreName {
+      width: 220px;
+      max-width: 220px;
+      min-width: 220px;
+      text-align: left;
+    }
+  
+    .mat-column-SupplierName {
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
+      text-align: left;
+    }
+
+  
+    .mat-column-action {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: center;
+      justify-content: center;
+  
+    }
+    .mat-tab-group {
+  margin-bottom: 48px;
+    
+}
+
+// .table-row:selected {
+
+//   background-color: rebeccapurple;
+// }
+
+}
+
+
+  

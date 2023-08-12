@@ -99,6 +99,21 @@ const appRoutes: Routes = [
             import("./main/otmanagement/ot-management.module").then((m) => m.OTManagementModule),
     },
     {
+        path: "inventory",
+        loadChildren: () =>
+            import("./main/inventory/inventory.module").then((m) => m.InventoryModule),
+    },
+    {
+        path: "purchase",
+        loadChildren: () =>
+            import("./main/purchase/purchase.module").then((m) => m.PurchaseModule),
+    },
+    {
+        path: "pharmacy",
+        loadChildren: () =>
+            import("./main/pharmacy/pharmacy.module").then((m) => m.PharmacyModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
     }

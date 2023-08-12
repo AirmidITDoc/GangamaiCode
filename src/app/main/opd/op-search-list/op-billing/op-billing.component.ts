@@ -317,7 +317,7 @@ export class OPBillingComponent implements OnInit {
       TariffId: this.selectedAdvanceObj.TariffId,
       ClassId: this.selectedAdvanceObj.ClassId
     };
-    // console.log(m_data);
+    console.log(m_data);
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._opappointmentService.getBillingServiceList(m_data).subscribe(data => {
         console.log(data);

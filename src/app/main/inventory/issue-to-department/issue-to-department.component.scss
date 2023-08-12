@@ -1,0 +1,139 @@
+app-issue-to-department {
+    .table1 {
+      height: 600px !important;
+      width: 1700px;
+    }
+
+    .table2 {
+      height: 600px !important;
+      width: 2000px;
+    }
+  
+    .mat-header-row {
+      width:200;
+      //max-width: 1600px;
+      min-width: 1000px;
+      min-height: 30px;
+      background-color: blue;
+    }
+  
+    .mat-row {
+      width: 100%;
+      //max-width: 1600px;
+      min-width: 1400px;
+      min-height: 30px;
+
+    }
+    
+    .mat-column-IssueNo {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+  
+    }
+  
+    .mat-column-IssueDate {
+      width: 220px;
+      max-width: 220px;
+      min-width: 220px;
+      text-align: left;
+    }
+  
+    .mat-column-FromStoreName {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
+      text-align: left;
+    }
+
+    .mat-column-ToStoreName {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
+      text-align: left;
+    }
+
+
+    .mat-column-NetAmount {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+    }
+
+    .mat-column-Remark {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+  
+    .mat-column-Receivedby {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+
+    .mat-column-action {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: center;
+      justify-content: center;
+  
+    }
+
+    .mat-column-ItemName {
+      width: 310px;
+      max-width: 310px;
+      min-width: 310px;
+      text-align: left;
+    }
+
+    .mat-column-BatchNo {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-BatchExpDate {
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
+      text-align: left;
+    }
+
+    .mat-column-Qty {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+    .mat-column-PerUnitLandedRate {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+    .mat-column-LandedTotalAmount {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+    .mat-column-VatPercentage {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+  
+    .mat-tab-group {
+  margin-bottom: 48px;
+  
+}
+  
+  }
