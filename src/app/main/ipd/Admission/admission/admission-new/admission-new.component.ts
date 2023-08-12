@@ -1,11 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatStepper } from '@angular/material/stepper';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionService } from '../admission.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -161,7 +161,8 @@ export class AdmissionNewComponent implements OnInit {
     public dialogRef: MatDialogRef<AdmissionNewComponent>,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any
     //public _regIns: RegInsert
   ) {
     dialogRef.disableClose = true;
@@ -303,6 +304,15 @@ export class AdmissionNewComponent implements OnInit {
       .subscribe(() => {
         this.filterDoctor();
       });
+
+      if (this.data) {
+
+        this.registerObj = this.data.registerObj;
+  
+        console.log(this.registerObj);
+  
+        // this.setDropdownObjs1();
+      }
   }
 
   private filterPrefix() {
@@ -1002,7 +1012,7 @@ export class AdmissionNewComponent implements OnInit {
       // console.log('The dialog was closed - Insert Action', result);
       if (result) {
         this.registerObj = result as AdmissionPersonlModel;
-        this.setDropdownObjs();
+        // this.setDropdownObjs();
         this._matDialog.closeAll();
       }
       //this.getRegistrationList();

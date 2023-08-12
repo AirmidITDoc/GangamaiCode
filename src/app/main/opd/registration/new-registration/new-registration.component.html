@@ -15,7 +15,9 @@
     </mat-toolbar> -->
     <mat-toolbar matDialogTitle class="mat-accent m-0">
       <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-        <h3>Registration </h3>
+        <!-- <h3>Registration </h3> -->
+        <h3>{{personalFormGroup.controls.RegId.value?"Modify Registration ":"New
+          Registration"}}</h3>
         <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
           <mat-icon>close</mat-icon>
         </button>
@@ -62,13 +64,13 @@
             </mat-form-field>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            <!-- <div class="search-button-div">
-              <button mat-raised-button style="background-color: #FBF8EF;margin-top: 5px;margin-right: 100px;"
+             <div class="search-button-div">
+              <button mat-raised-button style="background-color: #FBF8EF;margin-top: 5px;margin-right: 100px;border-radius: 16px;"
                 (click)="searchRegList()" [disabled]="isRegSearchDisabled">Search
 
                 <mat-icon>search</mat-icon>
               </button>
-            </div> -->
+            </div> 
 
             <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
             </app-common-date>
@@ -85,7 +87,7 @@
           <ng-template matStepLabel>Personal</ng-template>
 
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
+            <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]=RegId>
 
 
             <!-- <mat-form-field appearance="outline" fxFlex >

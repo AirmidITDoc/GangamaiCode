@@ -31,17 +31,17 @@
                     &nbsp;
                     <mat-form-field appearance="outline"  style="width:170px;padding-right: 10px;">
                         <mat-label>Reg No</mat-label>
-                        <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput>
+                        <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput (keyup)="getOPIPPatientList()">
                     </mat-form-field> &nbsp;
 
                     <mat-form-field appearance="outline" style="width:170px;padding-right: 10px;">
                         <mat-label>First Name</mat-label>
-                        <input name="FirstName" formControlName="FirstName" placeholder="Enter First Name" matInput>
+                        <input name="FirstName" formControlName="FirstName" placeholder="Enter First Name" matInput (keyup)="getOPIPPatientList()">
                     </mat-form-field> &nbsp;
 
                     <mat-form-field appearance="outline" style="width:170px;padding-right: 10px;">
                         <mat-label>Last Name</mat-label>
-                        <input name="LastName" formControlName="LastName" placeholder="Enter Last Name" matInput>
+                        <input name="LastName" formControlName="LastName" placeholder="Enter Last Name" matInput (keyup)="getOPIPPatientList()">
                     </mat-form-field> &nbsp;
 
                     <!-- <mat-form-field appearance="outline" style="width:170px;padding-right: 10px;">

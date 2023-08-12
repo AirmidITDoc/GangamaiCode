@@ -107,7 +107,7 @@ export class NursingstationService {
      
   }
 
-  public getOPIPPatientList(employee) {
+  public getOPIPPatient(employee) {
 
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList", employee)
   }
@@ -206,6 +206,8 @@ export class NursingstationService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
   }
 
-
+  public getPrescriptionReturnList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard", employee)
+  }
 
 }

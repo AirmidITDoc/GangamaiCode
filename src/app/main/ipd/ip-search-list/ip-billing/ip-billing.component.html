@@ -17,16 +17,18 @@
                 </mat-icon> -->
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px; font-weight: 500;width:80%;">
+                style="font-size:18px; font-weight: 500;width:80%;font-family: sans-serif;">
                 IP BILLING : &nbsp;
-                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}}</span>
+                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
+                    No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
+                    Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
             </span>
             <!-- <span  >RegNo : </span>
                 <span >{{selectedAdvanceObj.RegNo}}</span>
                 <span  >{{selectedAdvanceObj.PatientName}}</span>&nbsp; -->
 
             <span style="float: right;background: white;color: black;">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
                 </app-common-date>
             </span>
 
@@ -37,20 +39,6 @@
 
     </div>
 
-    <!-- <mat-toolbar style="background-color: #039be5 !important; height:40px; justify-content: space-between;width: 100%;">
-        
-
-            <div fxLayout="row"  fxLayoutAlign="space-between center" >
-              
-            
-              <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size:18px ;margin-top: 10px;" >
-                IP BILLING 
-                
-              </span>
-           
-            </div>
-        
-          </mat-toolbar> -->
 
     <mat-drawer-container class="example-container">
         <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;">
@@ -230,86 +218,7 @@
 
 
         <div class="example-sidenav-content" style="padding-left: 10px;">
-            <!-- <div fxFlex> -->
 
-            <!-- <div class="top-heading">
-                <span class="material-icons" style="cursor: pointer; margin-right: 6px;" (click)="drawer.toggle()">
-                    arrow_back
-                </span>
-                  <span class="material-icons" style="cursor: pointer; margin-right: 6px;" (click)="drawer.toggle()">
-                    menu
-                </span>  
-                <span class="ip-billing" style="margin-right: 10px;background-color:#039BE5; color: white;">IP
-                    BILLING</span>
-            </div> -->
-
-            <div class="row" style="width:100%;">
-                <!-- <mat-card > -->
-                <div>
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                        <form style="width: 100%;height: auto;">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-                                <div fxlayout="row" style="background-color: white; padding: 3px 3px 3px 3px;">
-                                    <!-- ================================ LABEL HEADER  -->
-                                    <mat-card fxFlex.gt-sm="100%" fxFlex
-                                        style="padding: 0 9px; height: fit-content;width: 100%;">
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                            fxLayoutAlign="space-between">
-                                            <h3 class="labels"
-                                                style="font-weight: 700; margin: 0 0 0px;margin-left:10px;">Patient
-                                                Information:
-                                            </h3>
-                                        </div>
-                                        <div class="reg-field">
-
-                                            <!-- <span class="labels" style="margin-left: 15px;font-weight: bold;">RegNo : </span>
-                                                <span class="label-value" style="margin-right: 10px;">{{selectedAdvanceObj.RegNo}}</span>
-                                              
-                                               
-                                                <span class="labels" style="margin-left: 15px;font-weight: bold;">Patient Name :</span>
-                                                <span class="label-value" >{{selectedAdvanceObj.PatientName}}</span>&nbsp; -->
-
-
-
-
-                                            <span class="labels" style="margin-left: 15px;font-weight: bold; ">Doctor
-                                                Name :</span>
-                                            <span
-                                                class="label-value">{{selectedAdvanceObj.Doctorname}}</span>&nbsp;&nbsp;
-
-                                            <span class="labels"
-                                                style="margin-left: 15px;font-weight: bold; ">IPDNO:</span>
-                                            <span class="label-value">{{selectedAdvanceObj.IPDNo}}</span>&nbsp;&nbsp;
-
-                                            <span class="labels" style="margin-left: 15px;font-weight: bold; ">Admission
-                                                Date :</span>
-                                            <span
-                                                class="label-value">{{selectedAdvanceObj.AdmDateTime}}</span>&nbsp;&nbsp;
-
-                                            <span class="labels" style="margin-left: 15px;font-weight: bold; ">Ward
-                                                Name:</span>
-                                            <span class="label-value">{{selectedAdvanceObj.WardName}} -
-                                                {{selectedAdvanceObj.BedName}}</span>&nbsp;&nbsp;
-
-                                            <span class="labels" style="margin-right: 15px;font-weight: bold;"> Tariff
-                                                Name :</span>
-                                            <span class="label-value"
-                                                style="margin-right: 10px;">{{selectedAdvanceObj.TariffName}}</span>
-
-
-                                        </div>
-
-                                    </mat-card>
-                                    <!-- ================================ LABEL HEADER  -->
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
-            </div>
 
             <mat-tab-group mat-align-tabs="start" class="tabs-group" mat-stretch-tabs style="margin-right: 7px">
 
@@ -349,8 +258,8 @@
 
                         </div>
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                            style="overflow:auto;" class="mat-data-table">
-                            
+                            style="overflow:auto;" class="mat-data-table" class="table1">
+
                             <ng-container matColumnDef="checkbox" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                     <span class="material-icons" (click)="getChargesList()">
@@ -539,109 +448,71 @@
                         <!-- <div class="som"> -->
                         <div class=" amount-section" style="width: 100%;margin-left: 5px;">
                             <div fxLayout="row">
-
-                                <mat-form-field class="cdk-visually-hidden" appearance="outline"
-                                    style=" width: 120px; margin-left: 5px;">
+                                <!-- class="cdk-visually-hidden" -->
+                                <mat-form-field appearance="outline" style="margin-left: 5px;" fxFlex>
                                     <mat-label>Total Amount</mat-label>
                                     <input matInput [(ngModel)]="totalAmtOfNetAmt" name="totalAmtOfNetAmt"
                                         formControlName="TotalAmt" readonly
                                         style="font-weight:bold;font-size: 15px;text-align: right;">
                                 </mat-form-field>&nbsp;
 
+                                <mat-form-field appearance="outline" style=" margin-left: 15px;" fxFlex>
+                                    <mat-label>%</mat-label>
+                                    <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
+                                        (keyup)='CalAdmincharge($event)' type="number">
+                                </mat-form-field>
 
-                                <mat-form-field appearance="outline" style="width: 120px;">
+                                <mat-form-field appearance="outline" style="margin-left: 10px;" fxFlex>
+                                    <mat-label>Amount</mat-label>
+                                    <input matInput name="Amount" formControlName="Amount" placeholder="0" type="number"
+                                        [(ngModel)]="Adminamt">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" style="margin-right: 7px;" fxFlex>
+                                    <mat-label>Concession Amount</mat-label>
+                                    <input matInput [(ngModel)]="concessionAmtOfNetAmt" name="concessionAmtOfNetAmt"
+                                        formControlName="concessionAmt" (keyup)="getNetAmount()"
+                                        style="font-weight:bold;font-size: 15px;text-align: right;">
+                                </mat-form-field>
+
+                                <div *ngIf="ConShow">
+                                    <mat-form-field appearance="outline" style=" margin-right: 7px;width: 250px; ">
+                                        <mat-label>Concession Reason Type</mat-label>
+                                        <mat-select formControlName="ConcessionId" [disabled]="Consession">
+                                            <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
+                                                {{Doc.ConcessionReason}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Net Amount</mat-label>
                                     <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount"
                                         name="netPaybleAmt" readonly required
                                         style="font-weight:bold;font-size: 15px;text-align: right;">
                                 </mat-form-field>&nbsp;
 
-                                <div>
-                                    <mat-form-field appearance="outline" style="margin-right: 7px;width: 120px;">
-                                        <mat-label>Concession Amount</mat-label>
-                                        <input matInput [(ngModel)]="concessionAmtOfNetAmt" name="concessionAmtOfNetAmt"
-                                            formControlName="concessionAmt" (keyup)="getNetAmount()"
-                                            style="font-weight:bold;font-size: 15px;text-align: right;">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" style="width: 120px;">
-                                        <mat-label>Net Amount</mat-label>
-                                        <input matInput [(ngModel)]="FinalAmountpay" formControlName="FinalAmountpay"
-                                            name="FinalAmountpay" readonly
-                                            style="font-weight:bold;font-size: 15px;text-align: right;">
-                                    </mat-form-field>&nbsp;
-
-
-                                </div>
-
-
-                                <mat-form-field appearance="outline" style=" margin-right: 7px;width: 250px; ">
-                                    <mat-label>Concession Reason Type</mat-label>
-                                    <mat-select formControlName="ConcessionId" [disabled]="Consession">
-                                        <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                            {{Doc.ConcessionReason}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
                                 <mat-form-field appearance="outline" style=" margin-right: 7px;width: 320px;">
                                     <mat-label>Remark</mat-label>
                                     <input matInput name="Remark" formControlName="Remark">
                                 </mat-form-field>
-                                <mat-radio-group aria-label="Select an option">
-                                    <mat-radio-button value="3" checked="true">Summary</mat-radio-button>
-                                    <mat-radio-button value="2">Details</mat-radio-button><br>
-                                    <mat-radio-button value="1">Draft Bill Date Wise</mat-radio-button>
 
-                                </mat-radio-group>
 
-                                <mat-checkbox aria-label="Remember Me" formControlName="GenerateBill" (checked)=false>
-                                    Generate Bill
-                                </mat-checkbox>
 
                             </div>
 
                             <div fxLayout="row" style="width: 100%;margin-top: 3px;">
-                                <div class="admini-checkbox" style="margin-top: 10px;">
-                                    <mat-checkbox class="labels-style" formControlName="AdminCharges"
-                                        (change)='Adminchargeselect($event)' aria-label="Administrative Charges"
-                                        style="font-weight: bold;">
-                                        Admin Charges
+
+                                <div style="text-align: right;margin-left:1100px;">
+
+                                    <mat-checkbox aria-label="Remember Me" formControlName="GenerateBill"
+                                        (checked)=false>
+                                        Generate Bill
                                     </mat-checkbox>
-                                </div>&nbsp;
-
-                                <!-- <div class="admini-checkbox" style="margin-top: 10px;">
-                                    <mat-checkbox class="labels-style" formControlName="Iscredited"
-                                         aria-label="Administrative Charges"
-                                        style="font-weight: bold;">
-                                        Iscredited
-                                    </mat-checkbox>
-                                </div>&nbsp; -->
-
-                                <div style="display: flex;width:40%; " *ngIf="Admincharge">
-                                    <!-- <div class="admini-checkbox" style="margin-top: 10px;">
-                                        <mat-checkbox class="labels-style" formControlName="AdminCharges"
-                                            (change)='Adminchargeselect($event)' aria-label="Administrative Charges">
-                                            Admin Charges
-                                        </mat-checkbox>
-                                    </div>&nbsp; -->
-                                    <mat-form-field appearance="outline" style=" margin-left: 15px;width:90px;">
-                                        <mat-label>%</mat-label>
-                                        <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
-                                            (change)='CalAdmincharge($event)' type="number">
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline" style=" width:90px;margin-left: 10px;">
-                                        <mat-label>Amount</mat-label>
-                                        <input matInput name="Amount" formControlName="Amount" placeholder="0"
-                                            type="number" [(ngModel)]="Adminamt">
-                                    </mat-form-field>
-
-
-                                </div>
-
-                                <div style="text-align: right;margin-left:400px;">
 
                                     <button class="next-btn" (click)="getPrintDraft()"
-                                        style="border-radius: 16px;width: 80px;">Interim</button>
+                                        style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button>
                                     <button class="next-btn" (click)="onSave()" style="border-radius: 16px;">
                                         Save
                                     </button>
@@ -727,5 +598,3 @@
         </div>
     </mat-card>
 </mat-drawer>
-
-///

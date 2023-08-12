@@ -815,7 +815,7 @@ export class IPBillBrowseListComponent implements OnInit {
   getIPIntreimBillPrint(el) {
     debugger;
     var D_data = {
-      "BillNo": el.BillNo,
+      "BillNo":  el.BillNo,
     }
     // el.bgColor = 'red';
     //console.log(el);

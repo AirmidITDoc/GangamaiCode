@@ -78,7 +78,7 @@ export class IPBillingComponent implements OnInit {
    b_qty = '1';
    b_totalAmount = '0';
    b_netAmount = '0';
-   FinalAmountpay ='0';
+   FinalAmountpay =0;
    b_disAmount = '0';
    b_DoctorName = '';
    b_traiffId = '';
@@ -130,7 +130,8 @@ export class IPBillingComponent implements OnInit {
    @ViewChild(MatAccordion) accordion: MatAccordion;
    @ViewChild('drawer') public drawer: MatDrawer;
  
- 
+   ConShow: boolean = false;
+   
    isLoading: String = '';
    selectedAdvanceObj: AdvanceDetailObj;
    isFilteredDateDisabled: boolean = false;
@@ -263,7 +264,7 @@ export class IPBillingComponent implements OnInit {
        ConcessionId: [],
        TotalAmt: [0],
        concessionAmt: [0],
-       FinalAmount: [0],
+       FinalAmount: '',
        ClassId: [],
        Percentage: [Validators.pattern("^[0-9]*$")],
        AdminCharges: [0],
@@ -533,28 +534,42 @@ export class IPBillingComponent implements OnInit {
      let netAmt;
      netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
      this.totalAmtOfNetAmt = netAmt;
-     this.netPaybleAmt = netAmt;
+    //  this.netPaybleAmt = netAmt;
+     this.registeredForm.get('TotalAmount').setValue(netAmt);
      return netAmt;
    }
  
    getNetAmount() {
-     this.netPaybleAmt = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
-     // this.netPaybleAmt = parseInt(this.netPaybleAmt);
-     // this.ConAmt = parseInt(this.netPaybleAmt);
-     this.FinalAmountpay = this.netPaybleAmt.toString();
- 
-     console.log(this.FinalAmountpay);
-   //  Swal.fire("Final Amount is",this.FinalAmountpay +"And DiscAmount is" +this.concessionAmtOfNetAmt);
-   //  Swal.fire("DiscAmount",this.concessionAmtOfNetAmt);
- 
+
+    debugger
+
+    let amt=this.registeredForm.get('FinalAmount').value
+
+     let Tot = parseInt(amt) - parseInt(this.concessionAmtOfNetAmt);
+
+    //  this.netPaybleAmt = amt - parseInt(this.concessionAmtOfNetAmt);
+    
+      this.netPaybleAmt = Tot;
+
+     
+   
      if (this.concessionAmtOfNetAmt > 0) {
        this.registeredForm.get('ConcessionId').reset();
        this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
        this.registeredForm.get('ConcessionId').enable;
        this.Consession = false;
-       this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();;
+
+       this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)
        this.registeredForm.get('FinalAmountpay').setValue(this.FinalAmountpay);
        this.registeredForm.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+       this.registeredForm.get('TotalAmount').setValue(this.FinalAmountpay);
+       this.ConShow=true;
+
+      //  if(this.concessionAmtOfNetAmt>0)
+      //  {
+      //   this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt) -  parseInt(this.concessionAmtOfNetAmt);
+
+      //  }
      }
      if (this.concessionAmtOfNetAmt <= 0) {
        this.registeredForm.get('ConcessionId').reset();
@@ -562,6 +577,9 @@ export class IPBillingComponent implements OnInit {
        this.registeredForm.get('ConcessionId').disable;
        this.Consession = true;
        this.FinalAmountpay = this.totalAmtOfNetAmt;
+
+
+       this.netPaybleAmt= parseInt(this.totalAmtOfNetAmt) - parseInt(this.Adminamt);
      }
  
    }
@@ -595,10 +613,13 @@ export class IPBillingComponent implements OnInit {
      let Percentage = this.registeredForm.get('Percentage').value;
      if (Percentage) {
        let discAmt = (this.netPaybleAmt * parseInt(Percentage)) / 100;
-       this.Adminper = discAmt.toString();
-       this.Adminamt = (this.netPaybleAmt - discAmt).toString();
-       console.log(this.Adminper);
-       console.log(this.Adminamt);
+       this.Adminamt = discAmt;
+           this.netPaybleAmt= Math.round(this.totalAmtOfNetAmt- this.Adminamt);
+           this.registeredForm.get('FinalAmount').setValue(this.netPaybleAmt);
+     }
+     else{
+      this.netPaybleAmt= this.totalAmtOfNetAmt;
+      this.registeredForm.get('FinalAmount').setValue(this.netPaybleAmt);
      }
  
  
@@ -1021,7 +1042,7 @@ export class IPBillingComponent implements OnInit {
        this.isLoading = 'submit';
  
        if (this.concessionAmtOfNetAmt > 0) {
-         this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();
+         this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
          // console.log(this.FinalAmountpay);
          this.ConcessionId = this.registeredForm.get('ConcessionId').value.ConcessionId;
        } else {
@@ -1336,7 +1357,7 @@ export class IPBillingComponent implements OnInit {
        this.chargeslist =this.dataSource;
      
        if (this.concessionAmtOfNetAmt > 0) {
-         this.FinalAmountpay = (parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt)).toString();
+         this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
          // console.log(this.FinalAmountpay);
          this.ConcessionId = this.registeredForm.get('ConcessionId').value.ConcessionId;
        } else {
@@ -1415,7 +1436,8 @@ export class IPBillingComponent implements OnInit {
          if (response) {
            Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
              if (result.isConfirmed) {
-               // this.getChargesList();
+               console.log(response)
+               console.log(result)
                this._matDialog.closeAll();
  
               //  this.getPrintDraft(response);
@@ -1434,8 +1456,6 @@ export class IPBillingComponent implements OnInit {
    }
  
    onSaveEntry() {
- 
- 
  
      if (this.registeredForm.get("DoctorID").value) {
        this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
@@ -1968,8 +1988,7 @@ export class IPBillingComponent implements OnInit {
    }
  
    onClose() {
-     debugger;
- 
+    this._matDialog.closeAll();
  
    }
  

@@ -75,7 +75,8 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
+                                            <input matEndDate formControlName="end" placeholder="End date"
+                                                (dateChange)="onShow($event)">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -164,8 +165,8 @@
                         </div>
                         <!-- [hiddenColumns]="[13]" matTableExporter #exportDirective="matTableExporter"-->
 
-                        <mat-table #table matSort 
-                            [dataSource]="dataSource" [@animateStagger]="{value:'50'}"  id="ToBeApplied" class="table1">
+                        <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                            id="ToBeApplied" class="table1">
 
                             <ng-container matColumnDef="SelfOrCompany" sticky>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Self/Company
@@ -210,7 +211,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            
+
                             <ng-container matColumnDef="BillDate" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Bill Date
                                 </mat-header-cell>

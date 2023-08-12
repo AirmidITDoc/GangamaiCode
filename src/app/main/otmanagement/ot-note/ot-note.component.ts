@@ -1,15 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/opd/op-search-list/search-page/search-page.component';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
+import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
 import { ReplaySubject, Subject } from 'rxjs';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OTManagementServiceService } from '../ot-management-service.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { OTManagementServiceService } from '../ot-management-service.service';
 
 @Component({
   selector: 'app-ot-note',
@@ -18,7 +18,6 @@ import { OTManagementServiceService } from '../ot-management-service.service';
 })
 export class OTNoteComponent implements OnInit {
 
-  
   personalFormGroup: FormGroup;
 
   submitted = false;
@@ -112,8 +111,8 @@ export class OTNoteComponent implements OnInit {
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<OTNoteComponent>,
-    public datePipe: DatePipe,
+    // public dialogRef: MatDialogRef<OtNotesComponent>,
+    // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
 
@@ -143,7 +142,7 @@ export class OTNoteComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.OPIP = this.selectedAdvanceObj.IP_OP_Number;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;
@@ -205,7 +204,7 @@ export class OTNoteComponent implements OnInit {
 
   closeDialog() {
     console.log("closed")
-    this.dialogRef.close();
+    // this.dialogRef.close();
     // this.personalFormGroup.reset();
   }
   createOtCathlabForm() {
@@ -233,7 +232,7 @@ export class OTNoteComponent implements OnInit {
       OTBookingID: '',
       Assistantscrub:'',
       Circulatingstaff:'',
-      AnathesticName:'',
+      AnathesticNAme:'',
       OtNote:'',
       Extra:'',
       Pre:''
@@ -245,7 +244,7 @@ export class OTNoteComponent implements OnInit {
   setDropdownObjs1() {
     debugger;
 
-    // this._OtManagementService.populateFormpersonal(this.registerObj1);
+    this._OtManagementService.populateFormpersonal(this.registerObj1);
 
     // const toSelect = this.SurgeryList.find(c => c.SurgeryId == this.registerObj1.SurgeryId);
     // this.personalFormGroup.get('SurgeryId').setValue(toSelect);
@@ -527,12 +526,12 @@ export class OTNoteComponent implements OnInit {
     //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
     //     }
     //   }
-    //   console.log(this.registerObj);
+    //   // console.log(this.registerObj);
     // });
   }
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 
@@ -541,11 +540,11 @@ export class OTNoteComponent implements OnInit {
     let otBookingID = this.registerObj1.OTBookingID;
 
     this.isLoading = 'submit';
-    // Adm_Vit_ID
-    if (this.registerObj1) {
+
+    if (this.Adm_Vit_ID) {
       if (!otBookingID) {
         var m_data = {
-          "otNoteTemplateInsert": {
+          "otTableBookingDetailInsert": {
             "OTBookingID": 0,// this._registerService.mySaveForm.get("RegId").value || "0",
             "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
             "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
@@ -564,7 +563,7 @@ export class OTNoteComponent implements OnInit {
             "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
             "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
             "PatientName": this.PatientName || '',
-            "isAddedBy":10,// this.accountService.currentUserValue.user.id|| 0,
+            "isAddedBy": this.accountService.currentUserValue.user.id || 0,
             "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
             "isNormalOrFuture": 0
 
@@ -599,7 +598,7 @@ export class OTNoteComponent implements OnInit {
             "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
             "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
             "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-            "surgeonId1":1,// this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
+            "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
             "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
             "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
             "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || 0,// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
@@ -635,65 +634,3 @@ export class OTNoteComponent implements OnInit {
 
 }
 
-
-
-export class OTReservationDetail {
-  OTBookingID: any;
-  OP_IP_ID: any;
-  RegNo: number;
-  PatientName: string;
-
-  OPDate: Date;
-  OPTime: Date;
-  Duration: number;
-  OTTableID: Number;
-  OTTableName: any;
-  SurgeonId: number;
-  SurgeonId1: number;
-  AdmissionID: any;
-  SurgeonName: any;
-  AnestheticsDr: any;
-  AnestheticsDr1: any;
-  Surgeryname: any;
-  AnesthType: any;
-  UnBooking: any;
-
-  IsAddedBy: any;
-  AddedBy: any;
-  TranDate: Date;
-  instruction: any;
-
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(OTReservationDetail) {
-    {
-      this.OTBookingID = OTReservationDetail.OTBookingID || '';
-      this.OP_IP_ID = OTReservationDetail.OP_IP_ID || '';
-      this.RegNo = OTReservationDetail.RegNo || '';
-      this.PatientName = OTReservationDetail.PatientName || '';
-      this.AdmissionID = OTReservationDetail.AdmissionID || 0;
-      this.OPDate = OTReservationDetail.OPDate || '';
-      this.OPTime = OTReservationDetail.OPTime || '';
-      this.Duration = OTReservationDetail.Duration || '';
-      this.OTTableID = OTReservationDetail.OTTableID || '';
-      this.OTTableName = OTReservationDetail.OTTableName || '';
-      this.SurgeonId = OTReservationDetail.SurgeonId || '';
-      this.SurgeonId1 = OTReservationDetail.SurgeonId1 || '';
-      this.SurgeonName = OTReservationDetail.SurgeonName || '';
-      this.AnestheticsDr = OTReservationDetail.AnestheticsDr || '';
-
-      this.AnestheticsDr1 = OTReservationDetail.AnestheticsDr1 || '';
-      this.Surgeryname = OTReservationDetail.Surgeryname || '';
-      this.AnesthType = OTReservationDetail.AnesthType || '';
-      this.UnBooking = OTReservationDetail.UnBooking || '';
-      this.IsAddedBy = OTReservationDetail.IsAddedBy || '';
-      this.AddedBy = OTReservationDetail.AddedBy || '';
-      this.TranDate = OTReservationDetail.TranDate || '';
-      this.instruction = OTReservationDetail.instruction || '';
-
-    }
-  }
-}

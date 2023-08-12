@@ -19,6 +19,7 @@ import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tp
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { AdmissionViewComponent } from './admission-view/admission-view.component';
+import { NewAdmissionComponent } from './new-admission/new-admission.component';
 
 @Component({
   selector: 'app-admission',
@@ -296,7 +297,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   addNewAdmission() {
-    const dialogRef = this._matDialog.open(AdmissionNewComponent,
+    const dialogRef = this._matDialog.open(NewAdmissionComponent,
       {
         maxWidth: "90vw",
         // maxHeight: "95vh", 
@@ -331,47 +332,50 @@ export class AdmissionComponent implements OnInit {
 
   getRecord(contact, m): void {
     console.log(contact);
-    let PatInforObj = {};
-    PatInforObj['PatientName'] = contact.PatientName,
+    // let PatInforObj = {};
+    // PatInforObj['PatientName'] = contact.PatientName,
 
-    PatInforObj['AdmissionID'] = contact.AdmissionID,
-    PatInforObj['AdmissionDate'] = contact.DOA,
-    PatInforObj['HospitalId'] = contact.HospitalID,
-    PatInforObj['TariffId'] = contact.TariffId,
-    PatInforObj['CityId'] = contact.CityId,
-    PatInforObj['PatientTypeID'] = contact.PatientTypeID,
+    // PatInforObj['AdmissionID'] = contact.AdmissionID,
+    // PatInforObj['AdmissionDate'] = contact.DOA,
+    // PatInforObj['HospitalId'] = contact.HospitalID,
+    // PatInforObj['TariffId'] = contact.TariffId,
+    // PatInforObj['CityId'] = contact.CityId,
+    // PatInforObj['PatientTypeID'] = contact.PatientTypeID,
 
-    PatInforObj['Departmentid'] = contact.DepartmentId,
-    PatInforObj['DoctorId'] = contact.DocNameID,
-    PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID ,
-    PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
+    // PatInforObj['Departmentid'] = contact.DepartmentId,
+    // PatInforObj['DoctorId'] = contact.DocNameID,
+    // PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID ,
+    // PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
 
-    PatInforObj['CompanyId'] = contact.CompanyId,
-    PatInforObj['SubCompanyId'] = contact.SubTpaComId,
-    PatInforObj['IsMLC'] = contact.IsMLC,
-    PatInforObj['RelativeName'] = contact.RelativeName,
-    PatInforObj['RelativeAddress'] = contact.RelativeAddress,
-    PatInforObj['RelationshipId'] = contact.RelationshipId,
-    PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
-    PatInforObj['PatientType'] = contact.PatientType,
-    PatInforObj ['TariffName'] = contact.TariffName
+    // PatInforObj['CompanyId'] = contact.CompanyId,
+    // PatInforObj['SubCompanyId'] = contact.SubTpaComId,
+    // PatInforObj['IsMLC'] = contact.IsMLC,
+    // PatInforObj['RelativeName'] = contact.RelativeName,
+    // PatInforObj['RelativeAddress'] = contact.RelativeAddress,
+    // PatInforObj['RelationshipId'] = contact.RelationshipId,
+    // PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
+    // PatInforObj['PatientType'] = contact.PatientType,
+    // PatInforObj ['TariffName'] = contact.TariffName
     
-
-    console.log(PatInforObj);
-    // this.advanceDataStored.storage = new Editdetail(PatInforObj);
-
-    this.advanceDataStored.storage = new AdvanceDetailObj(PatInforObj);
-
-    this._AdmissionService.populateForm2(PatInforObj);
-
+debugger
     if (m == "Edit Admission") {
-      const dialogRef = this._matDialog.open(EditAdmissionComponent,
+      let Regdata;
+    this._AdmissionService.getRegdata(contact.RegID).subscribe(data =>  {
+      Regdata = data as RegInsert[];
+      console.log(Regdata);
+         
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+
+      const dialogRef = this._matDialog.open(NewAdmissionComponent,
         {
-          maxWidth: '85vw',
+          maxWidth: '95vw',
       
-          height: '580px',width: '100%', 
+          height: '900px',width: '100%', 
           data: {
-            PatObj: PatInforObj 
+            PatObj: Regdata 
           }
         });
 
