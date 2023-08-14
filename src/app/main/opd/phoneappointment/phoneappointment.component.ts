@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { GeturlService } from './geturl.service';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -26,6 +27,10 @@ export class PhoneappointmentComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   doctorNameCmbList: any = [];
+
+  // dataurl1: any = [];
+  // dataurl2: any = [];
+  // dataurl3: any = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,15 +61,18 @@ export class PhoneappointmentComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
+    public _geturl :GeturlService
   ) { }
 
   ngOnInit(): void {
-
     // get Doctor list
     this.getDoctorNameCombobox();
-
     // get phone appointment list on page load
     this.getPhoneAppointList();
+
+    // this.geturlVisit();
+    // this.geturlBill();
+    // this.geturlBillDet();
   }
   
   // toggle sidebar
@@ -89,6 +97,25 @@ export class PhoneappointmentComponent implements OnInit {
       this.filtereddoctor.next(this.doctorNameCmbList.slice());
     });
   }
+
+  // geturlVisit(){
+  //   this._geturl.getVisitData().subscribe(data => {
+  //     this.dataurl1 = data;
+  //     console.log(this.dataurl1);
+  //     });
+  // }
+  // geturlBill(){
+  //   this._geturl.getBillData().subscribe(data => {
+  //     this.dataurl2 = data;
+  //     console.log(this.dataurl2);
+  //     });
+  // }
+  // geturlBillDet(){
+  //   this._geturl.getBillDetData().subscribe(data => {
+  //     this.dataurl2 = data;
+  //     console.log(this.dataurl2);
+  //     });
+  // }
 
   // get phone appointment list on Button click
   getPhoneAppointList() {

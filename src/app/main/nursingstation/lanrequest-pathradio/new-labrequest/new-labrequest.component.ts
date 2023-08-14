@@ -132,36 +132,32 @@ displayedColumns1 = [
   }
 
   getSearchList() {
-    var m_data = {
-      "F_Name": `${this._NursingStationService.myFilterform.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      "From_Dt" : '01/01/1900', 
-      "To_Dt" :  '01/01/1900',  
-      "AdmDisFlag":0,
-      "OP_IP_Type":1,
-      "IPNumber":1
-    }
-    // if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._NursingStationService.getOPIPPatient(m_data).subscribe(resData => {
-        // debugger;
-     
-        this.filteredOptions1 = resData;
-        console.log(resData);
-        if (this.filteredOptions1.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
+    // var m_data = {
+    //   "F_Name": `${this._NursingStationService.myFilterform.get('RegId').value}%`,
+    //   "L_Name": '%',
+    //   "Reg_No": '0',
+    //   "From_Dt" : '01/01/1900', 
+    //   "To_Dt" :  '01/01/1900',  
+    //   "AdmDisFlag":0,
+    //   "OP_IP_Type":1,
+    //   "IPNumber":1
     // }
+    // // if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    //   this._NursingStationService.getOPIPPatient(m_data).subscribe(resData => {
+    //     this.filteredOptions1 = resData;
+    //     if (this.filteredOptions1.length == 0) {
+    //       this.noOptionFound = true;
+    //     } else {
+    //       this.noOptionFound = false;
+    //     }
+
+    //   });
+    // // }
 
   }
 
   onShow(){
     this.showClicked.emit(this._NursingStationService.myFilterform);
- 
   }
 
   
@@ -400,38 +396,27 @@ debugger;
 
   getOPIPPatientList()
   {
-  debugger;
-   this.sIsLoading = 'loading-data';
-  
-   var m_data={
-     "F_Name": (this._NursingStationService.myFilterform.get("FirstName").value) + '%' || '%',
-     "L_Name": (this._NursingStationService.myFilterform.get("LastName").value) + '%'  || '%',
-     "Reg_No":this._NursingStationService.myFilterform.get("RegNo").value || 0,
-    //  "From_Dt" : this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-    //  "To_Dt" : this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-     "AdmDisFlag":0,
-     "OP_IP_Type": this._NursingStationService.myFilterform.get("PatientType").value || 1,
-     "IPNumber": this._NursingStationService.myFilterform.get("IPDNo").value || 0,
-      }
-     console.log(m_data);
-     setTimeout(() => {
-       this.sIsLoading = 'loading-data';
-       this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit=> {
-
-
-        //  console.log(this.dataSource.data);
-        //  this.dataSource.data = Visit as OPIPPatientModel[];
-        //  this.dataSource.sort =this.sort;
-        //  this.dataSource.paginator=this.paginator;
-       
-         this.sIsLoading = ' ';
-       
-         
-       },
-         error => {
-           this.sIsLoading = '';
-         });
-     }, 50);
+  //  this.sIsLoading = 'loading-data';
+  //  var m_data={
+  //    "F_Name": (this._NursingStationService.myFilterform.get("FirstName").value) + '%' || '%',
+  //    "L_Name": (this._NursingStationService.myFilterform.get("LastName").value) + '%'  || '%',
+  //    "Reg_No":this._NursingStationService.myFilterform.get("RegNo").value || 0,
+  //   //  "From_Dt" : this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+  //   //  "To_Dt" : this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+  //    "AdmDisFlag":0,
+  //    "OP_IP_Type": this._NursingStationService.myFilterform.get("PatientType").value || 1,
+  //    "IPNumber": this._NursingStationService.myFilterform.get("IPDNo").value || 0,
+  //     }
+  //    console.log(m_data);
+  //    setTimeout(() => {
+  //      this.sIsLoading = 'loading-data';
+  //      this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit=> {
+  //        this.sIsLoading = ' ';
+  //      },
+  //        error => {
+  //          this.sIsLoading = '';
+  //        });
+  //    }, 50);
    }
  
 

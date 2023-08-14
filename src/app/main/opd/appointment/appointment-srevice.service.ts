@@ -11,7 +11,7 @@ export class AppointmentSreviceService {
 
   public afterMethodFileSelect: Subject<any> = new Subject();
   
-  myFilterform: FormGroup;
+   myFilterform: FormGroup;
   mySaveForm: FormGroup;
   now = Date.now();
   sIsLoading: string = '';

@@ -317,7 +317,7 @@ export class OPBillingComponent implements OnInit {
       TariffId: this.selectedAdvanceObj.TariffId,
       ClassId: this.selectedAdvanceObj.ClassId
     };
-    // console.log(m_data);
+    console.log(m_data);
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._opappointmentService.getBillingServiceList(m_data).subscribe(data => {
         console.log(data);
@@ -441,16 +441,11 @@ export class OPBillingComponent implements OnInit {
   }
 
   getNetAmtSum(element) {
-
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
-    // this.TotalnetPaybleAmt = netAmt;
-    this.b_TotalChargesAmount=netAmt;
-    console.log(this.b_TotalChargesAmount);
-    // this.TotalnetPaybleAmt= this.netPaybleAmt.toString();
-
+    this.b_TotalChargesAmount = netAmt;
     return netAmt
   }
   transform(value: string) {
