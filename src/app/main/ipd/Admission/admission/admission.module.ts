@@ -43,6 +43,7 @@ import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tp
 import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { IPDSearcPatienthComponent } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
+import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 
 const routes: Routes = [
   { 
@@ -57,7 +58,8 @@ const routes: Routes = [
     AdmissionComponent,
     EditAdmissionComponent,
     MLCInformationComponent,
-    SubCompanyTPAInfoComponent,IPDSearcPatienthComponent, NewAdmissionComponent
+    SubCompanyTPAInfoComponent,IPDSearcPatienthComponent, NewAdmissionComponent,
+    RegAdmissionComponent
   ],
   imports: [
     CommonModule,

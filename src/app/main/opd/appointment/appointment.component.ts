@@ -205,8 +205,9 @@ export class AppointmentComponent implements OnInit {
         if (m == "Update Registration") {
             console.log(contact);
             var D_data = {
-                RegId: contact.RegId,
+                RegId: 8//TESTING APPointment edit contact.RegId,
             };
+            console.log(D_data)
             this._AppointmentSreviceService
                 .getregisterListByRegId(D_data)
                 .subscribe(
@@ -247,8 +248,7 @@ export class AppointmentComponent implements OnInit {
                             RegTime: this.dataArray[0].RegTime,
                         };
                         this._registrationService.populateFormpersonal(m_data);
-                        const dialogRef = this._matDialog.open(
-                            EditRegistrationComponent,
+                        const dialogRef = this._matDialog.open(NewAppointmentComponent,
                             {
                                 maxWidth: "85vw",
                                 height: "550px",

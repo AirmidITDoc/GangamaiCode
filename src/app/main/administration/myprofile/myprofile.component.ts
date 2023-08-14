@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { AdministrationService } from '../administration.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { CreateUserService } from '../create-user/create-user.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -56,7 +57,7 @@ export class MyprofileComponent implements OnInit {
 
   dataSource1 = new MatTableDataSource<UserList>();
   constructor(
-    // public _CreateUserService: CreateUserService,
+    public _CreateUserService: CreateUserService,
     //  public datePipe: DatePipe,
     // @Inject(MAT_DIALOG_DATA) public data: any,
      private dialogRef: MatDialogRef<MyprofileComponent>,

@@ -43,6 +43,9 @@ constructor(public _httpClient:HttpClient,
       patientstatus:'',
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
+
+
+      
     });
   }
   
@@ -445,5 +448,10 @@ getregisterListByRegId(employee){
 
 getRegdata(employee){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RegistrationByRegId", employee)
+}
+
+public getOPPatient(employee) {
+
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
 }
 }

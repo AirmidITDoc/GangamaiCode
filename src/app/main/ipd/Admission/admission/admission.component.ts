@@ -20,6 +20,7 @@ import { MLCInformationComponent } from './mlcinformation/mlcinformation.compone
 import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
+import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 
 @Component({
   selector: 'app-admission',
@@ -295,13 +296,13 @@ export class AdmissionComponent implements OnInit {
     //   this.sIsLoading = '';
     // });
   }
-
+  // AdmissionNewComponent
   addNewAdmission() {
-    const dialogRef = this._matDialog.open(NewAdmissionComponent,
+    const dialogRef = this._matDialog.open(RegAdmissionComponent,
       {
-        maxWidth: "90vw",
+        maxWidth: "110vw",
         // maxHeight: "95vh", 
-        height: '780px',
+        height: '800px',
         width: '100%',
         // height: "100%"
       });

@@ -33,6 +33,9 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { UserDetailComponent } from '../user-detail/user-detail.component';
+import { MyprofileComponent } from '../myprofile/myprofile.component';
 
 const routes: Routes = [
   {
@@ -42,7 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CreateUserComponent],
+  declarations: [CreateUserComponent, ChangePasswordComponent,UserDetailComponent,MyprofileComponent],
   imports: [
     RouterModule.forChild(routes),
     MatButtonModule,

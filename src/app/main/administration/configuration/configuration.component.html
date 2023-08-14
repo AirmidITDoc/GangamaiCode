@@ -1,0 +1,465 @@
+
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="overflow: auto;"> 
+
+    <!-- HEADER -->
+
+  
+    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;background-color: rgb(13, 67, 102)">
+        
+
+        <div fxLayout="row"  fxLayoutAlign="start center"  >
+          
+    
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+          <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
+          </mat-icon > -->
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="width: 40px;color: white;"  >
+          Configration
+          </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon" > 
+           
+          
+        </div> 
+    
+      </mat-toolbar>
+     
+    <!-- / HEADER -->
+
+    <!-- SELECTED BAR -->
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
+    <!-- / SELECTED BAR -->
+
+    <!-- CONTENT -->
+    <div  > 
+
+     
+        <!-- CENTER -->
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+                
+    
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                       
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur" >
+                                    <div class="spinner-border text-danger" ></div> 
+                               
+                               </div>
+                               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                               style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
+                               sticky>
+                               <h2 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Configration
+                                 
+                               </h2>
+                             </div>
+                               <mat-table #table matSort [dataSource]="dataSource"  [@animateStagger]="{value:'50'}"
+                                style="overflow:auto;width: 100%;" class="table1">
+  
+
+
+                                <ng-container matColumnDef="MandatoryFirstName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxShow.gt-sm> FirstName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-sm>
+                                        {{contact.MandatoryFirstName}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="MandatoryMiddleName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header   fxShow.gt-sm>MiddleName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-sm>
+                                        {{contact.MandatoryMiddleName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                 <ng-container matColumnDef="MandatoryLastName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header   fxShow.gt-sm>LastName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-sm>
+                                        {{contact.MandatoryLastName}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="MandatoryAddress">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxShow.gt-sm>Address</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"   fxShow.gt-sm>
+                                        {{contact.MandatoryAddress}}
+                                    </mat-cell>
+                                </ng-container> 
+                                <ng-container matColumnDef="MandatoryCity">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header   fxShow.gt-sm>City</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact"  fxShow.gt-sm>
+                                        {{contact.MandatoryCity}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+    
+   
+                                
+                                <ng-container matColumnDef="MandatoryAge">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Age</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.MandatoryAge}}
+                                    </mat-cell>
+                                </ng-container>
+                               
+                                <ng-container matColumnDef="MandatoryPhoneNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>PhoneNo</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.MandatoryPhoneNo}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                               
+                                <ng-container matColumnDef="OPBillCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>OP Bill </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.OPBillCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                <ng-container matColumnDef="OPReceiptCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>OP Receipt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.OPReceiptCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                <ng-container matColumnDef="OPRefundOfBillCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Refund Counter</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.OPRefundOfBillCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                
+                                <ng-container matColumnDef="IPReceiptCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>IPReceipt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IPReceiptCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                <ng-container matColumnDef="IPAdvanceCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>IPAdvance</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IPAdvanceCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                <ng-container matColumnDef="IPBillCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>IP Bill </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IPBillCounter}}
+                                    </mat-cell>
+                                </ng-container> 
+                                 <ng-container matColumnDef="IPRefundBillCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>IP Refund Bill </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IPRefundBillCounter}}
+                                    </mat-cell>
+                                </ng-container>  
+                                <ng-container matColumnDef="IPRefofAdvCounter">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>IPRefofAdv</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IPRefofAdvCounter}}
+                                    </mat-cell>
+                                </ng-container>  
+                                <ng-container matColumnDef="PrintRegAfterReg">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Print Reg After Reg</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.PrintRegAfterReg}}
+                                    </mat-cell>
+                                </ng-container>  
+                                <ng-container matColumnDef="OTCharges">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>OTCharges</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.OTCharges}}
+                                    </mat-cell>
+                                </ng-container>  
+                                <ng-container matColumnDef="PrintOPDCaseAfterVisit">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Print OPD Case After Visit</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.PrintOPDCaseAfterVisit}}
+                                    </mat-cell>
+                                </ng-container>  
+                                <ng-container matColumnDef="PrintIPDAfterAdm">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Print IPD After Adm</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.PrintIPDAfterAdm}}
+                                    </mat-cell>
+                                </ng-container>  
+            
+                               
+                               
+                                <ng-container matColumnDef="action" stickyEnd >
+                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" fxShow.gt-md>  Action </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button ><mat-icon title="Edit Menu" (click)="onEdit(row)">launch</mat-icon></button>
+                                        
+                                    </mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container> 
+                 
+            
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+            
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"  >
+                                    <!-- [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" -->
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            </mat-table>
+                              
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                        </div>
+
+                      
+
+                    </div>
+                </div>
+                
+              
+               
+           </div> 
+    
+           &nbsp;&nbsp;
+           <div class="content-card" style="border-radius:4px; ">
+                
+    
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <div fxFlex.gt-sm="100%" fxFlex>
+                   
+            
+
+                   <div fxlayout="row">
+                    <div style="width: 100%;">
+                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur" >
+                            <div class="spinner-border text-danger" ></div> 
+                       
+                       </div>
+                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                       style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
+                       sticky>
+                       <h2 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Scheduler
+                         
+                       </h2>
+                     </div>
+                       <mat-table #table matSort [dataSource]="dataSource1"  class="table2" [@animateStagger]="{value:'50'}"
+                        style="overflow:auto;width: 100%;">
+
+                       
+                        <ng-container matColumnDef="ScheduleExecuteType">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Schedule Execute Type </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.ScheduleExecuteType}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="MonthDay">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Month Day </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.MonthDay}}
+                            </mat-cell>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="WeekDayName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Week Day Name</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.WeekDayName}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="ExecuteTime">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Execute Time</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.ExecuteTime}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="Query">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Query </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.Query}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="IsDelete" >
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                IsDelete
+                            </mat-header-cell >
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                <mat-icon *ngIf="contact.IsDelete" class="active-icon green-600 s-16">check_circle</mat-icon>
+                                <mat-icon *ngIf="!contact.IsDelete" class="active-icon red-500 s-16">close</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+                       
+                        <ng-container matColumnDef="action" stickyEnd >
+                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" fxShow.gt-md>  Action </mat-header-cell>
+                         <!-- <mat-cell *matCellDef="let row" fxShow.gt-sm>
+                                <button mat-icon-button (click)="onEdit(row)">
+                                    <mat-icon title="Edit Menu">launch</mat-icon>
+                                </button>
+                               
+                            </mat-cell>  -->
+                              <mat-cell *matCellDef="let row">
+                                <button mat-icon-button  (click)="onEdit(row)" ><mat-icon title="Edit Menu" >launch</mat-icon></button>
+                                
+                            </mat-cell>  
+                        </ng-container>
+    
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                        </ng-container> 
+         
+    
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+    
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onresultentry($event,contact)"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}"  >
+                            <!-- [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" -->
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}"></mat-footer-row>
+                    </mat-table>
+                      
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                   </div>
+                    
+
+                </div>
+            </div>
+            &nbsp;&nbsp;
+
+            <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <div fxFlex.gt-sm="100%" fxFlex>
+                   
+            
+
+                   <div fxlayout="row">
+                    <div style="width: 100%;">
+                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur" >
+                            <div class="spinner-border text-danger" ></div> 
+                       
+                       </div>
+                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                       style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
+                       sticky>
+                       <h2 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Email Configuration
+                         
+                       </h2>
+                     </div>
+                       <mat-table #table matSort [dataSource]="dataSource1"  class="table3" [@animateStagger]="{value:'50'}"
+                        style="overflow:auto;width: 100%;height: 120px!important;">
+
+                       
+                        <ng-container matColumnDef="ScheduleExecuteType">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Schedule Execute Type </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.ScheduleExecuteType}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="MonthDay">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Month Day </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.MonthDay}}
+                            </mat-cell>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="WeekDayName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Week Day Name</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.WeekDayName}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="ExecuteTime">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Execute Time</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.ExecuteTime}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="Query">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header  fxHide fxShow.gt-md>Query </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                {{contact.Query}}
+                            </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="IsDelete" >
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                IsDelete
+                            </mat-header-cell >
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                <mat-icon *ngIf="contact.IsDelete" class="active-icon green-600 s-16">check_circle</mat-icon>
+                                <mat-icon *ngIf="!contact.IsDelete" class="active-icon red-500 s-16">close</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+                       
+                        <ng-container matColumnDef="action" stickyEnd >
+                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" fxShow.gt-md>  Action </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-icon-button ><mat-icon title="Edit Menu" (click)=" addUserDetails()">launch</mat-icon></button>
+                                
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                        </ng-container> 
+         
+    
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+    
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onresultentry($event,contact)"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}"  >
+                            
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}"></mat-footer-row>
+                    </mat-table>
+                      
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                   </div>
+                    
+
+                </div>
+            </div>
+             -->
+          
+           
+       </div> 
+
+        
+         </div>
+          
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT-->
+
+</div>
+
+

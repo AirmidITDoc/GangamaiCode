@@ -557,6 +557,9 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.getCityList().subscribe(data => {
       this.cityList = data;
       this.filteredCity.next(this.cityList.slice());
+      this.onChangeCityList(this.registerObj.CityId);
+
+      
       if (this.registerObj) {
         const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
         this.personalFormGroup.get('CityId').setValue(toSelectCity);
@@ -567,7 +570,7 @@ export class NewAppointmentComponent implements OnInit {
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
-      if(this.registerObj){
+      if(this.registerObj.StateId != 0){
         CityId=this.registerObj.CityId
       }
       this._opappointmentService.getStateList(CityId).subscribe(data => {
@@ -578,8 +581,9 @@ export class NewAppointmentComponent implements OnInit {
     }
   }
   onChangeCityList(CityId) {
+    debugger
     if (CityId > 0) {
-      if(this.registerObj){
+      if(this.registerObj.CityId ! =0){
         CityId=this.registerObj.CityId
       }
       this._opappointmentService.getStateList(CityId).subscribe(data => {
@@ -599,7 +603,7 @@ export class NewAppointmentComponent implements OnInit {
   }
   onChangeCountryList(StateId) {
     if (StateId > 0) {
-      if(this.registerObj){
+      if(this.registerObj.StateId ! =0){
         StateId=this.registerObj.StateId
       }
       this._opappointmentService.getCountryList(StateId).subscribe(data => {

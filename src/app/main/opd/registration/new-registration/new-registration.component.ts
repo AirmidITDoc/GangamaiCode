@@ -581,7 +581,7 @@ console.log
 
     this.registerObj = obj;
 
-    // this.setDropdownObjs();
+    this.setDropdownObjs1();
   }
 
 
