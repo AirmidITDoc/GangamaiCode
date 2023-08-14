@@ -10,7 +10,7 @@ app-op-billing {
     width: 100%;
     
     .mat-table {
-        height: 460px !important;
+        height: 400px !important;
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -57,62 +57,7 @@ app-op-billing {
 
 
 app-op-billing{
-
-    // .tables-contianer {
-    //     padding: 0 15px;
-    // }
-    
    
-    
-//     .mat-header-row {
-//         width: 100%;
-//         max-width: 460px;
-//         min-width: 460px;  
-//         min-height: 25px;     
-//     }
-//    .mat-row {
-//         width: 100%;
-//         max-width: 460px;
-//         min-width: 460px;         
-//     }
-//     .mat-column-checkbox {
-//         width:60px;
-//         max-width: 60px;
-//         min-width: 60px;
-//     }
- 
-//     .mat-column-ServiceName {
-//         width: 150px;
-//         max-width: 150px;
-//         min-width: 150px;
-//         justify-content:left;
-//     }
-   
-//     .mat-column-Qty {
-//         width:40px;
-//         max-width:40px;
-//         min-width:40px;
-//         justify-content:center;
-//     }
-    
-    // .mat-column-ChargeDoctorName {
-    //     width: 180px;
-    //     max-width: 180px;
-    //     min-width: 180px;
-    // }
-    
-
-//     .mat-column-buttons {
-//         width: 60px;
-//         max-width: 60px;
-//         min-width: 60px;
-//     }
-    
-    
-    // .data-table .mat-form-field {
-    //     width: 54px !important;
-    // }
-    
     .mat-data-table.mat-form-field-appearance-legacy .mat-form-field-infix{
         padding: 0.4375em 0px 0.4375em 5px !important;
     }
@@ -567,7 +512,7 @@ app-op-billing{
     
     .Consession-field {
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 350;
         color: royalblue;
     }
 
@@ -688,7 +633,7 @@ padding-bottom: 2px;
     width: 100%;
     max-width:1295px;
     min-width:1295px; 
-    min-height: 30px;            
+    min-height: 25px;            
 }
 // PatientData
 .mat-column-checkbox {

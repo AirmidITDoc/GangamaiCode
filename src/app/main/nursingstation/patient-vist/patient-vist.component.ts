@@ -21,7 +21,6 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class PatientVistComponent implements OnInit {
-
   step = 0;
   @ViewChild(MatAccordion) accordion: MatAccordion;
   sIsLoading: string = '';
@@ -71,41 +70,35 @@ export class PatientVistComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     // public dialogRef: MatDialogRef<PatientrefvisitComponent>, 
     ) { }
-
   ngOnInit(): void {
-    // this.myFilterform=this.filterForm();
-
-    debugger;
-    this.sIsLoading = 'loading-data';
-   
-    var m_data = {
-      "OP_IP_Type":1,
-      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value+ '%' || '%',
-      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%'  || '%',
-      "Reg_No": this._NursingStationService.myFilterform.get("RegNo").value || 0,
-      "From_Dt" : '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt" :  '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag":1
-      // "IPNumber":0
-       }
-    
-       console.log(m_data);
-        this.sIsLoading = 'loading-data';
-        this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit => {
-          
-          this.dataSource.data = Visit as OPIPPatientModel[];
-          this.dataSource.sort =this.sort;
-          this.dataSource.paginator=this.paginator;
-        
-          this.sIsLoading = ' ';
-        
-          
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-    
+    throw new Error('Method not implemented.');
   }
+
+  // ngOnInit(): void {
+  //   this.sIsLoading = 'loading-data';
+  //   var m_data = {
+  //     "OP_IP_Type":1,
+  //     "F_Name": this._AdmissionService.myFilterform.get("FirstName").value+ '%' || '%',
+  //     "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%'  || '%',
+  //     "Reg_No": this._NursingStationService.myFilterform.get("RegNo").value || 0,
+  //     "From_Dt" : '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+  //     "To_Dt" :  '01/01/1900', //this.datePipe.transform(this._NursingStationService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+  //     "AdmDisFlag":1
+  //     // "IPNumber":0
+  //      }
+    
+  //      console.log(m_data);
+  //       this.sIsLoading = 'loading-data';
+  //       this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit => {
+  //       this.dataSource.data = Visit as OPIPPatientModel[];
+  //       this.dataSource.sort =this.sort;
+  //       this.dataSource.paginator=this.paginator;
+  //       this.sIsLoading = ' ';
+  //       },
+  //         error => {
+  //           this.sIsLoading = '';
+  //         });
+  // }
 
 
   
@@ -122,36 +115,31 @@ export class PatientVistComponent implements OnInit {
 
   getOPIPPatientList()
    {
-   debugger;
-    this.sIsLoading = 'loading-data';
-   
-    var m_data={
-      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%'  || '%',
-      "Reg_No":this._AdmissionService.myFilterform.get("RegNo").value || 0,
-      "From_Dt" : '01/01/1900',//this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt" : '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag":0,
-      "OP_IP_Type": this._AdmissionService.myFilterform.get("PatientType").value || 1,
-      "IPNumber": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
-       }
-      console.log(m_data);
-      setTimeout(() => {
-        this.sIsLoading = 'loading-data';
-        this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit=> {
-          console.log(this.dataSource.data);
-          this.dataSource.data = Visit as OPIPPatientModel[];
-          this.dataSource.sort =this.sort;
-          this.dataSource.paginator=this.paginator;
-        
-          this.sIsLoading = ' ';
-        
-          
-        },
-          error => {
-            this.sIsLoading = '';
-          });
-      }, 50);
+    // this.sIsLoading = 'loading-data';
+    // var m_data={
+    //   "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
+    //   "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%'  || '%',
+    //   "Reg_No":this._AdmissionService.myFilterform.get("RegNo").value || 0,
+    //   "From_Dt" : '01/01/1900',//this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+    //   "To_Dt" : '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+    //   "AdmDisFlag":0,
+    //   "OP_IP_Type": this._AdmissionService.myFilterform.get("PatientType").value || 1,
+    //   "IPNumber": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+    //    }
+    //   console.log(m_data);
+    //   setTimeout(() => {
+    //     this.sIsLoading = 'loading-data';
+    //     this._NursingStationService.getOPIPPatient(m_data).subscribe(Visit=> {
+    //     console.log(this.dataSource.data);
+    //     this.dataSource.data = Visit as OPIPPatientModel[];
+    //     this.dataSource.sort =this.sort;
+    //     this.dataSource.paginator=this.paginator;
+    //     this.sIsLoading = ' ';
+    //     },
+    //       error => {
+    //         this.sIsLoading = '';
+    //       });
+    //   }, 50);
     }
   
 
@@ -160,14 +148,6 @@ export class PatientVistComponent implements OnInit {
     this._AdmissionService.myFilterform.get('LastName').reset();
     this._AdmissionService.myFilterform.get('RegNo').reset();
     this._AdmissionService.myFilterform.get('IPDNo').reset();
-   
-   
-    // this._AdmissionService.myFilterform.reset(
-    //   {
-    //     start: [],
-    //     end: []
-    //   }
-    // );
   }
 
   dateTimeObj: any;
@@ -182,7 +162,6 @@ export class PatientVistComponent implements OnInit {
 
   
    onEdit(row){
-    debugger;
   //  console.log(row);
    var m_data = {
     "Adm_Vit_ID":row.Adm_Vit_ID,
@@ -195,7 +174,6 @@ export class PatientVistComponent implements OnInit {
     "TariffName":row.TariffName,
     "CompanyName":row.CompanyName,
     "IPNumber":row.IPNumber,
-   
 }
     //  if(row) this.dialogRef.close(m_data);
   }

@@ -146,33 +146,25 @@ Adm_Vit_ID:any=0;
   }
 
   Prescriptionfromward(){
-    // debugger;
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "FromDate": '2022-03-24 00:00:00.000',//this.datePipe.transform(this.Returnprescription.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "ToDate": '2022-03-24 00:00:00.000',// this.datePipe.transform(this.Returnprescription.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "Reg_No":this.searchFormGroup.get("Reg_No").value || 0
+    // this.sIsLoading = 'loading-data';
+    // var m_data = {
+    //   "FromDate": '2022-03-24 00:00:00.000',//this.datePipe.transform(this.Returnprescription.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+    //   "ToDate": '2022-03-24 00:00:00.000',// this.datePipe.transform(this.Returnprescription.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+    //   "Reg_No":this.searchFormGroup.get("Reg_No").value || 0
       
-    }
-    // this.isLoadingStr = 'loading';
-    console.log(m_data);
-
-
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._NursingStationService.getPrescriptionReturnList(m_data).subscribe(Visit => {
-        this.dataSource.data = Visit as Prescriptionreturn[];
-
-        console.log(this.dataSource.data);
-        this.dataSource.sort= this.sort;
-        this.dataSource.paginator=this.paginator;
-        this.sIsLoading = ' ';
-     
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 500);
+    // }
+    // setTimeout(() => {
+    //   this.sIsLoading = 'loading-data';
+    //   this._NursingStationService.getPrescriptionReturnList(m_data).subscribe(Visit => {
+    //   this.dataSource.data = Visit as Prescriptionreturn[];
+    //   this.dataSource.sort= this.sort;
+    //   this.dataSource.paginator=this.paginator;
+    //   this.sIsLoading = ' ';
+    //   },
+    //     error => {
+    //       this.sIsLoading = '';
+    //     });
+    // }, 500);
   
  }
 
