@@ -17,7 +17,7 @@ import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
-import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
+import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import * as converter from 'number-to-words';
 
 type NewType = Observable<any[]>;
@@ -37,7 +37,7 @@ export class ILookup {
   animations: fuseAnimations
 })
 export class OPBillingComponent implements OnInit {
-  click: boolean = false;
+  saveclick: boolean = false;
   hasSelectedContacts: boolean;
   paidamt: number;
   flagSubmit: boolean;
@@ -50,6 +50,9 @@ export class OPBillingComponent implements OnInit {
   reportPrintObjList: BrowseOPDBill[] = [];
   chargeslist: any = [];
   screenFromString = 'OP-billing';
+  isDoctor: boolean = false;
+  Consession: boolean = false;
+
   displayedColumns = [
     // 'checkbox',
 
@@ -82,10 +85,6 @@ export class OPBillingComponent implements OnInit {
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
-
-  isDoctor: boolean = true;
-  Consession: boolean = true;
-
   ConcessionReasonList: any = [];
   FinalAmt: any;
   DoctorFinalId = 'N';
@@ -111,10 +110,11 @@ export class OPBillingComponent implements OnInit {
   formDiscPersc: any;
   serviceId: number;
   serviceName: String;
-  b_TotalChargesAmount:any;
+  b_TotalChargesAmount: any;
   DoctornewId: any;
   ChargesDoctorname: any;
   finalAmt: any;
+  CashorPay = 1;
 
   // @ViewChild('Price', {static: false}) inputEl: ElementRef;
 
@@ -150,6 +150,8 @@ export class OPBillingComponent implements OnInit {
   noOptionFound: boolean = false;
   SrvcName: any;
 
+  Paymentdata: any;
+
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -184,7 +186,7 @@ export class OPBillingComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
 
-    // this.getServiceListCombobox();
+    this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
     this.getChargesList1();
@@ -259,7 +261,7 @@ export class OPBillingComponent implements OnInit {
       concessionAmt: [''],
       TotallistAmount: [''],
       FinalAmt: ['', Validators.required],
-      drugController: [''],
+      cashpay: ['1']
       // TotalBillAmount: [Validators.pattern("^[0-9]*$")],
       // NetBillAmount: [Validators.pattern("^[0-9]*$")],
       // Concession:[Validators.pattern("^[0-9]*$")],
@@ -314,7 +316,7 @@ export class OPBillingComponent implements OnInit {
     let tempObj;
     var m_data = {
       SrvcName: `${this.registeredForm.get('SrvcName').value}%`,
-      TariffId: this.selectedAdvanceObj.TariffId,
+      TariffId:1,// this.selectedAdvanceObj.TariffId,
       ClassId: this.selectedAdvanceObj.ClassId
     };
     console.log(m_data);
@@ -352,34 +354,19 @@ export class OPBillingComponent implements OnInit {
     this.serviceId = obj.ServiceId;
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology;
-    // this.registerObj = new AdmissionPersonlModel({});
-    // this.registerObj = obj;
-    // this.setDropdownObjs();
-
 
     if (obj.IsDocEditable) {
 
-      // this.renderer.selectRootElement('#DoctorID').focus();
-      this.registeredForm.get('DoctorID').reset();
-      this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-      this.registeredForm.get('DoctorID').enable();
-      // this.isDoctor = true;
+      this.isDoctor = true;
     } else {
-      this.registeredForm.get('DoctorID').reset();
-      this.registeredForm.get('DoctorID').clearValidators();
-      this.registeredForm.get('DoctorID').updateValueAndValidity();
-      this.registeredForm.get('DoctorID').disable();
-      // this.isDoctor = false;
+
+      this.isDoctor = false;
+
     }
   }
 
   drugChange(event) {
-    // console.log(event);
-    // this.dataSource.data.forEach((element, index1) => {
-    //   if(element.drugName && index == index1) {
-    //     element.drugName = event ? event : {};
-    //   }
-    // });
+
     const filter$ = this.registeredForm.get(`drugController$`).valueChanges.pipe(
       startWith(''),
       debounceTime(200),
@@ -480,7 +467,7 @@ export class OPBillingComponent implements OnInit {
     let InsertAdddetArr = [];
 
     if (this.SrvcName && (Math.round(parseInt(this.b_price)) != 0) && this.b_qty) {
-      // console.log(this.dataSource.data.length);
+      
       this.dataSource.data.forEach((element) => {
         let InsertAddChargesObj = {};
         InsertAddChargesObj['ChargeID'] = 0,
@@ -573,7 +560,309 @@ export class OPBillingComponent implements OnInit {
   //Save Billing 
 
   onSaveOPBill() {
-    this.click = true;
+
+
+    // this.getChargesList();
+    
+    this.saveclick = true;
+    let disamt = this.registeredForm.get('concessionAmt').value;
+
+    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
+      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
+    else {
+      this.FinalAmt = this.TotalnetPaybleAmt;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
+
+
+    this.isLoading = 'submit';
+
+    let Pathreporthsarr = [];
+    this.dataSource.data.forEach((element) => {
+      if (element['IsPathology']) {
+        let PathologyReportHeaderObj = {};
+        PathologyReportHeaderObj['PathDate'] = this.dateTimeObj.date;
+        PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
+        PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
+        PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+          PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
+        PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+          PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
+        PathologyReportHeaderObj['IsCompleted'] = 0;
+        PathologyReportHeaderObj['IsPrinted'] = 0;
+        PathologyReportHeaderObj['IsSampleCollection'] = 0;
+        PathologyReportHeaderObj['TestType'] = 0;
+        Pathreporthsarr.push(PathologyReportHeaderObj);
+      }
+    });
+
+    let Redioreporthsarr = [];
+    this.dataSource.data.forEach((element) => {
+      if (element['IsRadiology']) {
+        let RadiologyReportHeaderObj = {};
+        RadiologyReportHeaderObj['RadDate'] = this.dateTimeObj.date;
+        RadiologyReportHeaderObj['RadTime'] = this.dateTimeObj.time;
+        RadiologyReportHeaderObj['OPD_IPD_Type'] = 0;
+        RadiologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+          RadiologyReportHeaderObj['RadTestID'] = element.ServiceId;
+        RadiologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+          RadiologyReportHeaderObj['ChargeID'] = element.ChargesId;
+        RadiologyReportHeaderObj['IsCompleted'] = 0;
+        RadiologyReportHeaderObj['IsPrinted'] = 0;
+        RadiologyReportHeaderObj['TestType'] = 0;
+        Redioreporthsarr.push(RadiologyReportHeaderObj);
+      }
+    });
+
+    let OPDoctorShareGroupAdmChargeObj = {};
+    OPDoctorShareGroupAdmChargeObj['BillNo'] = 0;
+
+    let Billdetsarr = [];
+    this.dataSource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['BillNo'] = 0;
+      BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+      Billdetsarr.push(BillDetailsInsertObj);
+    });
+
+
+    let PatientHeaderObj = {};
+
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+    PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
+   
+    
+    if (!this.registeredForm.get('cashpay').value) {
+      debugger;
+      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        {
+          maxWidth: "85vw",
+          height: '540px',
+          width: '100%',
+          data: {
+            advanceObj: PatientHeaderObj,
+            FromName: "OP-Bill"
+          }
+        });
+       
+      dialogRef.afterClosed().subscribe(result => {
+        // let Data = {
+        //   "opInsertPayment": result.submitDataPay.ipPaymentInsert
+
+        // };
+        this.Paymentdata = result.submitDataPay.ipPaymentInsert
+        console.log(this.Paymentdata)
+        this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+        this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+        this.flagSubmit = result.IsSubmitFlag
+
+      });
+    } else {
+
+      let Paymentobj = {};
+      Paymentobj['BillNo'] = 0;
+      Paymentobj['ReceiptNo'] = "";
+      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+      Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+      Paymentobj['CashPayAmount'] = this.FinalAmt;
+      Paymentobj['ChequePayAmount'] = 0;
+      Paymentobj['ChequeNo'] = 0;
+      Paymentobj['BankName'] = "";
+      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+      Paymentobj['CardPayAmount'] = 0;
+      Paymentobj['CardNo'] = 0;
+      Paymentobj['CardBankName'] = "";
+      Paymentobj['CardDate'] = this.dateTimeObj.date;
+      Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['AdvanceId'] = 0;
+      Paymentobj['RefundId'] = 0;
+      Paymentobj['TransactionType'] = 0;
+      Paymentobj['Remark'] = "Cashpayment";
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
+      Paymentobj['IsCancelledBy'] = 0;
+      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+      Paymentobj['CashCounterId'] = 0;
+      // Paymentobj['IsSelfORCompany'] = 0;
+      // Paymentobj['CompanyId'] = 0;
+      Paymentobj['NEFTPayAmount'] = 0;
+      Paymentobj['NEFTNo'] = 0;
+      Paymentobj['NEFTBankMaster'] = "";
+      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+      Paymentobj['PayTMAmount'] = 0;
+      Paymentobj['PayTMTranNo'] = 0;
+      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+      Paymentobj['PaidAmt'] = this.FinalAmt;
+      Paymentobj['BalanceAmt'] = 0;
+
+      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+      let submitDataPay = {
+        ipPaymentInsert,
+      };
+
+      // let Data = {
+      //   "opInsertPayment": Paymentobj
+      // };
+      this.Paymentdata = Paymentobj;
+      this.flagSubmit = true
+    }//end cashpay chk
+
+
+
+    let InsertBillUpdateBillNoObj = {};
+    if (this.concessionDiscPer > 0) {
+      this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+    } else {
+      this.FinalAmt = this.TotalnetPaybleAmt;
+    }
+
+    let InterimOrFinal = 1;
+  
+    InsertBillUpdateBillNoObj['BillNo'] = 0;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
+    InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.FinalAmt; //this.netPaybleAmt1;
+    InsertBillUpdateBillNoObj['PaidAmt'] = this.FinalAmt;
+    InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
+    InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+    InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
+    InsertBillUpdateBillNoObj['IsSettled'] = 0;
+    InsertBillUpdateBillNoObj['IsPrinted'] = 0;
+    InsertBillUpdateBillNoObj['IsFree'] = 0;
+    InsertBillUpdateBillNoObj['CompanyId'] = 0;
+    InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
+    InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+    InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+    InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
+    InsertBillUpdateBillNoObj['TaxPer'] = 0;
+    InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
+    InsertBillUpdateBillNoObj['CashCounterId'] = 0;
+    InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
+    //
+
+
+    let InsertAdddetArr = [];
+
+    if (this.SrvcName && (Math.round(parseInt(this.b_price)) != 0) && this.b_qty) {
+      // console.log(this.dataSource.data.length);
+      this.dataSource.data.forEach((element) => {
+        let InsertAddChargesObj = {};
+        InsertAddChargesObj['ChargeID'] = 0,
+          InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+          InsertAddChargesObj['opD_IPD_Type'] = 0,
+          InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+          InsertAddChargesObj['serviceId'] = element.ServiceId,
+          InsertAddChargesObj['price'] = element.Price,
+          InsertAddChargesObj['qty'] = element.Qty,
+          InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+          InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+          InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+          InsertAddChargesObj['netAmount'] = element.NetAmount,
+          InsertAddChargesObj['doctorId'] = element.DoctorId,
+          InsertAddChargesObj['docPercentage'] = 0,
+          InsertAddChargesObj['docAmt'] = 0,
+          InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+          InsertAddChargesObj['isGenerated'] = 0,
+          InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+          InsertAddChargesObj['isCancelled'] = 0,
+          InsertAddChargesObj['isCancelledBy'] = 0,
+          InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+          InsertAddChargesObj['isPathology'] = element.IsPathology,
+          InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+          InsertAddChargesObj['isPackage'] = 0,
+          InsertAddChargesObj['packageMainChargeID'] = 0,
+          InsertAddChargesObj['isSelfOrCompanyService'] = false,
+          InsertAddChargesObj['packageId'] = 0,
+          InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+          InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,
+
+          InsertAdddetArr.push(InsertAddChargesObj);
+        // console.log(InsertAdddetArr.length);
+      })
+    }
+
+     let opCalDiscAmountBill ={}
+      opCalDiscAmountBill['billNo']=0
+
+    debugger
+    if (this.flagSubmit == true) {
+      console.log("Procced with Payment Option");
+      const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+      let submitData = {
+        // "insertPathologyReportHeader": Pathreporthsarr,
+        // "insertRadiologyReportHeader": Redioreporthsarr,
+        "insertBillupdatewithbillno": insertBillUpdateBillNo,
+        "opBillDetailsInsert": Billdetsarr,
+        "chargesDetailInsert":InsertAdddetArr,
+        "opCalDiscAmountBill":opCalDiscAmountBill,
+        "opInsertPayment": this.Paymentdata// result.submitDataPay.ipPaymentInsert
+      };
+      console.log(submitData);
+      this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
+        // if (response) {
+        //   Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
+        //     if (result.isConfirmed) {
+        //       let m = response;
+        //       this.getPrint(m);
+        //       this._matDialog.closeAll();
+        //     }
+        //   });
+        // } else {
+        //   Swal.fire('Error !', 'OP Billing data not saved', 'error');
+        // }
+        this.isLoading = '';
+      });
+    }
+    else {
+      console.log("Procced with Credit bill");
+      InterimOrFinal = 0;
+      InsertBillUpdateBillNoObj['PaidAmt'] = 0;
+      InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
+      const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+      let submitData = {
+        // "insertPathologyReportHeadercredit": Pathreporthsarr,
+        // "insertRadiologyReportHeadercredit": Redioreporthsarr,
+        "chargesDetailInsert":InsertAdddetArr,
+        "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
+        "opBillDetailscreditInsert": Billdetsarr,
+        // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
+        // "opInsertPayment": result.submitDataPay.ipPaymentInsert
+      };
+      console.log(submitData);
+      this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
+        if (response) {
+          Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
+            if (result.isConfirmed) {
+              let m = response;
+              this.getPrint(m);
+              this._matDialog.closeAll();
+
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'OP Billing data not saved', 'error');
+        }
+        this.isLoading = '';
+      });
+    }
+
+  }
+
+
+
+  
+  onSaveOPBill1() {
+    // this.click = true;
     let disamt = this.registeredForm.get('concessionAmt').value;
     debugger;
     if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
@@ -645,11 +934,9 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+    PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
 
-    // const opCalDiscAmountBill = new Cal_DiscAmount(Cal_DiscAmount_OPBillObj);
-
-
+    
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
@@ -766,11 +1053,352 @@ export class OPBillingComponent implements OnInit {
     });
   }
 
+
+
+
+
+   
+  onSaveOPBill2() {
+    this.saveclick = true;
+    let disamt = this.registeredForm.get('concessionAmt').value;
+
+    if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
+      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
+    else {
+      this.FinalAmt = this.TotalnetPaybleAmt;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
+
+
+    this.isLoading = 'submit';
+
+
+    let Billdetsarr = [];
+    this.dataSource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['BillNo'] = 0;
+      BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+      Billdetsarr.push(BillDetailsInsertObj);
+    });
+
+
+    let PatientHeaderObj = {};
+
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+    PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
+debugger
+    if(!this.registeredForm.get('cashpay').value){
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      {
+        maxWidth: "85vw",
+        height: '540px',
+        width: '100%',
+        data: {
+          advanceObj: PatientHeaderObj,
+          FromName: "OP-Bill"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      let Data = {
+        "opInsertPayment": result.submitDataPay.ipPaymentInsert
+      };
+      this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+      this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+      this.flagSubmit = result.IsSubmitFlag
+      let InsertBillUpdateBillNoObj = {};
+      if (this.concessionDiscPer > 0) {
+        this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+      } else {
+        this.FinalAmt = this.TotalnetPaybleAmt;
+      }
+
+      let InterimOrFinal = 1;
+
+      InsertBillUpdateBillNoObj['BillNo'] = 0;
+      InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
+      InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
+      InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
+      InsertBillUpdateBillNoObj['NetPayableAmt'] = this.registeredForm.get('FinalAmt').value;
+      InsertBillUpdateBillNoObj['PaidAmt'] = this.registeredForm.get('FinalAmt').value;
+      InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
+      InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+      InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+      InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+      InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
+      InsertBillUpdateBillNoObj['IsSettled'] = 0;
+      InsertBillUpdateBillNoObj['IsPrinted'] = 0;
+      InsertBillUpdateBillNoObj['IsFree'] = 0;
+      InsertBillUpdateBillNoObj['CompanyId'] = 0;
+      InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
+      InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+      InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+      InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+      InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
+      InsertBillUpdateBillNoObj['TaxPer'] = 0;
+      InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
+      // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0; //1000;//this.taxAmt;
+      InsertBillUpdateBillNoObj['CashCounterId'] = 0;
+      InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
+      //
+
+      
+
+    let InsertAdddetArr = [];
+
+     this.dataSource.data.forEach((element) => {
+        let InsertAddChargesObj = {};
+        InsertAddChargesObj['ChargeID'] = 0,
+          InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+          InsertAddChargesObj['opD_IPD_Type'] = 0,
+          InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+          InsertAddChargesObj['serviceId'] = element.ServiceId,
+          InsertAddChargesObj['price'] = element.Price,
+          InsertAddChargesObj['qty'] = element.Qty,
+          InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+          InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+          InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+          InsertAddChargesObj['netAmount'] = element.NetAmount,
+          InsertAddChargesObj['doctorId'] = element.DoctorId,
+          InsertAddChargesObj['docPercentage'] = 0,
+          InsertAddChargesObj['docAmt'] = 0,
+          InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+          InsertAddChargesObj['isGenerated'] = 0,
+          InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+          InsertAddChargesObj['isCancelled'] = 0,
+          InsertAddChargesObj['isCancelledBy'] = 0,
+          InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+          InsertAddChargesObj['isPathology'] = element.IsPathology,
+          InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+          InsertAddChargesObj['isPackage'] = 0,
+          InsertAddChargesObj['packageMainChargeID'] = 0,
+          InsertAddChargesObj['isSelfOrCompanyService'] = false,
+          InsertAddChargesObj['packageId'] = 0,
+          InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+          InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,
+
+          InsertAdddetArr.push(InsertAddChargesObj);
+        // console.log(InsertAdddetArr.length);
+      })
+    
+
+     let opCalDiscAmountBill ={}
+      opCalDiscAmountBill['billNo']=0
+
+      if (this.flagSubmit == true) {
+        console.log("Procced with Payment Option");
+        const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+        let submitData = {
+          "chargesDetailInsert":InsertAdddetArr,
+          "insertBillupdatewithbillno": insertBillUpdateBillNo,
+          "opBillDetailsInsert": Billdetsarr,
+          "opCalDiscAmountBill": opCalDiscAmountBill,
+          "opInsertPayment": result.submitDataPay.ipPaymentInsert
+        };
+        console.log(submitData);
+        this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                let m = response;
+                this.getPrint(m);
+                this._matDialog.closeAll();
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'OP Billing data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+      }
+      else {
+        console.log("Procced with Credit bill");
+        InterimOrFinal = 0;
+        InsertBillUpdateBillNoObj['PaidAmt'] = 0;
+        InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
+        const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+        let submitData = {
+          "chargesDetailInsert":InsertAdddetArr,
+          "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
+          "opBillDetailscreditInsert": Billdetsarr,
+          // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
+          // "opInsertPayment": result.submitDataPay.ipPaymentInsert
+        };
+        console.log(submitData);
+        this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
+              if (result.isConfirmed) {
+                let m = response;
+                this.getPrint(m);
+                this._matDialog.closeAll();
+
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'OP Billing data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+      }
+    });
+  }else{
+
+    debugger
+    let Paymentobj = {};
+    Paymentobj['BillNo'] = 0;
+    Paymentobj['ReceiptNo'] = "";
+    Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+    Paymentobj['CashPayAmount'] = this.registeredForm.get('FinalAmt').value || 0;
+    Paymentobj['ChequePayAmount'] = 0;
+    Paymentobj['ChequeNo'] = 0;
+    Paymentobj['BankName'] = "";
+    Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+    Paymentobj['CardPayAmount'] = 0;
+    Paymentobj['CardNo'] = 0;
+    Paymentobj['CardBankName'] = "";
+    Paymentobj['CardDate'] = this.dateTimeObj.date;
+    Paymentobj['AdvanceUsedAmount'] = 0;
+    Paymentobj['AdvanceId'] = 0;
+    Paymentobj['RefundId'] = 0;
+    Paymentobj['TransactionType'] = 0;
+    Paymentobj['Remark'] = "Cashpayment";
+    Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+    Paymentobj['IsCancelled'] = 0;
+    Paymentobj['IsCancelledBy'] = 0;
+    Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+    Paymentobj['CashCounterId'] = 0;
+    Paymentobj['NEFTPayAmount'] = 0;
+    Paymentobj['NEFTNo'] = 0;
+    Paymentobj['NEFTBankMaster'] = "";
+    Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+    Paymentobj['PayTMAmount'] = 0;
+    Paymentobj['PayTMTranNo'] = 0;
+    Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+    Paymentobj['PaidAmt'] = this.registeredForm.get('FinalAmt').value || 0;
+    Paymentobj['BalanceAmt'] = 0;
+
+    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+    let submitDataPay = {
+      ipPaymentInsert,
+    };
+
+    this.Paymentdata = Paymentobj;
+    this.flagSubmit = true
+
+
+    let InterimOrFinal = 1;
+    let InsertBillUpdateBillNoObj = {};
+    InsertBillUpdateBillNoObj['BillNo'] = 0;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
+    InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.registeredForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['PaidAmt'] = this.registeredForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
+    InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+    InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
+    InsertBillUpdateBillNoObj['IsSettled'] = 0;
+    InsertBillUpdateBillNoObj['IsPrinted'] = 0;
+    InsertBillUpdateBillNoObj['IsFree'] = 0;
+    InsertBillUpdateBillNoObj['CompanyId'] = 0;
+    InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
+    InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+    InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+    InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
+    InsertBillUpdateBillNoObj['TaxPer'] = 0;
+    InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
+    InsertBillUpdateBillNoObj['CashCounterId'] = 0;
+    InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
+    
+
+  let InsertAdddetArr = [];
+
+    this.dataSource.data.forEach((element) => {
+      let InsertAddChargesObj = {};
+      InsertAddChargesObj['ChargeID'] = 0,
+        InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        InsertAddChargesObj['opD_IPD_Type'] = 0,
+        InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+        InsertAddChargesObj['serviceId'] = element.ServiceId,
+        InsertAddChargesObj['price'] = element.Price,
+        InsertAddChargesObj['qty'] = element.Qty,
+        InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+        InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+        InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+        InsertAddChargesObj['netAmount'] = element.NetAmount,
+        InsertAddChargesObj['doctorId'] = element.DoctorId,
+        InsertAddChargesObj['docPercentage'] = 0,
+        InsertAddChargesObj['docAmt'] = 0,
+        InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+        InsertAddChargesObj['isGenerated'] = 0,
+        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        InsertAddChargesObj['isCancelled'] = 0,
+        InsertAddChargesObj['isCancelledBy'] = 0,
+        InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+        InsertAddChargesObj['isPathology'] = element.IsPathology,
+        InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+        InsertAddChargesObj['isPackage'] = 0,
+        InsertAddChargesObj['packageMainChargeID'] = 0,
+        InsertAddChargesObj['isSelfOrCompanyService'] = false,
+        InsertAddChargesObj['packageId'] = 0,
+        InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,
+
+        InsertAdddetArr.push(InsertAddChargesObj);
+      
+    })
+  
+   let opCalDiscAmountBill ={}
+    opCalDiscAmountBill['billNo']=0;
+
+    const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+    let submitData = {
+      "chargesDetailInsert":InsertAdddetArr,
+      "insertBillupdatewithbillno": insertBillUpdateBillNo,
+      "opBillDetailsInsert": Billdetsarr,
+      "opCalDiscAmountBill": opCalDiscAmountBill,
+      "opInsertPayment": Paymentobj
+    };
+    console.log(submitData);
+    this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire('OP Bill With Cash Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            let m = response;
+            this.getPrint(m);
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'OP Billing data not saved', 'error');
+      }
+      this.isLoading = '';
+    });
+  }
+  }
+
+
+
+
+
   onSaveEntry() {
     debugger;
     if (this.registeredForm.get("DoctorID").value) {
       this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
-      this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName.toString()
+      this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName || '';
     } else {
       this.DoctornewId = 0;
       this.ChargesDoctorname = '';
@@ -809,6 +1437,8 @@ export class OPBillingComponent implements OnInit {
     }
     this.onClearServiceAddList();
     this.getTotalNetAmount();
+
+    this.isDoctor = false;
   }
 
 
@@ -857,8 +1487,9 @@ export class OPBillingComponent implements OnInit {
     this.tettotalAmount = parseInt(this.b_netAmount);
     let beforeamt = this.b_totalAmount;
     let disper = this.registeredForm.get('discPer').value;
-    if (disper == null) {
+    if (disper == null || disper ==0) {
       this.registeredForm.get('netAmount').setValue(beforeamt);
+      this.b_disAmount='';
     }
     else {
       let amt = parseInt(this.b_disAmount);
@@ -878,41 +1509,29 @@ export class OPBillingComponent implements OnInit {
 
 
   calculatePersc1() {
+  
+
     this.concessionAmtOfNetAmt = 0;
     let netAmt = this.b_TotalChargesAmount;
-    if (this.concessionDiscPer) {
+
+    if (this.concessionDiscPer > 0) {
       let discAmt1 = (this.b_TotalChargesAmount * parseInt(this.concessionDiscPer)) / 100;
       this.concessionAmtOfNetAmt = Math.round(discAmt1).toString();
       this.TotalnetPaybleAmt = Math.round(this.b_TotalChargesAmount - discAmt1).toString();
       this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
       this.TotalnetPaybleAmt = parseInt(this.TotalnetPaybleAmt);
-      this.Consession = false;
-    }
-    if (this.concessionDiscPer > 0) {
-      this.registeredForm.get('ConcessionId').reset();
-      this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
-      this.registeredForm.get('ConcessionId').enable;
-      this.registeredForm.get('ConcessionId').reset();
-      this.Consession = false;
-      this.finalAmt = this.totalAmtOfNetAmt;
-    }
-    if (this.concessionDiscPer <= 0) {
-      this.registeredForm.get('ConcessionId').reset();
-      this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
-      this.registeredForm.get('ConcessionId').reset();
-      this.registeredForm.get('ConcessionId').disable;
-      this.Consession = false;
+      this.Consession = true;
+
     }
 
-    this.netPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
-    this.netPaybleAmt1 = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
-    this.TotalnetPaybleAmt = this.netPaybleAmt;
-    this.registeredForm.get('FinalAmt').setValue(this.netPaybleAmt);
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
+    this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
   }
 
   calculatechargesDiscamt() {
     debugger;
     let d = this.registeredForm.get('discAmount').value;
+    this.Consession = false;
     this.disamt = this.registeredForm.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
 
@@ -936,25 +1555,25 @@ export class OPBillingComponent implements OnInit {
     let d = this.registeredForm.get('concessionAmt').value;
     this.Consession = false;
     this.disamt = this.registeredForm.get('concessionAmt').value;
-    if(this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt){
-    if (parseInt(this.disamt) > 0) {
-      let tot = 0;
-      if (this.b_TotalChargesAmount > 0) {
-        tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
-        this.TotalnetPaybleAmt = tot;
-        this.registeredForm.get('FinalAmt').setValue(tot);
+    if (this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt) {
+      if (parseInt(this.disamt) > 0) {
+        let tot = 0;
+        if (this.b_TotalChargesAmount > 0) {
+          tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
+          this.TotalnetPaybleAmt = tot;
+          this.registeredForm.get('FinalAmt').setValue(tot);
+        }
       }
+      else if (d == null) {
+        this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+        this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
+        this.registeredForm.get('ConcessionId').disable;
+        this.Consession = true;
+        this.registeredForm.get('ConcessionId').reset();
+      }
+    } else {
+      Swal.fire("Discount Amount Schoud be Less than Total Amount")
     }
-    else if (d == null) {
-      this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-      this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
-      this.registeredForm.get('ConcessionId').disable;
-      this.Consession = true;
-      this.registeredForm.get('ConcessionId').reset();
-    }
-  }else{
-    Swal.fire("Discount Amount Schoud be Less than Total Amount")
-  }
   }
 
   onKeydown(event) {
@@ -1055,31 +1674,6 @@ export class OPBillingComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
-
-        //   var strabc = `<hr style="border-color:white" >
-        //   <div style="display:flex;margin:8px 0">
-        //   <div style="display:flex;width:60px;margin-left:20px;">
-        //       <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-        //   </div>
-        //   <div style="display:flex;width:370px;margin-left:10px;text-align:left;">
-        //       <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-        //   </div>
-        //   // <div style="display:flex;width:370px;margin-left:30px;text-align:left;">
-        //   // <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-        //   // </div>
-        //   <div style="display:flex;width:90px;margin-left:40px;text-align:right;">
-        //       <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-        //   </div>
-        //   <div style="display:flex;width:60px;margin-left:40px;text-align:right;">
-        //       <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-        //   </div>
-        //   <div style="display:flex;width:140px;margin-left:40px;text-align:left;">
-        //       <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-        //   </div>
-        //   </div>`;
-        //   strrowslist += strabc;
-        // }
-
         var strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:60px;margin-left:20px;">
@@ -1105,25 +1699,11 @@ export class OPBillingComponent implements OnInit {
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
       let concessinamt;
-      // if (objPrintWordInfo.ConcessionAmt > 0) {
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      // }
-      // else {
-      //   this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      // }
-
+     
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      // this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformBilld(this.reportPrintObj.BillDate));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-
+     
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       setTimeout(() => {
         this.print();
@@ -1201,6 +1781,7 @@ export class Bill {
   TariffId: number;
   UnitId: number;
   InterimOrFinal: number;
+
   CompanyRefNo: any;
   ConcessionAuthorizationName: number;
   TaxPer: any;
