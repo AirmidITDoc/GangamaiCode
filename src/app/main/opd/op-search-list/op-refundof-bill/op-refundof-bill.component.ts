@@ -15,6 +15,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { fuseAnimations } from '@fuse/animations';
+import * as converter from 'number-to-words';
 
 type NewType = Observable<any[]>;
 
@@ -42,7 +43,7 @@ export class OPRefundofBillComponent implements OnInit {
   TotalRefundAmount:number=0;
   RefundBalAmount: number;
   BillDate: any; 
-  RefundAmount: number;
+  RefundAmount: number=0;
   Remark: string;
   b_price = '0';
   b_qty = '1';
@@ -162,13 +163,7 @@ export class OPRefundofBillComponent implements OnInit {
     }
 
     console.log(this.selectedAdvanceObj);
-    // this.myControl = new FormControl();
-    // this.filteredOptions = this.myControl.valueChanges.pipe(
-    //   debounceTime(20),
-    //   startWith(''),
-    //   map((value) => (value && value.length >= 1 ? this.filterStates(value) : this.billingServiceList.slice()))
-    // );
-
+   
     this.refundBillForm();
     this.getRefundofBillIPDList();
     // this.getAdmittedDoctorCombo();
@@ -176,32 +171,6 @@ export class OPRefundofBillComponent implements OnInit {
     // this.getBilldetailList();
     
     // this.serviceDetailForm();
-  }
-
-//   ngAfterViewInit() {
-//     this.renderer.invokeElementMethod(
-//     this.infocus.nativeElement, 'focus');                     
-// }
-
-// onKeypressEvent(event:any){      
-//     console.log("pressed key is:");
-//     console.log(event, event.keyCode, event.keyIdentifier,event.target);
-//     let thing1=event.target.name;
-//     console.log("thing name:");
-//     console.log(thing1);
-
-        
-// }
-
-  filterStates(name: string) {
-    let tempArr = [];
-
-    this.billingServiceList.forEach((element) => {
-      if (element.ServiceName.toString().toLowerCase().search(name) !== -1) {
-        tempArr.push(element);
-      }
-    });
-    return tempArr;
   }
 
 
@@ -224,10 +193,7 @@ export class OPRefundofBillComponent implements OnInit {
       Price: [Validators.pattern("^[0-9]*$")],
       Qty: [Validators.pattern("^[0-9]*$")],
       totalAmount: [Validators.pattern("^[0-9]*$")],
-      // BillingClassId: [''],
-      // price: [Validators.pattern("^[0-9]*$")],
-      // qty: [Validators.pattern("^[0-9]*$")],
-      // DoctorName: [''],
+      
     });
   }
 
@@ -235,18 +201,17 @@ export class OPRefundofBillComponent implements OnInit {
   //Give BillNumber For List
   getRefundofBillIPDList() {
     debugger;
-    // console.log(this.selectedAdvanceObj.RegId);
+    
     var m_data = {
-      "RegNo": 99686,//this.selectedAdvanceObj.OPD_IPD_ID
-      //137151
-      
+      "RegNo": 207//this.selectedAdvanceObj.OPD_IPD_ID
+            
     }
-    // this.isLoadingStr = 'loading';
+    
     this._OpSearchListService.getRefundofBillOPDList(m_data).subscribe(Visit => {
       this.dataSource3.data = Visit as RegRefundBillMaster[];
       this.dataSource3.sort = this.sort;
       this.dataSource3.paginator = this.paginator;
-      // this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+      
     });
   }
 
@@ -301,19 +266,7 @@ export class OPRefundofBillComponent implements OnInit {
     });
   }
 
-  // serviceDetailForm() {
-  //   this.myserviceForm = this.formBuilder.group({
-  //     BillingClassId:[''],
-  //     ServiceId:[''],
-  //     ServiceName:[''],
-  //     price:[''],
-  //     qty:[''],
 
-  //     totalAmount:[''],
-  //     DoctorId:[''],
-  //     DoctorName:[''],
-  //   });
-  // }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -359,7 +312,7 @@ export class OPRefundofBillComponent implements OnInit {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
-    console.log(netAmt1);
+    
   }
 
 
@@ -367,13 +320,13 @@ export class OPRefundofBillComponent implements OnInit {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
-    console.log(netAmt1);
+    
   }
 
 
 
   getServicetotSum(element) {
-    // debugger;
+    
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
@@ -400,13 +353,13 @@ export class OPRefundofBillComponent implements OnInit {
     if(this.TotalRefundAmount <= this.RefundBalAmount){
     let InsertRefundObj = {};
 
-    InsertRefundObj['refundNo'] = 311;
+    InsertRefundObj['refundNo'] = '';
     InsertRefundObj['RefundDate'] =  this.dateTimeObj.date;
     InsertRefundObj['RefundTime'] =  this.dateTimeObj.date;
     InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
     InsertRefundObj['AdvanceId'] = 0;
     InsertRefundObj['OPD_IPD_Type'] = 0;
-    InsertRefundObj['OPD_IPD_ID'] = this.selectedAdvanceObj.OPD_IPD_ID,
+    InsertRefundObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
     InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
     InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
     InsertRefundObj['TransactionId'] = 2;
@@ -414,7 +367,7 @@ export class OPRefundofBillComponent implements OnInit {
     InsertRefundObj['IsCancelled'] = 0;
     InsertRefundObj['IsCancelledBy'] = 0;
     InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
-    InsertRefundObj['refundId'] = this.RefundOfBillFormGroup.get('BillNo').value;
+    InsertRefundObj['refundId'] = 0;
     
 
     let RefundDetailarr = [];
@@ -448,24 +401,19 @@ export class OPRefundofBillComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this._OpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
-
-    // let DocShareGroupwiseObj = {};
-    // DocShareGroupwiseObj['RefundId'] = 0;
-
+    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+   
     const insertRefund = new InsertRefund(InsertRefundObj);
-    // const  update_AddCharges_RefundAmount = new AddchargesRefundAmount(AddchargesRefundAmountObj);
-    // const oP_DoctorShare_GroupWise_RefundOfBill = new DocShareGroupwise(DocShareGroupwiseObj);
-    // const insertOPPayment = new PaymentInsert(PaymentInsertObj);
-
+   
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',
         width: '100%',
         data: {
-          // patientName: this._OpSearchListService.myShowAdvanceForm.get("PatientName").value,
+          
           advanceObj: PatientHeaderObj, //this.advanceAmount
           FromName: "Advance-Refund",
         }
@@ -476,8 +424,6 @@ export class OPRefundofBillComponent implements OnInit {
         "insertRefund": insertRefund,
         "insertOPRefundDetails": RefundDetailarr,
         "update_AddCharges_RefundAmount": AddchargesRefundAmountarr,
-        // "ipDocShareGroupAdmRefundofBillDoc": oP_DoctorShare_GroupWise_RefundOfBill,
-        // "ipdInsertPayment": insertOPPayment,
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
@@ -581,9 +527,7 @@ this.RefundBalAmount=this.RefAmt1;
 }
 //
 onEdit(row) {
-  
-  // Swal.fire("Its Edit");
-  console.log(row);
+   console.log(row);
   var datePipe = new DatePipe("en-US");
   this.BillNo=row.BillNo;
   this.BillDate =  datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a'); 
@@ -596,7 +540,7 @@ onEdit(row) {
   debugger;
   //Testing
   var m_data1 = {
-    "BillId": 144,//row.BillNo
+    "BillId": row.BillNo
   }
   this.isLoadingStr = 'loading';
   this._OpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
@@ -617,8 +561,8 @@ populateiprefund(employee) {
 }
 
 calculateTotalRefund() {
-    
-  // this.RefundBalAmount = (parseInt(this.RefundAmount.toString()) - parseInt(this.TotalRefundAmount.toString()));
+    debugger
+  this.RefundBalAmount = this.RefundAmount - this.TotalRefundAmount;
  
   // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
   // console.log( this.RefundBalAmount);
@@ -628,14 +572,14 @@ calculateTotalRefund() {
 //for printing
 convertToWord(e){
   // this.numberInWords= converter.toWords(this.mynumber);
-  //  return converter.toWords(e);
+   return converter.toWords(e);
      }
  
      getTemplate() {
       let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
       this._OpSearchListService.getTemplate(query).subscribe((resData: any) => {
         this.printTemplate = resData[0].TempDesign;
-        let keysArray = ['HospitalName','HospAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
+        let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
           for (let i = 0; i < keysArray.length; i++) {
             let reString = "{{" + keysArray[i] + "}}";
             let re = new RegExp(reString, "g");
