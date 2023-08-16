@@ -105,9 +105,9 @@ app-browse-refund-list{
 
 app-browse-refund-list {
 
-// .mat-table {
-//     height: 400px !important  ;
-// }
+.mat-table {
+    height: 700px !important  ;
+}
 .active-icon {
     border-radius: 50%;
 }
@@ -132,9 +132,9 @@ app-browse-refund-list {
     text-align: left;
 }
 .mat-column-RefundDate {
-    width: 100px;
-    max-width:100px;
-    min-width: 100px;
+    width: 150px;
+    max-width:150px;
+    min-width: 150px;
 }
 .mat-column-BillId {
     width: 90px;
@@ -144,14 +144,14 @@ app-browse-refund-list {
 }
 
 .mat-column-PatientName {
-    width: 280px;
-    max-width: 280px;
-    min-width: 280px;
+    width: 480px;
+    max-width: 480px;
+    min-width: 480px;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+    // display: inline-block;
     justify-content:left; 
     text-align: left;
 }
@@ -162,7 +162,7 @@ app-browse-refund-list {
     min-width: 110px;
     text-align:center;
     justify-content:center;
-    margin-right: 5px;
+  
 }
 
 .mat-column-TotalAmt {
@@ -171,7 +171,7 @@ app-browse-refund-list {
     min-width: 110px;
     text-align:center;
     justify-content:center;
-    margin-right: 5px;
+    
 }
 // .mat-column-PaymentId {
 //     width: 120px;
@@ -219,7 +219,7 @@ app-browse-refund-list {
      justify-content:center;
 }
 
- .mat-column-PhoneNo {
+ .mat-column-MobileNo {
     width: 100px;
     max-width: 100px;
     min-width: 100px;
@@ -228,9 +228,9 @@ app-browse-refund-list {
 
 
 .mat-column-buttons {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
+    width:200px;
+    max-width: 200px;
+    min-width: 200px;
     text-align: right;
     justify-content:center;
 }

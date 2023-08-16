@@ -53,17 +53,20 @@ app-opd-search-list {
 }
 
 app-opd-search-list {
+    .table1{
+        height: 700px !important;
+    }
 .mat-header-row {
     width: 100%;
-    max-width: 1630px;
-    min-width: 1630px;    
+    max-width: 1550px;
+    min-width: 1550px;    
     min-height: 25px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width: 1630px;
-    min-width: 1630px;     
+    max-width: 1550px;
+    min-width: 1550px;     
     min-height: 25px;            
 }
 
@@ -73,9 +76,9 @@ app-opd-search-list {
     min-width: 60px;
 }
 .mat-column-PatientOldNew {
-    width: 50px;
-    max-width: 50px;
-    min-width: 50px;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
     text-align: left;
      justify-content:left; 
 }
@@ -94,9 +97,9 @@ app-opd-search-list {
     text-align:left;
 }
 .mat-column-PatientName {
-    width:230px;
-    max-width: 230px;
-    min-width: 230px;
+    width:260px;
+    max-width: 260px;
+    min-width: 260px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -139,16 +142,16 @@ app-opd-search-list {
     
 
 .mat-column-Doctorname {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 240px;
+    max-width: 240px;
+    min-width: 240px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
     display: inline-block;
-    margin-right: 10px;   
+    // margin-right: 10px;   
     justify-content:left; 
 }
 .mat-column-RefDocName {
@@ -161,21 +164,21 @@ app-opd-search-list {
     text-overflow: ellipsis; 
     overflow: hidden !important;
     display: inline-block;
-    margin-right: 10px;   
+    // margin-right: 10px;   
     justify-content:left; 
 }
 
 .mat-column-HospitalName {
-    width: 230px;
-    max-width: 230px;
-    min-width: 230px;
+    width: 170px;
+    max-width: 170px;
+    min-width: 170px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
     display: inline-block;
-    margin-right: 7px;   
+    // margin-right: 7px;   
     justify-content:left; 
 }
 .mat-icon-button {

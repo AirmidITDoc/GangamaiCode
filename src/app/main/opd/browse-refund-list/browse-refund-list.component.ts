@@ -40,12 +40,13 @@ export class BrowseRefundListComponent implements OnInit {
   displayedColumns = [
     'RefundDate',
     'PatientName',
-    'PaymentDate',
+    // 'PaymentDate',
     'RefundAmount',
     'TotalAmt',
-    'CashPayAmount',
-    'ChequePayAmount',
-    'CardPayAmount',
+    'MobileNo',
+    // 'CashPayAmount',
+    // 'ChequePayAmount',
+    // 'CardPayAmount',
     'buttons'
 
     // 'action'
@@ -238,6 +239,7 @@ export class BrowseRefundListComponent implements OnInit {
       console.log(D_data);
       this._BrowseOPDReturnsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as RefundMaster[];
+        console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.sIsLoading = '';
@@ -317,7 +319,7 @@ export class BrowseRefundListComponent implements OnInit {
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
     this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -387,7 +389,7 @@ getPrint(el) {
 
 
   print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
+    
     let popupWin, printContents;
     // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
 
@@ -536,7 +538,7 @@ export class BrowseIpdreturnadvanceReceipt
     RefundAmount:number;
     RefundNo:number;
     HospitalAddress:string;
-    Phone:any;
+    MobileNo:any;
     EmailId:any;
      Age:number;
      AgeYear:number;
@@ -585,7 +587,7 @@ export class BrowseIpdreturnadvanceReceipt
             this. HospitalAddress = BrowseIpdreturnadvanceReceipt. HospitalAddress || '';
            this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
-           this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
+           this.MobileNo=BrowseIpdreturnadvanceReceipt.MobileNo || ''
            this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
 
            this.NetPayableAmt=BrowseIpdreturnadvanceReceipt.NetPayableAmt || 0;

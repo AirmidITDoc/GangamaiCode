@@ -446,7 +446,7 @@
                                             <mat-form-field class="Consession-field" appearance="outline"
                                             fxFlex>
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="concessionAmtOfNetAmt"
+                                                <input matInput [(ngModel)]="Consessionamt"
                                                     name="concessionAmtOfNetAmt" formControlName="concessionAmt"
                                                     placeholder="0" type="number" (keyup)="calculateDiscamtfinal()">
                                             </mat-form-field>
@@ -460,7 +460,7 @@
                                                     FinalAmt is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 300px;" *ngIf="Consession">
+                                            <mat-form-field appearance="outline" style="width: 300px;" *ngIf="Consessionres">
                                                 <mat-label>Concession Reason Type</mat-label>
                                                 <mat-select formControlName="ConcessionId" [disabled]="Consession">
                                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">

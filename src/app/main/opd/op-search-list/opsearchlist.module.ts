@@ -48,7 +48,7 @@ import { OPRefundofBillComponent } from './op-refundof-bill/op-refundof-bill.com
 import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 // import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
-
+import {MatSliderModule} from '@angular/material/slider';
 
 
 
@@ -117,7 +117,7 @@ const routes: Routes = [
         MatChipsModule,
         MatTooltipModule,
         MatTreeModule,
-        
+        MatSliderModule
     ],
     providers: [
         OPSearhlistService,
