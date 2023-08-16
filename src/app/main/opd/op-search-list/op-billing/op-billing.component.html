@@ -74,7 +74,7 @@
                                             </mat-form-field>
 
 
-                                            <mat-form-field appearance="outline" fxFlex #Price>
+                                            <mat-form-field appearance="outline" fxFlex #Price style="width:50px;">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice"
                                                     (keyup)="calculateTotalAmt()" formControlName="price" required type="number"
@@ -84,7 +84,7 @@
                                                     Price is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty"
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
@@ -94,7 +94,7 @@
                                                     Qty is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>TotalAmt</mat-label>
                                                 <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                                                     formControlName="totalAmount" required>
@@ -103,7 +103,7 @@
                                                     TotalAmount is required</mat-error>
                                             </mat-form-field>
 
-                                            <div style="margin-right: 10px; width:400px;" *ngIf="isDoctor">
+                                            <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
                                                 <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <mat-select formControlName="DoctorID" placeholder="Bank" #DoctorId
@@ -127,7 +127,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
                                                     (keyup)="calculatePersc()" formControlName="discPer" type="number">
@@ -136,7 +136,7 @@
                                                     Percentage is Number</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
                                                     formControlName="discAmount" type="number"
