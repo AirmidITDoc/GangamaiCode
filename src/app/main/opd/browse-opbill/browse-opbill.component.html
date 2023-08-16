@@ -285,3 +285,12 @@
 
 
 //
+<!-- <script> function selectElems() { var divIdFormat = "divAmount"; var tags = document.querySelectorAll('*[id^="' + divIdFormat + '"]'); for (var i = 0; i < tags.length; i++) { if ((tags.item(i).innerHTML == "0") || (tags.item(i).innerHTML == "0.00")) { var trIdFormat = tags.item(i).id.replace("divAmount", "trAmount"); document.querySelector('#idBalAmt').classList.add('noprint'); } } }</script>
+<style>
+    @media print {
+        .noprint {
+            visibility: hidden;
+        }
+    }
+</style> -->
+

@@ -1077,6 +1077,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   OnChangeBedList(wardObj) {
+    debugger
     console.log(wardObj);
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;

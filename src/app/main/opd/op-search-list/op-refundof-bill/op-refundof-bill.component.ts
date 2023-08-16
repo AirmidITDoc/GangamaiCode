@@ -81,17 +81,6 @@ export class OPRefundofBillComponent implements OnInit {
   RefAmt1:any=0;
 
 
-  things=[
-        {"label":"Bill No" , "id":1, "name":"BillNo"},
-        {"label":"Bill Date" , "id":2, "name":"BillDate"},
-        {"label":"Net Bill Amount " , "id":3, "name":"NetBillAmount"},
-        // {"label":"Total Refund Amount" , "id":4, "name":"TotalRefundAmount"},
-        // {"label":"Refund Bal Amount" , "id":5, "name":"RefundBalAmount"},
-        // {"label":"Remarks" , "id":6, "name":"Remark"},
-
-    
-  ];
-  
   displayedColumns1 = [
     // 'ChargesId',
     // 'ChargesDate',
@@ -124,8 +113,7 @@ export class OPRefundofBillComponent implements OnInit {
   dataSource = new MatTableDataSource<InsertRefundDetail>();
   dataSource3 = new MatTableDataSource<RegRefundBillMaster>();
   dataSource1 = new MatTableDataSource<BillRefundMaster>();
-  // menuActions: Array<string> = [];
-  
+    
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
 
 
@@ -145,8 +133,7 @@ export class OPRefundofBillComponent implements OnInit {
     private dialogRef: MatDialogRef<OPRefundofBillComponent>,
     private _formBuilder: FormBuilder
     ) {
-      // this.RefundOfBillFormGroup=this.refundForm();
-      // dialogRef.disableClose = true;
+     
     }
     
    
@@ -169,8 +156,7 @@ export class OPRefundofBillComponent implements OnInit {
     // this.getAdmittedDoctorCombo();
     this.getServiceListCombobox();
     // this.getBilldetailList();
-    
-    // this.serviceDetailForm();
+ 
   }
 
 
@@ -184,10 +170,8 @@ export class OPRefundofBillComponent implements OnInit {
       BillDate: [''],
       RefundAmount: [Validators.pattern("^[0-9]*$")],
       Remark: [''],
-      // AdmissionId: '',
       RegNo: [''],
       PatientName: [''],
-      // BillAmount: [''],
       serviceName: [''],
       serviceId: [''],
       Price: [Validators.pattern("^[0-9]*$")],
@@ -298,7 +282,7 @@ export class OPRefundofBillComponent implements OnInit {
 
 
   getSelectedServicetotSum(element) {
-    // debugger;
+    
     let netAmt1;
     netAmt1 = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt1 = netAmt1;

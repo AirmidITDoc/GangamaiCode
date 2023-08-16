@@ -222,11 +222,10 @@ debugger;
             if (response) {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                  // this.getAdvanceList();
-                   console.log(response);
+               
                   this.getPrint(response);
-                  this._matDialog.closeAll();
-                                
+                  // this._matDialog.closeAll();
+                           
                  
                 }
               });

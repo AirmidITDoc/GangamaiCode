@@ -466,15 +466,16 @@ export class OPAdvancePaymentComponent implements OnInit {
           case 'UPI':
             this.paytmAmt = 0;
             this.paymentForm.get('paytmAmountController').setValidators([
-              Validators.required,
-              Validators.pattern("^[0-9]*$")]);
-            this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-            this.paymentForm.get('paytmMobileNoController').setValidators([
-              Validators.required,
-              Validators.pattern("^[0-9]*$"),
-              Validators.minLength(10),
-              Validators.maxLength(10)
+              // Validators.required,
+              // Validators.pattern("^[0-9]*$")
             ]);
+            this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
+            // this.paymentForm.get('paytmMobileNoController').setValidators([
+            //   Validators.required,
+            //   Validators.pattern("^[0-9]*$"),
+            //   Validators.minLength(10),
+            //   Validators.maxLength(10)
+            // ]);
             this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
             this.paymentForm.patchValue({ paytmDateController: new Date() });
             break;
