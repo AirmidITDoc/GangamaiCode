@@ -547,8 +547,8 @@
                   <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                 </span>
                 
-                <mat-autocomplete #autoDoctor="matAutocomplete" >
-                  <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option.Doctorname" (onSelectionChange)="isDoctorSelected = true;">
+                <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                  <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option" (onSelectionChange)="isDoctorSelected = true;">
                     {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId }}
                   </mat-option>
                 </mat-autocomplete>

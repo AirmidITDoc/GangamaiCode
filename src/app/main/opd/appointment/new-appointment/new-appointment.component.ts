@@ -318,17 +318,29 @@ export class NewAppointmentComponent implements OnInit {
     return option.departmentName;
   }
 
-
-  private _filterDep(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    this.isDepartmentSelected = false;
-    return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+  getOptionTextDoc(option) {
+    return option.Doctorname;
   }
 
-  private _filterDoc(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    this.isDoctorSelected = false;
-    return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+
+  private _filterDep(value: any): string[] {
+    if(value) {
+      const filterValue = value && value.departmentName ?  value.departmentName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+    
+  }
+
+  private _filterDoc(value: any): string[] {
+    if(value) {
+      const filterValue = value && value.Doctorname ?  value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+    // const filterValue = value.toLowerCase();
+    // this.isDoctorSelected = false;
+    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
   }
 
 
@@ -1170,7 +1182,7 @@ export class NewAppointmentComponent implements OnInit {
       visitSave['IsCancelledDate'] = this.dateTimeObj.date;
 
       visitSave['ClassId'] = 1; // this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-      visitSave['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+      visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       console.log(this.Patientnewold);
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
@@ -1185,23 +1197,23 @@ export class NewAppointmentComponent implements OnInit {
       tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
       submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
       console.log(submissionObj);
-      // this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
-      //   console.log(response);
-      //   if (response) {
-      //     Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-      //       if (result.isConfirmed) {
-      //         this._matDialog.closeAll();
-      //         // ;
-      //         this.getVisitList();
-      //       }
+      this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
+        console.log(response);
+        if (response) {
+          Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this._matDialog.closeAll();
+              // ;
+              this.getVisitList();
+            }
 
-      //     });
-      //   } else {
-      //     Swal.fire('Error !', 'Appoinment not saved', 'error');
-      //   }
-      //   this.isLoading = '';
+          });
+        } else {
+          Swal.fire('Error !', 'Appoinment not saved', 'error');
+        }
+        this.isLoading = '';
 
-      // });
+      });
     }
     else {
 
