@@ -474,7 +474,7 @@ app-op-billing{
     
     .Consession-field {
         font-size: 14px;
-        font-weight: 350;
+        font-weight: bolder;
         color: royalblue;
     }
 
@@ -587,14 +587,14 @@ padding-bottom: 2px;
 
 .mat-header-row {
     width: 100%;
-    max-width:1600px;
-    min-width:1600px; 
+    max-width:1450px;
+    min-width:1450px; 
     min-height: 30px;     
 }
 .mat-row {
     width: 100%;
-    max-width:1600px;
-    min-width:1600px; 
+    max-width:1450px;
+    min-width:1450px; 
     min-height: 25px;            
 }
 // PatientData
@@ -614,9 +614,9 @@ padding-bottom: 2px;
 }
 
 .mat-column-ServiceName {
-    width:400px;
-    max-width:400px;
-    min-width:400px;
+    width:300px;
+    max-width:300px;
+    min-width:300px;
     text-align:left;
     white-space: nowrap; 
     overflow: hidden;
