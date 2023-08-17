@@ -13,11 +13,7 @@
                 Appointment
             </span>
 
-            <!-- <button mat-raised-button (click)="appointment()" fxLayoutAlign="center center"
-            style="margin-left: 700px;">
-            <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
-            </button> -->
-
+          
             <button mat-raised-button (click)="newappointment()" fxLayoutAlign="center center"
                 style="margin-left:80%;">
                 <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
@@ -66,7 +62,8 @@
                                     <mat-form-field appearance="outline">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
-                                            <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getVisitList()">
+                                            <input matStartDate formControlName="start" placeholder="Start date"
+                                                (dateChange)="getVisitList()">
                                             <input matEndDate formControlName="end" placeholder="End date">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -80,12 +77,14 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
-                                        <input name="FirstName" formControlName="FirstName" matInput (keyup)="getVisitList()">
+                                        <input name="FirstName" formControlName="FirstName" matInput
+                                            (keyup)="getVisitList()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
-                                        <input name="LastName" formControlName="LastName" matInput (keyup)="getVisitList()">
+                                        <input name="LastName" formControlName="LastName" matInput
+                                            (keyup)="getVisitList()">
                                     </mat-form-field>
 
 
@@ -125,7 +124,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;" >
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
                                     <ng-container matColumnDef="PatientOldNew">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
