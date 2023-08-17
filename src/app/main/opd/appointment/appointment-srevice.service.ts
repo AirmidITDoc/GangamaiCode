@@ -313,6 +313,6 @@ export class AppointmentSreviceService {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
   public getOPDPrecriptionPrint(PrecriptionId) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
+    return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1 ", PrecriptionId)
   }
 }

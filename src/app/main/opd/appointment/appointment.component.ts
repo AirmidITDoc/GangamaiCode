@@ -89,7 +89,7 @@ export class AppointmentComponent implements OnInit {
     ngOnInit(): void {
         if (this._ActRoute.url == "/opd/appointment") {
             // this.menuActions.push('One');
-            this.menuActions.push("CasePaper Print");
+            // this.menuActions.push("CasePaper Print");
             this.menuActions.push("Update Registration");
             this.menuActions.push("Update Consultant Doctor");
             this.menuActions.push("Update Referred Doctor");
@@ -195,11 +195,10 @@ export class AppointmentComponent implements OnInit {
     }
 
     getRecord(contact, m): void {
-        debugger;
         this.VisitID = contact.VisitID;
-        if (m == "CasePaper Print") {
-            this.getPrint();
-        }
+        // if (m == "CasePaper Print") {
+        //     //this.getPrint();
+        // }
         if (m == "Update Registration") {
             console.log(contact);
             var D_data = {
@@ -269,7 +268,6 @@ export class AppointmentComponent implements OnInit {
                     }
                 );
         } else if (m == "Update Consultant Doctor") {
-            // console.log(contact);
             var m_data2 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -294,7 +292,6 @@ export class AppointmentComponent implements OnInit {
                 console.log("The dialog was closed - Insert Action", result);
             });
         } else if (m == "Update Referred Doctor") {
-            console.log(contact);
             var m_data3 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -303,7 +300,6 @@ export class AppointmentComponent implements OnInit {
                 RefDoctorId: contact.RefDocId,
                 RefDocName: contact.RefDocName,
             };
-            console.log(m_data3);
             this._registrationService.populateFormpersonal(m_data3);
             const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
                 maxWidth: "70vw",
@@ -452,11 +448,8 @@ export class AppointmentComponent implements OnInit {
     }
 
     getTemplate() {
-        debugger;
-
         let query =
             "select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12";
-        console.log(query);
         this._AppointmentSreviceService
             .getTemplate(query)
             .subscribe((resData: any) => {
@@ -531,27 +524,18 @@ export class AppointmentComponent implements OnInit {
         return value;
     }
 
-    getPrint() {
-        debugger;
+    getPrint(Params) {
         var D_data = {
-            VisitId: 82973, //this.selectedAdvanceObj.AdmissionID || 0,
-            PatientType: 0, //this.selectedAdvanceObj.PatientType || 0
+            VisitId: Params.VisitId ,
         };
-        // el.bgColor = 'red';
-        console.log(D_data);
         let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
         this.subscriptionArr.push(
             this._AppointmentSreviceService
                 .getOPDPrecriptionPrint(D_data)
                 .subscribe((res) => {
-                    console.log(res);
                     this.reportPrintObjList = res as CasepaperVisitDetails[];
-                    console.log(this.reportPrintObjList);
                     this.reportPrintObj = res[0] as CasepaperVisitDetails;
-
                     this.getTemplate();
-
-                    console.log(D_data);
                 })
         );
     }

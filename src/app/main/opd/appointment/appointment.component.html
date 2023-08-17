@@ -19,7 +19,7 @@
             </button> -->
 
             <button mat-raised-button (click)="newappointment()" fxLayoutAlign="center center"
-                style="margin-left: 1300px;">
+                style="margin-left:80%;">
                 <mat-icon color="Primary" title=" Appointment Form ">how_to_reg</mat-icon>
             </button>
             &nbsp; &nbsp; &nbsp;
@@ -238,6 +238,11 @@
                                         <mat-header-cell *matHeaderCellDef
                                             class="table-actions">Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
+
+                                            <button mat-icon-button (click)="getPrint(contact)" matTooltip="print">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            
                                             <div fxFlex="row" fxLayoutAlign="center center">
                                                 <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                                                     (click)="$event.stopPropagation();">
