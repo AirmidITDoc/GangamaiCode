@@ -1,19 +1,19 @@
 <div fusePerfectScrollbar>
     <div class="dialog-content-wrapper">
         <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 35px;">
+            fxLayoutAlign.gt-xs="space-between center " style="height:45px;">
 
             <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between " style="width: 100%;">
+            <div fxLayout="row" fxLayoutAlign="space-between " style="width: 100%;padding-top:10px;">
                 <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon> -->
                 <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
-                style="width: 80%;font-size: 16px;">
+                style="width: 80%;font-size: 16px;padding-top:10px;">
                 OPD REFUND OF BILL   || ( {{selectedAdvanceObj.RegNo}} ) {{selectedAdvanceObj.PatientName}} ( {{selectedAdvanceObj.AgeYear}})  Yrs | {{selectedAdvanceObj.Doctorname}}
             </span>
             <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
             style="border-color: red;"></app-common-date>
-                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" (click)="onClose()">
+                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" (click)="onClose()" style="padding-top:10px;">
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
@@ -168,7 +168,7 @@
                                                 *matHeaderRowDef="displayedColumns2; sticky: true">
                                             </mat-header-row>
                                             <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
-                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
                                             <mat-footer-row *matFooterRowDef="['noData']"
@@ -249,9 +249,8 @@
                                                                                 formControlName="BillDate"
                                                                                 name="BillDate">
                                                                         </mat-form-field>&nbsp;
-                                                                    </div>
 
-                                                                    <mat-form-field appearance="outline"
+                                                                        <mat-form-field appearance="outline"
                                                                         style="width:300px;">
                                                                         <mat-label>Net Bill Amount</mat-label>
                                                                         <input matInput [(ngModel)]="NetBillAmount"
@@ -261,15 +260,17 @@
                                                                             *ngIf="RefundOfBillFormGroup.get('NetBillAmount').invalid && RefundOfBillFormGroup.get('NetBillAmount').touched">
                                                                             Net Bill BillAmount is required</mat-error>
                                                                     </mat-form-field>&nbsp;
+                                                                    </div>
+                                                                 
 
                                                                     <div fxLayout="row">
+                                                                        <!-- (keyup)="calculateTotalRefund()" -->
                                                                         <mat-form-field appearance="outline"
                                                                             style="width:300px;">
                                                                             <mat-label>Net Refund Amount</mat-label>
                                                                             <input matInput [(ngModel)]="RefundAmount"
-                                                                                (clisk)="calculateTotalRefund()"
-                                                                                formControlName="RefundAmount"
-                                                                                name="RefundAmount">
+                                                                                   formControlName="RefundAmount"
+                                                                                name="RefundAmount" readonly>
                                                                             <mat-error class="error"
                                                                                 *ngIf="RefundOfBillFormGroup.get('RefundAmount').invalid && RefundOfBillFormGroup.get('RefundAmount').touched">
                                                                                 Net Bill RefundAmount is required
@@ -521,8 +522,7 @@
                                         <mat-form-field appearance="outline" style="width:30%;">
                                             <mat-label>Total Refund Amount</mat-label>
                                             <input matInput [(ngModel)]="TotalRefundAmount"
-                                                formControlName="TotalRefundAmount" name="TotalRefundAmount">
-
+                                                formControlName="TotalRefundAmount" name="TotalRefundAmount"  (keyup)="calculateTotalRefund()">
                                         </mat-form-field>&nbsp;
 
                                         <!-- <mat-form-field appearance="outline" style="width:30%;">

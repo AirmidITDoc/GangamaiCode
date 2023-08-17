@@ -162,17 +162,6 @@ app-op-billing{
         margin-left: 10px;
     }
     
-    .bill-info {
-        padding: 9px;
-       // background-color: #4f505030;
-        height: 40px;
-        width: fit-content;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-    }
-    
     .mat-expansion-panel {
         margin: 0 5px 0px 5px !important;
         background-color: #e1e2e2 !important;
@@ -186,14 +175,7 @@ app-op-billing{
         // height: 200px;
     }
     
-    // .tables-contianer {
-    //     display: flex;
-    //     flex-direction: row;
-    //     padding: 0 15px;
-    //     @media (min-width: 100px) and (max-width: 700px) {
-    //         flex-direction: column;
-    //     }
-    // }
+ 
     .header-labels {
         font-size: 16px;
         font-weight: 500;
@@ -204,17 +186,7 @@ app-op-billing{
         // justify-content: space-between;
         margin: 3px 0;
     }
-    
-    // .top-heading {
-    //     display: flex;
-    //     padding: 2px;
-    //     align-items: center;
-    //     background-color: #3c9ce5;
-    //     color: white;
-    //     padding: 10px;
-    //     display: flex;
-    //     justify-content: space-between;
-    // }
+   
     
     .ip-billing {
         font-size: 20px;
@@ -228,18 +200,8 @@ app-op-billing{
     }
 
     
-// .label{
-//     padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: 600; font-size: 17px;
-// }
- 
-
-    
-    // .body-content .mat-form-field-wrapper, .header-content .mat-form-field-wrapper {
-    //     padding-bottom: 0 !important;
-    // }
-    
     .header-content .mat-form-field-flex {
-        height: 28px !important;
+        height: 30px !important;
     }
     
     .matdate-picker .mat-form-field-flex {
@@ -625,14 +587,14 @@ padding-bottom: 2px;
 
 .mat-header-row {
     width: 100%;
-    max-width:1295px;
-    min-width:1295px; 
+    max-width:1600px;
+    min-width:1600px; 
     min-height: 30px;     
 }
 .mat-row {
     width: 100%;
-    max-width:1295px;
-    min-width:1295px; 
+    max-width:1600px;
+    min-width:1600px; 
     min-height: 25px;            
 }
 // PatientData
@@ -652,9 +614,9 @@ padding-bottom: 2px;
 }
 
 .mat-column-ServiceName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
+    width:400px;
+    max-width:400px;
+    min-width:400px;
     text-align:left;
     white-space: nowrap; 
     overflow: hidden;
@@ -684,9 +646,9 @@ padding-bottom: 2px;
 }
 
 .mat-column-DiscPer {
-    width:60px;
-    max-width:60px;
-    min-width:60px;
+    width:70px;
+    max-width:70px;
+    min-width:70px;
     text-align:center;
 }
 .mat-column-DiscAmt {
@@ -707,9 +669,9 @@ padding-bottom: 2px;
     text-align:center;
 }
 .mat-column-ChargeDoctorName {
-    width:140px;
-    max-width:140px;
-    min-width:140px;
+    width:240px;
+    max-width:240px;
+    min-width:240px;
     // justify-content:center;
     text-align:center;
     white-space: nowrap; 

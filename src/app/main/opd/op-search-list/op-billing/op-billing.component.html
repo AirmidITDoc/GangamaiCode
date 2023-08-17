@@ -41,6 +41,7 @@
                             <div fxlayout="row" style=" padding: 3px 3px 3px 1px; margin-right: 5px;">
                                 <!-- ================================ LABEL HEADER  -->
 
+                                            
                                 <mat-card fxFlex.gt-sm="100%" fxFlex
                                     style="padding: 0 5px; height: fit-content; background-color: white;">
                                     &nbsp;
@@ -48,7 +49,7 @@
 
                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
-                                            <mat-form-field appearance="outline" style="width: 30%;">
+                                            <mat-form-field appearance="outline" style="width:500px;">
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
                                                     (input)="getServiceListCombobox()" required
@@ -73,17 +74,17 @@
                                             </mat-form-field>
 
 
-                                            <mat-form-field appearance="outline" style="width: 7%;" #Price>
+                                            <mat-form-field appearance="outline" fxFlex #Price style="width:50px;">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice"
-                                                    (keyup)="calculateTotalAmt()" formControlName="price" required
+                                                    (keyup)="calculateTotalAmt()" formControlName="price" required type="number"
                                                     id="Price" (keydown.enter)="focusNextQty()">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 7%;">
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty"
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
@@ -93,7 +94,7 @@
                                                     Qty is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 10%;">
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>TotalAmt</mat-label>
                                                 <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                                                     formControlName="totalAmount" required>
@@ -102,7 +103,7 @@
                                                     TotalAmount is required</mat-error>
                                             </mat-form-field>
 
-                                            <div *ngIf="isDoctor" style="margin-right: 10px; width:200px;">
+                                            <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
                                                 <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <mat-select formControlName="DoctorID" placeholder="Bank" #DoctorId
@@ -126,7 +127,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <mat-form-field appearance="outline" style="width: 7%;">
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
                                                     (keyup)="calculatePersc()" formControlName="discPer" type="number">
@@ -135,7 +136,7 @@
                                                     Percentage is Number</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 7%;">
+                                            <mat-form-field appearance="outline" fxFlex style="width:50px;">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
                                                     formControlName="discAmount" type="number"
@@ -146,7 +147,7 @@
                                                     required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 10%;">
+                                            <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly
                                                     formControlName="netAmount" required>
@@ -413,16 +414,16 @@
 
                     </div>
                     <div>
+                        <form class="example-form" [formGroup]="registeredForm">
                         <div fxFlex="100" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
-                            fusePerfectScrollbar
-                            style=" width:20%; float: right;  border-radius:4px; background-color: white;
+                            fusePerfectScrollbar style=" width:20%; float: right;  border-radius:4px; background-color: white;
                         border:rgba(0,0,0,0.12) 1px solid; float: right;  padding: 1em; margin-top: 10px;">
                             <div class="nav material2">
-                                <form class="example-form" [formGroup]="registeredForm">
+                             
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
                                         <div>
-                                            <mat-form-field appearance="outline" class="Consession-field">
+                                            <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                                 <mat-label>Total Amount</mat-label>
                                                 <input matInput [(ngModel)]="b_TotalChargesAmount"
                                                     name="b_TotalChargesAmount" formControlName="TotallistAmount"
@@ -432,7 +433,7 @@
                                                     FinalAmt is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field class="Consession-field" appearance="outline">
+                                            <mat-form-field class="Consession-field" appearance="outline" fxFlex>
                                                 <mat-label>Disc(%)</mat-label>
                                                 <input matInput [(ngModel)]="concessionDiscPer"
                                                     formControlName="concesDiscPer" name="concessionDiscPer"
@@ -443,12 +444,11 @@
                                             </mat-form-field>
 
                                             <mat-form-field class="Consession-field" appearance="outline"
-                                                style="width:55%;">
+                                            fxFlex>
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="concessionAmtOfNetAmt"
+                                                <input matInput [(ngModel)]="Consessionamt"
                                                     name="concessionAmtOfNetAmt" formControlName="concessionAmt"
-                                                    placeholder="0" type="number"
-                                                    (keyup)="calculateDiscamtfinal()">
+                                                    placeholder="0" type="number" (keyup)="calculateDiscamtfinal()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" class="Consession-field">
@@ -460,7 +460,7 @@
                                                     FinalAmt is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex=100%>
+                                            <mat-form-field appearance="outline" style="width: 300px;" *ngIf="Consessionres">
                                                 <mat-label>Concession Reason Type</mat-label>
                                                 <mat-select formControlName="ConcessionId" [disabled]="Consession">
                                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
@@ -468,27 +468,29 @@
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" style="width: 300px;">
                                                 <mat-label>Remark</mat-label>
                                                 <input name="Address" appearance="legacy" style="color: green;"
                                                     formControlName="BillRemark" placeholder="Remark" matInput>
                                             </mat-form-field>
 
-                                            <!-- <button class="next-btn" (click)="onInsertAddCharges()" style="border-radius: 16px;" [disabled]="click">Save</button>
-                                            <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button> -->
-
                                         </div>
                                     </div>
-                                </form>
+                            
                             </div>
-                            <div fxLayout="row">
-                                <button class="next-btn" (click)="onInsertAddCharges()" style="border-radius: 16px;" [disabled]="click">Save</button>
-                                <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
+                            <div fxLayout="row" style="color: rgb(10, 81, 135);">
+                                <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true style="font-weight: bold;">
+                                    Cash Payment
+                                </mat-checkbox>
+
+                                <button class="next-btn" (click)="onSaveOPBill2()" style="border-radius: 16px;margin-left: 1350px;"
+                                    [disabled]="saveclick">Save</button>
+                                <button class="footer-btn" (click)="onClose()"
+                                    style="border-radius: 16px;">Close</button>
                             </div>
                         </div>
+                    </form>
                     </div>
-
-
 
                 </div>
             </mat-card-content>

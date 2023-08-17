@@ -10,7 +10,7 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Browse OP Bill  
+                Browse OP Bill
             </span>
         </div>
         <!-- <div class="ml-sm-32" fxLayout="row" fxFlexEnd>
@@ -61,7 +61,8 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
+                                            <input matEndDate formControlName="end" placeholder="End date"
+                                                (dateChange)="onShow($event)">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -124,8 +125,8 @@
                                     <div class="spinner-border text-danger"></div>
 
                                 </div>
-                                <mat-table #table matSort table="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;width: 100%;">
+                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
                                     <ng-container matColumnDef="BillDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Bill Date
@@ -203,7 +204,8 @@
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="chkBalanceAmt" sticky>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Creadit / Pay
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Creadit /
+                                            Pay
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
@@ -283,3 +285,12 @@
 
 
 //
+<!-- <script> function selectElems() { var divIdFormat = "divAmount"; var tags = document.querySelectorAll('*[id^="' + divIdFormat + '"]'); for (var i = 0; i < tags.length; i++) { if ((tags.item(i).innerHTML == "0") || (tags.item(i).innerHTML == "0.00")) { var trIdFormat = tags.item(i).id.replace("divAmount", "trAmount"); document.querySelector('#idBalAmt').classList.add('noprint'); } } }</script>
+<style>
+    @media print {
+        .noprint {
+            visibility: hidden;
+        }
+    }
+</style> -->
+

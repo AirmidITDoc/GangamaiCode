@@ -65,6 +65,12 @@ export class AppointmentService {
     return this._httpClient.post("OutPatient/RegistrationUpdate", employee);
   }
 
+  
+  // Feeback 
+  public feedbackInsert(employee) {
+    return this._httpClient.post("OutPatient/RegistrationUpdate", employee);
+  }
+
   // display Appointment list
   public getAppointmentList(employee) {
     // return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_VisitDetailsList", employee)

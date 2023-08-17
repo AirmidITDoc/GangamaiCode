@@ -167,11 +167,9 @@ export class AuthenticationService {
                 }catch{
 
                 }
-                console.log(this.navigation)
+                // console.log(this.navigation)
                 // Register the navigation to the service
-                
                 this._fuseNavigationService.register("main1", this.navigation);
-
                 // Set the main navigation as our current navigation
                 this._fuseNavigationService.setCurrentNavigation("main1");
             });

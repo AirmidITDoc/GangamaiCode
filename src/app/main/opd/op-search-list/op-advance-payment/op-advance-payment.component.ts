@@ -18,7 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class OPAdvancePaymentComponent implements OnInit {
 
- 
+
   chipsElements = [
     { name: 'Cash', state: true },
     { name: 'Card', state: false },
@@ -375,194 +375,195 @@ export class OPAdvancePaymentComponent implements OnInit {
     });
   }
   async chipsSelectionChanged(event: any) {
-    if(this.cashAmt < this.netPayAmt){
-    this.calculatePaidAmt();
-    const controllers = this.paymentForm.controls;
-    Object.keys(controllers).forEach(controlName => {
-      const controlValue = this.paymentForm.get(controlName);
-      console.log(controlName);
-      if (controlValue.untouched) {
-        controlValue.markAsUntouched();
-        controlValue.clearValidators();
-        controlValue.updateValueAndValidity();
-      }
-    });
-    console.log(event)
-    let chipName = event.name;
-    event.state = !event.state;
-    if (event.state) {
-      switch (chipName) {
-        case 'Cash': {
-          this.cashAmt = 0;
-          this.paymentForm.get('cashAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
-          break;
+    if (this.cashAmt < this.netPayAmt) {
+      this.calculatePaidAmt();
+      const controllers = this.paymentForm.controls;
+      Object.keys(controllers).forEach(controlName => {
+        const controlValue = this.paymentForm.get(controlName);
+        console.log(controlName);
+        if (controlValue.untouched) {
+          controlValue.markAsUntouched();
+          controlValue.clearValidators();
+          controlValue.updateValueAndValidity();
         }
+      });
+      console.log(event)
+      let chipName = event.name;
+      event.state = !event.state;
+      if (event.state) {
+        switch (chipName) {
+          case 'Cash': {
+            this.cashAmt = 0;
+            this.paymentForm.get('cashAmountController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")]);
+            this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
+            break;
+          }
 
-        case 'Card': {
-          this.cardAmt = 0;
-          console.log("378")
-          this.paymentForm.controls["cardAmountController"].setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]);
-          this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
+          case 'Card': {
+            this.cardAmt = 0;
+            console.log("378")
+            this.paymentForm.controls["cardAmountController"].setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")
+            ]);
+            this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
 
-          this.paymentForm.controls["cardNumberController"].setValidators([Validators.required,
-          Validators.pattern("^[0-9]*$"),
-        //   Validators.minLength(16),
-        //   Validators.maxLength(16)
-             ]);
-          this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
-
-          this.paymentForm.controls["cardBankNameController"].setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]);
-          this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardDateController: new Date() });
-          console.log("Line 398", this.paymentForm);
-          break;
-        }
-        case 'Cheque':
-          this.chequeAmt = 0;
-          console.log("406")
-          this.paymentForm.controls['chequeAmountController'].setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
-
-          this.paymentForm.get('chequeNumberController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.get('chequeNumberController').updateValueAndValidity();
-
-          this.paymentForm.controls['chequeBankNameController'].setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]); this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeDateController: new Date() });
-          break;
-
-        case 'NEFT':
-          this.neftAmt = 0;
-          this.paymentForm.get('neftAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
-          this.paymentForm.get('neftNumberController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")
-          ]); this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
-          this.paymentForm.get('neftBankNameController').setValidators([
-            Validators.required,
-            // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-          ]); this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftDateController: new Date() });
-          break;
-
-        case 'UPI':
-          this.paytmAmt = 0;
-          this.paymentForm.get('paytmAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-          this.paymentForm.get('paytmMobileNoController').setValidators([
-            Validators.required,
+            this.paymentForm.controls["cardNumberController"].setValidators([Validators.required,
             Validators.pattern("^[0-9]*$"),
-            Validators.minLength(10),
-            Validators.maxLength(10)
-          ]);
-          this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ paytmDateController: new Date() });
-          break;
+              //   Validators.minLength(16),
+              //   Validators.maxLength(16)
+            ]);
+            this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
 
-        case 'Wrf Option':
-          this.wrfAmt = 0;
-          this.paymentForm.get('wrfAmountController').setValidators([Validators.required, Validators.pattern('^[0-9]{2,8}$')]);
-          this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
-          break;
+            this.paymentForm.controls["cardBankNameController"].setValidators([
+              Validators.required,
+              // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+            ]);
+            this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
+            this.paymentForm.patchValue({ cardDateController: new Date() });
+            console.log("Line 398", this.paymentForm);
+            break;
+          }
+          case 'Cheque':
+            this.chequeAmt = 0;
+            console.log("406")
+            this.paymentForm.controls['chequeAmountController'].setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")
+            ]); this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
 
-        default:
-          console.log(460)
-          break;
-      }
-      this.calculatePaidAmt();
-    }
-    else {
-      switch (chipName) {
-        case 'Cash': {
-          this.cashAmt = 0;
-          this.paymentForm.get('cashAmountController').setValidators([
-            Validators.required,
-            Validators.pattern("^[0-9]*$")]);
-          this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
-          break;
+            this.paymentForm.get('chequeNumberController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")
+            ]); this.paymentForm.get('chequeNumberController').updateValueAndValidity();
+
+            this.paymentForm.controls['chequeBankNameController'].setValidators([
+              Validators.required,
+              // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+            ]); this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ chequeDateController: new Date() });
+            break;
+
+          case 'NEFT':
+            this.neftAmt = 0;
+            this.paymentForm.get('neftAmountController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")
+            ]); this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
+            this.paymentForm.get('neftNumberController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")
+            ]); this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
+            this.paymentForm.get('neftBankNameController').setValidators([
+              Validators.required,
+              // Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+            ]); this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ neftDateController: new Date() });
+            break;
+
+          case 'UPI':
+            this.paytmAmt = 0;
+            this.paymentForm.get('paytmAmountController').setValidators([
+              // Validators.required,
+              // Validators.pattern("^[0-9]*$")
+            ]);
+            this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
+            // this.paymentForm.get('paytmMobileNoController').setValidators([
+            //   Validators.required,
+            //   Validators.pattern("^[0-9]*$"),
+            //   Validators.minLength(10),
+            //   Validators.maxLength(10)
+            // ]);
+            this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ paytmDateController: new Date() });
+            break;
+
+          case 'Wrf Option':
+            this.wrfAmt = 0;
+            this.paymentForm.get('wrfAmountController').setValidators([Validators.required, Validators.pattern('^[0-9]{2,8}$')]);
+            this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
+            break;
+
+          default:
+            console.log(460)
+            break;
         }
-
-        case 'Card': {
-          this.cardAmt = 0;
-          console.log("378")
-          this.paymentForm.controls["cardAmountController"].clearValidators();
-          this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
-          this.paymentForm.controls["cardNumberController"].clearValidators();
-          this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardNumberController: '' });
-          this.paymentForm.controls["cardBankNameController"].clearValidators();
-          this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
-          this.paymentForm.patchValue({ cardBankNameController: '' });
-          this.paymentForm.patchValue({ cardDateController: new Date() });
-          console.log("Line 398", this.paymentForm);
-          break;
-        }
-        case 'Cheque':
-          this.chequeAmt = 0;
-          console.log("406")
-          this.paymentForm.controls['chequeAmountController'].clearValidators();
-          this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
-
-          this.paymentForm.get('chequeNumberController').clearValidators();
-          this.paymentForm.get('chequeNumberController').updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeNumberController: '' });
-          this.paymentForm.controls['chequeBankNameController'].clearValidators();
-          this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ chequeBankNameController: '' });
-          this.paymentForm.patchValue({ chequeDateController: new Date() });
-          break;
-
-        case 'NEFT':
-          this.neftAmt = 0;
-          this.paymentForm.get('neftAmountController').clearValidators();
-          this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
-          this.paymentForm.get('neftNumberController').clearValidators();
-          this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftNumberController: '' });
-          this.paymentForm.get('neftBankNameController').clearValidators();
-          this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ neftBankNameController: '' });
-          this.paymentForm.patchValue({ neftDateController: new Date() });
-          break;
-
-        case 'PayTM':
-          this.paytmAmt = 0;
-          this.paymentForm.get('paytmAmountController').clearValidators();
-          this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-          this.paymentForm.get('paytmMobileNoController').clearValidators();
-          this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
-          this.paymentForm.patchValue({ paytmMobileNoController: '' });
-          this.paymentForm.patchValue({ paytmDateController: new Date() });
-          break;
-
-        case 'Wrf Option':
-          this.wrfAmt = 0;
-          this.paymentForm.get('wrfAmountController').clearValidators();
-          this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
-          break;
+        this.calculatePaidAmt();
       }
-      this.calculatePaidAmt();
-    }
+      else {
+        switch (chipName) {
+          case 'Cash': {
+            this.cashAmt = 0;
+            this.paymentForm.get('cashAmountController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$")]);
+            this.paymentForm.controls['cashAmountController'].updateValueAndValidity();
+            break;
+          }
+
+          case 'Card': {
+            this.cardAmt = 0;
+            console.log("378")
+            this.paymentForm.controls["cardAmountController"].clearValidators();
+            this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
+            this.paymentForm.controls["cardNumberController"].clearValidators();
+            this.paymentForm.controls["cardNumberController"].updateValueAndValidity();
+            this.paymentForm.patchValue({ cardNumberController: '' });
+            this.paymentForm.controls["cardBankNameController"].clearValidators();
+            this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
+            this.paymentForm.patchValue({ cardBankNameController: '' });
+            this.paymentForm.patchValue({ cardDateController: new Date() });
+            console.log("Line 398", this.paymentForm);
+            break;
+          }
+          case 'Cheque':
+            this.chequeAmt = 0;
+            console.log("406")
+            this.paymentForm.controls['chequeAmountController'].clearValidators();
+            this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
+
+            this.paymentForm.get('chequeNumberController').clearValidators();
+            this.paymentForm.get('chequeNumberController').updateValueAndValidity();
+            this.paymentForm.patchValue({ chequeNumberController: '' });
+            this.paymentForm.controls['chequeBankNameController'].clearValidators();
+            this.paymentForm.controls['chequeBankNameController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ chequeBankNameController: '' });
+            this.paymentForm.patchValue({ chequeDateController: new Date() });
+            break;
+
+          case 'NEFT':
+            this.neftAmt = 0;
+            this.paymentForm.get('neftAmountController').clearValidators();
+            this.paymentForm.controls['neftAmountController'].updateValueAndValidity();
+            this.paymentForm.get('neftNumberController').clearValidators();
+            this.paymentForm.controls['neftNumberController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ neftNumberController: '' });
+            this.paymentForm.get('neftBankNameController').clearValidators();
+            this.paymentForm.controls['neftBankNameController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ neftBankNameController: '' });
+            this.paymentForm.patchValue({ neftDateController: new Date() });
+            break;
+
+          case 'PayTM':
+            this.paytmAmt = 0;
+            this.paymentForm.get('paytmAmountController').clearValidators();
+            this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
+            this.paymentForm.get('paytmMobileNoController').clearValidators();
+            this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
+            this.paymentForm.patchValue({ paytmMobileNoController: '' });
+            this.paymentForm.patchValue({ paytmDateController: new Date() });
+            break;
+
+          case 'Wrf Option':
+            this.wrfAmt = 0;
+            this.paymentForm.get('wrfAmountController').clearValidators();
+            this.paymentForm.controls['wrfAmountController'].updateValueAndValidity();
+            break;
+        }
+        this.calculatePaidAmt();
+      }
     }
     // event.state = !event.state;
     console.log('==', event);
@@ -573,17 +574,17 @@ export class OPAdvancePaymentComponent implements OnInit {
 
   calculatePaidAmt(controlNameParam?) {
     debugger;
-   
-   
-// console.log(controlNameParam != 'cashAmountController');
+
+
+    // console.log(controlNameParam != 'cashAmountController');
     Object.keys(this.paymentForm.controls).forEach(controlName => {
       if (controlNameParam == controlName) {
         this.paymentForm.get(controlNameParam).markAsTouched();
       } else {
         this.paymentForm.get(controlName).markAsUntouched();
       }
-    
-   
+
+
     });
 
     let cashAmtLocal = '0';
@@ -598,11 +599,7 @@ export class OPAdvancePaymentComponent implements OnInit {
     this.balanceAmt1 = this.paymentForm.get('balanceAmountController').value;
     this.balanceAmt = null;
 
-    // if(paidAmtLocal < this.balanceAmt1)
-    // {
-    //   Swal.fire('CHK');
-    // }
-
+   
     paidAmtLocal = parseInt(this.cashAmt ? this.cashAmt.toString() : cashAmtLocal)
       + parseInt(this.cardAmt ? this.cardAmt.toString() : cardAmtLocal)
       + parseInt(this.chequeAmt ? this.chequeAmt.toString() : chequeAmtLocal)
@@ -612,19 +609,12 @@ export class OPAdvancePaymentComponent implements OnInit {
     console.log(paidAmtLocal)
     console.log(this.balanceAmt1)
 
-debugger;
-
-
-console.log(this.balanceAmt1);
-console.log(paidAmtLocal);
-console.log(this.paidAmt);
-
-// if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-debugger;
-// if(chipName)
-//  if( paidAmtLocal > this.balanceAmt1){
-// Swal.fire("Amount chk")
-//   }
+    // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
+    debugger;
+    // if(chipName)
+    //  if( paidAmtLocal > this.balanceAmt1){
+    // Swal.fire("Amount chk")
+    //   }
     if (paidAmtLocal > this.netPayAmt) {
       this.paidAmt = this.paidAmtPrev;
       this.balanceAmt = this.balanceAmtPrev;
@@ -663,7 +653,7 @@ debugger;
     // else{
     //   Swal.fire("Enter validate Amount");
     // }
-  // }
+    // }
 
     // }
   }
@@ -698,51 +688,14 @@ debugger;
 
   saveClicked() {
     debugger
-    if(this.balanceAmt==0){
-    let Paymentobj = {};
-    if (this.advanceData.FromName == "OP-Payment") {
-      // Paymentobj['PaymentId'] = 0;
-      Paymentobj['BillNo'] = this.billNo;
-      Paymentobj['ReceiptNo'] = '';
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = this.dateTimeObj.date;
-      Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = this.chequeNo;
-      Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = this.cardNo;
-      Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-      Paymentobj['AdvanceId'] = 0;
-      Paymentobj['RefundId'] = 0;
-      Paymentobj['TransactionType'] = 0;
-      Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-      Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['IsSelfORCompany'] = 0;
-      Paymentobj['CompanyId'] = 0;
-      Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = this.neftNo;
-      Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-    }
-    else if (this.advanceData.FromName == "OP-Bill") {
+    if (this.balanceAmt == 0) {
+      let Paymentobj = {};
+      if (this.advanceData.FromName == "OP-Payment") {
         // Paymentobj['PaymentId'] = 0;
         Paymentobj['BillNo'] = this.billNo;
         Paymentobj['ReceiptNo'] = '';
         Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.date;
         Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
         Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
         Paymentobj['ChequeNo'] = this.chequeNo;
@@ -773,98 +726,135 @@ debugger;
         Paymentobj['PayTMDate'] = this.dateTimeObj.date;
         Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-    }
-    else if (this.advanceData.FromName == "Advance") {
-      // Paymentobj['PaymentId'] = 0;
-      Paymentobj['BillNo'] = this.billNo;
-      Paymentobj['ReceiptNo'] = '';
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = this.chequeNo;
-      Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = this.cardNo;
-      Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-      Paymentobj['AdvanceId'] = 0;
-      Paymentobj['RefundId'] = 0;
-      Paymentobj['TransactionType'] = 0;
-      Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-      Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['IsSelfORCompany'] = 0;
-      Paymentobj['CompanyId'] = 0;
-      Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = this.neftNo;
-      Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-  }
-  else if (this.advanceData.FromName == "Advance-Refund") {
-    // Paymentobj['PaymentId'] = 0;
-    Paymentobj['BillNo'] = this.billNo;
-    Paymentobj['ReceiptNo'] = '';
-    Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-    Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
-    Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
-    Paymentobj['ChequeNo'] = this.chequeNo;
-    Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
-    Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-    Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
-    Paymentobj['CardNo'] = this.cardNo;
-    Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
-    Paymentobj['CardDate'] = this.dateTimeObj.date;
-    Paymentobj['AdvanceUsedAmount'] = 0;
-    Paymentobj['AdvanceId'] = 0;
-    Paymentobj['RefundId'] = 0;
-    Paymentobj['TransactionType'] = 0;
-    Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
-    Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-    Paymentobj['IsCancelled'] = 0;
-    Paymentobj['IsCancelledBy'] = 0;
-    Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-    Paymentobj['CashCounterId'] = 0;
-    Paymentobj['IsSelfORCompany'] = 0;
-    Paymentobj['CompanyId'] = 0;
-    Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
-    Paymentobj['NEFTNo'] = this.neftNo;
-    Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
-    Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-    Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
-    Paymentobj['PayTMTranNo'] = this.paytmTransNo;
-    Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-    Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-    Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-}
+      }
+      else if (this.advanceData.FromName == "OP-Bill") {
+        // Paymentobj['PaymentId'] = 0;
+        Paymentobj['BillNo'] = this.billNo;
+        Paymentobj['ReceiptNo'] = '';
+        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
+        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
+        Paymentobj['ChequeNo'] = this.chequeNo;
+        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
+        Paymentobj['CardNo'] = this.cardNo;
+        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+        Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 0;
+        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+        Paymentobj['CashCounterId'] = 0;
+        Paymentobj['IsSelfORCompany'] = 0;
+        Paymentobj['CompanyId'] = 0;
+        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = this.neftNo;
+        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+        Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+        Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      }
+      else if (this.advanceData.FromName == "Advance") {
+        // Paymentobj['PaymentId'] = 0;
+        Paymentobj['BillNo'] = this.billNo;
+        Paymentobj['ReceiptNo'] = '';
+        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
+        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
+        Paymentobj['ChequeNo'] = this.chequeNo;
+        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
+        Paymentobj['CardNo'] = this.cardNo;
+        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+        Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 0;
+        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+        Paymentobj['CashCounterId'] = 0;
+        Paymentobj['IsSelfORCompany'] = 0;
+        Paymentobj['CompanyId'] = 0;
+        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = this.neftNo;
+        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+        Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+        Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      }
+      else if (this.advanceData.FromName == "Advance-Refund") {
+        // Paymentobj['PaymentId'] = 0;
+        Paymentobj['BillNo'] = this.billNo;
+        Paymentobj['ReceiptNo'] = '';
+        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
+        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
+        Paymentobj['ChequeNo'] = this.chequeNo;
+        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
+        Paymentobj['CardNo'] = this.cardNo;
+        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+        Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 0;
+        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+        Paymentobj['CashCounterId'] = 0;
+        Paymentobj['IsSelfORCompany'] = 0;
+        Paymentobj['CompanyId'] = 0;
+        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = this.neftNo;
+        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+        Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+        Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      }
 
-    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-    let submitDataPay = {
-      ipPaymentInsert,
-    };
-    let IsSubmit = {
-      "submitDataPay": submitDataPay,
-      "IsSubmitFlag": true
+      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+      let submitDataPay = {
+        ipPaymentInsert,
+      };
+      let IsSubmit = {
+        "submitDataPay": submitDataPay,
+        "IsSubmitFlag": true
+      }
+      console.log(IsSubmit);
+      this.dialogRef.close(IsSubmit);
+      // console.log('======================= Payment ======');
+      // console.log(IsSubmit);
     }
-    console.log(IsSubmit);
-    this.dialogRef.close(IsSubmit);
-    // console.log('======================= Payment ======');
-    // console.log(IsSubmit);
-  }
-  else{
-    Swal.fire('Error !', 'Balance Amount Have to Zero', 'error')
-  }
+    else {
+      Swal.fire('Error !', 'Balance Amount Have to Zero', 'error')
+    }
   }
 
   onClose() {

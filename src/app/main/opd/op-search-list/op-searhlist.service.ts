@@ -354,7 +354,7 @@ public getConcessionCombo()
   }
   public getAdvanceList(employee)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_T_AdvanceList",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
   }
   public getBankMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})

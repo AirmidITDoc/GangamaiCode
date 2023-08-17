@@ -89,7 +89,7 @@ export class AppointmentComponent implements OnInit {
     ngOnInit(): void {
         if (this._ActRoute.url == "/opd/appointment") {
             // this.menuActions.push('One');
-            this.menuActions.push("CasePaper Print");
+            // this.menuActions.push("CasePaper Print");
             this.menuActions.push("Update Registration");
             this.menuActions.push("Update Consultant Doctor");
             this.menuActions.push("Update Referred Doctor");
@@ -167,21 +167,7 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
-    appointment() {
-        // const dialogRef = this._matDialog.open(PatientAppointmentComponent, {
-        //     maxWidth: "95vw",
-        //     height: "800px",
-        //     width: "100%",
-        //     // height: "100%"
-        // });
-        // dialogRef.afterClosed().subscribe((result) => {
-        //     // console.log('The dialog was closed - Insert Action', result);
-        //     this.getVisitList();
-        // });
-    }
-    onShow() {
-        // this.getVisitList();
-    }
+   
 
     ngOnChanges(changes: SimpleChanges) {
         // changes.prop contains the old and the new value...
@@ -269,7 +255,6 @@ export class AppointmentComponent implements OnInit {
                     }
                 );
         } else if (m == "Update Consultant Doctor") {
-            // console.log(contact);
             var m_data2 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -294,7 +279,6 @@ export class AppointmentComponent implements OnInit {
                 console.log("The dialog was closed - Insert Action", result);
             });
         } else if (m == "Update Referred Doctor") {
-            console.log(contact);
             var m_data3 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -303,7 +287,6 @@ export class AppointmentComponent implements OnInit {
                 RefDoctorId: contact.RefDocId,
                 RefDocName: contact.RefDocName,
             };
-            console.log(m_data3);
             this._registrationService.populateFormpersonal(m_data3);
             const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
                 maxWidth: "70vw",
@@ -452,11 +435,8 @@ export class AppointmentComponent implements OnInit {
     }
 
     getTemplate() {
-        debugger;
-
         let query =
             "select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12";
-        console.log(query);
         this._AppointmentSreviceService
             .getTemplate(query)
             .subscribe((resData: any) => {
@@ -495,22 +475,22 @@ export class AppointmentComponent implements OnInit {
                     );
                 }
 
-                this.printTemplate = this.printTemplate.replace(
-                    "StrVisitDate",
-                    this.transform2(this.reportPrintObj.VisitDate)
-                );
+                // this.printTemplate = this.printTemplate.replace(
+                //     "StrVisitDate",
+                //     this.transform2(this.reportPrintObj.VisitDate)
+                // );
                 this.printTemplate = this.printTemplate.replace(
                     "StrPrintDate",
                     this.transform2(this.currentDate.toString())
                 );
-                this.printTemplate = this.printTemplate.replace(
-                    "StrConsultantDr",
-                    this.reportPrintObj.ConsultantDocName
-                );
-                this.printTemplate = this.printTemplate.replace(
-                    "StrOPDDate",
-                    this.transform1(this.reportPrintObj.VisitDate)
-                );
+                // this.printTemplate = this.printTemplate.replace(
+                //     "StrConsultantDr",
+                //     this.reportPrintObj.ConsultantDocName
+                // );
+                // this.printTemplate = this.printTemplate.replace(
+                //     "StrOPDDate",
+                //     this.transform1(this.reportPrintObj.VisitDate)
+                // );
 
                 this.printTemplate = this.printTemplate.replace(/{{.*}}/g, "");
                 setTimeout(() => {
@@ -544,14 +524,9 @@ export class AppointmentComponent implements OnInit {
             this._AppointmentSreviceService
                 .getOPDPrecriptionPrint(D_data)
                 .subscribe((res) => {
-                    console.log(res);
                     this.reportPrintObjList = res as CasepaperVisitDetails[];
-                    console.log(this.reportPrintObjList);
                     this.reportPrintObj = res[0] as CasepaperVisitDetails;
-
                     this.getTemplate();
-
-                    console.log(D_data);
                 })
         );
     }

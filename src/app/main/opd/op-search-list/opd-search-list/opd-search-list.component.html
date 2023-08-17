@@ -26,7 +26,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -54,7 +54,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getVisitList()">
 
                                 </mat-form-field>
 
@@ -66,13 +66,13 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Middle Name</mat-label>
-                                    <input name="MiddleName" formControlName="MiddleName" matInput>
+                                    <input name="MiddleName" formControlName="MiddleName" matInput (keyup)="getVisitList()">
                                     <!-- <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span> -->
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getVisitList()">
                                     <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched"> LastName is required Enter only Alphabets</span> -->
                                 </mat-form-field>
 
@@ -139,11 +139,11 @@
                                 </div>
                                 <!-- sppinner -->
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    style="height:600px !important;">
+                                     class="table1">
 
                                     <ng-container matColumnDef="PatientOldNew">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            style="color: white;"></mat-header-cell>
+                                            style="color: white;">New/Old</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
                                                 style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
