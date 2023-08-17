@@ -281,28 +281,28 @@ export class OPBillingComponent implements OnInit {
     return tempArr;
   }
 
-  onOptionSelected(selectedItem) {
-    this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
-    this.b_disAmount = '0';
-    this.b_netAmount = selectedItem.Price
-    this.b_IsEditable = selectedItem.IsEditable
-    this.b_IsDocEditable = selectedItem.IsDocEditable
-    this.b_isPath = selectedItem.IsPathology
-    this.b_isRad = selectedItem.IsRadiology
-    this.serviceId = selectedItem.ServiceId;
-    this.serviceName = selectedItem.ServiceName;
-    this.calculateTotalAmt();
-  }
+  // onOptionSelected(selectedItem) {
+  //   this.b_price = selectedItem.Price
+  //   this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
+  //   this.b_disAmount = '0';
+  //   this.b_netAmount = selectedItem.Price
+  //   this.b_IsEditable = selectedItem.IsEditable
+  //   this.b_IsDocEditable = selectedItem.IsDocEditable
+  //   this.b_isPath = selectedItem.IsPathology
+  //   this.b_isRad = selectedItem.IsRadiology
+  //   this.serviceId = selectedItem.ServiceId;
+  //   this.serviceName = selectedItem.ServiceName;
+  //   this.calculateTotalAmt();
+  // }
 
-  updatedVal(e) {
-    if (e && e.length >= 2) {
-      this.showAutocomplete = true;
-    } else {
-      this.showAutocomplete = false;
-    }
-    if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
-  }
+  // updatedVal(e) {
+  //   if (e && e.length >= 2) {
+  //     this.showAutocomplete = true;
+  //   } else {
+  //     this.showAutocomplete = false;
+  //   }
+  //   if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; this.b_isPath = ''; this.b_isRad = ''; this.b_IsEditable = '0'; }
+  // }
 
   getServiceListCombobox() {
     let tempObj;
@@ -357,67 +357,68 @@ export class OPBillingComponent implements OnInit {
     }
   }
 
-  drugChange(event) {
+  // drugChange(event) {
 
-    const filter$ = this.registeredForm.get(`drugController$`).valueChanges.pipe(
-      startWith(''),
-      debounceTime(200),
-      filter(q => typeof q === "string"));
+  //   const filter$ = this.registeredForm.get(`drugController$`).valueChanges.pipe(
+  //     startWith(''),
+  //     debounceTime(200),
+  //     filter(q => typeof q === "string"));
 
-    this.filteredDrugs$ = filter$.pipe(
-      switchMap(filter => {
-        //Note: Reset the page with every new seach text
-        let currentPage = 1;
-        return this.nextPage$.pipe(
-          startWith(currentPage),
-          //Note: Until the backend responds, ignore NextPage requests.
-          exhaustMap(_ => this.getDrugs(filter, currentPage)),
-          tap(() => currentPage++),
+  //   this.filteredDrugs$ = filter$.pipe(
+  //     switchMap(filter => {
+  //       //Note: Reset the page with every new seach text
+  //       let currentPage = 1;
+  //       return this.nextPage$.pipe(
+  //         startWith(currentPage),
+  //         //Note: Until the backend responds, ignore NextPage requests.
+  //         exhaustMap(_ => this.getDrugs(filter, currentPage)),
+  //         tap(() => currentPage++),
 
-          //Note: This is a custom operator because we also need the last emitted value.
-          //Note: Stop if there are no more pages, or no results at all for the current search text.
-          takeWhileInclusive(p => p.length > 0),
-          scan((allProducts, newProducts) => allProducts.concat(newProducts), []),
-        );
-      }));
-  }
-  getTotalAmount(element) {
-    // debugger
-    if (element.Price && element.Qty) {
-      let totalAmt;
-      totalAmt = parseInt(element.Price) * parseInt(element.Qty);
-      element.TotalAmt = totalAmt;
-      element.NetAmount = totalAmt;
-      this.totalAmtOfNetAmt = totalAmt;
-      this.getDiscAmount(element);
+  //         //Note: This is a custom operator because we also need the last emitted value.
+  //         //Note: Stop if there are no more pages, or no results at all for the current search text.
+  //         takeWhileInclusive(p => p.length > 0),
+  //         scan((allProducts, newProducts) => allProducts.concat(newProducts), []),
+  //       );
+  //     }));
+  // }
 
-    }
-  }
+  // getTotalAmount(element) {
+  //   // debugger
+  //   if (element.Price && element.Qty) {
+  //     let totalAmt;
+  //     totalAmt = parseInt(element.Price) * parseInt(element.Qty);
+  //     element.TotalAmt = totalAmt;
+  //     element.NetAmount = totalAmt;
+  //     this.totalAmtOfNetAmt = totalAmt;
+  //     this.getDiscAmount(element);
+
+  //   }
+  // }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  getDiscAmount(element) {
-    let netAmt = parseInt(element.Price) * parseInt(element.Qty);
-    if (element.ConcessionPercentage) {
-      let discAmt = (netAmt * parseInt(element.ConcessionPercentage)) / 100;
-      element.DiscAmt = discAmt;
-      element.NetAmount = netAmt - discAmt;
-    }
-  }
+  // getDiscAmount(element) {
+  //   let netAmt = parseInt(element.Price) * parseInt(element.Qty);
+  //   if (element.ConcessionPercentage) {
+  //     let discAmt = (netAmt * parseInt(element.ConcessionPercentage)) / 100;
+  //     element.DiscAmt = discAmt;
+  //     element.NetAmount = netAmt - discAmt;
+  //   }
+  // }
 
-  getDiscValue(element) {
-    let netAmt = parseInt(element.Price) * parseInt(element.Qty);
-    if (element.DiscAmt) {
-      element.ConcessionPercentage = (parseInt(element.DiscAmt) * 100) / netAmt;
-      element.NetAmount = netAmt - parseInt(element.DiscAmt);
-    }
-  }
+  // getDiscValue(element) {
+  //   let netAmt = parseInt(element.Price) * parseInt(element.Qty);
+  //   if (element.DiscAmt) {
+  //     element.ConcessionPercentage = (parseInt(element.DiscAmt) * 100) / netAmt;
+  //     element.NetAmount = netAmt - parseInt(element.DiscAmt);
+  //   }
+  // }
 
-  openBillInfo() {
-    this.isExpanded = !this.isExpanded;
-  }
+  // openBillInfo() {
+  //   this.isExpanded = !this.isExpanded;
+  // }
 
   getNetAmtSum(element) {
     let netAmt;
@@ -436,83 +437,24 @@ export class OPBillingComponent implements OnInit {
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.concessionAmtOfNetAmt;
   }
 
-  tableElementChecked(event, element) {
+  // tableElementChecked(event, element) {
 
-    if (event.checked) {
-      this.interimArray.push(element);
-    } else if (this.interimArray.length > 0) {
-      let index = this.interimArray.indexOf(element);
-      if (index !== -1) {
-        this.interimArray.splice(index, 1);
-      }
-    }
-  }
+  //   if (event.checked) {
+  //     this.interimArray.push(element);
+  //   } else if (this.interimArray.length > 0) {
+  //     let index = this.interimArray.indexOf(element);
+  //     if (index !== -1) {
+  //       this.interimArray.splice(index, 1);
+  //     }
+  //   }
+  // }
 
-  getInterimData() {
-    // console.log('this.interimArray==', this.interimArray);
-    // this._matDialog.open(InterimComponentComponent,
-    //   { data: this.interimArray });
-  }
-  //Addcharges
-  onInsertAddCharges() {
-    this.isLoading = 'save';
-    let InsertAdddetArr = [];
-
-    if (this.SrvcName && (Math.round(parseInt(this.b_price)) != 0) && this.b_qty) {
-
-      this.dataSource.data.forEach((element) => {
-        let InsertAddChargesObj = {};
-        InsertAddChargesObj['ChargeID'] = 0,
-          InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-          InsertAddChargesObj['opD_IPD_Type'] = 0,
-          InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-          InsertAddChargesObj['serviceId'] = element.ServiceId,
-          InsertAddChargesObj['price'] = element.Price,
-          InsertAddChargesObj['qty'] = element.Qty,
-          InsertAddChargesObj['totalAmt'] = element.TotalAmt,
-          InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-          InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
-          InsertAddChargesObj['netAmount'] = element.NetAmount,
-          InsertAddChargesObj['doctorId'] = element.DoctorId,// this.registeredForm.get('DoctorID').value.DoctorID;
-          InsertAddChargesObj['docPercentage'] = 0,// this.registeredForm.get('DoctorId').value;
-          InsertAddChargesObj['docAmt'] = 0,
-          InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
-          InsertAddChargesObj['isGenerated'] = 0,
-          InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
-          InsertAddChargesObj['isCancelled'] = 0,
-          InsertAddChargesObj['isCancelledBy'] = 0,
-          InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
-          InsertAddChargesObj['isPathology'] = element.IsPathology,
-          InsertAddChargesObj['isRadiology'] = element.IsRadiology,
-          InsertAddChargesObj['isPackage'] = 0,
-          InsertAddChargesObj['packageMainChargeID'] = 0,
-          InsertAddChargesObj['isSelfOrCompanyService'] = false,
-          InsertAddChargesObj['packageId'] = 0,
-          InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-          InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,// this.registeredForm.get('ClassId').value;
-
-          InsertAdddetArr.push(InsertAddChargesObj);
-        // console.log(InsertAdddetArr.length);
-      })
-      let submitData = {
-        "opdAddChargesInsert": InsertAdddetArr
-      }
-      this._opappointmentService.InsertOPAddCharges(submitData).subscribe(data => {
-        this.msg = data;
-        if (data) {
-          Swal.fire('Charges !', 'Record Saved Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this.getChargesList();
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'OP Addcharges data not saved', 'error');
-        }
-      });
-      this.isLoading = '';
-    }
-    // console.log(InsertAdddetArr.length);
-  }
+  // getInterimData() {
+  //   // console.log('this.interimArray==', this.interimArray);
+  //   // this._matDialog.open(InterimComponentComponent,
+  //   //   { data: this.interimArray });
+  // }
+  
 
   getChargesList1() {
     this.chargeslist = [];
@@ -549,506 +491,7 @@ export class OPBillingComponent implements OnInit {
         this.isLoading = 'list-loaded';
       });
   }
-  //Save Billing 
-
-  // onSaveOPBill() {
-
-
-  //   // this.getChargesList();
-
-  //   this.saveclick = true;
-  //   let disamt = this.registeredForm.get('concessionAmt').value;
-
-  //   if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
-  //     this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
-  //     this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-  //   }
-  //   else {
-  //     this.FinalAmt = this.TotalnetPaybleAmt;
-  //     this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-  //   }
-
-
-  //   this.isLoading = 'submit';
-
-  //   let Pathreporthsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     if (element['IsPathology']) {
-  //       let PathologyReportHeaderObj = {};
-  //       PathologyReportHeaderObj['PathDate'] = this.dateTimeObj.date;
-  //       PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
-  //       PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
-  //       PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-  //         PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
-  //       PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //         PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
-  //       PathologyReportHeaderObj['IsCompleted'] = 0;
-  //       PathologyReportHeaderObj['IsPrinted'] = 0;
-  //       PathologyReportHeaderObj['IsSampleCollection'] = 0;
-  //       PathologyReportHeaderObj['TestType'] = 0;
-  //       Pathreporthsarr.push(PathologyReportHeaderObj);
-  //     }
-  //   });
-
-  //   let Redioreporthsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     if (element['IsRadiology']) {
-  //       let RadiologyReportHeaderObj = {};
-  //       RadiologyReportHeaderObj['RadDate'] = this.dateTimeObj.date;
-  //       RadiologyReportHeaderObj['RadTime'] = this.dateTimeObj.time;
-  //       RadiologyReportHeaderObj['OPD_IPD_Type'] = 0;
-  //       RadiologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-  //         RadiologyReportHeaderObj['RadTestID'] = element.ServiceId;
-  //       RadiologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //         RadiologyReportHeaderObj['ChargeID'] = element.ChargesId;
-  //       RadiologyReportHeaderObj['IsCompleted'] = 0;
-  //       RadiologyReportHeaderObj['IsPrinted'] = 0;
-  //       RadiologyReportHeaderObj['TestType'] = 0;
-  //       Redioreporthsarr.push(RadiologyReportHeaderObj);
-  //     }
-  //   });
-
-  //   let OPDoctorShareGroupAdmChargeObj = {};
-  //   OPDoctorShareGroupAdmChargeObj['BillNo'] = 0;
-
-  //   let Billdetsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     let BillDetailsInsertObj = {};
-  //     BillDetailsInsertObj['BillNo'] = 0;
-  //     BillDetailsInsertObj['ChargesId'] = element.ChargesId;
-  //     Billdetsarr.push(BillDetailsInsertObj);
-  //   });
-
-
-  //   let PatientHeaderObj = {};
-
-  //   PatientHeaderObj['Date'] = this.dateTimeObj.date;
-  //   PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-  //   PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-  //   PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
-
-
-  //   if (!this.registeredForm.get('cashpay').value) {
-  //     debugger;
-  //     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-  //       {
-  //         maxWidth: "85vw",
-  //         height: '540px',
-  //         width: '100%',
-  //         data: {
-  //           advanceObj: PatientHeaderObj,
-  //           FromName: "OP-Bill"
-  //         }
-  //       });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       // let Data = {
-  //       //   "opInsertPayment": result.submitDataPay.ipPaymentInsert
-
-  //       // };
-  //       this.Paymentdata = result.submitDataPay.ipPaymentInsert
-  //       console.log(this.Paymentdata)
-  //       this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-  //       this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-  //       this.flagSubmit = result.IsSubmitFlag
-
-  //     });
-  //   } else {
-
-  //     let Paymentobj = {};
-  //     Paymentobj['BillNo'] = 0;
-  //     Paymentobj['ReceiptNo'] = "";
-  //     Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-  //     Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-  //     Paymentobj['CashPayAmount'] = this.FinalAmt;
-  //     Paymentobj['ChequePayAmount'] = 0;
-  //     Paymentobj['ChequeNo'] = 0;
-  //     Paymentobj['BankName'] = "";
-  //     Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-  //     Paymentobj['CardPayAmount'] = 0;
-  //     Paymentobj['CardNo'] = 0;
-  //     Paymentobj['CardBankName'] = "";
-  //     Paymentobj['CardDate'] = this.dateTimeObj.date;
-  //     Paymentobj['AdvanceUsedAmount'] = 0;
-  //     Paymentobj['AdvanceId'] = 0;
-  //     Paymentobj['RefundId'] = 0;
-  //     Paymentobj['TransactionType'] = 0;
-  //     Paymentobj['Remark'] = "Cashpayment";
-  //     Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-  //       Paymentobj['IsCancelled'] = 0;
-  //     Paymentobj['IsCancelledBy'] = 0;
-  //     Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
-  //     Paymentobj['CashCounterId'] = 0;
-  //     // Paymentobj['IsSelfORCompany'] = 0;
-  //     // Paymentobj['CompanyId'] = 0;
-  //     Paymentobj['NEFTPayAmount'] = 0;
-  //     Paymentobj['NEFTNo'] = 0;
-  //     Paymentobj['NEFTBankMaster'] = "";
-  //     Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-  //     Paymentobj['PayTMAmount'] = 0;
-  //     Paymentobj['PayTMTranNo'] = 0;
-  //     Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-  //     Paymentobj['PaidAmt'] = this.FinalAmt;
-  //     Paymentobj['BalanceAmt'] = 0;
-
-  //     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-  //     let submitDataPay = {
-  //       ipPaymentInsert,
-  //     };
-
-  //     // let Data = {
-  //     //   "opInsertPayment": Paymentobj
-  //     // };
-  //     this.Paymentdata = Paymentobj;
-  //     this.flagSubmit = true
-  //   }//end cashpay chk
-
-
-
-  //   let InsertBillUpdateBillNoObj = {};
-  //   if (this.concessionDiscPer > 0) {
-  //     this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-  //   } else {
-  //     this.FinalAmt = this.TotalnetPaybleAmt;
-  //   }
-
-  //   let InterimOrFinal = 1;
-
-  //   InsertBillUpdateBillNoObj['BillNo'] = 0;
-  //   InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
-  //   InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
-  //   InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
-  //   InsertBillUpdateBillNoObj['NetPayableAmt'] = this.FinalAmt; //this.netPaybleAmt1;
-  //   InsertBillUpdateBillNoObj['PaidAmt'] = this.FinalAmt;
-  //   InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
-  //   InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
-  //   InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-  //   InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //     InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-  //     InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
-  //   InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
-  //   InsertBillUpdateBillNoObj['IsSettled'] = 0;
-  //   InsertBillUpdateBillNoObj['IsPrinted'] = 0;
-  //   InsertBillUpdateBillNoObj['IsFree'] = 0;
-  //   InsertBillUpdateBillNoObj['CompanyId'] = 0;
-  //   InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
-  //   InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-  //   InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
-  //   InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
-  //   InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
-  //   InsertBillUpdateBillNoObj['TaxPer'] = 0;
-  //   InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
-  //   InsertBillUpdateBillNoObj['CashCounterId'] = 0;
-  //   InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
-  //   //
-
-
-  //   let InsertAdddetArr = [];
-
-  //   if (this.SrvcName && (Math.round(parseInt(this.b_price)) != 0) && this.b_qty) {
-  //     // console.log(this.dataSource.data.length);
-  //     this.dataSource.data.forEach((element) => {
-  //       let InsertAddChargesObj = {};
-  //       InsertAddChargesObj['ChargeID'] = 0,
-  //         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-  //         InsertAddChargesObj['opD_IPD_Type'] = 0,
-  //         InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-  //         InsertAddChargesObj['serviceId'] = element.ServiceId,
-  //         InsertAddChargesObj['price'] = element.Price,
-  //         InsertAddChargesObj['qty'] = element.Qty,
-  //         InsertAddChargesObj['totalAmt'] = element.TotalAmt,
-  //         InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-  //         InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
-  //         InsertAddChargesObj['netAmount'] = element.NetAmount,
-  //         InsertAddChargesObj['doctorId'] = element.DoctorId,
-  //         InsertAddChargesObj['docPercentage'] = 0,
-  //         InsertAddChargesObj['docAmt'] = 0,
-  //         InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
-  //         InsertAddChargesObj['isGenerated'] = 0,
-  //         InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
-  //         InsertAddChargesObj['isCancelled'] = 0,
-  //         InsertAddChargesObj['isCancelledBy'] = 0,
-  //         InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
-  //         InsertAddChargesObj['isPathology'] = element.IsPathology,
-  //         InsertAddChargesObj['isRadiology'] = element.IsRadiology,
-  //         InsertAddChargesObj['isPackage'] = 0,
-  //         InsertAddChargesObj['packageMainChargeID'] = 0,
-  //         InsertAddChargesObj['isSelfOrCompanyService'] = false,
-  //         InsertAddChargesObj['packageId'] = 0,
-  //         InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-  //         InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,
-
-  //         InsertAdddetArr.push(InsertAddChargesObj);
-  //       // console.log(InsertAdddetArr.length);
-  //     })
-  //   }
-
-  //   let opCalDiscAmountBill = {}
-  //   opCalDiscAmountBill['billNo'] = 0
-
-  //   debugger
-  //   if (this.flagSubmit == true) {
-  //     console.log("Procced with Payment Option");
-  //     const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-  //     let submitData = {
-  //       // "insertPathologyReportHeader": Pathreporthsarr,
-  //       // "insertRadiologyReportHeader": Redioreporthsarr,
-  //       "insertBillupdatewithbillno": insertBillUpdateBillNo,
-  //       "opBillDetailsInsert": Billdetsarr,
-  //       "chargesDetailInsert": InsertAdddetArr,
-  //       "opCalDiscAmountBill": opCalDiscAmountBill,
-  //       "opInsertPayment": this.Paymentdata// result.submitDataPay.ipPaymentInsert
-  //     };
-  //     console.log(submitData);
-  //     this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
-  //       // if (response) {
-  //       //   Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
-  //       //     if (result.isConfirmed) {
-  //       //       let m = response;
-  //       //       this.getPrint(m);
-  //       //       this._matDialog.closeAll();
-  //       //     }
-  //       //   });
-  //       // } else {
-  //       //   Swal.fire('Error !', 'OP Billing data not saved', 'error');
-  //       // }
-  //       this.isLoading = '';
-  //     });
-  //   }
-  //   else {
-  //     console.log("Procced with Credit bill");
-  //     InterimOrFinal = 0;
-  //     InsertBillUpdateBillNoObj['PaidAmt'] = 0;
-  //     InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
-  //     const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-  //     let submitData = {
-  //       // "insertPathologyReportHeadercredit": Pathreporthsarr,
-  //       // "insertRadiologyReportHeadercredit": Redioreporthsarr,
-  //       "chargesDetailInsert": InsertAdddetArr,
-  //       "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
-  //       "opBillDetailscreditInsert": Billdetsarr,
-  //       // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
-  //       // "opInsertPayment": result.submitDataPay.ipPaymentInsert
-  //     };
-  //     console.log(submitData);
-  //     this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
-  //       if (response) {
-  //         Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
-  //           if (result.isConfirmed) {
-  //             let m = response;
-  //             this.getPrint(m);
-  //             this._matDialog.closeAll();
-
-  //           }
-  //         });
-  //       } else {
-  //         Swal.fire('Error !', 'OP Billing data not saved', 'error');
-  //       }
-  //       this.isLoading = '';
-  //     });
-  //   }
-
-  // }
-
-
-
-
-  // onSaveOPBill1() {
-  //   // this.click = true;
-  //   let disamt = this.registeredForm.get('concessionAmt').value;
-  //   debugger;
-  //   if (this.concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
-  //     this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
-  //     this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-  //   }
-  //   else {
-  //     this.FinalAmt = this.TotalnetPaybleAmt;
-  //     this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-  //   }
-
-
-  //   this.isLoading = 'submit';
-
-  //   let Pathreporthsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     if (element['IsPathology']) {
-  //       let PathologyReportHeaderObj = {};
-  //       PathologyReportHeaderObj['PathDate'] = this.dateTimeObj.date;
-  //       PathologyReportHeaderObj['PathTime'] = this.dateTimeObj.time;
-  //       PathologyReportHeaderObj['OPD_IPD_Type'] = 0;
-  //       PathologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-  //         PathologyReportHeaderObj['PathTestID'] = element.ServiceId;
-  //       PathologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //         PathologyReportHeaderObj['ChargeID'] = element.ChargesId;
-  //       PathologyReportHeaderObj['IsCompleted'] = 0;
-  //       PathologyReportHeaderObj['IsPrinted'] = 0;
-  //       PathologyReportHeaderObj['IsSampleCollection'] = 0;
-  //       PathologyReportHeaderObj['TestType'] = 0;
-  //       Pathreporthsarr.push(PathologyReportHeaderObj);
-  //     }
-  //   });
-
-  //   let Redioreporthsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     if (element['IsRadiology']) {
-  //       let RadiologyReportHeaderObj = {};
-  //       RadiologyReportHeaderObj['RadDate'] = this.dateTimeObj.date;
-  //       RadiologyReportHeaderObj['RadTime'] = this.dateTimeObj.time;
-  //       RadiologyReportHeaderObj['OPD_IPD_Type'] = 0;
-  //       RadiologyReportHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
-  //         RadiologyReportHeaderObj['RadTestID'] = element.ServiceId;
-  //       RadiologyReportHeaderObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //         RadiologyReportHeaderObj['ChargeID'] = element.ChargesId;
-  //       RadiologyReportHeaderObj['IsCompleted'] = 0;
-  //       RadiologyReportHeaderObj['IsPrinted'] = 0;
-  //       RadiologyReportHeaderObj['TestType'] = 0;
-  //       Redioreporthsarr.push(RadiologyReportHeaderObj);
-  //     }
-  //   });
-
-  //   let OPDoctorShareGroupAdmChargeObj = {};
-  //   OPDoctorShareGroupAdmChargeObj['BillNo'] = 0;
-
-  //   // let Cal_DiscAmount_OPBillObj = {};
-  //   // Cal_DiscAmount_OPBillObj['BillNo'] = 0;
-
-  //   let Billdetsarr = [];
-  //   this.dataSource.data.forEach((element) => {
-  //     let BillDetailsInsertObj = {};
-  //     BillDetailsInsertObj['BillNo'] = 0;
-  //     BillDetailsInsertObj['ChargesId'] = element.ChargesId;
-  //     Billdetsarr.push(BillDetailsInsertObj);
-  //   });
-
-
-  //   let PatientHeaderObj = {};
-
-  //   PatientHeaderObj['Date'] = this.dateTimeObj.date;
-  //   PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-  //   PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-  //   PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
-
-
-  //   const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-  //     {
-  //       maxWidth: "85vw",
-  //       height: '540px',
-  //       width: '100%',
-  //       data: {
-  //         advanceObj: PatientHeaderObj,
-  //         FromName: "OP-Bill"
-  //       }
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     let Data = {
-  //       "opInsertPayment": result.submitDataPay.ipPaymentInsert
-  //     };
-  //     this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-  //     this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-  //     this.flagSubmit = result.IsSubmitFlag
-  //     let InsertBillUpdateBillNoObj = {};
-  //     if (this.concessionDiscPer > 0) {
-  //       this.FinalAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-  //     } else {
-  //       this.FinalAmt = this.TotalnetPaybleAmt;
-  //     }
-
-  //     let InterimOrFinal = 1;
-
-  //     InsertBillUpdateBillNoObj['BillNo'] = 0;
-  //     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
-  //     InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
-  //     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
-  //     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.FinalAmt; //this.netPaybleAmt1;
-  //     InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt;
-  //     InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
-  //     InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
-  //     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-  //     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-  //       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-  //       InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
-  //     InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.registeredForm.get('ConcessionReasonId').value || 0;
-  //     InsertBillUpdateBillNoObj['IsSettled'] = 0;
-  //     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
-  //     InsertBillUpdateBillNoObj['IsFree'] = 0;
-  //     InsertBillUpdateBillNoObj['CompanyId'] = 0;
-  //     InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
-  //     InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-  //     InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
-  //     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
-  //     InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
-  //     InsertBillUpdateBillNoObj['TaxPer'] = 0;
-  //     InsertBillUpdateBillNoObj['TaxAmount'] = 0; //1000;//this.taxAmt;
-  //     // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0; //1000;//this.taxAmt;
-  //     InsertBillUpdateBillNoObj['CashCounterId'] = 0;
-  //     InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
-  //     //
-  //     if (this.flagSubmit == true) {
-  //       console.log("Procced with Payment Option");
-  //       const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-  //       let submitData = {
-  //         "insertPathologyReportHeader": Pathreporthsarr,
-  //         "insertRadiologyReportHeader": Redioreporthsarr,
-  //         "insertBillupdatewithbillno": insertBillUpdateBillNo,
-  //         "opBillDetailsInsert": Billdetsarr,
-  //         // "opCalDiscAmountBill": Cal_DiscAmount_OPBillObj,
-  //         "opInsertPayment": result.submitDataPay.ipPaymentInsert
-  //       };
-  //       console.log(submitData);
-  //       this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
-  //         if (response) {
-  //           Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
-  //             if (result.isConfirmed) {
-  //               let m = response;
-  //               this.getPrint(m);
-  //               this._matDialog.closeAll();
-  //             }
-  //           });
-  //         } else {
-  //           Swal.fire('Error !', 'OP Billing data not saved', 'error');
-  //         }
-  //         this.isLoading = '';
-  //       });
-  //     }
-  //     else {
-  //       console.log("Procced with Credit bill");
-  //       InterimOrFinal = 0;
-  //       InsertBillUpdateBillNoObj['PaidAmt'] = 0;
-  //       InsertBillUpdateBillNoObj['BalanceAmt'] = this.FinalAmt;
-  //       const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-  //       let submitData = {
-  //         "insertPathologyReportHeadercredit": Pathreporthsarr,
-  //         "insertRadiologyReportHeadercredit": Redioreporthsarr,
-  //         "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
-  //         "opBillDetailscreditInsert": Billdetsarr,
-  //         // "opCalDiscAmountBillcredit": Cal_DiscAmount_OPBillObj,
-  //         // "opInsertPayment": result.submitDataPay.ipPaymentInsert
-  //       };
-  //       console.log(submitData);
-  //       this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
-  //         if (response) {
-  //           Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
-  //             if (result.isConfirmed) {
-  //               let m = response;
-  //               this.getPrint(m);
-  //               this._matDialog.closeAll();
-
-  //             }
-  //           });
-  //         } else {
-  //           Swal.fire('Error !', 'OP Billing data not saved', 'error');
-  //         }
-  //         this.isLoading = '';
-  //       });
-  //     }
-  //   });
-  // }
-
-
-
-
-
+  
 
   onSaveOPBill2() {
     this.saveclick = true;
@@ -1361,9 +804,9 @@ debugger
           
         });
       this.isLoading = '';
-      console.log(this.chargeslist);
+      
       this.dataSource.data = this.chargeslist;
-      console.log(this.dataSource.data);
+      
       this.changeDetectorRefs.detectChanges();
 
     }
@@ -1374,12 +817,12 @@ debugger
   }
 
 
-  getSelectedDrug(value) {
-    // console.log('historyContoller==', this.caseFormGroup.get('historyContoller').value);
-    console.log('controll===', value);
-    this.registeredForm.get(`drugController$`).setValue(value);
-    console.log(this.registeredForm.get(`drugController$`).value);
-  }
+  // getSelectedDrug(value) {
+  //   // console.log('historyContoller==', this.caseFormGroup.get('historyContoller').value);
+  //   console.log('controll===', value);
+  //   this.registeredForm.get(`drugController$`).setValue(value);
+  //   console.log(this.registeredForm.get(`drugController$`).value);
+  // }
 
   displayWith(lookup) {
     return lookup ? lookup.ItemName : null;
@@ -1397,14 +840,17 @@ debugger
   }
 
   onClearServiceAddList() {
-    this.registeredForm.get('SrvcName').reset();
-    this.registeredForm.get('price').reset();
-    this.registeredForm.get('qty').reset('1');
-    this.registeredForm.get('totalAmount').reset();
-    this.registeredForm.get('DoctorId').reset();
-    this.registeredForm.get('discPer').reset();
-    this.registeredForm.get('discAmount').reset();
-    this.registeredForm.get('netAmount').reset();
+    // this.registeredForm.get('SrvcName').reset();
+    // this.registeredForm.get('price').reset();
+    // this.registeredForm.get('qty').reset('1');
+    // this.registeredForm.get('totalAmount').reset();
+    // this.registeredForm.get('DoctorId').reset();
+    // this.registeredForm.get('discPer').reset();
+    // this.registeredForm.get('discAmount').reset();
+    // this.registeredForm.get('netAmount').reset();
+
+    this.registeredForm.reset();
+
   }
 
   calculateTotalAmt() {
@@ -1634,11 +1080,7 @@ debugger
     return converter.toWords(e);
   }
 
-  transform1(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-    return value;
-  }
+ 
 
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
