@@ -220,37 +220,26 @@
 
                         </div>
                         <div class="table-footer">
-
                             <div class="net-amt">
                                 <span class="net-amt-label" style="font-weight:bold;">Total Advance Amount:</span>
-                                <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
                                 <span class="net-amt-value"
                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvancetotal(dataSource.data)
                                     | currency:'INR' }}</span>
 
-                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Adv.Avilable
+                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Adv Available
                                     Amount:</span>&nbsp;
-                                <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
                                 <span class="net-amt-value"
                                     style="margin-left:10px;font-weight:bolder;">{{getAdvavilable(dataSource.data) |
                                     currency:'INR' }}</span>
                             </div>
                         </div>
-                        <hr>
                         <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
                             <!-- <form [formGroup]="_IpSearchListService.myShowAdvanceForm"> -->
                             <div class="dialog-content-wrapper">
                                 <!-- ================================ LABEL HEADER  -->
                                 <!-- <mat-card > -->
                                 <form [formGroup]="AdvFormGroup">
-                                    <button class="next-btn" (click)="onSave()"
-                                        style="border-radius: 16px;float: right;">Print</button>
-                                    <button class="next-btn" (click)="onSave()"
-                                        style="border-radius: 16px;float: right;width: auto;margin-right:20px;">Summary</button>
                                     <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <!-- <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"> -->
-
-                                        <!-- </div> -->
                                         <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                             <mat-form-field appearance="outline" style="width:200px ;">
                                                 <mat-label>Advance Amount</mat-label>
@@ -271,13 +260,10 @@
                                                     *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
                                                     Advance Amount is required</mat-error>
                                             </mat-form-field>
-
-
                                         </div>
-                                        <br />
                                         <div class="buttons" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                             <button class="next-btn" [disabled]="AdvFormGroup.invalid"
-                                                (click)="onSave()" style="border-radius: 16px;">Pay It</button>
+                                                (click)="onSave()" style="border-radius: 16px;">Save</button>
                                             <button class="footer-btn" (click)="onClose()"
                                                 style="border-radius: 16px;margin-left: 20px;">Close</button>
                                         </div>
