@@ -136,6 +136,7 @@ export class OPBillingComponent implements OnInit {
   IPBillingInfor: any = [];
 
   registeredForm: FormGroup;
+  BillingForm: FormGroup;
   myShowAdvanceForm: FormGroup;
 
   // concessionAmtOfNetAmt: any = 0;
@@ -182,6 +183,7 @@ export class OPBillingComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.BillingFooterForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
@@ -253,15 +255,28 @@ export class OPBillingComponent implements OnInit {
       doctorId: [0],
       netAmount: ['', Validators.pattern("^[0-9]*$")],
 
-      ConcessionId: [],
-      concesDiscPer: [Validators.pattern("^[0-9]*$")],
-      BillRemark: [''],
-      TotalAmount: [Validators.pattern("^[0-9]*$")],
+      // ConcessionId: [],
+      // concesDiscPer: [Validators.pattern("^[0-9]*$")],
+      // BillRemark: [''],
+      // TotalAmount: [Validators.pattern("^[0-9]*$")],
+      // concessionAmt: [''],
+      // TotallistAmount: [''],
+      // FinalAmt: ['', Validators.required],
+      // cashpay: ['1'],
+      // CashCounterId: ['', Validators.required]
+    });
+  }
+  BillingFooterForm() {
+    this.BillingForm = this.formBuilder.group({
+      TotallistAmount: ['', Validators.required],
       concessionAmt: [''],
-      TotallistAmount: [''],
+      concesDiscPer: [Validators.pattern("^[0-9]*$")],
+      ConcessionId: [],
+      BillRemark: [''],
       FinalAmt: ['', Validators.required],
       cashpay: ['1'],
       CashCounterId: ['', Validators.required]
+      // TotalAmount: [Validators.pattern("^[0-9]*$")],
     });
   }
 
@@ -365,7 +380,7 @@ export class OPBillingComponent implements OnInit {
 
   onSaveOPBill2() {
     this.saveclick = true;
-    let disamt = this.registeredForm.get('concessionAmt').value;
+    let disamt = this.BillingForm.get('concessionAmt').value;
 
     // if (this.b_concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
     //   this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
@@ -388,19 +403,17 @@ export class OPBillingComponent implements OnInit {
       Billdetsarr.push(BillDetailsInsertObj);
     });
 
-    let InterimOrFinal=1
-
     let ConcessionId=0;
-    if(this.registeredForm.get('ConcessionId').value)
-    ConcessionId = this.registeredForm.get('ConcessionId').value.ConcessionId;
+    if(this.BillingForm.get('ConcessionId').value)
+    ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
 
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.b_Consessionamt;
-    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.registeredForm.get('FinalAmt').value;
-    InsertBillUpdateBillNoObj['PaidAmt'] = this.registeredForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['PaidAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
@@ -414,26 +427,26 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['CompanyId'] = 0;
     InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
     InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-    InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
     InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0; 
-    InsertBillUpdateBillNoObj['CashCounterId'] = this.registeredForm.get('CashCounterId').value.CashCounterId;
+    InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId;
     InsertBillUpdateBillNoObj['DiscComments'] = 'Remark';// 
 
     let InsertAdddetArr = [];
-    if (this.registeredForm.get("DoctorID").value) {
-      this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
-      this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName || '';
-    } else {
-      this.DoctornewId = 0;
-      this.ChargesDoctorname = '';
-    }
+    // if (this.registeredForm.get("DoctorID").value) {
+    //   this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
+    //   this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName || '';
+    // } else {
+    //   this.DoctornewId = 0;
+    //   this.ChargesDoctorname = '';
+    // }
 
     this.dataSource.data.forEach((element) => {
       let InsertAddChargesObj = {};
-      InsertAddChargesObj['ChargeID'] = 0,
+        InsertAddChargesObj['ChargeID'] = 0,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
         InsertAddChargesObj['opD_IPD_Type'] = 0,
         InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
@@ -477,7 +490,7 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.FinalAmt;
 
-    if (!this.registeredForm.get('cashpay').value) {
+    if (!this.BillingForm.get('cashpay').value) {
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "85vw",
@@ -533,15 +546,12 @@ export class OPBillingComponent implements OnInit {
           });
         }
         else {
-
-        
           const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
           let submitData = {
             "chargesDetailCreditInsert":InsertAdddetArr,
             "insertBillcreditupdatewithbillno": insertBillUpdateBillNo,
             "opBillDetailscreditInsert": Billdetsarr,
             "opCalDiscAmountBillcredit": opCalDiscAmountBill,
-            
           };
           console.log(submitData);
           this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
@@ -567,7 +577,7 @@ export class OPBillingComponent implements OnInit {
       Paymentobj['ReceiptNo'] = "";
       Paymentobj['PaymentDate'] = this.dateTimeObj.date;
       Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = this.registeredForm.get('FinalAmt').value || 0;
+      Paymentobj['CashPayAmount'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['ChequePayAmount'] = 0;
       Paymentobj['ChequeNo'] = 0;
       Paymentobj['BankName'] = "";
@@ -593,7 +603,7 @@ export class OPBillingComponent implements OnInit {
       Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
       Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = this.registeredForm.get('FinalAmt').value || 0;
+      Paymentobj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 
       const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
@@ -611,7 +621,7 @@ export class OPBillingComponent implements OnInit {
       console.log(submitData);
       this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
         if (response) {
-          Swal.fire('OP Bill With Cash Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
+          Swal.fire('OP Bill with cash payment!', 'Bill Generated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               let m = response;
               this.getPrint(m);
@@ -627,6 +637,7 @@ export class OPBillingComponent implements OnInit {
   }
 
   onAddCharges() {
+
     if (this.registeredForm.get("DoctorID").value) {
       this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
       this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName || '';
@@ -729,19 +740,19 @@ export class OPBillingComponent implements OnInit {
       this.TotalnetPaybleAmt = Math.round(this.b_TotalChargesAmount - this.b_Consessionamt).toString();
     
       this.Consessionres = true;
-      this.registeredForm.get('ConcessionId').reset();
-      this.registeredForm.get('ConcessionId').setValidators([Validators.required]);
-      this.registeredForm.get('ConcessionId').enable();
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
+      this.BillingForm.get('ConcessionId').enable();
       // this.registeredForm.get('concessionAmt').disable();
 
     }
     else{
       this.Consessionres = false;
-      this.registeredForm.get('ConcessionId').reset();
-      this.registeredForm.get('ConcessionId').clearValidators();
-      this.registeredForm.get('ConcessionId').updateValueAndValidity();
-      this.registeredForm.get('ConcessionId').disable();
-      this.registeredForm.get('concessionAmt').disable();
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').clearValidators();
+      this.BillingForm.get('ConcessionId').updateValueAndValidity();
+      this.BillingForm.get('ConcessionId').disable();
+      this.BillingForm.get('concessionAmt').disable();
     }
   }
 
