@@ -102,7 +102,7 @@ export class OPBillingComponent implements OnInit {
   isExpanded: boolean = false;
   totalAmtOfNetAmt: any;
   interimArray: any = [];
-  formDiscPersc: any;
+  formDiscPersc: any=0;
   serviceId: number;
   serviceName: String;
   b_TotalChargesAmount: any;
