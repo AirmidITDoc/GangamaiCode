@@ -143,7 +143,7 @@ export class OPBillingComponent implements OnInit {
   // netPaybleAmt: any;
   // netPaybleAmt1: any;
 
-  TotalnetPaybleAmt: any;
+  TotalnetPaybleAmt: any =0;
 
 
   // private lookups: ILookup[] = [];
@@ -734,11 +734,14 @@ export class OPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
+    debugger;
     if (this.b_concessionDiscPer > 0) {
 
       this.b_Consessionamt = (this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100;
-      this.TotalnetPaybleAmt = Math.round(this.b_TotalChargesAmount - this.b_Consessionamt).toString();
-    
+      console.log(this.b_Consessionamt);
+      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
+      console.log(this.TotalnetPaybleAmt);
+
       this.Consessionres = true;
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
@@ -760,6 +763,7 @@ export class OPBillingComponent implements OnInit {
     debugger;
 
     if (this.b_Consessionamt > 0){
+      console.log(this.b_Consessionamt);
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
     }
     else
@@ -813,7 +817,6 @@ export class OPBillingComponent implements OnInit {
   getCashCounterComboList() {
     this._opappointmentService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
-      console.log(this.CashCounterList)
     });
   }
 

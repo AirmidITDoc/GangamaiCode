@@ -210,19 +210,24 @@ export class NewAppointmentComponent implements OnInit {
 
     this.getHospitalList1();
     this.getHospitalList();
+    
     this.getPrefixList();
     this.getPatientTypeList();
+
     this.getTariffList();
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
     this.getcityList();
+
     // this.getGendorMasterList();
     this.getCompanyList();
     this.getSubTPACompList();
+
     this.getDepartmentList();
     this.getDoctor1List();
     this.getDoctor2List();
+
     this.getPurposeList();
 
     this.bankFilterCtrl.valueChanges
@@ -915,7 +920,7 @@ export class NewAppointmentComponent implements OnInit {
 
   OnChangeDoctorList(departmentObj) {
     // ;
-    // console.log("departmentObj", departmentObj)
+    console.log("departmentObj", departmentObj)
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
