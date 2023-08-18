@@ -140,8 +140,8 @@ export class OPBillingComponent implements OnInit {
   myShowAdvanceForm: FormGroup;
 
   // concessionAmtOfNetAmt: any = 0;
-  // netPaybleAmt: any;
-  // netPaybleAmt1: any;
+  netPaybleAmt: any;
+  netPaybleAmt1: any;
 
   TotalnetPaybleAmt: any =0;
 
@@ -382,14 +382,14 @@ export class OPBillingComponent implements OnInit {
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
-    // if (this.b_concessionDiscPer > 0 || this.concessionAmtOfNetAmt > 0) {
-    //   this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
-    //   this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-    // }
-    // else {
-    //   this.FinalAmt = this.TotalnetPaybleAmt;
-    //   this.netPaybleAmt1 = this.TotalnetPaybleAmt;
-    // }
+    if (this.b_concessionDiscPer > 0 || this.b_Consessionamt > 0) {
+      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
+    else {
+      this.FinalAmt = this.TotalnetPaybleAmt;
+      this.netPaybleAmt1 = this.TotalnetPaybleAmt;
+    }
 
 
     this.isLoading = 'submit';
@@ -734,13 +734,14 @@ export class OPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-    debugger;
     if (this.b_concessionDiscPer > 0) {
-
       this.b_Consessionamt = (this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100;
       console.log(this.b_Consessionamt);
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
       console.log(this.TotalnetPaybleAmt);
+
+      this.BillingForm.get('concessionAmt').setValue(this.b_Consessionamt);
+      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
 
       this.Consessionres = true;
       this.BillingForm.get('ConcessionId').reset();
@@ -750,21 +751,25 @@ export class OPBillingComponent implements OnInit {
 
     }
     else{
+
+      this.BillingForm.get('concessionAmt').reset(0);
+      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
+      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+
       this.Consessionres = false;
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();
       this.BillingForm.get('ConcessionId').updateValueAndValidity();
       this.BillingForm.get('ConcessionId').disable();
-      this.BillingForm.get('concessionAmt').disable();
     }
   }
 
   calculateDiscamtfinal() {
-    debugger;
-
     if (this.b_Consessionamt > 0){
-      console.log(this.b_Consessionamt);
+
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
+      this.BillingForm.get('concessionAmt').setValue(this.b_Consessionamt);
+      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
     }
     else
     {
