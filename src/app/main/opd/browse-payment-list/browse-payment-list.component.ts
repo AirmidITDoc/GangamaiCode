@@ -262,30 +262,16 @@ debugger;
     console.log(this.printTemplate = resData[0].TempKeys);
     this.printTemplate = resData[0].TempDesign;
    
-    // this.data = this.sanitizer.bypassSecurityTrustHtml(resData[0].TempDesign);    
-
-    // console.log(this.printTemplate)
-    // console.log(this.data);
-    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','BillDate','RegId','BillNo','PatientName','ConsultantDr','Department','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
    
 
-//   @Pipe({
-//   name: 'htmlToPlaintext'
-// })
-//     const temp = document.createElement('div');
-//     temp.innerHTML = this.printTemplate;
-//     this.printTemplate=temp.innerHTML
-//     return temp.textContent || temp.innerText || '';
-
-//     console.log(temp.textContent || temp.innerText || '')
-  
    for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
 
-   
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
