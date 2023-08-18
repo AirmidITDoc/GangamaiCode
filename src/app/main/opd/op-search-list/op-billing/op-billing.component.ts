@@ -106,7 +106,7 @@ export class OPBillingComponent implements OnInit {
   b_CreditedtoDoctor=0;
   b_ChargeDiscPer: any =0;
   b_ChargeDisAmount: any =0;
-
+  
   totalamt = 0;
   TotalAmount = 0;
   
@@ -734,50 +734,60 @@ export class OPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-  //   if (this.b_concessionDiscPer > 0) {
-  //     this.b_concessionamt = (this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100;
-  //     console.log(this.b_concessionamt);
-  //     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
-  //     console.log(this.TotalnetPaybleAmt);
+    if (this.b_concessionDiscPer > 0) {
+      this.b_concessionamt = Math.round((this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100);
+      
+      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+      console.log(this.TotalnetPaybleAmt);
 
-  //     this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
-  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
+      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
 
-  //     this.Consessionres = true;
-  //     this.BillingForm.get('ConcessionId').reset();
-  //     this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
-  //     this.BillingForm.get('ConcessionId').enable();
-  //     // this.registeredForm.get('concessionAmt').disable();
+      this.Consessionres = true;
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
+      this.BillingForm.get('ConcessionId').enable();
+      
+    }
+    else{
+      this.Consessionres = false;
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').clearValidators();
+      this.BillingForm.get('ConcessionId').updateValueAndValidity();
 
-  //   }
-  //   else{
-
-  //     this.BillingForm.get('concessionAmt').reset(0);
-  //     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
-  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-
-  //     this.Consessionres = false;
-  //     this.BillingForm.get('ConcessionId').reset();
-  //     this.BillingForm.get('ConcessionId').clearValidators();
-  //     this.BillingForm.get('ConcessionId').updateValueAndValidity();
-  //     this.BillingForm.get('ConcessionId').disable();
-  //   }
+      
+      if(this.b_concessionDiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null)        
+        this.BillingForm.get('FinalAmt').setValue(this.b_TotalChargesAmount);
+      
+    }
   }
 
   calculateDiscamtfinal() {
-    debugger;
-    console.log(this.b_concessionamt);
-    //this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
-    console.log(this.b_concessionamt);
-    if (this.b_concessionamt > 0){
+   
+   this.b_concessionamt=this.BillingForm.get('concessionAmt').value ;
+        if (this.b_concessionamt > 0){
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
       this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
       this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+      this.Consessionres = true;
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
     }
     else
     {
+      this.Consessionres = false;
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').clearValidators();
+      this.BillingForm.get('ConcessionId').updateValueAndValidity();
+
+     
+      if(this.b_concessionamt == 0 || this.BillingForm.get('concessionAmt').value == null){
+        
+        this.BillingForm.get('FinalAmt').setValue(this.b_TotalChargesAmount);
+      }
 
     }
+
     // let d = this.registeredForm.get('concessionAmt').value;
     // this.Consessionres = false;
     // this.disamt = this.registeredForm.get('concessionAmt').value;

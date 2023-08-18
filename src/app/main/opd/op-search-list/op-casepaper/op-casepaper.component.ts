@@ -1464,6 +1464,7 @@ export class CasepaperVisitDetails {
   SecondDocRef: number;
   SpO2: string;
   VisitDate: any;
+  PreviousVisitDate:any;
   VisitId: any;
   VisitTime: any;
   Weight: string;
@@ -1488,6 +1489,7 @@ export class CasepaperVisitDetails {
   Address:any;
   SecondRefDoctorName:any;
   VistDateTime:any;
+ 
 
   constructor(casePaperDetails) {
     this.BP = casePaperDetails.BP || '';
@@ -1530,7 +1532,8 @@ export class CasepaperVisitDetails {
     this.DepartmentName =casePaperDetails.DepartmentName ||'';
     this.Address =casePaperDetails.Address ||'';
     this.SecondRefDoctorName=casePaperDetails.SecondRefDoctorName||'';
-    this.VistDateTime=casePaperDetails.VistDateTime||''
+    this.VistDateTime=casePaperDetails.VistDateTime ||'' ;
+    this.PreviousVisitDate=casePaperDetails.PreviousVisitDate ||'' ;
   }
 
 
