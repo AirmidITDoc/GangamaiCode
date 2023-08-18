@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { RegInsert, VisitMaster } from '../appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,10 +12,11 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatStepper } from '@angular/material/stepper';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { RegistrationService } from '../../registration/registration.service';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
+import { MatSelect } from '@angular/material/select';
 
 
 @Component({
@@ -119,7 +120,7 @@ export class NewAppointmentComponent implements OnInit {
 
   //department filter
   public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
   public religionFilterCtrl: FormControl = new FormControl();
@@ -178,7 +179,12 @@ export class NewAppointmentComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   editor: string;
-
+  isDepartmentSelected: boolean = false;
+  isDoctorSelected: boolean = false;
+  optionsDep: any[] = [];
+  optionsDoc: any[] = [];
+  filteredOptionsDep: Observable<string[]>;
+  filteredOptionsDoc: Observable<string[]>;
   constructor(public _opappointmentService: AppointmentSreviceService,
     private accountService: AuthenticationService,
     public _registerService: RegistrationService,
@@ -231,11 +237,11 @@ export class NewAppointmentComponent implements OnInit {
         this.filterCity();
       });
 
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDepartment();
-      });
+    // this.departmentFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     this.filterDepartment();
+    //   });
 
     this.religionFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -279,16 +285,14 @@ export class NewAppointmentComponent implements OnInit {
         this.filterDoctorone();
       });
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
+    // this.doctorFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     this.filterDoctor();
+    //   });
 
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
-
-    debugger;
 
     if (this.data) {
 
@@ -298,12 +302,50 @@ export class NewAppointmentComponent implements OnInit {
 
       // this.setDropdownObjs1();
     }
+
+    this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDep(value || '')),
+    );
+
+    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDoc(value || '')),
+    );
+  }
+
+  getOptionTextDep(option) {
+    return option.departmentName;
+  }
+
+  getOptionTextDoc(option) {
+    return option.Doctorname;
   }
 
 
+  private _filterDep(value: any): string[] {
+    if(value) {
+      const filterValue = value && value.departmentName ?  value.departmentName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+    
+  }
+
+  private _filterDoc(value: any): string[] {
+    if(value) {
+      const filterValue = value && value.Doctorname ?  value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+    // const filterValue = value.toLowerCase();
+    // this.isDoctorSelected = false;
+    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  }
+
 
   // setDropdownObjs1() {
-  //   debugger;
+  //   ;
 
 
   //   const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
@@ -416,7 +458,6 @@ export class NewAppointmentComponent implements OnInit {
     });
   }
   createSearchForm() {
-    debugger
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
@@ -433,7 +474,6 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   getPrefixList() {
-    debugger
     this._opappointmentService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       this.filteredPrefix.next(this.PrefixList.slice());
@@ -455,7 +495,6 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    debugger;
     console.log(value);
 
     if (value.PatientTypeId == 2) {
@@ -548,7 +587,8 @@ export class NewAppointmentComponent implements OnInit {
   getDepartmentList() {
     this._opappointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
+      this.optionsDep = this.DepartmentList.slice();
+      // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
 
@@ -581,7 +621,7 @@ export class NewAppointmentComponent implements OnInit {
     }
   }
   onChangeCityList(CityId) {
-    debugger
+    
     if (CityId > 0) {
       if(this.registerObj.CityId ! =0){
         CityId=this.registerObj.CityId
@@ -670,25 +710,25 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   // department filter code
-  private filterDepartment() {
+  // private filterDepartment() {
 
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  //   if (!this.DepartmentList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.departmentFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredDepartment.next(this.DepartmentList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredDepartment.next(
+  //     this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
+  //   );
+  // }
 
   // religion filter code
   private filterReligion() {
@@ -842,45 +882,47 @@ export class NewAppointmentComponent implements OnInit {
 
 
   // doctorone filter code  
-  private filterDoctor() {
+  // private filterDoctor() {
 
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  //   if (!this.DoctorList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.doctorFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredDoctor.next(this.DoctorList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredDoctor.next(
+  //     this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
+  //   );
+  // }
   onClear() {
     this._opappointmentService.mySaveForm.reset({ IsDeleted: 'false' });
     this._opappointmentService.initializeFormGroup();
   }
 
   // OnChangeDoctorList(departmentObj) {
-  //   //debugger;
+  //   //;
   //   console.log(departmentObj);
   //   this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
   // }
 
 
   OnChangeDoctorList(departmentObj) {
-    // debugger;
+    // ;
     // console.log("departmentObj", departmentObj)
+    this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
         console.log(this.DoctorList);
-        this.filteredDoctor.next(this.DoctorList.slice());
+        // this.filteredDoctor.next(this.DoctorList.slice());
+        this.optionsDoc = this.DoctorList.slice();
       })
   }
 
@@ -896,7 +938,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   DocSelectdelete() {
-    debugger;
+    ;
     // this.VisitFormGroup.get('RefDocId').setValue(this.Doctor1List[-1]);
     // this.VisitFormGroup.get('RefDocId').clearValidators();
     // this.VisitFormGroup.get('RefDocId').updateValueAndValidity();
@@ -937,7 +979,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   searchRegList() {
-    debugger;
+    ;
     const dialogRef = this._matDialog.open(SearchPageComponent,
       {
         maxWidth: "90vw",
@@ -964,7 +1006,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
   searchPatientList() {
-    debugger;
+    ;
     this.dialogRef.close();
     var m_data = {
       "RegAppoint": 0
@@ -1018,7 +1060,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-    debugger;
+    ;
     console.log('obj==', obj);
     let a, b, c;
 
@@ -1034,7 +1076,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   getVisitList() {
-    //  debugger;
+    //  ;
     this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": this._opappointmentService.myFilterform.get("FirstName").value.trim() + '%' || '%',
@@ -1140,8 +1182,7 @@ export class NewAppointmentComponent implements OnInit {
       visitSave['IsCancelledDate'] = this.dateTimeObj.date;
 
       visitSave['ClassId'] = 1; // this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-      visitSave['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-      debugger;
+      visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       console.log(this.Patientnewold);
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
@@ -1162,7 +1203,7 @@ export class NewAppointmentComponent implements OnInit {
           Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              // debugger;
+              // ;
               this.getVisitList();
             }
 
@@ -1228,7 +1269,7 @@ export class NewAppointmentComponent implements OnInit {
 
       visitUpdate['ClassId'] = 1; // this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitUpdate['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-      debugger;
+      ;
       console.log(this.Patientnewold);
 
       visitUpdate['PatientOldNew'] = this.Patientnewold;
@@ -1262,7 +1303,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   onClose() {
-    debugger
+    
     //this._opappointmentService.mySaveForm.reset();
     this.dialogRef.close();
   }
@@ -1335,6 +1376,9 @@ export class NewAppointmentComponent implements OnInit {
       return;
     }
     if (formGroupName == this.VisitFormGroup) {
+      if(!this.isDepartmentSelected) {
+        return;
+      }
       this.submitAppointForm();
       return;
     }

@@ -105,15 +105,6 @@ export class OPSearhlistService {
   OPDNo:'',
   _matDialog: '',
     RegNo: '0',
-
-    //   Date: [(new Date()).toISOString()],
-       
-    //     cashAmt: '',
-    //     AdvanceAmount: ['', Validators.pattern("^[0-9]*$")],
-    //     AdvanceUsedAmount: ['', Validators.pattern("^[0-9]*$")],
-    //     BalanceAmount: ['', Validators.pattern("^[0-9]*$")],
-    //     Amount: ['', Validators.required],
-      
     });
   }
 
@@ -245,6 +236,11 @@ export class OPSearhlistService {
   // Get billing Service List 
   public getBillingServiceList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveServices", employee)
+  }
+
+   // Get CashCounter List 
+  public getCashcounterList() {
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvOPCashCounterForCombo", {})
   }
 
   public getIpPatientBillInfo(employee) {
