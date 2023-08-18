@@ -123,7 +123,7 @@ export class OPBillingComponent implements OnInit {
   CashorPay = 1;
 
   b_concessionDiscPer: any = 0;
-  b_Consessionamt: any = 0;
+  b_concessionamt: any = 0;
   
   isLoading: String = '';
   selectedAdvanceObj: SearchInforObj;
@@ -362,8 +362,8 @@ export class OPBillingComponent implements OnInit {
   getDiscAmtSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
-    this.b_Consessionamt =netAmt;
-    this.TotalnetPaybleAmt =this.b_TotalChargesAmount - this.b_Consessionamt ;
+    this.b_concessionamt =netAmt;
+    this.TotalnetPaybleAmt =this.b_TotalChargesAmount - this.b_concessionamt ;
     return netAmt
   }
 
@@ -374,15 +374,15 @@ export class OPBillingComponent implements OnInit {
   }
   getTotalNetAmount() {
     this.b_concessionDiscPer=0;
-    this.b_Consessionamt=0;
-    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
+    this.b_concessionamt=0;
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
   }
 
   onSaveOPBill2() {
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
-    if (this.b_concessionDiscPer > 0 || this.b_Consessionamt > 0) {
+    if (this.b_concessionDiscPer > 0 || this.b_concessionamt > 0) {
       this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
@@ -411,7 +411,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.totalAmtOfNetAmt;
-    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.b_Consessionamt;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.b_concessionamt;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['PaidAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
@@ -511,7 +511,7 @@ export class OPBillingComponent implements OnInit {
         this.flagSubmit = result.IsSubmitFlag
       
         if (this.b_concessionDiscPer > 0) {
-          this.FinalAmt = this.totalAmtOfNetAmt - this.b_Consessionamt;
+          this.FinalAmt = this.totalAmtOfNetAmt - this.b_concessionamt;
         } else {
           this.FinalAmt = this.TotalnetPaybleAmt;
         }
@@ -734,41 +734,44 @@ export class OPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-    if (this.b_concessionDiscPer > 0) {
-      this.b_Consessionamt = (this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100;
-      console.log(this.b_Consessionamt);
-      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
-      console.log(this.TotalnetPaybleAmt);
+  //   if (this.b_concessionDiscPer > 0) {
+  //     this.b_concessionamt = (this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100;
+  //     console.log(this.b_concessionamt);
+  //     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+  //     console.log(this.TotalnetPaybleAmt);
 
-      this.BillingForm.get('concessionAmt').setValue(this.b_Consessionamt);
-      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+  //     this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
+  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
 
-      this.Consessionres = true;
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
-      this.BillingForm.get('ConcessionId').enable();
-      // this.registeredForm.get('concessionAmt').disable();
+  //     this.Consessionres = true;
+  //     this.BillingForm.get('ConcessionId').reset();
+  //     this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
+  //     this.BillingForm.get('ConcessionId').enable();
+  //     // this.registeredForm.get('concessionAmt').disable();
 
-    }
-    else{
+  //   }
+  //   else{
 
-      this.BillingForm.get('concessionAmt').reset(0);
-      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
-      this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
+  //     this.BillingForm.get('concessionAmt').reset(0);
+  //     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+  //     this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
 
-      this.Consessionres = false;
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.BillingForm.get('ConcessionId').updateValueAndValidity();
-      this.BillingForm.get('ConcessionId').disable();
-    }
+  //     this.Consessionres = false;
+  //     this.BillingForm.get('ConcessionId').reset();
+  //     this.BillingForm.get('ConcessionId').clearValidators();
+  //     this.BillingForm.get('ConcessionId').updateValueAndValidity();
+  //     this.BillingForm.get('ConcessionId').disable();
+  //   }
   }
 
   calculateDiscamtfinal() {
-    if (this.b_Consessionamt > 0){
-
-      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_Consessionamt;
-      this.BillingForm.get('concessionAmt').setValue(this.b_Consessionamt);
+    debugger;
+    console.log(this.b_concessionamt);
+    //this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
+    console.log(this.b_concessionamt);
+    if (this.b_concessionamt > 0){
+      this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
       this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
     }
     else
