@@ -280,6 +280,29 @@
                   </mat-select>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Phone Number</mat-label>
+                  <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
+                    [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
+                  <!-- <mat-error class="error"
+                      *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
+                      number is required
+                    </mat-error> -->
+                </mat-form-field>
+
+                 <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Mobile Number</mat-label>
+                  <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number" value="MobileNo.length">
+                  <mat-error class="error"
+                    *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                    digits Mobile number is
+                    required</mat-error>
+                </mat-form-field> 
+             
+              </div>
+
+              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>City</mat-label>
@@ -308,9 +331,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-              </div>
 
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="padding-bottom: 10px;">
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Country Name</mat-label>
                   <mat-select formControlName="CountryId">
@@ -321,25 +342,7 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxFlex>
-                  <mat-label>Phone Number</mat-label>
-                  <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
-                    [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
-                  <!-- <mat-error class="error"
-                      *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
-                      number is required
-                    </mat-error> -->
-                </mat-form-field>
-
-                 <mat-form-field appearance="outline" fxFlex>
-                  <mat-label>Mobile Number</mat-label>
-                  <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                    [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" type="number" value="MobileNo.length">
-                  <mat-error class="error"
-                    *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                    digits Mobile number is
-                    required</mat-error>
-                </mat-form-field> 
+             
 
 
                 <!-- <mat-form-field appearance="outline" fxFlex hintLabel="Max 10 characters">
@@ -498,7 +501,7 @@
               </mat-form-field> -->
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Department</mat-label>
-                <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput formControlName="Departmentid" [matAutocomplete]="autoDep" required>
                 <span matSuffix style="display: flex;">
                   <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
                   <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
