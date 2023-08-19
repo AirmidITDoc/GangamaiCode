@@ -527,6 +527,9 @@ export class OPBillingComponent implements OnInit {
         }
         else {
           const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+
+          InsertBillUpdateBillNoObj['BalanceAmt'] = this.TotalnetPaybleAmt;
+
           let submitData = {
             "chargesDetailCreditInsert":InsertAdddetArr,
             "insertBillcreditupdatewithbillno": InsertBillUpdateBillNoObj,

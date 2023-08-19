@@ -17,8 +17,8 @@
                 </mat-icon> -->
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size:18px; font-weight: 500;width:80%;font-family: sans-serif;">
-                IP BILLING : &nbsp;
+                style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
+                IP BILLING : 
                 <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
                     No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
                     Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
@@ -38,7 +38,7 @@
 
     <mat-drawer-container class="example-container">
         <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;">
-            <form class="example-form" [formGroup]="registeredForm">
+            <form class="example-form" [formGroup]="Ipbillform">
 
                 <div class="col-md-6">
                     <mat-form-field appearance="outline">
@@ -67,7 +67,7 @@
                             <span *ngIf="noOptionFound" style="color: #f44336;">No data
                                 Found</span>
                         </mat-hint>
-                        <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
+                        <mat-error *ngIf="Ipbillform.get('SrvcName').hasError('required')">
                             Required field cannot be left blank
                         </mat-error>
                     </mat-form-field>
@@ -83,7 +83,7 @@
                                 <input matInput [(ngModel)]="b_price" name="bPrice" (keyup)="calculateTotalAmt()"
                                     formControlName="price" required type="number">
                                 <mat-error
-                                    *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
+                                    *ngIf="Ipbillform.get('price').invalid && Ipbillform.get('price').touched">
                                     Price is required</mat-error>
                             </mat-form-field>
                         </div>
@@ -93,7 +93,7 @@
                                 <input matInput [(ngModel)]="b_qty" name="bQty" (keyup)="calculateTotalAmt()"
                                     formControlName="qty" required type="number">
                                 <mat-error
-                                    *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
+                                    *ngIf="Ipbillform.get('qty').invalid && Ipbillform.get('qty').touched">
                                     Qty is required</mat-error>
                             </mat-form-field>
                         </div>
@@ -106,7 +106,7 @@
                         <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                             formControlName="totalAmount" required>
                         <mat-error
-                            *ngIf="registeredForm.get('totalAmount').invalid && registeredForm.get('totalAmount').touched">
+                            *ngIf="Ipbillform.get('totalAmount').invalid && Ipbillform.get('totalAmount').touched">
                             TotalAmount is required</mat-error>
                     </mat-form-field>
                 </div>
@@ -158,12 +158,12 @@
                         <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly formControlName="netAmount"
                             required type="number">
                         <mat-error
-                            *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
+                            *ngIf="Ipbillform.get('netAmount').invalid && Ipbillform.get('netAmount').touched">
                             NetAmount is required</mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-md-6">
-                    <button class="next-btn" (click)="onSaveEntry()" [disabled]="registeredForm.invalid"
+                    <button class="next-btn" (click)="onSaveEntry()" [disabled]="Ipbillform.invalid"
                         style="border-radius: 16px;">
                         <span style="display: flex;justify-content: center; ">
                             Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner" [diameter]="25" color="white">
@@ -231,18 +231,18 @@
                                 Show All Charges
                             </mat-checkbox>
                             <div>
-                                <form [formGroup]="registeredForm">
-
+                                <form [formGroup]="Ipbillform">
 
                                     <!-- (dateChange)="onChangeDateofBirth($event.value)" -->
+                                 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Choose date</mat-label>
-                                        <input name="currentDate" matInput [matDatepicker]="picker"
-                                            formControllName="ChargeDate" [(ngModel)]="currentDate">
+                                        <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
+                                         [value]="currentDate" [readonly]="true">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-
-                                    </mat-form-field>
+                          
+                                      </mat-form-field>
                                 </form>
                             </div>
 
@@ -436,7 +436,7 @@
 
         </div>
 
-        <form class="example-form" [formGroup]="registeredForm" style="font-size:20px;">
+        <form class="example-form" [formGroup]="Ipbillform" style="font-size:20px;">
             <mat-card style="width: 100%;font-size: large;">
                 <div class="footer-container" fxLayoutAlign="start center" style="padding:3px 3px 3px 3px;">
 
@@ -455,14 +455,14 @@
                                 <mat-form-field appearance="outline" style=" margin-left: 15px;" fxFlex>
                                     <mat-label>%</mat-label>
                                     <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
-                                        (keyup)='CalAdmincharge($event)' type="number">
+                                        (keyup)='CalAdmincharge()' type="number">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" style="margin-left: 10px;" fxFlex>
+                                <!-- <mat-form-field appearance="outline" style="margin-left: 10px;" fxFlex>
                                     <mat-label>Amount</mat-label>
                                     <input matInput name="Amount" formControlName="Amount" placeholder="0" type="number"
                                         [(ngModel)]="Adminamt">
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <mat-form-field appearance="outline" style="margin-right: 7px;" fxFlex>
                                     <mat-label>Concession Amount</mat-label>
@@ -474,7 +474,7 @@
                                 <div *ngIf="ConShow">
                                     <mat-form-field appearance="outline" style=" margin-right: 7px;width: 250px; ">
                                         <mat-label>Concession Reason Type</mat-label>
-                                        <mat-select formControlName="ConcessionId" [disabled]="Consession">
+                                        <mat-select formControlName="ConcessionId">
                                             <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
                                                 {{Doc.ConcessionReason}}
                                             </mat-option>
