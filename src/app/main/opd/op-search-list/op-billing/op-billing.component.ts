@@ -409,7 +409,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
     InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
-    InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
+    InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0; 
     InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId;

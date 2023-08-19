@@ -152,98 +152,6 @@ export class BrowseIPDPaymentReceiptComponent implements OnInit {
   }
 
 
-  onExport(exprtType){
-    // let columnList=[];
-    // if(this.dataSource.data.length == 0){
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else{
-    //   var excelData = [];
-    //   var a=1;
-    //   for(var i=0;i<this.dataSource.data.length;i++){
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-        
-    //       "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"]:"N/A",
-         
-    //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
-    //       "PBillNo" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"] :"N/A",
-    //       "ReceiptNo" :this.dataSource.data[i]["ReceiptNo"] ? this.dataSource.data[i]["ReceiptNo"]:"N/A",
-    //       "Pay Date" :this.dataSource.data[i]["PayDate"] ? this.dataSource.data[i]["PayDate"]:"N/A",
-    //       "Total Amt" :this.dataSource.data[i]["TotalAmt"]+" - "+this.dataSource.data[i]["TotalAmt"],
-    //       "Balance Amount" :this.dataSource.data[i]["BalanceAmt"] ? this.dataSource.data[i]["BalanceAmt"]:"N/A",
-    //        "PaymentDate" :this.dataSource.data[i]["PaymentDate"] ? this.dataSource.data[i]["PaymentDate"]:"N/A",
-    //        "CashPay Amount" :this.dataSource.data[i]["CashPayAmount"] ? this.dataSource.data[i]["CardPayAmount"]:"N/A",
-    //        "ChequePay Amount" :this.dataSource.data[i]["ChequePayAmount"] ? this.dataSource.data[i]["ChequePayAmount"]:"N/A",
-    //        "CardPay Amount" :this.dataSource.data[i]["CardPayAmount"]+" - "+this.dataSource.data[i]["CardPayAmount"],
-    //       "AdvanceUsedAmount" :this.dataSource.data[i]["AdvanceUsedAmount"] ? this.dataSource.data[i]["AdvanceUsedAmount"]:"N/A",
-    //        "PaidAmount" :this.dataSource.data[i]["PaidAmount"] ? this.dataSource.data[i]["PaidAmount"]:"N/A",
-    //        "NEFTPayAmount" :this.dataSource.data[i]["NEFTPayAmount"] ? this.dataSource.data[i]["NEFTPayAmount"]:"N/A",
-    //        "PayTMAmount" :this.dataSource.data[i]["PayTMAmount"] ? this.dataSource.data[i]["PayTMAmount"]:"N/A",
-    //         "Remark" :this.dataSource.data[i]["Remark"] ? this.dataSource.data[i]["Remark"]:"N/A",
-    //        "UserName" :this.dataSource.data[i]["UserName"] ? this.dataSource.data[i]["UserName"]:"N/A"
-          
-    //     };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "Indoor-Payment Receipt-List " + new Date() +".xlsx";
-    //   if(exprtType =="Excel"){
-    //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if(excelData.length > 0){ 
-    //       var columnsIn = excelData[0]; 
-    //       console.log(columnsIn);
-    //       for(var key in columnsIn){
-    //         let headerLength = {wch:(key.length+1)};
-    //         let columnLength = headerLength;
-    //         try{
-    //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //         }
-    //         catch{
-    //           columnLength = headerLength;
-    //         }
-    //         if(headerLength["wch"] <= columnLength["wch"]){
-    //           wscols.push(columnLength)
-    //         }
-    //         else{
-    //           wscols.push(headerLength)
-    //         }
-    //       } 
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }else{
-    //     let doc = new jsPDF('p','pt', 'a4');
-    //     doc.page = 0;
-    //     var col=[];
-    //     for (var k in excelData[0]) col.push(k);
-    //       console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
-    //     });
-      
-    //     doc.autoTable(col, rows,{
-    //       margin:{left:5,right:5,top:5},
-    //       theme:"grid",
-    //       styles: {
-    //         fontSize: 3
-    //       }});
-    //     doc.setFontSize(3);
-    //     // doc.save("Indoor-Patient-List.pdf");
-    //     window.open(URL.createObjectURL(doc.output("blob")))
-    //   }
-    // }
-  }
-
   getViewbill(contact)
   {
      console.log(contact);
@@ -319,55 +227,12 @@ export class BrowseIPDPaymentReceiptComponent implements OnInit {
   
   
 
-  // getTemplate() {
-  //   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=6';
-  //   this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any) => {
-  //     // debugger;
-  //     this.printTemplate = resData[0].TempDesign;
-  //     let keysArray = ['HospitalName','HospitalAddress','RegNo', 'ReceiptNo','PaymentDate','PatientName','PBillNo','PaidAmount','Remark','BillDate','PaymentId','TotalAmount','CashPayAmount','UserName']; // resData[0].TempKeys;
-  //     for (let i = 0; i < keysArray.length; i++) {
-  //         let reString = "{{" + keysArray[i] + "}}";
-  //         console.log(reString);
-          
-  //         let re = new RegExp(reString, "g");
-  //         console.log(re);
-          
-  //         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-  //         console.log(this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]))
-  //       }
-  //       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-  //       console.log(this.printTemplate);
-  //       setTimeout(() => {
-  //         this.print();
-  //       }, 50);
-  //   });
-  // }
-// getPrint(el) {
-//   console.log(el);
-//   var D_data = {
-//     "PaymentId": el.PaymentId,
-//   }
-//   console.log(D_data);
-//   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-//   this.subscriptionArr.push(
-//     this._BrowseIPDPaymentReceiptService.getBrowseIPDPaymentReceiptPrint(D_data).subscribe(res => {
-//       this.reportPrintObj = res[0] as BrowseIpdPaymentReceipt;
-//       console.log(this.reportPrintObj );
-//       this.getTemplate();
-//       // console.log(res);
-      
-//     })
-//   );
-// }
-
-
-
 
 getTemplate() {
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=19';
   this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any) => {
     this.printTemplate = resData[0].TempDesign;
-    let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','RegId', 'ReceiptNo','PaymentDate','PatientName','AgeDay','AgeMonth','AgeYear','PBillNo','PaidAmount','Remark','BillDate','PaymentId','TotalAmt','CashPayAmount','UserName'
+    let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','RegId','ConsultantDocName','ReceiptNo','PaymentDate','PatientName','AgeDay','AgeMonth','AgeYear','PBillNo','PaidAmount','Remark','BillDate','PaymentId','TotalAmt','CashPayAmount','UserName'
   ,'CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName'];
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -378,8 +243,8 @@ getTemplate() {
       // this.printTemplate = this.printTemplate.replace('StrTotalAmt','₹' + (this.reportPrintObj.TotalAmt.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrPaymentAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.BillDate));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
       // this.printTemplate = this.printTemplate.replace('StrCashpay','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
       // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -421,7 +286,7 @@ value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
 getPrint(el) {
 console.log(el);
 var D_data = {
-  "PaymentId": el.PaymentId,
+  "PaymentId":206// el.PaymentId,
 }
 console.log(el);
 let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
@@ -480,7 +345,7 @@ export class BrowseIpdPaymentReceipt
     HospitalAddress:string;
     HospitalName:string;
     OPIPNo:any;
-    /**
+        /**
      * Constructor
      *
      * @param BrowseIpdPaymentReceipt
