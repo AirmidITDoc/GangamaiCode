@@ -296,8 +296,8 @@ convertToWord(e){
         this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
         // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.NetPayableAmt.toFixed(2)));
         // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-        // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate.toString()));
-        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
+        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(this.reportPrintObj.BillDate));
+        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform1(this.reportPrintObj.PaymentDate));
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.PaymentDate.toString()));
         // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {

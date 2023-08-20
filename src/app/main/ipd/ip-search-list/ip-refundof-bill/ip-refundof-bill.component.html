@@ -1,69 +1,21 @@
 <div fusePerfectScrollbar>
     <div class="dialog-content-wrapper">
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 35px;">
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Refund Of BILL | Reg No-{{selectedAdvanceObj.RegId}} | Patient Name
+                    {{selectedAdvanceObj.PatientName}} | Dr. {{selectedAdvanceObj.Doctorname}} </h3>
+                <!-- | Ward {{BedName}} |  -->
 
-            <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 82%; font-weight: 400;">
-                    IP Refund Of Bill
-                </span>
-
-                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" (click)="onClose()">
+                <app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
-            </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
 
-        </div>
-
-        <div class="content-card">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <form [formGroup]="_IpSearchListService.myRefundBillForm" style="width: 100%;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                            <!-- ================================ LABEL HEADER  -->
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                                    </h3>
-                                </div>
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-
-                                    <span class="label">Reg No :</span>
-                                    <span class="data_input">{{selectedAdvanceObj.RegNo}}</span>
-
-                                    <span class="label"> Patient Name : </span>
-                                    <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
-
-                                    <span class="label">Doctor Name : </span>
-                                    <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
-
-                                    <span class="label">Age(Y) :</span>
-                                    <span class="data_input">{{selectedAdvanceObj.AgeYear}}
-                                    </span>
-
-                                    <span class="label">Tariff Name : </span>
-                                    <span class="data_input">{{selectedAdvanceObj.TariffName}}
-                                        <!-- {{_IpSearchListService.myShowDischargeSummaryForm.get("DOT").value}} -->
-                                    </span>
-
-                                    <app-common-date [screenFrom]="screenFromString"
-                                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                                </div>
-                            </mat-card>
-                            <!-- ================================ LABEL HEADER  -->
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+       
     </div>
-
     <!--Middle Data-->
     <div class="content">
         <!-- CENTER -->
@@ -80,7 +32,7 @@
                                     style="background-color: white; width: 100%; ">
                                     <mat-card>
                                         <mat-table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
-                                            style="height: 180px !important;overflow: auto;">
+                                            style="height: 220px !important;overflow: auto;">
 
                                             <ng-container matColumnDef="BillNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -170,7 +122,7 @@
                                     style="background-color: white;padding-left: 10px;">
                                     <mat-card>
                                         <mat-table class="table1" matSort [dataSource]="dataSource1"
-                                            [@animateStagger]="{value:'50'}" style="height: 150px !important;">
+                                            [@animateStagger]="{value:'50'}" style="height: 220px !important;">
 
                                             <ng-container matColumnDef="RefundDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -310,7 +262,7 @@
                                                                             style="width:300px;">
                                                                             <mat-label>Net Refund Amount</mat-label>
                                                                             <input matInput [(ngModel)]="RefundAmount"
-                                                                                (clisk)="calculateTotalRefund()"
+                                                                               
                                                                                 formControlName="RefundAmount"
                                                                                 name="RefundAmount">
                                                                             <mat-error class="error"
@@ -587,7 +539,7 @@
                                     <div fxLayout="row" fxLayoutGap="2px">
                                         <mat-form-field appearance="outline" style="width:30%;">
                                             <mat-label>Total Refund Amount</mat-label>
-                                            <input matInput [(ngModel)]="TotalRefundAmount"
+                                            <input matInput [(ngModel)]="TotalRefundAmount"  (keyup)="calculateTotalRefund()"
                                                 formControlName="TotalRefundAmount" name="TotalRefundAmount">
 
                                         </mat-form-field>&nbsp;
@@ -610,7 +562,7 @@
                                             <div class="next-div" style="float: right;">
                                                 <button class="next-btn" [disabled]="RefundOfBillFormGroup.invalid"
                                                     (click)="onSave()"
-                                                    style="border-radius: 16px;margin-left:1200px;">Save</button>
+                                                    style="border-radius: 16px;margin-left:1300px;">Save</button>
                                                 <button class="footer-btn" (click)="onClose()"
                                                     style="border-radius: 16px;margin-left: 10px;">Close</button>
 

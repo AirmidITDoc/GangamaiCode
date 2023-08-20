@@ -120,21 +120,17 @@ Advavilableamt:any;
   }
 
   getAdvancetotal(element) {
-    // debugger;
-
-    // console.log(element);
+   
     let netAmt;
     netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
     // this.totalAmtOfNetAmt = netAmt;
     this.TotalAdvamt = netAmt;
 
-    
-// Advavilableamt:any;
     return netAmt;
   }
 
   getAdvavilable(element) {
-    // debugger;
+    
     let netAmt;
     netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
     // this.totalAmtOfNetAmt = netAmt;
@@ -224,7 +220,7 @@ debugger;
                 if (result.isConfirmed) {
                
                   this.getPrint(response);
-                  // this._matDialog.closeAll();
+                  this._matDialog.closeAll();
                            
                  
                 }

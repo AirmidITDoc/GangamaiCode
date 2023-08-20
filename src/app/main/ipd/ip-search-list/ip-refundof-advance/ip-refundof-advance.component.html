@@ -2,77 +2,19 @@
     <div class="dialog-content-wrapper">
         <mat-toolbar matDialogTitle class="mat-accent m-0">
             <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-                <h3>Refund Of Advance</h3>
+                <h3>Refund Of Advance | Reg No-{{selectedAdvanceObj.RegId}} | Patient Name
+                    {{selectedAdvanceObj.PatientName}} | Dr. {{selectedAdvanceObj.Doctorname}} </h3>
+                <!-- | Ward {{BedName}} |  -->
+
+                <app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                 <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-toolbar-row>
         </mat-toolbar>
 
-        <div class="content-card">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <form [formGroup]="_IpSearchListService.myRefundAdvanceForm" style="width: 100%;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                            <!-- ================================ LABEL HEADER  -->
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 2px; height: fit-content;">
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                                    </h3>
-                                </div>
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-
-                                    <span class="label">Reg No :</span>
-                                    <span
-                                        class="data_input">{{_IpSearchListService.myRefundAdvanceForm.get("RegNo").value}}</span>
-
-                                    <span class="label"> Patient Name : </span>
-                                    <span class="data_input">
-                                        {{_IpSearchListService.myRefundAdvanceForm.get("PatientName").value}}</span>
-
-                                    <span class="label">Doctor Name : </span>
-                                    <span
-                                        class="data_input">{{_IpSearchListService.myRefundAdvanceForm.get("DoctorName").value}}</span>
-
-                                    <span class="label">Ward Name :</span>
-                                    <span
-                                        class="data_input">{{_IpSearchListService.myRefundAdvanceForm.get("RoomName").value}}
-                                        -
-                                        {{_IpSearchListService.myShowDischargeSummaryForm.get("BedNo").value}}
-                                    </span>
-
-                                    <span class="label">DOA : </span>
-                                    <span
-                                        class="data_input">{{_IpSearchListService.myRefundAdvanceForm.get("DOA").value}}
-                                        {{_IpSearchListService.myRefundAdvanceForm.get("DOT").value}}
-                                    </span>
-
-                                    <!-- <span class="label">IPD No : </span>
-                                    <span class="data_input">{{_IpSearchListService.myShowDischargeSummaryForm.get("IPDNo").value}}</span> -->
-
-                                    <!-- <span class="label">DOT :</span> -->
-                                    <!-- <span class="data_input"></span> -->
-
-                                    <!-- <span style="padding:15px 5px 5px 5px;">AdmissionId :</span>
-                                    <span style="padding:15px 5px 5px 5px;">{{_IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value}}</span> -->
-
-
-                                    <app-common-date [screenFrom]="screenFromString"
-                                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                                </div>
-                            </mat-card>
-                            <!-- ================================ LABEL HEADER  -->
-                        </div>
-
-                    </div>
-                </form>
-
-
-
-
-            </div>
-        </div>
+       
     </div>
 
     <!--Middle Data-->
@@ -273,7 +215,7 @@
                                                     <mat-label>New Refund Amount</mat-label>
                                                     <input matInput [(ngModel)]="NewRefundAmount"
                                                         formControlName="NewRefundAmount" name="NewRefundAmount" required
-                                                        fxFlex="20%" (change)="calculateBal()">
+                                                        fxFlex="20%" (keyup)="calculateBal()">
                                                     <mat-error class="error"
                                                         *ngIf="RefundOfAdvanceFormGroup.get('NewRefundAmount').invalid && RefundOfAdvanceFormGroup.get('NewRefundAmount').touched">
                                                         Refund Amount is required</mat-error>

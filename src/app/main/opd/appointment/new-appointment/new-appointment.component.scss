@@ -183,50 +183,94 @@ button:disabled {
     border: 1px solid #b7e6fd;
 }
 
-// .footer-btn {
-//    width: 80px;
-//     font-size: 16px;
-//     font-weight: 700px;
-//     padding: 10px;
-//     color:  white;
-//     border-radius: 16px;
-//     background-color: #e6ecf1;
-//     border: 1px solid #0492C2;
-//     cursor: pointer;
-// }
-// .footer-btn:hover{
-//     background-color: rgb(247, 97, 97);
 
-// }
-// .back-btn {
-//     width: 100px;
-//     font-size: 14px;
-//     padding: 10px;
-//     border-radius: 2px;
-//     background-color: #7c7b71;
-//     color: white;
-//     border: 1px solid #7c7b71;
-//     cursor: pointer;
-// }
+.table1{
+    height:500px !important;
+}
+.mat-header-row {
+    width: 100%;
+    max-width: 800px;
+    min-width: 800px;   
+    font-weight: bold;   
+    min-height: 25px;        
+}
 
-// .next-btn {
-//     width: 100px;
-//     font-size: 14px;
-//     padding: 10px;
-//     border-radius:16px;
-//     background-color: #48a348;
-//     border: 1px solid #48a348;
-//     color: white;
-//     cursor: pointer;
-// }
+.mat-row {
+    width: 100%;
+    max-width: 800px;
+    min-width: 800px;   
+    min-height: 25px;                 
+}    
 
-// button:disabled {
-//     color: #FFFFFF !important;
-//     background-color: #CCCCCC !important;
-//     border-radius: 2px;
-//     border: 1px solid #CCCCCC;
-// }
 
+.mat-column-RegNo {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+}
+.mat-column-RegId {
+    width: 62px;
+    max-width: 62px;
+    min-width: 62px;
+}
+
+.mat-column-PatientName {
+    width: 300px;
+    max-width: 300px;
+    min-width: 300px;
+   
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+}
+
+  
+.mat-column-AgeYear {
+    width: 60px;
+    max-width: 60px;
+    min-width: 60px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+}
+
+.mat-column-GenderName {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+}
+
+.mat-column-PhoneNo {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+   
+}
+
+.mat-column-MobileNo {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+          }
 .header-container {
     background-color: #4863a0 !important;
     height: 40px;

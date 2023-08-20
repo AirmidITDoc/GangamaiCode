@@ -312,7 +312,7 @@ export class AppointmentComponent implements OnInit {
 
     newappointment() {
         const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-            maxWidth: "95vw",
+            maxWidth: "110vw",
             height: "800px",
             width: "100%",
             

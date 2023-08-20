@@ -522,8 +522,8 @@ debugger;
       this._ActRoute.navigate(['opd/new-OpdBilling']);
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
-          maxWidth: "115vw",
-          height: '100%',
+          maxWidth: "110vw",
+          height: '90%',
           width: '95%',
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -558,7 +558,7 @@ debugger;
        const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
      {
          maxWidth: "110vw",
-           maxHeight: "99%", width: '100%', height: "100%"
+           maxHeight: "90%", width: '100%', height: "100%"
          });
        dialogRef.afterClosed().subscribe(result => {
          console.log('The dialog was closed - Insert Action', result);
