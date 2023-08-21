@@ -654,7 +654,10 @@ public updateIPDDischargSummary(employee)
   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundofBillIPD_List",employee)
   }
 
-  
+     // Get CashCounter List 
+     public getCashcounterList() {
+      return this._httpClient.post("Generic/GetByProc?procName=RtrvOPCashCounterForCombo", {})
+    }
   public getRefundofBillOPDList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
     }

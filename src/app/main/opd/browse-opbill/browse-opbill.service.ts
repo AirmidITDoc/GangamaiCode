@@ -43,4 +43,8 @@ export class BrowseOPBillService {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
 
+  public InsertOPBillingPayment(emp){
+    return this._httpClient.post("OutPatient/PaymentInsert", emp);
+  }
+
 }

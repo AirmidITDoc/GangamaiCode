@@ -38,7 +38,7 @@
 
     <mat-drawer-container class="example-container">
         <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;">
-            <form class="example-form" [formGroup]="Ipbillform">
+            <form class="example-form" [formGroup]="Serviceform">
 
                 <div class="col-md-6">
                     <mat-form-field appearance="outline">
@@ -67,7 +67,7 @@
                             <span *ngIf="noOptionFound" style="color: #f44336;">No data
                                 Found</span>
                         </mat-hint>
-                        <mat-error *ngIf="Ipbillform.get('SrvcName').hasError('required')">
+                        <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
                             Required field cannot be left blank
                         </mat-error>
                     </mat-form-field>
@@ -83,7 +83,7 @@
                                 <input matInput [(ngModel)]="b_price" name="bPrice" (keyup)="calculateTotalAmt()"
                                     formControlName="price" required type="number">
                                 <mat-error
-                                    *ngIf="Ipbillform.get('price').invalid && Ipbillform.get('price').touched">
+                                    *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                     Price is required</mat-error>
                             </mat-form-field>
                         </div>
@@ -93,7 +93,7 @@
                                 <input matInput [(ngModel)]="b_qty" name="bQty" (keyup)="calculateTotalAmt()"
                                     formControlName="qty" required type="number">
                                 <mat-error
-                                    *ngIf="Ipbillform.get('qty').invalid && Ipbillform.get('qty').touched">
+                                    *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
                                     Qty is required</mat-error>
                             </mat-form-field>
                         </div>
@@ -106,7 +106,7 @@
                         <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                             formControlName="totalAmount" required>
                         <mat-error
-                            *ngIf="Ipbillform.get('totalAmount').invalid && Ipbillform.get('totalAmount').touched">
+                            *ngIf="Serviceform.get('totalAmount').invalid && Serviceform.get('totalAmount').touched">
                             TotalAmount is required</mat-error>
                     </mat-form-field>
                 </div>
@@ -158,12 +158,12 @@
                         <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly formControlName="netAmount"
                             required type="number">
                         <mat-error
-                            *ngIf="Ipbillform.get('netAmount').invalid && Ipbillform.get('netAmount').touched">
+                            *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
                             NetAmount is required</mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-md-6">
-                    <button class="next-btn" (click)="onSaveEntry()" [disabled]="Ipbillform.invalid"
+                    <button class="next-btn" (click)="onSaveEntry()" [disabled]="Serviceform.invalid"
                         style="border-radius: 16px;">
                         <span style="display: flex;justify-content: center; ">
                             Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner" [diameter]="25" color="white">
@@ -494,6 +494,14 @@
                                     <input matInput name="Remark" formControlName="Remark">
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" style="width: 250px;">
+                                    <mat-label>Cash Counter</mat-label>
+                                    <mat-select formControlName="CashCounterId" required>
+                                        <mat-option *ngFor="let m of CashCounterList" [value]="m">
+                                            {{m.CashCounterName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
 
                             </div>
@@ -509,7 +517,7 @@
 
                                     <button class="next-btn" (click)="getPrintDraft()"
                                         style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button>
-                                    <button class="next-btn" (click)="onSave()" style="border-radius: 16px;">
+                                    <button class="next-btn" (click)="onSave()" style="border-radius: 16px;" [disabled]="Ipbillform.invalid">
                                         Save
                                     </button>
 

@@ -76,6 +76,8 @@ export class IPBillingComponent implements OnInit {
   private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
   ConcessionReasonList: any = [];
+  CashCounterList: any = [];
+
 
   disamt: any;
   b_price = '0';
@@ -147,6 +149,7 @@ export class IPBillingComponent implements OnInit {
   BillingClassCmbList: any = [];
   IPBillingInfor: any = [];
   Ipbillform: FormGroup;
+  Serviceform: FormGroup;
   AdmissionId: any;
   MenuMasterid: any;
   reportPrintObj: ReportPrintObj;
@@ -181,15 +184,14 @@ export class IPBillingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
+    
     this.AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
-    this.createForm();
+    this.createserviceForm();
+    this.createBillForm();
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
     }
-
-
 
     this.myControl = new FormControl();
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -204,6 +206,7 @@ export class IPBillingComponent implements OnInit {
     this.getChargesList1();
     this.getBillingClassCombo();
     //  this.getIPBillinginformation();
+    this.getCashCounterComboList();
     this.getConcessionReasonList();
     this.drawer.toggle();
 
@@ -237,8 +240,8 @@ export class IPBillingComponent implements OnInit {
     );
   }
   // Create registered form group
-  createForm() {
-    this.Ipbillform = this.formBuilder.group({
+  createserviceForm() {
+    this.Serviceform = this.formBuilder.group({
       ClassId: [],
       SrvcName: [''],
       price: [Validators.required,
@@ -247,9 +250,6 @@ export class IPBillingComponent implements OnInit {
       Validators.pattern("^[0-9]*$")],
       totalAmount: [Validators.required,
         Validators.pattern("^[0-9]*$")],
-      // TotalAmount: [Validators.pattern("^[0-9]*$")],
-
-      // doctorId: [''],
       DoctorID: [''],
       discPer: [Validators.pattern("^[0-9]*$")],
       discAmt: [Validators.pattern("^[0-9]*$")],
@@ -258,14 +258,8 @@ export class IPBillingComponent implements OnInit {
       paidAmt: [''],
       ChargeDate: [new Date()],
       balanceAmt: [''],
-      TotalAmt: [0],
-      Percentage: [Validators.pattern("^[0-9]*$")],
-      concessionAmt: [0],
+
     
-      ConcessionId: [],
-      Remark: [''],
-      GenerateBill: [0],
-      FinalAmount: '',
 
       // BillingClassId:[''],
       // BillDate: [''],
@@ -282,6 +276,24 @@ export class IPBillingComponent implements OnInit {
       // FinalAmountpay: [0]
     });
   }
+
+  createBillForm() {
+    this.Ipbillform = this.formBuilder.group({
+      
+      TotalAmt: [0],
+      Percentage: [Validators.pattern("^[0-9]*$")],
+      concessionAmt: [0],
+    
+      ConcessionId: [],
+      Remark: [''],
+      GenerateBill: [0],
+      FinalAmount: '',
+      CashCounterId: ['', Validators.required]
+
+    
+    });
+  }
+
 
   //  ===================================================================================
   filterStates(name: string) {
@@ -324,25 +336,25 @@ export class IPBillingComponent implements OnInit {
   // }
 
   getServiceListCombobox() {
-    debugger;
+    
     let tempObj;
     var m_data = {
-      SrvcName: `${this.Ipbillform.get('SrvcName').value}%`,
+      SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
       TariffId: 1,//this.selectedAdvanceObj.TariffId || 1,
       ClassId: 1// this.selectedAdvanceObj.ClassId ||1
     };
-    if (this.Ipbillform.get('SrvcName').value.length >= 1) {
+    if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.filteredOptions = data;
-        console.log(this.filteredOptions);
+        // console.log(this.filteredOptions);
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
       });
-      // });
+      
     }
   }
   onScroll() {
@@ -350,7 +362,7 @@ export class IPBillingComponent implements OnInit {
     this.nextPage$.next();
   }
   getOptionText(option) {
-    // debugger;
+    
     if (!option)
       return '';
     return option.ServiceName;
@@ -360,8 +372,7 @@ export class IPBillingComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-    // debugger;
-
+    
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
     this.b_totalAmount = obj.Price;
@@ -372,23 +383,23 @@ export class IPBillingComponent implements OnInit {
 
 
     if (obj.IsDocEditable) {
-      this.Ipbillform.get('DoctorID').reset();
-      this.Ipbillform.get('DoctorID').setValidators([Validators.required]);
-      this.Ipbillform.get('DoctorID').enable();
+      this.Serviceform.get('DoctorID').reset();
+      this.Serviceform.get('DoctorID').setValidators([Validators.required]);
+      this.Serviceform.get('DoctorID').enable();
       // this.isDoctor = true;
 
     } else {
-      this.Ipbillform.get('DoctorID').reset();
-      this.Ipbillform.get('DoctorID').clearValidators();
-      this.Ipbillform.get('DoctorID').updateValueAndValidity();
-      this.Ipbillform.get('DoctorID').disable();
+      this.Serviceform.get('DoctorID').reset();
+      this.Serviceform.get('DoctorID').clearValidators();
+      this.Serviceform.get('DoctorID').updateValueAndValidity();
+      this.Serviceform.get('DoctorID').disable();
       // this.isDoctor = false;
 
     }
   }
 
   getChargesList1() {
-    // debugger;
+    
     this.chargeslist1 = [];
     this.dataSource1.data = [];
     var m = {
@@ -406,8 +417,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   getChargesList() {
-    // debugger;
-    // IsInterimBillFlag =0 check
+   
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
@@ -427,7 +437,6 @@ export class IPBillingComponent implements OnInit {
 
 
   getDatewiseChargesList() {
-    debugger;
     this.chargeslist = [];
     this.dataSource.data = [];
     this.selectDate = this.datePipe.transform(this.Ipbillform.get("ChargeDate").value, "mm/dd/YYYY") || this.dateTimeObj.date;
@@ -440,7 +449,7 @@ export class IPBillingComponent implements OnInit {
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       this.dataSource.data = this.chargeslist;
-      console.log(this.dataSource.data);
+      // console.log(this.dataSource.data);
       // this.isLoading = 'list-loaded';
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
     },
@@ -479,7 +488,7 @@ export class IPBillingComponent implements OnInit {
       "isSelfOrCompanyService": false,
       "packageId": 0,
       "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      "classId": this.Ipbillform.get("ClassId").value.ClassId
+      "classId": this.Serviceform.get("ClassId").value.ClassId
     }
     console.log(m_data);
     this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
@@ -524,9 +533,11 @@ export class IPBillingComponent implements OnInit {
       // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
     })
   }
-  // insertAddIPCharges() {
-
-  // }
+   getCashCounterComboList() {
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+    });
+  }
 
   // openBillInfo() {
   //   this.isExpanded = !this.isExpanded;
@@ -543,10 +554,11 @@ export class IPBillingComponent implements OnInit {
   }
 
   getNetAmount() {
-
-    let amt = this.Ipbillform.get('FinalAmount').value
-    let Tot = parseInt(amt) - parseInt(this.concessionAmtOfNetAmt);
-    this.netPaybleAmt = Tot;
+debugger
+    // let amt = this.Ipbillform.get('FinalAmount').value
+    // let Tot = parseInt(amt) - parseInt(this.concessionAmtOfNetAmt);
+    this.netPaybleAmt =  parseInt(this.Ipbillform.get('FinalAmount').value) - parseInt(this.concessionAmtOfNetAmt);
+    // this.Ipbillform.get('FinalAmount').setValue(this.netPaybleAmt);
 
 
     if (this.concessionAmtOfNetAmt > 0) {
@@ -600,14 +612,14 @@ export class IPBillingComponent implements OnInit {
 
 
   CalAdmincharge() {
-    debugger;
-    this.netPaybleAmt=this.totalAmtOfNetAmt;
+    debugger
+    // this.netPaybleAmt=this.totalAmtOfNetAmt;
     let Percentage = this.Ipbillform.get('Percentage').value;
     if (this.Ipbillform.get('Percentage').value) {
       this.concessionAmtOfNetAmt = Math.round((this.netPaybleAmt * parseInt(Percentage)) / 100);
-    let  tot = Math.round(this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt);
-      this.netPaybleAmt = tot;
-      this.ConShow = true
+      this.netPaybleAmt = Math.round(this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt);
+      this.Ipbillform.get('FinalAmount').setValue(this.netPaybleAmt);
+       this.ConShow = true
     }
     else {
       this.netPaybleAmt = this.totalAmtOfNetAmt;
@@ -644,9 +656,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   getInterimData() {
-    // debugger;
-
-    //   debugger;
+   
     //   if( this.Ipbillform.get("AdminCharges").value){
     //   this.FAmount=this.Adminamt;
     //   this.AdminDiscamt=this.Adminper;
@@ -1040,8 +1050,7 @@ export class IPBillingComponent implements OnInit {
 
 
   SaveBill() {
-    debugger;
-
+    
     let InterimOrFinal = 1;
     if (this.dataSource.data.length > 0 && (this.netPaybleAmt > 0)) {
       this.isLoading = 'submit';
@@ -1076,7 +1085,7 @@ export class IPBillingComponent implements OnInit {
         PatientHeaderObj['NetPayAmount'] =  this.Ipbillform.get('FinalAmount').value;
 
       //
-      debugger;
+     
       console.log('============================== Save IP Billing ===========');
 
       //==============-======--==============Payment======================
@@ -1093,12 +1102,10 @@ export class IPBillingComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('============================== Save IP Billing ===========');
-
-        debugger;
+   
         console.log(result.submitDataPay.ipPaymentInsert);
         this.paidamt = result.PaidAmt;
 
-        debugger;
 
         if (result.submitDataAdvancePay) {
           this.balanceamt = result.submitDataAdvancePay.BalanceAmount;
@@ -1122,38 +1129,39 @@ export class IPBillingComponent implements OnInit {
         }
 
         this.CompDisamount = this.AdminDiscamt + this.concessionAmtOfNetAmt;
-        console.log(this.CompDisamount);
+        // console.log(this.CompDisamount);
         this.flagSubmit = result.IsSubmitFlag
         //
+
+       
         let InsertBillUpdateBillNoObj = {};
         InsertBillUpdateBillNoObj['BillNo'] = 0;
         InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
-          InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-          InsertBillUpdateBillNoObj['TotalAmt'] = parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
+        InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
+        InsertBillUpdateBillNoObj['TotalAmt'] = parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
         InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
-        InsertBillUpdateBillNoObj['NetPayableAmt'] = this.FinalAmountpay,//this.netPaybleAmt;
-          InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
-          InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
-          InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+        InsertBillUpdateBillNoObj['NetPayableAmt'] =this.Ipbillform.get('FinalAmount').value || 0;
+        InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
+        InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
+        InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.ConcessionId;
         InsertBillUpdateBillNoObj['IsSettled'] = 0;
         InsertBillUpdateBillNoObj['IsPrinted'] = 1;
         InsertBillUpdateBillNoObj['IsFree'] = 0;
         InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-          InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
-          InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+        InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+        InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
         InsertBillUpdateBillNoObj['InterimOrFinal'] = 1;
         InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
         InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
         InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
-          InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
-          //  InsertBillUpdateBillNoObj['CompDiscAmt'] = this.CompDisamount,//this.Ipbillform.get('Amount').value || 0,
-          InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || ''
-        InsertBillUpdateBillNoObj['CashCounterId'] = 0;//this.Ipbillform.get('Remark').value || ''
+        InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
+        InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+        InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId || 0 ;
 
         let Billdetsarr = [];
 
@@ -1179,7 +1187,7 @@ export class IPBillingComponent implements OnInit {
 
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
-        debugger
+        
         // new
         let UpdateBillBalAmtObj = {};
         UpdateBillBalAmtObj['BillNo'] = 0;
@@ -1218,8 +1226,8 @@ export class IPBillingComponent implements OnInit {
             UpdateAdvanceHeaderObj['BalanceAmount'] = 0
         }
 
-        console.log(this.flagSubmit);
-        debugger
+        // console.log(this.flagSubmit);
+        
         if (this.flagSubmit == true) {
           let submitData = {
             "InsertBillUpdateBillNo": InsertBillUpdateBillNo,
@@ -1249,8 +1257,7 @@ export class IPBillingComponent implements OnInit {
           });
         }
         else {
-          debugger;
-
+          
           this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
           if (this.concessionAmtOfNetAmt > 0) {
             this.balanceamt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
@@ -1264,30 +1271,30 @@ export class IPBillingComponent implements OnInit {
           let InsertBillUpdateBillNoObj = {};
           InsertBillUpdateBillNoObj['BillNo'] = 0;
           InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
-            InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-            InsertBillUpdateBillNoObj['TotalAmt'] = parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
+          InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
+          InsertBillUpdateBillNoObj['TotalAmt'] = parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
           InsertBillUpdateBillNoObj['ConcessionAmt'] = this.concessionAmtOfNetAmt;
-          InsertBillUpdateBillNoObj['NetPayableAmt'] = this.FinalAmountpay,//this.netPaybleAmt;
-            InsertBillUpdateBillNoObj['PaidAmt'] = this.paidAmt;
+          InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
+          InsertBillUpdateBillNoObj['PaidAmt'] = this.paidAmt;
           InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,//this.netPaybleAmt;
-            InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+          InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
           InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
           InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-            InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+          InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
           InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
           InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.ConcessionId;
           InsertBillUpdateBillNoObj['IsSettled'] = 0;
           InsertBillUpdateBillNoObj['IsPrinted'] = 1;
           InsertBillUpdateBillNoObj['IsFree'] = 0;
           InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-            InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
-            InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+          InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+          InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
           InsertBillUpdateBillNoObj['InterimOrFinal'] = 1;
           InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
           InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
           InsertBillUpdateBillNoObj['TaxPer'] =0// this.Ipbillform.get('Percentage').value || 0,
-            InsertBillUpdateBillNoObj['TaxAmount'] =0// this.Ipbillform.get('Amount').value || 0,
-            InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || ''
+          InsertBillUpdateBillNoObj['TaxAmount'] =0// this.Ipbillform.get('Amount').value || 0,
+          InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || ''
           InsertBillUpdateBillNoObj['CashCounterId'] = 0;//this.Ipbillform.get('Remark').value || ''
 
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
@@ -1385,28 +1392,28 @@ export class IPBillingComponent implements OnInit {
       let InsertDraftBillOb = {};
       InsertDraftBillOb['DRBNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-        InsertDraftBillOb['TotalAmt'] = this.totalAmtOfNetAmt,//parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
-        InsertDraftBillOb['ConcessionAmt'] = this.concessionAmtOfNetAmt;
-      InsertDraftBillOb['NetPayableAmt'] = this.netPaybleAmt;
+      InsertDraftBillOb['TotalAmt'] = this.totalAmtOfNetAmt,//parseInt(this.totalAmtOfNetAmt) || this.netPaybleAmt;
+      InsertDraftBillOb['ConcessionAmt'] = this.concessionAmtOfNetAmt;
+      InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0//this.paidAmt;
-      InsertDraftBillOb['BalanceAmt'] = this.netPaybleAmt;
-        InsertDraftBillOb['BillDate'] = this.dateTimeObj.date;
+      InsertDraftBillOb['BalanceAmt'] =this.Ipbillform.get('FinalAmount').value || 0;
+      InsertDraftBillOb['BillDate'] = this.dateTimeObj.date;
       InsertDraftBillOb['OPD_IPD_Type'] = 1;
       InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertDraftBillOb['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+      InsertDraftBillOb['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
       InsertDraftBillOb['BillTime'] = this.dateTimeObj.date;
       InsertDraftBillOb['ConcessionReasonId'] = this.ConcessionId,
-        InsertDraftBillOb['IsSettled'] = 0;
+      InsertDraftBillOb['IsSettled'] = 0;
       InsertDraftBillOb['IsPrinted'] = 0;
       InsertDraftBillOb['IsFree'] = 0;
       InsertDraftBillOb['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-        InsertDraftBillOb['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
-        InsertDraftBillOb['UnitId'] = this.selectedAdvanceObj.UnitId || 0,
-        InsertDraftBillOb['InterimOrFinal'] = 0;
+      InsertDraftBillOb['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+      InsertDraftBillOb['UnitId'] = this.selectedAdvanceObj.UnitId || 0,
+      InsertDraftBillOb['InterimOrFinal'] = 0;
       InsertDraftBillOb['CompanyRefNo'] = 0;
       InsertDraftBillOb['ConcessionAuthorizationName'] = '';
       InsertDraftBillOb['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
-        InsertDraftBillOb['TaxAmount'] =0//this.Ipbillform.get('Amount').value || 0
+      InsertDraftBillOb['TaxAmount'] =0//this.Ipbillform.get('Amount').value || 0
       // InsertDraftBillOb['DiscComments'] = this.Ipbillform.get('BillRemark').value || '';
 
 
@@ -1428,7 +1435,7 @@ export class IPBillingComponent implements OnInit {
       // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       // PatientHeaderObj['NetPayAmount'] = this.netPaybleAmt; 
 
-
+debugger
       console.log('============================== Save IP Billing ===========');
       let submitData = {
         "ipIntremdraftbillInsert": InsertDraftBillObj,
@@ -1446,8 +1453,7 @@ export class IPBillingComponent implements OnInit {
               //  this.getPrintDraft(response);
             }
           });
-          // debugger;
-          this.deleteTableRow(this.dataSource.data);
+             this.deleteTableRow(this.dataSource.data);
         } else {
           Swal.fire('Error !', 'IP Draft Billing data not saved', 'error');
         }
@@ -1460,9 +1466,9 @@ export class IPBillingComponent implements OnInit {
 
   onSaveEntry() {
 
-    if (this.Ipbillform.get("DoctorID").value) {
-      this.DoctornewId = this.Ipbillform.get("DoctorID").value.DoctorID;
-      this.ChargesDoctorname = this.Ipbillform.get("DoctorID").value.DoctorName.toString()
+    if (this.Serviceform.get("DoctorID").value) {
+      this.DoctornewId = this.Serviceform.get("DoctorID").value.DoctorID;
+      this.ChargesDoctorname = this.Serviceform.get("DoctorID").value.DoctorName.toString()
     } else {
       this.DoctornewId = 0;
       this.ChargesDoctorname = '';
@@ -1513,14 +1519,14 @@ export class IPBillingComponent implements OnInit {
     }
   }
   onClearServiceAddList() {
-    this.Ipbillform.get('SrvcName').reset();
-    this.Ipbillform.get('price').reset();
-    this.Ipbillform.get('qty').reset('1');
-    this.Ipbillform.get('totalAmount').reset();
-    this.Ipbillform.get('DoctorID').reset();
-    this.Ipbillform.get('discPer').reset();
-    this.Ipbillform.get('discAmount').reset();
-    this.Ipbillform.get('netAmount').reset();
+    this.Serviceform.get('SrvcName').reset();
+    this.Serviceform.get('price').reset();
+    this.Serviceform.get('qty').reset('1');
+    this.Serviceform.get('totalAmount').reset();
+    this.Serviceform.get('DoctorID').reset();
+    this.Serviceform.get('discPer').reset();
+    this.Serviceform.get('discAmount').reset();
+    this.Serviceform.get('netAmount').reset();
   }
 
   calculateTotalAmt() {
@@ -1542,9 +1548,9 @@ export class IPBillingComponent implements OnInit {
 
 
   calculatechargesDiscamt() {
-    debugger;
-    let d = this.Ipbillform.get('discAmount').value;
-    this.disamt = this.Ipbillform.get('discAmount').value;
+    
+    // let d = this.Ipbillform.get('discAmount').value;
+    this.disamt = this.Serviceform.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
 
     if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
@@ -1552,15 +1558,13 @@ export class IPBillingComponent implements OnInit {
       if (Netamt > 0) {
         tot = Netamt - parseInt(this.disamt);
         this.b_netAmount = tot.toString();
-        this.Ipbillform.get('netAmount').setValue(tot);
+        this.Serviceform.get('netAmount').setValue(tot);
       }
-    } else if (d == null) {
-      this.Ipbillform.get('netAmount').setValue(this.b_totalAmount);
+    } else if (this.Serviceform.get('discAmount').value == null) {
+      this.Serviceform.get('netAmount').setValue(this.b_totalAmount);
       this.Consession = true;
     }
-    //   else
-    //     this.TotalnetPaybleAmt = this.disamt;
-    // }
+   
   }
 
 
@@ -1720,13 +1724,11 @@ export class IPBillingComponent implements OnInit {
 
   // GET DATA FROM DATABASE 
   getPrint(el) {
-    debugger;
-
+    
     var D_data = {
       "BillNo": el,
     }
-    // el.bgColor = 'red';
-
+   
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
     this.subscriptionArr.push(
       this._IpSearchListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
@@ -1742,12 +1744,11 @@ export class IPBillingComponent implements OnInit {
     );
 
 
-    // this.getIPIntreimBillPrint(el);
+    
   }
 
   getPrintDraft() {
-    debugger;
-
+    
     var D_data = {
       "AdmissionID": 10528,// el
     }
@@ -1811,7 +1812,7 @@ export class IPBillingComponent implements OnInit {
   getBillingClassCombo() {
     this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
       this.BillingClassCmbList = data;
-      this.Ipbillform.get('ClassId').setValue(this.BillingClassCmbList[0]);
+      this.Serviceform.get('ClassId').setValue(this.BillingClassCmbList[0]);
     });
   }
 
@@ -1950,12 +1951,11 @@ export class IPBillingComponent implements OnInit {
 
   // GET DATA FROM DATABASE  DraftBill
   getIPIntreimBillPrint(el) {
-    debugger;
+    
     var D_data = {
       "BillNo": el
     }
-    // el.bgColor = 'red';
-    //console.log(el);
+   
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
     this.subscriptionArr.push(
       this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
@@ -1965,8 +1965,7 @@ export class IPBillingComponent implements OnInit {
 
         console.log(this.reportPrintObj);
         this.getTemplateDraft();
-        // console.log(res);
-
+        
       })
     );
   }
@@ -1997,7 +1996,7 @@ export class IPBillingComponent implements OnInit {
 
 
   onSave() {
-    debugger;
+    
     if (this.dataSource.data.length > 0) {
 
       if (this.Ipbillform.get('GenerateBill').value) {
@@ -2067,7 +2066,7 @@ export class Bill {
   TaxPer: any;
   TaxAmount: any;
   DiscComments: String;
-
+  CashCounterId:any;
 
   constructor(InsertBillUpdateBillNoObj) {
     this.AdmissionID = InsertBillUpdateBillNoObj.AdmissionID || 0;
@@ -2096,6 +2095,7 @@ export class Bill {
     this.TaxPer = InsertBillUpdateBillNoObj.TaxPer || '0';
     this.TaxAmount = InsertBillUpdateBillNoObj.TaxAmount || '0';
     this.DiscComments = InsertBillUpdateBillNoObj.DiscComments || '';
+    this.CashCounterId = InsertBillUpdateBillNoObj.CashCounterId || '';
   }
 
 }

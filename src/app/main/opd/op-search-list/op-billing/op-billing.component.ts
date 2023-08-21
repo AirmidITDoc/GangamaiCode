@@ -483,9 +483,9 @@ export class OPBillingComponent implements OnInit {
         });
 
       dialogRef.afterClosed().subscribe(result => {
-        let Data = {
-          "opInsertPayment": result.submitDataPay.ipPaymentInsert
-        };
+        // let Data = {
+        //   "opInsertPayment": result.submitDataPay.ipPaymentInsert
+        // };
         this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
         this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
         this.flagSubmit = result.IsSubmitFlag
@@ -527,8 +527,8 @@ export class OPBillingComponent implements OnInit {
         }
         else {
           const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-
-          InsertBillUpdateBillNoObj['BalanceAmt'] = this.TotalnetPaybleAmt;
+debugger
+          InsertBillUpdateBillNoObj['BalanceAmt'] = this.BillingForm.get('FinalAmt').value;
 
           let submitData = {
             "chargesDetailCreditInsert":InsertAdddetArr,
@@ -699,7 +699,7 @@ export class OPBillingComponent implements OnInit {
   calculatePersc(){
     if (this.b_ChargeDiscPer)
     {
-      this.b_ChargeDisAmount = (this.b_totalAmount * parseInt(this.b_ChargeDiscPer)) / 100;
+      this.b_ChargeDisAmount =Math.round(this.b_totalAmount * parseInt(this.b_ChargeDiscPer)) / 100;
       this.b_netAmount= this.b_totalAmount - this.b_ChargeDisAmount;
       this.registeredForm.get('ChargeDiscAmount').disable();
     }
@@ -779,29 +779,6 @@ export class OPBillingComponent implements OnInit {
       this.BillingForm.get('ConcessionId').disable();
     }
 
-    // let d = this.registeredForm.get('concessionAmt').value;
-    // this.Consessionres = false;
-    // this.disamt = this.registeredForm.get('concessionAmt').value;
-    // if (this.concessionAmtOfNetAmt < this.totalAmtOfNetAmt) {
-    //   if (parseInt(this.disamt) > 0) {
-    //     let tot = 0;
-    //     if (this.b_TotalChargesAmount > 0) {
-    //       tot = parseInt(this.b_TotalChargesAmount) - parseInt(this.disamt);
-    //       this.TotalnetPaybleAmt = tot;
-    //       this.registeredForm.get('FinalAmt').setValue(tot);
-    //     }
-    //     this.Consessionres = true;
-    //   }
-    //   else if (d == null) {
-    //     this.registeredForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
-    //   }
-    // } else {
-    //   Swal.fire("Discount Amount Schoud be Less than Total Amount")
-    // }
-
-    // if ( (this.Consessionamt == 0)) {
-    //   this.Consessionres = false
-    // }
   }
 
 

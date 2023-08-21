@@ -814,11 +814,11 @@ export class RegAdmissionComponent implements OnInit {
 
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%' || '%',
+      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
+      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || '%',
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "From_Dt":'01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt":'01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "MobileNo": '%'
     }
     console.log(m_data);

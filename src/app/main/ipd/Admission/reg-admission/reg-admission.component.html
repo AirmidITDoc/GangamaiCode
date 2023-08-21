@@ -85,7 +85,7 @@
                   <form [formGroup]="_AdmissionService.myFilterform">
                     <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center"
                       style="padding-top: 10px;">
-
+<!-- 
                       <mat-form-field appearance="outline" style="margin-left:10px;">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker" [disabled]="Range">
@@ -95,9 +95,9 @@
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field>
+                      </mat-form-field> -->
                       &nbsp;
-                      <mat-form-field appearance="outline" style="width:100px;padding-right: 10px;">
+                      <mat-form-field appearance="outline" style="width:300px;padding-right: 10px;">
                         <mat-label>Reg No</mat-label>
                         <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput
                           (keyup)="getOPIPPatientList()">
