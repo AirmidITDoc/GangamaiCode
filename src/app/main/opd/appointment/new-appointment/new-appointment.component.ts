@@ -308,15 +308,15 @@ export class NewAppointmentComponent implements OnInit {
       // this.setDropdownObjs1();
     }
 
-    this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDep(value || '')),
-    );
+    // this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterDep(value || '')),
+    // );
 
-    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterDoc(value || '')),
-    );
+    // this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterDoc(value || '')),
+    // );
   }
 
   getOptionTextDep(option) {
@@ -593,6 +593,10 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
@@ -928,6 +932,10 @@ export class NewAppointmentComponent implements OnInit {
         console.log(this.DoctorList);
         // this.filteredDoctor.next(this.DoctorList.slice());
         this.optionsDoc = this.DoctorList.slice();
+        this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+        );
       })
   }
 
