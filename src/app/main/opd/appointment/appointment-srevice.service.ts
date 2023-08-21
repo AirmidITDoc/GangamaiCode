@@ -315,4 +315,10 @@ export class AppointmentSreviceService {
   public getOPDPrecriptionPrint(PrecriptionId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1 ", PrecriptionId)
   }
+  
+  public getOPPatient(employee) {
+
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
+  }
+  
 }

@@ -14,10 +14,6 @@ import { PrintPaymentComponent } from './print-payment/print-payment.component';
 import * as converter from 'number-to-words';
 import { DomSanitizer } from '@angular/platform-browser';
 
-// @Pipe({
-//   name: 'numberToWords'
-// })
-
 
 @Component({
   selector: 'app-browse-payment-list',
@@ -29,7 +25,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class BrowsePaymentListComponent implements OnInit {
   click : boolean = false;
   MouseEvent=true;
-  // BrowseIPDPaymentReceiptList:any;
   msg:any;
   currentDate=new Date();
   reportPrintObj: BrowseOpdPaymentReceipt;
@@ -85,8 +80,7 @@ export class BrowsePaymentListComponent implements OnInit {
 
 onShow(event:MouseEvent)
   {   
-    //debugger;
-   
+     
     this.click=!this.click;
      setTimeout(() => {
        {
@@ -125,7 +119,7 @@ getBrowseOpdPaymentReceiptList(){
   this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptList(D_data).subscribe(Visit=> {
       
       this.dataSource.data =Visit as BrowseOpdPaymentReceipt[];
-      console.log(this.dataSource.data);
+      
       this.dataSource.sort =this.sort;
       this.dataSource.paginator=this.paginator;
       this.sIsLoading = '';
@@ -138,104 +132,12 @@ getBrowseOpdPaymentReceiptList(){
 }
 
 ngOnChanges(changes: SimpleChanges) {
-  // changes.prop contains the old and the new value...
-  // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
+
   this.dataSource.data = changes.dataArray.currentValue as BrowseOpdPaymentReceipt[];
   this.dataSource.sort =this.sort;
   this.dataSource.paginator=this.paginator;
 }
 
-
-
-onExport(exprtType){
-  // let columnList=[];
-  // if(this.dataSource.data.length == 0){
-  //   // this.toastr.error("No Data Found");
-  //   Swal.fire('Error !', 'No Data Found', 'error');
-  // }
-  // else{
-  //   var excelData = [];
-  //   var a=1;
-  //   for(var i=0;i<this.dataSource.data.length;i++){
-  //     let singleEntry = {
-  //       // "Sr No":a+i,
-  //       "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"]:"N/A",
-         
-  //         "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
-  //         "PaymentDate" :this.dataSource.data[i]["PaymentDate"] ? this.dataSource.data[i]["PaymentDate"]:"N/A",
-  //         "PBillNo" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"] :"N/A",
-  //         "ReceiptNo" :this.dataSource.data[i]["ReceiptNo"] ? this.dataSource.data[i]["ReceiptNo"]:"N/A",
-  //         "Pay Date" :this.dataSource.data[i]["PayDate"] ? this.dataSource.data[i]["PayDate"]:"N/A",
-  //         "Total Amt" :this.dataSource.data[i]["TotalAmt"]+" - "+this.dataSource.data[i]["TotalAmt"],
-  //         "Balance Amount" :this.dataSource.data[i]["BalanceAmt"] ? this.dataSource.data[i]["BalanceAmt"]:"N/A",
-  //         "CashPay Amount" :this.dataSource.data[i]["CashPayAmount"] ? this.dataSource.data[i]["CardPayAmount"]:"N/A",
-  //          "ChequePay Amount" :this.dataSource.data[i]["ChequePayAmount"] ? this.dataSource.data[i]["ChequePayAmount"]:"N/A",
-  //          "CardPay Amount" :this.dataSource.data[i]["CardPayAmount"]+" - "+this.dataSource.data[i]["CardPayAmount"],
-  //         "AdvanceUsedAmount" :this.dataSource.data[i]["AdvanceUsedAmount"] ? this.dataSource.data[i]["AdvanceUsedAmount"]:"N/A",
-  //          "PaidAmount" :this.dataSource.data[i]["PaidAmount"] ? this.dataSource.data[i]["PaidAmount"]:"N/A",
-  //          "NEFTPayAmount" :this.dataSource.data[i]["NEFTPayAmount"] ? this.dataSource.data[i]["NEFTPayAmount"]:"N/A",
-  //          "PayTMAmount" :this.dataSource.data[i]["PayTMAmount"] ? this.dataSource.data[i]["PayTMAmount"]:"N/A",
-  //           // "Remark" :this.dataSource.data[i]["Remark"] ? this.dataSource.data[i]["Remark"]:"N/A",
-  //          "UserName" :this.dataSource.data[i]["UserName"] ? this.dataSource.data[i]["UserName"]:"N/A"
-  //     };
-  //     excelData.push(singleEntry);
-  //   }
-  //   var fileName = "OutDoor-Payment-Receipt-List " + new Date() +".xlsx";
-  //   if(exprtType =="Excel"){
-  //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-  //     var wscols = [];
-  //     if(excelData.length > 0){ 
-  //       var columnsIn = excelData[0]; 
-  //       console.log(columnsIn);
-  //       for(var key in columnsIn){
-  //         let headerLength = {wch:(key.length+1)};
-  //         let columnLength = headerLength;
-  //         try{
-  //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-  //         }
-  //         catch{
-  //           columnLength = headerLength;
-  //         }
-  //         if(headerLength["wch"] <= columnLength["wch"]){
-  //           wscols.push(columnLength)
-  //         }
-  //         else{
-  //           wscols.push(headerLength)
-  //         }
-  //       } 
-  //     }
-  //     ws['!cols'] = wscols;
-  //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  //     XLSX.writeFile(wb, fileName);
-  //   }else{
-  //     let doc = new jsPDF('p','pt', 'a4');
-  //     doc.page = 0;
-  //     var col=[];
-  //     for (var k in excelData[0]) col.push(k);
-  //       console.log(col.length)
-  //     var rows = [];
-  //     excelData.forEach(obj => {
-  //       console.log(obj)
-  //       let arr = [];
-  //       col.forEach(col => {
-  //         arr.push(obj[col]);
-  //       });
-  //       rows.push(arr);
-  //     });
-    
-  //     doc.autoTable(col, rows,{
-  //       margin:{left:5,right:5,top:5},
-  //       theme:"grid",
-  //       styles: {
-  //         fontSize: 3
-  //       }});
-  //     doc.setFontSize(3);
-  //     // doc.save("Indoor-Patient-List.pdf");
-  //     window.open(URL.createObjectURL(doc.output("blob")))
-  //   }
-  // }
-}
 
 
   getRecord(el,i) {
@@ -249,43 +151,27 @@ onExport(exprtType){
 
   }
   convertToWord(e){
-    // this.numberInWords= converter.toWords(this.mynumber);
+    
      return converter.toWords(e);
        }
        val = 1;
 
 getTemplate() {
-debugger;
+
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
-    console.log(this.printTemplate = resData[0].TempDesign);
-    console.log(this.printTemplate = resData[0].TempKeys);
-    this.printTemplate = resData[0].TempDesign;
+      this.printTemplate = resData[0].TempDesign;
    
-    // this.data = this.sanitizer.bypassSecurityTrustHtml(resData[0].TempDesign);    
-
-    // console.log(this.printTemplate)
-    // console.log(this.data);
-    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','ReceiptNo','BillDate','RegId','GenderName','BillNo','PatientName','Age','AgeDay','AgeMonth','ConsultantDr','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
+    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','BillDate','RegId','BillNo','PatientName','ConsultantDr','Department',"Address",'MobileNo','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
    
 
-//   @Pipe({
-//   name: 'htmlToPlaintext'
-// })
-//     const temp = document.createElement('div');
-//     temp.innerHTML = this.printTemplate;
-//     this.printTemplate=temp.innerHTML
-//     return temp.textContent || temp.innerText || '';
-
-//     console.log(temp.textContent || temp.innerText || '')
-  
    for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
 
-   
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -294,20 +180,9 @@ debugger;
         this.print();
       }, 50);
   });
-// });
+
 }
 
-transform(value: string) {
-  var datePipe = new DatePipe("en-US");
-   value = datePipe.transform(value, 'dd/MM/yyyy ');
-   return value;
-}
-
-transform1(value: string) {
-var datePipe = new DatePipe("en-US");
-value = datePipe.transform(value, 'dd/MM/yyyy h:mm a');
- return value;
-}
 
 transform2(value: string) {
   var datePipe = new DatePipe("en-US");
@@ -316,7 +191,7 @@ transform2(value: string) {
 }
 
 getPrint(el) {
-  debugger
+  
    var D_data = {
      "PaymentId": el.PaymentId,
    }
@@ -326,7 +201,7 @@ getPrint(el) {
      this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
        if(res){
        this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-       console.log(this.reportPrintObj);
+       
       this.getTemplate();
       }
               
@@ -360,7 +235,7 @@ print() {
 
 getViewbill(contact)
 {
-  console.log(contact);
+  
     let xx = {
       PaymentId:contact.PaymentId,
       HospitalName:contact.HospitalName,
@@ -407,41 +282,11 @@ getViewbill(contact)
           }
      });
      dialogRef.afterClosed().subscribe(result => {
-      //  console.log('The dialog was closed - Insert Action', result);
-      //  this.getRadiologytemplateMasterList();
+      
      });
   }
 
 
-
- 
-
-
-
-// getBrowseOpdPaymentReceiptList(registrationValue){
-//   this.sIsLoading = 'loading-data';
-//   var D_data= {
-//     "F_Name": this._BrowseOpdPaymentReceiptService.myFilterform.get("FirstName").value + '%' || "%",
-//     "L_Name": this._BrowseOpdPaymentReceiptService.myFilterform.get("LastName").value + '%' || "%",
-//     "From_Dt" : this.datePipe.transform(this._BrowseOpdPaymentReceiptService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-//     "To_Dt" : this.datePipe.transform(this._BrowseOpdPaymentReceiptService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
-//     "Reg_No":this._BrowseOpdPaymentReceiptService.myFilterform.get("RegNo").value || 0,
-//     "PBillNo":this._BrowseOpdPaymentReceiptService.myFilterform.get("PBillNo").value || 0,
-//     "ReceiptNo":this._BrowseOpdPaymentReceiptService.myFilterform.get("ReceiptNo").value || 0,
-
-//   }
-//   // console.log(D_data);
-//   this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptList(D_data).subscribe(Visit=> {
-//     this.dataArray = Visit;
-     
-//       this.sIsLoading = '';
-//       console.log(this.dataSource.data);
-     
-//     },
-//     error => {
-//       this.sIsLoading = '';
-//     });
-// }
 
 }
 
@@ -490,6 +335,8 @@ export class BrowseOpdPaymentReceipt
     PatientName: string;
     FirstName: string;
     MiddleName: string; 
+    Department:any;
+    MobileNo:any;
     ConsultantDr:string;
     ReferDr:string;
     LastName: string;
@@ -555,7 +402,7 @@ export class BrowseOpdPaymentReceipt
             this.RefundId = BrowseOpdPaymentReceipt.RefundId || '';
             this.IsCancelled = BrowseOpdPaymentReceipt.IsCancelled || '';
             this.AddBy = BrowseOpdPaymentReceipt.AddBy || '';
-
+            this.Department=BrowseOpdPaymentReceipt.Department || '';
             this.UserName = BrowseOpdPaymentReceipt.UserName || '';
             this.ReceiptNo = BrowseOpdPaymentReceipt.ReceiptNo || '';
             this.PBillNo = BrowseOpdPaymentReceipt.PBillNo || '';
@@ -567,7 +414,7 @@ export class BrowseOpdPaymentReceipt
             this.CardNo = BrowseOpdPaymentReceipt.CardNo || '';
             this.CardBankName = BrowseOpdPaymentReceipt.CardBankName || '';
             this.ChequeNo=BrowseOpdPaymentReceipt.ChequeNo || 0;
-
+             this.MobileNo=BrowseOpdPaymentReceipt.MobileNo || '';
             this.HospitalName = BrowseOpdPaymentReceipt.HospitalName || '';
             this.HospitalAddress = BrowseOpdPaymentReceipt.HospitalAddress || '';
             this.EmailId = BrowseOpdPaymentReceipt.EmailId || '';

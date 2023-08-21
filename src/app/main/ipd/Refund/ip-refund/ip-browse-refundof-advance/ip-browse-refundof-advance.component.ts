@@ -251,7 +251,7 @@ getRecord(el,i) {
 
         
         this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
+        this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform2(this.reportPrintObj.PaymentTime));
         // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
         // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -268,11 +268,11 @@ getRecord(el,i) {
      return value;
  }
 
- transform1(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-   return value;
-}
+//  transform1(value: string) {
+//   var datePipe = new DatePipe("en-US");
+//   value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
+//    return value;
+// }
 
 transform2(value: string) {
   var datePipe = new DatePipe("en-US");
@@ -417,7 +417,7 @@ export class BrowseIpdreturnadvanceReceipt
     PayTMAmount: number;
     AddedBy:string;
     HospitalName:string;
-    
+    PaymentTime:any;
     RefundAmount:number;
     RefundNo:number;
     HospitalAddress:string;
@@ -470,6 +470,7 @@ export class BrowseIpdreturnadvanceReceipt
            this.AgeYear=BrowseIpdreturnadvanceReceipt.AgeYear || ''
            this.IPDNo=BrowseIpdreturnadvanceReceipt.IPDNo || '';
            this.Phone=BrowseIpdreturnadvanceReceipt.Phone || ''
+           this.PaymentTime=BrowseIpdreturnadvanceReceipt.PaymentTime || '';
            this.EmailId=BrowseIpdreturnadvanceReceipt.EmailId || '';
         }
 

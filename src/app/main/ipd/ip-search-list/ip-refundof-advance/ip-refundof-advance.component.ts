@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,11 +12,14 @@ import { AdvanceDataStored } from '../../advance';
 import { IPSearchListService } from '../ip-search-list.service';
 import Swal from 'sweetalert2';
 import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-ip-refundof-advance',
   templateUrl: './ip-refundof-advance.component.html',
-  styleUrls: ['./ip-refundof-advance.component.scss']
+  styleUrls: ['./ip-refundof-advance.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPRefundofAdvanceComponent implements OnInit {
 
@@ -127,8 +130,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
 
   getReturndetails() {
+    debugger
     var m_data = {
-    "OPIPID":this.selectedAdvanceObj.AdmissionID
+    "OPIPID": 32//this.selectedAdvanceObj.AdmissionID
     }
     debugger;
     // this.dataSource1.data = [];
@@ -171,7 +175,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   {
     debugger;
     // this.BalanceAdvance= this.BalanceAmount-this.RefundAmount;
-    this.BalanceAdvance=  this.BalanceAmount-this.NewRefundAmount;
+    this.BalanceAdvance=  this.RefundAmount - this.NewRefundAmount;
 
   }
 

@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="overflow: auto;">
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
@@ -59,27 +59,32 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getAdmittedPatientList()">
+                                    <input name="RegNo" formControlName="RegNo" matInput
+                                        (keyup)="getAdmittedPatientList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>IPD No</mat-label>
-                                    <input name="IPDNo" formControlName="IPDNo" matInput (keyup)="getAdmittedPatientList()">
+                                    <input name="IPDNo" formControlName="IPDNo" matInput
+                                        (keyup)="getAdmittedPatientList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getAdmittedPatientList()">
+                                    <input name="FirstName" formControlName="FirstName" matInput
+                                        (keyup)="getAdmittedPatientList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Middle Name</mat-label>
-                                    <input name="MiddleName" formControlName="MiddleName" matInput (keyup)="getAdmittedPatientList()">
+                                    <input name="MiddleName" formControlName="MiddleName" matInput
+                                        (keyup)="getAdmittedPatientList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getAdmittedPatientList()">
+                                    <input name="LastName" formControlName="LastName" matInput
+                                        (keyup)="getAdmittedPatientList()">
                                 </mat-form-field>
 
 

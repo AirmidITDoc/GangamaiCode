@@ -10,6 +10,11 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { BrowseIpdreturnadvanceReceipt } from '../ip-refund.component';
+import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import * as converter from 'number-to-words';
+import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
+
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -78,7 +83,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   currentDate = new Date();
   selectedAdvanceObj: AdvanceDetailObj;
 
-  constructor(public _IpSearchListService: IpSearchListService,
+  constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
@@ -126,7 +131,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getReturndetails() {
     var m_data = {
-    "OPIPID": this.selectedAdvanceObj.AdmissionID
+    "OPIPID":32// this.selectedAdvanceObj.AdmissionID
     }
     debugger;
     // this.dataSource1.data = [];
@@ -252,7 +257,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
 
 
-    const dialogRef = this._matDialog.open(IpAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
         maxHeight: "93vh", width: '100%', height: "100%",
@@ -300,7 +305,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
 
   getTemplate() {
@@ -345,10 +350,8 @@ getPrint(el) {
 
 
 print() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
-  let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+    let popupWin, printContents;
+  
   popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
   // popupWin.document.open();
   popupWin.document.write(` <html>
@@ -364,9 +367,7 @@ print() {
 }
   onClose() {
     this._IpSearchListService.myRefundAdvanceForm.reset();
-    // this._matDialog.closeAll();
-
-    this.dialogRef.close();
+      this.dialogRef.close();
   }
 }
 

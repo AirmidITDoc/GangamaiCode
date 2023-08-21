@@ -210,4 +210,16 @@ app-opd-search-list {
      width: 100%;  
     
 }
+
+
+.highlight{
+    background: #42A948; /* green */
+  }
+
+  .mat-row {
+     
+    &.selected {
+        background: #c21d1d;
+    }
+ }
 }

@@ -55,28 +55,28 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keuyp)="getAdmittedPatientList()">
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getAdmittedPatientList()">
                                     <span class="error" *ngIf="f.FirstName.invalid && f.RegNo.touched">RegNo is
                                         required Enter only Digits</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput (keuyp)="getAdmittedPatientList()">
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getAdmittedPatientList()">
                                     <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput (keuyp)="getAdmittedPatientList()">
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getAdmittedPatientList()">
                                     <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Mobile Number</mat-label>
-                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keuyp)="getAdmittedPatientList()">
+                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keyup)="getAdmittedPatientList()">
                                     <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
                                         required Enter only Digits</span>
                                 </mat-form-field>

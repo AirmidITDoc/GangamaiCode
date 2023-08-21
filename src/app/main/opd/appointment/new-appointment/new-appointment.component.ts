@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -17,14 +17,20 @@ import Swal from 'sweetalert2';
 import { RegistrationService } from '../../registration/registration.service';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-new-appointment',
   templateUrl: './new-appointment.component.html',
-  styleUrls: ['./new-appointment.component.scss']
+  styleUrls: ['./new-appointment.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewAppointmentComponent implements OnInit {
+
+  showtable:boolean=false;
+
 
   registerObj = new RegInsert({});
   registerObj1 = new RegInsert({});
@@ -110,6 +116,20 @@ export class NewAppointmentComponent implements OnInit {
   loadID = 0;
   savedValue: number = null;
 
+
+  displayedColumns: string[] = [
+    'RegNo',
+    'PatientName',
+    'AgeYear',
+    'GenderName',
+    'PhoneNo',
+    'MobileNo'
+    ];
+
+
+  dataSource = new MatTableDataSource<OPIPPatientModel>();
+
+
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -171,7 +191,7 @@ export class NewAppointmentComponent implements OnInit {
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
-  dataSource = new MatTableDataSource<VisitMaster>();
+  // dataSource = new MatTableDataSource<VisitMaster>();
 
   visitObj = new VisitMaster({});
 
@@ -207,6 +227,16 @@ export class NewAppointmentComponent implements OnInit {
     this.VisitFormGroup.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
     this.searchFormGroup.markAllAsTouched();
+
+    
+    if (this.data) {
+
+      this.registerObj = this.data.registerObj;
+
+      // console.log(this.registerObj);
+
+      // this.setDropdownObjs1();
+    }
 
     this.getHospitalList1();
     this.getHospitalList();
@@ -299,14 +329,7 @@ export class NewAppointmentComponent implements OnInit {
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-    if (this.data) {
-
-      this.registerObj = this.data.registerObj;
-
-      console.log(this.registerObj);
-
-      // this.setDropdownObjs1();
-    }
+   
 
     // this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
     //   startWith(''),
@@ -327,6 +350,7 @@ export class NewAppointmentComponent implements OnInit {
     return option.Doctorname;
   }
 
+  
 
   private _filterDep(value: any): string[] {
     if(value) {
@@ -519,11 +543,14 @@ export class NewAppointmentComponent implements OnInit {
   }
 
 
-  // getGendorMasterList() {
-  //   this._opappointmentService.getGenderMasterCombo().subscribe(data => {
-  //     this.GenderList = data;
-  //   })
-  // }
+  onEdit(row) {
+    console.log(row);
+   
+this.registerObj = row;
+this.getSelectedObj(row);
+     } 
+
+
 
   getClassList() {
     this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
@@ -991,30 +1018,71 @@ export class NewAppointmentComponent implements OnInit {
 
   }
 
-  searchRegList() {
-    ;
-    const dialogRef = this._matDialog.open(SearchPageComponent,
-      {
-        maxWidth: "90vw",
-        maxHeight: "540px", width: '100%'
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      if (result) {
-        let a, b, c;
+  // searchRegList() {
+  //   ;
+  //   const dialogRef = this._matDialog.open(SearchPageComponent,
+  //     {
+  //       maxWidth: "90vw",
+  //       maxHeight: "540px", width: '100%'
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
+  //     if (result) {
+  //       let a, b, c;
 
-        a = result.AgeDay.trim();;
-        b = result.AgeMonth.trim();
-        c = result.AgeYear.trim();
+  //       a = result.AgeDay.trim();;
+  //       b = result.AgeMonth.trim();
+  //       c = result.AgeYear.trim();
 
-        result.AgeDay = a;
-        result.AgeMonth = b;
-        result.AgeYear = c;
-        this.registerObj = result as RegInsert;
-        this.setDropdownObjs();
-      }
-      //this.getRegistrationList();
-    });
+  //       result.AgeDay = a;
+  //       result.AgeMonth = b;
+  //       result.AgeYear = c;
+  //       this.registerObj = result as RegInsert;
+  //       this.setDropdownObjs();
+  //     }
+  //     //this.getRegistrationList();
+  //   });
+  // }
+
+    // RegistrationListComponent
+    searchRegList() {
+    
+      this.showtable=true;
+      this.getOPIPPatientList()
+      this.setDropdownObjs();
+    }
+
+    
+  getOPIPPatientList() {
+
+    this.sIsLoading = 'loading-data';
+    var m_data = {
+      "F_Name": (this._opappointmentService.myFilterform.get("FirstName").value) + '%' || '%',
+      "L_Name": (this._opappointmentService.myFilterform.get("LastName").value) + '%' || '%',
+      "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
+      "From_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "MobileNo": '%'
+    }
+    console.log(m_data);
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this._opappointmentService.getOPPatient(m_data).subscribe(Visit => {
+       
+        this.dataSource.data = Visit as OPIPPatientModel[];
+
+        console.log(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+
+        this.sIsLoading = ' ';
+
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 50);
+       
   }
 
 

@@ -89,17 +89,17 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Reg No</mat-label>
-                                        <input name="RegNo" formControlName="RegNo" matInput>
+                                        <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
-                                        <input name="FirstName" formControlName="FirstName" matInput>
+                                        <input name="FirstName" formControlName="FirstName" matInput (keyup)="onShow($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
-                                        <input name="LastName" formControlName="LastName" matInput>
+                                        <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>

@@ -94,7 +94,6 @@ export class AppointmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
   }
 
-  
 
   public getGenderMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveGenderMasterForCombo", {})

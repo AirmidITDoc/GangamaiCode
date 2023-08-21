@@ -99,7 +99,7 @@ export class AppointmentComponent implements OnInit {
         }
 
         this.getVisitList();
-        // this.dataSource.data.refresh();
+        
     }
 
     // VisitList
@@ -170,21 +170,19 @@ export class AppointmentComponent implements OnInit {
    
 
     ngOnChanges(changes: SimpleChanges) {
-        // changes.prop contains the old and the new value...
-        // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
-        // this.isLoading = true;
+       
         this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
         this.isLoading = false;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        // this.isLoading = false;
+        
     }
 
     getRecord(contact, m): void {
         debugger;
-        this.VisitID = contact.VisitID;
+        // this.VisitID = contact.VisitId;
         if (m == "CasePaper Print") {
-            this.getPrint();
+            this.getPrint(contact);
         }
         if (m == "Update Registration") {
             console.log(contact);
@@ -314,13 +312,13 @@ export class AppointmentComponent implements OnInit {
 
     newappointment() {
         const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-            maxWidth: "95vw",
+            maxWidth: "110vw",
             height: "800px",
             width: "100%",
-            // height: "100%"
+            
         });
         dialogRef.afterClosed().subscribe((result) => {
-            // console.log('The dialog was closed - Insert Action', result);
+            
             this.getVisitList();
         });
     }
@@ -329,7 +327,7 @@ export class AppointmentComponent implements OnInit {
             maxWidth: "80vw",
             height: "90%",
             width: "100%",
-            // height: "100%"
+            
         });
     }
 
@@ -341,7 +339,7 @@ export class AppointmentComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            //  this.getRadiologytemplateMasterList();
+            
         });
     }
 
@@ -444,6 +442,7 @@ export class AppointmentComponent implements OnInit {
                 this.printTemplate = resData[0].TempDesign;
                 console.log(this.printTemplate);
                 let keysArray = [
+                    'HospitalName','HospitalAddress','Phone','EmailId',
                     "RegNo",
                     "PrecriptionId",
                     "PatientName",
@@ -464,6 +463,7 @@ export class AppointmentComponent implements OnInit {
                     "MobileNo",
                     "Address",
                     "VisitDate",
+                    "PreviousVisitDate"
                 ]; // resData[0].TempKeys;
 
                 for (let i = 0; i < keysArray.length; i++) {
@@ -475,23 +475,13 @@ export class AppointmentComponent implements OnInit {
                     );
                 }
 
-                // this.printTemplate = this.printTemplate.replace(
-                //     "StrVisitDate",
-                //     this.transform2(this.reportPrintObj.VisitDate)
-                // );
                 this.printTemplate = this.printTemplate.replace(
                     "StrPrintDate",
                     this.transform2(this.currentDate.toString())
                 );
-                // this.printTemplate = this.printTemplate.replace(
-                //     "StrConsultantDr",
-                //     this.reportPrintObj.ConsultantDocName
-                // );
-                // this.printTemplate = this.printTemplate.replace(
-                //     "StrOPDDate",
-                //     this.transform1(this.reportPrintObj.VisitDate)
-                // );
-
+                this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
+                this.printTemplate = this.printTemplate.replace('StrPreviousVisitDate', this.transform2(this.reportPrintObj.PreviousVisitDate));
+              
                 this.printTemplate = this.printTemplate.replace(/{{.*}}/g, "");
                 setTimeout(() => {
                     this.print();
@@ -511,20 +501,20 @@ export class AppointmentComponent implements OnInit {
         return value;
     }
 
-    getPrint() {
+    getPrint(contact) {
         debugger;
         var D_data = {
-            VisitId: 82973, //this.selectedAdvanceObj.AdmissionID || 0,
-            PatientType: 0, //this.selectedAdvanceObj.PatientType || 0
+            VisitId: contact.VisitId || 0,
+            
         };
-        // el.bgColor = 'red';
-        console.log(D_data);
+     
         let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
         this.subscriptionArr.push(
             this._AppointmentSreviceService
                 .getOPDPrecriptionPrint(D_data)
                 .subscribe((res) => {
                     this.reportPrintObjList = res as CasepaperVisitDetails[];
+                    console.log(this.reportPrintObjList )
                     this.reportPrintObj = res[0] as CasepaperVisitDetails;
                     this.getTemplate();
                 })

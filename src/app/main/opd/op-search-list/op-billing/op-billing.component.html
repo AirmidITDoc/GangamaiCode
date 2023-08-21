@@ -453,7 +453,7 @@
                                             <mat-form-field class="Consession-field" appearance="outline"
                                                 style="width: 100px;">
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="b_Consessionamt" name="b_Consessionamt"
+                                                <input matInput [(ngModel)]="b_concessionamt" name="b_Consessionamt"
                                                     formControlName="concessionAmt" placeholder="0" type="number"
                                                     (keyup)="calculateDiscamtfinal()">
                                             </mat-form-field>
@@ -468,7 +468,7 @@
                                                     FinalAmt is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 300px;"
+                                            <mat-form-field appearance="outline" style="width: 250px;"
                                                 *ngIf="Consessionres">
                                                 <mat-label>Concession Reason Type</mat-label>
                                                 <mat-select formControlName="ConcessionId" [disabled]="Consession">
@@ -477,13 +477,14 @@
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <mat-form-field appearance="outline" style="width: 300px;">
+                                            
+                                            <mat-form-field appearance="outline" style="width: 250px;">
                                                 <mat-label>Remark</mat-label>
                                                 <input name="Address" appearance="legacy" style="color: green;"
                                                     formControlName="BillRemark" placeholder="Remark" matInput>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 300px;">
+                                            <mat-form-field appearance="outline" style="width: 250px;">
                                                 <mat-label>Cash Counter</mat-label>
                                                 <mat-select formControlName="CashCounterId" required>
                                                     <mat-option *ngFor="let m of CashCounterList" [value]="m">
@@ -497,6 +498,9 @@
 
                                 </div>
                                 <div fxLayout="row" style="color: rgb(10, 81, 135);">
+                                    
+                                   
+
                                     <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
                                         style="font-weight: bold;">
                                         Cash Payment

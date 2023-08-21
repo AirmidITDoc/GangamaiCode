@@ -35,12 +35,10 @@ export class BrowseOPBillComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
-
+  
   selectedAdvanceObj: BrowseOPDBill;
   numberInWords!: string;
-  // lang: SUPPORTED_LANGUAGE = 'en';
-  value = 123;
+   value = 123;
   BrowseOPDBillsList: any;
   msg: any;
 
@@ -71,11 +69,9 @@ export class BrowseOPBillComponent implements OnInit {
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _BrowseOPDBillsService: BrowseOPBillService,
     public datePipe: DatePipe,
-    // public fuseSplashScreenService:FuseSplashScreenService,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
-    // private ngxNumToWordsService: NgxNumToWordsService,
-
+    
   ) { }
 
   ngOnInit(): void {
@@ -116,10 +112,8 @@ export class BrowseOPBillComponent implements OnInit {
 
 
   onShow(event: MouseEvent) {
-    // this.click = false;// !this.click;
-    this.click = !this.click;
-    // this. showSpinner = true;
-
+        this.click = !this.click;
+    
     setTimeout(() => {
       {
         this.sIsLoading = 'loading-data';
@@ -156,8 +150,7 @@ export class BrowseOPBillComponent implements OnInit {
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
     }
-    // console.log(D_data);
-
+    
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
@@ -261,8 +254,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
+  
     this.dataSource.data = changes.dataArray.currentValue as BrowseOPDBill[];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -380,13 +372,11 @@ export class BrowseOPBillComponent implements OnInit {
 
   // PRINT 
   print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
+    
     let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+    
     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
+        popupWin.document.write(` <html>
     <head><style type="text/css">`);
     popupWin.document.write(`
       </style>
