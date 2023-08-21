@@ -19,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import * as converter from 'number-to-words';
+import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -369,6 +370,17 @@ export class OPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
+    // const dialogRef1 = this._matDialog.open(OpPaymentNewComponent,
+    //   {
+    //     maxWidth: "85vw",
+    //     height: '540px',
+    //     width: '100%',
+    //     data: {
+    //       advanceObj: 'PatientHeaderObj',
+    //       FromName: "OP-Bill"
+    //     }
+    //   });
+    //   return;
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
