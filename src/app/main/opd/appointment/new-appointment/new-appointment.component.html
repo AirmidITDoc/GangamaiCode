@@ -58,7 +58,7 @@
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                           (optionSelected)='getSelectedObj($event.option.value)'>
                           <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                            {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
+                            {{option.FirstName}} {{option.LastName}} ({{option.RegNo}})
                           </mat-option>
                         </mat-autocomplete>
                         <mat-hint>
@@ -69,8 +69,6 @@
                           Required field cannot be left blank
                         </mat-error>
                       </mat-form-field>
-
-
                       <button Class="search-btn " mat-raised-button
                         style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
                         [disabled]="isRegSearchDisabled">Search
@@ -80,13 +78,12 @@
                   </div>
                 </form>
 
-                <div *ngIf="showtable" style="border-style: groove;border-color: rgb(246, 215, 215);">
-
+                <div *ngIf="showtable">
                   <form [formGroup]="_opappointmentService.myFilterform">
                     <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center"
                       style="padding-top: 10px;">
 
-                      <mat-form-field appearance="outline" style="margin-left:10px;">
+                      <!-- <mat-form-field appearance="outline" style="margin-left:10px;">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker" [disabled]="Range">
                           <input matStartDate formControlName="start" placeholder="Start date">
@@ -95,13 +92,12 @@
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field>
-                      &nbsp;
+                      </mat-form-field> -->
                       <mat-form-field appearance="outline" style="width:100px;padding-right: 10px;">
                         <mat-label>Reg No</mat-label>
                         <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput
                           (keyup)="getOPIPPatientList()">
-                      </mat-form-field> &nbsp;
+                      </mat-form-field>
                     </div>
                   </form>
                   <div fxlayout="row" fusePerfectScrollbar>
@@ -115,11 +111,10 @@
                       <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                         style="overflow:auto" class="table1">
 
-
-
                         <ng-container matColumnDef="RegNo">
                           <mat-header-cell *matHeaderCellDef mat-sort-header> RegNo </mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegNo}}
+                          <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                            {{element.RegNo}}
                           </mat-cell>
                         </ng-container>
 
@@ -128,8 +123,6 @@
                           <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PatientName}}
                           </mat-cell>
                         </ng-container>
-
-
 
                         <ng-container matColumnDef="AgeYear">
                           <mat-header-cell *matHeaderCellDef mat-sort-header> Age </mat-header-cell>

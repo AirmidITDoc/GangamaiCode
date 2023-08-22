@@ -1046,7 +1046,6 @@ this.getSelectedObj(row);
 
     // RegistrationListComponent
     searchRegList() {
-    
       this.showtable=true;
       this.getOPIPPatientList()
       this.setDropdownObjs();
@@ -1054,29 +1053,24 @@ this.getSelectedObj(row);
 
     
   getOPIPPatientList() {
-
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": (this._opappointmentService.myFilterform.get("FirstName").value) + '%' || '%',
       "L_Name": (this._opappointmentService.myFilterform.get("LastName").value) + '%' || '%',
       "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "From_Dt": '01/01/1900',
+      "To_Dt": '01/01/1900',
       "MobileNo": '%'
     }
     console.log(m_data);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._opappointmentService.getOPPatient(m_data).subscribe(Visit => {
-       
         this.dataSource.data = Visit as OPIPPatientModel[];
-
         console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-
         this.sIsLoading = ' ';
-
       },
         error => {
           this.sIsLoading = '';
