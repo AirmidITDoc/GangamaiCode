@@ -50,9 +50,16 @@
                         </mat-radio-button>
                         <mat-radio-button value="registrered">Registered</mat-radio-button>
                       </mat-radio-group>
+
+
+                      <button Class="search-btn " mat-raised-button
+                      style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
+                      [disabled]="isRegSearchDisabled">Search
+                      <mat-icon>search</mat-icon>
+                    </button>
                     </div>
                     <div>
-                      <mat-form-field appearance="outline" style="width:70%;margin-right:5px;">
+                      <!-- <mat-form-field appearance="outline" style="width:70%;margin-right:5px;">
                         <input type="text" name="RegId" formControlName="RegId" placeholder="RegNo" matInput
                           [matAutocomplete]="auto" (input)="getSearchList()">
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
@@ -68,14 +75,10 @@
                         <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
                           Required field cannot be left blank
                         </mat-error>
-                      </mat-form-field>
+                      </mat-form-field> -->
 
 
-                      <button Class="search-btn " mat-raised-button
-                        style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
-                        [disabled]="isRegSearchDisabled">Search
-                        <mat-icon>search</mat-icon>
-                      </button>
+                   
                     </div>
                   </div>
                 </form>
@@ -85,23 +88,23 @@
                   <form [formGroup]="_AdmissionService.myFilterform">
                     <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center"
                       style="padding-top: 10px;">
-<!-- 
-                      <mat-form-field appearance="outline" style="margin-left:10px;">
-                        <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="picker" [disabled]="Range">
-                          <input matStartDate formControlName="start" placeholder="Start date">
-                          <input matEndDate formControlName="end" placeholder="End date"
-                            (dateChange)="getOPIPPatientList()">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field> -->
-                      &nbsp;
-                      <mat-form-field appearance="outline" style="width:300px;padding-right: 10px;">
-                        <mat-label>Reg No</mat-label>
+
+                      <mat-form-field appearance="outline" style="width:100px;padding-right: 10px;">
+                        <!-- <mat-label>Reg No</mat-label> -->
                         <input name="RegNo" formControlName="RegNo" placeholder="Reg No" matInput
                           (keyup)="getOPIPPatientList()">
-                      </mat-form-field> &nbsp;
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" style="width:130px;padding-right:5px;">
+                        <mat-label>FirstName</mat-label>
+                        <input name="FirstName" formControlName="FirstName" placeholder="FirstName" matInput
+                          (keyup)="getOPIPPatientList()">
+                      </mat-form-field> &nbsp; 
+
+                      <mat-form-field appearance="outline" style="width:130px;">
+                        <mat-label>LastName</mat-label>
+                        <input name="LastName" formControlName="LastName" placeholder="LastName" matInput
+                          (keyup)="getOPIPPatientList()">
+                      </mat-form-field> &nbsp; 
                     </div>
                   </form>
                   <div fxlayout="row" fusePerfectScrollbar>
@@ -206,6 +209,36 @@
                   </div>
                   <div style="padding: 7px;">
 
+                   
+                      <div *ngIf="Regdisplay" style="border: #c1cade;border-style: groove;margin-bottom: 5px;">
+                      
+                        <mat-form-field appearance="outline" style="width:20%;margin-left:15px;">
+                        <!-- <lable>Enter RegNo for Search<lable> -->
+                          <input type="text" name="RegId" formControlName="RegId" placeholder="RegNo" matInput
+                            [matAutocomplete]="auto" (input)="getSearchList()">
+                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                            (optionSelected)='getSelectedObj($event.option.value)'>
+                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                              {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
+                            </mat-option>
+                          </mat-autocomplete>
+                          <mat-hint>
+                            <span *ngIf="!noOptionFound">Select one of the name from auto suggestions.</span>
+                            <span *ngIf="noOptionFound" style="color: #f44336;">No data Found</span>
+                          </mat-hint>
+                          <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
+                            Required field cannot be left blank
+                          </mat-error>
+                        </mat-form-field>
+        
+                        <label style="margin-left: 20px;font-weight: bold;">Search Registered Patient </label>
+                        <!-- <button Class="search-btn " mat-raised-button
+                          style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
+                          [disabled]="isRegSearchDisabled">Search
+                          <mat-icon>search</mat-icon>
+                        </button> -->
+                      </div>
+                      
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Prefix</mat-label>

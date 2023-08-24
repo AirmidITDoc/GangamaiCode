@@ -86,11 +86,12 @@ export class RegAdmissionComponent implements OnInit {
   registration: any;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
-
+DoctorId:any=0;
   options = [];
   filteredOptions: any;
   showtable:boolean=false;
   noOptionFound: boolean = false;
+  Regdisplay:boolean = false;
   registerObj = new AdmissionPersonlModel({});
   bedObj = new Bed({});
   selectedPrefixId: any;
@@ -323,7 +324,7 @@ export class RegAdmissionComponent implements OnInit {
       if (this.data) {
 
         this.registerObj = this.data.registerObj;
-  
+        this.DoctorId=this.data.registerObj.DoctorId;
         console.log(this.registerObj);
   
         // this.setDropdownObjs1();
@@ -657,7 +658,8 @@ export class RegAdmissionComponent implements OnInit {
       CityId: '',
       StateId: '',
       StateName: '',
-      CountryId: ''
+      CountryId: '',
+      RegId:''
     });
   }
 
@@ -718,15 +720,23 @@ export class RegAdmissionComponent implements OnInit {
 
   getSearchList() {
     debugger
+    // var m_data = {
+    //   "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
+    //   "L_Name": '%',
+    //   "Reg_No": '0',
+    //   "From_Dt": '01/01/1900',
+    //   "To_Dt": '01/01/1900',
+    //   "MobileNo": '%'
+    // }
     var m_data = {
-      "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
+      "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
       "L_Name": '%',
       "Reg_No": '0',
-      "From_Dt": '01/01/1900',
-      "To_Dt": '01/01/1900',
+      // "From_Dt": '01/01/1900',
+      // "To_Dt": '01/01/1900',
       "MobileNo": '%'
     }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    if (this.personalFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
         // debugger;
 
@@ -849,8 +859,8 @@ export class RegAdmissionComponent implements OnInit {
 
   onChangeReg(event) {
     if (event.value == 'registration') {
-      this.searchFormGroup.get('RegId').reset();
-      this.searchFormGroup.get('RegId').disable();
+      this.personalFormGroup.get('RegId').reset();
+      this.personalFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
       this.registerObj = new AdmissionPersonlModel({});
       this.personalFormGroup.reset();
@@ -871,11 +881,13 @@ export class RegAdmissionComponent implements OnInit {
     this.getPrefixList();
     this.getPatientTypeList();
     this.getTariffList();
+    this.Regdisplay=false;
+    this.showtable=false;
 
     } else {
+      this.Regdisplay=true;
 
-
-      this.searchFormGroup.get('RegId').enable();
+      this.personalFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
 
       this.personalFormGroup = this.createPesonalForm();
@@ -1051,23 +1063,9 @@ export class RegAdmissionComponent implements OnInit {
   }
   // RegistrationListComponent
   searchRegList() {
-    // const dialogRef = this._matDialog.open(IPDSearcPatienthComponent,
-    //   {
-    //     maxWidth: "80vw",
-    //     height: '630px', width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     this.registerObj = result as AdmissionPersonlModel;
-    //     // this.setDropdownObjs();
-    //     this._matDialog.closeAll();
-    //   }
-    //   //this.getRegistrationList();
-    // });
+ 
     this.showtable=true;
-    this.getOPIPPatientList()
+    // this.getOPIPPatientList()
     this.setDropdownObjs();
   }
 

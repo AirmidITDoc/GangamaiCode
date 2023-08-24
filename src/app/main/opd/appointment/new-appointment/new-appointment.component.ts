@@ -235,9 +235,6 @@ export class NewAppointmentComponent implements OnInit {
 
       this.registerObj = this.data.registerObj;
 
-      // console.log(this.registerObj);
-
-      // this.setDropdownObjs1();
     }
 
     this.getHospitalList1();

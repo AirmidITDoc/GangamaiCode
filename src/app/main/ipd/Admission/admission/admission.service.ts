@@ -220,7 +220,7 @@ public regInsert(employee)
   // registration patient list
 public getRegistrationList(employee)
 {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",employee)
 }                                 
  // Search Window Option
 

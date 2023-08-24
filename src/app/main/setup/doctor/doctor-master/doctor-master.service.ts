@@ -43,7 +43,7 @@ export class DoctorMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
                 ],
             ],
-            DateofBirth: [""],
+            DateofBirth: [new Date()],
             Address: [""],
             City: ["", Validators.pattern("[a-zA-Z]+$")],
             Pin: ["", [Validators.minLength(6), Validators.maxLength(6)]],
@@ -76,17 +76,18 @@ export class DoctorMasterService {
             AgeYear: ["", Validators.pattern("[0-9]+")],
             AgeMonth: ["", Validators.pattern("[0-9]+")],
             AgeDay: ["", Validators.pattern("[0-9]+")],
-            PassportNo: [
-                "",
-                Validators.pattern(
-                    "^[A-PR-WYa-pr-wy][1-9]\\d" + "\\s?\\d{4}[1-9]$"
-                ),
-            ],
+            // PassportNo: [
+            //     "",
+            //     Validators.pattern(
+            //         "^[A-PR-WYa-pr-wy][1-9]\\d" + "\\s?\\d{4}[1-9]$"
+            //     ),
+            // ],
+            PassportNo: [""],
             ESINO: [""],
             RegNo: [""],
-            RegDate: [""],
+            RegDate: [new Date()],
             MahRegNo: [""],
-            MahRegDate: [""],
+            MahRegDate: [new Date()],
             RefDocHospitalName: [
                 "",
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
