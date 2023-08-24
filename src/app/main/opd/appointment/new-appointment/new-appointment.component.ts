@@ -1053,7 +1053,6 @@ this.getSelectedObj(row);
 
     // RegistrationListComponent
     searchRegList() {
-    
       this.showtable=true;
       // this.getOPIPPatientList()
       this.setDropdownObjs();
@@ -1075,15 +1074,11 @@ debugger
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._opappointmentService.getOPPatient(m_data).subscribe(Visit => {
-       
         this.dataSource.data = Visit as OPIPPatientModel[];
-
         console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-
         this.sIsLoading = ' ';
-
       },
         error => {
           this.sIsLoading = '';

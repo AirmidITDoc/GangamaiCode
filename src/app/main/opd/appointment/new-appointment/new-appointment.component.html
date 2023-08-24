@@ -63,8 +63,7 @@
                   </div>
                 </form>
 
-                <div *ngIf="showtable" style="border-style: groove;border-color: rgb(246, 215, 215);">
-
+                <div *ngIf="showtable">
                   <form [formGroup]="_opappointmentService.myFilterform">
                     <div class="dialog-content-wrapper" fxFlex fxLayoutAlign="space-between-center"
                       style="padding-top: 10px;">
@@ -99,10 +98,10 @@
                       <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                         style="overflow:auto" class="table1">
 
-
                         <ng-container matColumnDef="RegNo">
                           <mat-header-cell *matHeaderCellDef mat-sort-header> RegNo </mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegNo}}
+                          <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                            {{element.RegNo}}
                           </mat-cell>
                         </ng-container>
 
@@ -111,7 +110,6 @@
                           <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PatientName}}
                           </mat-cell>
                         </ng-container>
-
 
                         <ng-container matColumnDef="AgeYear">
                           <mat-header-cell *matHeaderCellDef mat-sort-header> Age </mat-header-cell>

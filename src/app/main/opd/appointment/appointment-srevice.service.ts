@@ -10,16 +10,16 @@ import { Subject } from 'rxjs';
 export class AppointmentSreviceService {
 
   public afterMethodFileSelect: Subject<any> = new Subject();
-  
    myFilterform: FormGroup;
-  mySaveForm: FormGroup;
+   mySaveForm:FormGroup;
+
   now = Date.now();
   sIsLoading: string = '';
   constructor(public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) {
     this.myFilterform = this.filterForm();
-    // this.mySaveForm = this.saveForm();
+   
   }
 
   filterForm(): FormGroup {
@@ -39,6 +39,8 @@ export class AppointmentSreviceService {
 
     });
   }
+
+ 
 
   //---Regi starrt-------
   // saveForm(): FormGroup {
