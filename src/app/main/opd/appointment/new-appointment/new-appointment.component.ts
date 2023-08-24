@@ -89,6 +89,7 @@ export class NewAppointmentComponent implements OnInit {
   searchFormGroup: FormGroup;
   registration: any;
   isRegSearchDisabled: boolean = true;
+  Regdisplay:boolean = false;
   newRegSelected: any = 'registration';
   dataArray = {};
   HospitalList1: any = [];
@@ -200,6 +201,7 @@ export class NewAppointmentComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   editor: string;
   isDepartmentSelected: boolean = false;
+  isCitySelected: boolean = false;
   isDoctorSelected: boolean = false;
   optionsDep: any[] = [];
   optionsDoc: any[] = [];
@@ -344,6 +346,10 @@ export class NewAppointmentComponent implements OnInit {
 
   getOptionTextDep(option) {
     return option.departmentName;
+  }
+
+    getOptionTextCity(option) {
+    return option.CityName;
   }
 
   getOptionTextDoc(option) {
@@ -696,10 +702,10 @@ this.getSelectedObj(row);
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
       const timeDiff = Math.abs(Date.now() - dob.getTime());
-      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      // this.registerObj.DateofBirth = DateOfBirth;
+      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+      this.registerObj.DateofBirth = DateOfBirth;
       this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
     }
 
@@ -995,15 +1001,16 @@ this.getSelectedObj(row);
 
   // RegId of Patient Searching 
   getSearchList() {
+    debugger
     var m_data = {
-      "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
+      "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
       "L_Name": '%',
       "Reg_No": '0',
-      "From_Dt": '01/01/1900',
-      "To_Dt": '01/01/1900',
+      // "From_Dt": '01/01/1900',
+      // "To_Dt": '01/01/1900',
       "MobileNo": '%'
     }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    if (this.personalFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData)
@@ -1048,20 +1055,20 @@ this.getSelectedObj(row);
     searchRegList() {
     
       this.showtable=true;
-      this.getOPIPPatientList()
+      // this.getOPIPPatientList()
       this.setDropdownObjs();
     }
 
     
   getOPIPPatientList() {
-
+debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "F_Name": (this._opappointmentService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._opappointmentService.myFilterform.get("LastName").value) + '%' || '%',
+      "F_Name": this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
+      "L_Name": this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
       "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "From_Dt":'01/01/1900',// this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": '01/01/1900',//this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "MobileNo": '%'
     }
     console.log(m_data);
@@ -1406,7 +1413,7 @@ this.getSelectedObj(row);
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.personalFormGroup.reset();
-      this.searchFormGroup.get('RegId').reset();
+      this.personalFormGroup.get('RegId').reset();
       this.searchFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
 
@@ -1414,15 +1421,18 @@ this.getSelectedObj(row);
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
-      // this.Patientnewold = 1;
+      this.Regdisplay=false;
+      this.showtable=false;
 
       this.getHospitalList1();
       this.getHospitalList();
       this.getTariffList();
       this.getPatientTypeList();
+    
 
     } else {
-      this.searchFormGroup.get('RegId').enable();
+      this.Regdisplay=true;
+      this.personalFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
       this.personalFormGroup.reset();
       this.Patientnewold = 2;

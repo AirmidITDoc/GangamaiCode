@@ -44,10 +44,11 @@ export class NewDoctorComponent implements OnInit {
         private accountService: AuthenticationService,
         // public notification: NotificationServiceService,
         public dialogRef: MatDialogRef<DoctorMasterComponent>
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // this.editor = new Editor();
+        this._doctorService.myform.reset();
 
         this.getPrefixNameCombobox();
         this.getGenderNameCombobox();
@@ -461,7 +462,7 @@ export class NewDoctorComponent implements OnInit {
                         } else {
                             Swal.fire(
                                 "Error !",
-                                "Appoinment not updated",
+                                "Record not updated",
                                 "error"
                             );
                         }
@@ -470,44 +471,7 @@ export class NewDoctorComponent implements OnInit {
             this.onClose();
         }
     }
-    onEdit(row) {
-        var m_data = {
-            DoctorId: row.DoctorId,
-            PrefixID: row.PrefixID,
-            FirstName: row.ServiceShortDesc.trim(),
-            MiddleName: row.MiddleName.trim(),
-            LastName: row.LastName.trim(),
-            DateofBirth: row.DateofBirth,
-            Address: row.Address.trim(),
-            City: row.City.trim(),
-            Pin: row.Pin.trim(),
-            Phone: row.Phone.trim(),
-            Mobile: row.Mobile.trim(),
-            GenderId: row.GenderId,
-            Education: row.Education.trim(),
-            IsConsultant: Boolean(JSON.stringify(row.IsConsultant)),
-            IsRefDoc: Boolean(JSON.stringify(row.IsRefDoc)),
-            IsDeleted: Boolean(JSON.stringify(row.IsActive)),
-            DoctorTypeId: row.DoctorTypeId,
-            AgeYear: row.AgeYear.trim(),
-            AgeMonth: row.AgeMonth.trim(),
-            AgeDay: row.AgeDay.trim(),
-            PassportNo: row.PassportNo.trim(),
-            ESINO: row.ESINO.trim(),
-            RegNo: row.RegNo.trim(),
-            RegDate: row.RegDate,
-            MahRegNo: row.MahRegNo.trim(),
-            MahRegDate: row.MahRegDate,
-            AddedByName: row.AddedByName.trim(),
-            RefDocHospitalName: row.RefDocHospitalName.trim(),
-            UpdatedBy: row.UpdatedBy,
-            DepartmentId: row.DepartmentId,
-            DepartmentName: row.DepartmentName.trim(),
-        };
-
-        this._doctorService.populateForm(m_data);
-        console.log(row);
-    }
+   
 
     onClear() {
         this._doctorService.myform.reset();
@@ -519,16 +483,14 @@ export class NewDoctorComponent implements OnInit {
 
     onChangeGenderList(prefixObj) {
         if (prefixObj) {
-            this._doctorService
-                .getGenderCombo(prefixObj.PrefixID)
-                .subscribe((data) => {
-                    this.GendercmbList = data;
-                    this._doctorService.myform
-                        .get("GenderId")
-                        .setValue(this.GendercmbList[0]);
-                    // this.selectedGender = this.GenderList[0];
-                    this.selectedGenderID = this.GendercmbList[0].GenderId;
-                });
+            this._doctorService.getGenderCombo(prefixObj).subscribe((data) => {
+                this.GendercmbList = data;
+                this._doctorService.myform
+                    .get("GenderId")
+                    .setValue(this.GendercmbList[0]);
+                // this.selectedGender = this.GenderList[0];
+                this.selectedGenderID = this.GendercmbList[0].GenderId;
+            });
         }
     }
 }

@@ -83,13 +83,13 @@ export class PrefixMasterComponent implements OnInit {
                         // addedBy: 1,
                         isActive: Boolean(
                             JSON.parse(
-                                this._PrefixService.myform.get("IsDeleted")
+                                this._PrefixService.myform.get("IsActive")
                                     .value
                             )
                         ),
                     },
                 };
-
+                console.log(m_data);
                 this._PrefixService
                     .insertPrefixMaster(m_data)
                     .subscribe((data) => {
@@ -125,13 +125,13 @@ export class PrefixMasterComponent implements OnInit {
                             .SexID,
                         isActive: Boolean(
                             JSON.parse(
-                                this._PrefixService.myform.get("IsDeleted")
+                                this._PrefixService.myform.get("IsActive")
                                     .value
                             )
                         ),
                     },
                 };
-
+console.log(m_dataUpdate);
                 this._PrefixService
                     .updatePrefixMaster(m_dataUpdate)
                     .subscribe((data) => {

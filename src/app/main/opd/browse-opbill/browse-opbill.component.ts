@@ -177,7 +177,7 @@ debugger
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.currentDate;
         // Paymentobj['CashCounterId'] = 0;

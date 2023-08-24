@@ -407,19 +407,16 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>City</mat-label>
-                        <mat-select formControlName="CityId" placeholder="Bank" #singleSelect required
-                          (selectionChange)="onChangeCityList($event.value.CityId)">
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="cityFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput formControlName="CityId" [matAutocomplete]="autoCity" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close" (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close" (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoCity="matAutocomplete"  [displayWith]="getOptionTextCity">
+                          <mat-option *ngFor="let option of filteredCity | async" [value]="option" (onSelectionChange)="onChangeCityList($event.value.CityId)">
+                            {{option.CityName}}
                           </mat-option>
-                          <mat-option *ngFor="let element of filteredCity | async" [value]="element">
-                            {{element.CityName}}
-                          </mat-option>
-                        </mat-select>
-                        <mat-error
-                          *ngIf="personalFormGroup.get('CityId').invalid && personalFormGroup.get('CityId').touched">
-                          City Name is required</mat-error>
+                        </mat-autocomplete>
                       </mat-form-field>
 
 

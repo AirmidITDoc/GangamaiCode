@@ -36,7 +36,7 @@ export class RegAdmissionComponent implements OnInit {
   reportPrintObj: Admission;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
-
+  isCitySelected: boolean = false;
   selectedAdvanceObj: AdvanceDetailObj;
   sIsLoading: string = '';
   submitted = false;
@@ -717,6 +717,7 @@ export class RegAdmissionComponent implements OnInit {
   // }
 
   getSearchList() {
+    debugger
     var m_data = {
       "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
       "L_Name": '%',
@@ -808,6 +809,10 @@ export class RegAdmissionComponent implements OnInit {
     this.onChangeCityList(this.registerObj.CityId);
 
     this.personalFormGroup.updateValueAndValidity();
+  }
+
+  getOptionTextCity(option) {
+    return option.CityName;
   }
 
   getOPIPPatientList() {
