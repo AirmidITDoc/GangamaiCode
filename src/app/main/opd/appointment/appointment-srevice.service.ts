@@ -169,6 +169,10 @@ export class AppointmentSreviceService {
     return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
   }
 
+  
+public documentuploadInsert(employee){
+  return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
+}
   // display Appointment list
   public getAppointmentList(employee) {
     // return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_VisitDetailsList", employee)
@@ -322,5 +326,7 @@ export class AppointmentSreviceService {
 
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
   }
+
+
   
 }

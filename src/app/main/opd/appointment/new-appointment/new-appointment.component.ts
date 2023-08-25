@@ -19,6 +19,7 @@ import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/sear
 import { MatSelect } from '@angular/material/select';
 import { fuseAnimations } from '@fuse/animations';
 import { SafePipesPipe } from '../safe-pipe';
+import { ImageViewComponent } from '../image-view/image-view.component';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 
 export class DocData {
@@ -104,6 +105,7 @@ export class NewAppointmentComponent implements OnInit {
 
   IsPathRad: any;
   PatientName: any = '';
+  RegId:any =0;
   OPIP: any = '';
   Bedname: any = '';
   wardname: any = '';
@@ -250,6 +252,7 @@ export class NewAppointmentComponent implements OnInit {
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private router: Router,
+    public matDialog: MatDialog,
     // public safe: SafePipesPipe
   ) {
     dialogRef.disableClose = true;
@@ -376,18 +379,7 @@ export class NewAppointmentComponent implements OnInit {
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-   
-
-    // this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterDep(value || '')),
-    // );
-
-    // this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterDoc(value || '')),
-    // );
-  }
+     }
 
   getOptionTextDep(option) {
     return option.departmentName;
@@ -423,38 +415,6 @@ export class NewAppointmentComponent implements OnInit {
     // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
   }
 
-
-  // setDropdownObjs1() {
-  //   ;
-
-
-  //   const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-  //   this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-  //   const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-  //   this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-  //   const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-  //   this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-  //   const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-  //   this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-  //   const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-  //   this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-  //   // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-  //   // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-
-  //   this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-
-  //   this.onChangeCityList(this.registerObj.CityId);
-
-  //   this.personalFormGroup.updateValueAndValidity();
-  //   // this.dialogRef.close();
-
-  // }
 
   createPesonalForm() {
     return this.formBuilder.group({
@@ -1191,7 +1151,7 @@ this.getSelectedObj(row);
 
   getSelectedObj(obj) {
     ;
-    console.log('obj==', obj);
+    // console.log('obj==', obj);
     let a, b, c;
 
     a = obj.AgeDay.trim();;
@@ -1202,6 +1162,9 @@ this.getSelectedObj(row);
     obj.AgeMonth = b;
     obj.AgeYear = c;
     this.registerObj = obj;
+    this.PatientName=obj.PatientName;
+    this.RegId=obj.RegId;
+    console.log( this.registerObj )
     this.setDropdownObjs();
   }
 
@@ -1415,7 +1378,7 @@ this.getSelectedObj(row);
 
       console.log(submissionObj);
       this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
-        console.log(response);
+        // console.log(response);
         if (response) {
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
@@ -1590,5 +1553,145 @@ this.getSelectedObj(row);
 
   //Image Upload
   
+  onImageFileChange(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      let filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.images.push(event.target.result);
+          this.imageForm.patchValue({
+            imgFileSource: this.images
+          });
+        }
+        reader.readAsDataURL(event.target.files[i]);
+      }
+      this.attachment.nativeElement.value = '';
+    }
+  }
 
+  onDocFileChange(event: any) {
+    let files = event.target.files;
+    let type: string;
+    if (files && files[0]) {
+      let filesAmount = files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        let file = files[i];
+        if (file) {
+          let pdf = (/\.(pdf)$/i);
+          type = file.name.toLowerCase();
+          if (pdf.exec(type)) {
+            type = "pdf";
+          }
+        }
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.docsArray.push({ doc: event.target.result, type: type });
+          this.docsForm.patchValue({
+            docFileSource: this.docsArray
+          });
+        }
+        reader.readAsDataURL(event.target.files[i]);
+      }
+      this.attachment.nativeElement.value = '';
+    }
+  }
+
+  removeImage(url: string) {
+    let index = this.images.indexOf(url);
+    this.images.splice(index, 1);
+  }
+
+  removeDoc(ele: DocData) {
+    let index = this.docsArray.indexOf(ele);
+    this.docsArray.splice(index, 1);
+  }
+  onViewImage(ele: any, type: string) {
+    let fileType;
+    if (ele) {
+      // const dialogRef = this.matDialog.open(ImageViewComponent,
+      //   {
+      //     width: '900px',
+      //     height: '900px',
+      //     data: {
+      //       docData: type == 'img' ? ele : ele.doc,
+      //       type: type == 'img' ? "image" : ele.type
+      //     }
+      //   }
+      // );
+      // dialogRef.afterClosed().subscribe(result => {
+
+      // });
+    }
+  }
+
+  onSubmitImgFiles() {
+    console.log(this.imageForm.get('imgFileSource')?.value);
+  }
+
+  onSubmitDocFiles() {
+    console.log(this.docsForm.get('docFileSource')?.value);
+  
+   
+      var m_data = {
+          feedbackInsert: {
+              PatientName: this.PatientName,
+              RegNo:this.RegId,
+              DocumentName: this.docsForm.get('docFileSource')?.value,
+              // ReceptionEnquiry:
+              //     this.feedbackFormGroup.get("recpRadio").value,
+              // SignBoards: this.feedbackFormGroup.get("signRadio").value,
+              // StaffBehaviour:
+              //     this.feedbackFormGroup.get("staffBehvRadio").value,
+              // ClinicalStaff:
+              //     this.feedbackFormGroup.get("clinicalStaffRadio").value,
+              // DoctorsTreatment:
+              //     this.feedbackFormGroup.get("docTreatRadio").value,
+              // Cleanliness: this.feedbackFormGroup.get("cleanRadio").value,
+              // Radiology:
+              //     this.feedbackFormGroup.get("radiologyRadio").value,
+              // Pathology:
+              //     this.feedbackFormGroup.get("pathologyRadio").value,
+              // Security: this.feedbackFormGroup.get("securityRadio").value,
+              // Parking: this.feedbackFormGroup.get("parkRadio").value,
+              // Pharmacy: this.feedbackFormGroup.get("pharmaRadio").value,
+              // Physiotherapy:
+              //     this.feedbackFormGroup.get("physioRadio").value,
+              // Canteen: this.feedbackFormGroup.get("canteenRadio").value,
+              // SpeechTherapy:
+              //     this.feedbackFormGroup.get("speechRadio").value,
+              // Dietation: this.feedbackFormGroup.get("dietRadio").value,
+              // comment: this.feedbackFormGroup
+              //     .get("commentText")
+              //     .value.trim(),
+          },
+      };
+      console.log(m_data);
+      this._opappointmentService.documentuploadInsert(m_data).subscribe((data) => {
+          if(data){
+            Swal.fire("Document uploaded Successfully  ! ");
+          }
+        
+      });
+
+  }
+
+  openCamera(type: string) {
+    let fileType;
+    const dialogRef = this.matDialog.open(ImageViewComponent,
+      {
+        width: '900px',
+        height: '900px',
+        data: {
+          docData: type == 'camera' ? 'camera' : '',
+          type: type == 'camera' ? 'camera' : ''
+        }
+      }
+    );
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.images.push(result.url);
+      }
+    });
+  }
 }

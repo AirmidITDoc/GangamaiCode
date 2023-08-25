@@ -60,6 +60,7 @@
     "ngx-mat-select-search": "3.3.1",
     "ngx-spinner": "11.0.2",
     "ngx-toastr": "17.0.2",
+    "ngx-webcam": "0.4.1",
     "number-to-words": "1.2.4",
     "perfect-scrollbar": "1.4.0",
     "prismjs": "1.19.0",

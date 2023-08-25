@@ -224,8 +224,11 @@ export class AppointmentService {
   }
 
 
-
   populateFormpersonal(employee) {
     // this.personalFormGroup.patchValue(employee);
+  }
+
+  public documentuploadInsert(employee){
+    return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
   }
 }

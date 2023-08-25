@@ -315,7 +315,7 @@ button:disabled {
 
 .img-container {
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
     align-items: center;
 }
 
@@ -329,11 +329,11 @@ button:disabled {
 }
 .file-lable {
     cursor: pointer;
-    background-color: #e34b4b;
+    background-color: #6e91f0;
     padding: 10px;
     color: white;
     // border-radius: 5px;
-    height: 20px;
+    height: 30px;
 }
 
 .submit-btn1 {

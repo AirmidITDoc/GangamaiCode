@@ -1,0 +1,24 @@
+<div *ngIf="docType=='image'">image-view works!</div>
+<img *ngIf="docType=='image'" [src]="docData" height="800" width="800" class="view-image"> <br />
+<object [data]="docData" *ngIf="docType=='pdf' || docType=='xls'" [type]="docViewType" width="100%"
+    height="600px"></object>
+
+<div *ngIf="docType=='camera'" class="container mt-5 cam-div">
+    <h2>Angular Webcam Capture Image from Camera</h2>
+    <div class="col-md-12">
+        <webcam [height]="400" 
+        [width]="1000"  [trigger]="invokeObservable" (imageCapture)="captureImg($event)"></webcam>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-danger" (click)="getSnapshot()">
+            Capture Image
+        </button>
+    </div>
+    <div class="col-12">
+        <div id="results">Your taken image manifests here...</div>
+        <img [src]="webcamImage?.imageAsDataUrl" height="400px" />
+    </div>
+    <div *ngIf="webcamImage?.imageAsDataUrl">
+        <button style="margin-top: 20px;" class="submit-btn1" (click)="onUpload()">Upload</button>
+    </div>
+</div>
