@@ -117,8 +117,8 @@ export class DoctorMasterComponent implements OnInit {
             DateofBirth: row.DateofBirth,
             Address: row.Address.trim(),
             City: row.City.trim(),
-            Pin: row.Pin.trim(),
-            Phone: row.Phone.trim(),
+            Pin: row.Pin,
+            Phone: row.Phone,
             Mobile: row.Mobile.trim(),
             GenderId: row.GenderId,
             Education: row.Education.trim(),
@@ -148,9 +148,12 @@ export class DoctorMasterComponent implements OnInit {
 
             {
                 maxWidth: "80vw",
-                maxHeight: "70vh",
+                maxHeight: "90vh",
                 width: "100%",
                 height: "100%",
+                data : {
+                    registerObj : m_data,
+                    }
             }
         );
 
@@ -163,7 +166,7 @@ export class DoctorMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "80vw",
-            maxHeight: "70vh",
+            maxHeight: "90vh",
             width: "100%",
             height: "100%",
         });
@@ -180,7 +183,7 @@ export class DoctorMaster {
     FirstName: string;
     MiddleName: string;
     LastName: string;
-    DateofBirth: Date;
+    DateofBirth: any;
     Address: string;
     City: string;
     Pin: string;
@@ -198,14 +201,15 @@ export class DoctorMaster {
     PassportNo: string;
     ESINO: string;
     RegNo: string;
-    RegDate: Date;
+    RegDate: any;
     MahRegNo: string;
-    MahRegDate: Date;
+    MahRegDate: any;
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
-
+    CurrentDate=new Date();
     IsDeletedSearch: number;
+    
     /**
      * Constructor
      *
@@ -218,6 +222,7 @@ export class DoctorMaster {
             this.FirstName = DoctorMaster.FirstName || "";
             this.MiddleName = DoctorMaster.MiddleName || "";
             this.LastName = DoctorMaster.LastName || "";
+            this.DateofBirth = DoctorMaster.DateofBirth || this.CurrentDate;
             this.Address = DoctorMaster.Address || "";
             this.City = DoctorMaster.City || "";
             this.Pin = DoctorMaster.Pin || "";
@@ -235,9 +240,9 @@ export class DoctorMaster {
             this.PassportNo = DoctorMaster.PassportNo || "";
             this.ESINO = DoctorMaster.ESINO || "";
             this.RegNo = DoctorMaster.RegNo || "";
-            this.RegDate = DoctorMaster.RegDate || "";
+            this.RegDate = DoctorMaster.RegDate || this.CurrentDate;
             this.MahRegNo = DoctorMaster.MahRegNo || "";
-            this.MahRegDate = DoctorMaster.MahRegDate || "";
+            this.MahRegDate = DoctorMaster.MahRegDate || this.CurrentDate;
             this.UpdatedBy = DoctorMaster.UpdatedBy || "";
             this.AddedBy = DoctorMaster.AddedBy || "";
 

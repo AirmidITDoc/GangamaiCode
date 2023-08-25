@@ -278,33 +278,16 @@ export class AdmissionComponent implements OnInit {
         });
     }, 200);
 
-    // this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {
-    //   this.dataSource.data = data as Admission[];
-    //   this.dataSource.sort = this.sort;
-    //   this.dataSource.paginator = this.paginator;
-
-    //   let x = {};
-    //   x['TodaysAdmCount'] = data[0].TodaysAdmCount;
-    //   x['TodaysDischargeCount'] = data[0].TodaysDischargeCount;
-    //   x['TotalAdmCount'] = data[0].TotalAdmCount;
-    //   x['TotalCompanyPatCount'] = data[0].TotalCompanyPatCount;
- 
-    //   this.sentCountsToParent.emit(x);
-    //   this.sIsLoading = '';
-    // },
-    // error => {
-    //   this.sIsLoading = '';
-    // });
+  
   }
   // AdmissionNewComponent
   addNewAdmission() {
     const dialogRef = this._matDialog.open(RegAdmissionComponent,
       {
         maxWidth: "110vw",
-        // maxHeight: "95vh", 
-        height: '800px',
+        height: '850px',
         width: '100%',
-        // height: "100%"
+        
       });
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed - Insert Action', result);
@@ -333,31 +316,7 @@ export class AdmissionComponent implements OnInit {
 
   getRecord(contact, m): void {
     console.log(contact);
-    // let PatInforObj = {};
-    // PatInforObj['PatientName'] = contact.PatientName,
-
-    // PatInforObj['AdmissionID'] = contact.AdmissionID,
-    // PatInforObj['AdmissionDate'] = contact.DOA,
-    // PatInforObj['HospitalId'] = contact.HospitalID,
-    // PatInforObj['TariffId'] = contact.TariffId,
-    // PatInforObj['CityId'] = contact.CityId,
-    // PatInforObj['PatientTypeID'] = contact.PatientTypeID,
-
-    // PatInforObj['Departmentid'] = contact.DepartmentId,
-    // PatInforObj['DoctorId'] = contact.DocNameID,
-    // PatInforObj['AdmittedDoctor1ID'] = contact.AdmittedDoctor1ID ,
-    // PatInforObj['AdmittedDoctor2ID'] = contact.AdmittedDoctor2ID,
-
-    // PatInforObj['CompanyId'] = contact.CompanyId,
-    // PatInforObj['SubCompanyId'] = contact.SubTpaComId,
-    // PatInforObj['IsMLC'] = contact.IsMLC,
-    // PatInforObj['RelativeName'] = contact.RelativeName,
-    // PatInforObj['RelativeAddress'] = contact.RelativeAddress,
-    // PatInforObj['RelationshipId'] = contact.RelationshipId,
-    // PatInforObj['RelatvieMobileNo'] = contact.MobileNo,
-    // PatInforObj['PatientType'] = contact.PatientType,
-    // PatInforObj ['TariffName'] = contact.TariffName
-    
+        
 debugger
     if (m == "Edit Admission") {
       let Regdata;
@@ -647,19 +606,6 @@ debugger
     </html>`);
     popupWin.document.close();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

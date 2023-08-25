@@ -220,7 +220,29 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Phone Number</mat-label>
+                    <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
+                      [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" maxlength="10" type="number"
+                      value="9876658688">
+                    <mat-error class="error"
+                      *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
+                      number is required
+                    </mat-error>
+                  </mat-form-field>
   
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Mobile Number</mat-label>
+                    <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                      [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10"
+                      required="required" type="number" value="9876658688">
+                    <mat-error class="error"
+                      *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                      digits Mobile number is
+                      required</mat-error>
+                  </mat-form-field>
+
   
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>City</mat-label>
@@ -262,27 +284,7 @@
                     </mat-select>
                   </mat-form-field>
   
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Phone Number</mat-label>
-                    <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
-                      [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" maxlength="10" type="number"
-                      value="9876658688">
-                    <mat-error class="error"
-                      *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
-                      number is required
-                    </mat-error>
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Mobile Number</mat-label>
-                    <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                      [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10"
-                      required="required" type="number" value="9876658688">
-                    <mat-error class="error"
-                      *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                      digits Mobile number is
-                      required</mat-error>
-                  </mat-form-field>
+                
                 </div>
               </div>
   

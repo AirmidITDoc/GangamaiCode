@@ -42,7 +42,7 @@ import { PatientAppointmentComponent } from "./patient-appointment/patient-appoi
 export class AppointmentComponent implements OnInit {
     msg: any;
     sIsLoading: string = "";
-    isLoading = true;
+    // isLoading = true;
     isRateLimitReached = false;
     hasSelectedContacts: boolean;
     currentDate = new Date();
@@ -51,6 +51,8 @@ export class AppointmentComponent implements OnInit {
     printTemplate: any;
     reportPrintObjList: CasepaperVisitDetails[] = [];
     subscriptionArr: Subscription[] = [];
+    isLoadingStr: string = '';
+    isLoading: String = '';
 
     VisitID: any;
     @ViewChild(MatSort) sort: MatSort;
@@ -138,7 +140,7 @@ export class AppointmentComponent implements OnInit {
                     .value || 0,
         };
         setTimeout(() => {
-            this.sIsLoading = "loading-data";
+            this.isLoadingStr = 'loading';
             this._AppointmentSreviceService
                 .getAppointmentList(D_data)
                 .subscribe(
@@ -146,10 +148,10 @@ export class AppointmentComponent implements OnInit {
                         this.dataSource.data = Visit as VisitMaster[];
                         this.dataSource.sort = this.sort;
                         this.dataSource.paginator = this.paginator;
-                        this.sIsLoading = "";
+                        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
                     },
                     (error) => {
-                        this.sIsLoading = "";
+                        this.isLoading = 'list-loaded';
                     }
                 );
         }, 1000);
@@ -169,14 +171,12 @@ export class AppointmentComponent implements OnInit {
 
    
 
-    ngOnChanges(changes: SimpleChanges) {
-       
-        this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
-        this.isLoading = false;
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        
-    }
+    // ngOnChanges(changes: SimpleChanges) {
+    //     this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
+    //     this.isLoading = false;
+    //     this.dataSource.sort = this.sort;
+    //     this.dataSource.paginator = this.paginator;
+    // }
 
     getRecord(contact, m): void {
         debugger;
@@ -313,7 +313,7 @@ export class AppointmentComponent implements OnInit {
     newappointment() {
         const dialogRef = this._matDialog.open(NewAppointmentComponent, {
             maxWidth: "110vw",
-            height: "800px",
+            height: "850px",
             width: "100%",
             
         });

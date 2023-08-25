@@ -1,6 +1,7 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar matDialogTitle class="mat-accent m-0">
-    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
+      style="background-color: rgb(18, 87, 134) !important;">
       <h3>{{_doctorService.myform.controls.DoctorId.value?"Modify Doctor Master":"New
         Doctor Master"}}</h3>
       <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
@@ -12,15 +13,10 @@
 
 
 <form [formGroup]="_doctorService.myform">
-  <input type="hidden" name="DoctorId" formControlName="DoctorId">
+  <input type="hidden" name="DoctorId" formControlName="DoctorId" [(ngModel)]="DoctorId">
 
-  <br />
-  <br />
-
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding: 10px;">
+    <mat-form-field appearance="outline" fxFlex>
       <mat-label>Prefix</mat-label>
       <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect
         (selectionChange)="onChangeGenderList($event.value)" required>
@@ -56,7 +52,7 @@
         Alphabets</span>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+    <mat-form-field appearance="outline" fxFlex>
       <mat-label>Gender</mat-label>
       <mat-select formControlName="GenderId" required>
         <mat-option></mat-option>
@@ -88,24 +84,23 @@
   </div>
 
   <div>
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+    <mat-form-field appearance="outline" fxFlex>
       <input matInput [matDatepicker]="picker" placeholder="Choose a DateofBirth" name="DateofBirth"
-        formControlName="DateofBirth">
+        formControlName="DateofBirth"  (dateChange)="onChangeDateofBirth($event.value)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    &nbsp;&nbsp;&nbsp;
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
       <input name="AgeYear" formControlName="AgeYear" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.AgeYear.errors }" placeholder="Enter AgeYear">
+        [ngClass]="{ 'is-invalid': submitted && f.AgeYear.errors }" placeholder="Enter AgeYear" [(ngModel)]="b_AgeYear">
       <span class="error" *ngIf="f.AgeYear.invalid && f.AgeYear.touched">AgeYear required Enter only 4 Number</span>
     </mat-form-field>
     &nbsp;&nbsp;&nbsp;
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
       <input name="AgeMonth" formControlName="AgeMonth" matInput
-        [ngClass]="{ 'is-invalid': submitted && f.AgeMonth.errors }" placeholder="Enter AgeMonth">
+        [ngClass]="{ 'is-invalid': submitted && f.AgeMonth.errors }" placeholder="Enter AgeMonth" [(ngModel)]="b_AgeMonth">
       <span class="error" *ngIf="f.AgeMonth.invalid && f.AgeMonth.touched">AgeMonth required Enter only 1-12
         Number</span>
     </mat-form-field>
@@ -113,7 +108,7 @@
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
       <input name="AgeDay" formControlName="AgeDay" matInput [ngClass]="{ 'is-invalid': submitted && f.AgeDay.errors }"
-        placeholder="Enter AgeDay">
+        placeholder="Enter AgeDay" [(ngModel)]="b_AgeDay">
       <span class="error" *ngIf="f.AgeDay.invalid && f.AgeDay.touched">AgeDay required Enter only 1-31 Number</span>
     </mat-form-field>
 
@@ -159,10 +154,13 @@
       <mat-error>Please enter RegNo </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input matInput [matDatepicker]="picker2" placeholder="Choose a RegDate" name="RegDate" formControlName="RegDate">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
+   
+
+    <mat-form-field appearance="outline" fxFlex>
+      <input matInput [matDatepicker]="picker1" placeholder="Choose a RegDate" name="RegDate"
+        formControlName="RegDate">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -170,11 +168,13 @@
       <mat-error>Please enter MahRegNo </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <input matInput [matDatepicker]="picker3" placeholder="Choose a MahRegDate" name="MahRegDate"
+   
+
+    <mat-form-field appearance="outline" fxFlex>
+      <input matInput [matDatepicker]="picker2" placeholder="Choose a MahRegDate" name="MahRegDate"
         formControlName="MahRegDate">
-      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-      <mat-datepicker #picker3></mat-datepicker>
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
 
   </div>
@@ -189,7 +189,7 @@
     </mat-form-field>
 
 
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+    <mat-form-field appearance="outline" fxFlex>
       <mat-label>DoctorType</mat-label>
       <mat-select formControlName="DoctorTypeId" placeholder="Bank" #singleSelect>
         <mat-option>
@@ -202,53 +202,124 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-      <mat-label>Department</mat-label>
-      <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required>
-        <!-- (selectionChange)="OnChangeDoctorList($event.value)"> -->
-        <mat-option>
-          <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'"
-            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-          {{element.departmentName}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
 
   </div>
 
   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+    <div class="child-1" fxFlex="30%">
+      <!-- <mat-form-field appearance="outline" fxFlex>
+              <mat-select placeholder="DepartmentName" #txt  formControlName="DepartmentId" multiple>
+               <mat-option *ngFor="let M of DepartmentcmbList" [value]="M.DepartmentId">
+                      {{M.DepartmentName}}
+                  </mat-option>
+              </mat-select>
+               </mat-form-field> -->
 
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
+          (selectionChange)="SaveEnter($event.value)">
+          <mat-option>
+            <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'"
+              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
+            {{element.departmentName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+<!-- 
+      <button mat-raised-button color="primary" type="submit" (click)="SaveEnter($event.value)"
+      >Add Selected Values</button>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
 
-    <mat-radio-group name="IsConsultant" formControlName="IsConsultant" value='false'>
-      <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsConsultant</mat-radio-button>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+   
+    <div>
+      <!-- <section class="example-section">
+              <mat-checkbox class="example-margin" name="IsConsultant" formControlName="IsConsultant" value='true'>IsConsultant</mat-checkbox>
+              </section> -->
+      <!-- <section class="example-section"> -->
+        <mat-slide-toggle class="example-margin" name="IsConsultant" formControlName="IsConsultant" style="margin-right: 10px;">
+          IsConsultant
+        </mat-slide-toggle>
+      <!-- </section> -->
+    <!-- </div> -->
 
-    </mat-radio-group>
+   
+      <!-- <section class="example-section"> -->
+        <mat-slide-toggle class="example-margin" name="IsRefDoc" formControlName="IsRefDoc" style="margin-right: 10px;">
+          IsRefDoctor
+        </mat-slide-toggle>
+      <!-- </section> -->
 
-    <mat-radio-group name="IsRefDoc" formControlName="IsRefDoc" value='false'>
-      <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsRefDoc</mat-radio-button>
+      <!-- <section class="example-section"> -->
+        <mat-checkbox style="text-align:right;" class="example-margin" name="IsDeleted" formControlName="IsDeleted"
+          value='false'>IsActive</mat-checkbox>
+      <!-- </section> -->
 
-    </mat-radio-group>
-
-    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-      <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-
-    </mat-radio-group>
+      <!-- <section class="example-section">
+              <mat-checkbox class="example-margin" name="IsRefDoc" formControlName="IsRefDoc" value='true' >IsRefDoc</mat-checkbox>
+              </section> -->
+    </div>
 
   </div>
 
+  <hr>
+  
+
+  <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}" style="width: 250px;height: 100px !important;">
+
+    <ng-container matColumnDef="DeptId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
+      <mat-cell *matCellDef="let contact">
+        {{contact.DeptId}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="DeptName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+        Dept Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+        {{contact.DeptName}}
+      </mat-cell>
+    </ng-container>
 
 
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        loading data...
+      </mat-footer-cell>
+    </ng-container>
 
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        <!-- <mat-spinner  class="spinner" [diameter]="35"
+      [color]="blue"></mat-spinner> -->
+        <span>No Data Found</span>
+      </mat-footer-cell>
+    </ng-container>
 
+    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+    </mat-header-row>
+    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+      [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
+    </mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']"
+      [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+    </mat-footer-row>
+  </mat-table>
 </form>
 
 <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
   <div class="button-row">
     <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-      [disabled]="_doctorService.myform.invalid">Save</button>
+    >Save</button>
     <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-
+<!--   [disabled]="_doctorService.myform.invalid" -->
   </div>
 </div>
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

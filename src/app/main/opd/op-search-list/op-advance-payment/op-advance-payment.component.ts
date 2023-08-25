@@ -197,7 +197,9 @@ export class OPAdvancePaymentComponent implements OnInit {
       neftBankNameController: ['', []],
       neftDateController: [(new Date()).toISOString()],
       paytmAmountController: ['', []],
-      paytmMobileNoController: ['', []],
+      paytmMobileNoController: ['', [Validators.required,Validators.pattern("^[0-9]*$"),
+      Validators.minLength(10),
+      Validators.maxLength(10),]], 
       paytmDateController: [(new Date()).toISOString()],
       wrfAmountController: ['', []],
 
