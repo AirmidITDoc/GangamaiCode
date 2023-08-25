@@ -18,7 +18,13 @@ import { RegistrationService } from '../../registration/registration.service';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
 import { fuseAnimations } from '@fuse/animations';
+import { SafePipesPipe } from '../safe-pipe';
+// import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 
+export class DocData {
+  doc: any;
+  type: string = '';
+};
 
 @Component({
   selector: 'app-new-appointment',
@@ -116,7 +122,34 @@ export class NewAppointmentComponent implements OnInit {
   isOpen = false;
   loadID = 0;
   savedValue: number = null;
+  
+  // Image upload
+  docData;
+  docType;
+  docViewType: any;
+  sStatus: any = '';
+  // public errors: WebcamInitError[] = [];
 
+  private trigger: Subject<any> = new Subject();
+  // public webcamImage!: WebcamImage;
+  private nextWebcam: Subject<any> = new Subject();
+  sysImage = '';
+
+  // Document Upload
+  title = 'file-upload';
+  images: string[] = [];
+  docsArray: DocData[] = [];
+  @ViewChild('attachments') attachment: any;
+  imageForm = new FormGroup({
+    imageFile: new FormControl('', [Validators.required]),
+    imgFileSource: new FormControl('', [Validators.required])
+  });
+
+  docsForm = new FormGroup({
+    docFile: new FormControl('', [Validators.required]),
+    docFileSource: new FormControl('', [Validators.required])
+  });
+  showOptions: boolean = false;
 
   displayedColumns: string[] = [
     'RegNo',
@@ -207,18 +240,33 @@ export class NewAppointmentComponent implements OnInit {
   optionsDoc: any[] = [];
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsDoc: Observable<string[]>;
+
   constructor(public _opappointmentService: AppointmentSreviceService,
     private accountService: AuthenticationService,
     public _registerService: RegistrationService,
-    // public notification: NotificationServiceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewAppointmentComponent>,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    // public safe: SafePipesPipe
   ) {
     dialogRef.disableClose = true;
+    
+    // if (data.type == "image") {
+    //   this.docData = data.docData;
+    //   this.docType = "image";
+    // } else if (data.type == "pdf") {
+    //   this.docType = "pdf";
+    //   this.docViewType = "application/pdf";
+    //   data.docData = data.docData.split('data:application/pdf;base64,').pop();
+    //   this.docData = this.b64toBlob(data.docData, 'application/pdf');
+    // } else  if (data.type == "camera") {
+    //   this.docData = data.docData;
+    //   this.docType = "camera";
+    // }
+    console.log(this.docData)
   }
 
   ngOnInit(): void {
@@ -1057,14 +1105,16 @@ this.getSelectedObj(row);
 
     
   getOPIPPatientList() {
-debugger
+    debugger
+   
+    if((this._opappointmentService.myFilterform.get('RegNo').value !="") || (this._opappointmentService.myFilterform.get('FirstName').value !=="") || (this._opappointmentService.myFilterform.get('LastName').value !="") ){
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
       "L_Name": this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
       "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
-      "From_Dt":'01/01/1900',// this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": '01/01/1900',//this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+      "From_Dt":'01/01/1900',
+      "To_Dt": '01/01/1900',
       "MobileNo": '%'
     }
     console.log(m_data);
@@ -1081,7 +1131,7 @@ debugger
           this.sIsLoading = '';
         });
     }, 50);
-       
+  }
   }
 
 
@@ -1438,6 +1488,7 @@ debugger
       this.getHospitalList();
       this.getTariffList();
       this.getPatientTypeList();
+      this.searchRegList();
     }
   }
   getHospitalList1() {
@@ -1494,5 +1545,50 @@ debugger
   get showNameEditor() {
     return this.editor === 'name';
   }
+
+  // Image Upload
+
+  b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: contentType });
+    const Url = URL.createObjectURL(blob);
+    // return this.safe.transform(Url);
+  }
+
+  public getSnapshot(): void {
+    this.trigger.next(void 0);
+  }
+  // public captureImg(webcamImage: WebcamImage): void {
+  //   this.webcamImage = webcamImage;
+  //   this.sysImage = webcamImage!.imageAsDataUrl;
+  //   console.info('got webcam image', this.sysImage);
+  // }
+  // public get invokeObservable(): Observable<any> {
+  //   return this.trigger.asObservable();
+  // }
+  // public get nextWebcamObservable(): Observable<any> {
+  //   return this.nextWebcam.asObservable();
+  // }
+  // public handleInitError(error: WebcamInitError): void {
+  //   this.errors.push(error);
+  // }
+
+  onUpload() {
+    this.dialogRef.close({url: this.sysImage});
+  }
+
+
+  //Image Upload
+  
 
 }

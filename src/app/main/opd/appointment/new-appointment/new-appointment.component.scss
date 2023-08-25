@@ -280,3 +280,73 @@ button:disabled {
 .mat-icon-close {
     cursor: pointer;
 }
+//Camera 
+.cam-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.submit-btn1 {
+    width: 80px;
+    height: 40px;
+    background-color: #444848;
+    color: white;
+    cursor: pointer;
+}
+
+//Document upload
+.upload-container {
+    background-color: white;
+    padding: 20px;
+    // height: 200px;
+}
+.img-div {
+    position: relative;
+    margin-top: 15px;
+}
+.img-div img {
+    display: block;
+}
+.img-div mat-icon {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+
+.img-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.file-lable {
+    cursor: pointer;
+    background-color: #e34b4b;
+    padding: 10px;
+    color: white;
+    // border-radius: 5px;
+    height: 20px;
+}
+
+.submit-btn1 {
+    width: 80px;
+    height: 40px;
+    background-color: #444848;
+    color: white;
+    cursor: pointer;
+}
+
+.upload-option-div {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 120px;
+}

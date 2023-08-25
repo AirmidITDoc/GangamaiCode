@@ -37,6 +37,8 @@ export class RegAdmissionComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   isCitySelected: boolean = false;
+  isCompanySelected: boolean = false;
+  isDepartmentSelected: boolean = false;
   selectedAdvanceObj: AdvanceDetailObj;
   sIsLoading: string = '';
   submitted = false;
@@ -96,7 +98,6 @@ DoctorId:any=0;
   bedObj = new Bed({});
   selectedPrefixId: any;
 
-  isCompanySelected: boolean = false;
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
@@ -825,8 +826,18 @@ DoctorId:any=0;
     return option.CityName;
   }
 
-  getOPIPPatientList() {
+  getOptionTextCompany(option) {
+    return option.CompanyName;
+  }
 
+
+  getOptionTextDepartment(option) {
+    return option.departmentName;
+  }
+
+
+  getOPIPPatientList() {
+    if((this._AdmissionService.myFilterform.get('RegNo').value !="") || (this._AdmissionService.myFilterform.get('FirstName').value !=="") || (this._AdmissionService.myFilterform.get('LastName').value !="") ){
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
@@ -854,6 +865,7 @@ DoctorId:any=0;
           this.sIsLoading = '';
         });
     }, 50);
+  }
        
   }
 
@@ -906,6 +918,7 @@ DoctorId:any=0;
       this.getPrefixList();
       this.getPatientTypeList();
       this.getTariffList();
+      this.showtable=true;
     }
   }
 
@@ -1413,111 +1426,11 @@ DoctorId:any=0;
 
   onEdit(row) {
     console.log(row);
-    // var m_data = {
-    //   "RegNo": row.RegNo,
-    //   "RegId": row.RegId,
-    //   "PrefixID": row.PrefixID,
-    //   "PrefixName": row.PrefixName,
-    //   "FirstName": row.FirstName.trim(),
-    //   "MiddleName": row.MiddleName.trim(),
-    //   "LastName": row.LastName.trim(),
-    //   "PatientName": row.PatientName.trim(),
-    //   "DateofBirth": row.DateofBirth,
-    //   "MaritalStatusId": row.MaritalStatusId,
-    //   "AadharCardNo": row.AadharCardNo,
-    //   "Age": row.Age,
-    //   "AgeDay": row.AgeDay.trim(),
-    //   "AgeMonth": row.AgeMonth.trim(),
-    //   "AgeYear": row.AgeYear.trim(),
-    //   "Address": row.Address.trim(),
-    //   "AreaId": row.AreaId,
-    //   "City": row.City.trim(),
-    //   "CityId": row.CityId,
-    //   "StateId": row.StateId,
-    //   "CountryId": row.CountryId,
-    //   "PhoneNo": row.PhoneNo.trim(),
-    //   "MobileNo": row.MobileNo.trim(),
-    //   "GenderId": row.GenderId,
-    //   "GenderName": row.GenderName,
-    //   "ReligionId": row.ReligionId,
-    //   "IsCharity": 0,
-    //   "PinNo": row.PinNo,
-    //   "RegDate": row.RegDate,
-    //   "RegNoWithPrefix": row.RegNoWithPrefix,
-    //   "RegTime": row.RegTime.trim()
-    // }
+   
 this.registerObj = row;
 this.getSelectedObj(row);
      } 
-    // else {
-
-    //   var D_data = {
-    //     RegId: row.RegId,
-    //   };
-    //   this._registrationService.getregisterListByRegId(D_data).subscribe((reg) => {
-    //     this.dataArray = reg;
-    //     console.log(this.dataArray);
-    //     var m_data = {
-    //       RegNo: this.dataArray[0].RegNo,
-    //       RegId: this.dataArray[0].RegId,
-    //       PrefixID: this.dataArray[0].PrefixId,
-    //       PrefixName: this.dataArray[0].PrefixName,
-    //       FirstName: this.dataArray[0].FirstName,
-    //       MiddleName: this.dataArray[0].MiddleName,
-    //       LastName: this.dataArray[0].LastName,
-    //       PatientName: this.dataArray[0].PatientName,
-    //       DateofBirth: this.dataArray[0].DateofBirth,
-    //       MaritalStatusId: this.dataArray[0].MaritalStatusId,
-    //       AadharCardNo: this.dataArray[0].AadharCardNo || 0,
-    //       Age: this.dataArray[0].Age.trim(),
-    //       AgeDay: this.dataArray[0].AgeDay,
-    //       AgeMonth: this.dataArray[0].AgeMonth,
-    //       AgeYear: this.dataArray[0].AgeYear,
-    //       Address: this.dataArray[0].Address,
-    //       AreaId: this.dataArray[0].AreaId,
-    //       City: this.dataArray[0].City,
-    //       CityId: this.dataArray[0].CityId,
-    //       StateId: this.dataArray[0].StateId,
-    //       CountryId: this.dataArray[0].CountryId,
-    //       PhoneNo: this.dataArray[0].PhoneNo,
-    //       MobileNo: this.dataArray[0].MobileNo,
-    //       GenderId: this.dataArray[0].GenderId,
-    //       GenderName: this.dataArray[0].GenderName,
-    //       ReligionId: this.dataArray[0].ReligionId,
-    //       IsCharity: 0,
-    //       PinNo: this.dataArray[0].PinNo,
-    //       RegDate: this.dataArray[0].RegDate,
-    //       RegNoWithPrefix: this.dataArray[0].RegNoWithPrefix,
-    //       RegTime: this.dataArray[0].RegTime,
-    //     };
-    //     this._registrationService.populateFormpersonal(m_data);
-    //     const dialogRef = this._matDialog.open(
-    //       EditRegistrationComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: "550px",
-    //         width: "100%",
-    //         data: {
-    //           registerObj: m_data,
-    //         },
-    //       }
-    //     );
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //       console.log(
-    //         "The dialog was closed - Insert Action",
-    //         result
-    //       );
-    //       // this.getVisitList();
-    //     });
-    //   },
-    //     (error) => {
-    //       this.sIsLoading = "";
-    //     }
-    //   );
-
-
-    // }
-  
+   
 
 
 

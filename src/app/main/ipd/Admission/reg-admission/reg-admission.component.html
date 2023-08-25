@@ -52,11 +52,11 @@
                       </mat-radio-group>
 
 
-                      <button Class="search-btn " mat-raised-button
+                      <!-- <button Class="search-btn " mat-raised-button
                       style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
                       [disabled]="isRegSearchDisabled">Search
                       <mat-icon>search</mat-icon>
-                    </button>
+                    </button> -->
                     </div>
                     <div>
                       <!-- <mat-form-field appearance="outline" style="width:70%;margin-right:5px;">
@@ -184,11 +184,6 @@
                   </div>
 
                 </div>
-
-
-
-
-
               </div>
 
             </div>
@@ -199,7 +194,29 @@
               <div>
 
                 <form [formGroup]="personalFormGroup">
-                  <!-- <ng-template matStepLabel>Personal</ng-template> -->
+                                
+                  <div>
+                      
+                    <mat-form-field appearance="outline" style="width:60%;margin-left:15px;">
+                    <!-- <lable>Enter RegNo for Search<lable> -->
+                      <input type="text" name="RegId" formControlName="RegId" placeholder="RegNo/Name" matInput
+                        [matAutocomplete]="auto" (input)="getSearchList()">
+                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                        (optionSelected)='getSelectedObj($event.option.value)'>
+                        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                          {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
+                        </mat-option>
+                      </mat-autocomplete>
+                      <mat-hint>
+                        <span *ngIf="!noOptionFound">Select one of the name from auto suggestions.</span>
+                        <span *ngIf="noOptionFound" style="color: #f44336;">No data Found</span>
+                      </mat-hint>
+                      <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
+                        Required field cannot be left blank
+                      </mat-error>
+                    </mat-form-field>
+    
+                  </div>
                   <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
                     style=" height: 35px;background-color:#33b5e5">
                     <span
@@ -209,35 +226,6 @@
                   </div>
                   <div style="padding: 7px;">
 
-                   
-                      <div *ngIf="Regdisplay" style="border: #c1cade;border-style: groove;margin-bottom: 5px;">
-                      
-                        <mat-form-field appearance="outline" style="width:20%;margin-left:15px;">
-                        <!-- <lable>Enter RegNo for Search<lable> -->
-                          <input type="text" name="RegId" formControlName="RegId" placeholder="RegNo" matInput
-                            [matAutocomplete]="auto" (input)="getSearchList()">
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                            (optionSelected)='getSelectedObj($event.option.value)'>
-                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                              {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
-                            </mat-option>
-                          </mat-autocomplete>
-                          <mat-hint>
-                            <span *ngIf="!noOptionFound">Select one of the name from auto suggestions.</span>
-                            <span *ngIf="noOptionFound" style="color: #f44336;">No data Found</span>
-                          </mat-hint>
-                          <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
-                            Required field cannot be left blank
-                          </mat-error>
-                        </mat-form-field>
-        
-                        <label style="margin-left: 20px;font-weight: bold;">Search Registered Patient </label>
-                        <!-- <button Class="search-btn " mat-raised-button
-                          style=" color: blue;border:blue ;border-radius: 16px;" (click)="searchRegList() "
-                          [disabled]="isRegSearchDisabled">Search
-                          <mat-icon>search</mat-icon>
-                        </button> -->
-                      </div>
                       
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                       <mat-form-field appearance="outline" fxFlex>
@@ -295,6 +283,22 @@
                           only
                           Alphabets</mat-error>
                       </mat-form-field>
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="GenderId" required>
+                          <mat-option></mat-option>
+                          <mat-option *ngFor="let m of GenderList" [value]="m">
+                            {{m.GenderName}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error
+                          *ngIf="personalFormGroup.get('GenderId').invalid && personalFormGroup.get('GenderId').touched">
+                          <span *ngIf="personalFormGroup.get('GenderId').hasError('required')">
+                            Gender is required</span>
+                        </mat-error>
+                      </mat-form-field>
+
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
@@ -340,50 +344,6 @@
                       </mat-form-field>
 
 
-
-                    </div>
-
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                      <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Aadhar Card No.</mat-label>
-                        <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="Aadhar Card No."
-                          [ngModel]="registerObj.AadharCardNo | trim" (ngModelChange)="registerObj.AadharCardNo = $event"
-                          matInput type="number" required minlength="12" maxlength="12">
-                        <mat-error class="error"
-                          *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">
-                          12 digits
-                          AadharCardNo is
-                          required</mat-error>
-                      </mat-form-field> -->
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Pan Card No.</mat-label>
-                        <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No."
-                          [ngModel]="registerObj.Pancardno | trim" (ngModelChange)="registerObj.Pancardno = $event"
-                          matInput>
-                        <!-- [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('Pancardno').errors }" -->
-                        <!-- <mat-error class="error"
-                            *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">
-                            12 digits
-                            AadharCardNo is
-                            required</mat-error> -->
-                      </mat-form-field>
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Gender</mat-label>
-                        <mat-select formControlName="GenderId" required>
-                          <mat-option></mat-option>
-                          <mat-option *ngFor="let m of GenderList" [value]="m">
-                            {{m.GenderName}}
-                          </mat-option>
-                        </mat-select>
-                        <mat-error
-                          *ngIf="personalFormGroup.get('GenderId').invalid && personalFormGroup.get('GenderId').touched">
-                          <span *ngIf="personalFormGroup.get('GenderId').hasError('required')">
-                            Gender is required</span>
-                        </mat-error>
-                      </mat-form-field>
-
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Marital Name</mat-label>
                         <mat-select formControlName="MaritalStatusId" placeholder="Bank" #singleSelect>
@@ -411,6 +371,24 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                      <!-- <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Aadhar Card No.</mat-label>
+                        <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="Aadhar Card No."
+                          [ngModel]="registerObj.AadharCardNo | trim" (ngModelChange)="registerObj.AadharCardNo = $event"
+                          matInput type="number" required minlength="12" maxlength="12">
+                        <mat-error class="error"
+                          *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">
+                          12 digits
+                          AadharCardNo is
+                          required</mat-error>
+                      </mat-form-field> -->
+
+                 
+                  
+                   
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
@@ -463,9 +441,7 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-                    </div>
 
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Country Name</mat-label>
                         <mat-select formControlName="CountryId">
@@ -474,6 +450,22 @@
                             {{g.CountryName}}
                           </mat-option>
                         </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                     
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Pan Card No.</mat-label>
+                        <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No."
+                          [ngModel]="registerObj.Pancardno | trim" (ngModelChange)="registerObj.Pancardno = $event"
+                          matInput>
+                        <!-- [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('Pancardno').errors }" -->
+                        <!-- <mat-error class="error"
+                            *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">
+                            12 digits
+                            AadharCardNo is
+                            required</mat-error> -->
                       </mat-form-field>
 
                       <mat-form-field appearance="outline" fxFlex>
@@ -553,7 +545,7 @@
                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
                         *ngIf="isCompanySelected">
 
-                        <mat-form-field appearance="outline" #Company fxFlex>
+                        <!-- <mat-form-field appearance="outline" #Company fxFlex>
                           <mat-label>Company Name </mat-label>
                           <mat-select formControlName="CompanyId" placeholder="Bank" #singleSelect>
                             <mat-option>
@@ -564,7 +556,23 @@
                               {{element.CompanyName}}
                             </mat-option>
                           </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+                           <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Company</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoCompany="matAutocomplete"  [displayWith]="getOptionTextCompany">
+                          <mat-option *ngFor="let option of filteredCompany | async" [value]="option">
+                            {{option.CompanyName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+
 
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Sub Company Name</mat-label>
@@ -579,7 +587,8 @@
                       </div>
 
                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                        <mat-form-field appearance="outline" fxFlex
+
+                        <!-- <mat-form-field appearance="outline" fxFlex
                           [floatLabel]="isLoading || (!isOpen && departmentFilterCtrl.value === null) ? 'never' : 'auto'">
                           <mat-label>Department</mat-label>
                           <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
@@ -601,7 +610,22 @@
                             </div>
                           </mat-label>
 
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>DepartmentName</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput formControlName="Departmentid" [matAutocomplete]="autoDept" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoDept="matAutocomplete"  [displayWith]="getOptionTextDepartment">
+                          <mat-option *ngFor="let option of filteredDepartment | async" [value]="option" (selectionChange)="OnChangeDoctorList($event.value)" (openedChange)="openChanged($event)">
+                            {{option.departmentName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Doctor Name</mat-label>
