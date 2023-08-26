@@ -25,7 +25,7 @@ export class ImageViewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ImageViewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public safe: SafePipesPipe
+    // public safe: SafePipesPipe
     
   ) {
     if (data.type == "image") {
@@ -60,7 +60,7 @@ export class ImageViewComponent implements OnInit {
     }
     const blob = new Blob(byteArrays, { type: contentType });
     const Url = URL.createObjectURL(blob);
-    return this.safe.transform(Url);
+    // return this.safe.transform(Url);
   }
 
   public getSnapshot(): void {

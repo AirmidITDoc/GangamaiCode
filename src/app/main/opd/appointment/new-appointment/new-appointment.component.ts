@@ -37,8 +37,8 @@ export class DocData {
 export class NewAppointmentComponent implements OnInit {
 
   showtable:boolean=false;
-
-
+  
+  doclist: any = [];
   registerObj = new RegInsert({});
   registerObj1 = new RegInsert({});
   name = new FormControl('');
@@ -101,7 +101,7 @@ export class NewAppointmentComponent implements OnInit {
   dataArray = {};
   HospitalList1: any = [];
   Patientnewold: any = 1;
-
+  Filename:any;
 
   IsPathRad: any;
   PatientName: any = '';
@@ -165,6 +165,14 @@ export class NewAppointmentComponent implements OnInit {
 
   dataSource = new MatTableDataSource<OPIPPatientModel>();
 
+
+  displayedColumns1 = [
+
+    'DocumentName',
+    'DocumentPath'
+];
+
+dataSource1 = new MatTableDataSource<DocumentUpload>();
 
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
@@ -386,7 +394,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
     getOptionTextCity(option) {
-    return option.CityName;
+    // return option.CityName;
   }
 
   getOptionTextDoc(option) {
@@ -1571,18 +1579,23 @@ this.getSelectedObj(row);
   }
 
   onDocFileChange(event: any) {
+    debugger
     let files = event.target.files;
     let type: string;
     if (files && files[0]) {
       let filesAmount = files.length;
       for (let i = 0; i < filesAmount; i++) {
         let file = files[i];
+        console.log(file)
         if (file) {
           let pdf = (/\.(pdf)$/i);
           type = file.name.toLowerCase();
           if (pdf.exec(type)) {
             type = "pdf";
           }
+          this.Filename=file.name.toLowerCase();
+          type=file.type
+          this.onAddDocument(this.Filename,type);
         }
         var reader = new FileReader();
         reader.onload = (event: any) => {
@@ -1593,8 +1606,13 @@ this.getSelectedObj(row);
         }
         reader.readAsDataURL(event.target.files[i]);
       }
-      this.attachment.nativeElement.value = '';
+      // this.attachment.nativeElement.value = '';
+
+      this.Filename=this.docsForm.get('docFileSource')?.value
+      console.log(this.Filename)
     }
+
+   
   }
 
   removeImage(url: string) {
@@ -1693,5 +1711,40 @@ this.getSelectedObj(row);
         this.images.push(result.url);
       }
     });
+  }
+
+
+
+  onAddDocument(name,type) {
+debugger
+
+    this.isLoading = 'save';
+    // if (this.SrvcName && (parseInt(this.b_price) != 0) && this.b_qty) {
+    
+      this.dataSource1.data = [];
+      this.doclist.push(
+        {
+          DocumentName:name,// this.imageForm.get('imgFileSource')?.value,
+          DocumentPath:type// this.imageForm.get('imgFileSource')?.value,
+         
+        });
+      this.isLoading = '';
+      this.dataSource1.data = this.doclist;
+      
+    }
+   
+  // }
+}
+
+export class DocumentUpload {
+  DocumentName: any;
+  DocumentPath: string;
+ 
+  constructor(DocumentUpload) {
+    {
+      this.DocumentName = DocumentUpload.DocumentName || '';
+      this.DocumentPath = DocumentUpload.DocumentPath || '';
+     
+    }
   }
 }

@@ -302,7 +302,7 @@ button:disabled {
 }
 .img-div {
     position: relative;
-    margin-top: 15px;
+    margin-top:5px;
 }
 .img-div img {
     display: block;
@@ -349,4 +349,37 @@ button:disabled {
     display: flex;
     justify-content: space-between;
     width: 120px;
+}
+
+.table2{
+    height:300px !important;
+
+
+    .mat-header-row {
+        width: 100%;
+        max-width: 800px;
+        min-width: 800px;   
+        font-weight: bold;   
+        min-height: 25px;        
+    }
+    
+    .mat-row {
+        width: 100%;
+        max-width: 800px;
+        min-width: 800px;   
+        min-height: 25px;                 
+    }    
+    
+    
+    .mat-column-DocumentName {
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+    }
+    .mat-column-DocumentPath {
+        width: 500px;
+        max-width: 500px;
+        min-width: 500px;
+    }
+
 }
