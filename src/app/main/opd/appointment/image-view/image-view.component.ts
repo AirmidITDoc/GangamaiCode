@@ -1,25 +1,28 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { SafePipesPipe } from '../safe-pipe';
+import { WebcamImage, WebcamInitError } from 'ngx-webcam';
+import { fuseAnimations } from '@fuse/animations';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 
 @Component({
   selector: 'app-image-view',
   templateUrl: './image-view.component.html',
-  styleUrls: ['./image-view.component.scss']
+  styleUrls: ['./image-view.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class ImageViewComponent implements OnInit {
 
-  
   docData;
   docType;
   docViewType: any;
   sStatus: any = '';
-  // public errors: WebcamInitError[] = [];
+  public errors: WebcamInitError[] = [];
 
   private trigger: Subject<any> = new Subject();
-  // public webcamImage!: WebcamImage;
+  public webcamImage!: WebcamImage;
   private nextWebcam: Subject<any> = new Subject();
   sysImage = '';
   constructor(
@@ -66,10 +69,10 @@ export class ImageViewComponent implements OnInit {
   public getSnapshot(): void {
     this.trigger.next(void 0);
   }
-  public captureImg(webcamImage): void {
-    // this.webcamImage = webcamImage;
+  public captureImg(webcamImage: WebcamImage): void {
+    this.webcamImage = webcamImage;
     this.sysImage = webcamImage!.imageAsDataUrl;
-    console.info('got webcam image', this.sysImage);
+    // console.info('got webcam image', this.sysImage);
   }
   public get invokeObservable(): Observable<any> {
     return this.trigger.asObservable();
@@ -77,12 +80,17 @@ export class ImageViewComponent implements OnInit {
   public get nextWebcamObservable(): Observable<any> {
     return this.nextWebcam.asObservable();
   }
-  public handleInitError(error): void {
-    // this.errors.push(error);
+  public handleInitError(error: WebcamInitError): void {
+    this.errors.push(error);
   }
 
   onUpload() {
     this.dialogRef.close({url: this.sysImage});
   }
 
+
+
+  onClose(){
+    this.dialogRef.close();
+  }
 }

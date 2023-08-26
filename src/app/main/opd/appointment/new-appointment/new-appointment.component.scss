@@ -185,7 +185,7 @@ button:disabled {
 
 
 .table1{
-    height:500px !important;
+    height:650px !important;
 }
 .mat-header-row {
     width: 100%;
@@ -292,94 +292,4 @@ button:disabled {
     background-color: #444848;
     color: white;
     cursor: pointer;
-}
-
-//Document upload
-.upload-container {
-    background-color: white;
-    padding: 20px;
-    // height: 200px;
-}
-.img-div {
-    position: relative;
-    margin-top:5px;
-}
-.img-div img {
-    display: block;
-}
-.img-div mat-icon {
-    position: absolute;
-    top: 0;
-    cursor: pointer;
-}
-
-.img-container {
-    display: flex;
-    // flex-direction: row;
-    align-items: center;
-}
-
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-.file-lable {
-    cursor: pointer;
-    background-color: #6e91f0;
-    padding: 10px;
-    color: white;
-    // border-radius: 5px;
-    height: 30px;
-}
-
-.submit-btn1 {
-    width: 80px;
-    height: 40px;
-    background-color: #444848;
-    color: white;
-    cursor: pointer;
-}
-
-.upload-option-div {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    width: 120px;
-}
-
-.table2{
-    height:300px !important;
-
-
-    .mat-header-row {
-        width: 100%;
-        max-width: 800px;
-        min-width: 800px;   
-        font-weight: bold;   
-        min-height: 25px;        
-    }
-    
-    .mat-row {
-        width: 100%;
-        max-width: 800px;
-        min-width: 800px;   
-        min-height: 25px;                 
-    }    
-    
-    
-    .mat-column-DocumentName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-    }
-    .mat-column-DocumentPath {
-        width: 500px;
-        max-width: 500px;
-        min-width: 500px;
-    }
-
 }

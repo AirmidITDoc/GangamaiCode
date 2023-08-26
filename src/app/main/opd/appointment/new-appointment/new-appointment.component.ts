@@ -22,10 +22,6 @@ import { SafePipesPipe } from '../safe-pipe';
 import { ImageViewComponent } from '../image-view/image-view.component';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 
-export class DocData {
-  doc: any;
-  type: string = '';
-};
 
 @Component({
   selector: 'app-new-appointment',
@@ -36,9 +32,10 @@ export class DocData {
 })
 export class NewAppointmentComponent implements OnInit {
 
-  showtable:boolean=false;
-  
-  doclist: any = [];
+  showtable: boolean = false;
+
+  showReg: boolean = false;
+
   registerObj = new RegInsert({});
   registerObj1 = new RegInsert({});
   name = new FormControl('');
@@ -96,16 +93,16 @@ export class NewAppointmentComponent implements OnInit {
   searchFormGroup: FormGroup;
   registration: any;
   isRegSearchDisabled: boolean = true;
-  Regdisplay:boolean = false;
+  Regdisplay: boolean = false;
   newRegSelected: any = 'registration';
   dataArray = {};
   HospitalList1: any = [];
   Patientnewold: any = 1;
-  Filename:any;
+
 
   IsPathRad: any;
   PatientName: any = '';
-  RegId:any =0;
+  RegId: any = 0;
   OPIP: any = '';
   Bedname: any = '';
   wardname: any = '';
@@ -124,7 +121,7 @@ export class NewAppointmentComponent implements OnInit {
   isOpen = false;
   loadID = 0;
   savedValue: number = null;
-  
+
   // Image upload
   docData;
   docType;
@@ -137,21 +134,7 @@ export class NewAppointmentComponent implements OnInit {
   private nextWebcam: Subject<any> = new Subject();
   sysImage = '';
 
-  // Document Upload
-  title = 'file-upload';
-  images: string[] = [];
-  docsArray: DocData[] = [];
-  @ViewChild('attachments') attachment: any;
-  imageForm = new FormGroup({
-    imageFile: new FormControl('', [Validators.required]),
-    imgFileSource: new FormControl('', [Validators.required])
-  });
 
-  docsForm = new FormGroup({
-    docFile: new FormControl('', [Validators.required]),
-    docFileSource: new FormControl('', [Validators.required])
-  });
-  showOptions: boolean = false;
 
   displayedColumns: string[] = [
     'RegNo',
@@ -160,19 +143,13 @@ export class NewAppointmentComponent implements OnInit {
     'GenderName',
     'PhoneNo',
     'MobileNo'
-    ];
+  ];
 
 
   dataSource = new MatTableDataSource<OPIPPatientModel>();
 
 
-  displayedColumns1 = [
 
-    'DocumentName',
-    'DocumentPath'
-];
-
-dataSource1 = new MatTableDataSource<DocumentUpload>();
 
   // prefix filter
   public bankFilterCtrl: FormControl = new FormControl();
@@ -254,7 +231,7 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
   constructor(public _opappointmentService: AppointmentSreviceService,
     private accountService: AuthenticationService,
     public _registerService: RegistrationService,
-     @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewAppointmentComponent>,
     public datePipe: DatePipe,
@@ -264,7 +241,7 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
     // public safe: SafePipesPipe
   ) {
     dialogRef.disableClose = true;
-    
+
     // if (data.type == "image") {
     //   this.docData = data.docData;
     //   this.docType = "image";
@@ -289,7 +266,7 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
     this.searchFormGroup = this.createSearchForm();
     this.searchFormGroup.markAllAsTouched();
 
-    
+
     if (this.data) {
 
       this.registerObj = this.data.registerObj;
@@ -298,7 +275,7 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
 
     this.getHospitalList1();
     this.getHospitalList();
-    
+
     this.getPrefixList();
     this.getPatientTypeList();
 
@@ -387,13 +364,13 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-     }
+  }
 
   getOptionTextDep(option) {
     return option.departmentName;
   }
 
-    getOptionTextCity(option) {
+  getOptionTextCity(option) {
     // return option.CityName;
   }
 
@@ -401,20 +378,20 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
     return option.Doctorname;
   }
 
-  
+
 
   private _filterDep(value: any): string[] {
-    if(value) {
-      const filterValue = value && value.departmentName ?  value.departmentName.toLowerCase() : value.toLowerCase();
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
       // this.isDepartmentSelected = false;
       return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
     }
-    
+
   }
 
   private _filterDoc(value: any): string[] {
-    if(value) {
-      const filterValue = value && value.Doctorname ?  value.Doctorname.toLowerCase() : value.toLowerCase();
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
       this.isDoctorSelected = false;
       return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
@@ -508,8 +485,10 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
+      regRadio1: ['registration1'],
+      // RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
       // [Validators.required]]
+      RegId:['']
     });
   }
 
@@ -564,10 +543,10 @@ dataSource1 = new MatTableDataSource<DocumentUpload>();
 
   onEdit(row) {
     console.log(row);
-   
-this.registerObj = row;
-this.getSelectedObj(row);
-     } 
+
+    this.registerObj = row;
+    this.getSelectedObj(row);
+  }
 
 
 
@@ -654,7 +633,7 @@ this.getSelectedObj(row);
       this.filteredCity.next(this.cityList.slice());
       this.onChangeCityList(this.registerObj.CityId);
 
-      
+
       if (this.registerObj) {
         const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
         this.personalFormGroup.get('CityId').setValue(toSelectCity);
@@ -665,8 +644,8 @@ this.getSelectedObj(row);
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
-      if(this.registerObj.StateId != 0){
-        CityId=this.registerObj.CityId
+      if (this.registerObj.StateId != 0) {
+        CityId = this.registerObj.CityId
       }
       this._opappointmentService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
@@ -676,10 +655,10 @@ this.getSelectedObj(row);
     }
   }
   onChangeCityList(CityId) {
-    
+
     if (CityId > 0) {
-      if(this.registerObj.CityId ! =0){
-        CityId=this.registerObj.CityId
+      if (this.registerObj.CityId! = 0) {
+        CityId = this.registerObj.CityId
       }
       this._opappointmentService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
@@ -698,8 +677,8 @@ this.getSelectedObj(row);
   }
   onChangeCountryList(StateId) {
     if (StateId > 0) {
-      if(this.registerObj.StateId ! =0){
-        StateId=this.registerObj.StateId
+      if (this.registerObj.StateId! = 0) {
+        StateId = this.registerObj.StateId
       }
       this._opappointmentService.getCountryList(StateId).subscribe(data => {
         this.countryList = data;
@@ -1015,15 +994,19 @@ this.getSelectedObj(row);
   // RegId of Patient Searching 
   getSearchList() {
     debugger
+    // var m_data = {
+    //   "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
+    //   "L_Name": '%',
+    //   "Reg_No": '0',
+    //   // "From_Dt": '01/01/1900',
+    //   // "To_Dt": '01/01/1900',
+    //   "MobileNo": '%'
+    // }
+
     var m_data = {
-      "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      // "From_Dt": '01/01/1900',
-      // "To_Dt": '01/01/1900',
-      "MobileNo": '%'
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-    if (this.personalFormGroup.get('RegId').value.length >= 1) {
+    if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData)
@@ -1038,57 +1021,45 @@ this.getSelectedObj(row);
 
   }
 
-  // searchRegList() {
-  //   ;
-  //   const dialogRef = this._matDialog.open(SearchPageComponent,
-  //     {
-  //       maxWidth: "90vw",
-  //       maxHeight: "540px", width: '100%'
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //     if (result) {
-  //       let a, b, c;
 
-  //       a = result.AgeDay.trim();;
-  //       b = result.AgeMonth.trim();
-  //       c = result.AgeYear.trim();
+  // RegistrationListComponent
+  searchRegList() {
+    this.showtable = true;
+    // this.getOPIPPatientList()
+    this.setDropdownObjs();
+  }
 
-  //       result.AgeDay = a;
-  //       result.AgeMonth = b;
-  //       result.AgeYear = c;
-  //       this.registerObj = result as RegInsert;
-  //       this.setDropdownObjs();
-  //     }
-  //     //this.getRegistrationList();
-  //   });
-  // }
 
-    // RegistrationListComponent
-    searchRegList() {
-      this.showtable=true;
-      // this.getOPIPPatientList()
-      this.setDropdownObjs();
-    }
-
-    
   getOPIPPatientList() {
     debugger
-   
-    if((this._opappointmentService.myFilterform.get('RegNo').value !="") || (this._opappointmentService.myFilterform.get('FirstName').value !=="") || (this._opappointmentService.myFilterform.get('LastName').value !="") ){
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "F_Name": this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
-      "L_Name": this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
-      "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
-      "From_Dt":'01/01/1900',
-      "To_Dt": '01/01/1900',
-      "MobileNo": '%'
+ let data;
+    if ((this._opappointmentService.myFilterform.get('RegNo').value != "") || (this._opappointmentService.myFilterform.get('FirstName').value != "") || (this._opappointmentService.myFilterform.get('LastName').value != "")) {
+      this.sIsLoading = 'loading-data';
+      var m_data = {
+        "F_Name": this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
+        "L_Name": this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
+        "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
+        "From_Dt": '01/01/1900',
+        "To_Dt": '01/01/1900',
+        "MobileNo": '%'
+      }
+      data=m_data;
     }
-    console.log(m_data);
+    else {
+      var m_data1 = {
+        "F_Name": '1',
+        "L_Name": '2',
+        "Reg_No": 0, 
+        "From_Dt": '01/01/1900',
+        "To_Dt": '01/01/1900',
+        "MobileNo": '%'
+      }
+      data=m_data1;
+    }
+    console.log(data);
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-      this._opappointmentService.getOPPatient(m_data).subscribe(Visit => {
+      this._opappointmentService.getOPPatient(data).subscribe(Visit => {
         this.dataSource.data = Visit as OPIPPatientModel[];
         console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
@@ -1099,7 +1070,6 @@ this.getSelectedObj(row);
           this.sIsLoading = '';
         });
     }, 50);
-  }
   }
 
 
@@ -1170,9 +1140,9 @@ this.getSelectedObj(row);
     obj.AgeMonth = b;
     obj.AgeYear = c;
     this.registerObj = obj;
-    this.PatientName=obj.PatientName;
-    this.RegId=obj.RegId;
-    console.log( this.registerObj )
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.RegId;
+    console.log(this.registerObj)
     this.setDropdownObjs();
   }
 
@@ -1404,7 +1374,7 @@ this.getSelectedObj(row);
   }
 
   onClose() {
-    
+
     //this._opappointmentService.mySaveForm.reset();
     this.dialogRef.close();
   }
@@ -1422,7 +1392,7 @@ this.getSelectedObj(row);
 
 
   onChangeReg(event) {
-
+debugger
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.personalFormGroup.reset();
@@ -1434,19 +1404,18 @@ this.getSelectedObj(row);
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
-      this.Regdisplay=false;
-      this.showtable=false;
+      // this.Regdisplay = false;
+      this.showtable = false;
 
       this.getHospitalList1();
       this.getHospitalList();
       this.getTariffList();
       this.getPatientTypeList();
-    
+
 
     } else {
-      this.Regdisplay=true;
-      this.personalFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
+      this.personalFormGroup.get('RegId').enable();
       this.personalFormGroup.reset();
       this.Patientnewold = 2;
 
@@ -1462,6 +1431,8 @@ this.getSelectedObj(row);
       this.searchRegList();
     }
   }
+
+
   getHospitalList1() {
     this._opappointmentService.getHospitalCombo().subscribe(data => {
       this.HospitalList1 = data;
@@ -1481,7 +1452,7 @@ this.getSelectedObj(row);
       return;
     }
     if (formGroupName == this.VisitFormGroup) {
-      if(!this.isDepartmentSelected) {
+      if (!this.isDepartmentSelected) {
         return;
       }
       this.submitAppointForm();
@@ -1517,234 +1488,4 @@ this.getSelectedObj(row);
     return this.editor === 'name';
   }
 
-  // Image Upload
-
-  b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-    const blob = new Blob(byteArrays, { type: contentType });
-    const Url = URL.createObjectURL(blob);
-    // return this.safe.transform(Url);
-  }
-
-  public getSnapshot(): void {
-    this.trigger.next(void 0);
-  }
-  // public captureImg(webcamImage: WebcamImage): void {
-  //   this.webcamImage = webcamImage;
-  //   this.sysImage = webcamImage!.imageAsDataUrl;
-  //   console.info('got webcam image', this.sysImage);
-  // }
-  // public get invokeObservable(): Observable<any> {
-  //   return this.trigger.asObservable();
-  // }
-  // public get nextWebcamObservable(): Observable<any> {
-  //   return this.nextWebcam.asObservable();
-  // }
-  // public handleInitError(error: WebcamInitError): void {
-  //   this.errors.push(error);
-  // }
-
-  onUpload() {
-    this.dialogRef.close({url: this.sysImage});
-  }
-
-
-  //Image Upload
-  
-  onImageFileChange(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      let filesAmount = event.target.files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        reader.onload = (event: any) => {
-          this.images.push(event.target.result);
-          this.imageForm.patchValue({
-            imgFileSource: this.images
-          });
-        }
-        reader.readAsDataURL(event.target.files[i]);
-      }
-      this.attachment.nativeElement.value = '';
-    }
-  }
-
-  onDocFileChange(event: any) {
-    debugger
-    let files = event.target.files;
-    let type: string;
-    if (files && files[0]) {
-      let filesAmount = files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        let file = files[i];
-        console.log(file)
-        if (file) {
-          let pdf = (/\.(pdf)$/i);
-          type = file.name.toLowerCase();
-          if (pdf.exec(type)) {
-            type = "pdf";
-          }
-          this.Filename=file.name.toLowerCase();
-          type=file.type
-          this.onAddDocument(this.Filename,type);
-        }
-        var reader = new FileReader();
-        reader.onload = (event: any) => {
-          this.docsArray.push({ doc: event.target.result, type: type });
-          this.docsForm.patchValue({
-            docFileSource: this.docsArray
-          });
-        }
-        reader.readAsDataURL(event.target.files[i]);
-      }
-      // this.attachment.nativeElement.value = '';
-
-      this.Filename=this.docsForm.get('docFileSource')?.value
-      console.log(this.Filename)
-    }
-
-   
-  }
-
-  removeImage(url: string) {
-    let index = this.images.indexOf(url);
-    this.images.splice(index, 1);
-  }
-
-  removeDoc(ele: DocData) {
-    let index = this.docsArray.indexOf(ele);
-    this.docsArray.splice(index, 1);
-  }
-  onViewImage(ele: any, type: string) {
-    let fileType;
-    if (ele) {
-      // const dialogRef = this.matDialog.open(ImageViewComponent,
-      //   {
-      //     width: '900px',
-      //     height: '900px',
-      //     data: {
-      //       docData: type == 'img' ? ele : ele.doc,
-      //       type: type == 'img' ? "image" : ele.type
-      //     }
-      //   }
-      // );
-      // dialogRef.afterClosed().subscribe(result => {
-
-      // });
-    }
-  }
-
-  onSubmitImgFiles() {
-    console.log(this.imageForm.get('imgFileSource')?.value);
-  }
-
-  onSubmitDocFiles() {
-    console.log(this.docsForm.get('docFileSource')?.value);
-  
-   
-      var m_data = {
-          feedbackInsert: {
-              PatientName: this.PatientName,
-              RegNo:this.RegId,
-              DocumentName: this.docsForm.get('docFileSource')?.value,
-              // ReceptionEnquiry:
-              //     this.feedbackFormGroup.get("recpRadio").value,
-              // SignBoards: this.feedbackFormGroup.get("signRadio").value,
-              // StaffBehaviour:
-              //     this.feedbackFormGroup.get("staffBehvRadio").value,
-              // ClinicalStaff:
-              //     this.feedbackFormGroup.get("clinicalStaffRadio").value,
-              // DoctorsTreatment:
-              //     this.feedbackFormGroup.get("docTreatRadio").value,
-              // Cleanliness: this.feedbackFormGroup.get("cleanRadio").value,
-              // Radiology:
-              //     this.feedbackFormGroup.get("radiologyRadio").value,
-              // Pathology:
-              //     this.feedbackFormGroup.get("pathologyRadio").value,
-              // Security: this.feedbackFormGroup.get("securityRadio").value,
-              // Parking: this.feedbackFormGroup.get("parkRadio").value,
-              // Pharmacy: this.feedbackFormGroup.get("pharmaRadio").value,
-              // Physiotherapy:
-              //     this.feedbackFormGroup.get("physioRadio").value,
-              // Canteen: this.feedbackFormGroup.get("canteenRadio").value,
-              // SpeechTherapy:
-              //     this.feedbackFormGroup.get("speechRadio").value,
-              // Dietation: this.feedbackFormGroup.get("dietRadio").value,
-              // comment: this.feedbackFormGroup
-              //     .get("commentText")
-              //     .value.trim(),
-          },
-      };
-      console.log(m_data);
-      this._opappointmentService.documentuploadInsert(m_data).subscribe((data) => {
-          if(data){
-            Swal.fire("Document uploaded Successfully  ! ");
-          }
-        
-      });
-
-  }
-
-  openCamera(type: string) {
-    let fileType;
-    const dialogRef = this.matDialog.open(ImageViewComponent,
-      {
-        width: '900px',
-        height: '900px',
-        data: {
-          docData: type == 'camera' ? 'camera' : '',
-          type: type == 'camera' ? 'camera' : ''
-        }
-      }
-    );
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.images.push(result.url);
-      }
-    });
-  }
-
-
-
-  onAddDocument(name,type) {
-debugger
-
-    this.isLoading = 'save';
-    // if (this.SrvcName && (parseInt(this.b_price) != 0) && this.b_qty) {
-    
-      this.dataSource1.data = [];
-      this.doclist.push(
-        {
-          DocumentName:name,// this.imageForm.get('imgFileSource')?.value,
-          DocumentPath:type// this.imageForm.get('imgFileSource')?.value,
-         
-        });
-      this.isLoading = '';
-      this.dataSource1.data = this.doclist;
-      
-    }
-   
-  // }
-}
-
-export class DocumentUpload {
-  DocumentName: any;
-  DocumentPath: string;
- 
-  constructor(DocumentUpload) {
-    {
-      this.DocumentName = DocumentUpload.DocumentName || '';
-      this.DocumentPath = DocumentUpload.DocumentPath || '';
-     
-    }
-  }
 }

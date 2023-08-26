@@ -837,6 +837,8 @@ DoctorId:any=0;
 
 
   getOPIPPatientList() {
+
+    let data ;
     if((this._AdmissionService.myFilterform.get('RegNo').value !="") || (this._AdmissionService.myFilterform.get('FirstName').value !=="") || (this._AdmissionService.myFilterform.get('LastName').value !="") ){
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -847,25 +849,35 @@ DoctorId:any=0;
       "To_Dt":'01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "MobileNo": '%'
     }
-    console.log(m_data);
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._AdmissionService.getOPPatient(m_data).subscribe(Visit => {
-       
-        this.dataSource.data = Visit as OPIPPatientModel[];
-
-        console.log(this.dataSource.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-
-        this.sIsLoading = ' ';
-
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 50);
+    data=m_data;
+     }
+  else{
+    var m_data1 = {
+      "F_Name": '1',//this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
+      "L_Name": '2',//this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
+      "Reg_No": 0, //this._opappointmentService.myFilterform.get("RegNo").value || 0,
+      "From_Dt":'01/01/1900',
+      "To_Dt": '01/01/1900',
+      "MobileNo": '%'
+    }
+    data=m_data1;
+   
   }
+  console.log(data);
+  
+  setTimeout(() => {
+    this.sIsLoading = 'loading-data';
+    this._AdmissionService.getOPPatient(data).subscribe(Visit => {
+      this.dataSource.data = Visit as OPIPPatientModel[];
+      console.log(this.dataSource.data);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.sIsLoading = ' ';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }, 50);
        
   }
 

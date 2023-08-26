@@ -39,7 +39,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FeedbackComponent } from "./feedback/feedback.component";
 import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
 import { ImageViewComponent } from './image-view/image-view.component';
-// import { WebcamModule } from 'ngx-webcam';
+import { CameraComponent } from './camera/camera.component';
+import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
     {
@@ -56,6 +57,7 @@ const routes: Routes = [
         FeedbackComponent,
         PatientAppointmentComponent,
         ImageViewComponent,
+        CameraComponent,
         
     ],
     imports: [
@@ -94,7 +96,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        // WebcamModule 
+        WebcamModule 
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],

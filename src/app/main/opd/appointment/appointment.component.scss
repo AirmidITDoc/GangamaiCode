@@ -169,10 +169,7 @@ app-appointment{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    // display: inline-block;
-    // margin-top: 7px;
-    margin-right: 10px;   
-    justify-content:left; 
+   justify-content:left; 
 }
 
 .mat-column-DVisitDate {
@@ -388,3 +385,115 @@ h1, .h1 {
 }
 
 
+
+//Document upload
+.upload-container {
+    background-color: white;
+    padding:10px;
+    // height: 200px;
+}
+.img-div {
+    position: relative;
+    margin-top:5px;
+}
+.img-div img {
+    display: block;
+}
+.img-div mat-icon {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+
+.img-container {
+    display: flex;
+    // flex-direction: row;
+    width: 100px;
+    height: 100px;
+    align-items: center;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.file-lable {
+    cursor: pointer;
+    background-color: #6e91f0;
+    padding: 10px;
+    color: white;
+    // border-radius: 5px;
+    height: 30px;
+}
+
+.submit-btn1 {
+    width: 80px;
+    height: 40px;
+    background-color: #444848;
+    color: white;
+    cursor: pointer;
+}
+
+.upload-option-div {
+    margin-top:4px;
+    display: flex;
+    justify-content: space-between;
+    width:150px;
+}
+
+.table2{
+    height:380px !important;
+
+
+    .mat-header-row {
+        width: 100%;
+        max-width: 1100px;
+        min-width: 1100px;   
+        font-weight: bold;   
+        min-height: 25px;        
+    }
+    
+    .mat-row {
+        width: 100%;
+        max-width: 1100px;
+        min-width: 1100px;   
+        min-height: 25px;                 
+    }    
+    
+    
+    .mat-column-DocumentName {
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+       justify-content:left; 
+    }
+    .mat-column-DocumentPath {
+        width: 400px;
+        max-width: 400px;
+        min-width: 400px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+       justify-content:left; 
+    }
+
+    .mat-column-buttons{
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+        justify-content:left;
+    }
+
+}
