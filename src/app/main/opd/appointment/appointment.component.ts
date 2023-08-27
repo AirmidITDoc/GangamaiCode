@@ -838,8 +838,8 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
     let fileType;
     const dialogRef = this.matDialog.open(ImageViewComponent,
       {
-        width: '1100px',
-        height: '700px',
+        width: '800px',
+        height: '550px',
         data: {
           docData: type == 'camera' ? 'camera' : '',
           type: type == 'camera' ? 'camera' : ''
