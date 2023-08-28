@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
 import { Admission, AdmissionPersonlModel, Bed } from '../admission/admission.component';
 import { fuseAnimations } from '@fuse/animations';
@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -36,9 +36,15 @@ export class RegAdmissionComponent implements OnInit {
   reportPrintObj: Admission;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
+
+  isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
   isCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
+  isRefDoctorSelected: boolean = false;
+  isRefDoctor2Selected:boolean =false;
+  isDoctorSelected: boolean = false;
+
   selectedAdvanceObj: AdvanceDetailObj;
   sIsLoading: string = '';
   submitted = false;
@@ -89,7 +95,17 @@ export class RegAdmissionComponent implements OnInit {
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
 DoctorId:any=0;
+
   options = [];
+  optionsPrefix: any[] = [];
+  optionsDep: any[] = [];
+  optionsCity: any[] = [];
+  optionsDoc: any[] = [];
+  optionsDoc2: any[] = [];
+  optionsRefDoc: any[] = [];
+  optionsWard: any[] = [];
+
+
   filteredOptions: any;
   showtable:boolean=false;
   noOptionFound: boolean = false;
@@ -97,6 +113,14 @@ DoctorId:any=0;
   registerObj = new AdmissionPersonlModel({});
   bedObj = new Bed({});
   selectedPrefixId: any;
+
+  filteredOptionsPrefix: Observable<string[]>;
+  filteredOptionsDep: Observable<string[]>;
+  filteredOptionsCity: Observable<string[]>;
+  filteredOptionsDoc: Observable<string[]>;
+  filteredOptionsRefDoc: Observable<string[]>;
+  filteredOptionsWard: Observable<string[]>;
+  filteredOptionsDoc2: Observable<string[]>;
 
   public now: Date = new Date();
   isLoading: string = '';
@@ -120,16 +144,7 @@ DoctorId:any=0;
   @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
-
-  public bankFilterCtrl: FormControl = new FormControl();
-  public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  public cityFilterCtrl: FormControl = new FormControl();
-  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
+  
   //religion filter
   public religionFilterCtrl: FormControl = new FormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -159,21 +174,12 @@ DoctorId:any=0;
   public bedFilterCtrl: FormControl = new FormControl();
   public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
+  
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
-  //doctorone filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
-  public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
+ 
   private _onDestroy = new Subject<void>();
 
   constructor(public _AdmissionService: AdmissionService,
@@ -227,40 +233,7 @@ DoctorId:any=0;
     this.getDoctor2List();
     this.getWardList();
 
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPrefix();
-
-      });
-
-    this.cityFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCity();
-      });
-
-
-
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(serviceData => {
-        if (serviceData && this.isLoading) {
-          this.filteredDepartment = serviceData.filteredDepartment === null ? [] : serviceData.filteredDepartment;
-          this.isLoadings = false;
-          if (this.filteredDepartment && this.filteredDepartment && this.savedValue !== null && this.filteredDepartment) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-          }
-          if (serviceData.error) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-            this.departmentFilterCtrl.setErrors({ 'serviceFail': serviceData.error });
-
-          }
-        }
-        this.filterDepartment();
-      });
-
-
+  
     this.religionFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -304,23 +277,7 @@ DoctorId:any=0;
         this.filterCompany();
       });
 
-    this.doctoroneFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctorone();
-      });
-
-    this.doctortwoFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctortwo();
-      });
-
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
+    
 
       if (this.data) {
 
@@ -332,68 +289,7 @@ DoctorId:any=0;
       }
   }
 
-  private filterPrefix() {
-
-    if (!this.PrefixList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredPrefix.next(this.PrefixList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredPrefix.next(
-      this.PrefixList.filter(bank => bank.PrefixName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterCity() {
-    // debugger;
-    if (!this.cityList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cityFilterCtrl.value;
-    if (!search) {
-      this.filteredCity.next(this.cityList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCity.next(
-      this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  private filterDepartment() {
-    // debugger;
-
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.DepartmentName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-
+ 
   getOptionsText(option) {
     // debugger;
     if (!option)
@@ -555,68 +451,6 @@ DoctorId:any=0;
   }
 
 
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctoroneFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctortwo() {
-
-    if (!this.Doctor2List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctortwoFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctortwo.next(this.Doctor2List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctortwo.next(
-      this.Doctor2List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
 
   ngOnDestroys() {
     this.isAlive = false;
@@ -706,29 +540,10 @@ DoctorId:any=0;
     });
   }
 
-  // getSearchList() {
-  //   if (this.searchFormGroup.get('RegId').value.length >= 3) {
-  //     this.filteredOptions = this.searchFormGroup.get('RegId').valueChanges.pipe(
-  //       startWith(''),
-  //       debounceTime(400),
-  //       distinctUntilChanged(),
-  //       switchMap(val => {
-  //         return this.filterData(val || '')
-  //       })
-  //     );
-  //   }
-  // }
-
+  
   getSearchList() {
     debugger
-    // var m_data = {
-    //   "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
-    //   "L_Name": '%',
-    //   "Reg_No": '0',
-    //   "From_Dt": '01/01/1900',
-    //   "To_Dt": '01/01/1900',
-    //   "MobileNo": '%'
-    // }
+
     var m_data = {
       "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
       "L_Name": '%',
@@ -754,6 +569,73 @@ DoctorId:any=0;
 
   }
 
+  private _filterPrex(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
+       return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+       return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  private _filterCity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+        return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterDoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+    // const filterValue = value.toLowerCase();
+    // this.isDoctorSelected = false;
+    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+  }
+
+
+  private _filterRefdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterdoc2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+  
+  
+
+  private _filterWard(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
@@ -774,31 +656,6 @@ DoctorId:any=0;
     this.setDropdownObjs();
   }
 
-  // getSelectedObj(obj) {
-  //   // console.log('obj==', obj);
-
-  //   let a,b,c ;
-
-  //   a =obj.AgeDay.trim();;
-  //   b =obj.AgeMonth.trim();
-  //   c =obj.AgeYear.trim();
-  //   console.log(a,b,c);
-  //   obj.AgeDay=a;
-  //   obj.AgeMonth=b;
-  //   obj.AgeYear=c;
-  //   this.registerObj = new AdmissionPersonlModel({});
-  //   let a,b,c ;
-
-  //   a =obj.AgeDay.trim();;
-  //   b =obj.AgeMonth.trim();
-  //   c =obj.AgeYear.trim();
-  //   console.log(a,b,c);
-  //   obj.AgeDay=a;
-  //   obj.AgeMonth=b;
-  //   obj.AgeYear=c;
-  //   this.registerObj = obj;
-  //   this.setDropdownObjs();
-  // }
 
   setDropdownObjs() {
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
@@ -822,6 +679,11 @@ DoctorId:any=0;
     this.personalFormGroup.updateValueAndValidity();
   }
 
+
+  getOptionTextPrefix(option){
+    return option.PrefixName;
+  }
+
   getOptionTextCity(option) {
     return option.CityName;
   }
@@ -831,8 +693,20 @@ DoctorId:any=0;
   }
 
 
-  getOptionTextDepartment(option) {
+  getOptionTextDep(option) {
     return option.departmentName;
+  }
+
+  getOptionTextRefDoc(option){
+    return option.DoctorName;
+  }
+
+  getOptionTextDoc(option) {
+    return option.Doctorname;
+  }
+
+  getOptionTextWard(option) {
+    return option.RoomName;
   }
 
 
@@ -958,12 +832,19 @@ DoctorId:any=0;
   getRelationshipList() {
     this._AdmissionService.getRelationshipCombo().subscribe(data => { this.RelationshipList = data; })
   }
+
   getPrefixList() {
     this._AdmissionService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
-      this.filteredPrefix.next(this.PrefixList.slice());
+      this.optionsPrefix = this.PrefixList.slice();
+      this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
+      );
+      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     });
   }
+
 
   getTariffList() {
     this._AdmissionService.getTariffCombo().subscribe(data => {
@@ -997,17 +878,29 @@ DoctorId:any=0;
 
   }
 
+
   getDepartmentList() {
-    let cData = this._AdmissionService.getDepartmentCombo().subscribe(data => {
+    this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
+      this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this.hospitalFormGroup.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
 
+ 
   getCityList() {
-    let cData = this._AdmissionService.getCityList().subscribe(data => {
+    this._AdmissionService.getCityList().subscribe(data => {
       this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
 
@@ -1015,41 +908,65 @@ DoctorId:any=0;
     this._AdmissionService.getDoctorMaster().subscribe(
       data => {
         this.DoctorList = data;
-        console.log(data)
-        // data => {
-        //   this.DoctorList = data;
+        // console.log(data)
+        data => {
+          this.DoctorList = data;
         this.filteredDoctor.next(this.DoctorList.slice());
+        }
       })
   }
+
+
+
+  // getDoctor1List() {
+  //   this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //     this.optionsRefDoc = this.Doctor1List.slice();
+  //     this.filteredOptionsRefDoc = this.hospitalFormGroup.get('DoctorID').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
+  //     );
+  //     // this.filteredDepartment.next(this.DepartmentList.slice());
+  //   });
+  // }
 
   getDoctor1List() {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      console.log(this.Doctor1List);
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-    })
+      this.optionsRefDoc = this.Doctor1List.slice();
+      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
+    });
   }
+
+
+
   getDoctor2List() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      this.filteredDoctortwo.next(this.Doctor2List.slice())
-    })
+      this.optionsDoc2 = this.Doctor2List.slice();
+      this.filteredOptionsDoc2 = this.hospitalFormGroup.get('DoctorIdTwo').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterRefdoc(value) : this.Doctor2List.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
+    });
   }
 
   getWardList() {
     this._AdmissionService.getWardCombo().subscribe(data => {
       this.WardList = data;
-      this.filteredWard.next(this.WardList.slice());
-    })
+      this.optionsWard = this.WardList.slice();
+      this.filteredOptionsWard = this.wardFormGroup.get('RoomId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWard(value) : this.WardList.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
+    });
   }
-
-  // getPatientTypeList() {
-  //   this._AdmissionService.getPatientTypeCombo().subscribe(data => {
-  //     this.PatientTypeList = data;
-  //     this.hospitalFormGroup.get('PatientTypeId').setValue(this.PatientTypeList[0]);
-  //     this.onChangePatient(this.PatientTypeList[0]);
-  //   });
-  // }
 
   getPatientTypeList() {
     this._AdmissionService.getPatientTypeCombo().subscribe(data => {
@@ -1059,23 +976,30 @@ DoctorId:any=0;
   }
 
 
-  onChangeCityList(CityId) {
-    if (CityId > 0) {
-      this._AdmissionService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
-        this.selectedStateID = this.stateList[0].StateId;
-        // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
-        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
-        this.onChangeCountryList(this.selectedStateID);
-      });
-    } else {
-      this.selectedState = null;
-      this.selectedStateID = null;
-      this.selectedCountry = null;
-      this.selectedCountryID = null;
-    }
-  }
+  onChangeCityList(obj) {
+    debugger
+        // if (obj.CityId > 0) {
+          // if (this.registerObj.CityId! = 0) {
+          //   CityId = this.registerObj.CityId
+          // }
+          this._AdmissionService.getStateList(obj.CityId).subscribe(data => {
+            this.stateList = data;
+            this.selectedState = this.stateList[0].StateName;
+            this.selectedStateID = this.stateList[0].StateId;
+            // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
+            this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
+            this.onChangeCountryList(this.selectedStateID);
+          });
+        // } else {
+        //   this.selectedState = null;
+        //   this.selectedStateID = null;
+        //   this.selectedCountry = null;
+        //   this.selectedCountryID = null;
+        // }
+      }
+
+
+
   onChangeCountryList(StateId) {
     if (StateId > 0) {
       this._AdmissionService.getCountryList(StateId).subscribe(data => {
@@ -1128,31 +1052,25 @@ DoctorId:any=0;
     }
   }
 
+
   OnChangeDoctorList(departmentObj) {
-    // debugger;
-    console.log("departmentObj", departmentObj)
+    // ;
+        this.isDepartmentSelected = true;
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
         console.log(this.DoctorList);
-        this.filteredDoctor.next(this.DoctorList.slice());
+         this.optionsDoc = this.DoctorList.slice();
+        this.filteredOptionsDoc = this.hospitalFormGroup.get('DoctorId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+        );
       })
   }
 
 
-  openChanged(event) {
-    this.isOpen = event;
-    this.isLoading = event;
-    if (event) {
-      this.savedValue = this.departmentFilterCtrl.value;
-      this.options = [];
-      this.departmentFilterCtrl.reset();
-      this._AdmissionService.getDepartmentCombo();
-    }
-  }
-
   OnChangeBedList(wardObj) {
-    console.log(wardObj);
+    // console.log(wardObj);
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
       this.filteredBed.next(this.BedList.slice());

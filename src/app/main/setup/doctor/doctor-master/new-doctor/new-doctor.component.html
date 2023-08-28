@@ -85,11 +85,13 @@
 
   <div>
     <mat-form-field appearance="outline" fxFlex>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a DateofBirth" name="DateofBirth"
-        formControlName="DateofBirth"  (dateChange)="onChangeDateofBirth($event.value)">
+      <mat-label>Birth date</mat-label>
+      <input name="DateofBirth" matInput [matDatepicker]="picker" formControllName="DateofBirth"
+        (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth" [readonly]="true">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
       <input name="AgeYear" formControlName="AgeYear" matInput

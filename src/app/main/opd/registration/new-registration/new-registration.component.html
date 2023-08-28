@@ -88,29 +88,24 @@
 
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
             <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]=RegId>
-
-
-            <!-- <mat-form-field appearance="outline" fxFlex >
-          <mat-label>RegNo</mat-label>
-          <input name="RegNo" formControlName="RegNo" placeholder="RegNo" matInput 
-            [(ngModel)]="registerObj.RegNo" [readonly]="true">
-         </mat-form-field> -->
-
-            <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Prefix</mat-label>
-              <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect
-                (selectionChange)="onChangeGenderList($event.value)" [(ngModel)]="Prefix" required>
-                <mat-option>
-                  <ngx-mat-select-search [formControl]="bankFilterCtrl" [placeholderLabel]="'Search'"
-                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let element of filteredPrefix | async" [value]="element">
-                  {{element.PrefixName}}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="personalFormGroup.get('PrefixID').invalid && personalFormGroup.get('PrefixID').touched">
-                Prefix is required</mat-error>
-            </mat-form-field>
+         
+         <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Prefix</mat-label>
+          <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
+            formControlName="PrefixID" [matAutocomplete]="autoPrefix" required>
+          <span matSuffix style="display: flex;">
+            <mat-icon class="mat-icon-close"
+              (click)="personalFormGroup.get('PrefixID').setValue(''); isPrefixSelected = false;">close</mat-icon>
+            <mat-icon class="mat-icon-close"
+              (click)="personalFormGroup.get('PrefixID').setValue(''); isPrefixSelected = false;">search</mat-icon>
+          </span>
+          <mat-autocomplete #autoPrefix="matAutocomplete" [displayWith]="getOptionTextPrefix">
+            <mat-option *ngFor="let option of filteredOptionsPrefix | async" [value]="option"
+              (onSelectionChange)="onChangeGenderList(option)">
+              {{option.PrefixName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>First Name</mat-label>
@@ -285,13 +280,17 @@
 
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>City</mat-label>
-              <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput formControlName="CityId" [matAutocomplete]="autoCity" required>
+              <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput
+                formControlName="CityId" [matAutocomplete]="autoCity" required>
               <span matSuffix style="display: flex;">
-                <mat-icon class="mat-icon-close" (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                <mat-icon class="mat-icon-close" (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
               </span>
-              <mat-autocomplete #autoCity="matAutocomplete"  [displayWith]="getOptionTextCity">
-                <mat-option *ngFor="let option of filteredCity | async" [value]="option" (onSelectionChange)="onChangeCityList($event.value.CityId)">
+              <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
+                <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option"
+                  (onSelectionChange)="onChangeCityList(option)">
                   {{option.CityName}}
                 </mat-option>
               </mat-autocomplete>
