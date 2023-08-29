@@ -123,7 +123,6 @@ isDisabled: boolean = false;
   ngOnInit(): void {
    this.RegId=0;
 
-  console.log(this.data)
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
     // this.getHospitalList();
@@ -159,15 +158,12 @@ isDisabled: boolean = false;
     
     
       if(this.data){
-        // this.IsSave="false";
-        // this.IsSaveupdate='false';
+      
         this.registerObj=this.data.registerObj;
         this.RegId= this.registerObj.RegId;
           this.isDisabled=true
-          // this.AdmissionID = this.data.PatObj.AdmissionID;
           this.Prefix=this.data.registerObj.PrefixID;
-         
-          this.setDropdownObjs1();
+         this.setDropdownObjs1();
       }
 
      
@@ -182,8 +178,7 @@ isDisabled: boolean = false;
 
   closeDialog() {
     console.log("closed")
-    //  this.dialogRef.close();
-   // this.personalFormGroup.reset();
+  
   }
   createPesonalForm() {
     return this.formBuilder.group({
@@ -241,34 +236,21 @@ isDisabled: boolean = false;
     });
   }
 
-
-
-
-//  maxLengthCheck(object) {
-//   debugger;
-//   console.log(object);
-//     if (object.value.length > object.maxLength)
-//     object.value = object.value.slice(0, object.maxLength)
-//   }
-
-
 validateadhaarcard( input: any){
   console.log(input.value);
 }
 
-
-
-  count_down(count){
-    debugger;
-console.log
-    // let c=+1;
-    this.charcount=this.charcount + 1;
-    if(this.charcount==count){
-    event.preventDefault();
-    event.stopPropagation();
-    }
+//   count_down(count){
+//     debugger;
+// console.log
+//     // let c=+1;
+//     this.charcount=this.charcount + 1;
+//     if(this.charcount==count){
+//     event.preventDefault();
+//     event.stopPropagation();
+//     }
            
-  }
+//   }
 
   // get f() { return this._registerService.mySaveForm.controls }
 
@@ -356,22 +338,6 @@ console.log
 
   }
 
-
-
-  // getPrefixListold() {
-    
-  //     this._registerService.getPrefixCombo().subscribe(data => {
-  //     this.PrefixList = data;
-  //     this.filteredPrefix.next(this.PrefixList.slice());
-  //       if(this.data){
-  //     const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
-  //     this.personalFormGroup.get('PrefixID').setValue(ddValue);  
-  //   }
-  //    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);   
-  //   });
-  // }
-
-
   getPrefixList() {
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
@@ -383,7 +349,6 @@ console.log
       this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
     });
   }
-
 
   getCityList() {
     this._registerService.getCityList().subscribe(data => {
@@ -400,7 +365,6 @@ console.log
   private _filterCity(value: any): string[] {
     if (value) {
       const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      // this.isDepartmentSelected = false;
       return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
     }
 
@@ -425,8 +389,7 @@ console.log
   }
 
   getMaritalStatusList() {
-    // this._registerService.getMaritalStatusCombo().subscribe(data => { this.MaritalStatusList = data; })
-    this._registerService.getMaritalStatusCombo().subscribe(data => {
+     this._registerService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
       this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
       if(this.data){
@@ -457,24 +420,26 @@ console.log
     })
   }
 
+
+
   getcityList() {
     this._registerService.getCityList().subscribe(data => {
       this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
-     if(this.data){
-      const ddValue = this.cityList.find(c => c.CityId == this.data.registerObj.CityId);
-     this.personalFormGroup.get('CityId').setValue(ddValue); 
-     this.onChangeCityList(this.data.registerObj.CityId)
-     }
-    });
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+          });
   }
+
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
       this._registerService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
-        //  this._AdmissionService.myFilterform.get('StateId').setValue(this.selectedState);
+        
       });
     }
   }
@@ -539,13 +504,11 @@ console.log
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       if (result) {
-        
         this.registerObj = result as RegInsert;
         this.setDropdownObjs1();
         
       }
-      //this.getRegistrationList();
-    });
+        });
   }
 
     
@@ -556,9 +519,7 @@ console.log
   }
 
   getSelectedObj(obj) {
-    
-    console.log('obj==', obj);
-    
+      
     let a, b, c;
 
     a = obj.AgeDay.trim();;
@@ -593,10 +554,6 @@ console.log
 
     const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-    // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
 
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -661,20 +618,14 @@ console.log
       console.log(m_data);
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
-          // this.myFunction("Register Data save Successfully !");
-        // setTimeout(() => {
-        //      this._matDialog.closeAll();
-        //   }, 1000);
-
+     
           Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              
-            }
+              }
           });
         } else {
-          // this.myFunction("Register Data  not saved', 'error !");
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
+                    Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
       });
     }

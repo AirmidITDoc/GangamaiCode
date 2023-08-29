@@ -289,9 +289,10 @@ export class AppointmentComponent implements OnInit {
             this.getPrint(contact);
         }
         if (m == "Update Registration") {
+          
             console.log(contact);
             var D_data = {
-                RegId: 8//TESTING APPointment edit contact.RegId,
+                RegId: contact.RegId//8//TESTING APPointment edit contact.RegId,
             };
             console.log(D_data)
             this._AppointmentSreviceService

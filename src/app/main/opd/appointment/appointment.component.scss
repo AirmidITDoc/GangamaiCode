@@ -389,7 +389,7 @@ h1, .h1 {
 //Document upload
 .upload-container {
     background-color: white;
-    padding:10px;
+    padding:5px;
     // height: 200px;
 }
 .img-div {
@@ -407,9 +407,9 @@ h1, .h1 {
 
 .img-container {
     display: flex;
-    // flex-direction: row;
+    flex-direction: row;
     width: 100px;
-    height: 100px;
+    // height: 100px;
     align-items: center;
 }
 
@@ -497,3 +497,95 @@ h1, .h1 {
     }
 
 }
+// Image
+/* Container Flex */
+.gallery {
+    display: grid;
+    flex-wrap: wrap;
+    /* Flex-wrap: quebrar a linha quando um item não puder mais compactar o seu conteúdo */
+    padding: 20px 20px 0 20px;
+    max-width: 499px;
+  }
+  
+  /* Flex Item */
+  .gallery__item {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+  }
+  
+  .gallery__item > img {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    border-radius: .25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .75);
+  }
+  
+  .gallery__item > img:hover {
+    cursor: pointer;
+  }
+  
+  /* Responsive */
+  @media only screen and (min-width: 500px) {
+    .gallery {
+      max-width: 100%;
+      padding: 20px 20px 0 0;
+      /* Agora sem padding-left */
+    }
+  
+    .gallery__item {
+      width: calc((100% / 3) - 20px);
+      /* Agora que o container .gallery não possui
+      mais padding-left, e os item ímpares serão os
+      que ficaram na lateral esquerda, retiro 20px
+      de cada item, e adiciono como margin-left
+      nos ímpares abaixo */
+    }
+  
+    .gallery__item:nth-child(odd) {
+      margin-left: 20px;
+      /* Cada item ímpar, terá uma
+      margem esquerda de 20px */
+    }
+  }
+  
+  @media only screen and (min-width: 720px) {
+    .gallery {
+      max-width: 100%;
+      padding: 20px 20px 0 0;
+      /* Agora sem padding-left */
+    }
+  
+    .gallery__item {
+      width: calc((100% / 3) - 20px);
+      /* Agora que o container .gallery não possui
+      mais padding-left, e os item ímpares serão os
+      que ficaram na lateral esquerda, retiro 20px
+      de cada item, e adiciono como margin-left
+      nos ímpares abaixo */
+    }
+  
+    .gallery__item:nth-child(odd) {
+      margin-left: 20px;
+      /* Cada item ímpar, terá uma
+      margem esquerda de 20px */
+    }
+  }
+  
+  @media (max-width: 500px) and (min-width: 0px) {
+    .gallery {
+      display: block;
+      flex-wrap: wrap;
+    }
+  
+  
+    .gallery__item {
+      width: 100%;
+      margin-bottom: 20px;
+      display: block!important;
+    }
+  }
+ 
+
+//   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular

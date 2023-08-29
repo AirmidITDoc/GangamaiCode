@@ -640,9 +640,9 @@
                             formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
                           <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
-                              (click)="VisitFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                              (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
-                              (click)="VisitFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                              (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                           </span>
 
                           <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
@@ -672,8 +672,7 @@
                           </mat-autocomplete>
                         </mat-form-field>
 
-
-                    
+                   
 
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Ref Doctor Name</mat-label>

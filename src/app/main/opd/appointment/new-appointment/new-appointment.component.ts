@@ -156,8 +156,8 @@ export class NewAppointmentComponent implements OnInit {
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   // // city filter
-  // public cityFilterCtrl: FormControl = new FormControl();
-  // public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
+  public cityFilterCtrl: FormControl = new FormControl();
+  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   // //department filter
   // public departmentFilterCtrl: FormControl = new FormControl();
@@ -285,7 +285,7 @@ export class NewAppointmentComponent implements OnInit {
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
-    this.getcityList();
+    this.getcityList1();
 
     // this.getGendorMasterList();
     this.getCompanyList();
@@ -334,11 +334,40 @@ export class NewAppointmentComponent implements OnInit {
         this.filterHospital();
       });
 
+      this.cityFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCity();
+      });
+
     
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
   }
+
+
+    // City filter code
+    private filterCity() {
+
+      if (!this.cityList) {
+        return;
+      }
+      // get the search keyword
+      let search = this.cityFilterCtrl.value;
+      if (!search) {
+        this.filteredCity.next(this.cityList.slice());
+        return;
+      }
+      else {
+        search = search.toLowerCase();
+      }
+      // filter
+      this.filteredCity.next(
+        this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
+      );
+    }
+  
 
   getOptionTextPrefix(option){
     return option.PrefixName;
@@ -671,6 +700,14 @@ export class NewAppointmentComponent implements OnInit {
     });
   }
 
+  getcityList1() {
+    
+    this._opappointmentService.getCityList().subscribe(data => {
+      this.cityList = data;
+      this.filteredCity.next(this.cityList.slice());
+    });
+  }
+
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
@@ -684,7 +721,27 @@ export class NewAppointmentComponent implements OnInit {
       });
     }
   }
-  onChangeCityList(obj) {
+
+  onChangeCityList(CityId) {
+    // if (CityId > 0) {
+      this._opappointmentService.getStateList(CityId).subscribe(data => {
+        this.stateList = data;
+        this.selectedState = this.stateList[0].StateName;
+        this.selectedStateID = this.stateList[0].StateId;
+        // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
+        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
+        this.onChangeCountryList(this.selectedStateID);
+      });
+    // } else {
+    //   this.selectedState = null;
+    //   this.selectedStateID = null;
+    //   this.selectedCountry = null;
+    //   this.selectedCountryID = null;
+    // }
+  }
+
+
+  onChangeCityList1(obj) {
 debugger
     // if (obj.CityId > 0) {
       // if (this.registerObj.CityId! = 0) {
@@ -705,6 +762,8 @@ debugger
     //   this.selectedCountryID = null;
     // }
   }
+
+
   onChangeCountryList(StateId) {
     if (StateId > 0) {
       if (this.registerObj.StateId! = 0) {

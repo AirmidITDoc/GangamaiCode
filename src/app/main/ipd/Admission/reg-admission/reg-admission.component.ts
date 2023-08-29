@@ -37,6 +37,7 @@ export class RegAdmissionComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
 
+  isWardSelected:boolean= false;
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
   isCompanySelected: boolean = false;
@@ -707,6 +708,10 @@ DoctorId:any=0;
 
   getOptionTextWard(option) {
     return option.RoomName;
+  }
+
+  getOptionTextDoc2(option){
+    return option.DoctorName;
   }
 
 

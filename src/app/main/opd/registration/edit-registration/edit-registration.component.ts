@@ -545,9 +545,7 @@ export class EditRegistrationComponent implements OnInit {
 
 
   setDropdownObjs1() {
-    debugger;
-
-    debugger;
+   
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
