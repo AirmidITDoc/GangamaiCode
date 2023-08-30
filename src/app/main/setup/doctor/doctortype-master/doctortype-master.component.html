@@ -5,7 +5,7 @@
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center" style="color: aliceblue;">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -40,7 +40,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> DoctorType" autocomplete="off"
-                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch" />
+                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch" (keyup)="onSearch()" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -82,21 +82,20 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsDeleted">
+                                    <!-- <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="element.IsActive"
+                                            <mat-icon *ngIf="!element.IsDeleted"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!element.IsActive"
+                                            <mat-icon *ngIf="element.IsDeleted"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                            Action
+                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
@@ -144,7 +143,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0">
+                            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
                                 <form [formGroup]="_doctortypeService.myform">
                                     <h3>{{_doctortypeService.myform.controls.Id.value?"Modify DoctorType Master":"New
                                         DoctorType Master"}}</h3>
@@ -161,11 +160,9 @@
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='true' class="mr-sm-12"
+                                        <mat-radio-group name="isActive" formControlName="isActive" >
+                                            <mat-radio-button  class="mr-sm-12" [checked]=true
                                                 fxFlex>IsActive</mat-radio-button>
-                                            <mat-radio-button value='false' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                 </form>

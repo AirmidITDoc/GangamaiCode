@@ -79,3 +79,46 @@
 {
     font-weight: bold;
 }
+
+.table2{
+    // height: 600px !important;
+}
+.mat-header-row {
+background-color:rgb(18, 87, 134) !important;
+max-width: 100%; 
+ min-width: 520px; 
+ min-height: 20px;  
+ width: 100%; 
+
+}
+
+.mat-row {
+max-width: 100%;
+min-height: 52px;  
+min-width: 220px; 
+display: flex;      
+}
+
+.mat-column-DeptId {
+width:90px;
+max-width: 90px;
+min-width: 90px;
+text-align: center;
+}
+.mat-column-DeptName {
+ width:320px;
+ max-width:320px;
+ min-width:320px;
+text-align: left;
+justify-content:left; 
+}
+
+.mat-column-action {
+// color: white !important;
+width:80px;
+max-width: 80px;
+min-width: 80px;
+text-align: left;
+justify-content: last baseline;
+
+}

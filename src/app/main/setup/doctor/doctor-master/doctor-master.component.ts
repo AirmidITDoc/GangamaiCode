@@ -108,6 +108,13 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onEdit(row) {
+
+        let Year,Day,Month;
+        if(row.AgeYear !=null || row.AgeDay !=null || row.AgeMonth !=null){
+            Year=row.AgeYear.trim();
+            Day=row.AgeDay.trim();
+            Month=row.AgeMonth.trim();
+        }
         var m_data = {
             DoctorId: row.DoctorId,
             PrefixID: row.PrefixID,
@@ -126,9 +133,9 @@ export class DoctorMasterComponent implements OnInit {
             IsRefDoc: JSON.stringify(row.IsRefDoc),
             IsDeleted: Boolean(JSON.stringify(row.IsDeleted)),
             DoctorTypeId: row.DoctorTypeId,
-            AgeYear: row.AgeYear,
-            AgeMonth: row.AgeMonth,
-            AgeDay: row.AgeDay,
+            AgeYear: Year,
+            AgeMonth:Month,
+            AgeDay: Day,
             PassportNo: row.PassportNo,
             ESINO: row.ESINO,
             RegNo: row.RegNo,
@@ -183,7 +190,7 @@ export class DoctorMaster {
     FirstName: string;
     MiddleName: string;
     LastName: string;
-    DateofBirth: any;
+    DateofBirth: Date;
     Address: string;
     City: string;
     Pin: string;
@@ -201,13 +208,13 @@ export class DoctorMaster {
     PassportNo: string;
     ESINO: string;
     RegNo: string;
-    RegDate: any;
+    RegDate: Date;
     MahRegNo: string;
-    MahRegDate: any;
+    MahRegDate: Date;
     UpdatedBy: number;
     RefDocHospitalName: string;
     AddedBy: String;
-    CurrentDate=new Date();
+    CurrentDate = new Date();
     IsDeletedSearch: number;
     
     /**
