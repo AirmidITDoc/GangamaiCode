@@ -169,4 +169,28 @@
 .mat-row {
     cursor: pointer !important;
 }
-
+.dashboard-container {
+    padding: 12px;
+}
+.icon-div {
+    padding: 8px;
+    border-radius: 5px;
+}
+.labels-div {
+    text-align: end;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+}
+.icon-1 {
+    background-color: #9661db;
+}
+.icon-2 {
+    background-color: #e9ac1b;
+}
+.icon-3 {
+    background-color: #28af28;
+}
+.icon-4 {
+    background-color: #70c7bd;
+}

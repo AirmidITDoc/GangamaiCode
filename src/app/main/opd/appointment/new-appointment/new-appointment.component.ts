@@ -18,7 +18,7 @@ import { RegistrationService } from '../../registration/registration.service';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
 import { fuseAnimations } from '@fuse/animations';
-import { SafePipesPipe } from '../safe-pipe';
+// import { SafePipesPipe } from '../safe-pipe';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 
 export class DocData {

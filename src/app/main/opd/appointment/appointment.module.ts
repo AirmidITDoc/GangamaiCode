@@ -38,7 +38,7 @@ import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-d
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FeedbackComponent } from "./feedback/feedback.component";
 import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
-import { ImageViewComponent } from './image-view/image-view.component';
+// import { ImageViewComponent } from './image-view/image-view.component';
 // import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
@@ -55,7 +55,7 @@ const routes: Routes = [
         EditRefraneDoctorComponent,
         FeedbackComponent,
         PatientAppointmentComponent,
-        ImageViewComponent,
+        // ImageViewComponent,
         
     ],
     imports: [

@@ -466,4 +466,13 @@ public prescriptionDetails(visistId) {
   public getTemplates(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
+
+  getPaymentArr() {
+    return [
+      {value: 'cash', viewValue: 'Cash'},
+      {value: 'cheque', viewValue: 'Cheque'},
+      {value: 'upi', viewValue: 'UPI'},
+      {value: 'net banking', viewValue: 'Net Banking'},
+    ];
+  }
 }
