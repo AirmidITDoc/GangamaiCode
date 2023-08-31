@@ -80,18 +80,18 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                                class="active-icon green-600 s-16" style="color: azure;">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                        <mat-header-cell *matHeaderCellDef class="table-actions">
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)">
+                                            <button mat-icon-button (click)="onEdit(row)"  style="color: white;">
                                                 <mat-icon title="Edit Menu">launch</mat-icon>
                                             </button>
                                             <button mat-icon-button (click)="onDeactive(row.GenderId)" color="warn">

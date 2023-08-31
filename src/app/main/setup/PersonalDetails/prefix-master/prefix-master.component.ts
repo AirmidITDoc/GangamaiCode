@@ -79,7 +79,7 @@ export class PrefixMasterComponent implements OnInit {
                             .get("PrefixName")
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value
-                            .SexID,
+                            .GenderId,
                         // addedBy: 1,
                         isActive: Boolean(
                             JSON.parse(
@@ -122,7 +122,7 @@ export class PrefixMasterComponent implements OnInit {
                             .get("PrefixName")
                             .value.trim(),
                         sexID: this._PrefixService.myform.get("SexID").value
-                            .SexID,
+                            .GenderId,
                         isActive: Boolean(
                             JSON.parse(
                                 this._PrefixService.myform.get("IsActive")

@@ -1,7 +1,7 @@
 import { Component, HostListener, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert } from '../registration.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { RegistrationService } from '../registration.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -9,7 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
@@ -68,17 +68,14 @@ export class NewRegistrationComponent implements OnInit {
   RegId:any;
 snackmessage:any;
 
+
+isPrefixSelected: boolean = false;
+optionsPrefix: any[] = [];
+
+
 isDisabled: boolean = false;
   IsSave:any;
 
-
-  // prefix filter
-  public bankFilterCtrl: FormControl = new FormControl();
-  public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  // city filter
-  public cityFilterCtrl: FormControl = new FormControl();
-  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
   public religionFilterCtrl: FormControl = new FormControl();
@@ -105,6 +102,10 @@ isDisabled: boolean = false;
 
   matDialogRef: any;
 
+  optionsCity: any[] = [];
+  filteredOptionsCity: Observable<string[]>;
+  filteredOptionsPrefix: Observable<string[]>;
+
   constructor(public _registerService: RegistrationService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
@@ -122,7 +123,6 @@ isDisabled: boolean = false;
   ngOnInit(): void {
    this.RegId=0;
 
-  console.log(this.data)
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
     // this.getHospitalList();
@@ -132,23 +132,11 @@ isDisabled: boolean = false;
     // this.getPatientTypeList();
     this.getAreaList();
     // this.getCityList();
-    this.getcityList();
+    this.getCityList();
     this.getDoctor1List();
     this.getDoctor2List();
-    // this.addEmptyRow();
-
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPrefix();
-      });
-
-    this.cityFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCity();
-      });
-
+    
+   
     this.religionFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -170,16 +158,12 @@ isDisabled: boolean = false;
     
     
       if(this.data){
-        // this.IsSave="false";
-        // this.IsSaveupdate='false';
+      
         this.registerObj=this.data.registerObj;
         this.RegId= this.registerObj.RegId;
-        // console.log( this.registerObj);
-        this.isDisabled=true
-          // this.AdmissionID = this.data.PatObj.AdmissionID;
+          this.isDisabled=true
           this.Prefix=this.data.registerObj.PrefixID;
-         
-          this.setDropdownObjs1();
+         this.setDropdownObjs1();
       }
 
      
@@ -194,8 +178,7 @@ isDisabled: boolean = false;
 
   closeDialog() {
     console.log("closed")
-    //  this.dialogRef.close();
-   // this.personalFormGroup.reset();
+  
   }
   createPesonalForm() {
     return this.formBuilder.group({
@@ -253,78 +236,24 @@ isDisabled: boolean = false;
     });
   }
 
-
-
-
-//  maxLengthCheck(object) {
-//   debugger;
-//   console.log(object);
-//     if (object.value.length > object.maxLength)
-//     object.value = object.value.slice(0, object.maxLength)
-//   }
-
-
 validateadhaarcard( input: any){
   console.log(input.value);
 }
 
-
-
-  count_down(count){
-    debugger;
-console.log
-    // let c=+1;
-    this.charcount=this.charcount + 1;
-    if(this.charcount==count){
-    event.preventDefault();
-    event.stopPropagation();
-    }
-        // console.log(count,event);
-   
-  }
+//   count_down(count){
+//     debugger;
+// console.log
+//     // let c=+1;
+//     this.charcount=this.charcount + 1;
+//     if(this.charcount==count){
+//     event.preventDefault();
+//     event.stopPropagation();
+//     }
+           
+//   }
 
   // get f() { return this._registerService.mySaveForm.controls }
 
-  // prefix filter
-  private filterPrefix() {
-    
-    if (!this.PrefixList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredPrefix.next(this.PrefixList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredPrefix.next(
-      this.PrefixList.filter(bank => bank.PrefixName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // City filter code
-  private filterCity() {
-
-    if (!this.cityList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cityFilterCtrl.value;
-    if (!search) {
-      this.filteredCity.next(this.cityList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCity.next(
-      this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    );
-  }
   // religion filter code
   private filterReligion() {
 
@@ -401,25 +330,44 @@ console.log
     //this._registerService.getHospitalCombo().subscribe(data => { this.HospitalList = data; })
   }
 
+  private _filterPrex(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
+       return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+    }
+
+  }
 
   getPrefixList() {
-    
-      this._registerService.getPrefixCombo().subscribe(data => {
+    this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
-      this.filteredPrefix.next(this.PrefixList.slice());
-        if(this.data){
-      const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
-      this.personalFormGroup.get('PrefixID').setValue(ddValue);  
-    }
-     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);   
+      this.optionsPrefix = this.PrefixList.slice();
+      this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
+      );
+      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
     });
   }
 
   getCityList() {
     this._registerService.getCityList().subscribe(data => {
       this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+      
     });
+  }
+
+  private _filterCity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+
   }
 
   getPatientTypeList() {
@@ -441,8 +389,7 @@ console.log
   }
 
   getMaritalStatusList() {
-    // this._registerService.getMaritalStatusCombo().subscribe(data => { this.MaritalStatusList = data; })
-    this._registerService.getMaritalStatusCombo().subscribe(data => {
+     this._registerService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
       this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
       if(this.data){
@@ -473,43 +420,51 @@ console.log
     })
   }
 
+
+
   getcityList() {
     this._registerService.getCityList().subscribe(data => {
       this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
-     if(this.data){
-      const ddValue = this.cityList.find(c => c.CityId == this.data.registerObj.CityId);
-     this.personalFormGroup.get('CityId').setValue(ddValue); 
-     this.onChangeCityList(this.data.registerObj.CityId)
-     }
-    });
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+          });
   }
+
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
       this._registerService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
-        //  this._AdmissionService.myFilterform.get('StateId').setValue(this.selectedState);
+        
       });
     }
   }
-  onChangeCityList(CityId) {
-    if (CityId > 0) {
-      this._registerService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
-        this.selectedStateID = this.stateList[0].StateId;
-        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
-        this.onChangeCountryList(this.selectedStateID);
-      });
-    } else {
-      this.selectedState = null;
-      this.selectedStateID = null;
-      this.selectedCountry = null;
-      this.selectedCountryID = null;
-    }
-  }
+  
+  onChangeCityList(obj) {
+    debugger
+        // if (obj.CityId > 0) {
+          // if (this.registerObj.CityId! = 0) {
+          //   CityId = this.registerObj.CityId
+          // }
+          this._registerService.getStateList(obj.CityId).subscribe(data => {
+            this.stateList = data;
+            this.selectedState = this.stateList[0].StateName;
+            this.selectedStateID = this.stateList[0].StateId;
+            // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
+            this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
+            this.onChangeCountryList(this.selectedStateID);
+          });
+        // } else {
+        //   this.selectedState = null;
+        //   this.selectedStateID = null;
+        //   this.selectedCountry = null;
+        //   this.selectedCountryID = null;
+        // }
+      }
   onChangeCountryList(StateId) {
     if (StateId > 0) {
       this._registerService.getCountryList(StateId).subscribe(data => {
@@ -549,13 +504,11 @@ console.log
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       if (result) {
-        
         this.registerObj = result as RegInsert;
         this.setDropdownObjs1();
         
       }
-      //this.getRegistrationList();
-    });
+        });
   }
 
     
@@ -566,9 +519,7 @@ console.log
   }
 
   getSelectedObj(obj) {
-    
-    console.log('obj==', obj);
-    
+      
     let a, b, c;
 
     a = obj.AgeDay.trim();;
@@ -603,10 +554,6 @@ console.log
 
     const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-    // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
 
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -671,20 +618,14 @@ console.log
       console.log(m_data);
       this._registerService.regInsert(m_data).subscribe(response => {
         if (response) {
-          // this.myFunction("Register Data save Successfully !");
-        // setTimeout(() => {
-        //      this._matDialog.closeAll();
-        //   }, 1000);
-
+     
           Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              
-            }
+              }
           });
         } else {
-          // this.myFunction("Register Data  not saved', 'error !");
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
+                    Swal.fire('Error !', 'Register Data  not saved', 'error');
         }
       });
     }
@@ -737,6 +678,12 @@ console.log
       });
     }
   }
+
+  getOptionTextPrefix(option){
+    return option.PrefixName;
+  }
+
+
   getOptionTextCity(option) {
     return option.CityName;
   }

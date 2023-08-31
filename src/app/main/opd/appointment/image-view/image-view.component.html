@@ -1,0 +1,60 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="accent" style="width:100% ; height:37px;color: white;">
+
+  <div class="logo" fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+
+    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
+      style="width:990%;font-size: 16px;margin-left: 5px;">
+      Image View
+    </span>
+
+    <div fxLayout="row" fxLayoutAlign="start center" style="float: right; margin-right:2px;  ">
+      <diV style="margin-top:21px;">
+
+      </diV>&nbsp;&nbsp;
+      <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+        close
+      </span>
+    </div>
+  </div>
+</div>
+
+
+
+<img *ngIf="docType=='image'" [src]="docData" height="400" width="400" class="view-image"> <br />
+<object [data]="docData" *ngIf="docType=='pdf' || docType=='xls'" [type]="docViewType" width="100%"
+  height="500px"></object>
+
+<div *ngIf="docType=='camera'" class="container mt-5 cam-div">
+  <h2>Webcam Capture Image.....</h2>
+
+  <div fxLayout="row" style="width: 100%;">
+    <div fxFlex="100" fxFlex.gt-sm="50" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
+      fusePerfectScrollbar style=" width:99%; float: right;  border-radius:4px; background-color: white;
+    border:rgba(0,0,0,0.12) 1px solid; padding: 1em;margin-top: 10px;">
+      <div class="col-md-12">
+        <webcam [height]="300" [width]="300" [trigger]="invokeObservable" (imageCapture)="captureImg($event)"></webcam>
+      </div>
+      <div class="col-md-12">
+
+        <button style="margin-top:5px;margin-left:50px;background-color: blue;width: fit-content !important;"
+          class="submit-btn1" (click)="getSnapshot()">Capture Image</button>
+      </div>
+    </div>
+
+
+    <div fxFlex="100" fxFlex.gt-sm="48" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
+      fusePerfectScrollbar style=" width:100%; float: right;  border-radius:4px; background-color: white;
+border:rgba(0,0,0,0.12) 1px solid;padding: 1em;margin-top: 10px;margin-left: 5px;">
+
+      <div class="col-12">
+        <img [src]="webcamImage?.imageAsDataUrl"
+          style="color: rgb(53, 63, 240);box-sizing: border-box;height: 300px;" />
+      </div>
+      <div *ngIf="webcamImage?.imageAsDataUrl">
+        <button style="margin-top: 20px;background-color: blue;" class="submit-btn1"
+          (click)="onUpload()">Upload</button>
+      </div>
+    </div>
+  </div>
+  <div id="results" style="margin-left: 200px;font-weight: bold;color: rgb(5, 44, 56);">Your taken image manifests
+    here...</div>

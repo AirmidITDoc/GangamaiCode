@@ -11,11 +11,14 @@
   </mat-toolbar>
 </div>
 
-
+<div style="margin-top: 10px;">
 <form [formGroup]="_doctorService.myform">
-  <input type="hidden" name="DoctorId" formControlName="DoctorId" [(ngModel)]="DoctorId">
+  <input type="hidden" name="DoctorId" formControlName="DoctorId">
 
-  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding: 10px;">
+
+  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" >
+
+
     <mat-form-field appearance="outline" fxFlex>
       <mat-label>Prefix</mat-label>
       <mat-select formControlName="PrefixID" placeholder="Bank" #singleSelect
@@ -84,11 +87,15 @@
   </div>
 
   <div>
+  
+
     <mat-form-field appearance="outline" fxFlex>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a DateofBirth" name="DateofBirth"
-        formControlName="DateofBirth"  (dateChange)="onChangeDateofBirth($event.value)">
+      <mat-label>Birth date</mat-label>
+      <input name="DateofBirth" matInput [matDatepicker]="picker" formControllName="DateofBirth"
+        (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -154,11 +161,11 @@
       <mat-error>Please enter RegNo </mat-error>
     </mat-form-field>
 
-   
 
     <mat-form-field appearance="outline" fxFlex>
-      <input matInput [matDatepicker]="picker1" placeholder="Choose a RegDate" name="RegDate"
-        formControlName="RegDate">
+      <mat-label>Reg date</mat-label>
+      <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
+        [value]="registerObj.RegDate">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
@@ -168,11 +175,11 @@
       <mat-error>Please enter MahRegNo </mat-error>
     </mat-form-field>
 
-   
-
+  
     <mat-form-field appearance="outline" fxFlex>
-      <input matInput [matDatepicker]="picker2" placeholder="Choose a MahRegDate" name="MahRegDate"
-        formControlName="MahRegDate">
+      <mat-label>MahReg date</mat-label>
+      <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
+        [value]="registerObj.MahRegDate">
       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
@@ -253,15 +260,10 @@
           IsRefDoctor
         </mat-slide-toggle>
       <!-- </section> -->
-
-      <!-- <section class="example-section"> -->
-        <mat-checkbox style="text-align:right;" class="example-margin" name="IsDeleted" formControlName="IsDeleted"
-          value='false'>IsActive</mat-checkbox>
-      <!-- </section> -->
-
-      <!-- <section class="example-section">
-              <mat-checkbox class="example-margin" name="IsRefDoc" formControlName="IsRefDoc" value='true' >IsRefDoc</mat-checkbox>
-              </section> -->
+      <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
+      style="font-weight: bold;">
+      IsActive
+    </mat-checkbox>
     </div>
 
   </div>
@@ -269,7 +271,7 @@
   <hr>
   
 
-  <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}" style="width: 250px;height: 100px !important;">
+  <mat-table #table matSort [dataSource]="dataSource" class="table2" [@animateStagger]="{value:'50'}" style="height:150px !important;overflow: auto;width: 500px;">
 
     <ng-container matColumnDef="DeptId">
       <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
@@ -287,6 +289,17 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="action" stickyEnd>
+      <mat-header-cell *matHeaderCellDef style="color: white;">
+          Action
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+       <button mat-icon-button (click)="deleteTableRow(row)"
+              color="warn">
+              <mat-icon>delete_outline</mat-icon>
+          </button>
+      </mat-cell>
+  </ng-container>
 
     <ng-container matColumnDef="loading">
       <mat-footer-cell *matFooterCellDef colspan="6">
@@ -313,7 +326,7 @@
     </mat-footer-row>
   </mat-table>
 </form>
-
+</div>
 <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
   <div class="button-row">
     <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"

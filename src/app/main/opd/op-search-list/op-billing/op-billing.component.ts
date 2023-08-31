@@ -121,8 +121,7 @@ export class OPBillingComponent implements OnInit {
   DoctornewId: any;
   ChargesDoctorname: any;
   finalAmt: any;
-  CashorPay = 1;
-
+  
   b_concessionDiscPer: any = 0;
   b_concessionamt: any = 0;
   

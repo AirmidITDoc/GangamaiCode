@@ -38,8 +38,9 @@ import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-d
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FeedbackComponent } from "./feedback/feedback.component";
 import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
-// import { ImageViewComponent } from './image-view/image-view.component';
-// import { WebcamModule } from 'ngx-webcam';
+import { ImageViewComponent } from './image-view/image-view.component';
+import { CameraComponent } from './camera/camera.component';
+import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
     {
@@ -55,7 +56,8 @@ const routes: Routes = [
         EditRefraneDoctorComponent,
         FeedbackComponent,
         PatientAppointmentComponent,
-        // ImageViewComponent,
+        ImageViewComponent,
+        CameraComponent,
         
     ],
     imports: [
@@ -75,21 +77,13 @@ const routes: Routes = [
         MatSelectModule,
         MatRadioModule,
         MatTabsModule,
-        MatCardModule,
-        MatDividerModule,
-        MatProgressSpinnerModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatDialogModule,
         MatListModule,
-        MatSnackBarModule,
         MatSlideToggleModule,
         MatDividerModule,
         MatDialogModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
-        FuseSidebarModule,
         ReactiveFormsModule,
         MatSnackBarModule,
         MatStepperModule,
@@ -102,7 +96,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        // WebcamModule
+        WebcamModule 
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],
