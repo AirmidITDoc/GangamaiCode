@@ -3,6 +3,7 @@ import { DashboardService } from '../dashboard.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
+import Chart, { ChartColor } from 'chart.js';
 
 @Component({
   selector: 'app-daily-dashboard',
@@ -13,24 +14,30 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class DailyDashboardComponent implements OnInit {
 
-  dashbardCardData : any = [];
-  username :any;
-  
+  dashbardCardData: any = [];
+  username: any;
+
   DashChartIP: any = [];
   DashChartOP: any = [];
-  
+
   isLoadingArr = ['0', '0', '0'];
   pieChartOPData = new PieChartOPData();
   pieChartData = new PieChartData();
   tableCurrentRange: any;
-  
+  public chart1: any;
+  public chart2: any;
+  public chart3: any;
+  public chart4: any;
+  public surveyChart: any;
+  public doughnutChart: any;
+
   constructor(
     public _dashboardServices: DashboardService,
     public _accountServices: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-    
+
     this.username = this._accountServices.currentUserValue.user
       ? this._accountServices.currentUserValue.user.firstName + ' ' + this._accountServices.currentUserValue.user.lastName
       : '';
@@ -40,6 +47,12 @@ export class DailyDashboardComponent implements OnInit {
     this.getIPChartData();
 
     this.tableCurrentRange = this.pieChartData.currentRange;
+    this.chart1 = this.getLineChartData('MyChart1', '#d4bbf4', '#c5aae6');
+    this.chart2 = this.getLineChartData('MyChart2', '#f3ddb3', '#ebcf9a');
+    this.chart3 = this.getLineChartData('MyChart3', '#d1efad', '#c5e999');
+    this.chart4 = this.getLineChartData('MyChart4', '#c5f1ef', '#a1e6e3');
+    this.surveyChart = this.getSurveyChart();
+    this.doughnutChart = this.getDoughnutChart();
   }
 
   public getDashboardSummary() {
@@ -48,8 +61,8 @@ export class DailyDashboardComponent implements OnInit {
       //console.log(this.dashCardsData);
     });
   }
-  
-  showOPDayGroupWiseSummary(){
+
+  showOPDayGroupWiseSummary() {
 
   }
 
@@ -124,6 +137,124 @@ export class DailyDashboardComponent implements OnInit {
       });
     });
     return subject.asObservable();
+  }
+
+  getLineChartData(charId: string, backgroundColor: ChartColor, borderColor: ChartColor) {
+
+    return new Chart(charId, {
+      type: 'line',
+      data: {
+        labels: ['2022-05-10', '2022-05-11', '2022-05-12', '2022-05-13',
+          '2022-05-14'],
+        datasets: [
+          {
+            label: "Sales",
+            data: [0, 90, 70, 60, 110],
+            backgroundColor: backgroundColor, //#cacef3',
+            borderColor: borderColor
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
+        legend: {
+          display: false,
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false
+          }]
+        }
+      }
+    });
+  }
+
+  getSurveyChart() {
+    const canvas = <HTMLCanvasElement>document.getElementById('surveyChart');
+    const ctx = canvas.getContext('2d');
+    var gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient1.addColorStop(0, 'rgba(10,10,10,.2)');
+    gradient1.addColorStop(1, 'rgba(255,255,255,1)');
+
+    var gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient2.addColorStop(0, 'rgb(183 115 208 / 20%)');
+    gradient2.addColorStop(1, 'rgba(255,255,255,1)');
+    return new Chart("surveyChart", {
+      type: 'line', //this denotes tha type of chart
+
+      data: {// values on X-Axis
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Friday', 'Sat'],
+        datasets: [
+          {
+            label: "Sales",
+            data: [467, 576, 572, 79, 92, 574],
+            backgroundColor: gradient1,
+            borderColor: "rgba(10,10,10,.2)"
+          },
+          {
+            label: "Profit",
+            data: [542, 542, 536, 327, 17, 0.00],
+            backgroundColor: gradient2,
+            borderColor: "rgb(156 76 186 / 20%)"
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+        }
+      }
+
+    });
+  }
+
+  getDoughnutChart() {
+    return new Chart('doughnutChart', {
+      type: 'doughnut',
+      data: {
+        labels: ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'],
+        datasets: [
+          {
+            backgroundColor: [
+              '#FF3784',
+              '#36A2EB',
+              '#4BC0C0',
+              '#F77825',
+              '#9966FF',
+            ],
+            data: [1, 2, 3, 4, 5],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: true,
+          tooltip: {
+            enabled: true,
+          },
+          outlabels: {
+            text: '%l %p',
+            color: 'white',
+            stretch: 35,
+            font: {
+              resizable: true,
+              minSize: 12,
+              maxSize: 18,
+            },
+          },
+        },
+      },
+    })
   }
 }
 

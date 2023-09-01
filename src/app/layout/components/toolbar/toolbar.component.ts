@@ -38,6 +38,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     selectedLanguage: any;
     userStatusOptions: any[];
     user: any;
+    currentDate: Date = new Date();
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -103,6 +104,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        setInterval(() => {
+            this.currentDate = new Date();
+          }, 1);
     }
 
     // -----------------------------------------------------------------------------------------------------

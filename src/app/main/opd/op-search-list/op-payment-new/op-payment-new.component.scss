@@ -14,9 +14,16 @@ legend {
     max-width: 50% !important;
 }
 
-.flex-item.no-shrink {
-    flex-shrink: 0;
-  }
+.flex-item, .patient-sub {
+    flex-basis: 100%;
+}
+.flex-item-middle{
+    width: 5px;
+    margin-right: 8px;
+}
+.item-header {
+    width: 200px;
+}
 .field-row {
     align-items: center;
 }

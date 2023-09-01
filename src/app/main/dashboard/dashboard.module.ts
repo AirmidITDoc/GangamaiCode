@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.compo
     MatSelectModule,
     MatRadioModule,
     MatPaginatorModule,
+    MatCardModule
   ],
   providers: [
     DatePipe
