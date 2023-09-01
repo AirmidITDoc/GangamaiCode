@@ -116,24 +116,7 @@ export class BrowseOPBillComponent implements OnInit {
 
   Billpayment(contact){
         
-      // let data = {
-      //   RegNo: contact.RegId,
-      //   AdmissionID: contact.VisitId,
-      //   PatientName: contact.PatientName,
-      //   Doctorname: contact.Doctorname,
-      //   AdmDateTime: contact.AdmDateTime,
-      //   AgeYear: contact.AgeYear,
-      //   ClassName: contact.ClassName,
-      //   WardName:contact.RoomName,
-      //   BedName:contact.BedName,
-      //   IPDNo:contact.IPDNo,
-      //   TariffName: contact.TariffName,
-      //   TariffId: contact.TariffId,
-      //   PatientType:contact.PatientType,
-      //   VisitId:contact.VisitId,
-      //   opD_IPD_Type :contact.opD_IPD_Type,
-      // };
-
+    
       let PatientHeaderObj = {};
 debugger
       PatientHeaderObj['Date'] = contact.BillDate;

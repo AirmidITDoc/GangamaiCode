@@ -11,7 +11,7 @@
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px; font-weight: 500;width:90%;">
                 Payment : &nbsp;
-                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}}</span>
+                <span> RegNo - {{selectedAdvanceObj.OPD_IPD_Id}} - {{selectedAdvanceObj.PatientName}}</span>
             </span>
 
             <span style="float: right;background: white;color: black;">
@@ -36,9 +36,9 @@
 
                 <div fxlayout="row" style="height:fit-content;">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                        <div fxFlex.gt-sm="98%" fxFlex>
+                        <div fxFlex.gt-sm="100%" fxFlex>
                             <mat-card>
-                                <div fxlayout="row" style="height:240px;overflow: auto;">
+                                <div fxlayout="row" style="height:270px;overflow: auto;">
                                     <div style="width: 100%;background-color: white;">
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                             style="background-color:white; margin-left:5px; width:100%; width: fit-content;"
@@ -174,12 +174,12 @@
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                        <div fxFlex.gt-sm="98%" fxFlex>
+                        <div fxFlex.gt-sm="100%" fxFlex>
                             &nbsp;
                             <form [formGroup]="paymentFormGroup" fxLayoutAlign="space-between start"
                                 style="margin-top: 10px;margin-bottom: 7px;">
                                 <mat-card>
-                                    <div fxlayout="row" style="height:240px;overflow: auto;">
+                                    <div fxlayout="row" style="height:300px;overflow: auto;">
                                         <div style="width: 100%;margin-top: 7px;">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                 fxLayoutAlign="space-between"

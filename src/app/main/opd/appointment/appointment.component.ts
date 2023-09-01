@@ -228,15 +228,7 @@ export class AppointmentComponent implements OnInit {
 
     getSearchList() {
         debugger
-        // var m_data = {
-        //   "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
-        //   "L_Name": '%',
-        //   "Reg_No": '0',
-        //   // "From_Dt": '01/01/1900',
-        //   // "To_Dt": '01/01/1900',
-        //   "MobileNo": '%'
-        // }
-
+      
         var m_data={
           "Keyword":`${this.personalFormGroup.get('RegId').value}%`
         }

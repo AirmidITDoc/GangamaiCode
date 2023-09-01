@@ -47,4 +47,8 @@ public getIPBILLBrowsePrint(BillNo) {
     {
       return this._httpClient.post("Generic/GetByProc?procName=rptIPDInterimBill",emp)
     }
+
+    public InsertIPBillingPayment(emp){
+      return this._httpClient.post("InPatient/Credit_Payment", emp);
+    }
 }
