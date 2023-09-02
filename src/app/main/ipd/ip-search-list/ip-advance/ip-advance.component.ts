@@ -16,6 +16,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdvanceDetail, AdvanceDetailObj } from '../ip-search-list.component';
 import { Router } from '@angular/router';
+import * as converter from 'number-to-words';
+
 
 @Component({
   selector: 'app-ip-advance',
@@ -321,7 +323,7 @@ debugger;
   
  convertToWord(e){
     // this.numberInWords= converter.toWords(this.mynumber);
-    //  return converter.toWords(e);
+     return converter.toWords(e);
        }
 
   getTemplate() {

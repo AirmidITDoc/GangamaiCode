@@ -259,21 +259,6 @@ export class IPBillingComponent implements OnInit {
       ChargeDate: [new Date()],
       balanceAmt: [''],
 
-    
-
-      // BillingClassId:[''],
-      // BillDate: [''],
-      // BillRemark: [''],
-           
-      // AdminCharges: [0],
-      // Remark: [''],
-      // Amount: [Validators.pattern("^[0-9]*$")],
-     
-      // GenerateBill: [0],
-      // Iscredited: [0],
-    
-      // ChargesDate: [new Date().toISOString],
-      // FinalAmountpay: [0]
     });
   }
 
@@ -589,27 +574,6 @@ debugger
   }
 
 
-  // Adminchargeselect(event) {
-
-  //   console.log(this.FinalAmountpay);
-  //   if (event.checked == true) {
-  //     this.Ipbillform.get('Percentage').reset;
-  //     this.Ipbillform.get('Amount').reset;
-  //     this.Ipbillform.get('Percentage').clearValidators();
-  //     this.Ipbillform.get('Amount').clearValidators();
-  //     this.Ipbillform.get('Percentage').updateValueAndValidity();
-  //     this.Ipbillform.get('Amount').updateValueAndValidity();
-  //     this.Ipbillform.get('Amount').enable();
-  //     // this.Admincharge=true;
-  //   } else {
-  //     // this.Admincharge=false;
-  //     this.Ipbillform.get('Percentage').reset;
-  //     this.Ipbillform.get('Amount').reset;
-  //     this.Ipbillform.get('Percentage').disable();
-  //     this.Ipbillform.get('Amount').disable();
-  //   }
-  // }
-
 
   CalAdmincharge() {
     debugger
@@ -657,17 +621,6 @@ debugger
 
   getInterimData() {
    
-    //   if( this.Ipbillform.get("AdminCharges").value){
-    //   this.FAmount=this.Adminamt;
-    //   this.AdminDiscamt=this.Adminper;
-    // }
-    //   else{
-    //   this.FAmount=this.Adminamt;
-    //   this.AdminDiscamt=this.b_disAmount;
-    //   }
-
-    //   console.log(this.FAmount);
-    //   console.log(this.AdminDiscamt);
 
     if (this.interimArray.length > 0 && this.netPaybleAmt > 0) {
       let xx = {
@@ -1055,24 +1008,6 @@ debugger
     if (this.dataSource.data.length > 0 && (this.netPaybleAmt > 0)) {
       this.isLoading = 'submit';
 
-      // if (this.concessionAmtOfNetAmt > 0) {
-      //   this.FinalAmountpay = parseInt(this.totalAmtOfNetAmt) - parseInt(this.concessionAmtOfNetAmt);
-      //   // console.log(this.FinalAmountpay);
-      //   // this.ConcessionId = this.Ipbillform.get('ConcessionId').value.ConcessionId;
-      // } else {
-      //   this.FinalAmountpay = this.totalAmtOfNetAmt;
-      //   this.ConcessionId = 0;
-      // }
-      //Admin Charges
-      // if (this.Ipbillform.get("AdminCharges").value) {
-      //   this.FinalAmountpay = this.Adminamt;
-      //   this.AdminDiscamt = this.Adminper;
-      // }
-      // else {
-      //   this.FinalAmountpay = this.FinalAmountpay;
-      //   this.AdminDiscamt = this.b_disAmount;
-
-      // }
      
       debugger;
 
@@ -1453,7 +1388,7 @@ debugger
               //  this.getPrintDraft(response);
             }
           });
-             this.deleteTableRow(this.dataSource.data);
+            //  this.deleteTableRow(this.dataSource.data);
         } else {
           Swal.fire('Error !', 'IP Draft Billing data not saved', 'error');
         }
