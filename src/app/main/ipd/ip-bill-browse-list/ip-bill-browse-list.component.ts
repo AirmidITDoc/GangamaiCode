@@ -16,6 +16,10 @@ import { takeUntil } from 'rxjs/operators';
 import { SmsEmailTemplateComponent } from 'app/main/shared/componets/sms-email-template/sms-email-template.component';
 import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
 import * as converter from 'number-to-words';
+import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import Swal from 'sweetalert2';
+import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -81,7 +85,7 @@ export class IPBillBrowseListComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private santitized: DomSanitizer,
-    // private printService:PrintServiceService,
+    private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,) {
 
   }
@@ -154,6 +158,94 @@ export class IPBillBrowseListComponent implements OnInit {
     this.MouseEvent = true;
   }
 
+  Billpayment(contact){
+        
+    
+    let PatientHeaderObj = {};
+debugger
+    PatientHeaderObj['Date'] = contact.BillDate;
+    PatientHeaderObj['PatientName'] = contact.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
+    PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
+    PatientHeaderObj['BillId'] =contact.BillNo;
+
+     const dialogRef = this._matDialog.open(IPSettlementComponent,
+        {
+          maxWidth: "95vw",
+          height: '740px',
+          width: '100%',
+          data: {
+            advanceObj: PatientHeaderObj,
+            FromName: "IP-Bill"
+          }
+        });
+
+    dialogRef.afterClosed().subscribe(result => {
+           
+      debugger
+      let Paymentobj = {};
+      Paymentobj['paymentId'] = 0;
+      Paymentobj['BillNo'] = contact.BillNo;
+      // Paymentobj['ReceiptNo'] = '';
+      Paymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+      Paymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+      Paymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+      Paymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+      Paymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+      Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+      Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+      Paymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+      Paymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+      Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+      Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+      Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['AdvanceId'] = 0;
+      Paymentobj['RefundId'] = 0;
+      Paymentobj['TransactionType'] = 0;
+      Paymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
+      Paymentobj['IsCancelledBy'] = 0;
+      Paymentobj['IsCancelledDate'] = this.currentDate;
+      // Paymentobj['CashCounterId'] = 0;
+      // Paymentobj['IsSelfORCompany'] = 0;
+      // Paymentobj['CompanyId'] = 0;
+      Paymentobj['opD_IPD_Type'] = 0;
+      Paymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+      Paymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+      Paymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+      Paymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+      Paymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+      Paymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+      Paymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+      // Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+      // Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+
+      console.log(Paymentobj)
+      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+
+        let Data = {
+        "paymentInsert": ipPaymentInsert
+      }; 
+
+      console.log(Data)
+      this._IpBillBrowseListService.InsertIPBillingPayment(Data).subscribe(response => {
+        if (response) {
+          Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
+            if (result) {
+              // let m = response;
+              // this.getPrint(m);
+              this._matDialog.closeAll();
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+        }
+        
+      });
+    });
+  
+}
 
    onExport(exprtType) {
     // let columnList=[];
@@ -436,6 +528,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
   // GET DATA FROM DATABASE 
   getPrint(el) {
+
     debugger;
     if (el.InterimOrFinal == 1) {
       var D_data = {
@@ -463,98 +556,7 @@ export class IPBillBrowseListComponent implements OnInit {
   }
   isShow = false;
   printTemplate1: any
-  // PRINT 
-  // async print() {
-  //   // HospitalName, HospitalAddress, AdvanceNo, PatientName
-  //   let popupWin, printContents;
-  //   // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-  //   console.log(this.printTemplate);
-  //   // this.printTemplate = this.printTemplate.replace("top:100px;","top:50px;");
-  //   // var html = htmlToPdfmake(this.printTemplate);
-  //   this.printTemplate = this.printTemplate;
-  //   this.printTemplate1 = this.santitized.bypassSecurityTrustHtml(this.printTemplate);
-  //   this.isShow = true;
-  //   // const pdfPreviewCard = this.pdfTemplate.nativeElement;
-  //   // var blob = new Blob([document.getElementById('canvas_div_pdf').innerHTML])
-  //   // var docDefinition = {
-  //   //   content: [blob]
-  //   // }
-  //   // pdfMake.createPdf(docDefinition).download("Slip.pdf")
-  //   await new Promise(f => setTimeout(f, 100));
-
-  //   // var html = htmlToPdfmake(pdfPreviewCard.innerHTML);
-  //   // var docDefinition = {
-  //   //   content: [
-  //   //   html
-  //   //   ],
-  //   //   pageBreakBefore: function(currentNode) {
-  //   //     return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
-  //   //   }
-  //   // };
-  //   // this.printService.exportPdf($(".canvas_div_pdf"),"IPBrowse");
-  //   // pdfMake.createPdf(docDefinition).download("Slip.pdf");
-  //   //   var HTML_Width = $(".canvas_div_pdf").width();
-  //   //   var HTML_Height = $(".canvas_div_pdf").height();
-  //   //   var top_left_margin = 15;
-  //   //   var PDF_Width = HTML_Width+(top_left_margin*2);
-  //   //   var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
-  //   //   var canvas_image_width = HTML_Width;
-  //   //   var canvas_image_height = HTML_Height+5;
-
-  //   //   var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;  
-  //   //   html2canvas($(".canvas_div_pdf")[0],{allowTaint:true,
-  //   //               scale: 5
-  //   //       //         ,onclone: function (clonedDoc) {
-  //   //       // clonedDoc.getElementById('canvas_div_pdf').style.display = 'inline-block';}
-  //   // }).then(function(canvas) {
-  //   //     canvas.getContext('2d');
-  //   //     console.log(canvas.height+"  "+canvas.width);
-  //   //     var imgData = canvas.toDataURL("image/jpeg", 1.0);
-  //   //     var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
-  //   //     pdf.internal.scaleFactor = 35;
-  //   //     pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
-
-  //   //     for (var i = 1; i <= totalPDFPages; i++) { 
-  //   //       pdf.addPage(PDF_Width, PDF_Height);
-  //   //       pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-  //   //     }
-
-  //   //     var datePipe = new DatePipe("en-US");
-  //   //   var value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm:ss');
-  //   //       pdf.save("HTML-Document"+value+".pdf");
-  //   //       });
-  //   this.isShow = false;
-
-  //   // var data = document.getElementById('pdfTemplate');
-  //   // html2canvas(data).then(canvas => {  
-  //   //   // Few necessary setting options  
-  //   //   console.log(canvas)
-  //   //   let imgWidth = 208;   
-  //   //   let pageHeight = 295;    
-  //   //   let imgHeight = canvas.height * imgWidth / canvas.width;  
-  //   //   let heightLeft = imgHeight;  
-
-  //   //   const contentDataURL = canvas.toDataURL('image/png')  
-  //   //   let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-  //   //   let position = 0;  
-  //   //   pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-  //   //   pdf.save('MYPdf.pdf'); // Generated PDF   
-  //   // });  
-  //   // var pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  //   // console.log(pdfDocGenerator)
-  //   // popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  //   // // popupWin.document.open();
-  //   // popupWin.document.write(` <html>
-  //   // <head><style type="text/css">`);
-  //   // popupWin.document.write(`
-  //   //   </style>
-  //   //       <title></title>
-  //   //   </head>
-  //   // `);
-  //   // popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  //   // </html>`);
-  //   // popupWin.document.close();
-  // }
+ 
 
      // PRINT 
      print() {
@@ -583,16 +585,16 @@ export class IPBillBrowseListComponent implements OnInit {
       var D_data = {
         "BillNo": el.BillNo,
       }
-      el.bgColor = 'red';
+      // el.bgColor = 'red';
 
       let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
       this.subscriptionArr.push(
         this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
-          console.log(res);
+          // console.log(res);
           this.reportPrintObjList = res as ReportPrintObj[];
           this.reportPrintObj = res[0] as ReportPrintObj;
 
-          console.log(this.reportPrintObj);
+          // console.log(this.reportPrintObj);
           this.getSummaryFinalBillTemplate();
           // console.log(res);
 
@@ -659,7 +661,7 @@ export class IPBillBrowseListComponent implements OnInit {
       // this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrAdvanceBalAmount', '₹' + (objPrintWordInfo.AdvanceBalAmount.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrAdvanceRefundAmount', '₹' + (objPrintWordInfo.AdvanceRefundAmount.toFixed(2)));
-
+      this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
 
 
       //console.log(this.printTemplate);
@@ -730,7 +732,7 @@ export class IPBillBrowseListComponent implements OnInit {
       // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
       // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-
+      this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
 
       //console.log(this.printTemplate);
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
@@ -780,12 +782,9 @@ export class IPBillBrowseListComponent implements OnInit {
         console.log(res);
         this.reportPrintObjList = res as ReportPrintObj[];
         this.reportPrintObj = res[0] as ReportPrintObj;
-
-
         console.log(this.reportPrintObj);
         this.getTemplateDraft();
-        // console.log(res);
-
+      
       })
     );
   }

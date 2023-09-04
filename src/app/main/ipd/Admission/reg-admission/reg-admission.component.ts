@@ -37,6 +37,7 @@ export class RegAdmissionComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
 
+  isRegIdSelected: boolean = false;
   isWardSelected:boolean= false;
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
@@ -537,23 +538,20 @@ DoctorId:any=0;
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
+      regRadio1: ['registration1'],
+      // RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
+      // [Validators.required]]
+      RegId:['']
     });
   }
-
   
   getSearchList() {
     debugger
 
-    var m_data = {
-      "F_Name": `${this.personalFormGroup.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      // "From_Dt": '01/01/1900',
-      // "To_Dt": '01/01/1900',
-      "MobileNo": '%'
+    var m_data={
+      "Keyword":`${this.searchFormGroup.get('RegId').value}%`
     }
-    if (this.personalFormGroup.get('RegId').value.length >= 1) {
+    if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
         // debugger;
 

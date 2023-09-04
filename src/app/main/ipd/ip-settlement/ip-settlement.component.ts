@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
@@ -7,7 +7,7 @@ import { IpBillBrowseList, ReportPrintObj } from '../ip-bill-browse-list/ip-bill
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -77,7 +77,7 @@ export class IPSettlementComponent implements OnInit {
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    // public dialogRef: MatDialogRef<IPSettlementComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
@@ -86,8 +86,10 @@ export class IPSettlementComponent implements OnInit {
   ngOnInit(): void {
     
 debugger;
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
+    if (this.data) {
+     console.log(this.data)
+
+      this.selectedAdvanceObj = this.data.advanceObj;
       this.regId = this.selectedAdvanceObj.RegId;
      
     }
@@ -108,6 +110,8 @@ debugger;
   getPaidBillDetails() {
 debugger
     this.sIsLoading = 'loading-data';
+
+    this.regId=199;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
    console.log(query);
@@ -129,8 +133,10 @@ debugger
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
+    this.regId=382
+    
   
-    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 0 and RegID= " + this.regId + " and BalanceAmt>0";
+    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 40 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
      this.dataSource1.data = Visit as CreditBilldetail[];

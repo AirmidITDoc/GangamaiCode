@@ -169,9 +169,9 @@
                           (input)="getSearchList()">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
-                            (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
                           <mat-icon class="mat-icon-close"
-                            (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                         </span>
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                           (optionSelected)='getSelectedObj($event.option.value)'>
@@ -180,7 +180,7 @@
                             {{option.MobileNo}}
                           </mat-option>
                         </mat-autocomplete>
-                        <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
+                        <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
                           Required field cannot be left blank
                         </mat-error>
                       </mat-form-field>

@@ -12,6 +12,7 @@ import { AdvanceDataStored } from '../../advance';
 import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import * as converter from 'number-to-words';
 
 @Component({
   selector: 'app-interim-bill',
@@ -316,7 +317,7 @@ var strabc = `
 
 
         var objPrintWordInfo = this.reportPrintObjList[0];  
-        console.log(objPrintWordInfo);
+        // console.log(objPrintWordInfo);
         var objPrintWordInfo = this.reportPrintObjList[0];
         this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceUsedAmount);
         console.log( this.BalanceAmt);
@@ -368,7 +369,7 @@ transform2(value: string) {
 
 convertToWord(e){
   // this.numberInWords= converter.toWords(this.mynumber);
-  //  return converter.toWords(e);
+   return converter.toWords(e);
      }
 
 // GET DATA FROM DATABASE 

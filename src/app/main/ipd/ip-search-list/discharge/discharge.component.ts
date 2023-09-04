@@ -188,7 +188,7 @@ debugger;
         "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
         "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
         "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-        "Modeofdischarge":this._IpSearchListService.mySaveForm.get("Modeofdischarge").value || '',
+        // "Modeofdischarge":this._IpSearchListService.mySaveForm.get("Modeofdischarge").value || '',
         "UpdatedBy": this.accountService.currentUserValue.user.id,
         "AddedBy": this.accountService.currentUserValue.user.id,
       },
