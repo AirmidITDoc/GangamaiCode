@@ -27,7 +27,7 @@ export class OpPaymentNewComponent implements OnInit {
   selectedPaymnet3: string = '';
   selectedPaymnet4: string = '';
   selectedPaymnet5: string = '';
-  
+
   netPayAmt: number = 0;
   nowDate: Date = new Date();
   constructor(
@@ -45,7 +45,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.netPayAmt = parseInt(this.paymentData.advanceObj.NetPayAmount);
     this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
     console.log(this.paymentData);
-    this.setPaymentOption();
+    this.onPaymentChange(1, 'cash');
   }
 
   createForm() {
@@ -62,24 +62,26 @@ export class OpPaymentNewComponent implements OnInit {
       regDate: [],
       paymentType3: [],
       amount3: [],
-      upi: [],
+      // upi: [],
       referenceNo2: [],
       paymentType4: [],
       amount4: [],
       bankName2: [],
+      bankName3: [],
       regDate1: [],
+      regDate2: [],
       eferenceNo3: [],
       paymentType5: [],
       amount5: [],
-      bankName3: [],
-      regDate2: [],
+      bankName4: [],
+      regDate3: [],
       eferenceNo4: [],
     });
   }
 
   onChangePaymnt(event: any) {
     let value = event.value;
-    if(value != 'cash') {
+    if (value != 'cash') {
       this.patientDetailsFormGrp.get('referenceNumber').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('bankName').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('registrationDate').setValidators([Validators.required]);
@@ -90,12 +92,11 @@ export class OpPaymentNewComponent implements OnInit {
       this.patientDetailsFormGrp.get('registrationDate').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
-    this.changePaymentOptions();
   }
 
   onAddClick(paymentOption: string) {
     this.paymentRowObj[paymentOption] = true;
-    if(paymentOption && paymentOption == 'upi') {
+    if (paymentOption && paymentOption == 'upi') {
 
     }
   }
@@ -106,38 +107,6 @@ export class OpPaymentNewComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
-  }
-
-  changePaymentOptions() {
-    if(this.selectedPaymnet1) {
-      this.paymentArr2 = this.opService.getPaymentArr();
-      
-      let element = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr2.splice(element, 1);
-      this.paymentArr2 = this.opService.getPaymentArr();
-      let element1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr2.splice(element1, 1);
-
-      // this.paymentArr2 = this.paymentArr2;
-    }
-  }
-
-  onChangePaymnt1(value: string) {
-    console.log(this.selectedPaymnet2);
-    console.log(value);
-    if(value) {
-      this.paymentArr3 = this.opService.getPaymentArr();
-      let element = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr3.splice(element, 1);
-
-      let element1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet2);
-      this.paymentArr3.splice(element1, 1);
-      let element2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet2);
-      this.paymentArr4.splice(element2, 1);
-
-
-      // this.paymentArr2 = this.paymentArr2;
-    }
   }
 
   onPaymentChange(rowId: number, value: string) {
@@ -159,14 +128,86 @@ export class OpPaymentNewComponent implements OnInit {
         let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
         this.paymentArr5.splice(element3, 1);
         break;
+
+      case 2:
+        this.paymentArr1 = this.opService.getPaymentArr();
+        let ele = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet2);
+        this.paymentArr1.splice(ele, 1);
+
+        this.paymentArr3 = this.opService.getPaymentArr();
+        let ele1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet2);
+        this.paymentArr3.splice(ele1, 1);
+
+        this.paymentArr4 = this.opService.getPaymentArr();
+        let ele2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet2);
+        this.paymentArr4.splice(ele2, 1);
+
+        this.paymentArr5 = this.opService.getPaymentArr();
+        let ele3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet2);
+        this.paymentArr5.splice(ele3, 1);
+        break;
+
+      case 3:
+        this.paymentArr1 = this.opService.getPaymentArr();
+        let elem = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet3);
+        this.paymentArr1.splice(elem, 1);
+
+        this.paymentArr2 = this.opService.getPaymentArr();
+        let elem1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet3);
+        this.paymentArr2.splice(elem1, 1);
+
+        this.paymentArr4 = this.opService.getPaymentArr();
+        let elem2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet3);
+        this.paymentArr4.splice(elem2, 1);
+
+        this.paymentArr5 = this.opService.getPaymentArr();
+        let elem3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet3);
+        this.paymentArr5.splice(elem3, 1);
+        break;
+      
+        case 4:
+          this.paymentArr1 = this.opService.getPaymentArr();
+          let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
+          this.paymentArr1.splice(elemen, 1);
+  
+          this.paymentArr2 = this.opService.getPaymentArr();
+          let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
+          this.paymentArr2.splice(elemen1, 1);
+  
+          this.paymentArr3 = this.opService.getPaymentArr();
+          let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
+          this.paymentArr3.splice(elemen2, 1);
+  
+          this.paymentArr5 = this.opService.getPaymentArr();
+          let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
+          this.paymentArr5.splice(elemen3, 1);
+          break;
+
+          case 5:
+            this.paymentArr1 = this.opService.getPaymentArr();
+            let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
+            this.paymentArr1.splice(elemnt, 1);
     
+            this.paymentArr2 = this.opService.getPaymentArr();
+            let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
+            this.paymentArr2.splice(elemnt1, 1);
+    
+            this.paymentArr3 = this.opService.getPaymentArr();
+            let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
+            this.paymentArr3.splice(elemnt2, 1);
+    
+            this.paymentArr4 = this.opService.getPaymentArr();
+            let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
+            this.paymentArr4.splice(elemnt3, 1);
+            break;
+
       default:
         break;
     }
   }
 
   setPaymentOption() {
-    if(this.selectedPaymnet1) {
+    if (this.selectedPaymnet1) {
       let element1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
       this.paymentArr2.splice(element1, 1);
 

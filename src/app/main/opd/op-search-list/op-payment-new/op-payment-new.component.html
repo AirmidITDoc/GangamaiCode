@@ -148,7 +148,8 @@
                             style="width: 50%; min-width: 50%; max-width: 50px;">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Payment Type</mat-label>
-                                <mat-select formControlName="paymentTyp1" [(ngModel)]="selectedPaymnet1" (selectionChange)="onPaymentChange(1, $event.value)" required>
+                                <mat-select formControlName="paymentTyp1" [(ngModel)]="selectedPaymnet1"
+                                    (selectionChange)="onPaymentChange(1, $event.value)" required>
                                     <mat-option *ngFor="let ele of paymentArr1" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
@@ -164,12 +165,12 @@
                                     <mat-label>Reference Number</mat-label>
                                     <input matInput formControlName="referenceNumber">
                                 </mat-form-field>
-    
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Bank Name</mat-label>
                                     <input matInput formControlName="bankName">
                                 </mat-form-field>
-    
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration Date</mat-label>
                                     <input matInput [matDatepicker]="datepickerReg" formControlName="registrationDate"
@@ -188,7 +189,8 @@
                         <div fxFlexFill fxLayout="row" fxLayoutGap="20px" class="field-row" *ngIf="paymentRowObj.cash">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Payment Type</mat-label>
-                                <mat-select formControlName="paymentType2" [(ngModel)]="selectedPaymnet2" (selectionChange)="onChangePaymnt1($event.value)">
+                                <mat-select formControlName="paymentType2" [(ngModel)]="selectedPaymnet2"
+                                    (selectionChange)="onPaymentChange(2, $event.value)">
                                     <mat-option *ngFor="let ele of paymentArr2" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
@@ -199,25 +201,26 @@
                                 <mat-label>Amount</mat-label>
                                 <input matInput formControlName="amount2">
                             </mat-form-field>
+                            <ng-container *ngIf="selectedPaymnet2 != 'cash'">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Reference Number</mat-label>
+                                    <input matInput formControlName="referenceNo1">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reference Number</mat-label>
-                                <input matInput formControlName="referenceNo1">
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matInput formControlName="bankName1">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Bank Name</mat-label>
-                                <input matInput formControlName="bankName1">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Registration Date</mat-label>
-                                <input matInput [matDatepicker]="datepickerReg" formControlName="regDate"
-                                    (click)="datepickerReg.open()">
-                                <mat-datepicker-toggle matSuffix [for]="datepickerReg"></mat-datepicker-toggle>
-                                <mat-datepicker #datepickerReg>
-                                </mat-datepicker>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration Date</mat-label>
+                                    <input matInput [matDatepicker]="datepickerReg" formControlName="regDate"
+                                        (click)="datepickerReg.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="datepickerReg"></mat-datepicker-toggle>
+                                    <mat-datepicker #datepickerReg>
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
                             <div class="remove-icon" (click)="onRemoveClick('cash')">
                                 <span>-</span>
                             </div>
@@ -229,31 +232,47 @@
                         <div fxFlexFill fxLayout="row" fxLayoutGap="20px" class="field-row" *ngIf="paymentRowObj.upi">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Payment Type</mat-label>
-                                <mat-select formControlName="paymentType3" [(ngModel)]="selectedPaymnet3" >
+                                <mat-select formControlName="paymentType3" [(ngModel)]="selectedPaymnet3"
+                                    (selectionChange)="onPaymentChange(3, $event.value)">
                                     <mat-option *ngFor="let ele of paymentArr3" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Select UPI option</mat-label>
                                 <mat-select formControlName="upi">
                                     <mat-option *ngFor="let food of foods" [value]="food.value">
                                         {{food.viewValue}}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Amount</mat-label>
                                 <input matInput formControlName="amount3">
                             </mat-form-field>
+                            <ng-container *ngIf="selectedPaymnet3 != 'cash'">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Reference Number</mat-label>
+                                    <input matInput formControlName="referenceNo2">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reference Number</mat-label>
-                                <input matInput formControlName="referenceNo2">
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matInput formControlName="bankName2">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration Date</mat-label>
+                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate1"
+                                        (click)="datepickerRegs.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="datepickerRegs"></mat-datepicker-toggle>
+                                    <mat-datepicker #datepickerRegs>
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
                             <div class="remove-icon" (click)="onRemoveClick('upi')">
                                 <span>-</span>
                             </div>
@@ -266,7 +285,8 @@
                             *ngIf="paymentRowObj.cheque">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Payment Type</mat-label>
-                                <mat-select formControlName="paymentType4" [(ngModel)]="selectedPaymnet4" >
+                                <mat-select formControlName="paymentType4" [(ngModel)]="selectedPaymnet4"
+                                    (selectionChange)="onPaymentChange(4, $event.value)">
                                     <mat-option *ngFor="let food of paymentArr4" [value]="food.value">
                                         {{food.viewValue}}
                                     </mat-option>
@@ -277,25 +297,26 @@
                                 <mat-label>Amount</mat-label>
                                 <input matInput formControlName="amount4">
                             </mat-form-field>
+                            <ng-container *ngIf="selectedPaymnet4 != 'cash'">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Reference Number</mat-label>
+                                    <input matInput formControlName="referenceNo3">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reference Number</mat-label>
-                                <input matInput formControlName="referenceNo3">
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matInput formControlName="bankName3">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Bank Name</mat-label>
-                                <input matInput formControlName="bankName2">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Registration Date</mat-label>
-                                <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate1"
-                                    (click)="datepickerRegs.open()">
-                                <mat-datepicker-toggle matSuffix [for]="datepickerRegs"></mat-datepicker-toggle>
-                                <mat-datepicker #datepickerRegs>
-                                </mat-datepicker>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration Date</mat-label>
+                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate2"
+                                        (click)="datepickerRegs.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="datepickerRegs"></mat-datepicker-toggle>
+                                    <mat-datepicker #datepickerRegs>
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
                             <div class="remove-icon" (click)="onRemoveClick('cheque')">
                                 <span>-</span>
                             </div>
@@ -308,7 +329,8 @@
                             *ngIf="paymentRowObj.netbanking">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Payment Type</mat-label>
-                                <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5" >
+                                <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"
+                                    (selectionChange)="onPaymentChange(5, $event.value)">
                                     <mat-option *ngFor="let ele of paymentArr5" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
@@ -319,25 +341,27 @@
                                 <mat-label>Amount</mat-label>
                                 <input matInput formControlName="amount5">
                             </mat-form-field>
+                            <ng-container *ngIf="selectedPaymnet5 != 'cash'">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Reference Number</mat-label>
+                                    <input matInput formControlName="referenceNo5">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Reference Number</mat-label>
-                                <input matInput formControlName="referenceNo5">
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matInput formControlName="bankName4">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Bank Name</mat-label>
-                                <input matInput formControlName="bankName3">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Registration Date</mat-label>
-                                <input matInput [matDatepicker]="datepickerRegistartion" formControlName="regDate2"
-                                    (click)="datepickerRegistartion.open()">
-                                <mat-datepicker-toggle matSuffix [for]="datepickerRegistartion"></mat-datepicker-toggle>
-                                <mat-datepicker #datepickerRegistartion>
-                                </mat-datepicker>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration Date</mat-label>
+                                    <input matInput [matDatepicker]="datepickerRegistartion" formControlName="regDate3"
+                                        (click)="datepickerRegistartion.open()">
+                                    <mat-datepicker-toggle matSuffix
+                                        [for]="datepickerRegistartion"></mat-datepicker-toggle>
+                                    <mat-datepicker #datepickerRegistartion>
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
                             <div class="remove-icon" (click)="onRemoveClick('netbanking')">
                                 <span>-</span>
                             </div>
