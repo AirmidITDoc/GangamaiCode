@@ -175,9 +175,9 @@ export class NewAppointmentComponent implements OnInit {
   public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  //purpose filter
-  public purposeFilterCtrl: FormControl = new FormControl();
-  public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // //purpose filter
+  // public purposeFilterCtrl: FormControl = new FormControl();
+  // public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
   public companyFilterCtrl: FormControl = new FormControl();
@@ -235,6 +235,7 @@ export class NewAppointmentComponent implements OnInit {
   optionsCity: any[] = [];
   optionsDoc: any[] = [];
   optionsRefDoc: any[] = [];
+  optionsPurpose:any[] = [];
 
   filteredOptionsDep: Observable<string[]>;
  
@@ -282,21 +283,16 @@ export class NewAppointmentComponent implements OnInit {
 
     this.getPrefixList();
     this.getPatientTypeList();
-
     this.getTariffList();
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
     this.getcityList1();
-
-    // this.getGendorMasterList();
     this.getCompanyList();
     this.getSubTPACompList();
-
     this.getDepartmentList();
     this.getDoctor1List();
     this.getDoctor2List();
-
     this.getPurposeList();
 
      
@@ -318,12 +314,7 @@ export class NewAppointmentComponent implements OnInit {
         this.filterArea();
       });
 
-    this.purposeFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPurpose();
-      });
-
+    
     this.companyFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -336,13 +327,8 @@ export class NewAppointmentComponent implements OnInit {
         this.filterHospital();
       });
 
-      // this.cityFilterCtrl.valueChanges
-      // .pipe(takeUntil(this._onDestroy))
-      // .subscribe(() => {
-      //   this.filterCity();
-      // });
+  
 
-    
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
@@ -407,6 +393,7 @@ export class NewAppointmentComponent implements OnInit {
     return option && option.PurposeName ? option.PurposeName : '';
   }
 
+ 
   private _filterPrex(value: any): string[] {
     if (value) {
       const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
@@ -457,7 +444,14 @@ export class NewAppointmentComponent implements OnInit {
 
   }
 
+  private _filterPurpose(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PurposeName ? value.PurposeName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsPurpose.filter(option => option.PurposeName.toLowerCase().includes(filterValue));
+    }
 
+  }
   createPesonalForm() {
     return this.formBuilder.group({
       RegId: '',
@@ -465,11 +459,11 @@ export class NewAppointmentComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z] . *[a-zA-Z]*$"),
+        Validators.pattern("^[a-zA-Z._ -]+$"),
       ]],
       MiddleName: ['', [
 
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       LastName: ['', [
         Validators.required,
@@ -585,6 +579,18 @@ export class NewAppointmentComponent implements OnInit {
     
   }
 
+  getPurposeList() {
+    this._opappointmentService.getPurposeList().subscribe(data => {
+      this.PurposeList = data;
+      console.log(data)
+      this.optionsPurpose = this.PurposeList.slice();
+      this.filteredOptionsPurpose= this.VisitFormGroup.get('PurposeId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPurpose(value) : this.PurposeList.slice()),
+      );
+    });
+  }
+
 
 
   getPatientTypeList() {
@@ -648,13 +654,7 @@ export class NewAppointmentComponent implements OnInit {
     });
   }
 
-  getPurposeList() {
-    this._opappointmentService.getPurposeList().subscribe(data => {
-      this.PurposeList = data;
-      this.filteredPurpose.next(this.PurposeList.slice());
-    });
-  }
-
+ 
   getMaritalStatusList() {
     this._opappointmentService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
@@ -701,16 +701,16 @@ export class NewAppointmentComponent implements OnInit {
 
   
   onChangeStateList(CityId) {
-    if (CityId > 0) {
-      if (this.registerObj.StateId != 0) {
-        CityId = this.registerObj.CityId
-      }
+    // if (CityId > 0) {
+    //   if (this.registerObj.StateId != 0) {
+    //     CityId = this.registerObj.CityId
+    //   }
       this._opappointmentService.getStateList(CityId).subscribe(data => {
         this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
         //  this._AdmissionService.myFilterform.get('StateId').setValue(this.selectedState);
       });
-    }
+    // }
   }
 
 
@@ -806,27 +806,27 @@ export class NewAppointmentComponent implements OnInit {
 
   }
 
-  // purpose filter code  
-  private filterPurpose() {
+  // // purpose filter code  
+  // private filterPurpose() {
 
-    if (!this.PurposeList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.purposeFilterCtrl.value;
-    if (!search) {
-      this.filteredPurpose.next(this.PurposeList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredPurpose.next(
-      this.PurposeList.filter(bank => bank.PurposeName.toLowerCase().indexOf(search) > -1)
-    );
+  //   if (!this.PurposeList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.purposeFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredPurpose.next(this.PurposeList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredPurpose.next(
+  //     this.PurposeList.filter(bank => bank.PurposeName.toLowerCase().indexOf(search) > -1)
+  //   );
 
-  }
+  // }
 
   // company filter code  
   private filterCompany() {
@@ -999,34 +999,6 @@ export class NewAppointmentComponent implements OnInit {
   }
 
 
-  // searchPatientList() {
-  //   ;
-  //   this.dialogRef.close();
-  //   var m_data = {
-  //     "RegAppoint": 0
-  //   }
-  //   const dialogRef = this._matDialog.open(SearchPageComponent,
-  //     {
-  //       maxWidth: "70%",
-  //       height: "530px !important ", width: '100%',
-  //       data: {
-  //         registerObj: m_data,
-  //       }
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //     if (result) {
-  //       this.registerObj = result as RegInsert;
-  //       console.log(this.registerObj)
-  //       this.getSelectedObj(this.registerObj)
-     
-  //     }
-      
-  //   });
-  // }
-
-
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
@@ -1035,19 +1007,19 @@ export class NewAppointmentComponent implements OnInit {
   getSelectedObj(obj) {
     ;
     // console.log('obj==', obj);
-    let a, b, c;
+    // let a, b, c;
 
-    a = obj.AgeDay.trim();;
-    b = obj.AgeMonth.trim();
-    c = obj.AgeYear.trim();
-    console.log(a, b, c);
-    obj.AgeDay = a;
-    obj.AgeMonth = b;
-    obj.AgeYear = c;
+    // a = obj.AgeDay.trim();;
+    // b = obj.AgeDay.trim();
+    // c = obj.AgeYear.trim();
+    // console.log(a, b, c);
+    obj.AgeDay = obj.AgeDay.trim();
+    obj.AgeMonth = obj.AgeDay.trim();
+    obj.AgeYear =obj.AgeYear.trim();
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
-    console.log(this.registerObj)
+    // console.log(this.registerObj)
     this.setDropdownObjs();
   }
 
@@ -1075,7 +1047,7 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   setDropdownObjs() {
-   
+    debugger
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
@@ -1090,7 +1062,7 @@ export class NewAppointmentComponent implements OnInit {
 
     const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
-    debugger
+
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     this.onChangeCityList(this.personalFormGroup.get('CityId').value);
     this.personalFormGroup.updateValueAndValidity();
@@ -1299,14 +1271,14 @@ export class NewAppointmentComponent implements OnInit {
 
   onChangeCityList(CityObj) {
 
-  
+    debugger
     if (CityObj) {
       this._opappointmentService.getStateList(CityObj.CityId).subscribe((data: any) => {
            this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
-        debugger
+     
         // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
-        this.personalFormGroup.get('StateId').setValue(this.stateList[0].StateId);
+        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
         this.selectedStateID = this.stateList[0].StateId;
         this.onChangeCountryList(this.selectedStateID);
         
@@ -1357,6 +1329,7 @@ debugger
     }
     this.getPrefixList();
     this.getDepartmentList();
+    this.getcityList1();
   }
 
 
