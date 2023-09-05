@@ -7,7 +7,6 @@ app-opd-search-list {
     
     .mat-table {
        height: 500px !important;
-      
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -58,16 +57,27 @@ app-opd-search-list {
     }
 .mat-header-row {
     width: 100%;
-    max-width: 1550px;
-    min-width: 1550px;    
-    min-height: 25px;     
+    //max-width: 1600px;
+    min-width: 1500px;  
+    min-height: 30px; 
+
+    // width: 100%;
+    // max-width: 1550px;
+    // min-width: 1550px;    
+    // min-height: 25px;     
 }
 
 .mat-row {
     width: 100%;
     max-width: 1550px;
     min-width: 1550px;     
-    min-height: 25px;            
+    min-height: 25px;     
+    
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1500px;      
+    min-height: 30px;  
+
 }
 
 .mat-column-checkbox {
