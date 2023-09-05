@@ -147,6 +147,16 @@ DoctorId:any=0;
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
   
+  
+  // prefix filter
+  public bankFilterCtrl: FormControl = new FormControl();
+  public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+  // // city filter
+  public cityFilterCtrl: FormControl = new FormControl();
+  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+  // //
   //religion filter
   public religionFilterCtrl: FormControl = new FormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -227,9 +237,9 @@ DoctorId:any=0;
     this.getDepartmentList();
     this.getCompanyList();
     this.getSubTPACompList();
-    this.getConfigCityList();
+    // this.getConfigCityList();
     this.getRelationshipList();
-    this.getCityList();
+    this.getcityList1();
     this.getDoctorList();
     this.getDoctor1List();
     this.getDoctor2List();
@@ -273,6 +283,13 @@ DoctorId:any=0;
         this.filterBed();
       });
 
+      this.cityFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCity();
+      });
+
+
     this.companyFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -291,6 +308,7 @@ DoctorId:any=0;
       }
   }
 
+
  
   getOptionsText(option) {
     // debugger;
@@ -300,6 +318,28 @@ DoctorId:any=0;
 
 
   }
+
+    // City filter code
+    private filterCity() {
+
+      if (!this.cityList) {
+        return;
+      }
+      // get the search keyword
+      let search = this.cityFilterCtrl.value;
+      if (!search) {
+        this.filteredCity.next(this.cityList.slice());
+        return;
+      }
+      else {
+        search = search.toLowerCase();
+      }
+      // filter
+      this.filteredCity.next(
+        this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
+      );
+    }
+  
 
   // religion filter code
   private filterReligion() {
@@ -586,14 +626,15 @@ DoctorId:any=0;
   }
 
 
+ 
   private _filterCity(value: any): string[] {
     if (value) {
       const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-        return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+      // this.isDepartmentSelected = false;
+      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
     }
 
   }
-
   private _filterDoc(value: any): string[] {
     if (value) {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
@@ -843,8 +884,16 @@ DoctorId:any=0;
       this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
+              
       );
-      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+      // this.filteredDepartment.next(this.DepartmentList.slice());
+      if (this.data) {
+        const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
+        this.personalFormGroup.get('PrefixID').setValue(toSelect);
+        this.getOptionTextPrefix(this.data);
+
+        this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+      }
     });
   }
 
@@ -895,17 +944,14 @@ DoctorId:any=0;
   }
 
  
-  getCityList() {
+  getcityList1() {
+    
     this._AdmissionService.getCityList().subscribe(data => {
       this.cityList = data;
-      this.optionsCity = this.cityList.slice();
-      this.filteredOptionsCity = this.personalFormGroup.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.cityList.slice()),
-      );
-      // this.filteredDepartment.next(this.DepartmentList.slice());
+      this.filteredCity.next(this.cityList.slice());
     });
   }
+
 
   getDoctorList() {
     this._AdmissionService.getDoctorMaster().subscribe(
@@ -978,29 +1024,33 @@ DoctorId:any=0;
     })
   }
 
-
-  onChangeCityList(obj) {
-    debugger
-        // if (obj.CityId > 0) {
-          // if (this.registerObj.CityId! = 0) {
-          //   CityId = this.registerObj.CityId
-          // }
-          this._AdmissionService.getStateList(obj.CityId).subscribe(data => {
-            this.stateList = data;
-            this.selectedState = this.stateList[0].StateName;
-            this.selectedStateID = this.stateList[0].StateId;
-            // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
-            this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
-            this.onChangeCountryList(this.selectedStateID);
-          });
-        // } else {
-        //   this.selectedState = null;
-        //   this.selectedStateID = null;
-        //   this.selectedCountry = null;
-        //   this.selectedCountryID = null;
-        // }
+  onChangeStateList(CityId) {
+    if (CityId > 0) {
+      if (this.registerObj.StateId != 0) {
+        CityId = this.registerObj.CityId
       }
+      this._AdmissionService.getStateList(CityId).subscribe(data => {
+        this.stateList = data;
+        this.selectedState = this.stateList[0].StateName;
+        //  this._AdmissionService.myFilterform.get('StateId').setValue(this.selectedState);
+      });
+    }
+  }
 
+  onChangeCityList(CityId) {
+    // if (CityId > 0) {
+      this._AdmissionService.getStateList(CityId).subscribe((data: any) => {
+        if(data && data.length > 0) {
+          this.stateList = data;
+        this.selectedState = this.stateList[0].StateName;
+        this.selectedStateID = this.stateList[0].StateId;
+        // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
+        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
+        this.onChangeCountryList(this.selectedStateID);
+        }
+      });
+  
+  }
 
 
   onChangeCountryList(StateId) {
@@ -1021,14 +1071,14 @@ DoctorId:any=0;
     this.setDropdownObjs();
   }
 
-  getConfigCityList() {
+  // getConfigCityList() {
 
-    this._AdmissionService.getHospitalCombo().subscribe(data => {
-      this.ConfigcityList = data;
-      this.selectedHName = this.ConfigcityList[0].HospitalName
+  //   this._AdmissionService.getHospitalCombo().subscribe(data => {
+  //     this.ConfigcityList = data;
+  //     this.selectedHName = this.ConfigcityList[0].HospitalName
 
-    });
-  }
+  //   });
+  // }
 
   onChangeDateofBirth(DateOfBirth) {
     if (DateOfBirth) {

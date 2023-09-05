@@ -502,8 +502,8 @@
                                         style="font-weight: bold;">
                                         Cash Payment
                                     </mat-checkbox>
-                                    <button class="next-btn" (click)="onSaveOPBill2()"
-                                        style="border-radius: 16px;margin-left: 80%;">Save</button>
+                                    <button class="next-btn" (click)="onSaveOPBill2()"  [disabled]="BillingForm.invalid"
+                                        style="border-radius: 16px;margin-left: 80%;" >Save</button>
                                     <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
                                 </div>
                             </div>

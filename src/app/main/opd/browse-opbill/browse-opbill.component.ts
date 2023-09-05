@@ -48,6 +48,7 @@ export class BrowseOPBillComponent implements OnInit {
   isLoading = true;
 
   displayedColumns = [
+    'chkBalanceAmt',
     'BillDate',
     'BillNo',
     'RegNo',
@@ -57,7 +58,6 @@ export class BrowseOPBillComponent implements OnInit {
     'NetPayableAmt',
     'PaidAmount',
     'BalanceAmt',
-    'chkBalanceAmt',
     'action'
   ];
 

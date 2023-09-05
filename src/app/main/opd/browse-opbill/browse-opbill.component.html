@@ -128,6 +128,25 @@
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
+
+                                    <ng-container matColumnDef="chkBalanceAmt" sticky>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Credit
+                                        
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <!-- <mat-icon
+                                                style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
+                                                *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
+                                            </mat-icon> -->
+                                            <mat-icon  *ngIf="contact.BalanceAmt !=0 " matTooltip=" Settlement "
+                                                (click)="Billpayment(contact)">payment
+                                            </mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+
+
+
                                     <ng-container matColumnDef="BillDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Bill Date
                                         </mat-header-cell>
@@ -203,23 +222,7 @@
                                             {{contact.BalanceAmt | currency:'INR'}}
                                         </mat-cell>
                                     </ng-container>
-                                    <ng-container matColumnDef="chkBalanceAmt" sticky>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Creadit /
-                                            Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <mat-icon
-                                                style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
-                                                *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
-                                            </mat-icon>
-                                            <mat-icon
-                                                style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
-                                                *ngIf="contact.BalanceAmt ==0 " matTooltip=" Settlement "
-                                                (click)="Billpayment(contact)">payment
-                                            </mat-icon>
-                                        </mat-cell>
-                                    </ng-container>
-
+                                  
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                         </mat-header-cell>
