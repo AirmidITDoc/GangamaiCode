@@ -19,13 +19,26 @@
                 <form [formGroup]="feedbackFormGroup">
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                        <mat-form-field appearance="outline" style="font-weight: bold;font-size: 20px;" fxFlex>
-                            <input name="PatientName" formControlName="PatientName" placeholder="Patient Name" matInput>
-                            <mat-error
-                                *ngIf="feedbackFormGroup.get('PatientName').invalid && feedbackFormGroup.get('PatientName').touched">
-                                Please enter Patient Name </mat-error>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" style="font-weight: bold;font-size: 20px;" fxFlex>
+
+                          <mat-form-field appearance="outline" style="font-weight: bold;font-size: 15px;"  fxFlex>
+                            <mat-label>Patient Name</mat-label>
+                              <input type="text" name="RegId" formControlName="RegId" placeholder="RegNo/Name" matInput
+                                [matAutocomplete]="auto" (input)="getSearchList()">
+                              <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                (optionSelected)='getSelectedObj($event.option.value)'>
+                                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                  {{option.FirstName}} {{option.LastName}} ({{option.RegId}})
+                                </mat-option>
+                              </mat-autocomplete>
+                              <mat-hint>
+                                <span *ngIf="noOptionFound" style="color: #f44336;">No data Found</span>
+                              </mat-hint>
+                              <mat-error *ngIf="feedbackFormGroup.get('RegId').hasError('required')">
+                                
+                              </mat-error>
+                            </mat-form-field>
+    
+                        <!-- <mat-form-field appearance="outline" style="font-weight: bold;font-size: 15px;" fxFlex>
                             <mat-label>Mobile No</mat-label>
                             <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile No" maxlength="10"
                                 required="required" type="number" matInput required>
@@ -35,7 +48,8 @@
                                 digits Mobile number is
                                 required</mat-error>
 
-                        </mat-form-field>
+                                
+                        </mat-form-field> -->
                     </div>
 
                     <hr>
@@ -53,24 +67,45 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="opdRadio" name="opdRadio">
                             <mat-label>OPD Appointment:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:300px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:300px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
+                
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
 
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="recpRadio" name="recpRadio">
                             <mat-label>Reception Enquiry:</mat-label>
-                            <mat-radio-button value=" 1" style="padding-left:300px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:300px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -79,11 +114,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="signRadio" name="signRadio">
                             <mat-label>Sign Boards:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:355px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:355px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -91,11 +136,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="staffBehvRadio" name="staffBehvRadio">
                             <mat-label>OPD Staff Behaviour:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:275px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:275px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -103,11 +158,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="clinicalStaffRadio" name="clinicalStaffRadio">
                             <mat-label>OPD Clinical Staff:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:300px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:300px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -115,11 +180,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="docTreatRadio" name="docTreatRadio">
                             <mat-label>Consulting Doctors Treatment :</mat-label>
-                            <mat-radio-button value="1" style="padding-left:185px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:185px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -127,11 +202,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="cleanRadio" name="cleanRadio">
                             <mat-label>Cleanliness:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:360px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:360px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -139,11 +224,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="radiologyRadio" name="radiologyRadio">
                             <mat-label>Radiology Department:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:255px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:255px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -151,11 +246,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="pathologyRadio" name="pathologyRadio">
                             <mat-label>Pathology Department:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:255px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:255px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -163,11 +268,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="securityRadio" name="securityRadio">
                             <mat-label>Security Department:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:273px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:273px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -175,11 +290,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="parkRadio" name="parkRadio">
                             <mat-label>Parking:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:395px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:395px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -187,11 +312,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="pharmaRadio" name="pharmaRadio">
                             <mat-label>Pharmacy:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:370px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:370px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -199,11 +334,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="physioRadio" name="physioRadio">
                             <mat-label>Physiotherapy Department:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:215px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:215px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -211,11 +356,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="canteenRadio" name="canteenRadio">
                             <mat-label>Canteen Services:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:304px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:304px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -223,11 +378,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="speechRadio" name="speechRadio">
                             <mat-label>Speech Therapy Department :</mat-label>
-                            <mat-radio-button value="1" style="padding-left:193px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:193px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
@@ -235,11 +400,21 @@
                         <mat-radio-group class="mat-radio-button" aria-label="Select an option"
                             formControlName="dietRadio" name="dietRadio">
                             <mat-label>Dietation:</mat-label>
-                            <mat-radio-button value="1" style="padding-left:379px;">1</mat-radio-button>
-                            <mat-radio-button value="2">2</mat-radio-button>
-                            <mat-radio-button value="3">3</mat-radio-button>
-                            <mat-radio-button value="4">4</mat-radio-button>
-                            <mat-radio-button value="5">5</mat-radio-button>
+                            <mat-radio-button value="bad" style="padding-left:379px;">
+                                <img src="assets/images/logos/1.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="sad">
+                                <img src="assets/images/logos/2.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="good">
+                                <img src="assets/images/logos/3.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                            <mat-radio-button value="happy"> 
+                                <img src="assets/images/logos/4.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
+                           <mat-radio-button value="excellent">
+                            <img src="assets/images/logos/5.jpeg" Width="33px" height="33px"/>
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
 
