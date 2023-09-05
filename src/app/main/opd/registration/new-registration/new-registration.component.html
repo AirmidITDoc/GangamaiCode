@@ -110,8 +110,9 @@
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>First Name</mat-label>
               <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required
-                [(ngModel)]="registerObj.FirstName" onkeypress=" (event.charCode > 64 && 
-            event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
+                [(ngModel)]="registerObj.FirstName" >
+                <!-- onkeypress=" (event.charCode > 64 && 
+            event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
               <mat-error
                 *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
                 First Name is required Enter only

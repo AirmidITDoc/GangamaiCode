@@ -465,7 +465,7 @@ DoctorId:any=0;
         ['', [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern("[a-zA-Z][a-zA-Z ]+")
+          Validators.pattern("[a-zA-Z] *[a-zA-Z ]+")
         ]],
       MiddleName:
         ['', [

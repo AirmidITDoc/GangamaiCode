@@ -453,7 +453,7 @@ export class NewAppointmentComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z] *[a-zA-Z]*$"),
       ]],
       MiddleName: ['', [
 
@@ -549,7 +549,7 @@ export class NewAppointmentComponent implements OnInit {
     this._opappointmentService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       this.filteredPrefix.next(this.PrefixList.slice());
-      if (this.registerObj) {
+      if (this.data) {
         const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
         this.personalFormGroup.get('PrefixID').setValue(toSelect);
 

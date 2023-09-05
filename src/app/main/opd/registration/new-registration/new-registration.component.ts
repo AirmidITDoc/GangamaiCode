@@ -188,7 +188,7 @@ isDisabled: boolean = false;
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z] *[a-zA-Z]*$"),
       ]],
       MiddleName: ['', [
 

@@ -209,11 +209,11 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
-                                                style="font-size:30px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
                                             </mat-icon>
                                             <mat-icon
-                                                style="font-size:30px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.BalanceAmt ==0 " matTooltip=" Settlement "
                                                 (click)="Billpayment(contact)">payment
                                             </mat-icon>
