@@ -370,7 +370,7 @@ export class NewAppointmentComponent implements OnInit {
   
 
   getOptionTextPrefix(option){
-    return option.PrefixName;
+    return option && option.PrefixName ? option.PrefixName : '';
   }
 
 
@@ -724,13 +724,15 @@ export class NewAppointmentComponent implements OnInit {
 
   onChangeCityList(CityId) {
     // if (CityId > 0) {
-      this._opappointmentService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
+      this._opappointmentService.getStateList(CityId).subscribe((data: any) => {
+        if(data && data.length > 0) {
+          this.stateList = data;
         this.selectedState = this.stateList[0].StateName;
         this.selectedStateID = this.stateList[0].StateId;
         // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
         this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
         this.onChangeCountryList(this.selectedStateID);
+        }
       });
     // } else {
     //   this.selectedState = null;
@@ -1405,6 +1407,8 @@ debugger
       this.getPatientTypeList();
       this.searchRegList();
     }
+    this.getPrefixList();
+    this.getDepartmentList();
   }
 
 
