@@ -470,18 +470,6 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
-    // console.log(this.TotalnetPaybleAmt);
-    // const dialogRef1 = this._matDialog.open(OpPaymentNewComponent,
-    //   {
-    //     maxWidth: "85vw",
-    //     // height: '540px',
-    //     width: '100%',
-    //     data: {
-    //       advanceObj: { advanceObj: PatientHeaderObj, FromName: "OP-Bill"},
-    //       FromName: "OP-Bill"
-    //     }
-    //   });
-    //   return;
     if (!this.BillingForm.get('cashpay').value) {
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
@@ -942,6 +930,20 @@ debugger
 
   onClose() {
     this.dialogRef.close();
+  }
+
+  showNewPaymnet() {
+    console.log(this.TotalnetPaybleAmt);
+    const dialogRef1 = this._matDialog.open(OpPaymentNewComponent,
+      {
+        maxWidth: "85vw",
+        // height: '540px',
+        width: '100%',
+        data: {
+          advanceObj: { advanceObj: this.BillingForm.get('FinalAmt').value, FromName: "OP-Bill"},
+          FromName: "OP-Bill"
+        }
+      });
   }
 
 }

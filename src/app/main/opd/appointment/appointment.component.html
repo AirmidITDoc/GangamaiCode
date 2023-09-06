@@ -365,6 +365,7 @@
                                         <form [formGroup]="imageForm">
                                             <div class="upload-container"
                                                 style="height: 270px !important;overflow: auto;">
+                                                <div fxLayout="row" fxLayoutGap="15px" style="align-items: center;">
                                                 <label class="file-lable" (click)="showOptions = true;">Upload
                                                     Image</label>
                                                 <div class="upload-option-div" *ngIf="showOptions"
@@ -379,9 +380,9 @@
 
                                                         <label class="file-lable1" for="file">
                                                             <mat-icon
-                                                                style="width: 10%;">open_in_browser</mat-icon></label>
+                                                                style="width: 10%; font-size: 45px;">open_in_browser</mat-icon></label>
 
-                                                        <mat-icon
+                                                        <mat-icon style="font-size: 45px;"
                                                             (click)="openCamera('camera')">camera_enhance</mat-icon>
                                                     </div>
 
@@ -390,14 +391,22 @@
                                                             (click)="openCamera('camera')">camera_enhance</mat-icon>
                                                     </div> -->
                                                 </div>
-                                                <div class="gallery">
-                                                    <div class="gallery__item">
-                                                      <ng-container *ngFor="let url of images">
-                                                        <img [src]="url" class="view-image"
-                                                        (click)="onViewImage(url, 'img')" style="height: 150px;width: 150px;margin-left: 10px;">
-                                                    
+                                                </div>
+                                                <div class="gallery1">
+                                                    <div class="gallery__item1" fxLayout="row wrap" fxLayoutGap="15px grid">
+                                                      <ng-container *ngFor="let elem of images">
+                                                        <div fxFlex="10%" style="text-align: center; padding: 15px;">
+                                                            <img [src]="elem.url" class="view-image"
+                                                            (click)="onViewImage(elem.url, 'img')" style="height: 150px;width: 150px;margin-left: 10px;">
+                                                        </div>
                                                       </ng-container>
+                                                      
                                                    </div>
+                                                   <div class="gallery__item1" fxLayout="row wrap" fxLayoutGap="15px grid">
+                                                        <ng-container *ngFor="let elem of imgArr">
+                                                            <div fxFlex="10%" class="file-name">{{elem}}</div>
+                                                        </ng-container>
+                                                  </div>
                                                 </div>
 <!-- 
                                                 <div *ngFor='let url of images' class="img-div" fxLayout="column">

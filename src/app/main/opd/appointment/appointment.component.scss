@@ -408,9 +408,9 @@ h1, .h1 {
 .img-container {
     display: flex;
     flex-direction: row;
-    width: 100px;
+    // width: 100px;
     // height: 100px;
-    align-items: center;
+    // align-items: center;
 }
 
 .inputfile {
@@ -427,7 +427,7 @@ h1, .h1 {
     padding: 10px;
     color: white;
     // border-radius: 5px;
-    height: 30px;
+    height: 38px;
 }
 
 .submit-btn1 {
@@ -586,6 +586,16 @@ h1, .h1 {
       display: block!important;
     }
   }
+
+  .file-lable1 {
+    margin-right: 10px;
+  }
+
+.file-name {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
  
 
 //   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular

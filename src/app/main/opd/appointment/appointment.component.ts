@@ -74,7 +74,7 @@ export class AppointmentComponent implements OnInit {
   // Document Upload
   personalFormGroup:FormGroup;
   title = 'file-upload';
-  images: string[] = [];
+  images: any[] = [];
   docsArray: DocData[] = [];
   filteredOptions: any;
   showOptions: boolean = false;
@@ -606,19 +606,21 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
 
   //Image Upload
-  
-  onImageFileChange(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      let filesAmount = event.target.files.length;
+  imgArr: string[] = [];
+  onImageFileChange(events: any) {
+    if (events.target.files && events.target.files[0]) {
+      let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         var reader = new FileReader();
+        this.imgArr.push(events.target.files[i].name);
+        reader['fileName'] = events.target.files[i].name;
         reader.onload = (event: any) => {
-          this.images.push(event.target.result);
+          this.images.push({url: event.target.result, name: reader['fileName']});
           this.imageForm.patchValue({
             imgFileSource: this.images
           });
         }
-        reader.readAsDataURL(event.target.files[i]);
+        reader.readAsDataURL(events.target.files[i]);
       }
       this.attachment.nativeElement.value = '';
     }
@@ -693,6 +695,12 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
   }
 
   onSubmitImgFiles() {
+    let imgFiles = this.imageForm.get('imgFileSource')?.value;
+    if(imgFiles && imgFiles.length > 0) {
+      imgFiles.forEach((element, index) => {
+        element.name = this.imgArr[index];
+      });
+    }
     console.log(this.imageForm.get('imgFileSource')?.value);
   }
 
@@ -759,7 +767,8 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
     );
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.images.push(result.url);
+        this.imgArr.push(result.name);
+        this.images.push(result);
       }
     });
   }

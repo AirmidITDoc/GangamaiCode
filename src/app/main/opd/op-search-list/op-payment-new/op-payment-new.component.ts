@@ -29,20 +29,22 @@ export class OpPaymentNewComponent implements OnInit {
   selectedPaymnet5: string = '';
 
   netPayAmt: number = 0;
-  nowDate: Date = new Date();
+  nowDate: Date;
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService
 
-  ) { }
+  ) {
+    this.nowDate = new Date();
+  }
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
     this.paymentData = this.data.advanceObj;
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-    this.netPayAmt = parseInt(this.paymentData.advanceObj.NetPayAmount);
+    this.netPayAmt = parseInt(this.paymentData.advanceObj);
     this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
     console.log(this.paymentData);
     this.onPaymentChange(1, 'cash');
@@ -70,12 +72,12 @@ export class OpPaymentNewComponent implements OnInit {
       bankName3: [],
       regDate1: [],
       regDate2: [],
-      eferenceNo3: [],
+      referenceNo3: [],
       paymentType5: [],
       amount5: [],
       bankName4: [],
       regDate3: [],
-      eferenceNo4: [],
+      referenceNo4: [],
     });
   }
 
@@ -96,6 +98,27 @@ export class OpPaymentNewComponent implements OnInit {
 
   onAddClick(paymentOption: string) {
     this.paymentRowObj[paymentOption] = true;
+    switch (paymentOption) {
+      case 'cash':
+        this.setSecRowValidators(paymentOption);
+        break;
+
+      case 'upi':
+        this.setThirdRowValidators(paymentOption);
+        break;
+
+      case 'cheque':
+        this.setFourthRowValidators(paymentOption);
+        break;
+
+      case 'netbanking':
+        this.setFifthRowValidators(paymentOption);
+        break;
+
+      default:
+        break;
+    }
+
     if (paymentOption && paymentOption == 'upi') {
 
     }
@@ -103,6 +126,14 @@ export class OpPaymentNewComponent implements OnInit {
 
   onRemoveClick(caseId: string) {
     this.paymentRowObj[caseId] = false;
+    switch (caseId) {
+      case 'upi':
+        this.removeThirdValidators();
+        break;
+    
+      default:
+        break;
+    }
   }
 
   onClose() {
@@ -145,6 +176,8 @@ export class OpPaymentNewComponent implements OnInit {
         this.paymentArr5 = this.opService.getPaymentArr();
         let ele3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet2);
         this.paymentArr5.splice(ele3, 1);
+        this.setSecRowValidators(value);
+        this.patientDetailsFormGrp.updateValueAndValidity();
         break;
 
       case 3:
@@ -163,43 +196,49 @@ export class OpPaymentNewComponent implements OnInit {
         this.paymentArr5 = this.opService.getPaymentArr();
         let elem3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet3);
         this.paymentArr5.splice(elem3, 1);
+        this.setThirdRowValidators(value);
+        this.patientDetailsFormGrp.updateValueAndValidity();
         break;
-      
-        case 4:
-          this.paymentArr1 = this.opService.getPaymentArr();
-          let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
-          this.paymentArr1.splice(elemen, 1);
-  
-          this.paymentArr2 = this.opService.getPaymentArr();
-          let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
-          this.paymentArr2.splice(elemen1, 1);
-  
-          this.paymentArr3 = this.opService.getPaymentArr();
-          let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
-          this.paymentArr3.splice(elemen2, 1);
-  
-          this.paymentArr5 = this.opService.getPaymentArr();
-          let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
-          this.paymentArr5.splice(elemen3, 1);
-          break;
 
-          case 5:
-            this.paymentArr1 = this.opService.getPaymentArr();
-            let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
-            this.paymentArr1.splice(elemnt, 1);
-    
-            this.paymentArr2 = this.opService.getPaymentArr();
-            let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
-            this.paymentArr2.splice(elemnt1, 1);
-    
-            this.paymentArr3 = this.opService.getPaymentArr();
-            let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
-            this.paymentArr3.splice(elemnt2, 1);
-    
-            this.paymentArr4 = this.opService.getPaymentArr();
-            let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
-            this.paymentArr4.splice(elemnt3, 1);
-            break;
+      case 4:
+        this.paymentArr1 = this.opService.getPaymentArr();
+        let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
+        this.paymentArr1.splice(elemen, 1);
+
+        this.paymentArr2 = this.opService.getPaymentArr();
+        let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
+        this.paymentArr2.splice(elemen1, 1);
+
+        this.paymentArr3 = this.opService.getPaymentArr();
+        let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
+        this.paymentArr3.splice(elemen2, 1);
+
+        this.paymentArr5 = this.opService.getPaymentArr();
+        let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
+        this.paymentArr5.splice(elemen3, 1);
+        this.setFourthRowValidators(value);
+        this.patientDetailsFormGrp.updateValueAndValidity();
+        break;
+
+      case 5:
+        this.paymentArr1 = this.opService.getPaymentArr();
+        let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
+        this.paymentArr1.splice(elemnt, 1);
+
+        this.paymentArr2 = this.opService.getPaymentArr();
+        let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
+        this.paymentArr2.splice(elemnt1, 1);
+
+        this.paymentArr3 = this.opService.getPaymentArr();
+        let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
+        this.paymentArr3.splice(elemnt2, 1);
+
+        this.paymentArr4 = this.opService.getPaymentArr();
+        let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
+        this.paymentArr4.splice(elemnt3, 1);
+        this.setFifthRowValidators(value);
+        this.patientDetailsFormGrp.updateValueAndValidity();
+        break;
 
       default:
         break;
@@ -219,6 +258,84 @@ export class OpPaymentNewComponent implements OnInit {
 
       let element4 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
       this.paymentArr5.splice(element4, 1);
+    }
+  }
+
+  setSecRowValidators(paymentOption: any) {
+    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate').clearAsyncValidators();
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    }
+  }
+
+  setThirdRowValidators(paymentOption: any) {
+    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+      this.patientDetailsFormGrp.get('amount3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+      this.removeThirdValidators();
+    }
+  }
+
+  setFourthRowValidators(paymentOption: any) {
+    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    }
+  }
+
+  setFifthRowValidators(paymentOption: any) {
+    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+      this.patientDetailsFormGrp.updateValueAndValidity();
+    }
+  }
+
+  removeThirdValidators() {
+    this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
+    this.patientDetailsFormGrp.updateValueAndValidity();
+  }
+
+  onSubmit() {
+    console.log(this.patientDetailsFormGrp);
+    if (this.patientDetailsFormGrp.invalid) {
+      const controls = this.patientDetailsFormGrp.controls;
+      Object.keys(controls).forEach(controlsName => {
+        const controlField = this.patientDetailsFormGrp.get(controlsName);
+        if (controlField && controlField.invalid) {
+          controlField.markAsTouched({ onlySelf: true });
+        }
+      });
+      return;
+    } else {
+      console.log('valid...');
     }
   }
 
