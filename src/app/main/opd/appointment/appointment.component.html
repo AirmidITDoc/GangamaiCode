@@ -36,8 +36,8 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" style="background-color: white;
-        height:100%; margin-top: 10px;">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+        margin-left:12px; background-color: white;height:90%;">
 
             <!-- SIDEBAR CONTENT -->
             <div class="sidebar-content">
@@ -109,7 +109,7 @@
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div style="width: 100%;">
+        <div style="width: 85%;">
             <mat-tab-group style="background-color: white;">
 
                 <mat-tab>
@@ -125,10 +125,6 @@
 
                                     <div fxlayout="row">
                                         <div style="width: 100%; overflow: hidden;">
-                                            <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
                                             <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 

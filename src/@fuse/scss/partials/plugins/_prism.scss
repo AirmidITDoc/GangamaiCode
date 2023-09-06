@@ -27,7 +27,7 @@ $violet: $base0E;
 $magenta: $base0F;
 
 $code-font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
-$code-font-size: 14px;
+$code-font-size: 15px;
 $code-line-height: 1.6;
 $code-background: $base00;
 $code-color: $base05;
@@ -63,7 +63,7 @@ $code-selector-inline: ":not(pre) > code[class*=\"language-\"]";
 
 // generic stuff
 $code-font-family: Menlo, Monaco, "Courier New", monospace !default;
-$code-font-size: 14px !default;
+$code-font-size: 15px !default;
 $code-line-height: 1.6 !default;
 
 $code-tab-size: 4 !default;

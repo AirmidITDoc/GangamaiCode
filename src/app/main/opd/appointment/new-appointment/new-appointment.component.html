@@ -624,7 +624,7 @@
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Purpose</mat-label>
                           <input matAutocompletePosition="below" type="text" placeholder="Select Purpose" matInput
-                            formControlName="PurposeId" [matAutocomplete]="autoPurpose" required>
+                            formControlName="PurposeId" [matAutocomplete]="autoPurpose">
                           <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                               (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">close</mat-icon>
