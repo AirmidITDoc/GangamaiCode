@@ -1288,7 +1288,6 @@ export class NewAppointmentComponent implements OnInit {
 
 
   onChangeReg(event) {
-debugger
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.personalFormGroup.reset();
@@ -1303,11 +1302,6 @@ debugger
       // this.Regdisplay = false;
       this.showtable = false;
 
-      this.getHospitalList1();
-      this.getHospitalList();
-      this.getTariffList();
-      this.getPatientTypeList();
-
 
     } else {
       this.isRegSearchDisabled = false;
@@ -1319,13 +1313,14 @@ debugger
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
-
-      this.getHospitalList1();
-      this.getHospitalList();
-      this.getTariffList();
-      this.getPatientTypeList();
       // this.searchRegList();
     }
+
+
+    this.getHospitalList1();
+    this.getHospitalList();
+    this.getTariffList();
+    this.getPatientTypeList();
     this.getPrefixList();
     this.getDepartmentList();
     this.getcityList1();

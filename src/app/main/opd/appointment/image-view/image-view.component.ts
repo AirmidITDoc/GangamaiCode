@@ -85,7 +85,7 @@ export class ImageViewComponent implements OnInit {
   }
 
   onUpload() {
-    this.dialogRef.close({url: this.sysImage});
+    this.dialogRef.close({url: this.sysImage, name: 'captured_image'});
   }
 
 
