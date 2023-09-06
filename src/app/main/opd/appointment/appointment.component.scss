@@ -1,61 +1,61 @@
 @import "src/@fuse/scss/fuse";
 app-appointment{
-:host {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-    height: 100%;
-    width: 100%;
+// :host {
+//     display: flex;
+//     flex-direction: column;
+//     flex: 1 0 auto;
+//     height: 100%;
+//     width: 100%;
     
-    .mat-form-field {
-        margin-right: 12px;
-      } 
+//     .mat-form-field {
+//         margin-right: 12px;
+//       } 
 
-    .sidebar-content {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        background-color: white;    
+//     .sidebar-content {
+//         display: flex;
+//         flex-direction: column;
+//         padding: 0;
+//         background-color: white;    
             
-        @include media-breakpoint(gt-sm) {
-            //prasad
-            // padding: 24px 4px 24px 24px;
-            padding: 12px 0 12px 12px;
-        }
+//         @include media-breakpoint(gt-sm) {
+//             //prasad
+//             // padding: 24px 4px 24px 24px;
+//             padding: 12px 0 12px 12px;
+//         }
 
-        .card {
-            display: flex;
-            flex-direction: column;
-            flex: 0 1 auto;
-            padding: 0;
-            border-radius: 8px;
+//         .card {
+//             display: flex;
+//             flex-direction: column;
+//             flex: 0 1 auto;
+//             padding: 0;
+//             border-radius: 8px;
 
-            @include media-breakpoint(gt-sm) {
-                @include mat-elevation(1);
-            }
+//             @include media-breakpoint(gt-sm) {
+//                 @include mat-elevation(1);
+//             }
 
-            > .header {
-                flex: 0 1 auto;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            }
+//             > .header {
+//                 flex: 0 1 auto;
+//                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+//             }
 
-            > .content {
-                flex: 0 1 auto;
-            }
+//             > .content {
+//                 flex: 0 1 auto;
+//             }
 
-            .example-chip-list {
-                width: 100%;
-                font-size: small;
-                display:inline
-               }
+//             .example-chip-list {
+//                 width: 100%;
+//                 font-size: small;
+//                 display:inline
+//                }
 
-            // .mat-form-field-wrapper {
-            //     padding-bottom: 0.34375em;
-            // }
-        }
-    }
+//             // .mat-form-field-wrapper {
+//             //     padding-bottom: 0.34375em;
+//             // }
+//         }
+//     }
 
-}
+// }
 
 
 .mat-form-field-wrapper {
@@ -124,18 +124,27 @@ app-appointment{
         height: 800px !important;
 }
 .mat-header-row {
-   max-width: 100%; 
-     min-width: 1640px; 
-     min-height: 40px;  
-     width: 100%; 
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1640px;  
+    min-height: 30px; 
+    // background-color: blue;
+    // max-width: 100%; 
+    // min-width: 1640px; 
+    // min-height: 40px;  
+    // width: 100%; 
     
 }
 
 .mat-row {
-    max-width: 100%;
-    min-height: 40px;  
-    min-width: 1640px; 
-    display: flex;      
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1640px;      
+    min-height: 30px;  
+    // max-width: 100%;
+    // min-height: 40px;  
+    // min-width: 1640px; 
+    // display: flex;      
 }
 
 
@@ -408,9 +417,9 @@ h1, .h1 {
 .img-container {
     display: flex;
     flex-direction: row;
-    width: 100px;
+    // width: 100px;
     // height: 100px;
-    align-items: center;
+    // align-items: center;
 }
 
 .inputfile {
@@ -427,7 +436,7 @@ h1, .h1 {
     padding: 10px;
     color: white;
     // border-radius: 5px;
-    height: 30px;
+    height: 38px;
 }
 
 .submit-btn1 {
@@ -586,6 +595,16 @@ h1, .h1 {
       display: block!important;
     }
   }
+
+  .file-lable1 {
+    margin-right: 10px;
+  }
+
+.file-name {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
  
 
 //   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular
