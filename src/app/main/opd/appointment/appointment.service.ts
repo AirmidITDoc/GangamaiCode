@@ -14,6 +14,7 @@ export class AppointmentService {
   mySaveForm: FormGroup;
   now = Date.now();
   sIsLoading: string = '';
+  getRegistrationSearchList: any;
   constructor(public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) {
@@ -190,7 +191,7 @@ export class AppointmentService {
   }
   //registration list 
   public getRegistrationList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
   }
 
   public UpdateQueryByStatement(query) {

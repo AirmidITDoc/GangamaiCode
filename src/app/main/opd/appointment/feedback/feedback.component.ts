@@ -10,6 +10,7 @@ import { HttpClient } from "@angular/common/http";
 import Swal from "sweetalert2";
 import { AppointmentService } from "../appointment.service";
 import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
+import { MatStepper } from "@angular/material/stepper";
 
 @Component({
     selector: "app-feedback",
@@ -31,15 +32,18 @@ export class FeedbackComponent implements OnInit {
     registerObj: any;
     GenderList: Object;
     selectedPrefixID: any;
-  DoctorList: Object;
-  filteredDoctor: any;
-  VisitFormGroup: any;
-  Doctor2List: Object;
-  doctorFilterCtrl: any;
+    DoctorList: Object;
+    filteredDoctor: any;
+    VisitFormGroup: any;
+    Doctor2List: Object;
+    doctorFilterCtrl: any;
 
-  
-  filteredOptions: any;
-  noOptionFound: boolean = false;
+    
+    filteredOptions: any;
+    noOptionFound: boolean = false;
+    isRegSearchDisabled: boolean = true;
+  isDepartmentSelected: any;
+
     
   // prefix filter
   private filterPrefix() {
@@ -88,7 +92,27 @@ export class FeedbackComponent implements OnInit {
           });
         }
       }
-
+      nextClicked(feedbackFormGroup) {
+        if (feedbackFormGroup.invalid) {
+          const controls = feedbackFormGroup.controls;
+          Object.keys(controls).forEach(controlsName => {
+            const controlField = feedbackFormGroup.get(controlsName);
+            if (controlField && controlField.invalid) {
+              //  Swal.fire('Error !', controlsName, 'error');
+              controlField.markAsTouched({ onlySelf: true });
+            }
+          });
+          return;
+        }
+        if (feedbackFormGroup) {
+          if (!this.isDepartmentSelected) {
+            return;
+          }
+          this.submitFeedbackForm();
+          return;
+        }
+        this.appointmentFormStepper.next();
+      }
       //Patient search
        getSearchList() {
         debugger
@@ -119,14 +143,13 @@ export class FeedbackComponent implements OnInit {
         return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
       }
 
-
       getSelectedObj(obj) {
         console.log('obj==', obj);
         this.registerObj = new AdmissionPersonlModel({});
                     this.registerObj = obj;
         
       }
-    
+      @ViewChild('appointmentFormStepper') appointmentFormStepper: MatStepper;
 
 
   DocSelectdelete(){
@@ -140,7 +163,6 @@ export class FeedbackComponent implements OnInit {
   this.getDoctor2List();
   }
 
-
   getDoctor2List() {
     this._opappointmentService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
@@ -148,7 +170,7 @@ export class FeedbackComponent implements OnInit {
 
     createFeedbackForm() {
         return this.formBuilder.group({
-          RegId:[''],
+            RegId:[''],
             DoctorList:[""],
             PrefixName:[""],
             PatientName: [""],
@@ -177,11 +199,10 @@ export class FeedbackComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    clearForm() {
+   clearForm() {
         this.feedbackFormGroup.reset(); // Resets the formgroup
     }
     
-
     // onChange(event) {
     //
     //         console.log(event.value);
