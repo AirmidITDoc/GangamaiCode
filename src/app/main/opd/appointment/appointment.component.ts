@@ -198,9 +198,7 @@ export class AppointmentComponent implements OnInit {
         };
         setTimeout(() => {
             this.isLoadingStr = 'loading';
-            this._AppointmentSreviceService
-                .getAppointmentList(D_data)
-                .subscribe(
+            this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
                     (Visit) => {
                         this.dataSource.data = Visit as VisitMaster[];
                         this.dataSource.sort = this.sort;

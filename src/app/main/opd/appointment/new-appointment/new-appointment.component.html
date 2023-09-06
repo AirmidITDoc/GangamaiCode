@@ -175,7 +175,7 @@
                         </span>
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                           (optionSelected)='getSelectedObj($event.option.value)'>
-                          <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                          <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                             {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
                             {{option.MobileNo}}
                           </mat-option>

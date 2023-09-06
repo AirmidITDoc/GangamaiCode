@@ -32,6 +32,11 @@ import { IPBillingComponent } from './ip-billing/ip-billing.component';
   animations: fuseAnimations
 })
 export class IPSearchListComponent implements OnInit {
+// ----- spinner loading 
+  isLoadingStr: string = '';
+  isLoading: String = '';
+
+
   hasSelectedContacts: boolean;
   MouseEvent = true;
   AdvanceId: number;
@@ -274,17 +279,20 @@ debugger;
       }
 
       console.log(D_data);
+      setTimeout(() => {
+      this.isLoadingStr = 'loading';
       this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
-        this.dataSource.data = data as Admission[];
-        console.log( this.dataSource.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
+            this.dataSource.data = data as Admission[];
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+            // this.sIsLoading = '';
+            // this.click = false;
       },
         error => {
           this.sIsLoading = '';
         });
+      }, 1000);
     }
     else {
 
@@ -300,18 +308,21 @@ debugger;
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
+
+      setTimeout(() => {
+      this.isLoadingStr = 'loading';
       this._IpSearchListService.getDischargedPatientList(D_data).subscribe(data => {
-        this.dataSource.data = data as Admission[];
-        console.log( this.dataSource.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
+          this.dataSource.data = data as Admission[];
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+          // this.sIsLoading = '';
+          // this.click = false;
       },
         error => {
           this.sIsLoading = '';
         });
-        
+      }, 1000);
 
     }
   }

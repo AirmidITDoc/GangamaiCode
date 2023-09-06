@@ -203,6 +203,7 @@ export class NewAppointmentComponent implements OnInit {
 
   options = [];
   filteredOptions: any;
+  PatientListfilteredOptions: any;
   noOptionFound: boolean = false;
   @ViewChild('appointmentFormStepper') appointmentFormStepper: MatStepper;
   @Input() panelWidth: string | number;
@@ -927,15 +928,13 @@ export class NewAppointmentComponent implements OnInit {
 
   // RegId of Patient Searching 
   getSearchList() {
-    debugger
-   
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
-        console.log(resData)
+        this.PatientListfilteredOptions=resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
