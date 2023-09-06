@@ -60,7 +60,7 @@ app-registration {
 
 app-registration {
   .table1 {
-    height: 600px !important;
+    height: 700px !important;
   }
 
   .mat-header-row {
@@ -78,24 +78,24 @@ app-registration {
   }
 
   .mat-column-RegNo {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
 
   }
 
   .mat-column-RegDate {
-    width: 130px;
-    max-width: 130px;
-    min-width: 130px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: left;
   }
 
   .mat-column-PatientName {
-    width: 250px;
-    max-width: 250px;
-    min-width: 250px;
+    width:350px;
+    max-width: 350px;
+    min-width: 350px;
     text-align: left;
     //  display: inline-block; 
     white-space: nowrap;
@@ -107,24 +107,22 @@ app-registration {
   }
 
   .mat-column-Address {
-    width: 330px;
-    max-width: 330px;
-    min-width: 330px;
+    width: 400px;
+    max-width: 400px;
+    min-width: 400px;
     text-align: left;
     white-space: nowrap;
-    margin-right: 20px;
     overflow: hidden;
     overflow: hidden !important;
     //  display: inline-block; 
   }
 
   .mat-column-AgeYear {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
     text-align: left;
     white-space: nowrap;
-    margin-right: 20px;
     overflow: hidden;
     overflow: hidden !important;
     //  display: inline-block; 

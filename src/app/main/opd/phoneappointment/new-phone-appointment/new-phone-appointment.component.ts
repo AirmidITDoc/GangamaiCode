@@ -7,9 +7,9 @@ import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 
@@ -70,6 +70,17 @@ export class NewPhoneAppointmentComponent implements OnInit {
   submitted = false;
   sIsLoading: string = '';
   minDate: Date;
+
+  isDepartmentSelected:boolean=false;
+  isDoctorSelected:boolean=false;
+
+  
+  optionsDep: any[] = [];
+  optionsDoc: any[] = [];
+
+  filteredOptionsDep: Observable<string[]>;
+  filteredOptionsDoc: Observable<string[]>;
+  
 
   displayedColumns = [
 
@@ -173,6 +184,17 @@ export class NewPhoneAppointmentComponent implements OnInit {
     });
   }
 
+  getOptionTextDep(option) {
+    return option.departmentName;
+  }
+
+  getOptionTextDoc(option) {
+    
+    return option && option.Doctorname ? option.Doctorname : '';
+    
+  }
+
+
   private filterDepartment() {
     // debugger;
     if (!this.DepartmentList) {
@@ -214,14 +236,60 @@ export class NewPhoneAppointmentComponent implements OnInit {
     );
   }
 
-  OnChangeDoctorList(departmentObj) {
-    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+  // OnChangeDoctorList(departmentObj) {
+  //   this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
+  // }
+
+  private _filterDoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
+      return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+    // const filterValue = value.toLowerCase();
+    // this.isDoctorSelected = false;
+    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
   }
+
+
+  OnChangeDoctorList(departmentObj) {
+  
+    this.isDepartmentSelected = true;
+    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+      data => {
+        this.DoctorList = data;
+        console.log(this.DoctorList);
+        // this.filteredDoctor.next(this.DoctorList.slice());
+        this.optionsDoc = this.DoctorList.slice();
+        this.filteredOptionsDoc = this.personalFormGroup.get('DoctorId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+        );
+      })
+  }
+
+
+
+   private _filterDep(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      // this.isDepartmentSelected = false;
+      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
 
   getDepartmentList() {
     this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
+      this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this.personalFormGroup.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
+      // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
 

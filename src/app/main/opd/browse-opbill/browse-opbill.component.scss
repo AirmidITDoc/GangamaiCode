@@ -122,12 +122,12 @@ app-browse-opbill{
 app-browse-opbill{
 
     .table1{
-        height: 600px !important;
+        height: 700px !important;
     }
 .mat-header-row {
    
    max-width: 100%; 
-     min-width: 1240px; 
+     min-width: 1480px; 
      min-height: 20px;  
      width: 100%; 
     
@@ -136,14 +136,14 @@ app-browse-opbill{
 .mat-row {
     max-width: 100%;
     min-height: 25px;  
-    min-width: 1240px; 
+    min-width: 1480px; 
     display: flex;      
 }
 
 .mat-column-BillDate {
-    width:100px;
-    max-width: 100px;
-    min-width: 100px;
+    width:80px;
+    max-width: 80px;
+    min-width: 80px;
     text-align: center;
 }
 .mat-column-BillNo {
@@ -173,7 +173,7 @@ app-browse-opbill{
     overflow: hidden !important;
     // display: inline-block;
     // margin-top: 7px;
-    margin-right: 10px;   
+    
     justify-content:left; 
 }
 
@@ -243,7 +243,7 @@ app-browse-opbill{
     min-width: 110px;
     text-align: right;
     justify-content:right;
-    margin-right: 15px;
+    
     // justify-content:flex-start;
 }
 .mat-column-action{

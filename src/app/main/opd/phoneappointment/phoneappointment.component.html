@@ -13,8 +13,8 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
-            <button mat-raised-button (click)="newPhoneAppointment()">
-                <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon>
+            <button mat-raised-button (click)="newPhoneAppointment()" style="background-color: aliceblue;color: brown;">New Phone Appointment
+                <!-- <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon> -->
             </button>
         </div>
     </mat-toolbar>
@@ -27,7 +27,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -118,17 +118,17 @@
                                 <!-- sppinner -->
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                     style="overflow:auto;">
-                                    <ng-container matColumnDef="PhoneAppId">
+                                    <!-- <ng-container matColumnDef="PhoneAppId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             PhoneAppId
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.PhoneAppId}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="AppDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppDate
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AppDate}}

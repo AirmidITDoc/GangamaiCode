@@ -10,8 +10,8 @@
         Registration
       </span>
 
-      <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1500px;">
-        <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
+      <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1500px;background-color: aliceblue;color: brown;">
+        <!-- <mat-icon color="Primary" title=" Registration Form " >Registration</mat-icon> -->New Registration
     </button>
     </div> 
 
@@ -28,7 +28,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -140,7 +140,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="GenderName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>GenderName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Gender
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             {{contact.GenderName}}

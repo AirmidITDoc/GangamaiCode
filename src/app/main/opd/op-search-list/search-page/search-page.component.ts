@@ -219,7 +219,7 @@ export class SearchPageComponent implements OnInit {
       "RegTime": row.RegTime.trim()
     }
 
-    console.log(m_data);
+   
     this._registrationService.populateFormpersonal(m_data);
     this.onClose();
     debugger;
