@@ -32,7 +32,7 @@ import { IPBillingComponent } from './ip-billing/ip-billing.component';
   animations: fuseAnimations
 })
 export class IPSearchListComponent implements OnInit {
-// ----- spinner loading 
+  // ----- spinner loading 
   isLoadingStr: string = '';
   isLoading: String = '';
 
@@ -80,9 +80,9 @@ export class IPSearchListComponent implements OnInit {
   ];
 
 
-  
+
   menuActions: Array<string> = [];
-  
+
 
   constructor(
     public _IpSearchListService: IPSearchListService,
@@ -111,12 +111,12 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Discharge Summary');
     }
     else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
-     
+
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Refund of Advance');
-      
+
     }
-   
+
     else if (this._ActRoute.url == '/ipd/add-billing') {
       this.menuActions.push('Advance');
       this.menuActions.push('Bill');
@@ -138,7 +138,7 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Bed Transfer');
       this.menuActions.push('Doctor Note');
       this.menuActions.push('Nursing Note');
-     
+
     }
     // this.getAdvanceId();
 
@@ -175,7 +175,7 @@ export class IPSearchListComponent implements OnInit {
   // }
 
 
-  onExport(exprtType){
+  onExport(exprtType) {
     // let columnList=[];
     // if(this.dataSource.data.length == 0){
     //   // this.toastr.error("No Data Found");
@@ -187,7 +187,7 @@ export class IPSearchListComponent implements OnInit {
     //   for(var i=0;i<this.dataSource.data.length;i++){
     //     let singleEntry = {
     //       // "Sr No":a+i,
-        
+
     //       "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"]:"N/A",
     //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
     //       "DOA" :this.dataSource.data[i]["DOA"] ? this.dataSource.data[i]["DOA"]:"N/A",
@@ -243,7 +243,7 @@ export class IPSearchListComponent implements OnInit {
     //       });
     //       rows.push(arr);
     //     });
-      
+
     //     doc.autoTable(col, rows,{
     //       margin:{left:5,right:5,top:5},
     //       theme:"grid",
@@ -259,13 +259,12 @@ export class IPSearchListComponent implements OnInit {
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
-}
+  }
 
 
   getAdmittedPatientList() {
-debugger;
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value) {
-      this.sIsLoading = 'loading-data';
+      this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
@@ -277,26 +276,24 @@ debugger;
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
-
-      console.log(D_data);
       setTimeout(() => {
-      this.isLoadingStr = 'loading';
-      this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
-            this.dataSource.data = data as Admission[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-            // this.sIsLoading = '';
-            // this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
+        this.isLoadingStr = 'loading';
+        this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
+          this.dataSource.data = data as Admission[];
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+          // this.sIsLoading = '';
+          // this.click = false;
+        },
+          error => {
+            this.sIsLoading = '';
+          });
       }, 1000);
     }
     else {
 
-      this.sIsLoading = 'loading-data';
+      this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
@@ -308,20 +305,19 @@ debugger;
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
-
       setTimeout(() => {
-      this.isLoadingStr = 'loading';
-      this._IpSearchListService.getDischargedPatientList(D_data).subscribe(data => {
+        this.isLoadingStr = 'loading';
+        this._IpSearchListService.getDischargedPatientList(D_data).subscribe(data => {
           this.dataSource.data = data as Admission[];
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
           // this.sIsLoading = '';
           // this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
+        },
+          error => {
+            this.sIsLoading = '';
+          });
       }, 1000);
 
     }
@@ -362,27 +358,27 @@ debugger;
   //     console.log(this.AdvanceId);
   //   });
   // } 
-  SubMenu(contact){
-      let xx = {
-        RegNo: contact.RegNo,
-        AdmissionID: contact.AdmissionID,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        IsDischarged: contact.IsDischarged,
-        IPDNo:contact.IPDNo,
-        BedName:contact.BedName,
-        WardName:contact.RoomName
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx); 
-      this._ActRoute.navigate(['ipd/add-billing/new-appointment']);
+  SubMenu(contact) {
+    let xx = {
+      RegNo: contact.RegNo,
+      AdmissionID: contact.AdmissionID,
+      PatientName: contact.PatientName,
+      Doctorname: contact.Doctorname,
+      AdmDateTime: contact.AdmDateTime,
+      AgeYear: contact.AgeYear,
+      ClassId: contact.ClassId,
+      TariffName: contact.TariffName,
+      TariffId: contact.TariffId,
+      IsDischarged: contact.IsDischarged,
+      IPDNo: contact.IPDNo,
+      BedName: contact.BedName,
+      WardName: contact.RoomName
+    };
+    this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    this._ActRoute.navigate(['ipd/add-billing/new-appointment']);
   }
 
-  
+
   getRecord(contact, m): void {
     // debugger;
     console.log(contact);
@@ -394,7 +390,7 @@ debugger;
         RegNo: contact.RegNo,
         RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID:contact.OPD_IPD_Id,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
         AdmDateTime: contact.AdmDateTime,
@@ -410,7 +406,7 @@ debugger;
         BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
-        opD_IPD_Typec : contact.opD_IPD_Type
+        opD_IPD_Typec: contact.opD_IPD_Type
 
       }
 
@@ -418,7 +414,7 @@ debugger;
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm(m_data);
 
-     
+
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -468,7 +464,7 @@ debugger;
         RegNo: contact.RegNo,
         RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID:contact.OPD_IPD_Id,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
         AdmDateTime: contact.AdmDateTime,
@@ -484,7 +480,7 @@ debugger;
         BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
-        opD_IPD_Typec : contact.opD_IPD_Type
+        opD_IPD_Typec: contact.opD_IPD_Type
 
       }
       // console.log(m_data1);
@@ -507,7 +503,7 @@ debugger;
       });
     }
     else if (m == "Refund of Bill") {
-debugger;
+      debugger;
       console.log(" This is for IP Refund of Bill pop : " + m);
       let xx = {
         RegNo: contact.RegId,
@@ -566,20 +562,20 @@ debugger;
       debugger
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
-       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
-     {
-         maxWidth: "110vw",
-           maxHeight: "90%", width: '100%', height: "100%"
-         });
-       dialogRef.afterClosed().subscribe(result => {
-         console.log('The dialog was closed - Insert Action', result);
-         //this.getAdmittedPatientList();
-       });
+      const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
+        {
+          maxWidth: "110vw",
+          maxHeight: "90%", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        //this.getAdmittedPatientList();
+      });
     }
     else if (m == "Bill") {
 
       debugger;
-// console.log(m);
+      // console.log(m);
       console.log(" This is for  Bill pop : " + m);
       let xx = {
         RegNo: contact.RegNo,
@@ -592,62 +588,62 @@ debugger;
         TariffName: contact.TariffName,
         TariffId: contact.TariffId,
         IsDischarged: contact.IsDischarged,
-        IPDNo:contact.IPDNo,
-        BedName:contact.BedName,
-        WardName:contact.RoomName,
-        CompanyId:contact.CompanyId,
-        IsBillGenerated:contact.IsBillGenerated,
-        UnitId:contact.HospitalID
+        IPDNo: contact.IPDNo,
+        BedName: contact.BedName,
+        WardName: contact.RoomName,
+        CompanyId: contact.CompanyId,
+        IsBillGenerated: contact.IsBillGenerated,
+        UnitId: contact.HospitalID
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       console.log(this.advanceDataStored.storage);
-     if(!contact.IsBillGenerated){
+      if (!contact.IsBillGenerated) {
 
-      console.log(this.advanceDataStored.storage);
-      const dialogRef = this._matDialog.open(IPBillingComponent,
-        {
+        console.log(this.advanceDataStored.storage);
+        const dialogRef = this._matDialog.open(IPBillingComponent,
+          {
 
-          maxWidth: "120vw",
-          height: '890px',    //maxHeight: "170vh",
-          // width: '100%',
+            maxWidth: "120vw",
+            height: '890px',    //maxHeight: "170vh",
+            // width: '100%',
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      
-      });
-    }else{Swal.fire("Final Bill Already Generated")}
+      } else { Swal.fire("Final Bill Already Generated") }
     }
     else if (m == "Discharge") {
       debugger;
-      if(!contact.IsDischarged){
-      let m_data = {
-        "RegNo": contact.RegNo,
-        "PatientName": contact.PatientName,
-        "AdmissionID": contact.AdmissionID,
-        "DOA": contact.DOA,
-        "DOT": contact.DOT,
-        "DoctorName": contact.DoctorName,
-        "RoomName": contact.RoomName,
-        "BedNo": contact.BedName,
-        "IPDNo": contact.IPDNo,
-        "DocNameID": contact.DocNameID,
-        "IsDischarged":contact.IsDischarged
-      }
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      this._IpSearchListService.populateForm(m_data);
-      const dialogRef = this._matDialog.open(DischargeComponent,
-        {
-          maxWidth: "85vw",
-          height: '400px',
-          width: '100%',
+      if (!contact.IsDischarged) {
+        let m_data = {
+          "RegNo": contact.RegNo,
+          "PatientName": contact.PatientName,
+          "AdmissionID": contact.AdmissionID,
+          "DOA": contact.DOA,
+          "DOT": contact.DOT,
+          "DoctorName": contact.DoctorName,
+          "RoomName": contact.RoomName,
+          "BedNo": contact.BedName,
+          "IPDNo": contact.IPDNo,
+          "DocNameID": contact.DocNameID,
+          "IsDischarged": contact.IsDischarged
+        }
+        this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+        this._IpSearchListService.populateForm(m_data);
+        const dialogRef = this._matDialog.open(DischargeComponent,
+          {
+            maxWidth: "85vw",
+            height: '400px',
+            width: '100%',
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this.getAdmittedPatientList();
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.getAdmittedPatientList();
-      });
-    }else{
-     
-     
+      } else {
+
+
         Swal.fire({
           title: 'Patient Already Discharged Do you Want to Edit',
           // showDenyButton: true,
@@ -656,42 +652,42 @@ debugger;
 
         }).then((result) => {
 
-        
-        if (result.isConfirmed) {
-          let m_data = {
-            "RegNo": contact.RegNo,
-            "PatientName": contact.PatientName,
-            "AdmissionID": contact.AdmissionID,
-            "DOA": contact.DOA,
-            "DOT": contact.DOT,
-            "DoctorName": contact.DoctorName,
-            "RoomName": contact.RoomName,
-            "BedNo": contact.BedName,
-            "IPDNo": contact.IPDNo,
-            "DocNameID": contact.DocNameID,
-            "IsDischarged":contact.IsDischarged
+
+          if (result.isConfirmed) {
+            let m_data = {
+              "RegNo": contact.RegNo,
+              "PatientName": contact.PatientName,
+              "AdmissionID": contact.AdmissionID,
+              "DOA": contact.DOA,
+              "DOT": contact.DOT,
+              "DoctorName": contact.DoctorName,
+              "RoomName": contact.RoomName,
+              "BedNo": contact.BedName,
+              "IPDNo": contact.IPDNo,
+              "DocNameID": contact.DocNameID,
+              "IsDischarged": contact.IsDischarged
+            }
+            this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+            this._IpSearchListService.populateForm(m_data);
+            const dialogRef = this._matDialog.open(DischargeComponent,
+              {
+
+                maxWidth: "85vw",
+                height: '400px',
+                width: '100%',
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+
+            });
           }
-          this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-          this._IpSearchListService.populateForm(m_data);
-         const dialogRef = this._matDialog.open(DischargeComponent,
-           {
-   
-            maxWidth: "85vw",
-             height: '400px',
-              width: '100%',
-           });
-         dialogRef.afterClosed().subscribe(result => {
-           console.log('The dialog was closed - Insert Action', result);
-         
-         });
-           }
-           else{
-            
-           }
-         });
-    
+          else {
+
+          }
+        });
+
+      }
     }
-  }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
       let m_data = {
@@ -726,191 +722,191 @@ debugger;
         this.getAdmittedPatientList();
       });
     }
-//     else if (m == "Prescription") {
-//       console.log(" This is for Prescription pop : " + m);
-//       let m_data = {
-//         "RegNo": contact.RegNo,
-//         "PatientName": contact.PatientName,
-//         "AdmissionID": contact.AdmissionID,
-//         "AdmDateTime": contact.AdmDateTime,
-//         "DOA": contact.DOA,
-//         //"Dot":contact.DOT,
-//         //"AdmittedDoctor1":contact.AdmittedDoctor1,
-//         "DocNameID": contact.DocNameID,
-//         "RoomId": contact.WardId,
-//         "WardId": contact.WardId,
-//         "RoomName": contact.RoomName,
-//         "BedId": contact.BedId,
-//         "BedName": contact.BedName,
-//         "TariffId": contact.TariffId,
-//         "TariffName": contact.TariffName,
-//         "ClassId": contact.ClassId,
+    //     else if (m == "Prescription") {
+    //       console.log(" This is for Prescription pop : " + m);
+    //       let m_data = {
+    //         "RegNo": contact.RegNo,
+    //         "PatientName": contact.PatientName,
+    //         "AdmissionID": contact.AdmissionID,
+    //         "AdmDateTime": contact.AdmDateTime,
+    //         "DOA": contact.DOA,
+    //         //"Dot":contact.DOT,
+    //         //"AdmittedDoctor1":contact.AdmittedDoctor1,
+    //         "DocNameID": contact.DocNameID,
+    //         "RoomId": contact.WardId,
+    //         "WardId": contact.WardId,
+    //         "RoomName": contact.RoomName,
+    //         "BedId": contact.BedId,
+    //         "BedName": contact.BedName,
+    //         "TariffId": contact.TariffId,
+    //         "TariffName": contact.TariffName,
+    //         "ClassId": contact.ClassId,
 
 
-//       }
-//       // console.log(m_data);
-//       this._IpSearchListService.populateForm(m_data);
-//       //      this.getAdvanceList();
-//       const dialogRef = this._matDialog.open(PrescriptionComponent,
-//         {
-//           maxWidth: "95vw",
-//           maxHeight: "90vh", width: '100%', height: "100%"
-//         });
-//       dialogRef.afterClosed().subscribe(result => {
-//         console.log('The dialog was closed - Insert Action', result);
+    //       }
+    //       // console.log(m_data);
+    //       this._IpSearchListService.populateForm(m_data);
+    //       //      this.getAdvanceList();
+    //       const dialogRef = this._matDialog.open(PrescriptionComponent,
+    //         {
+    //           maxWidth: "95vw",
+    //           maxHeight: "90vh", width: '100%', height: "100%"
+    //         });
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
 
-//       });
-//     }
-   
-//     else if (m == "Medical CasePaper") {
-// debugger;
-//       console.log(" This is for Medical CasePaper pop : " + m);
-//       let xx = {
-//         RegNo: contact.RegID,        
-//         AdmissionID: contact.AdmissionID,
-//         OPD_IPD_ID:contact.OPD_IPD_ID,
-//         OPD_IPD_Type:contact.opD_IPD_Type,
-//         PatientName: contact.PatientName,
-//         Doctorname: contact.Doctorname,
-//         AdmDateTime: contact.AdmDateTime,
-//         AgeYear: contact.AgeYear,
-//         ClassId: contact.ClassId,
-//         TariffName: contact.TariffName,
-//         TariffId: contact.TariffId,
-//         DoctorId: contact.DoctorId,
-//         DOA: contact.DOA,
-//         DOT: contact.DOT,
-//         DoctorName: contact.DoctorName,
-//         WardName: contact.RoomName,
-//         BedName: contact.BedName,
-//         IPDNo: contact.IPDNo,
-//         DocNameID: contact.DocNameID,
-//       };
-//       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    //       });
+    //     }
 
-//       const dialogRef = this._matDialog.open(CasePaperComponent,
-//         {
-//           maxWidth: "115vw",
-//           height: '860px',
-//           width: '100%',
-//         });
-//       dialogRef.afterClosed().subscribe(result => {
-//         console.log('The dialog was closed - Insert Action', result);
+    //     else if (m == "Medical CasePaper") {
+    // debugger;
+    //       console.log(" This is for Medical CasePaper pop : " + m);
+    //       let xx = {
+    //         RegNo: contact.RegID,        
+    //         AdmissionID: contact.AdmissionID,
+    //         OPD_IPD_ID:contact.OPD_IPD_ID,
+    //         OPD_IPD_Type:contact.opD_IPD_Type,
+    //         PatientName: contact.PatientName,
+    //         Doctorname: contact.Doctorname,
+    //         AdmDateTime: contact.AdmDateTime,
+    //         AgeYear: contact.AgeYear,
+    //         ClassId: contact.ClassId,
+    //         TariffName: contact.TariffName,
+    //         TariffId: contact.TariffId,
+    //         DoctorId: contact.DoctorId,
+    //         DOA: contact.DOA,
+    //         DOT: contact.DOT,
+    //         DoctorName: contact.DoctorName,
+    //         WardName: contact.RoomName,
+    //         BedName: contact.BedName,
+    //         IPDNo: contact.IPDNo,
+    //         DocNameID: contact.DocNameID,
+    //       };
+    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-//       });
-//     }
-//     else if (m == "Bed Transfer") {
+    //       const dialogRef = this._matDialog.open(CasePaperComponent,
+    //         {
+    //           maxWidth: "115vw",
+    //           height: '860px',
+    //           width: '100%',
+    //         });
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
 
-//       console.log(" This is for Bed Transfer pop : " + m);
-//       let xx = {
-//         RegNo: contact.RegId,
-//         AdmissionID: contact.AdmissionID,
-//         OPD_IPD_ID:contact.OPD_IPD_ID,
-//         OPD_IPD_Type:contact.opD_IPD_Type,
-//         PatientName: contact.PatientName,
-//         Doctorname: contact.Doctorname,
-//         AdmDateTime: contact.AdmDateTime,
-//         AgeYear: contact.AgeYear,
-//         ClassId: contact.ClassId,
-//         TariffName: contact.TariffName,
-//         TariffId: contact.TariffId,
-//         DoctorId: contact.DoctorId,
-//         DOA: contact.DOA,
-//         DOT: contact.DOT,
-//         DoctorName: contact.DoctorName,
-//         RoomName: contact.RoomName,
-//         BedNo: contact.BedName,
-//         IPDNo: contact.IPDNo,
-//         DocNameID: contact.DocNameID,
-//       };
-//       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    //       });
+    //     }
+    //     else if (m == "Bed Transfer") {
 
-//       const dialogRef = this._matDialog.open(BedTransferComponent,
-//         {
-//           maxWidth: "115vw",
-//           height: '860px',
-//           width: '100%',
-//         });
-//       dialogRef.afterClosed().subscribe(result => {
-//         console.log('The dialog was closed - Insert Action', result);
+    //       console.log(" This is for Bed Transfer pop : " + m);
+    //       let xx = {
+    //         RegNo: contact.RegId,
+    //         AdmissionID: contact.AdmissionID,
+    //         OPD_IPD_ID:contact.OPD_IPD_ID,
+    //         OPD_IPD_Type:contact.opD_IPD_Type,
+    //         PatientName: contact.PatientName,
+    //         Doctorname: contact.Doctorname,
+    //         AdmDateTime: contact.AdmDateTime,
+    //         AgeYear: contact.AgeYear,
+    //         ClassId: contact.ClassId,
+    //         TariffName: contact.TariffName,
+    //         TariffId: contact.TariffId,
+    //         DoctorId: contact.DoctorId,
+    //         DOA: contact.DOA,
+    //         DOT: contact.DOT,
+    //         DoctorName: contact.DoctorName,
+    //         RoomName: contact.RoomName,
+    //         BedNo: contact.BedName,
+    //         IPDNo: contact.IPDNo,
+    //         DocNameID: contact.DocNameID,
+    //       };
+    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-//       });  
-//     }
-//     else if (m == "Doctor Note") {
+    //       const dialogRef = this._matDialog.open(BedTransferComponent,
+    //         {
+    //           maxWidth: "115vw",
+    //           height: '860px',
+    //           width: '100%',
+    //         });
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
 
-//       console.log(" This is for Doctor Note pop : " + m);
-//       let xx = {
-//         RegNo: contact.RegId,
-//         AdmissionID: contact.AdmissionID,
-//         OPD_IPD_ID:contact.OPD_IPD_ID,
-//         OPD_IPD_Type:contact.opD_IPD_Type,
-//         PatientName: contact.PatientName,
-//         Doctorname: contact.Doctorname,
-//         AdmDateTime: contact.AdmDateTime,
-//         AgeYear: contact.AgeYear,
-//         ClassId: contact.ClassId,
-//         TariffName: contact.TariffName,
-//         TariffId: contact.TariffId,
-//         DoctorId: contact.DoctorId,
-//         DOA: contact.DOA,
-//         DOT: contact.DOT,
-//         DoctorName: contact.DoctorName,
-//         RoomName: contact.RoomName,
-//         BedNo: contact.BedName,
-//         IPDNo: contact.IPDNo,
-//         DocNameID: contact.DocNameID,
-//       };
-//       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    //       });  
+    //     }
+    //     else if (m == "Doctor Note") {
 
-//       // const dialogRef = this._matDialog.open(DoctorNoteComponent,
-//       //   {
-//       //     maxWidth: "115vw",
-//       //     height: '760px',
-//       //     width: '90%',
-//       //   });
-//       // dialogRef.afterClosed().subscribe(result => {
-//       //   console.log('The dialog was closed - Insert Action', result);
+    //       console.log(" This is for Doctor Note pop : " + m);
+    //       let xx = {
+    //         RegNo: contact.RegId,
+    //         AdmissionID: contact.AdmissionID,
+    //         OPD_IPD_ID:contact.OPD_IPD_ID,
+    //         OPD_IPD_Type:contact.opD_IPD_Type,
+    //         PatientName: contact.PatientName,
+    //         Doctorname: contact.Doctorname,
+    //         AdmDateTime: contact.AdmDateTime,
+    //         AgeYear: contact.AgeYear,
+    //         ClassId: contact.ClassId,
+    //         TariffName: contact.TariffName,
+    //         TariffId: contact.TariffId,
+    //         DoctorId: contact.DoctorId,
+    //         DOA: contact.DOA,
+    //         DOT: contact.DOT,
+    //         DoctorName: contact.DoctorName,
+    //         RoomName: contact.RoomName,
+    //         BedNo: contact.BedName,
+    //         IPDNo: contact.IPDNo,
+    //         DocNameID: contact.DocNameID,
+    //       };
+    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-//       // });
-//     }
-//     else if (m == "Nursing Note") {
+    //       // const dialogRef = this._matDialog.open(DoctorNoteComponent,
+    //       //   {
+    //       //     maxWidth: "115vw",
+    //       //     height: '760px',
+    //       //     width: '90%',
+    //       //   });
+    //       // dialogRef.afterClosed().subscribe(result => {
+    //       //   console.log('The dialog was closed - Insert Action', result);
 
-//       console.log(" This is for Nursing Note pop : " + m);
-//       let xx = {
-//         RegNo: contact.RegId,
-//         AdmissionID: contact.AdmissionID,
-//         OPD_IPD_ID:contact.OPD_IPD_ID,
-//         OPD_IPD_Type:contact.opD_IPD_Type,
-//         PatientName: contact.PatientName,
-//         Doctorname: contact.Doctorname,
-//         AdmDateTime: contact.AdmDateTime,
-//         AgeYear: contact.AgeYear,
-//         ClassId: contact.ClassId,
-//         TariffName: contact.TariffName,
-//         TariffId: contact.TariffId,
-//         DoctorId: contact.DoctorId,
-//         DOA: contact.DOA,
-//         DOT: contact.DOT,
-//         DoctorName: contact.DoctorName,
-//         RoomName: contact.RoomName,
-//         BedNo: contact.BedName,
-//         IPDNo: contact.IPDNo,
-//         DocNameID: contact.DocNameID,
-//       };
-//       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    //       // });
+    //     }
+    //     else if (m == "Nursing Note") {
 
-//       // const dialogRef = this._matDialog.open(NursingNoteComponent,
-//       //   {
-//       //     maxWidth: "115vw",
-//       //     height: '760px',
-//       //     width: '90%',
-//       //   });
-//       // dialogRef.afterClosed().subscribe(result => {
-//       //   console.log('The dialog was closed - Insert Action', result);
+    //       console.log(" This is for Nursing Note pop : " + m);
+    //       let xx = {
+    //         RegNo: contact.RegId,
+    //         AdmissionID: contact.AdmissionID,
+    //         OPD_IPD_ID:contact.OPD_IPD_ID,
+    //         OPD_IPD_Type:contact.opD_IPD_Type,
+    //         PatientName: contact.PatientName,
+    //         Doctorname: contact.Doctorname,
+    //         AdmDateTime: contact.AdmDateTime,
+    //         AgeYear: contact.AgeYear,
+    //         ClassId: contact.ClassId,
+    //         TariffName: contact.TariffName,
+    //         TariffId: contact.TariffId,
+    //         DoctorId: contact.DoctorId,
+    //         DOA: contact.DOA,
+    //         DOT: contact.DOT,
+    //         DoctorName: contact.DoctorName,
+    //         RoomName: contact.RoomName,
+    //         BedNo: contact.BedName,
+    //         IPDNo: contact.IPDNo,
+    //         DocNameID: contact.DocNameID,
+    //       };
+    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-//       // });
-//     }
-    
+    //       // const dialogRef = this._matDialog.open(NursingNoteComponent,
+    //       //   {
+    //       //     maxWidth: "115vw",
+    //       //     height: '760px',
+    //       //     width: '90%',
+    //       //   });
+    //       // dialogRef.afterClosed().subscribe(result => {
+    //       //   console.log('The dialog was closed - Insert Action', result);
+
+    //       // });
+    //     }
+
     //
   }
 
@@ -1003,7 +999,7 @@ debugger;
   }
 
 
-  Listdisplay(){
+  Listdisplay() {
     this.click = !this.click;
     setTimeout(() => {
       {
@@ -1020,10 +1016,10 @@ debugger;
   onChangeIsactive(SiderOption) {
     console.log(SiderOption);
     debugger;
-   this.IsDischarge = SiderOption.checked;
+    this.IsDischarge = SiderOption.checked;
     // console.log(this.IsDischarge);
 
-    if (SiderOption.checked==true) {
+    if (SiderOption.checked == true) {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
       // this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());
       // this._IpSearchListService.myFilterform.get('end').setValue((new Date()).toISOString());
@@ -1038,18 +1034,18 @@ debugger;
       this.MouseEvent = true;
     }
     else {
-          this._IpSearchListService.myFilterform.get('IsDischarge').setValue(0);
-          // this._IpSearchListService.myFilterform.get('start').setValue(''),
-          // this._IpSearchListService.myFilterform.get('end').setValue('')
-            
-          setTimeout(() => {
-            {
-              this.sIsLoading = 'loading-data';
-              console.log(this._IpSearchListService.myFilterform);
-              this.showClicked.emit(this._IpSearchListService.myFilterform);
-              this.click = false;
-            }
-          }, 1000);
+      this._IpSearchListService.myFilterform.get('IsDischarge').setValue(0);
+      // this._IpSearchListService.myFilterform.get('start').setValue(''),
+      // this._IpSearchListService.myFilterform.get('end').setValue('')
+
+      setTimeout(() => {
+        {
+          this.sIsLoading = 'loading-data';
+          console.log(this._IpSearchListService.myFilterform);
+          this.showClicked.emit(this._IpSearchListService.myFilterform);
+          this.click = false;
+        }
+      }, 1000);
     }
   }
 }
@@ -1066,368 +1062,362 @@ export class Bed {
    * @param Bed
    */
   constructor(Bed) {
-      {
-          this.BedId = Bed.BedId || '';
-          this.BedName = Bed.BedName || '';
-      }
+    {
+      this.BedId = Bed.BedId || '';
+      this.BedName = Bed.BedName || '';
+    }
   }
 }
 
 
-export class AdvanceDetail
-{
-    AdvanceDetailID : Number;
-    Date : Date;
-    Time : Time;
-    AdvanceId : number;
-    RefId : number;
-    TransactionID : number;
-    OPD_IPD_Id : number;
-    OPD_IPD_Type :number;
-    AdvanceAmount : number;
-    UsedAmount : number;
-    BalanceAmount : number;
-    RefundAmount : number;
-    ReasonOfAdvanceId : number;
-    AddedBy : number;
-    IsCancelled : boolean;
-    IsCancelledBy : number;
-    IsCancelledDate : Date;
-    Reason : string;
+export class AdvanceDetail {
+  AdvanceDetailID: Number;
+  Date: Date;
+  Time: Time;
+  AdvanceId: number;
+  RefId: number;
+  TransactionID: number;
+  OPD_IPD_Id: number;
+  OPD_IPD_Type: number;
+  AdvanceAmount: number;
+  UsedAmount: number;
+  BalanceAmount: number;
+  RefundAmount: number;
+  ReasonOfAdvanceId: number;
+  AddedBy: number;
+  IsCancelled: boolean;
+  IsCancelledBy: number;
+  IsCancelledDate: Date;
+  Reason: string;
 
-     /**
-     * Constructor
-     *
-     * @param AdvanceDetail
-     */
-      constructor(AdvanceDetail) {
-        {
-           this.AdvanceDetailID = AdvanceDetail.AdvanceDetailID || '';
-           this.Date = AdvanceDetail.Date || '';
-           this.Time = AdvanceDetail.Time || '';
-           this.AdvanceId = AdvanceDetail.AdvanceId || '';
-           this.RefId = AdvanceDetail.RefId || '';
-           this.TransactionID = AdvanceDetail.TransactionID || '';
-           this.OPD_IPD_Id = AdvanceDetail.OPD_IPD_Id || '';
-           this.OPD_IPD_Type = AdvanceDetail.OPD_IPD_Type || '';
-           this.AdvanceAmount = AdvanceDetail.AdvanceAmount || '';
-           this.UsedAmount = AdvanceDetail.UsedAmount || '';
-           this.BalanceAmount = AdvanceDetail.BalanceAmount || '';
-           this.RefundAmount= AdvanceDetail.RefundAmount || '';
-           this.ReasonOfAdvanceId= AdvanceDetail.ReasonOfAdvanceId || '';
-           this.AddedBy= AdvanceDetail.AddedBy || '';
-           this.IsCancelled= AdvanceDetail.IsCancelled || '';
-           this.IsCancelledBy = AdvanceDetail.IsCancelledBy || '';
-           this.IsCancelledDate = AdvanceDetail.IsCancelledDate || '';
-           this.Reason = AdvanceDetail.Reason || '';
-        }
-    }
-}
-
-export class AdvanceDetailObj
-{
-    RegNo : Number;
-    AdmissionID: Number;
-    PatientName: string;
-    Doctorname: string;
-    AdmDateTime: string;
-    AgeYear: number;
-    ClassId: number;
-    ClassName:String;
-    TariffName: String;
-    TariffId : number;
-    IsDischarged:boolean;
-    opD_IPD_Type:number;
-    PatientType:any;
-    PatientTypeID:any;
-    VisitId:any;
-    AdmissionId:number;
-    IPDNo:any;
-    DoctorId:number;
-    BedId:any;
-    BedName:String;
-    WardName:String;
-    CompanyId:string;
-    SubCompanyId:any;
-    IsBillGenerated:any;
-    UnitId:any;
-    RegId:number;
-    RefId:number;
-     OPD_IPD_ID:any;
-     storage: any;
-     IsMLC:any;
-     NetPayableAmt:any;
-     /**
-     * Constructor
-     *
-     * @param AdvanceDetailObj
-     */
-      constructor(AdvanceDetailObj) {
-        {
-           this.RegNo = AdvanceDetailObj.RegNo || '';
-           this.RegId = AdvanceDetailObj.RegId || '';
-           this.AdmissionID = AdvanceDetailObj.AdmissionID || '';
-           this.PatientName = AdvanceDetailObj.PatientName || '';
-           this.Doctorname = AdvanceDetailObj.Doctorname || '';
-           this.AdmDateTime = AdvanceDetailObj.AdmDateTime || '';
-           this.AgeYear = AdvanceDetailObj.AgeYear || '';
-           this.ClassId = AdvanceDetailObj.ClassId || '';
-           this.ClassName = AdvanceDetailObj.ClassName || '';
-           this.TariffName = AdvanceDetailObj.TariffName || '';
-           this.TariffId = AdvanceDetailObj.TariffId || '';
-           this.IsDischarged =AdvanceDetailObj.IsDischarged || 0 ;
-           this.opD_IPD_Type = AdvanceDetailObj.opD_IPD_Type | 0;
-           this.PatientType = AdvanceDetailObj.PatientType || 0;
-           this.VisitId = AdvanceDetailObj.VisitId || '';
-           this.AdmissionId = AdvanceDetailObj.AdmissionId || '';
-           this.IPDNo = AdvanceDetailObj.IPDNo || '';
-           this.BedName = AdvanceDetailObj.BedName || '';
-           this.WardName = AdvanceDetailObj.WardName || '';
-           this.CompanyId = AdvanceDetailObj.CompanyId || '';
-           this.IsBillGenerated = AdvanceDetailObj.IsBillGenerated || 0;
-           this.UnitId = AdvanceDetailObj.UnitId || 0;
-           this.RefId = AdvanceDetailObj.RefId || 0;
-            this.DoctorId = AdvanceDetailObj.DoctorId || 0;
-            this.OPD_IPD_ID = AdvanceDetailObj.OPD_IPD_ID || 0;
-            this.IsMLC = AdvanceDetailObj.IsMLC || 0;
-            this.BedId = AdvanceDetailObj.BedId || 0;
-            this.SubCompanyId =AdvanceDetailObj.SubCompanyId || 0;
-            this.PatientTypeID =AdvanceDetailObj.PatientTypeID || 0;
-           this.NetPayableAmt =AdvanceDetailObj.NetPayableAmt || 0;
-
-        }
-    }
-}
-
-
-export class ChargesList{
-    ChargesId: number;
-    ServiceId: number;
-    ServiceName : String;
-    Price:number;
-    Qty: number;
-    TotalAmt: number;
-    DiscPer: number;
-    DiscAmt: number;
-    NetAmount: number;
-    DoctorId:number;
-    ChargeDoctorName: String;
-    ChargesDate: Date;
-    IsPathology:boolean;
-    IsRadiology:boolean;
-    ClassId:number;
-    ClassName: string;
-    ChargesAddedName: string;
-
-    constructor(ChargesList){
-            this.ChargesId = ChargesList.ChargesId || '';
-            this.ServiceId = ChargesList.ServiceId || '';
-            this.ServiceName = ChargesList.ServiceName || '';
-            this.Price = ChargesList.Price || '';
-            this.Qty = ChargesList.Qty || '';
-            this.TotalAmt = ChargesList.TotalAmt || '';
-            this.DiscPer = ChargesList.DiscPer || '';
-            this.DiscAmt = ChargesList.DiscAmt || '';
-            this.NetAmount = ChargesList.NetAmount || '';
-            this.DoctorId=ChargesList.DoctorId || 0;
-            this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-            this.ChargesDate = ChargesList.ChargesDate || '';
-            this.IsPathology = ChargesList.IsPathology || '';
-            this.IsRadiology = ChargesList.IsRadiology || '';
-            this.ClassId=ChargesList.ClassId || 0;
-            this.ClassName = ChargesList.ClassName || '';
-            this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-    }
-} 
-export class AdvanceHeader
-{
-    AdvanceId : Number;
-    Date : Date;
-    RefId : number;
-    OPD_IPD_Type :number;
-    OPD_IPD_Id : number;
-    AdvanceAmount : number;
-    AdvanceUsedAmount : number;
-    BalanceAmount : number;
-    AddedBy : number;
-    IsCancelled : boolean;
-    IsCancelledBy : number;
-    IsCancelledDate : Date;
-    
-     /**
-     * Constructor
-     *
-     * @param AdvanceHeader
-     */
-      constructor(AdvanceHeader) {
-        {
-           this.AdvanceId = AdvanceHeader.AdvanceId || '';           
-           this.Date = AdvanceHeader.Date || '';
-           this.RefId = AdvanceHeader.RefId || '';
-           this.OPD_IPD_Type = AdvanceHeader.OPD_IPD_Type || '';
-           this.OPD_IPD_Id = AdvanceHeader.OPD_IPD_Id || '';
-           this.AdvanceAmount = AdvanceHeader.AdvanceAmount || '';
-           this.AdvanceUsedAmount = AdvanceHeader.AdvanceUsedAmount || '';
-           this.BalanceAmount = AdvanceHeader.BalanceAmount || '';
-           this.AddedBy= AdvanceHeader.AddedBy || '';
-           this.IsCancelled= AdvanceHeader.IsCancelled || '';
-           this.IsCancelledBy = AdvanceHeader.IsCancelledBy || '';
-           this.IsCancelledDate = AdvanceHeader.IsCancelledDate || '';
-           
-        }
-    }
-}
-export class Payment
-{
-    PaymentId : Number;
-    BillNo : number;
-	ReceiptNo : string;
-	PaymentDate	: Date;
-	PaymentTime : Time; 
-	CashPayAmount :	number;
-	ChequePayAmount : number;
-	ChequeNo : string;
-	BankName : string;
-	ChequeDate : Date;
-	CardPayAmount :	number;
-	CardNo : string;
-	CardBankName : string;
-	CardDate : Date;
-	AdvanceUsedAmount :	number;
-	AdvanceId :	number;
-	RefundId :	number;
-	TransactionType :	number;
-	Remark : string;
-	AddBy:	number;
-	IsCancelled	: boolean;
-	IsCancelledBy : number;
-	IsCancelledDate	: Date;
-	CashCounterId :	number;
-	IsSelfORCompany	: number;
-	CompanyId : number;
-	NEFTPayAmount :	number;
-	NEFTNo : string;
-	NEFTBankMaster : string;
-	NEFTDate	:Date;
-	PayTMAmount	: number;
-    PayTMTranNo : string;
-	PayTMDate : Date;
-
-     /**
-     * Constructor
-     *
-     * @param Payment
-     */
-      constructor(Payment) {
-        {
-           this.PaymentId = Payment.PaymentId || '';       
-           this.BillNo = Payment.BillNo || '';       
-           this.ReceiptNo = Payment.ReceiptNo || '';       
-           this.PaymentDate = Payment.PaymentDate || '';       
-           this.PaymentTime = Payment.PaymentTime || '';       
-           this.CashPayAmount = Payment.CashPayAmount || '';       
-           this.ChequePayAmount = Payment.ChequePayAmount || '';       
-           this.ChequeNo = Payment.ChequeNo || '';       
-           this.BankName = Payment.BankName || '';       
-           this.ChequeDate = Payment.ChequeDate || '';       
-           this.CardPayAmount = Payment.CardPayAmount || '';       
-           this.CardNo = Payment.CardNo || '';       
-           this.CardBankName = Payment.CardBankName || '';       
-           this.CardDate = Payment.CardDate || '';       
-           this.AdvanceUsedAmount = Payment.AdvanceUsedAmount || '';       
-           this.AdvanceId = Payment.AdvanceId || '';       
-           this.RefundId = Payment.RefundId || '';       
-           this.TransactionType = Payment.TransactionType || '';       
-           this.Remark = Payment.Remark || '';       
-           this.AddBy = Payment.AddBy || '';       
-           this.IsCancelled = Payment.IsCancelled || '';       
-           this.IsCancelledBy = Payment.IsCancelledBy || '';       
-           this.IsCancelledDate = Payment.IsCancelledDate || '';       
-           this.CashCounterId = Payment.CashCounterId || '';       
-           this.IsSelfORCompany = Payment.IsSelfORCompany || '';       
-           this.CompanyId = Payment.CompanyId || '';       
-           this.NEFTPayAmount = Payment.NEFTPayAmount || '';       
-           this.NEFTNo = Payment.NEFTNo || '';       
-           this.NEFTBankMaster = Payment.NEFTBankMaster || '';       
-           this.NEFTDate = Payment.NEFTDate || '';       
-           this.PayTMAmount = Payment.PayTMAmount || '';       
-           this.PayTMTranNo = Payment.PaymentId || '';       
-           this.PayTMDate = Payment.PayTMDate || '';       
-          
-           
-        }
-    }
-    
-}
-
-export class Discharge
-{
-    DischargeId : Number;
-    AdmissionID: Number;
-    DischargeDate: Date;
-    DischargeTime: Date;
-    DischargeTypeId: string;
-    DischargedDocId: number;
-    AddedBy: number;
-    
-     /**
-     * Constructor
-     *
-     * @param Discharge
-     */
-      constructor(Discharge) {
-        {
-           this.DischargeId = Discharge.DischargeId || '';
-           this.AdmissionID = Discharge.AdmissionID || '';
-           this.DischargeDate = Discharge.DischargeDate || '';
-           this.DischargeTime = Discharge.DischargeTime || '';
-           this.DischargeTypeId = Discharge.DischargeTypeId || '';
-           this.DischargedDocId = Discharge.DischargedDocId || '';
-           this.AddedBy = Discharge.AddedBy || '';
-          
-        }
-    }
-    }
-
-
-    export class Bedtransfer
+  /**
+  * Constructor
+  *
+  * @param AdvanceDetail
+  */
+  constructor(AdvanceDetail) {
     {
-   // BedId : Number;
-    FromTime: Date;
-    FromDate: Date;
-    FromBedId: number;
-    FromClassId: number;
-    FromWardID: number;
-    ToDate: Date;
-    ToTime: Date;
-    ToBedId: number;
-    ToWardID : Number;
-    ToClassId: Number;
-    AddedBy: number;
-    IsCancelled : boolean;
-    IsCancelledBy: Number;
-    
-     /**
-     * Constructor
-     *
-     * @param Bedtransfer
-     */
-      constructor(Bedtransfer) {
-        {
-           this.FromTime = Bedtransfer.FromTime || '';
-           this.FromDate = Bedtransfer.FromDate || '';
-           this.FromBedId = Bedtransfer.FromBedId || '';
-           this.FromClassId = Bedtransfer.FromClassId || '';
-           this.FromWardID = Bedtransfer.FromWardID || '';
-           this.ToDate = Bedtransfer.ToDate || '';
-           this.ToTime = Bedtransfer.ToTime || '';
-           this.ToBedId = Bedtransfer.ToBedId || '';
-           this.ToClassId = Bedtransfer.ToClassId || '';
-           this.ToWardID = Bedtransfer.ToWardID || '';
-           this.IsCancelled = Bedtransfer.IsCancelled || '';
-           this.IsCancelledBy = Bedtransfer.IsCancelledBy || '';
-            this.AddedBy = Bedtransfer.AddedBy || '';
-          
-        }
+      this.AdvanceDetailID = AdvanceDetail.AdvanceDetailID || '';
+      this.Date = AdvanceDetail.Date || '';
+      this.Time = AdvanceDetail.Time || '';
+      this.AdvanceId = AdvanceDetail.AdvanceId || '';
+      this.RefId = AdvanceDetail.RefId || '';
+      this.TransactionID = AdvanceDetail.TransactionID || '';
+      this.OPD_IPD_Id = AdvanceDetail.OPD_IPD_Id || '';
+      this.OPD_IPD_Type = AdvanceDetail.OPD_IPD_Type || '';
+      this.AdvanceAmount = AdvanceDetail.AdvanceAmount || '';
+      this.UsedAmount = AdvanceDetail.UsedAmount || '';
+      this.BalanceAmount = AdvanceDetail.BalanceAmount || '';
+      this.RefundAmount = AdvanceDetail.RefundAmount || '';
+      this.ReasonOfAdvanceId = AdvanceDetail.ReasonOfAdvanceId || '';
+      this.AddedBy = AdvanceDetail.AddedBy || '';
+      this.IsCancelled = AdvanceDetail.IsCancelled || '';
+      this.IsCancelledBy = AdvanceDetail.IsCancelledBy || '';
+      this.IsCancelledDate = AdvanceDetail.IsCancelledDate || '';
+      this.Reason = AdvanceDetail.Reason || '';
     }
+  }
+}
+
+export class AdvanceDetailObj {
+  RegNo: Number;
+  AdmissionID: Number;
+  PatientName: string;
+  Doctorname: string;
+  AdmDateTime: string;
+  AgeYear: number;
+  ClassId: number;
+  ClassName: String;
+  TariffName: String;
+  TariffId: number;
+  IsDischarged: boolean;
+  opD_IPD_Type: number;
+  PatientType: any;
+  PatientTypeID: any;
+  VisitId: any;
+  AdmissionId: number;
+  IPDNo: any;
+  DoctorId: number;
+  BedId: any;
+  BedName: String;
+  WardName: String;
+  CompanyId: string;
+  SubCompanyId: any;
+  IsBillGenerated: any;
+  UnitId: any;
+  RegId: number;
+  RefId: number;
+  OPD_IPD_ID: any;
+  storage: any;
+  IsMLC: any;
+  NetPayableAmt: any;
+  /**
+  * Constructor
+  *
+  * @param AdvanceDetailObj
+  */
+  constructor(AdvanceDetailObj) {
+    {
+      this.RegNo = AdvanceDetailObj.RegNo || '';
+      this.RegId = AdvanceDetailObj.RegId || '';
+      this.AdmissionID = AdvanceDetailObj.AdmissionID || '';
+      this.PatientName = AdvanceDetailObj.PatientName || '';
+      this.Doctorname = AdvanceDetailObj.Doctorname || '';
+      this.AdmDateTime = AdvanceDetailObj.AdmDateTime || '';
+      this.AgeYear = AdvanceDetailObj.AgeYear || '';
+      this.ClassId = AdvanceDetailObj.ClassId || '';
+      this.ClassName = AdvanceDetailObj.ClassName || '';
+      this.TariffName = AdvanceDetailObj.TariffName || '';
+      this.TariffId = AdvanceDetailObj.TariffId || '';
+      this.IsDischarged = AdvanceDetailObj.IsDischarged || 0;
+      this.opD_IPD_Type = AdvanceDetailObj.opD_IPD_Type | 0;
+      this.PatientType = AdvanceDetailObj.PatientType || 0;
+      this.VisitId = AdvanceDetailObj.VisitId || '';
+      this.AdmissionId = AdvanceDetailObj.AdmissionId || '';
+      this.IPDNo = AdvanceDetailObj.IPDNo || '';
+      this.BedName = AdvanceDetailObj.BedName || '';
+      this.WardName = AdvanceDetailObj.WardName || '';
+      this.CompanyId = AdvanceDetailObj.CompanyId || '';
+      this.IsBillGenerated = AdvanceDetailObj.IsBillGenerated || 0;
+      this.UnitId = AdvanceDetailObj.UnitId || 0;
+      this.RefId = AdvanceDetailObj.RefId || 0;
+      this.DoctorId = AdvanceDetailObj.DoctorId || 0;
+      this.OPD_IPD_ID = AdvanceDetailObj.OPD_IPD_ID || 0;
+      this.IsMLC = AdvanceDetailObj.IsMLC || 0;
+      this.BedId = AdvanceDetailObj.BedId || 0;
+      this.SubCompanyId = AdvanceDetailObj.SubCompanyId || 0;
+      this.PatientTypeID = AdvanceDetailObj.PatientTypeID || 0;
+      this.NetPayableAmt = AdvanceDetailObj.NetPayableAmt || 0;
+
+    }
+  }
+}
+
+
+export class ChargesList {
+  ChargesId: number;
+  ServiceId: number;
+  ServiceName: String;
+  Price: number;
+  Qty: number;
+  TotalAmt: number;
+  DiscPer: number;
+  DiscAmt: number;
+  NetAmount: number;
+  DoctorId: number;
+  ChargeDoctorName: String;
+  ChargesDate: Date;
+  IsPathology: boolean;
+  IsRadiology: boolean;
+  ClassId: number;
+  ClassName: string;
+  ChargesAddedName: string;
+
+  constructor(ChargesList) {
+    this.ChargesId = ChargesList.ChargesId || '';
+    this.ServiceId = ChargesList.ServiceId || '';
+    this.ServiceName = ChargesList.ServiceName || '';
+    this.Price = ChargesList.Price || '';
+    this.Qty = ChargesList.Qty || '';
+    this.TotalAmt = ChargesList.TotalAmt || '';
+    this.DiscPer = ChargesList.DiscPer || '';
+    this.DiscAmt = ChargesList.DiscAmt || '';
+    this.NetAmount = ChargesList.NetAmount || '';
+    this.DoctorId = ChargesList.DoctorId || 0;
+    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+    this.ChargesDate = ChargesList.ChargesDate || '';
+    this.IsPathology = ChargesList.IsPathology || '';
+    this.IsRadiology = ChargesList.IsRadiology || '';
+    this.ClassId = ChargesList.ClassId || 0;
+    this.ClassName = ChargesList.ClassName || '';
+    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+  }
+}
+export class AdvanceHeader {
+  AdvanceId: Number;
+  Date: Date;
+  RefId: number;
+  OPD_IPD_Type: number;
+  OPD_IPD_Id: number;
+  AdvanceAmount: number;
+  AdvanceUsedAmount: number;
+  BalanceAmount: number;
+  AddedBy: number;
+  IsCancelled: boolean;
+  IsCancelledBy: number;
+  IsCancelledDate: Date;
+
+  /**
+  * Constructor
+  *
+  * @param AdvanceHeader
+  */
+  constructor(AdvanceHeader) {
+    {
+      this.AdvanceId = AdvanceHeader.AdvanceId || '';
+      this.Date = AdvanceHeader.Date || '';
+      this.RefId = AdvanceHeader.RefId || '';
+      this.OPD_IPD_Type = AdvanceHeader.OPD_IPD_Type || '';
+      this.OPD_IPD_Id = AdvanceHeader.OPD_IPD_Id || '';
+      this.AdvanceAmount = AdvanceHeader.AdvanceAmount || '';
+      this.AdvanceUsedAmount = AdvanceHeader.AdvanceUsedAmount || '';
+      this.BalanceAmount = AdvanceHeader.BalanceAmount || '';
+      this.AddedBy = AdvanceHeader.AddedBy || '';
+      this.IsCancelled = AdvanceHeader.IsCancelled || '';
+      this.IsCancelledBy = AdvanceHeader.IsCancelledBy || '';
+      this.IsCancelledDate = AdvanceHeader.IsCancelledDate || '';
+
+    }
+  }
+}
+export class Payment {
+  PaymentId: Number;
+  BillNo: number;
+  ReceiptNo: string;
+  PaymentDate: Date;
+  PaymentTime: Time;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: string;
+  BankName: string;
+  ChequeDate: Date;
+  CardPayAmount: number;
+  CardNo: string;
+  CardBankName: string;
+  CardDate: Date;
+  AdvanceUsedAmount: number;
+  AdvanceId: number;
+  RefundId: number;
+  TransactionType: number;
+  Remark: string;
+  AddBy: number;
+  IsCancelled: boolean;
+  IsCancelledBy: number;
+  IsCancelledDate: Date;
+  CashCounterId: number;
+  IsSelfORCompany: number;
+  CompanyId: number;
+  NEFTPayAmount: number;
+  NEFTNo: string;
+  NEFTBankMaster: string;
+  NEFTDate: Date;
+  PayTMAmount: number;
+  PayTMTranNo: string;
+  PayTMDate: Date;
+
+  /**
+  * Constructor
+  *
+  * @param Payment
+  */
+  constructor(Payment) {
+    {
+      this.PaymentId = Payment.PaymentId || '';
+      this.BillNo = Payment.BillNo || '';
+      this.ReceiptNo = Payment.ReceiptNo || '';
+      this.PaymentDate = Payment.PaymentDate || '';
+      this.PaymentTime = Payment.PaymentTime || '';
+      this.CashPayAmount = Payment.CashPayAmount || '';
+      this.ChequePayAmount = Payment.ChequePayAmount || '';
+      this.ChequeNo = Payment.ChequeNo || '';
+      this.BankName = Payment.BankName || '';
+      this.ChequeDate = Payment.ChequeDate || '';
+      this.CardPayAmount = Payment.CardPayAmount || '';
+      this.CardNo = Payment.CardNo || '';
+      this.CardBankName = Payment.CardBankName || '';
+      this.CardDate = Payment.CardDate || '';
+      this.AdvanceUsedAmount = Payment.AdvanceUsedAmount || '';
+      this.AdvanceId = Payment.AdvanceId || '';
+      this.RefundId = Payment.RefundId || '';
+      this.TransactionType = Payment.TransactionType || '';
+      this.Remark = Payment.Remark || '';
+      this.AddBy = Payment.AddBy || '';
+      this.IsCancelled = Payment.IsCancelled || '';
+      this.IsCancelledBy = Payment.IsCancelledBy || '';
+      this.IsCancelledDate = Payment.IsCancelledDate || '';
+      this.CashCounterId = Payment.CashCounterId || '';
+      this.IsSelfORCompany = Payment.IsSelfORCompany || '';
+      this.CompanyId = Payment.CompanyId || '';
+      this.NEFTPayAmount = Payment.NEFTPayAmount || '';
+      this.NEFTNo = Payment.NEFTNo || '';
+      this.NEFTBankMaster = Payment.NEFTBankMaster || '';
+      this.NEFTDate = Payment.NEFTDate || '';
+      this.PayTMAmount = Payment.PayTMAmount || '';
+      this.PayTMTranNo = Payment.PaymentId || '';
+      this.PayTMDate = Payment.PayTMDate || '';
+
+
+    }
+  }
+
+}
+
+export class Discharge {
+  DischargeId: Number;
+  AdmissionID: Number;
+  DischargeDate: Date;
+  DischargeTime: Date;
+  DischargeTypeId: string;
+  DischargedDocId: number;
+  AddedBy: number;
+
+  /**
+  * Constructor
+  *
+  * @param Discharge
+  */
+  constructor(Discharge) {
+    {
+      this.DischargeId = Discharge.DischargeId || '';
+      this.AdmissionID = Discharge.AdmissionID || '';
+      this.DischargeDate = Discharge.DischargeDate || '';
+      this.DischargeTime = Discharge.DischargeTime || '';
+      this.DischargeTypeId = Discharge.DischargeTypeId || '';
+      this.DischargedDocId = Discharge.DischargedDocId || '';
+      this.AddedBy = Discharge.AddedBy || '';
+
+    }
+  }
+}
+
+
+export class Bedtransfer {
+  // BedId : Number;
+  FromTime: Date;
+  FromDate: Date;
+  FromBedId: number;
+  FromClassId: number;
+  FromWardID: number;
+  ToDate: Date;
+  ToTime: Date;
+  ToBedId: number;
+  ToWardID: Number;
+  ToClassId: Number;
+  AddedBy: number;
+  IsCancelled: boolean;
+  IsCancelledBy: Number;
+
+  /**
+  * Constructor
+  *
+  * @param Bedtransfer
+  */
+  constructor(Bedtransfer) {
+    {
+      this.FromTime = Bedtransfer.FromTime || '';
+      this.FromDate = Bedtransfer.FromDate || '';
+      this.FromBedId = Bedtransfer.FromBedId || '';
+      this.FromClassId = Bedtransfer.FromClassId || '';
+      this.FromWardID = Bedtransfer.FromWardID || '';
+      this.ToDate = Bedtransfer.ToDate || '';
+      this.ToTime = Bedtransfer.ToTime || '';
+      this.ToBedId = Bedtransfer.ToBedId || '';
+      this.ToClassId = Bedtransfer.ToClassId || '';
+      this.ToWardID = Bedtransfer.ToWardID || '';
+      this.IsCancelled = Bedtransfer.IsCancelled || '';
+      this.IsCancelledBy = Bedtransfer.IsCancelledBy || '';
+      this.AddedBy = Bedtransfer.AddedBy || '';
+
+    }
+  }
 }
