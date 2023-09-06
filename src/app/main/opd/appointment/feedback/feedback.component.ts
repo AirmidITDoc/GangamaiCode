@@ -10,6 +10,7 @@ import { HttpClient } from "@angular/common/http";
 import Swal from "sweetalert2";
 import { AppointmentService } from "../appointment.service";
 import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
+import { MatStepper } from "@angular/material/stepper";
 
 @Component({
     selector: "app-feedback",
@@ -22,28 +23,31 @@ export class FeedbackComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  feedbackFormGroup: FormGroup;
-  msg: any;
-  PrefixList: any;
-  bankFilterCtrl: any;
-  filteredPrefix: any;
-  personalFormGroup: any;
-  registerObj: any;
-  GenderList: Object;
-  selectedPrefixID: any;
-  DoctorList: Object;
-  filteredDoctor: any;
-  VisitFormGroup: any;
-  Doctor2List: Object;
-  doctorFilterCtrl: any;
+    feedbackFormGroup: FormGroup;
+    msg: any;
+    PrefixList: any;
+    bankFilterCtrl: any;
+    filteredPrefix: any;
+    personalFormGroup: any;
+    registerObj: any;
+    GenderList: Object;
+    selectedPrefixID: any;
+    DoctorList: Object;
+    filteredDoctor: any;
+    VisitFormGroup: any;
+    Doctor2List: Object;
+    doctorFilterCtrl: any;
 
-  
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  
-// prefix filter
-private filterPrefix() {
-  if (!this.PrefixList) {
+    
+    filteredOptions: any;
+    noOptionFound: boolean = false;
+    isRegSearchDisabled: boolean = true;
+  isDepartmentSelected: any;
+
+    
+  // prefix filter
+  private filterPrefix() {
+    if (!this.PrefixList) {
 
     return;
   }

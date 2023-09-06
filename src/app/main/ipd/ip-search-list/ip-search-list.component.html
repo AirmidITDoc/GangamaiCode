@@ -70,8 +70,8 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input name="LastName" formControlName="LastName" matInput (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
-                                        required Enter only Alphabets</span>
+                                    <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">
+                                    LastName is required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
@@ -110,10 +110,10 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
                                 <mat-table #table  class ="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="width: 100%;" >
@@ -257,17 +257,18 @@
             
                                 <ng-container matColumnDef="noData">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
+                                        <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                            [diameter]='30'>
+                                        </mat-spinner>
+                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                     </mat-footer-cell>
                                 </ng-container>
             
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                             
                             </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
