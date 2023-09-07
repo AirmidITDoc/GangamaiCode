@@ -59,6 +59,7 @@ import { StockManagementComponent } from './stock-management/stock-management.co
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 import { BrowseIPDPaymentReceiptComponent } from './browse-ipdpayment-receipt/browse-ipdpayment-receipt.component';
 import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
+import { AdmissionComponent } from './AdmissionAll/admission/admission.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
@@ -71,7 +72,7 @@ import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-
      IPSettlementComponent, IPRefundComponent, IPRefundofAdvanceComponent, 
      IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent,
       BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent, 
-     BrowseIPDPaymentReceiptComponent, ViewBrowseIPDPaymentComponent],
+     BrowseIPDPaymentReceiptComponent, ViewBrowseIPDPaymentComponent, AdmissionComponent],
   imports: [
     CommonModule,
     MatButtonModule,
