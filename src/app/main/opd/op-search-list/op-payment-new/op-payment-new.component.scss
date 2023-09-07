@@ -34,7 +34,14 @@ legend {
     border-radius: 50%;
     display: flex;
     justify-content: center;
+}
+.enable-1-add {
     cursor: pointer;
+    pointer-events: visible;
+}
+.disable-1-add {
+    pointer-events: none;
+    // cursor: ar;
 }
 .remove-icon {
     width: 30px;
@@ -104,4 +111,8 @@ button:disabled {
 .patient-details mat-error {
     margin-top: 10px;
     font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
 }

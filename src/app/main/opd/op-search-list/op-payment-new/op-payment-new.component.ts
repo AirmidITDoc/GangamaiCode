@@ -30,6 +30,11 @@ export class OpPaymentNewComponent implements OnInit {
 
   netPayAmt: number = 0;
   nowDate: Date;
+  amount1: any;
+  amount2: any;
+  amount3: any;
+  amount4: any;
+  amount5: any;
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
@@ -44,8 +49,8 @@ export class OpPaymentNewComponent implements OnInit {
     this.patientDetailsFormGrp = this.createForm();
     this.paymentData = this.data.advanceObj;
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-    this.netPayAmt = parseInt(this.paymentData.advanceObj);
-    this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
+    this.amount1 = this.netPayAmt = parseInt(this.paymentData.advanceObj);
+    // this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
     console.log(this.paymentData);
     this.onPaymentChange(1, 'cash');
   }
@@ -53,7 +58,7 @@ export class OpPaymentNewComponent implements OnInit {
   createForm() {
     return this.formBuilder.group({
       paymentTyp1: [],
-      amount1: [],
+      amount1: [this.netPayAmt],
       referenceNumber: [],
       bankName: [],
       registrationDate: [],
@@ -77,7 +82,7 @@ export class OpPaymentNewComponent implements OnInit {
       amount5: [],
       bankName4: [],
       regDate3: [],
-      referenceNo4: [],
+      referenceNo4: []
     });
   }
 
@@ -321,6 +326,31 @@ export class OpPaymentNewComponent implements OnInit {
     this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
     this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
     this.patientDetailsFormGrp.updateValueAndValidity();
+  }
+
+  amountChange1(controlName) {
+    let value = this.patientDetailsFormGrp.get(controlName).value;
+    if(value && value > 0) {
+      this.amount2 = this.netPayAmt - this.amount1;
+    }
+  }
+  amountChange2(controlName) {
+    let value = parseInt(this.patientDetailsFormGrp.get(controlName).value);
+    if(value && value > 0) {
+      this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
+    }
+  }
+  amountChange3(controlName) {
+    let value = parseInt(this.patientDetailsFormGrp.get(controlName).value);
+    if(value && value > 0) {
+      this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
+    }
+  }
+  amountChange4(controlName) {
+    let value = parseInt(this.patientDetailsFormGrp.get(controlName).value);
+    if(value && value > 0) {
+      this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
+    }
   }
 
   onSubmit() {
