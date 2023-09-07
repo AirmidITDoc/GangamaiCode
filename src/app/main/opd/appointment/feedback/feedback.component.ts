@@ -76,8 +76,8 @@ export class FeedbackComponent implements OnInit {
   ngOnInit(): void {
       this.feedbackFormGroup = this.createFeedbackForm();
       // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-      this.onChangeCityList(this.registerObj.CityId);
-      this.personalFormGroup.updateValueAndValidity();
+      // this.onChangeCityList(this.registerObj.CityId);
+      // this.personalFormGroup.updateValueAndValidity();
   }
   onChangeCityList(CityId: any) {
       throw new Error("Method not implemented.");
@@ -194,6 +194,7 @@ getDoctor2List() {
 /*API used code*/
 
   submitFeedbackForm() {
+    debugger
       //  console.log(this.feedbackFormGroup.value);
       if (this.feedbackFormGroup.valid) {
           // var m_data = {
@@ -236,7 +237,7 @@ getDoctor2List() {
       
           let feedbackdata = {};
           feedbackdata['patientFeedbackId'] = 0;
-          feedbackdata['oP_IP_ID'] = 0;
+          feedbackdata['oP_IP_ID'] =  this.registerObj.RegId;
           feedbackdata['oP_IP_Type'] = 0;
           feedbackdata['feedbackCategory'] = "cat1";
           feedbackdata['feedbackRating'] = "Rat1";

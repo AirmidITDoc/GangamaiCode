@@ -69,7 +69,7 @@ export class AppointmentService {
   
   // Feeback 
   public feedbackInsert(employee) {
-    return this._httpClient.post("OutPatient/RegistrationUpdate", employee);
+    return this._httpClient.post("OutPatient/PatientFeedback", employee);
   }
 
   // display Appointment list
