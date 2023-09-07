@@ -51,4 +51,8 @@ public getIPBILLBrowsePrint(BillNo) {
     public InsertIPBillingPayment(emp){
       return this._httpClient.post("InPatient/Credit_Payment", emp);
     }
+
+   public InsertIPCreditBillingPayment(emp){
+    return this._httpClient.post("InPatient/IPSettlement", emp);
+   }
 }

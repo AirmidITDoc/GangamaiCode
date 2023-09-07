@@ -44,7 +44,10 @@ export class BrowseOPBillService {
   } 
 
   public InsertOPBillingPayment(emp){
-    return this._httpClient.post("OutPatient/PaymentInsert", emp);
+    return this._httpClient.post("OutPatient/OpSettlement", emp);
   }
 
+ public InsertOPBillingsettlement(emp){
+  return this._httpClient.post("OutPatient/OpSettlement", emp);
+ }
 }

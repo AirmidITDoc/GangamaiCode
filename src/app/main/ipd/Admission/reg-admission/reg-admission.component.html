@@ -10,11 +10,12 @@
             <mat-icon>menu</mat-icon>
           </button>
 
-          <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
+          <!-- <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
             style="width: 80%;font-size: 16px;">
             Admission
-          </span>
-
+          </span> -->
+          <h3>{{personalFormGroup.controls.RegId.value?"Update Admission":"New
+            Admission"}}</h3>
           <div fxLayout="row" fxLayoutAlign="start center" style="float: right; margin-right: 5px;  ">
             <diV style="margin-top:21px;">
               <span style="margin-right: 40px;color: black;font-weight: bold;color: aliceblue;">
@@ -36,10 +37,11 @@
           <div fxLayout="row" style="width: 100%;">
 
 
-             <div fxFlex="100" fxFlex.gt-sm="10" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
-              fusePerfectScrollbar  style=" width:100%; float: right;  border-radius:4px; background-color: white;
+            <div fxFlex="100" fxFlex.gt-sm="10" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
+              fusePerfectScrollbar
+              style=" width:100%; float: right;  border-radius:4px; background-color: white;
                             border:rgba(0,0,0,0.12) 1px solid; float: right;  padding: 1em; height: 915px !important; margin-top: 10px;">
-             <!-- <div class="nav material2">
+              <!-- <div class="nav material2">
               
 
                 <div *ngIf="showtable" style="border-style: groove;border-color: rgb(246, 215, 215);">
@@ -124,7 +126,7 @@
                 </div>
               </div>-->
 
-            </div> 
+            </div>
             <div fxFlex="100" fxFlex.gt-sm="90" fxLayout="row" fxLayout.gt-xs="column"
               style="width:100%; ;margin-left: 1px; margin-right: 5px; margin-top: 7px;margin-left: 7px;overflow: auto ;background-color:white !important; "
               fusePerfectScrollbar>
@@ -135,7 +137,7 @@
                   <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                     <div fxLayout="column" fxLayoutAlign="start none"
                       style="border-style: groove;color: grey;width: 100%;">
-  
+
                       <div class="redio-container">
                         <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                           (change)="onChangeReg($event)">
@@ -143,7 +145,7 @@
                           </mat-radio-button>
                           <mat-radio-button value="registrered">Registered</mat-radio-button>
                         </mat-radio-group>
-  
+
                         <mat-form-field appearance="outline" style="width:60%;margin-left:15px;"
                           disabled="isRegSearchDisabled">
                           <input type="text" name="RegId" formControlName="RegId"
@@ -167,16 +169,18 @@
                           </mat-error>
                         </mat-form-field>
                       </div>
-  
-  
+
+
                     </div>
                   </form>
-  
+
                 </div>
 
                 <form [formGroup]="personalFormGroup">
-                                
-                                  <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
+                  <input type="hidden" name="RegId" formControlName="RegId">
+
+
+                  <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
                     style=" height: 35px;background-color:#33b5e5">
                     <span
                       style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Personal
@@ -185,9 +189,9 @@
                   </div>
                   <div style="padding: 7px;">
 
-                      
+
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                  
+
 
 
                       <mat-form-field appearance="outline" fxFlex>
@@ -215,7 +219,7 @@
                         <input name="FirstName" formControlName="FirstName" placeholder="First Name"
                           [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('FirstName').errors }" matInput
                           required [(ngModel)]="registerObj.FirstName">
-                          <!-- onkeypress=" (event.charCode > 64 && 
+                        <!-- onkeypress=" (event.charCode > 64 && 
                               event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
@@ -311,7 +315,7 @@
                       </mat-form-field>
 
 
-                      
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Marital Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
@@ -359,7 +363,7 @@
                       </mat-form-field>
 
 
-                      
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Area Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
@@ -422,7 +426,7 @@
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                     
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Pan Card No.</mat-label>
                         <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No."
@@ -460,7 +464,7 @@
                     </div>
                   </div>
 
-                 
+
                 </form>
                 <form [formGroup]="hospitalFormGroup">
                   <div>
@@ -508,42 +512,40 @@
                         *ngIf="isCompanySelected">
 
                         <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Company Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
-                          formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
-                        </span>
+                          <mat-label>Company Name</mat-label>
+                          <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
+                            formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
+                          <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                              (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                              (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                          </span>
                           <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
-                          <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option"
-                         >
-                            {{option.CompanyName}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
+                            <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
+                              {{option.CompanyName}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Sub Company Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Sub Company" matInput
-                          formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
-                        </span>
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Sub Company Name</mat-label>
+                          <input matAutocompletePosition="below" type="text" placeholder="Select Sub Company" matInput
+                            formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany" required>
+                          <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                              (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                              (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
+                          </span>
                           <mat-autocomplete #autoSubCompany="matAutocomplete" [displayWith]="getOptionTextSubCompany">
-                          <mat-option *ngFor="let option of filteredOptionsSubCompany | async" [value]="option"
-                            >
-                            {{option.CompanyName}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
+                            <mat-option *ngFor="let option of filteredOptionsSubCompany | async" [value]="option">
+                              {{option.CompanyName}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
 
-                          </div>
+                      </div>
 
                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -557,7 +559,7 @@
                             <mat-icon class="mat-icon-close"
                               (click)="hospitalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
                           </span>
-                            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                          <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
                             <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
                               (onSelectionChange)="OnChangeDoctorList(option)">
                               {{option.departmentName}}
@@ -565,7 +567,7 @@
                           </mat-autocomplete>
                         </mat-form-field>
 
-                       
+
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Doctor Name</mat-label>
                           <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
@@ -597,14 +599,14 @@
                             <mat-icon class="mat-icon-close"
                               (click)="hospitalFormGroup.get('DoctorID').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
                           </span>
-                            <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                          <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                             <mat-option *ngFor="let option of filteredOptionsRefDoc | async" [value]="option">
                               {{option.DoctorName}}
                             </mat-option>
                           </mat-autocomplete>
                         </mat-form-field>
 
-                   
+
 
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Ref Doctor Name</mat-label>
@@ -616,7 +618,7 @@
                             <mat-icon class="mat-icon-close"
                               (click)="hospitalFormGroup.get('DoctorIdTwo').setValue(''); isRefDoctor2Selected = false;">search</mat-icon>
                           </span>
-                            <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
+                          <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
                             <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
                               {{option.DoctorName}}
                             </mat-option>
@@ -626,7 +628,7 @@
                       </div>
                     </div>
 
-                 
+
                   </div>
                 </form>
                 <form [formGroup]="wardFormGroup">
@@ -640,7 +642,7 @@
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                      
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Ward Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Ward" matInput
@@ -651,7 +653,7 @@
                           <mat-icon class="mat-icon-close"
                             (click)="wardFormGroup.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
                         </span>
-                          <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
+                        <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
                           <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option"
                             (onSelectionChange)="OnChangeBedList(option)">
                             {{option.RoomName}}
@@ -669,7 +671,7 @@
                           <mat-icon class="mat-icon-close"
                             (click)="wardFormGroup.get('BedId').setValue(''); isWardSelected = false;">search</mat-icon>
                         </span>
-                          <mat-autocomplete #autoBed="matAutocomplete" [displayWith]="getOptionTextBed">
+                        <mat-autocomplete #autoBed="matAutocomplete" [displayWith]="getOptionTextBed">
                           <mat-option *ngFor="let option of filteredOptionsBed | async" [value]="option"
                             (onSelectionChange)="onBedChange(option)">
                             {{option.BedName}}
@@ -694,7 +696,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                 
+
                 </form>
                 <form [formGroup]="otherFormGroup">
 
@@ -741,9 +743,8 @@
                           <mat-icon class="mat-icon-close"
                             (click)="otherFormGroup.get('RelationshipId').setValue(''); isRelationshipSelected = false;">search</mat-icon>
                         </span>
-                          <mat-autocomplete #autoRelation="matAutocomplete" [displayWith]="getOptionTextRelationship">
-                          <mat-option *ngFor="let option of filteredOptionsRelation | async" [value]="option"
-                           >
+                        <mat-autocomplete #autoRelation="matAutocomplete" [displayWith]="getOptionTextRelationship">
+                          <mat-option *ngFor="let option of filteredOptionsRelation | async" [value]="option">
                             {{option.RelationshipName}}
                           </mat-option>
                         </mat-autocomplete>
