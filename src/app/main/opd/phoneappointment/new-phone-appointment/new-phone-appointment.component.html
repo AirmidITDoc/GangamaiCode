@@ -111,21 +111,29 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Department</mat-label>
-                    <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
-                      (selectionChange)="OnChangeDoctorList($event.value)">
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="departmentFilterCtrl"  [placeholderLabel]="'Search'"
-                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                        {{element.departmentName}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Department</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                      formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                    </span>
+
+                    <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                      <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                        (onSelectionChange)="OnChangeDoctorList(option)">
+                        {{option.departmentName}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+
+
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Doctor Name</mat-label>
                     <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect >
                       <mat-option>
@@ -136,6 +144,27 @@
                         {{element.Doctorname}}
                       </mat-option>
                     </mat-select>
+                  </mat-form-field> -->
+
+
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Doctor Name</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
+                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                    </span>
+
+                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                      <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                        (onSelectionChange)="isDoctorSelected = true;">
+                        {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId
+                        }}
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                           
               

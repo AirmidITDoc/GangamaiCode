@@ -338,6 +338,18 @@ validateadhaarcard( input: any){
 
   }
 
+  // getPrefixList() {
+  //   this._registerService.getPrefixCombo().subscribe(data => {
+  //     this.PrefixList = data;
+  //     this.optionsPrefix = this.PrefixList.slice();
+  //     this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
+  //     );
+  //     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
+  //   });
+  // }
+
   getPrefixList() {
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
@@ -346,9 +358,10 @@ validateadhaarcard( input: any){
         startWith(''),
         map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
       );
-      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
+      
     });
   }
+
 
   getCityList() {
     this._registerService.getCityList().subscribe(data => {
@@ -502,7 +515,8 @@ validateadhaarcard( input: any){
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+      // console.log('The dialog was closed - Insert Action', result);
+      console.log(result);
       if (result) {
         this.registerObj = result as RegInsert;
         this.setDropdownObjs1();
@@ -537,9 +551,7 @@ validateadhaarcard( input: any){
 
 
   setDropdownObjs1() {
-    debugger;
-    
-    debugger;
+   
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
@@ -557,7 +569,7 @@ validateadhaarcard( input: any){
 
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
-    this.onChangeCityList(this.registerObj.CityId);
+    this.onChangeCityList(this.personalFormGroup.get('CityId').value);
     
     this.personalFormGroup.updateValueAndValidity();
     // this.dialogRef.close();
@@ -578,9 +590,9 @@ validateadhaarcard( input: any){
 
    
 
-    let reg = this.registerObj.RegId;
+    // let reg = this.registerObj.RegId;
     this.isLoading = 'submit';
-    if (!reg) {
+    if (!this.registerObj.RegId) {
       var m_data = {
         "opdRegistrationSave": {
           "RegId": 0,
@@ -725,7 +737,12 @@ validateadhaarcard( input: any){
       this.isRegSearchDisabled = false;
       // this.personalFormGroup.reset();
     }
+    this.getPrefixList();
+    // this.getDepartmentList();
+    this.getcityList();
   }
+
+
   getSearchList() {
     var m_data = {
       "F_Name": `${this.searchFormGroup.get('RegId').value}%`,

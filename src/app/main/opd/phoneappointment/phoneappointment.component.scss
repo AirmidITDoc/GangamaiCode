@@ -62,13 +62,13 @@ app-phoneappointment {
 
     
   .table1{
-    height: 600px !important;
+    height: 700px !important;
 }
   
   .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1500px;  
+    min-width: 1450px;  
     min-height: 30px; 
     background-color: blue;
    
@@ -78,7 +78,7 @@ app-phoneappointment {
   .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1500px;      
+    min-width: 1450px;      
     min-height: 30px;  
                
   }
@@ -107,7 +107,7 @@ app-phoneappointment {
     // text-overflow: ellipsis; 
      overflow: hidden !important;  
   
-    margin-right: 20px;
+    
   }
   
   .mat-column-Address {
@@ -116,7 +116,7 @@ app-phoneappointment {
     min-width:230px;
     text-align: left;
     white-space: nowrap; 
-    margin-right: 20px;
+    
     overflow: hidden; 
      overflow: hidden !important;
     //  display: inline-block; 
@@ -136,7 +136,7 @@ app-phoneappointment {
     min-width: 150px;
     text-align: left;
     white-space: nowrap; 
-    margin-right: 20px;
+    
     overflow: hidden; 
      overflow: hidden !important;
     //  display: inline-block; 
@@ -157,7 +157,7 @@ app-phoneappointment {
     min-width:250px;
     text-align: left;
     white-space: nowrap; 
-    margin-right: 20px;
+    
     overflow: hidden; 
      overflow: hidden !important;
     //  display: inline-block; 
@@ -168,7 +168,7 @@ app-phoneappointment {
     max-width: 80px;
     min-width: 80px;
     text-align: center;
-    margin-right: 7px;
+    
    
   }
   .mat-column-action{

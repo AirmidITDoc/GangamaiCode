@@ -188,7 +188,13 @@ DoctorId:any=0;
 
   ngOnInit(): void {
     
+    if (this.data) {
 
+      this.registerObj = this.data.registerObj;
+      this.DoctorId=this.data.registerObj.DoctorId;
+      // console.log(this.registerObj);
+
+     }
     this.isAlive = true;
   
     this.personalFormGroup = this.createPesonalForm();
@@ -226,13 +232,7 @@ DoctorId:any=0;
 
     
 
-      if (this.data) {
-
-        this.registerObj = this.data.registerObj;
-        this.DoctorId=this.data.registerObj.DoctorId;
-        console.log(this.registerObj);
-  
-       }
+     
   }
 
 

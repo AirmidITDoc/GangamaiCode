@@ -561,7 +561,7 @@ export class NewAppointmentComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
       );
-      // this.filteredDepartment.next(this.DepartmentList.slice());
+      
     });
   }
 

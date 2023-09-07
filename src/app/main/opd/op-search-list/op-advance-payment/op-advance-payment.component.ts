@@ -916,7 +916,17 @@ export class OPAdvancePaymentComponent implements OnInit {
   }
 }
 
+export class UpdateBill {
+  BillNo: number;
+  BillBalAmount: number;
+ 
 
+  constructor(UpdateBill) {
+    this.BillNo = UpdateBill.BillNo || 0;
+    this.BillBalAmount = UpdateBill.BillBalAmount || 0;
+    
+  }
+}
 
 export class IpPaymentInsert {
   PaymentId: number;

@@ -37,7 +37,7 @@ export class PhoneappointmentComponent implements OnInit {
   @Input() dataArray: any;
 
   displayedColumns = [
-    'PhoneAppId',
+    // 'PhoneAppId',
     'AppDate',
     'PatientName',
     'Address',
