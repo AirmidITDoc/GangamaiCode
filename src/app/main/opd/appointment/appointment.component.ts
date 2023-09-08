@@ -166,35 +166,13 @@ export class AppointmentComponent implements OnInit {
     getVisitList() {
         this.sIsLoading = "loading-data";
         var D_data = {
-            F_Name:
-                this._AppointmentSreviceService.myFilterform
-                    .get("FirstName")
-                    .value.trim() + "%" || "%",
-            L_Name:
-                this._AppointmentSreviceService.myFilterform
-                    .get("LastName")
-                    .value.trim() + "%" || "%",
-            Reg_No:
-                this._AppointmentSreviceService.myFilterform.get("RegNo")
-                    .value || 0,
-            Doctor_Id:
-                this._AppointmentSreviceService.myFilterform.get("DoctorId")
-                    .value || 0,
-            From_Dt:
-                this.datePipe.transform(
-                    this._AppointmentSreviceService.myFilterform.get("start")
-                        .value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "01/01/1900",
-            To_Dt:
-                this.datePipe.transform(
-                    this._AppointmentSreviceService.myFilterform.get("end")
-                        .value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "01/01/1900",
-            IsMark:
-                this._AppointmentSreviceService.myFilterform.get("IsMark")
-                    .value || 0,
+            F_Name:this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
+            L_Name:this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
+            Reg_No:this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
+            Doctor_Id:this._AppointmentSreviceService.myFilterform.get("DoctorId").value || 0,
+            From_Dt: this.datePipe.transform( this._AppointmentSreviceService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000" ) || "01/01/1900",
+            To_Dt:this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+            IsMark:this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
         };
         setTimeout(() => {
             this.isLoadingStr = 'loading';
@@ -279,7 +257,6 @@ export class AppointmentComponent implements OnInit {
             this.getPrint(contact);
         }
         if (m == "Update Registration") {
-          
             console.log(contact);
             var D_data = {
                 RegId: contact.RegId//8//TESTING APPointment edit contact.RegId,
