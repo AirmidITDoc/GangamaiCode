@@ -10,9 +10,9 @@ import { OPSearhlistService } from '../op-searhlist.service';
 import { OPBillingComponent } from '../op-billing/op-billing.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
 // import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
@@ -38,6 +38,12 @@ export class OpdSearchListComponent implements OnInit {
   response: any = [];
   sIsLoading: string = '';
   doctorNameCmbList:any=[];
+
+  optionsDoctor: any[] = [];
+
+  filteredOptionsDoctor: Observable<string[]>;
+  isDoctorSelected:boolean = false;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
@@ -60,10 +66,10 @@ export class OpdSearchListComponent implements OnInit {
   dataSource = new MatTableDataSource<VisitMaster>();
   menuActions: Array<string> = [];
 
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // public doctorFilterCtrl: FormControl = new FormControl();
+  // public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
-  private _onDestroy = new Subject<void>();
+  // private _onDestroy = new Subject<void>();
 
   constructor(public _opSearchListService: OPSearhlistService,
     private _ActRoute: Router,
@@ -79,13 +85,6 @@ export class OpdSearchListComponent implements OnInit {
     this.getDoctorNameCombobox();
 
     
-    this.doctorFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-     this.filterDoctor();
-     
-  });
-
     if (this._ActRoute.url == '/opd/appointment') {
       // this.menuActions.push('One');
       this.menuActions.push('New Appointment');
@@ -116,42 +115,38 @@ export class OpdSearchListComponent implements OnInit {
     this.getVisitList();
   }
 
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
 
+  }
+
+
+  getDoctorNameCombobox() {
+    this._opSearchListService.getDoctorMasterCombo().subscribe(data => {
+      this.doctorNameCmbList = data;
+      this.optionsDoctor = this.doctorNameCmbList.slice();
+      this.filteredOptionsDoctor = this._opSearchListService.myFilterform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+      );
+      
+    });
+  }
+
+  
+  getOptionTextDoctor(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
   
 // validation
 get f() { return this._opSearchListService.myFilterform.controls; }
 
-private filterDoctor() {
-  // debugger;
-  if (!this.doctorNameCmbList) {
-    return;
-  }
-  // get the search keyword
-  let search = this.doctorFilterCtrl.value;
-   if (!search) {
-    this.filtereddoctor.next(this.doctorNameCmbList.slice());
-    return;
-  }
-  else {
-    search = search.toLowerCase();
-  }
-  // filter
-  this.filtereddoctor.next(
-    this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-  );
-  }
-
-  getDoctorNameCombobox(){
-    // this._opSearchListService.getDoctorMasterCombo().subscribe(data => this.doctorNameCmbList =data);
-
-     this._opSearchListService.getDoctorMasterCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.filtereddoctor.next(this.doctorNameCmbList.slice());
-    });
-  }
 
   getVisitList() {
-    // debugger;
+    debugger;
     this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": (this._opSearchListService.myFilterform.get("FirstName").value).trim() + '%' || "%",
@@ -162,10 +157,9 @@ private filterDoctor() {
       "To_Dt": this.datePipe.transform(this._opSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || '01/01/1900',
       "IsMark": this._opSearchListService.myFilterform.get("IsMark").value.selected || 0,
     }
-    //  console.log(D_data);
+     console.log(D_data);
     this._opSearchListService.getAppointmentList(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as VisitMaster[];
-      // console.log( this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';

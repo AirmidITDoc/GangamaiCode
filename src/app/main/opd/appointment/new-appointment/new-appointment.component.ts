@@ -334,28 +334,6 @@ export class NewAppointmentComponent implements OnInit {
     this.AreaId.markAsTouched();
 
   }
-
-
-    // // City filter code
-    // private filterCity() {
-
-    //   if (!this.cityList) {
-    //     return;
-    //   }
-    //   // get the search keyword
-    //   let search = this.cityFilterCtrl.value;
-    //   if (!search) {
-    //     this.filteredCity.next(this.cityList.slice());
-    //     return;
-    //   }
-    //   else {
-    //     search = search.toLowerCase();
-    //   }
-    //   // filter
-    //   this.filteredCity.next(
-    //     this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    //   );
-    // }
   
 
   getOptionTextPrefix(option){
@@ -364,7 +342,8 @@ export class NewAppointmentComponent implements OnInit {
 
 
   getOptionTextDep(option) {
-    return option.departmentName;
+    
+    return option && option.departmentName ? option.departmentName : '';
   }
 
   getOptionTextCity(option) {

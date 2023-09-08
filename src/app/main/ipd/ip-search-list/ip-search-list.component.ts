@@ -1151,6 +1151,7 @@ export class AdvanceDetailObj {
   storage: any;
   IsMLC: any;
   NetPayableAmt: any;
+  OPD_IPD_Id:any;
   /**
   * Constructor
   *
@@ -1188,7 +1189,7 @@ export class AdvanceDetailObj {
       this.SubCompanyId = AdvanceDetailObj.SubCompanyId || 0;
       this.PatientTypeID = AdvanceDetailObj.PatientTypeID || 0;
       this.NetPayableAmt = AdvanceDetailObj.NetPayableAmt || 0;
-
+      this.OPD_IPD_Id = AdvanceDetailObj.OPD_IPD_Id || 0;
     }
   }
 }

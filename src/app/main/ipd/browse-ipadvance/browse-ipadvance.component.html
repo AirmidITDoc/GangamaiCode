@@ -48,7 +48,7 @@
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matStartDate formControlName="start" placeholder="Start date"  (dateChange)="onShow_IpdAdvance()">
                                         <input matEndDate formControlName="end" placeholder="End date"
                                             (dateChange)="onShow_IpdAdvance()">
                                     </mat-date-range-input>
@@ -58,22 +58,22 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Bill No</mat-label>
-                                    <input name="PBillNo" formControlName="PBillNo" matInput>
+                                    <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow_IpdAdvance()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow_IpdAdvance()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="onShow_IpdAdvance()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="onShow_IpdAdvance()">
                                 </mat-form-field>
 
 

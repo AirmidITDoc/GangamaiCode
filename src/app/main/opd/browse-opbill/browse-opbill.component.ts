@@ -268,7 +268,7 @@ debugger
         });
     }, 1000);
 
-    this.onClear();
+    // this.onClear();
   }
 
 

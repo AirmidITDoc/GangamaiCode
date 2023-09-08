@@ -39,11 +39,11 @@ export class BrowseIPDPaymentReceiptComponent implements OnInit {
   printTemplate: any;
   displayedColumns = [
     // 'checkbox',
-    'RegNo',
+    'RegId',
     'PatientName',
-    'PBillNo',
-    'ReceiptNo',
-    'PayDate',
+    // 'PBillNo',
+    // 'ReceiptNo',
+    // 'PayDate',
     'TotalAmt',
     'BalanceAmt',
     'PaymentDate',

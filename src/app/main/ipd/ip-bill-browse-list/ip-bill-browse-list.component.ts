@@ -6,13 +6,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDataStored } from '../advance';
 import { IPBrowseBillService } from './ip-browse-bill.service';
 import { DatePipe } from '@angular/common';
 // import { PrintServiceService } from 'app/core/services/print-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { SmsEmailTemplateComponent } from 'app/main/shared/componets/sms-email-template/sms-email-template.component';
 import { ViewIPBillComponent } from './view-ip-bill/view-ip-bill.component';
 import * as converter from 'number-to-words';
@@ -37,6 +37,14 @@ export class IPBillBrowseListComponent implements OnInit {
   dataArray = {};
   currentDate = new Date();
   companyList: any = [];
+
+  isCompanySelected:boolean=false;
+  
+
+  optionsCompany: any[] = [];
+
+  filteredOptionsCompany: Observable<string[]>;
+
   //Company filter
   @ViewChild('pdfTemplate') pdfTemplate: ElementRef;
   public companyFilterCtrl: FormControl = new FormControl();
@@ -96,46 +104,36 @@ export class IPBillBrowseListComponent implements OnInit {
   ngOnInit(): void {
     this.getCompanyNameCombobox();
 
-    this.companyFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCompany();
-      });
-    // TotalAmt: this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value,"MM-dd-yyyy")  ||  "01/01/1900",
-
     this.onShow_IpdBrowse();
   }
 
-  //  Filter for comapny combo  
-  private filterCompany() {
+  private _filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value._filterCompany ? value._filterCompany.toLowerCase() : value.toLowerCase();
+       return this.optionsCompany.filter(option => option._filterCompany.toLowerCase().includes(filterValue));
+    }
 
-    if (!this.companyList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.companyFilterCtrl.value;
-    if (!search) {
-      this.filteredCompany.next(this.companyList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredCompany.next(
-      this.companyList.filter(bank => bank.CompanyName.toLowerCase().indexOf(search) > -1)
-    );
   }
 
-  // company combo list
+ // company combo list
   getCompanyNameCombobox() {
-    // this._drugService.getClassMasterCombo().subscribe(data => this.ClassmbList =data);
     this._IpBillBrowseListService.getCompanyMasterCombo().subscribe(data => {
       this.companyList = data;
-      this.filteredCompany.next(this.companyList.slice());
-
-    })
+      this.optionsCompany = this.companyList.slice();
+      this.filteredOptionsCompany = this._IpBillBrowseListService.myFilterform.get('CompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCompany(value) : this.companyList.slice()),
+      );
+      
+    });
   }
 
+  
+  getOptionTextCompany(option) {
+    return option && option.CompanyName ? option.CompanyName : '';
+  }
+ 
+ 
 
   getRecord(el, i) {
     // console.log(el,i);
@@ -168,7 +166,7 @@ export class IPBillBrowseListComponent implements OnInit {
 debugger
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
     PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
     PatientHeaderObj['BillId'] =contact.BillNo;
 

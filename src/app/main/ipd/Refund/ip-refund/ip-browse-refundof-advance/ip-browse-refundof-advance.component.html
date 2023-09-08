@@ -48,7 +48,7 @@
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="GetIpdreturnAdvancepaymentreceipt()">
                                         <input matEndDate formControlName="end" placeholder="End date">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -58,17 +58,17 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="GetIpdreturnAdvancepaymentreceipt()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="GetIpdreturnAdvancepaymentreceipt()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="GetIpdreturnAdvancepaymentreceipt()">
                                 </mat-form-field>
 
                                 <div style="margin-top: 10px;">

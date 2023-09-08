@@ -45,7 +45,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getBrowseIPDRefundbillList()">
                                         <input matEndDate formControlName="end" placeholder="End date"
                                             (dateChange)="getBrowseIPDRefundbillList()">
                                     </mat-date-range-input>
@@ -60,17 +60,17 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseIPDRefundbillList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getBrowseIPDRefundbillList()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getBrowseIPDRefundbillList()">
                                 </mat-form-field>
 
                                 <div style="margin-top: 10px;">
