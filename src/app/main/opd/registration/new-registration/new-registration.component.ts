@@ -115,7 +115,7 @@ isDisabled: boolean = false;
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
     private router: Router,
-    // private toastr: ToastrService
+    
     )  
     {}
 
@@ -125,13 +125,21 @@ isDisabled: boolean = false;
 
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
-    // this.getHospitalList();
+   
+   if(this.data){
+      
+    this.registerObj=this.data.registerObj;
+    this.RegId= this.registerObj.RegId;
+      this.isDisabled=true
+      // this.Prefix=this.data.registerObj.PrefixID;
+     this.setDropdownObjs1();
+  }
+ 
     this.getPrefixList();
     this.getMaritalStatusList();
     this.getReligionList();
     // this.getPatientTypeList();
     this.getAreaList();
-    // this.getCityList();
     this.getCityList();
     this.getDoctor1List();
     this.getDoctor2List();
@@ -155,20 +163,7 @@ isDisabled: boolean = false;
         this.filterArea();
       });
 
-    
-    
-      if(this.data){
-      
-        this.registerObj=this.data.registerObj;
-        this.RegId= this.registerObj.RegId;
-          this.isDisabled=true
-          this.Prefix=this.data.registerObj.PrefixID;
-         this.setDropdownObjs1();
-      }
-
-     
-
-  }
+    }
 
 
   
@@ -240,17 +235,6 @@ validateadhaarcard( input: any){
   console.log(input.value);
 }
 
-//   count_down(count){
-//     debugger;
-// console.log
-//     // let c=+1;
-//     this.charcount=this.charcount + 1;
-//     if(this.charcount==count){
-//     event.preventDefault();
-//     event.stopPropagation();
-//     }
-           
-//   }
 
   // get f() { return this._registerService.mySaveForm.controls }
 
@@ -317,8 +301,7 @@ validateadhaarcard( input: any){
 
   }
 
-  addEmptyRow() { }
- 
+
   
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -338,18 +321,6 @@ validateadhaarcard( input: any){
 
   }
 
-  // getPrefixList() {
-  //   this._registerService.getPrefixCombo().subscribe(data => {
-  //     this.PrefixList = data;
-  //     this.optionsPrefix = this.PrefixList.slice();
-  //     this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
-  //     );
-  //     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
-  //   });
-  // }
-
   getPrefixList() {
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
@@ -360,6 +331,7 @@ validateadhaarcard( input: any){
       );
       
     });
+    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
   }
 
 
@@ -534,15 +506,15 @@ validateadhaarcard( input: any){
 
   getSelectedObj(obj) {
       
-    let a, b, c;
+    // let a, b, c;
 
-    a = obj.AgeDay.trim();;
-    b = obj.AgeMonth.trim();
-    c = obj.AgeYear.trim();
-    console.log(a, b, c);
-    obj.AgeDay = a;
-    obj.AgeMonth = b;
-    obj.AgeYear = c;
+    // a = obj.AgeDay.trim();
+    // b = obj.AgeMonth.trim();
+    // c = obj.AgeYear.trim();
+    // console.log(a, b, c);
+    obj.AgeDay =  obj.AgeDay.trim();
+    obj.AgeMonth =obj.AgeMonth.trim();
+    obj.AgeYear = obj.AgeYear.trim();
 
     this.registerObj = obj;
 
@@ -587,10 +559,7 @@ validateadhaarcard( input: any){
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
   onSubmit() {
-
    
-
-    // let reg = this.registerObj.RegId;
     this.isLoading = 'submit';
     if (!this.registerObj.RegId) {
       var m_data = {

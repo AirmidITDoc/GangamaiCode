@@ -1,23 +1,22 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center" >
-        <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
-            <mat-icon>menu</mat-icon>
-        </button>
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
-      </mat-icon>
-      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
-        Registration
-      </span>
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+        <div fxLayout="row">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Registration
+            </span>
+        </div>
 
-      <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1500px;background-color: aliceblue;color: brown;">
-        <!-- <mat-icon color="Primary" title=" Registration Form " >Registration</mat-icon> -->New Registration
-    </button>
-    </div> 
-
-           
-    
-
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:20px !important; ">
+            <button mat-raised-button (click)="newRegistration()" style="background-color: aliceblue;color: brown;">New Registration
+                <!-- <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon> -->
+            </button>
+        </div>
     </mat-toolbar>
 
     <!-- / HEADER -->
@@ -39,7 +38,7 @@
                 <!-- SIDEBAR CONTENT -->
                 <div>
                     <div class="nav material2">
-                        <form [formGroup]="_registrationService.myFilterform" style="padding: 6px 6px 5px 5px;"
+                          <form [formGroup]="_registrationService.myFilterform" style="padding: 6px 6px 5px 5px;"
                             fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
                                 <br />
@@ -55,21 +54,21 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput>
+                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getregistrationList()">
                                     <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput>
+                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getregistrationList()">
                                     <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Mobile Number</mat-label>
-                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number">
+                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keyup)="getregistrationList()">
                                     <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
                                         required Enter only Digits</span>
                                 </mat-form-field>
@@ -201,7 +200,9 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>

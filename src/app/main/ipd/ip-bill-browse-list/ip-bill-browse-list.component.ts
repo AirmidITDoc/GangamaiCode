@@ -62,8 +62,10 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
   displayedColumns = [
+   
     'SelfOrCompany',
     'InterimOrFinal',
+    'BalanceAmt',
     'BillDate',
     'PBillNo',
     'RegID',

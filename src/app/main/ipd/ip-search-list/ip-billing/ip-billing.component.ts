@@ -1227,10 +1227,10 @@ debugger
           InsertBillUpdateBillNoObj['InterimOrFinal'] = 1;
           InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
           InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
-          InsertBillUpdateBillNoObj['TaxPer'] =0// this.Ipbillform.get('Percentage').value || 0,
+          InsertBillUpdateBillNoObj['TaxPer'] =0;// this.Ipbillform.get('Percentage').value || 0,
           InsertBillUpdateBillNoObj['TaxAmount'] =0// this.Ipbillform.get('Amount').value || 0,
-          InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || ''
-          InsertBillUpdateBillNoObj['CashCounterId'] = 0;//this.Ipbillform.get('Remark').value || ''
+          InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+          InsertBillUpdateBillNoObj['CashCounterId'] =  this.Ipbillform.get('CashCounterId').value.CashCounterId ;
 
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
           const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);

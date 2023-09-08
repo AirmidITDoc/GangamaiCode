@@ -121,30 +121,22 @@ app-appointment{
 
 app-appointment{
 .table1{
-        height: 700px !important;
+        height: 800px !important;
 }
 .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1640px;  
+    min-width: 1500px;  
     min-height: 30px; 
-    // background-color: blue;
-    // max-width: 100%; 
-    // min-width: 1640px; 
-    // min-height: 40px;  
-    // width: 100%; 
-    
+      
 }
 
 .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1640px;      
+    min-width: 1500px;      
     min-height: 30px;  
-    // max-width: 100%;
-    // min-height: 40px;  
-    // min-width: 1640px; 
-    // display: flex;      
+   
 }
 
 
@@ -175,7 +167,6 @@ app-appointment{
     min-width:300px;
     text-align: left;
     white-space: nowrap; 
-    overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
    justify-content:left; 
@@ -189,9 +180,9 @@ app-appointment{
    justify-content:left; 
 }
 .mat-column-VisitTime {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
+    width:80px;
+    max-width:80px;
+    min-width:80px;
    text-align: right;
    justify-content:left; 
 }
@@ -220,9 +211,9 @@ app-appointment{
 }
 
 .mat-column-RefDocName {
-    width: 250px;
-    max-width:250px;
-    min-width:250px;
+    width: 200px;
+    max-width:200px;
+    min-width:200px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -235,19 +226,13 @@ app-appointment{
 }
 
 .mat-column-PatientType {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+    width: 80px;
+    max-width: 8%;
+    min-width: 80px;
     text-align: right;
     justify-content:left;
 }
-.mat-column-buttons{
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    text-align: center;
-    justify-content:center;
-}
+
 
 .mat-icon-button {
     padding: 2px 2px 2px 2px;
@@ -498,9 +483,9 @@ h1, .h1 {
     }
 
     .mat-column-buttons{
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
         text-align: left;
         justify-content:left;
     }

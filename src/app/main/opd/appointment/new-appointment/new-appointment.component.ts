@@ -1300,7 +1300,7 @@ export class NewAppointmentComponent implements OnInit {
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       // this.Regdisplay = false;
-      this.showtable = false;
+      // this.showtable = false;
 
 
     } else {

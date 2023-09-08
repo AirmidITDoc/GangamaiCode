@@ -515,7 +515,7 @@
                                         Generate Bill
                                     </mat-checkbox>
 
-                                    <button class="next-btn" (click)="getPrintDraft()"
+                                    <button class="next-btn" (click)="onSaveDraft()"  [disabled]="Ipbillform.invalid"
                                         style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button>
                                     <button class="next-btn" (click)="onSave()" style="border-radius: 16px;" [disabled]="Ipbillform.invalid">
                                         Save
