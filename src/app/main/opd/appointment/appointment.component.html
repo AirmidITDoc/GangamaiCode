@@ -1,39 +1,31 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
-                style="color: white;">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+        <div fxLayout="row">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Appointment
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Appointment List
             </span>
-
-
-            <button mat-raised-button (click)="newappointment()" fxLayoutAlign="center center"
-                style="margin-left:10%;width:150px; background-color: aliceblue;color: brown;">Appointment
-                <!-- <mat-icon color="Primary" title=" Appointment Form " style="background-color: rgb(221, 25, 25);color: aliceblue;">Appointment</mat-icon> -->
-            </button>
-            &nbsp; &nbsp; &nbsp;
-            <button mat-raised-button (click)="feedback()" fxLayoutAlign="center center" style="margin-left:1%">
-                <mat-icon color="Primary" title=" Feedback Form ">feedback</mat-icon>
-            </button>
-            <!-- <button mat-raised-button (click)="PatientAppointment()" fxLayoutAlign="center center">
-                <mat-icon color="Primary" title=" Patient Appointment ">Appointment</mat-icon>
-            </button> -->
         </div>
-    </mat-toolbar>
-    <!-- / HEADER -->
 
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
+            <button mat-raised-button (click)="newappointment()" style="background-color: aliceblue;color: brown;margin-left:10% !important">New Appointment
+              
+            </button>
+        </div>
+
+    </mat-toolbar>
+
+    <!-- / HEADER -->
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
     <!-- / SELECTED BAR -->
-
     <!-- CONTENT -->
+   
     <div class="content">
 
         <!-- SIDEBAR -->
@@ -106,9 +98,11 @@
 
         <!-- CENTER -->
        <div style="width: 100%;">
-              <div style="width: 85%;">
-                    <mat-tab-group style="background-color: white;">
+         
+                <div style="width: 99%;">
+                    <mat-tab-group style="background-color: white;margin-top: 10px;">
                         
+
                         <mat-tab>
                             <ng-template mat-tab-label style="color: black; font-size: 17px bold; height: 100px; ">
                                 Appointment List
@@ -556,6 +550,7 @@
                 <!-- / CENTER -->
 
     </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
     <!-- / CONTENT-->
-
 </div>

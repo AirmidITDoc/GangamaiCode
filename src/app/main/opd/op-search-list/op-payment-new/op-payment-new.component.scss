@@ -1,11 +1,12 @@
 fieldset {
-    border-color: #fff9f9;
+    border-color: #039be5;// #fff9f9;
 }
 .fieldset-div {
     background-color: #191a1c21;
 }
 legend {
     padding: 10px;
+    font-size: 20px;
 }
 
 // .payment-container {
@@ -34,7 +35,14 @@ legend {
     border-radius: 50%;
     display: flex;
     justify-content: center;
+}
+.enable-1-add {
     cursor: pointer;
+    pointer-events: visible;
+}
+.disable-1-add {
+    pointer-events: none;
+    // cursor: ar;
 }
 .remove-icon {
     width: 30px;
@@ -104,4 +112,18 @@ button:disabled {
 .patient-details mat-error {
     margin-top: 10px;
     font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
+}
+.labels-h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.labels-h6 {
+    font-size: 18px;
+}
+.form-field-labels {
+    font-size: 16px;
 }

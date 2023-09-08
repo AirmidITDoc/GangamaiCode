@@ -197,6 +197,22 @@
                             </ng-container>
 
 
+                            <ng-container matColumnDef="BalanceAmt">
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: rgb(15, 14, 14);">Credit
+                                
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <!-- <mat-icon
+                                        style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
+                                        *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
+                                    </mat-icon> -->
+                                    <mat-icon  *ngIf="contact.BalanceAmt !=0 " matTooltip=" Settlement "
+                                        (click)="Billpayment(contact)">payment
+                                    </mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
+
                             <ng-container matColumnDef="BillDate" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Bill Date
                                 </mat-header-cell>
@@ -327,9 +343,9 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="Billpayment(contact)">
+                                    <!-- <button mat-icon-button (click)="Billpayment(contact)">
                                         <mat-icon>payment</mat-icon>
-                                    </button>
+                                    </button> -->
                                     <!-- <button mat-icon-button matTooltip="Summary Bill Print"
                                         (click)="getSummaryFinalBillPrint(contact)">
                                         <mat-icon>print</mat-icon>
