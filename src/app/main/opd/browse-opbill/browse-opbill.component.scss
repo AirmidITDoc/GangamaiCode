@@ -54,12 +54,12 @@ app-browse-opbill {
 app-browse-opbill{
 
     .table1{
-        height: 700px !important;
+        height: 600px !important;
     }
 .mat-header-row {
    
    max-width: 100%; 
-     min-width: 1480px; 
+     min-width: 1580px; 
      min-height: 20px;  
      width: 100%; 
     
@@ -68,7 +68,7 @@ app-browse-opbill{
 .mat-row {
     max-width: 100%;
     min-height: 25px;  
-    min-width: 1480px; 
+    min-width: 1580px; 
     display: flex;      
 }
 
@@ -84,6 +84,12 @@ app-browse-opbill{
      min-width:100px;
     text-align: left;
     justify-content:left; 
+}
+.mat-column-Bill{
+    width:60px;
+    max-width: 60px;
+    min-width: 60px;
+    text-align: left;
 }
 
 .mat-column-RegNo {

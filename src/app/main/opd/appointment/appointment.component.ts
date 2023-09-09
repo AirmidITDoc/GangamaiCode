@@ -32,6 +32,9 @@ import { PatientAppointmentComponent } from "./patient-appointment/patient-appoi
 import { ImageViewComponent } from "./image-view/image-view.component";
 import { CameraComponent } from "./camera/camera.component";
 import { map, startWith } from "rxjs/operators";
+import { OPBillingComponent } from "../op-search-list/op-billing/op-billing.component";
+import { SearchInforObj } from "../op-search-list/opd-search-list/opd-search-list.component";
+import { AdvanceDataStored } from "app/main/ipd/advance";
 
 export class DocData {
     doc: any;
@@ -107,6 +110,7 @@ export class AppointmentComponent implements OnInit {
     displayedColumns = [
         "PatientOldNew",
         "MPbillNo",
+        "Bill",
         "RegNoWithPrefix",
         "PatientName",
         "DVisitDate",
@@ -116,7 +120,7 @@ export class AppointmentComponent implements OnInit {
         "RefDocName",
         "PatientType",
         // 'HospitalName',
-        "buttons",
+        "action",
     ];
     dataSource = new MatTableDataSource<VisitMaster>();
     menuActions: Array<string> = [];
@@ -138,6 +142,7 @@ export class AppointmentComponent implements OnInit {
         public _registrationService: RegistrationService,
         public _matDialog: MatDialog,
         public matDialog: MatDialog,
+        private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public datePipe: DatePipe // private advanceDataStored: AdvanceDataStored
     ) {
@@ -486,7 +491,7 @@ export class AppointmentComponent implements OnInit {
                     "AgeYear",
                     "DrugName",
                     "ConsultantDocName",
-                    "SecondRefDoctorName",
+                    "RefDocName",
                     "MobileNo",
                     "Address",
                     "VisitDate",
@@ -816,6 +821,40 @@ debugger
     }
     Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
   }
+
+
+  Billpayment(contact){
+    let xx = {
+      RegNo: contact.RegId,
+      // RegId: contact.RegId,
+      AdmissionID: contact.VisitId,
+      PatientName: contact.PatientName,
+      Doctorname: contact.Doctorname,
+      AdmDateTime: contact.AdmDateTime,
+      AgeYear: contact.AgeYear,
+      ClassId: contact.ClassId,
+      ClassName: contact.ClassName,
+      TariffName: contact.TariffName,
+      TariffId: contact.TariffId
+    };
+    this.advanceDataStored.storage = new SearchInforObj(xx);
+
+     const dialogRef = this._matDialog.open(OPBillingComponent,
+        {
+          maxWidth: "90%",
+        
+          height: '695px !important',
+          // data: {
+          //   advanceObj: PatientHeaderObj,
+          //   FromName: "OP-Bill"
+          // }
+        });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+       });
+  
+}
 
 }
 

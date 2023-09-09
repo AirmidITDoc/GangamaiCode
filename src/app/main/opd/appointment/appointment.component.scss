@@ -1,61 +1,62 @@
 @import "src/@fuse/scss/fuse";
 app-appointment{
-// :host {
-//     display: flex;
-//     flex-direction: column;
-//     flex: 1 0 auto;
-//     height: 100%;
-//     width: 100%;
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100%;
+    width: 100%;
     
-//     .mat-form-field {
-//         margin-right: 12px;
-//       } 
+    .mat-form-field {
+        margin-right: 12px;
+      } 
 
-//     .sidebar-content {
-//         display: flex;
-//         flex-direction: column;
-//         padding: 0;
-//         background-color: white;    
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background-color: white;    
             
-//         @include media-breakpoint(gt-sm) {
-//             //prasad
-//             // padding: 24px 4px 24px 24px;
-//             padding: 12px 0 12px 12px;
-//         }
+        @include media-breakpoint(gt-sm) {
+            //prasad
+            // padding: 24px 4px 24px 24px;
+            padding: 12px 0 12px 12px;
+        }
 
-//         .card {
-//             display: flex;
-//             flex-direction: column;
-//             flex: 0 1 auto;
-//             padding: 0;
-//             border-radius: 8px;
+        .card {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding: 0;
+            border-radius: 8px;
 
-//             @include media-breakpoint(gt-sm) {
-//                 @include mat-elevation(1);
-//             }
+            @include media-breakpoint(gt-sm) {
+                @include mat-elevation(1);
+            }
 
-//             > .header {
-//                 flex: 0 1 auto;
-//                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-//             }
+            > .header {
+                flex: 0 1 auto;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
 
-//             > .content {
-//                 flex: 0 1 auto;
-//             }
+            > .content {
+                flex: 0 1 auto;
+            }
 
-//             .example-chip-list {
-//                 width: 100%;
-//                 font-size: small;
-//                 display:inline
-//                }
+            .example-chip-list {
+                width: 100%;
+                font-size: small;
+                display:inline
+               }
 
-//             // .mat-form-field-wrapper {
-//             //     padding-bottom: 0.34375em;
-//             // }
-//         }
-//     }
+            // .mat-form-field-wrapper {
+            //     padding-bottom: 0.34375em;
+            // }
+        }
+    }
 
-// }
+}
 
 
 .mat-form-field-wrapper {
@@ -68,8 +69,7 @@ app-appointment{
     width: 100%;
     
     .mat-table {
-        //height: 400px !important;
-      // height: 100%;
+      
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -121,7 +121,7 @@ app-appointment{
 
 app-appointment{
 .table1{
-        height: 800px !important;
+        height:600px !important;
 }
 .mat-header-row {
     width: 100%;
@@ -157,6 +157,13 @@ app-appointment{
     width:100px;
     max-width: 100px;
     min-width: 100px;
+    text-align: center;
+}
+
+.mat-column-Bill {
+    width:50px;
+    max-width: 50px;
+    min-width:50px;
     text-align: center;
 }
 
@@ -227,9 +234,9 @@ app-appointment{
 
 .mat-column-PatientType {
     width: 80px;
-    max-width: 8%;
+    max-width: 80px;
     min-width: 80px;
-    text-align: right;
+    text-align: left;
     justify-content:left;
 }
 
