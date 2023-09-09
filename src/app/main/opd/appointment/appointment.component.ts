@@ -56,6 +56,7 @@ export class AppointmentComponent implements OnInit {
     subscriptions: Subscription[] = [];
     reportPrintObj: CasepaperVisitDetails;
     printTemplate: any;
+    TempKeys: any[] = [];
     reportPrintObjList: CasepaperVisitDetails[] = [];
     subscriptionArr: Subscription[] = [];
     isLoadingStr: string = '';
@@ -73,19 +74,19 @@ export class AppointmentComponent implements OnInit {
     registerObj = new RegInsert({});
     RegNo:any=0;
   // Document Upload
-  personalFormGroup:FormGroup;
-  title = 'file-upload';
-  images: any[] = [];
-  docsArray: DocData[] = [];
-  filteredOptions: any;
-  showOptions: boolean = false;
+    personalFormGroup:FormGroup;
+    title = 'file-upload';
+    images: any[] = [];
+    docsArray: DocData[] = [];
+    filteredOptions: any;
+    showOptions: boolean = false;
 
-  doctorNameCmbList:any=[];
+    doctorNameCmbList:any=[];
 
-  optionsDoctor: any[] = [];
+    optionsDoctor: any[] = [];
 
-  filteredOptionsDoctor: Observable<string[]>;
-  isDoctorSelected:boolean = false;
+    filteredOptionsDoctor: Observable<string[]>;
+    isDoctorSelected:boolean = false;
 
 
   @ViewChild('attachments') attachment: any;
@@ -465,10 +466,14 @@ export class AppointmentComponent implements OnInit {
         this._AppointmentSreviceService
             .getTemplate(query)
             .subscribe((resData: any) => {
-                console.log(resData);
                 this.printTemplate = resData[0].TempDesign;
-                console.log(this.printTemplate);
-                let keysArray = [
+                this.TempKeys = resData[0].TempKeys;
+                //console.log(this.printTemplate);
+                console.log(this.TempKeys);
+                let keysArray1 = this.TempKeys;
+
+                console.log(keysArray1);
+                let keysArray =[
                     'HospitalName','HospitalAddress','Phone','EmailId',
                     "RegNo",
                     "PrecriptionId",
@@ -486,6 +491,7 @@ export class AppointmentComponent implements OnInit {
                     "AgeYear",
                     "DrugName",
                     "ConsultantDocName",
+                    "RefDocName",
                     "SecondRefDoctorName",
                     "MobileNo",
                     "Address",
@@ -493,6 +499,8 @@ export class AppointmentComponent implements OnInit {
                     "PreviousVisitDate"
                 ]; // resData[0].TempKeys;
 
+                console.log(keysArray);
+                debugger;
                 for (let i = 0; i < keysArray.length; i++) {
                     let reString = "{{" + keysArray[i] + "}}";
                     let re = new RegExp(reString, "g");
@@ -502,13 +510,9 @@ export class AppointmentComponent implements OnInit {
                     );
                 }
 
-                this.printTemplate = this.printTemplate.replace(
-                    "StrPrintDate",
-                    this.transform2(this.currentDate.toString())
-                );
+                this.printTemplate = this.printTemplate.replace("StrPrintDate",this.transform2(this.currentDate.toString()));
                 this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
                 this.printTemplate = this.printTemplate.replace('StrPreviousVisitDate', this.transform2(this.reportPrintObj.PreviousVisitDate));
-              
                 this.printTemplate = this.printTemplate.replace(/{{.*}}/g, "");
                 setTimeout(() => {
                     this.print();
@@ -529,10 +533,8 @@ export class AppointmentComponent implements OnInit {
     }
 
     getPrint(contact) {
-        debugger;
         var D_data = {
             VisitId: contact.VisitId || 0,
-            
         };
      
         let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;

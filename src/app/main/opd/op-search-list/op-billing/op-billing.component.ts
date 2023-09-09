@@ -527,7 +527,6 @@ export class OPBillingComponent implements OnInit {
         }
         else {
           const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
-debugger
           InsertBillUpdateBillNoObj['BalanceAmt'] = this.BillingForm.get('FinalAmt').value;
 
           let submitData = {

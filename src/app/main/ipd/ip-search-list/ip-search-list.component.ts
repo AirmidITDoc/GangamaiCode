@@ -380,11 +380,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   getRecord(contact, m): void {
-    // debugger;
-    console.log(contact);
-
     if (m == "Advance") {
-
       console.log(contact);
       var m_data = {
         RegNo: contact.RegNo,
@@ -413,8 +409,6 @@ export class IPSearchListComponent implements OnInit {
       console.log(m_data)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm(m_data);
-
-
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -423,7 +417,6 @@ export class IPSearchListComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-
       });
     }
     // else if (m == "Discharge Summary") {
