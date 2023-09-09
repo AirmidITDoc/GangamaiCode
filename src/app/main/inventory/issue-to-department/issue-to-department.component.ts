@@ -9,6 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-issue-to-department',
@@ -65,7 +66,7 @@ export class IssueToDepartmentComponent implements OnInit {
   ];
 
   displayedColumns2 = [
-    'ItemID',
+    'ItemId',
     'ItemName',
     'BatchNO',
     'BalanceQty',
@@ -153,7 +154,7 @@ export class IssueToDepartmentComponent implements OnInit {
     console.log(Param);
     this._IssueToDep.getItemNameList(Param).subscribe(data => {
       this.filteredOptions = data;
-      console.log( this.filteredOptions )
+      // console.log( this.filteredOptions )
             if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -163,7 +164,7 @@ export class IssueToDepartmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-    this.ItemCode=obj.ItemID;
+    this.ItemCode=obj.ItemId;
     this.ItemName = obj.ItemName;
     this.BatchNO = obj.BatchNO;
     this.BalanceQty = obj.BalanceQty;
@@ -174,17 +175,42 @@ export class IssueToDepartmentComponent implements OnInit {
   }
 
   onAdd(){
-    this.dsItemNameList.data = [];
-    // this.chargeslist=this.chargeslist;
+    debugger;
+    // this.dsItemNameList.data = [];
+    if(this.dsItemNameList.data.length > 0){
+  
+    this.dsItemNameList.data.forEach((element) => {
+      console.log(element)
+      debugger;
+     if(this.ItemCode == element.ItemId)
+     {
+      Swal.fire("Item already Added")
+     }else if(this.ItemCode != element.ItemId){
+      debugger;
+      this.chargeslist.push(
+        {
+          ItemId:this.ItemCode,
+          ItemName: this.ItemName,
+          BatchNO: this.BatchNO,
+          BalanceQty: this.BalanceQty,
+          UnitRate: this.UnitRate,
+          TotalAmount: this.TotalAmount,
+        });
+     }
+    });
+  }
+
+  if(this.dsItemNameList.data.length ==0){
     this.chargeslist.push(
       {
-        ItemID:this.ItemCode,
+        ItemId:this.ItemCode,
         ItemName: this.ItemName,
         BatchNO: this.BatchNO,
         BalanceQty: this.BalanceQty,
         UnitRate: this.UnitRate,
         TotalAmount: this.TotalAmount,
       });
+    }
 
       this.dsItemNameList.data=this.chargeslist
   }
@@ -241,7 +267,7 @@ export class IssueItemList {
   VatPercentage:number;
   StoreId:any;
   StoreName:any;
-  static ItemID: string;
+  static ItemId: string;
   static ItemName: number;
   static Qty: number;
   static BatchNO: number;
@@ -300,7 +326,7 @@ export class IssueToDep {
 
 
 export class ItemNameList {
-  ItemID: string;
+  ItemId: string;
   ItemName: number;
   BatchNO:number;
   BalanceQty:number;
@@ -314,7 +340,7 @@ export class ItemNameList {
    */
   constructor(ItemNameList) {
     {
-      this.ItemID = IssueItemList.ItemID || "";
+      this.ItemId = IssueItemList.ItemId || "";
       this.ItemName = IssueItemList.ItemName || 0;
       this.BatchNO = IssueItemList.BatchNO || 0;
       this.BalanceQty = IssueItemList.BalanceQty || 0;

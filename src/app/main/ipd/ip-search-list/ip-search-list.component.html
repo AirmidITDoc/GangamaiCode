@@ -1,22 +1,18 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center" >
-        <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
-            <mat-icon>menu</mat-icon>
-        </button>
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;" >account_box
-      </mat-icon>
-      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
-        IP Search List
-      </span>
-
-      <!-- <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1300px;">
-        <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
-    </button> -->
-    </div> 
-
-           
-    
+    <mat-toolbar class="accent"
+        style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+        <div fxLayout="row">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
+                style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+               IP Search List
+            </span>
+        </div>
 
     </mat-toolbar>
 
@@ -40,58 +36,58 @@
                 <div>
                     <div class="nav material2">
                         <form [formGroup]="_IpSearchListService.myFilterform" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getAdmittedPatientList()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                        fusePerfectScrollbar>
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                            <br />
+                            <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getAdmittedPatientList()">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.FirstName.invalid && f.RegNo.touched">RegNo is
-                                        required Enter only Digits</span>
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>RegNo</mat-label>
+                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="getAdmittedPatientList()">
+                                <span class="error" *ngIf="f.FirstName.invalid && f.RegNo.touched">RegNo is
+                                    required Enter only Digits</span>
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
-                                        required Enter only Alphabets</span>
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input name="FirstName" formControlName="FirstName" matInput (keyup)="getAdmittedPatientList()">
+                                <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
+                                    required Enter only Alphabets</span>
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">
-                                    LastName is required Enter only Alphabets</span>
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input name="LastName" formControlName="LastName" matInput (keyup)="getAdmittedPatientList()">
+                                <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">
+                                LastName is required Enter only Alphabets</span>
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Mobile Number</mat-label>
-                                    <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keyup)="getAdmittedPatientList()">
-                                    <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
-                                        required Enter only Digits</span>
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Mobile Number</mat-label>
+                                <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keyup)="getAdmittedPatientList()">
+                                <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
+                                    required Enter only Digits</span>
+                            </mat-form-field>
 
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>&nbsp;
+                                <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()" matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
                             </div>
+                        </div>
 
-                        </form>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -110,10 +106,10 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div> -->
+                                </div>
                                 <!-- sppinner -->
                                 <mat-table #table  class ="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="width: 100%;" >
@@ -271,7 +267,9 @@
                                 <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                             
                             </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>
