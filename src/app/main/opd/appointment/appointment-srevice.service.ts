@@ -327,6 +327,9 @@ public documentuploadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
   }
 
-
+    // Doctor Master Combobox List
+    public getDoctorMasterComboA() {
+      return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    }
   
 }

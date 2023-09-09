@@ -126,7 +126,7 @@ app-appointment{
 .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1500px;  
+    min-width: 1800px;  
     min-height: 30px; 
       
 }
@@ -134,7 +134,7 @@ app-appointment{
 .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1500px;      
+    min-width: 1800px;      
     min-height: 30px;  
    
 }
@@ -241,7 +241,7 @@ app-appointment{
     height: 20px;
     flex-shrink: 0;
     line-height: 20px;
-    // border-radius: 50%;
+    align-items: left;
 }
 
 .clearbutton{
@@ -314,8 +314,8 @@ app-appointment{
     width:100px;
     max-width: 100px;
     min-width: 100px;
-    text-align: right;
-    justify-content:right; 
+    text-align: left;
+    justify-content:left; 
     // background:#039be5 !important; 
 }
 
@@ -483,9 +483,9 @@ h1, .h1 {
     }
 
     .mat-column-buttons{
-        width: 130px;
-        max-width: 130px;
-        min-width: 130px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
         text-align: left;
         justify-content:left;
     }

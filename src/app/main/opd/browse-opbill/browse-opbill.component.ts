@@ -577,6 +577,7 @@ export class ReportPrintObj {
 
 export class BrowseOPDBill {
   BillNo: Number;
+  
   RegId: number;
   RegNo: number;
   PatientName: string;

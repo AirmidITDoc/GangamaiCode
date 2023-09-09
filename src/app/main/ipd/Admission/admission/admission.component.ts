@@ -284,7 +284,7 @@ export class AdmissionComponent implements OnInit {
   addNewAdmission() {
     const dialogRef = this._matDialog.open(RegAdmissionComponent,
       {
-        maxWidth: "110vw",
+        maxWidth: "90vw",
         height: '850px',
         width: '100%',
         

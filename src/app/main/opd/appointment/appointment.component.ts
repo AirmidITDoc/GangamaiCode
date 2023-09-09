@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { ReplaySubject, Subject, Subscription } from "rxjs";
+import { Observable, ReplaySubject, Subject, Subscription } from "rxjs";
 import { RegistrationService } from "../registration/registration.service";
 import { DatePipe, Time } from "@angular/common";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
@@ -31,6 +31,7 @@ import { FeedbackComponent } from "./feedback/feedback.component";
 import { PatientAppointmentComponent } from "./patient-appointment/patient-appointment.component";
 import { ImageViewComponent } from "./image-view/image-view.component";
 import { CameraComponent } from "./camera/camera.component";
+import { map, startWith } from "rxjs/operators";
 
 export class DocData {
     doc: any;
@@ -78,6 +79,14 @@ export class AppointmentComponent implements OnInit {
   docsArray: DocData[] = [];
   filteredOptions: any;
   showOptions: boolean = false;
+
+  doctorNameCmbList:any=[];
+
+  optionsDoctor: any[] = [];
+
+  filteredOptionsDoctor: Observable<string[]>;
+  isDoctorSelected:boolean = false;
+
 
   @ViewChild('attachments') attachment: any;
 
@@ -151,6 +160,7 @@ export class AppointmentComponent implements OnInit {
         }
 
         this.getVisitList();
+        this.getDoctorNameCombobox();
         
     }
 
@@ -169,7 +179,7 @@ export class AppointmentComponent implements OnInit {
             F_Name:this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
             L_Name:this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
             Reg_No:this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
-            Doctor_Id:this._AppointmentSreviceService.myFilterform.get("DoctorId").value || 0,
+            Doctor_Id:this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
             From_Dt: this.datePipe.transform( this._AppointmentSreviceService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000" ) || "01/01/1900",
             To_Dt:this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || "01/01/1900",
             IsMark:this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
@@ -202,6 +212,32 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
+    
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  getDoctorNameCombobox() {
+    this._AppointmentSreviceService.getDoctorMasterComboA().subscribe(data => {
+      this.doctorNameCmbList = data;
+      this.optionsDoctor = this.doctorNameCmbList.slice();
+      this.filteredOptionsDoctor = this._AppointmentSreviceService.myFilterform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+      );
+      
+    });
+  }
+
+  
+  getOptionTextDoctor(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
     getSearchList() {
         debugger
       
