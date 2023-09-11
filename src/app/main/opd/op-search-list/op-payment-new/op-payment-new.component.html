@@ -1,6 +1,8 @@
 <div class="parent-container">
     <fieldset style="font-size: 17px;">
         <legend>Bill Information</legend>
+        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+        style="border-color: red;"></app-common-date>
         <div>
             <fieldset class="fieldset-div">
                 <legend>Patient Information</legend>
@@ -14,7 +16,7 @@
                                 <h6 class="labels-h6">:</h6>
                             </div>
                             <div class="flex-item">
-                                <h6 class="labels-h6">Vijay Shelkar</h6>
+                                <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}</h6>
                             </div>
                         </div>
                         <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
@@ -119,7 +121,7 @@
                             <h6 class="labels-h6">:</h6>
                         </div>
                         <div fxFlex="200px">
-                            <h6 class="labels-h6">12345</h6>
+                            <h6 class="labels-h6">0</h6>
                         </div>
                     </div>
 
@@ -144,7 +146,7 @@
 
                     <div class="patient-bill-info" fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-between center">
                         <div fxFlex="200px">
-                            <h3 class="labels-h3">Net Payable Amount</h3>
+                            <h3 class="labels-h3">Net Pay Amount</h3>
                         </div>
                         <div>
                             <h6 class="labels-h6">:</h6>
@@ -167,7 +169,7 @@
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
-                                <mat-select formControlName="paymentTyp1" [(ngModel)]="selectedPaymnet1"
+                                <mat-select formControlName="paymentType1" [(ngModel)]="selectedPaymnet1"
                                     (selectionChange)="onPaymentChange(1, $event.value)" required>
                                     <mat-option *ngFor="let ele of paymentArr1" [value]="ele.value">
                                         {{ele.viewValue}}
@@ -376,7 +378,7 @@
                         </div>
                         <!-- Fifth Row -->
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                            *ngIf="paymentRowObj.netbanking">
+                            *ngIf="paymentRowObj.card">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"

@@ -102,10 +102,10 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
@@ -236,26 +236,27 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
                                 <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>
+                                </ng-container> 
+            
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                            [diameter]='30'>
+                                        </mat-spinner>
+                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                    </mat-footer-cell>
                                 </ng-container>
 
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                
                             </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20" showFirstLastButtons>
                                 </mat-paginator>

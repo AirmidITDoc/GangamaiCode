@@ -28,7 +28,7 @@ export class BrowseOPBillComponent implements OnInit {
   click: boolean = false;
   MouseEvent = true;
   hasSelectedContacts: boolean;
-  sIsLoading: string = '';
+  isLoadingStr: string = '';
   dataArray = {};
   dataSource = new MatTableDataSource<BrowseOPDBill>();
   reportPrintObj: BrowseOPDBill;
@@ -82,33 +82,7 @@ export class BrowseOPBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    debugger;
-    var D_data = {
-      "F_Name": "%",
-      "L_Name": "%",
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": 0,
-      "PBillNo": 0,
-    }
-    console.log(D_data);
-
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
-        this.dataSource.data = Visit as BrowseOPDBill[];
-        this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000);
-
+    this.getBrowseOPDBillsList();
     this.onClear();
   }
 
@@ -117,24 +91,22 @@ export class BrowseOPBillComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  NewBillpayment(contact){
-        
-    
-    let PatientHeaderObj = {};
-debugger
-    PatientHeaderObj['Date'] = contact.BillDate;
-    PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
-    PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
-    PatientHeaderObj['BillId'] =contact.BillNo;
+  NewBillpayment(SelectedRecordValue){
+    console.log(SelectedRecordValue);
+    // let PatientHeaderObj = {};
+    // PatientHeaderObj['Date'] = contact.BillDate;
+    // PatientHeaderObj['PatientName'] = contact.PatientName;
+    // PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
+    // PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
+    // PatientHeaderObj['BillId'] =contact.BillNo;
 
      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "85vw",
-          height: '540px',
+          maxWidth: "90vw",
+          height: '640px',
           width: '100%',
           data: {
-            advanceObj: PatientHeaderObj,
+            vPatientHeaderObj: SelectedRecordValue,
             FromName: "OP-Bill"
           }
         });
@@ -142,17 +114,13 @@ debugger
     dialogRef.afterClosed().subscribe(result => {
 
       let updateBillobj = {};
-
-      
-      updateBillobj['BillNo'] = contact.BillNo;
+      updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
       updateBillobj['BillBalAmount'] = 0;
 
       const updateBill = new UpdateBill(updateBillobj);
-           
-      debugger
       let CreditPaymentobj = {};
       CreditPaymentobj['paymentId'] = 0;
-      CreditPaymentobj['BillNo'] = contact.BillNo;
+      CreditPaymentobj['BillNo'] = SelectedRecordValue.BillNo;
       CreditPaymentobj['ReceiptNo'] = '';
       CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
       CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
@@ -218,10 +186,7 @@ debugger
 }
 
   Billpayment(contact){
-        
-    
       let PatientHeaderObj = {};
-debugger
       PatientHeaderObj['Date'] = contact.BillDate;
       PatientHeaderObj['PatientName'] = contact.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
@@ -321,7 +286,7 @@ debugger
     
     setTimeout(() => {
       {
-        this.sIsLoading = 'loading-data';
+        this.isLoadingStr = 'loading-data';
 
         this.getBrowseOPDBillsList();
       }
@@ -345,8 +310,7 @@ debugger
 
 
   getBrowseOPDBillsList() {
-    this.sIsLoading = 'loading-data';
-
+    this.isLoadingStr = 'loading';
     var D_data = {
       "F_Name": (this._BrowseOPDBillsService.myFilterform.get("FirstName").value).trim() + '%' || "%",
       "L_Name": (this._BrowseOPDBillsService.myFilterform.get("LastName").value).trim() + '%' || "%",
@@ -355,19 +319,16 @@ debugger
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
     }
-    
     setTimeout(() => {
-      this.sIsLoading = 'loading-data';
+      this.isLoadingStr = 'loading';
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as BrowseOPDBill[];
         this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
         this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
+        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       },
         error => {
-          this.sIsLoading = '';
+          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
         });
     }, 1000);
 

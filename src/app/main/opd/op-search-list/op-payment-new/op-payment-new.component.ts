@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-op-payment-new',
@@ -9,6 +10,7 @@ import { OPSearhlistService } from '../op-searhlist.service';
   styleUrls: ['./op-payment-new.component.scss']
 })
 export class OpPaymentNewComponent implements OnInit {
+
   patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
   paymentArr2: any[] = this.opService.getPaymentArr();
@@ -19,9 +21,11 @@ export class OpPaymentNewComponent implements OnInit {
     cash: false,
     upi: false,
     cheque: false,
-    netbanking: false
+    card: false
   };
-  paymentData: any;
+  
+  PatientHeaderObj: any;
+
   selectedPaymnet1: string = '';
   selectedPaymnet2: string = '';
   selectedPaymnet3: string = '';
@@ -35,38 +39,53 @@ export class OpPaymentNewComponent implements OnInit {
   amount3: any;
   amount4: any;
   amount5: any;
+
+  dateTimeObj: any;
+  screenFromString = 'payment-form';
+  
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private opService: OPSearhlistService
-
+    private opService: OPSearhlistService,
+    private accountService: AuthenticationService,
   ) {
     this.nowDate = new Date();
   }
 
   ngOnInit(): void {
+
     this.patientDetailsFormGrp = this.createForm();
-    this.paymentData = this.data.advanceObj;
+
+    this.PatientHeaderObj = this.data.vPatientHeaderObj;
+    console.log(this.PatientHeaderObj);
+    
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-    this.amount1 = this.netPayAmt = parseInt(this.paymentData.advanceObj);
+    
+    this.amount1 = this.netPayAmt = parseInt(this.PatientHeaderObj.NetPayableAmt);
     // this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
-    console.log(this.paymentData);
+    
+    // console.log(this.PatientHeaderObj);
     this.onPaymentChange(1, 'cash');
+  }
+
+  getDateTime(dateTimeObj) {
+    console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
   }
 
   createForm() {
     return this.formBuilder.group({
-      paymentTyp1: [],
+      paymentType1: [],
       amount1: [this.netPayAmt],
       referenceNumber: [],
       bankName: [],
-      registrationDate: [],
+      registrationDate: [(new Date()).toISOString()],
       paymentType2: [],
       amount2: [],
       referenceNo1: [],
       bankName1: [],
-      regDate: [],
+      regDate: [(new Date()).toISOString()],
       paymentType3: [],
       amount3: [],
       // upi: [],
@@ -75,13 +94,13 @@ export class OpPaymentNewComponent implements OnInit {
       amount4: [],
       bankName2: [],
       bankName3: [],
-      regDate1: [],
-      regDate2: [],
+      regDate1: [(new Date()).toISOString()],
+      regDate2: [(new Date()).toISOString()],
       referenceNo3: [],
       paymentType5: [],
       amount5: [],
       bankName4: [],
-      regDate3: [],
+      regDate3: [(new Date()).toISOString()],
       referenceNo4: []
     });
   }
@@ -116,7 +135,7 @@ export class OpPaymentNewComponent implements OnInit {
         this.setFourthRowValidators(paymentOption);
         break;
 
-      case 'netbanking':
+      case 'card':
         this.setFifthRowValidators(paymentOption);
         break;
 
@@ -355,18 +374,87 @@ export class OpPaymentNewComponent implements OnInit {
 
   onSubmit() {
     console.log(this.patientDetailsFormGrp);
-    if (this.patientDetailsFormGrp.invalid) {
-      const controls = this.patientDetailsFormGrp.controls;
-      Object.keys(controls).forEach(controlsName => {
-        const controlField = this.patientDetailsFormGrp.get(controlsName);
-        if (controlField && controlField.invalid) {
-          controlField.markAsTouched({ onlySelf: true });
-        }
-      });
-      return;
-    } else {
-      console.log('valid...');
-    }
+      let Paymentobj = {};
+      Paymentobj['BillNo'] = this.PatientHeaderObj.billNo;
+      Paymentobj['ReceiptNo'] = '';
+      Paymentobj['PaymentDate'] = ""; //this.dateTimeObj.date;
+      Paymentobj['PaymentTime'] = "";//this.dateTimeObj.date;
+      if (this.patientDetailsFormGrp.get("paymentType1").value == "cash"){
+        Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
+      }else{
+        Paymentobj['CashPayAmount'] = 0
+      }
+      if (this.patientDetailsFormGrp.get("paymentType1").value == "cheque"){
+        Paymentobj['ChequePayAmount'] = 0;
+        Paymentobj['ChequeNo'] = 0;
+        Paymentobj['BankName'] = "";
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+      } else{
+        Paymentobj['ChequePayAmount'] = 0;
+        Paymentobj['ChequeNo'] = "";
+        Paymentobj['BankName'] = "" ;//this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = "01/01/1900";
+      }
+      if (this.patientDetailsFormGrp.get("paymentType1").value == "card"){
+        Paymentobj['CardPayAmount'] = 0;
+        Paymentobj['CardNo'] =0;
+        Paymentobj['CardBankName'] = "";//this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+      }else {
+        Paymentobj['CardPayAmount'] = 0;
+        Paymentobj['CardNo'] = "";
+        Paymentobj['CardBankName'] = "";//this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = "01/01/1900";
+      }
+      Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['AdvanceId'] = 0;
+      Paymentobj['RefundId'] = 0;
+      Paymentobj['TransactionType'] = 0;
+      Paymentobj['Remark'] = "" //this.paymentForm.get('commentsController').value;
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
+      Paymentobj['IsCancelledBy'] = 0;
+      Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
+      Paymentobj['CashCounterId'] = 0;
+      Paymentobj['IsSelfORCompany'] = 0;
+      Paymentobj['CompanyId'] = 0;
+      if (this.patientDetailsFormGrp.get("paymentType1").value == "cash"){
+        Paymentobj['NEFTPayAmount'] = 0;//parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = ""; // this.neftNo;
+        Paymentobj['NEFTBankMaster'] = "";//this.patientDetailsFormGrp.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+      }else{
+        Paymentobj['NEFTPayAmount'] = 0;
+        Paymentobj['NEFTNo'] = "";
+        Paymentobj['NEFTBankMaster'] = "";
+        Paymentobj['NEFTDate'] = '01/01/1900'
+      }
+      if (this.patientDetailsFormGrp.get("paymentType1").value == "cash"){
+        Paymentobj['PayTMAmount'] = 0; // parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = 0 ;//this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+      }else{
+        Paymentobj['PayTMAmount'] = 0;
+        Paymentobj['PayTMTranNo'] = '';
+        Paymentobj['PayTMDate'] = '01/01/1900'
+      }
+      Paymentobj['PaidAmt'] = 0 ;//this.paymentForm.get('paidAmountController').value;
+      Paymentobj['BalanceAmt'] = 0; //this.paymentForm.get('balanceAmountController').value;
+
+      console.log(Paymentobj);
+
+    // if (this.patientDetailsFormGrp.invalid) {
+    //   const controls = this.patientDetailsFormGrp.controls;
+    //   Object.keys(controls).forEach(controlsName => {
+    //     const controlField = this.patientDetailsFormGrp.get(controlsName);
+    //     if (controlField && controlField.invalid) {
+    //       controlField.markAsTouched({ onlySelf: true });
+    //     }
+    //   });
+    //   return;
+    // } else {
+    //   console.log('valid...');
+    // }
   }
 
 }
