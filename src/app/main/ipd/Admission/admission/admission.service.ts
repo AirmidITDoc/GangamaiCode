@@ -14,11 +14,9 @@ export class AdmissionService {
   
   myFilterform: FormGroup;
   mySaveForm: FormGroup;
-  
 
   counter = 0;
 
-  
 constructor(public _httpClient:HttpClient,
     public _formBuilder: FormBuilder
     ) {
@@ -43,8 +41,6 @@ constructor(public _httpClient:HttpClient,
       patientstatus:'',
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-
-
       
     });
   }
