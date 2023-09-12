@@ -1,7 +1,9 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+    <mat-toolbar class="accent"
+        style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
         <div fxLayout="row">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
+                style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -12,11 +14,13 @@
             </span>
         </div>
 
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
-            <button mat-raised-button (click)="newPhoneAppointment()" style="background-color: aliceblue;color: brown;">New Phone Appointment
-                <!-- <mat-icon color="warn" title="New Appointment">how_to_reg</mat-icon> -->
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
+            <button mat-raised-button (click)="newPhoneAppointment()"
+                style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
+
             </button>
         </div>
+
     </mat-toolbar>
 
     <!-- / HEADER -->
@@ -38,14 +42,16 @@
                 <!-- SIDEBAR CONTENT -->
                 <div>
                     <div class="nav material2">
-                        <form [formGroup]="_phoneAppointService.mysearchform" style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                        <form [formGroup]="_phoneAppointService.mysearchform" style="padding: 6px 6px 5px 5px;"
+                            fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
                                 <br />
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date" (dateChnage)="getPhoneAppointList()">
+                                        <input matStartDate formControlName="start" placeholder="Start date"
+                                            (dateChange)="getPhoneAppointList()">
+                                        <input matEndDate formControlName="end" placeholder="End date">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -53,7 +59,8 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search First Name</mat-label>
-                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput>
+                                    <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput
+                                        (keyup)="getPhoneAppointList()">
                                     <span class="error"
                                         *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">First Name is
                                         required Enter only Alphabets</span>
@@ -61,13 +68,14 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search Last Name</mat-label>
-                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput>
+                                    <input name="LastNameSearch" formControlName="LastNameSearch" matInput
+                                        (keyup)="getPhoneAppointList()">
                                     <span class="error"
                                         *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">Last Name is
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
                                     <mat-select formControlName="DoctorId" #singleSelect>
                                         <mat-option>
@@ -78,7 +86,26 @@
                                             {{element.DoctorName}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                      <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option"
+                                        >
+                                        {{option.DoctorName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
 
                                 <div style="margin-top: 10px;">
                                     <button mat-raised-button (click)="onClear()" class="clearbutton"
@@ -116,8 +143,8 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto;">
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
                                     <!-- <ng-container matColumnDef="PhoneAppId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             PhoneAppId

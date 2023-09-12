@@ -68,7 +68,7 @@ app-phoneappointment {
   .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1450px;  
+    min-width: 1480px;  
     min-height: 30px; 
     background-color: blue;
    
@@ -78,49 +78,39 @@ app-phoneappointment {
   .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1450px;      
+    min-width: 1480px;      
     min-height: 30px;  
                
   }
   
-  .mat-column-PhoneAppId {
-    width:110px;
-    max-width:110px;
-    min-width:110px;
-    text-align: left;
-      
-  }
+  
   .mat-column-AppDate {
-    width: 100px; 
-    max-width: 100px;
-    min-width: 100px;
-    text-align: left;
+    width: 110px; 
+    max-width: 110px;
+    min-width: 110px;
+   justify-content: left;
   }
+
   .mat-column-PatientName {
+    width: 330px;
+    max-width:330px;
+    min-width:330px;
+     text-align: left;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
+  }
+  
+  .mat-column-Address {
     width: 250px;
     max-width:250px;
     min-width:250px;
     text-align: left;
-    //  display: inline-block; 
     white-space: nowrap; 
-    // overflow: hidden;
-    // text-overflow: ellipsis; 
-     overflow: hidden !important;  
-  
-    
-  }
-  
-  .mat-column-Address {
-    width: 230px;
-    max-width:230px;
-    min-width:230px;
-    text-align: left;
-    white-space: nowrap; 
-    
-    overflow: hidden; 
-     overflow: hidden !important;
-    //  display: inline-block; 
-        
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
   }
 
   .mat-column-MobileNo{
@@ -131,15 +121,14 @@ app-phoneappointment {
     
   }
   .mat-column-DepartmentName {
-    width:150px;
-    max-width: 150px;
-    min-width: 150px;
+    width:200px;
+    max-width: 200px;
+    min-width: 200px;
     text-align: left;
     white-space: nowrap; 
-    
-    overflow: hidden; 
-     overflow: hidden !important;
-    //  display: inline-block; 
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
   
   }
   
@@ -157,11 +146,9 @@ app-phoneappointment {
     min-width:250px;
     text-align: left;
     white-space: nowrap; 
-    
-    overflow: hidden; 
-     overflow: hidden !important;
-    //  display: inline-block; 
-   
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
   }
   .mat-column-IsCancelled {
     width: 80px;

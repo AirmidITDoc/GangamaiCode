@@ -90,7 +90,7 @@ debugger;
      console.log(this.data)
 
       this.selectedAdvanceObj = this.data.advanceObj;
-      this.regId = this.selectedAdvanceObj.RegId;
+      this.regId =  this.data.advanceObj.OPD_IPD_Id;
      
     }
     this.getPaidBillDetails();
@@ -111,7 +111,7 @@ debugger;
 debugger
     this.sIsLoading = 'loading-data';
 
-    this.regId=199;
+    // this.regId=199;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
    console.log(query);
@@ -133,7 +133,7 @@ debugger
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    this.regId=382
+    // this.regId=382
     
   
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 40 and RegID= " + this.regId + " and BalanceAmt>0";

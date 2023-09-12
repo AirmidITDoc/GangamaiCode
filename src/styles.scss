@@ -6,7 +6,7 @@
 // @import '~font-awesome/css/font-awesome.min.css';
 
 //added by prasad
-.mat-cell, .mat-footer-cell {
+.mat-cell, .mat-footer-cell, .mat-label{
     font-size: 15px !important;
 } 
 //added by prasad
@@ -130,8 +130,9 @@ snack-bar-container success {
     display: none !important;
 }
 
-html, body { height: 80% !important; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important;zoom: 0.8; zoom: 80%; }
+html, body { height: 90% !important; }
+body { margin: 0; font-family: Roboto, sans-serif !important;zoom: 0.9; zoom: 90%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important;zoom: 0.9; zoom: 90%; }
 
 
 // Spinner Css
@@ -157,6 +158,9 @@ background: rgba(240, 239, 239, 0.15);
     text-align: center;
   }
 
+//   .mat-label{
+//     font-size: 20px;
+//   }
 
 //  ===================== Save and Close Button CSS
   .save-button {
@@ -187,8 +191,8 @@ background: rgba(240, 239, 239, 0.15);
 .data_input{
     padding: 15px 2px 5px 2px; font-variant-caps: all-petite-caps; font-weight: bolder;font-size: 17px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 
@@ -437,5 +441,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 // end spinner
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// html, body { height: 80%;}
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

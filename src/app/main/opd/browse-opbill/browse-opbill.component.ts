@@ -14,6 +14,7 @@ import * as converter from 'number-to-words';
 import { IpPaymentInsert, OPAdvancePaymentComponent, UpdateBill } from '../op-search-list/op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OpPaymentNewComponent } from '../op-search-list/op-payment-new/op-payment-new.component';
 @Component({
   selector: 'app-browse-opbill',
   templateUrl: './browse-opbill.component.html',
@@ -27,7 +28,7 @@ export class BrowseOPBillComponent implements OnInit {
   click: boolean = false;
   MouseEvent = true;
   hasSelectedContacts: boolean;
-  sIsLoading: string = '';
+  isLoadingStr: string = '';
   dataArray = {};
   dataSource = new MatTableDataSource<BrowseOPDBill>();
   reportPrintObj: BrowseOPDBill;
@@ -48,7 +49,9 @@ export class BrowseOPBillComponent implements OnInit {
   isLoading = true;
 
   displayedColumns = [
+    
     'chkBalanceAmt',
+    "Bill",
     'BillDate',
     'BillNo',
     'RegNo',
@@ -79,33 +82,7 @@ export class BrowseOPBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    debugger;
-    var D_data = {
-      "F_Name": "%",
-      "L_Name": "%",
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": 0,
-      "PBillNo": 0,
-    }
-    console.log(D_data);
-
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
-        this.dataSource.data = Visit as BrowseOPDBill[];
-        this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 1000);
-
+    this.getBrowseOPDBillsList();
     this.onClear();
   }
 
@@ -114,11 +91,102 @@ export class BrowseOPBillComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  Billpayment(contact){
-        
+  NewBillpayment(SelectedRecordValue){
+    console.log(SelectedRecordValue);
+    // let PatientHeaderObj = {};
+    // PatientHeaderObj['Date'] = contact.BillDate;
+    // PatientHeaderObj['PatientName'] = contact.PatientName;
+    // PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
+    // PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
+    // PatientHeaderObj['BillId'] =contact.BillNo;
+
+     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+        {
+          maxWidth: "90vw",
+          height: '640px',
+          width: '100%',
+          data: {
+            vPatientHeaderObj: SelectedRecordValue,
+            FromName: "OP-Bill"
+          }
+        });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      let updateBillobj = {};
+      updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
+      updateBillobj['BillBalAmount'] = 0;
+
+      const updateBill = new UpdateBill(updateBillobj);
+      let CreditPaymentobj = {};
+      CreditPaymentobj['paymentId'] = 0;
+      CreditPaymentobj['BillNo'] = SelectedRecordValue.BillNo;
+      CreditPaymentobj['ReceiptNo'] = '';
+      CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+      CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+      CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+      CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+      CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+      CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+      CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+      CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+      CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+      CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+      CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+      CreditPaymentobj['AdvanceUsedAmount'] = 0;
+      CreditPaymentobj['AdvanceId'] = 0;
+      CreditPaymentobj['RefundId'] = 0;
+      CreditPaymentobj['TransactionType'] = 0;
+      CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+      CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      CreditPaymentobj['IsCancelled'] = 0;
+      CreditPaymentobj['IsCancelledBy'] = 0;
+      CreditPaymentobj['IsCancelledDate'] = this.currentDate;
+      // CreditPaymentobj['CashCounterId'] = 0;
+      // CreditPaymentobj['IsSelfORCompany'] = 0;
+      // CreditPaymentobj['CompanyId'] = 0;
+      CreditPaymentobj['opD_IPD_Type'] = 0;
+      CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+      CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+      CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+      CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+      CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+      CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+      CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+      // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+      // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+
+      console.log(CreditPaymentobj)
+      const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+
+        let Data = {
+        "updateBill":updateBill,
+        "paymentCreditUpdate": ipPaymentInsert
+      }; 
+
     
+      console.log(Data);
+
+      this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
+        if (response) {
+          Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              // let m = response;
+              // this.getPrint(m);
+              this._matDialog.closeAll();
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+        }
+        
+      });
+    });
+  
+}
+
+  Billpayment(contact){
       let PatientHeaderObj = {};
-debugger
       PatientHeaderObj['Date'] = contact.BillDate;
       PatientHeaderObj['PatientName'] = contact.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
@@ -218,7 +286,7 @@ debugger
     
     setTimeout(() => {
       {
-        this.sIsLoading = 'loading-data';
+        this.isLoadingStr = 'loading-data';
 
         this.getBrowseOPDBillsList();
       }
@@ -242,8 +310,7 @@ debugger
 
 
   getBrowseOPDBillsList() {
-    this.sIsLoading = 'loading-data';
-
+    this.isLoadingStr = 'loading';
     var D_data = {
       "F_Name": (this._BrowseOPDBillsService.myFilterform.get("FirstName").value).trim() + '%' || "%",
       "L_Name": (this._BrowseOPDBillsService.myFilterform.get("LastName").value).trim() + '%' || "%",
@@ -252,23 +319,20 @@ debugger
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
     }
-    
     setTimeout(() => {
-      this.sIsLoading = 'loading-data';
+      this.isLoadingStr = 'loading';
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as BrowseOPDBill[];
         this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
         this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.click = false;
+        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       },
         error => {
-          this.sIsLoading = '';
+          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
         });
     }, 1000);
 
-    this.onClear();
+    // this.onClear();
   }
 
 
@@ -577,6 +641,7 @@ export class ReportPrintObj {
 
 export class BrowseOPDBill {
   BillNo: Number;
+  
   RegId: number;
   RegNo: number;
   PatientName: string;

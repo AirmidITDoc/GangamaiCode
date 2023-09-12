@@ -4,13 +4,14 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PhoneAppointListService } from './phone-appoint-list.service';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { GeturlService } from './geturl.service';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -27,10 +28,10 @@ export class PhoneappointmentComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   doctorNameCmbList: any = [];
-
-  // dataurl1: any = [];
-  // dataurl2: any = [];
-  // dataurl3: any = [];
+  isDoctorSelected:boolean=false;
+  filteredOptionsDoctor: Observable<string[]>;
+  
+  optionsDoctor: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,9 +53,9 @@ export class PhoneappointmentComponent implements OnInit {
   dataSource = new MatTableDataSource<PhoneAppointmentlist>();
   menuActions: Array<string> = [];
 
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
+  // public doctorFilterCtrl: FormControl = new FormControl();
+  // public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // private _onDestroy = new Subject<void>();
 
   constructor(
     public _phoneAppointService: PhoneAppointListService,
@@ -69,10 +70,6 @@ export class PhoneappointmentComponent implements OnInit {
     this.getDoctorNameCombobox();
     // get phone appointment list on page load
     this.getPhoneAppointList();
-
-    // this.geturlVisit();
-    // this.geturlBill();
-    // this.geturlBillDet();
   }
   
   // toggle sidebar
@@ -90,32 +87,38 @@ export class PhoneappointmentComponent implements OnInit {
     this._phoneAppointService.mysearchform.get('DoctorId').reset();
   }
 
-  //get doctor list 
-  getDoctorNameCombobox(){
-     this._phoneAppointService.getAdmittedDoctorCombo().subscribe(data => {
+
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+   
+  getDoctorNameCombobox() {
+    this._phoneAppointService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
-      this.filtereddoctor.next(this.doctorNameCmbList.slice());
+      this.optionsDoctor = this.doctorNameCmbList.slice();
+      this.filteredOptionsDoctor = this._phoneAppointService.mysearchform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+      );
+      
     });
   }
 
-  // geturlVisit(){
-  //   this._geturl.getVisitData().subscribe(data => {
-  //     this.dataurl1 = data;
-  //     console.log(this.dataurl1);
-  //     });
-  // }
-  // geturlBill(){
-  //   this._geturl.getBillData().subscribe(data => {
-  //     this.dataurl2 = data;
-  //     console.log(this.dataurl2);
-  //     });
-  // }
-  // geturlBillDet(){
-  //   this._geturl.getBillDetData().subscribe(data => {
-  //     this.dataurl2 = data;
-  //     console.log(this.dataurl2);
-  //     });
-  // }
+  
+
+  getOptionTextDoctor(option){
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+
+
+
+
+
 
   // get phone appointment list on Button click
   getPhoneAppointList() {
@@ -190,34 +193,34 @@ export class PhoneAppointmentlist {
 }
 
 
-export class PhoneApplistMaster {
-  PhoneAppId: number;
-  PatientName: string;
-  AppDate: Date;
-  Address:string;
-  PhAppDate: Date;
-  MobileNo :string;
-  DepartmentName :string;
-  DoctorName :string;
-  IsCancelled : boolean;
+// export class PhoneApplistMaster {
+//   PhoneAppId: number;
+//   PatientName: string;
+//   AppDate: Date;
+//   Address:string;
+//   PhAppDate: Date;
+//   MobileNo :string;
+//   DepartmentName :string;
+//   DoctorName :string;
+//   IsCancelled : boolean;
   
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(PhoneApplistMaster) {
-      {
-          this.PhoneAppId = PhoneApplistMaster.PhoneAppId || '';
-          this.PatientName = PhoneApplistMaster.PatientName || '';
-          this.AppDate = PhoneApplistMaster.AppDate || '';
-          this.Address = PhoneApplistMaster.Address || '';
-          this.PhAppDate = PhoneApplistMaster.PhAppDate || '';
-          this.MobileNo = PhoneApplistMaster.MobileNo || '';
-          this.DepartmentName= PhoneApplistMaster.DepartmentName ||'';
-          this.DoctorName= PhoneApplistMaster.DoctorName ||'';
-          this.IsCancelled = PhoneApplistMaster.IsCancelled ||'';
+//   /**
+//    * Constructor
+//    *
+//    * @param contact
+//    */
+//   constructor(PhoneApplistMaster) {
+//       {
+//           this.PhoneAppId = PhoneApplistMaster.PhoneAppId || '';
+//           this.PatientName = PhoneApplistMaster.PatientName || '';
+//           this.AppDate = PhoneApplistMaster.AppDate || '';
+//           this.Address = PhoneApplistMaster.Address || '';
+//           this.PhAppDate = PhoneApplistMaster.PhAppDate || '';
+//           this.MobileNo = PhoneApplistMaster.MobileNo || '';
+//           this.DepartmentName= PhoneApplistMaster.DepartmentName ||'';
+//           this.DoctorName= PhoneApplistMaster.DoctorName ||'';
+//           this.IsCancelled = PhoneApplistMaster.IsCancelled ||'';
           
-      }
-  }
-  }
+//       }
+//   }
+//   }

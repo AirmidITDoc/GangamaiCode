@@ -334,28 +334,6 @@ export class NewAppointmentComponent implements OnInit {
     this.AreaId.markAsTouched();
 
   }
-
-
-    // // City filter code
-    // private filterCity() {
-
-    //   if (!this.cityList) {
-    //     return;
-    //   }
-    //   // get the search keyword
-    //   let search = this.cityFilterCtrl.value;
-    //   if (!search) {
-    //     this.filteredCity.next(this.cityList.slice());
-    //     return;
-    //   }
-    //   else {
-    //     search = search.toLowerCase();
-    //   }
-    //   // filter
-    //   this.filteredCity.next(
-    //     this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    //   );
-    // }
   
 
   getOptionTextPrefix(option){
@@ -364,7 +342,8 @@ export class NewAppointmentComponent implements OnInit {
 
 
   getOptionTextDep(option) {
-    return option.departmentName;
+    
+    return option && option.departmentName ? option.departmentName : '';
   }
 
   getOptionTextCity(option) {
@@ -1119,7 +1098,7 @@ export class NewAppointmentComponent implements OnInit {
       visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-      visitSave['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+      visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
@@ -1300,7 +1279,7 @@ export class NewAppointmentComponent implements OnInit {
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       // this.Regdisplay = false;
-      this.showtable = false;
+      // this.showtable = false;
 
 
     } else {

@@ -208,8 +208,8 @@ getRecord(el,i) {
   GetIpdreturnAdvancepaymentreceipt() {
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._IpReturnadvanceReceiptService.myFilterform.get("FirstName").value || "%",
-      "L_Name": this._IpReturnadvanceReceiptService.myFilterform.get("LastName").value || "%",
+      "F_Name": this._IpReturnadvanceReceiptService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._IpReturnadvanceReceiptService.myFilterform.get("LastName").value + '%' || "%",
       "From_Dt": "01/01/1900",// this.datePipe.transform(this._IpReturnadvanceReceiptService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
       "To_Dt": "01/01/1900",//this.datePipe.transform(this._IpReturnadvanceReceiptService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
       "Reg_No": this._IpReturnadvanceReceiptService.myFilterform.get("RegNo").value || 0

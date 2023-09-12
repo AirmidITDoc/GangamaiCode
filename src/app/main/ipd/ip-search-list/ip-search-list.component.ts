@@ -380,11 +380,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   getRecord(contact, m): void {
-    // debugger;
-    console.log(contact);
-
     if (m == "Advance") {
-
       console.log(contact);
       var m_data = {
         RegNo: contact.RegNo,
@@ -413,8 +409,6 @@ export class IPSearchListComponent implements OnInit {
       console.log(m_data)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm(m_data);
-
-
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -423,7 +417,6 @@ export class IPSearchListComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-
       });
     }
     // else if (m == "Discharge Summary") {
@@ -1151,6 +1144,7 @@ export class AdvanceDetailObj {
   storage: any;
   IsMLC: any;
   NetPayableAmt: any;
+  OPD_IPD_Id:any;
   /**
   * Constructor
   *
@@ -1188,7 +1182,7 @@ export class AdvanceDetailObj {
       this.SubCompanyId = AdvanceDetailObj.SubCompanyId || 0;
       this.PatientTypeID = AdvanceDetailObj.PatientTypeID || 0;
       this.NetPayableAmt = AdvanceDetailObj.NetPayableAmt || 0;
-
+      this.OPD_IPD_Id = AdvanceDetailObj.OPD_IPD_Id || 0;
     }
   }
 }

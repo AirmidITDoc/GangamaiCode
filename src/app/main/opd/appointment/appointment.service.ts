@@ -232,4 +232,6 @@ export class AppointmentService {
   public documentuploadInsert(employee){
     return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
   }
+
+  
 }

@@ -22,7 +22,7 @@
     <div class="content">
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:90%;">
+        margin-left:12px; background-color: white;height:99%;">
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
@@ -72,18 +72,25 @@
                                     <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched"> LastName is required Enter only Alphabets</span> -->
                                 </mat-form-field>
 
+                           
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
-                                    <mat-select formControlName="DoctorId" #singleSelect>
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                                [placeholderLabel]="'Search'"></ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option *ngFor="let element of filtereddoctor" [value]="element">
-                                            {{element.DoctorName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_opSearchListService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="_opSearchListService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                      <mat-option *ngFor="let option of filteredOptionsDoctor| async" [value]="option"
+                                        (onSelectionChange)="getVisitList()">
+                                        {{option.DoctorName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+
 
                                 <!-- <mat-chip-list multiple id="chipList" [selectable]="true" >
                                     <mat-chip *ngFor="let chip of selectedChips" [selected]="chip.state" (click)="chip.state=!chip.state;changesSelected('s', chip.viewValue)" >
@@ -129,10 +136,10 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                      class="table1">
@@ -268,10 +275,14 @@
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
-                                    </ng-container>
+                                    </ng-container> 
+                
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
+                                            <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                [diameter]='30'>
+                                            </mat-spinner>
+                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                         </mat-footer-cell>
                                     </ng-container>
 
@@ -279,13 +290,11 @@
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                    
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>

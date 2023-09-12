@@ -120,12 +120,14 @@
                                 </div>
                                 <!-- sppinner -->
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'5'}"
-                                    style="overflow:auto;height:700px !important;">
-                                    <ng-container matColumnDef="RegNo">
+                                    style="overflow:auto;height:680px !important;">
+                                  
+
+                                    <ng-container matColumnDef="RegId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
                                             fxShow.gt-sm>RegNo</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.RegNo}}
+                                            {{contact.RegId}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PatientName">
@@ -135,7 +137,7 @@
                                             {{contact.PatientName}}
                                         </mat-cell>
                                     </ng-container>
-
+                                 
                                     <ng-container matColumnDef="TotalAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Total
                                             Amount</mat-header-cell>
@@ -160,7 +162,7 @@
                                             {{contact.PaymentDate | date:'shortDate'}}
                                         </mat-cell>
                                     </ng-container>
-
+                                  
                                     <ng-container matColumnDef="CashPayAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Cash
                                             Pay</mat-header-cell>
@@ -191,7 +193,7 @@
                                     </ng-container>
 
 
-
+<!-- 
                                     <ng-container matColumnDef="PBillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
                                             fxShow.gt-sm>PBillNo</mat-header-cell>
@@ -214,7 +216,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.PayDate}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="PaidAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header

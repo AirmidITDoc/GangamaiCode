@@ -507,13 +507,13 @@
                                         <!-- sppinner -->
                                         <mat-table #table class="table2" matSort [dataSource]="dsItemNameList"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
-                                            <ng-container matColumnDef="ItemID">
+                                            <ng-container matColumnDef="ItemId">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                     fxShow.gt-sm>
-                                                    ItemID
+                                                    ItemId
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemID}}
+                                                    {{contact.ItemId}}
                                                 </mat-cell>
                                             </ng-container>
 

@@ -1,61 +1,62 @@
 @import "src/@fuse/scss/fuse";
 app-appointment{
-// :host {
-//     display: flex;
-//     flex-direction: column;
-//     flex: 1 0 auto;
-//     height: 100%;
-//     width: 100%;
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100%;
+    width: 100%;
     
-//     .mat-form-field {
-//         margin-right: 12px;
-//       } 
+    .mat-form-field {
+        margin-right: 12px;
+      } 
 
-//     .sidebar-content {
-//         display: flex;
-//         flex-direction: column;
-//         padding: 0;
-//         background-color: white;    
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background-color: white;    
             
-//         @include media-breakpoint(gt-sm) {
-//             //prasad
-//             // padding: 24px 4px 24px 24px;
-//             padding: 12px 0 12px 12px;
-//         }
+        @include media-breakpoint(gt-sm) {
+            //prasad
+            // padding: 24px 4px 24px 24px;
+            padding: 12px 0 12px 12px;
+        }
 
-//         .card {
-//             display: flex;
-//             flex-direction: column;
-//             flex: 0 1 auto;
-//             padding: 0;
-//             border-radius: 8px;
+        .card {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding: 0;
+            border-radius: 8px;
 
-//             @include media-breakpoint(gt-sm) {
-//                 @include mat-elevation(1);
-//             }
+            @include media-breakpoint(gt-sm) {
+                @include mat-elevation(1);
+            }
 
-//             > .header {
-//                 flex: 0 1 auto;
-//                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-//             }
+            > .header {
+                flex: 0 1 auto;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
 
-//             > .content {
-//                 flex: 0 1 auto;
-//             }
+            > .content {
+                flex: 0 1 auto;
+            }
 
-//             .example-chip-list {
-//                 width: 100%;
-//                 font-size: small;
-//                 display:inline
-//                }
+            .example-chip-list {
+                width: 100%;
+                font-size: small;
+                display:inline
+               }
 
-//             // .mat-form-field-wrapper {
-//             //     padding-bottom: 0.34375em;
-//             // }
-//         }
-//     }
+            // .mat-form-field-wrapper {
+            //     padding-bottom: 0.34375em;
+            // }
+        }
+    }
 
-// }
+}
 
 
 .mat-form-field-wrapper {
@@ -68,8 +69,7 @@ app-appointment{
     width: 100%;
     
     .mat-table {
-        //height: 400px !important;
-      // height: 100%;
+      
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -121,30 +121,22 @@ app-appointment{
 
 app-appointment{
 .table1{
-        height: 700px !important;
+        height:600px !important;
 }
 .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1640px;  
+    min-width: 1800px;  
     min-height: 30px; 
-    // background-color: blue;
-    // max-width: 100%; 
-    // min-width: 1640px; 
-    // min-height: 40px;  
-    // width: 100%; 
-    
+      
 }
 
 .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1640px;      
+    min-width: 1800px;      
     min-height: 30px;  
-    // max-width: 100%;
-    // min-height: 40px;  
-    // min-width: 1640px; 
-    // display: flex;      
+   
 }
 
 
@@ -168,6 +160,13 @@ app-appointment{
     text-align: center;
 }
 
+.mat-column-Bill {
+    width:50px;
+    max-width: 50px;
+    min-width:50px;
+    text-align: center;
+}
+
 .mat-column-PatientName {
    
     width: 300px;
@@ -175,7 +174,6 @@ app-appointment{
     min-width:300px;
     text-align: left;
     white-space: nowrap; 
-    overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
    justify-content:left; 
@@ -189,9 +187,9 @@ app-appointment{
    justify-content:left; 
 }
 .mat-column-VisitTime {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
+    width:80px;
+    max-width:80px;
+    min-width:80px;
    text-align: right;
    justify-content:left; 
 }
@@ -220,9 +218,9 @@ app-appointment{
 }
 
 .mat-column-RefDocName {
-    width: 250px;
-    max-width:250px;
-    min-width:250px;
+    width: 200px;
+    max-width:200px;
+    min-width:200px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -235,19 +233,13 @@ app-appointment{
 }
 
 .mat-column-PatientType {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: right;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
     justify-content:left;
 }
-.mat-column-buttons{
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    text-align: center;
-    justify-content:center;
-}
+
 
 .mat-icon-button {
     padding: 2px 2px 2px 2px;
@@ -256,7 +248,7 @@ app-appointment{
     height: 20px;
     flex-shrink: 0;
     line-height: 20px;
-    // border-radius: 50%;
+    align-items: left;
 }
 
 .clearbutton{
@@ -329,8 +321,8 @@ app-appointment{
     width:100px;
     max-width: 100px;
     min-width: 100px;
-    text-align: right;
-    justify-content:right; 
+    text-align: left;
+    justify-content:left; 
     // background:#039be5 !important; 
 }
 
@@ -498,9 +490,9 @@ h1, .h1 {
     }
 
     .mat-column-buttons{
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
         text-align: left;
         justify-content:left;
     }
@@ -606,5 +598,7 @@ h1, .h1 {
     font-size: 18px;
 }
  
-
+.self-row {
+    background-color: red !important;
+}
 //   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular

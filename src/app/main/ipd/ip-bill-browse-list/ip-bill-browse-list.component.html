@@ -87,20 +87,25 @@
                                         <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
                                     </mat-form-field>
 
+                                 
+
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Company Name</mat-label>
-                                        <mat-select formControlName="CompanyId" placeholder="Bank" #singleSelect>
-                                            <mat-option>
-                                                <ngx-mat-select-search [formControl]="companyFilterCtrl"
-                                                    [placeholderLabel]="'Search'"
-                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                            </mat-option>
-                                            <mat-option *ngFor="let element of filteredCompany | async"
-                                                [value]="element">
-                                                {{element.CompanyName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
+                                          formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
+                                        <span matSuffix style="display: flex;">
+                                          <mat-icon class="mat-icon-close"
+                                            (click)="_IpBillBrowseListService.myFilterform.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                                          <mat-icon class="mat-icon-close"
+                                            (click)="_IpBillBrowseListService.myFilterform.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
+                                          <mat-option *ngFor="let option of filteredOptionsCompany| async" [value]="option"
+                                            (onSelectionChange)="onShow(option)">
+                                            {{option.CompanyName}}
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                      </mat-form-field>
 
                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>IsInterimOrFinal</mat-label>
@@ -193,6 +198,22 @@
                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                         *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
                                         class="red-600 s-16 ">circle</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="BalanceAmt">
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: rgb(227, 225, 225);">Credit
+                                
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <!-- <mat-icon
+                                        style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
+                                        *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
+                                    </mat-icon> -->
+                                    <mat-icon  *ngIf="contact.BalanceAmt !=0 " matTooltip=" Settlement "
+                                        (click)="Billpayment(contact)">payment
+                                    </mat-icon>
                                 </mat-cell>
                             </ng-container>
 
@@ -327,9 +348,9 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="Billpayment(contact)">
+                                    <!-- <button mat-icon-button (click)="Billpayment(contact)">
                                         <mat-icon>payment</mat-icon>
-                                    </button>
+                                    </button> -->
                                     <!-- <button mat-icon-button matTooltip="Summary Bill Print"
                                         (click)="getSummaryFinalBillPrint(contact)">
                                         <mat-icon>print</mat-icon>

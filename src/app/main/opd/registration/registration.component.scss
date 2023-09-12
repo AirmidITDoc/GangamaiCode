@@ -86,24 +86,22 @@ app-registration {
   }
 
   .mat-column-RegDate {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
     text-align: left;
   }
 
   .mat-column-PatientName {
-    width:350px;
-    max-width: 350px;
-    min-width: 350px;
+    width:400px;
+    max-width: 400px;
+    min-width: 400px;
     text-align: left;
-    //  display: inline-block; 
-    white-space: nowrap;
-    // overflow: hidden;
-    // text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
     overflow: hidden !important;
-
-    margin-right: 20px;
+   justify-content:left; 
   }
 
   .mat-column-Address {
@@ -114,19 +112,14 @@ app-registration {
     white-space: nowrap;
     overflow: hidden;
     overflow: hidden !important;
-    //  display: inline-block; 
-  }
+      }
 
   .mat-column-AgeYear {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    overflow: hidden !important;
-    //  display: inline-block; 
-
+    width: 100px;
+    max-width: 100px;
+    min-width: 00px;
+    text-align: center;
+    
   }
 
   .mat-column-GenderName {
@@ -138,17 +131,17 @@ app-registration {
   }
 
   .mat-column-PhoneNo {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
     text-align: left;
 
   }
 
   .mat-column-MobileNo {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
     text-align: left;
 
   }
@@ -168,6 +161,6 @@ app-registration {
     min-width: 112px;
     text-align: center;
     justify-content: center;
-    // background:#039be5 !important; 
+    
   }
 }

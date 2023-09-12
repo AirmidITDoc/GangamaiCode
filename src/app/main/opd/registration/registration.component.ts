@@ -25,10 +25,10 @@ export class RegistrationComponent implements OnInit {
 
   sIsLoading: string = '';
   isLoading = true;
-  isRateLimitReached = false;
-  D_data1:any;
+  
+
   hasSelectedContacts: boolean;
-  doctorNameCmbList: any = [];
+  
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,7 +44,7 @@ export class RegistrationComponent implements OnInit {
     'MobileNo',
     'Address',
    'action',
-  //  'buttons'
+  
   ];
 
   dataSource = new MatTableDataSource<RegInsert>();
@@ -87,14 +87,14 @@ export class RegistrationComponent implements OnInit {
   getregistrationList() {
     this.sIsLoading = 'loading';
     var D_data = {
-      "F_Name": (this._registrationService.myFilterform.get("FirstName").value).trim() || '%',
-      "L_Name": (this._registrationService.myFilterform.get("LastName").value).trim() || '%',
+      "F_Name": (this._registrationService.myFilterform.get("FirstName").value) + '%' || '%',
+      "L_Name": (this._registrationService.myFilterform.get("LastName").value) + '%' || '%',
       "Reg_No": this._registrationService.myFilterform.get("RegNo").value || "0",
       "From_Dt": this.datePipe.transform(this._registrationService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._registrationService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "MobileNo": this._registrationService.myFilterform.get("MobileNo").value || '%',
+      "MobileNo": this._registrationService.myFilterform.get("MobileNo").value  + '%' || '%',
     }
-    // console.log(D_data);
+    
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._registrationService.getRegistrationList(D_data).subscribe(data => {
@@ -124,49 +124,49 @@ export class RegistrationComponent implements OnInit {
   
 onEdit(row){
   console.log(row);
-    var m_data = {
-      "RegNo":row.RegNo,
-      "RegId":row.RegId,
-      "PrefixID":row.PrefixID,
-      "PrefixName":row.PrefixName,
-      "FirstName":row.FirstName.trim(),
-      "MiddleName":row.MiddleName.trim(),
-      "LastName":row.LastName.trim(),
-      "PatientName":row.PatientName.trim(),
-      "DateofBirth":row.DateofBirth,
-      "MaritalStatusId":row.MaritalStatusId,
-      "AadharCardNo":row.AadharCardNo,
-      "Age":row.Age,
-      "AgeDay":row.AgeDay.trim(),
-      "AgeMonth":row.AgeMonth.trim(),
-      "AgeYear":row.AgeYear.trim(),
-      "Address":row.Address.trim(),
-      "AreaId":row.AreaId,
-      "City":row.City.trim(),
-      "CityId":row.CityId,
-      "StateId":row.StateId,
-      "CountryId":row.CountryId,
-      "PhoneNo":row.PhoneNo.trim(),
-      "MobileNo":row.MobileNo.trim(),
-      "GenderId":row.GenderId,
-      "GenderName":row.GenderName,
-      "ReligionId":row.ReligionId,
-      "IsCharity":0,
-      "PinNo":row.PinNo,
-      "RegDate":row.RegDate,
-      "RegNoWithPrefix":row.RegNoWithPrefix,
-      "RegTime":row.RegTime.trim()
-    }
+    // var m_data = {
+    //   "RegNo":row.RegNo,
+    //   "RegId":row.RegId,
+    //   "PrefixID":row.PrefixID,
+    //   "PrefixName":row.PrefixName,
+    //   "FirstName":row.FirstName.trim(),
+    //   "MiddleName":row.MiddleName.trim(),
+    //   "LastName":row.LastName.trim(),
+    //   "PatientName":row.PatientName.trim(),
+    //   "DateofBirth":row.DateofBirth,
+    //   "MaritalStatusId":row.MaritalStatusId,
+    //   "AadharCardNo":row.AadharCardNo,
+    //   "Age":row.Age,
+    //   "AgeDay":row.AgeDay.trim(),
+    //   "AgeMonth":row.AgeMonth.trim(),
+    //   "AgeYear":row.AgeYear.trim(),
+    //   "Address":row.Address.trim(),
+    //   "AreaId":row.AreaId,
+    //   "City":row.City.trim(),
+    //   "CityId":row.CityId,
+    //   "StateId":row.StateId,
+    //   "CountryId":row.CountryId,
+    //   "PhoneNo":row.PhoneNo.trim(),
+    //   "MobileNo":row.MobileNo.trim(),
+    //   "GenderId":row.GenderId,
+    //   "GenderName":row.GenderName,
+    //   "ReligionId":row.ReligionId,
+    //   "IsCharity":0,
+    //   "PinNo":row.PinNo,
+    //   "RegDate":row.RegDate,
+    //   "RegNoWithPrefix":row.RegNoWithPrefix,
+    //   "RegTime":row.RegTime.trim()
+    // }
   
-    console.log(m_data);
-    this._registrationService.populateFormpersonal(m_data);
+    // console.log(m_data);
+    this._registrationService.populateFormpersonal(row);
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 
       {   maxWidth: "85vw",
           height: '550px',
           width: '100%',
            data : {
-          registerObj : m_data,
+          registerObj : row,
         }
     });
     
