@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PurchaseOrderComponent } from './purchase-order.component';
 
+
 const routes: Routes = [
   { 
       path: '**', 
@@ -46,7 +47,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PurchaseOrderComponent,
-    
     
   ],
   imports: [
@@ -90,16 +90,18 @@ const routes: Routes = [
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
-        
+    
   ],
   providers: [
     
     DatePipe,
     
-  
 ],
 entryComponents: [
   PurchaseOrderComponent,
+ 
 ]
 })
 export class PurchaseOrderModule { }
+
+

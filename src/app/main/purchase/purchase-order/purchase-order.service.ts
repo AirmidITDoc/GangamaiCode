@@ -9,13 +9,14 @@ export class PurchaseOrderService {
 
   userFormGroup: FormGroup;
   PurchaseSearchGroup :FormGroup;
-
+  PurchaseOrderForm:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.PurchaseOrder();
+    this.userFormGroup = this.getPurchaseOrderForm();
+    this.PurchaseSearchGroup= this.PurchaseSearchFrom();
     this.PurchaseSearchGroup= this.PurchaseSearchFrom();
   }
 
@@ -29,23 +30,33 @@ export class PurchaseOrderService {
     });
   }
   
+  getPurchaseOrderForm() {
+    return this._formBuilder.group({
+      ItemName:[''],
+      Qty:[''],
+      UOM:[''],
+      Rate:[''],
+      TotalAmount:[''],
+      Dis :[''],
+      DiscAmount:[''],
+      GST:[''],
+      GSTAmount:[''],
+      NetAmount :[''],
+      MRP:[''],
+      Specification:[''],
+    });
+
+  }
+
   PurchaseOrder() {
     return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      
+     
     });
   }
  
   public getPurchaseOrder(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PurchaseOrderList_by_Name",Param);
   }
-
 
   public getPurchaseItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PurchaseItemList",Param);
@@ -62,4 +73,9 @@ export class PurchaseOrderService {
   public getSupplierSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
   }
+
+  public getItemNameList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
+  }
+  
 }
