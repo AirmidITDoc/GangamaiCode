@@ -65,6 +65,7 @@ export class OpPaymentNewComponent implements OnInit {
     // this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
 
     // console.log(this.PatientHeaderObj);
+    this.paymentRowObj["cash"] = true;
     this.onPaymentChange(1, 'cash');
   }
 
@@ -106,25 +107,25 @@ export class OpPaymentNewComponent implements OnInit {
       regDate5: [(new Date()).toISOString()],
       referenceNo5: [],
 
-      paymentType6: [],
-      amount6: [],
-      bankName6: [],
-      regDate6: [(new Date()).toISOString()],
-      referenceNo6: []
+      // paymentType6: [],
+      // amount6: [],
+      // bankName6: [],
+      // regDate6: [(new Date()).toISOString()],
+      // referenceNo6: []
     });
   }
 
   onChangePaymnt(event: any) {
     let value = event.value;
     if (value != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNumber').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('registrationDate').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNumber1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else {
-      this.patientDetailsFormGrp.get('referenceNumber').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('registrationDate').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('referenceNumber1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
@@ -320,14 +321,14 @@ export class OpPaymentNewComponent implements OnInit {
 
   setSecRowValidators(paymentOption: any) {
     if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
@@ -335,9 +336,9 @@ export class OpPaymentNewComponent implements OnInit {
   setThirdRowValidators(paymentOption: any) {
     if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
       this.patientDetailsFormGrp.get('amount3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
       this.removeThirdValidators();
@@ -346,37 +347,37 @@ export class OpPaymentNewComponent implements OnInit {
 
   setFourthRowValidators(paymentOption: any) {
     if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate4').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
 
   setFifthRowValidators(paymentOption: any) {
     if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo5').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('bankName5').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
 
   removeThirdValidators() {
     this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
+    this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
     this.patientDetailsFormGrp.updateValueAndValidity();
   }
 

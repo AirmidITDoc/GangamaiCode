@@ -167,7 +167,7 @@
                          <!-- First Row 1 -->
                         <div fxFlexFill fxLayout="column" class="patient-details" fxLayoutGap="15px">
 
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container" *ngIf="paymentRowObj.cash">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType1" [(ngModel)]="selectedPaymnet1"
@@ -204,12 +204,12 @@
                             </ng-container>
                             <div fxFlex="16%">
                                 <div [ngClass]="amount1 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'">
-                                    <mat-icon (click)="onAddClick('cash')"> add </mat-icon>
+                                    <mat-icon (click)="onAddClick('upi')"> add </mat-icon>
                                 </div>
                             </div>
                         </div>
                         <!-- Second Row 2 -->
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.cash">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.upi">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType2" [(ngModel)]="selectedPaymnet2"
@@ -260,13 +260,13 @@
                                 <div class="remove-icon" (click)="onRemoveClick('cash')">
                                     <span>-</span>
                                 </div>
-                                <div [ngClass]="amount3 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('upi')">
+                                <div [ngClass]="amount3 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('cheque')">
                                     <mat-icon> add </mat-icon>
                                 </div>
                             </div>
                         </div>
                         <!-- Third Row 3 -->
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.upi">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.cheque">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType3" [(ngModel)]="selectedPaymnet3"
@@ -318,13 +318,13 @@
                                 <div class="remove-icon" (click)="onRemoveClick('upi')">
                                     <span>-</span>
                                 </div>
-                                <div [ngClass]="amount4 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('cheque')">
+                                <div [ngClass]="amount4 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('card')">
                                     <mat-icon> add </mat-icon>
                                 </div>
                             </div>
                         </div>
                         <!-- Fourth Row 4 -->
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.cheque">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.card">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType4" [(ngModel)]="selectedPaymnet4"
@@ -369,7 +369,7 @@
                                 </mat-form-field>
                             </ng-container>
                             <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                <div class="remove-icon" (click)="onRemoveClick('cheque')">
+                                <div class="remove-icon" (click)="onRemoveClick('card')">
                                     <span>-</span>
                                 </div>
                                 <div [ngClass]="amount5 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('neft')">
@@ -424,13 +424,13 @@
                                 </mat-form-field>
                             </ng-container>
                             <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                <div class="remove-icon" (click)="onRemoveClick('neft')">
+                                <div class="remove-icon" (click)="onRemoveClick('card')">
                                     <span>-</span>
                                 </div>
                             </div>
                         </div>
                          <!-- Six Row  6 -->
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.neft">
+                        <!-- <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.neft">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"
@@ -480,7 +480,7 @@
                                     <span>-</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </form>
