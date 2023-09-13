@@ -1,4 +1,4 @@
-<div class="parent-container">
+<div class="parent-container" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
     <fieldset style="font-size: 17px;">
         <legend>Bill Information</legend>
         <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
@@ -164,7 +164,7 @@
             <fieldset>
                 <legend>Payment Details</legend>
                 <form [formGroup]="patientDetailsFormGrp">
-                    <!-- First Row -->
+                      <!-- First Row -->
                     <div fxFlexFill fxLayout="column" class="patient-details" fxLayoutGap="15px">
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container">
                             <mat-form-field appearance="outline" fxFlex="16%">
@@ -371,14 +371,13 @@
                                 <div class="remove-icon" (click)="onRemoveClick('cheque')">
                                     <span>-</span>
                                 </div>
-                                <div [ngClass]="amount5 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('netbanking')">
+                                <div [ngClass]="amount5 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'" (click)="onAddClick('neft')">
                                     <mat-icon> add </mat-icon>
                                 </div>
                             </div>
                         </div>
                         <!-- Fifth Row -->
-                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                            *ngIf="paymentRowObj.card">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.card">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"
@@ -424,7 +423,7 @@
                                 </mat-form-field>
                             </ng-container>
                             <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                <div class="remove-icon" (click)="onRemoveClick('netbanking')">
+                                <div class="remove-icon" (click)="onRemoveClick('neft')">
                                     <span>-</span>
                                 </div>
                             </div>

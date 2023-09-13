@@ -19,9 +19,10 @@ export class OpPaymentNewComponent implements OnInit {
   paymentArr5: any[] = this.opService.getPaymentArr();
   paymentRowObj = {
     cash: false,
-    upi: false,
     cheque: false,
-    card: false
+    card: false,
+    upi: false,
+    Neft: false,
   };
 
   PatientHeaderObj: any;
@@ -81,22 +82,26 @@ export class OpPaymentNewComponent implements OnInit {
       referenceNumber: [],
       bankName: [],
       registrationDate: [(new Date()).toISOString()],
+
       paymentType2: [],
       amount2: [],
       referenceNo1: [],
       bankName1: [],
       regDate: [(new Date()).toISOString()],
+
       paymentType3: [],
       amount3: [],
-      // upi: [],
+      bankName3: [],
       referenceNo2: [],
+
       paymentType4: [],
       amount4: [],
+      referenceNo3: [],
       bankName2: [],
-      bankName3: [],
       regDate1: [(new Date()).toISOString()],
       regDate2: [(new Date()).toISOString()],
-      referenceNo3: [],
+     
+      
       paymentType5: [],
       amount5: [],
       bankName4: [],
@@ -131,6 +136,10 @@ export class OpPaymentNewComponent implements OnInit {
         this.setThirdRowValidators(paymentOption);
         break;
 
+      case 'neft':
+        this.setThirdRowValidators(paymentOption);
+        break;
+
       case 'cheque':
         this.setFourthRowValidators(paymentOption);
         break;
@@ -143,9 +152,9 @@ export class OpPaymentNewComponent implements OnInit {
         break;
     }
 
-    if (paymentOption && paymentOption == 'upi') {
+    // if (paymentOption && paymentOption == 'upi') {
 
-    }
+    // }
   }
 
   onRemoveClick(caseId: string) {
@@ -387,7 +396,7 @@ export class OpPaymentNewComponent implements OnInit {
     Paymentobj['CashPayAmount'] = this.getAmount("cash");// parseInt(this.cashAmount.toString());
     Paymentobj['ChequePayAmount'] = this.getAmount("cheque");
     Paymentobj['CardPayAmount'] = this.getAmount("card");
-    Paymentobj['NEFTPayAmount'] = this.getAmount("net banking");
+    Paymentobj['NEFTPayAmount'] = this.getAmount("neft");
     Paymentobj['PayTMAmount'] = this.getAmount("upi");
     if (this.patientDetailsFormGrp.get("paymentType1").value == "cheque") {
       // Paymentobj['ChequePayAmount'] = 0;
@@ -423,7 +432,7 @@ export class OpPaymentNewComponent implements OnInit {
     Paymentobj['CashCounterId'] = 0;
     Paymentobj['IsSelfORCompany'] = 0;
     Paymentobj['CompanyId'] = 0;
-    if (this.patientDetailsFormGrp.get("paymentType1").value == "cash") {
+    if (this.patientDetailsFormGrp.get("paymentType1").value == "neft") {
       // Paymentobj['NEFTPayAmount'] = 0;//parseInt(this.neftAmt.toString());
       Paymentobj['NEFTNo'] = ""; // this.neftNo;
       Paymentobj['NEFTBankMaster'] = "";//this.patientDetailsFormGrp.get('neftBankNameController').value.BankName;
@@ -434,7 +443,7 @@ export class OpPaymentNewComponent implements OnInit {
       Paymentobj['NEFTBankMaster'] = "";
       Paymentobj['NEFTDate'] = '01/01/1900'
     }
-    if (this.patientDetailsFormGrp.get("paymentType1").value == "cash") {
+    if (this.patientDetailsFormGrp.get("paymentType1").value == "upi") {
       // Paymentobj['PayTMAmount'] = 0; // parseInt(this.paytmAmt.toString());
       Paymentobj['PayTMTranNo'] = 0;//this.paytmTransNo;
       Paymentobj['PayTMDate'] = this.dateTimeObj.date;

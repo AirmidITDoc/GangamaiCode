@@ -576,8 +576,6 @@ export class OPAdvancePaymentComponent implements OnInit {
 
   calculatePaidAmt(controlNameParam?) {
     debugger;
-
-
     // console.log(controlNameParam != 'cashAmountController');
     Object.keys(this.paymentForm.controls).forEach(controlName => {
       if (controlNameParam == controlName) {
