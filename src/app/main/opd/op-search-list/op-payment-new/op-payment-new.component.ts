@@ -22,7 +22,7 @@ export class OpPaymentNewComponent implements OnInit {
     cheque: false,
     card: false,
     upi: false,
-    Neft: false,
+    neft: false,
   };
 
   PatientHeaderObj: any;
@@ -57,12 +57,10 @@ export class OpPaymentNewComponent implements OnInit {
   ngOnInit(): void {
 
     this.patientDetailsFormGrp = this.createForm();
-
     this.PatientHeaderObj = this.data.vPatientHeaderObj;
-    console.log(this.PatientHeaderObj);
+    // console.log(this.PatientHeaderObj);
 
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-
     this.amount1 = this.netPayAmt = parseInt(this.PatientHeaderObj.NetPayableAmt);
     // this.patientDetailsFormGrp.get('amount1').setValue(this.netPayAmt);
 
@@ -79,34 +77,40 @@ export class OpPaymentNewComponent implements OnInit {
     return this.formBuilder.group({
       paymentType1: [],
       amount1: [this.netPayAmt],
-      referenceNumber: [],
-      bankName: [],
-      registrationDate: [(new Date()).toISOString()],
+      referenceNumber1: [],
+      bankName1: [],
+      regDate1: [(new Date()).toISOString()],
+      // regDate2: [(new Date()).toISOString()],
 
       paymentType2: [],
       amount2: [],
-      referenceNo1: [],
-      bankName1: [],
-      regDate: [(new Date()).toISOString()],
+      referenceNo2: [],
+      bankName2: [],
+      regDate2: [(new Date()).toISOString()],
 
       paymentType3: [],
       amount3: [],
       bankName3: [],
-      referenceNo2: [],
+      referenceNo3: [],
+      regDate3: [(new Date()).toISOString()],
 
       paymentType4: [],
       amount4: [],
-      referenceNo3: [],
-      bankName2: [],
-      regDate1: [(new Date()).toISOString()],
-      regDate2: [(new Date()).toISOString()],
-     
-      
+      referenceNo4: [],
+      bankName4: [],
+      regDate4: [(new Date()).toISOString()],
+           
       paymentType5: [],
       amount5: [],
-      bankName4: [],
-      regDate3: [(new Date()).toISOString()],
-      referenceNo4: []
+      bankName5: [],
+      regDate5: [(new Date()).toISOString()],
+      referenceNo5: [],
+
+      paymentType6: [],
+      amount6: [],
+      bankName6: [],
+      regDate6: [(new Date()).toISOString()],
+      referenceNo6: []
     });
   }
 
@@ -272,6 +276,26 @@ export class OpPaymentNewComponent implements OnInit {
         this.setFifthRowValidators(value);
         this.patientDetailsFormGrp.updateValueAndValidity();
         break;
+
+      // case 6:
+      //   this.paymentArr1 = this.opService.getPaymentArr();
+      //   let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
+      //   this.paymentArr1.splice(elemnt, 1);
+
+      //   this.paymentArr2 = this.opService.getPaymentArr();
+      //   let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
+      //   this.paymentArr2.splice(elemnt1, 1);
+
+      //   this.paymentArr3 = this.opService.getPaymentArr();
+      //   let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
+      //   this.paymentArr3.splice(elemnt2, 1);
+
+      //   this.paymentArr4 = this.opService.getPaymentArr();
+      //   let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
+      //   this.paymentArr4.splice(elemnt3, 1);
+      //   this.setFifthRowValidators(value);
+      //   this.patientDetailsFormGrp.updateValueAndValidity();
+      //   break;
 
       default:
         break;

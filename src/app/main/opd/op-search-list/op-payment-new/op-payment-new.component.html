@@ -164,8 +164,9 @@
             <fieldset>
                 <legend>Payment Details</legend>
                 <form [formGroup]="patientDetailsFormGrp">
-                      <!-- First Row -->
-                    <div fxFlexFill fxLayout="column" class="patient-details" fxLayoutGap="15px">
+                         <!-- First Row 1 -->
+                        <div fxFlexFill fxLayout="column" class="patient-details" fxLayoutGap="15px">
+
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
@@ -184,17 +185,17 @@
                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNumber">
+                                    <input matInput formControlName="referenceNumber1">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
-                                    <input matInput formControlName="bankName">
+                                    <input matInput formControlName="bankName1">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
-                                    <input matInput [matDatepicker]="datepickerReg" formControlName="registrationDate"
+                                    <input matInput [matDatepicker]="datepickerReg" formControlName="regDate1"
                                         (click)="datepickerReg.open()" [max]="nowDate">
                                     <mat-datepicker-toggle matSuffix [for]="datepickerReg"></mat-datepicker-toggle>
                                     <mat-datepicker #datepickerReg>
@@ -207,7 +208,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Second Row -->
+                        <!-- Second Row 2 -->
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.cash">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
@@ -229,28 +230,28 @@
                             <ng-container *ngIf="selectedPaymnet2 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo1">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo1').hasError('required')">
+                                    <input matInput formControlName="referenceNo2">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
-                                    <input matInput formControlName="bankName1">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName1').hasError('required')">
+                                    <input matInput formControlName="bankName2">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
-                                    <input matInput [matDatepicker]="datepickerReg" formControlName="regDate"
+                                    <input matInput [matDatepicker]="datepickerReg" formControlName="regDate2"
                                         (click)="datepickerReg.open()" [max]="nowDate">
                                     <mat-datepicker-toggle matSuffix [for]="datepickerReg"></mat-datepicker-toggle>
                                     <mat-datepicker #datepickerReg>
                                     </mat-datepicker>
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate').hasError('required')">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
@@ -264,7 +265,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Third Row -->
+                        <!-- Third Row 3 -->
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.upi">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
@@ -286,28 +287,28 @@
                             <ng-container *ngIf="selectedPaymnet3 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo2">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
+                                    <input matInput formControlName="referenceNo3">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
-                                    <input matInput formControlName="bankName2">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName2').hasError('required')">
+                                    <input matInput formControlName="bankName3">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName3').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
-                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate1"
+                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate3"
                                         (click)="datepickerRegs.open()" [max]="nowDate">
                                     <mat-datepicker-toggle matSuffix [for]="datepickerRegs"></mat-datepicker-toggle>
                                     <mat-datepicker #datepickerRegs>
                                     </mat-datepicker>
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate1').hasError('required')">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate3').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
@@ -322,7 +323,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Fourth Row -->
+                        <!-- Fourth Row 4 -->
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.cheque">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
@@ -341,28 +342,28 @@
                             <ng-container *ngIf="selectedPaymnet4 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo3">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
+                                    <input matInput formControlName="referenceNo4">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
-                                    <input matInput formControlName="bankName3">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName3').hasError('required')">
+                                    <input matInput formControlName="bankName4">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName4').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
-                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate2"
+                                    <input matInput [matDatepicker]="datepickerRegs" formControlName="regDate4"
                                         (click)="datepickerRegs.open()" [max]="nowDate">
                                     <mat-datepicker-toggle matSuffix [for]="datepickerRegs"></mat-datepicker-toggle>
                                     <mat-datepicker #datepickerRegs>
                                     </mat-datepicker>
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate2').hasError('required')">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate4').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
@@ -376,7 +377,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Fifth Row -->
+                        <!-- Fifth Row  5 -->
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.card">
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
@@ -395,29 +396,81 @@
                             <ng-container *ngIf="selectedPaymnet5 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo4">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
+                                    <input matInput formControlName="referenceNo5">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
-                                    <input matInput formControlName="bankName4">
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName4').hasError('required')">
+                                    <input matInput formControlName="bankName5">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName5').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
-                                    <input matInput [matDatepicker]="datepickerRegistartion" formControlName="regDate3"
+                                    <input matInput [matDatepicker]="datepickerRegistartion" formControlName="regDate5"
                                         (click)="datepickerRegistartion.open()" [max]="nowDate">
                                     <mat-datepicker-toggle matSuffix
                                         [for]="datepickerRegistartion"></mat-datepicker-toggle>
                                     <mat-datepicker #datepickerRegistartion>
                                     </mat-datepicker>
-                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate3').hasError('required')">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate5').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-form-field>
+                            </ng-container>
+                            <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
+                                <div class="remove-icon" (click)="onRemoveClick('neft')">
+                                    <span>-</span>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- Six Row  6 -->
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row" *ngIf="paymentRowObj.neft">
+                            <mat-form-field appearance="outline" fxFlex="16%">
+                                <mat-label class="form-field-labels">Payment Type</mat-label>
+                                <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"
+                                    (selectionChange)="onPaymentChange(5, $event.value)">
+                                    <mat-option *ngFor="let ele of paymentArr5" [value]="ele.value">
+                                        {{ele.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="16%">
+                                <mat-label class="form-field-labels">Amount</mat-label>
+                                <input matInput formControlName="amount5" [(ngModel)]="amount6">
+                            </mat-form-field>
+                            <ng-container *ngIf="selectedPaymnet5 != 'cash'">
+                                <mat-form-field appearance="outline" fxFlex="16%">
+                                    <mat-label class="form-field-labels">Reference Number</mat-label>
+                                    <input matInput formControlName="referenceNo6">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo6').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="16%">
+                                    <mat-label class="form-field-labels">Bank Name</mat-label>
+                                    <input matInput formControlName="bankName6">
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('bankName6').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="16%">
+                                    <mat-label class="form-field-labels">Registration Date</mat-label>
+                                    <input matInput [matDatepicker]="datepickerRegistartion" formControlName="regDate6"
+                                        (click)="datepickerRegistartion.open()" [max]="nowDate">
+                                    <mat-datepicker-toggle matSuffix
+                                        [for]="datepickerRegistartion"></mat-datepicker-toggle>
+                                    <mat-datepicker #datepickerRegistartion>
+                                    </mat-datepicker>
+                                    <mat-error *ngIf="patientDetailsFormGrp.get('regDate6').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
