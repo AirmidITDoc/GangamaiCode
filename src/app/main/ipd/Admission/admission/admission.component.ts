@@ -531,12 +531,12 @@ debugger
 
 
   getTemplate() {
-    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=13';
+    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=32';//13
     this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
        this.printTemplate = resData[0].TempDesign;
        
-      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','FirstName','MiddleName','LastName','AdmissionId','RegNo','PatientName','Age','AgeDay','AgeMonth','GenderName','MaritalStatusName','Address','MobileNo','IsMLC','PhoneNo', 'AdmissionTime' ,'IPDNo','CompanyName', 'DepartmentName' ,'AdmittedDoctorName','AdmittedDoctor1','BedName','AdmittedDoctor2',
-       'RelationshipName','RefDoctorName','RelativePhoneNo','IsReimbursement','TariffName','RelativeName','Aadharcardno','RelativeAddress']; // resData[0].TempKeys;
+      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','FirstName','MiddleName','LastName','AdmissionId','RegNo','PatientName','Age','AgeDay','AgeMonth','GenderName','MaritalStatusName','Address','MobileNo','IsMLC','PhoneNo', 'AdmissionTime' ,'IPDNo','CompanyName', 'DepartmentName' ,'AdmittedDoctorName','AdmittedDoctor1','RoomName','BedName','AdmittedDoctor2',
+      'AdmittedDoctorName', 'RelationshipName','RefDoctorName','RelativePhoneNo','IsReimbursement','TariffName','RelativeName','Aadharcardno','RelativeAddress']; // resData[0].TempKeys;
       for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -545,7 +545,7 @@ debugger
        /// this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
       //  this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.AdmissionDate));
-        this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(this.reportPrintObj.AdmissionDate));
+        this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(this.reportPrintObj.AdmissionTime));
        
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
 
@@ -572,8 +572,7 @@ debugger
     console.log(el);
     debugger;
     var D_data = {
-     // "AdmissionId": el.AdmissionID,
-      "AdmissionId":el.AdmissionID
+       "AdmissionId":el.AdmissionID
     }
     // console.log(D_data);
     let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
@@ -670,7 +669,7 @@ export class Admission {
   TariffName: string;
   RelationshipName:string;
   RoomName: string;
-  
+  DepartmentName:any;
   BedName: string;
   GenderId: number;
   GenderName: string;
@@ -682,6 +681,7 @@ export class Admission {
   AgeDay:number;
   AgeMonth:number;
   SubCompanyId:any;
+  AdmittedDoctorName:any;
   /**
 * Constructor
 *
@@ -741,7 +741,7 @@ export class Admission {
           this.RefDocName = Admission.RefDocName || '';
           this.RegNoWithPrefix = Admission.RegNoWithPrefix || '';
           this.HospitalName = Admission.HospitalName || '';
-
+          this.DepartmentName=Admission.DepartmentName || '';
           this.AdmittedDoctor1ID = Admission.AdmittedDoctor1ID || '';
           this.AdmittedDoctor1 = Admission.AdmittedDoctor1 || '';
           this.TariffId = Admission.TariffId || '';
@@ -762,6 +762,7 @@ export class Admission {
           this.AgeDay = Admission.AgeDay || '';
           this.AgeMonth = Admission.AgeMonth || '';
           this.SubCompanyId =Admission.SubCompanyId || 0;
+          this.AdmittedDoctorName=Admission.AdmittedDoctorName || ''
       }
   }
 }
