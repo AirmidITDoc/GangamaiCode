@@ -1,157 +1,198 @@
 app-indent {
-    .table1 {
-      height: 600px !important;
-      width: 1700px;
 
+  .table1 {
+    height: 440px !important;
+    width: 1700px;
+  }
 
-    }
+  .table2 {
+    height: 440px !important;
+    width: 2000px;
 
-
-
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-      
-
-      .mat-column-ItemID {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-        text-align: left;
-    
-      }
-  
-      .mat-column-ItemName {
-        width: 410px;
-        max-width: 410px;
-        min-width: 410px;
-        text-align: left;
-    
-      }
-
-      .mat-column-Qty {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-        text-align: left;
-    
-      }
-    
-    }
-  
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
-  
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
-    }
-  
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+    .mat-column-Action {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: left;
-  
+
     }
 
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+    .mat-column-ItemID {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
       text-align: left;
-  
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
-  
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
 
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
     }
 
     .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
+      width: 410px;
+      max-width: 410px;
+      min-width: 410px;
       text-align: left;
+
     }
-    
-    .mat-column-Qty {
+
+    .mat-column-HospitalBalance {
       width: 150px;
       max-width: 150px;
       min-width: 150px;
       text-align: left;
+
     }
-  
-    .mat-column-IssQty {
+
+    .mat-column-IndentQuantity {
       width: 150px;
       max-width: 150px;
       min-width: 150px;
       text-align: left;
+
     }
-    .mat-column-Bal {
+
+    .mat-column-CurrentBalance {
       width: 150px;
       max-width: 150px;
       min-width: 150px;
       text-align: left;
+
     }
-    .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: center;
-      justify-content: center;
-  
-    }
-    .mat-tab-group {
-  margin-bottom: 48px;
-    
+
+  }
+.fuse-sidebar{
+  width: 200%;
 }
+  .mat-header-row {
+    width: 200;
+    //max-width: 1600px;
+    min-width: 1000px;
+    min-height: 30px;
+    background-color: blue;
+  }
 
-// .table-row:selected {
+  .mat-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 1400px;
+    min-height: 30px;
 
-//   background-color: rebeccapurple;
-// }
+  }
 
-}
+  .mat-column-FromStoreId {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
 
+  }
+
+  .mat-column-IndentNo {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+
+  }
+
+  .mat-column-IndentDate {
+    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
+    text-align: left;
+  }
+
+  .mat-column-FromStoreName {
+    width: 200PX;
+    max-width: 200PX;
+    min-width: 200PX;
+    text-align: left;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }
+
+  .mat-column-ToStoreName {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    
+    text-align: left;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }
+
+
+  .mat-column-Addedby {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
+
+  .mat-column-IsInchargeVerify {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
+
+  .mat-column-ItemName {
+    width: 330px;
+    max-width: 330px;
+    min-width: 330px;
+    text-align: left;
+  }
+
+  .mat-column-Qty {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
+
+  .mat-column-IssQty {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
+
+  .mat-column-Bal {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
+
+  .mat-column-action {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: center;
+    justify-content: center;
+
+  }
+
+  .mat-tab-group {
+    margin-bottom: 48px;
+
+  }
+
+  .vertical {
+    border-left: 1px solid rgb(177, 172, 172);
+    height: 40px;
+    position: absolute;
+    left: 38%;
+  }
 
   
+
+  // .table-row:selected {
+
+  //   background-color: rebeccapurple;
+  // }
+
+
+}

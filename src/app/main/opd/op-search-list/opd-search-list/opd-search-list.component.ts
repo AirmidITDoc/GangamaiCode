@@ -29,7 +29,7 @@ import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.co
 
 })
 export class OpdSearchListComponent implements OnInit {
-
+  isLoadingStr: string = '';
   isLoading = true;
   hasSelectedContacts: boolean;
   VisitList: any;
@@ -146,8 +146,7 @@ get f() { return this._opSearchListService.myFilterform.controls; }
 
 
   getVisitList() {
-    debugger;
-    this.sIsLoading = 'loading-data';
+    this.isLoadingStr = 'loading';
     var D_data = {
       "F_Name": (this._opSearchListService.myFilterform.get("FirstName").value).trim() + '%' || "%",
       "L_Name": (this._opSearchListService.myFilterform.get("LastName").value).trim() + '%' || "%",
@@ -158,14 +157,15 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       "IsMark": this._opSearchListService.myFilterform.get("IsMark").value.selected || 0,
     }
      console.log(D_data);
+     this.isLoadingStr = 'loading';
     this._opSearchListService.getAppointmentList(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as VisitMaster[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
+      this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
     },
       error => {
-        this.sIsLoading = '';
+        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       });
     // console.log( this.dataArray);
   }

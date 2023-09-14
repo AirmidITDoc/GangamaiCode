@@ -1,14 +1,34 @@
 app-purchase-order {
     .table1 {
-      height: 600px !important;
+      height: 440px !important;
       width: 1700px;
     }
 
     .table2 {
-      height: 600px !important;
+      height: 440px !important;
       width: 2000px;
     }
-  
+
+    .table3 {
+      height: 350px !important;
+      width: 2000px;
+    }
+
+    .highlightTableColor{
+      background-color: rgb(240, 240, 74) !important;
+    }
+    .right
+    {
+      float: right;
+      margin-left: 100px;
+      padding: 20px;
+    } 
+    .list {
+      display: grid;
+      grid-column-gap: 8px;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto;
+    }
     .mat-header-row {
       width:200;
       //max-width: 1600px;
@@ -33,7 +53,15 @@ app-purchase-order {
   
     }
 
-    .mat-column-IndentNo {
+    .mat-column-PurchaseNo {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+  
+    }
+
+    .mat-column-Qty {
       width: 110px;
       max-width: 110px;
       min-width: 110px;
@@ -41,80 +69,130 @@ app-purchase-order {
   
     }
   
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
+    .mat-column-PurchaseDate {
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
       text-align: left;
     }
   
-    .mat-column-FromStoreName {
+    .mat-column-PurchaseTime {
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
+      text-align: left;
+    }
+
+    .mat-column-StoreName {
       width: 200px;
       max-width: 200px;
       min-width: 200px;
       text-align: left;
     }
 
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
+
+    .mat-column-SupplierName {
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
     }
 
-
-    .mat-column-Addedby {
+    .mat-column-TotalAmount {
       width: 110px;
       max-width: 110px;
       min-width: 110px;
       text-align: left;
     }
 
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+    .mat-column-Action {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: left;
     }
 
     .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
     }
     
     .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-  
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-action {
       width: 100px;
       max-width: 100px;
       min-width: 100px;
-      text-align: center;
-      justify-content: center;
-  
+      text-align: left;
     }
-    .mat-tab-group {
-  margin-bottom: 48px;
     
-}
+    .mat-column-UOM {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-Rate {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-TotalAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-Dis {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-DiscAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-GST {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+  
+    .mat-column-GSTAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-NetAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-MRP {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-Specification {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+   
+    
+   
 
 // .table-row:selected {
 
@@ -124,4 +202,3 @@ app-purchase-order {
 }
 
 
-  

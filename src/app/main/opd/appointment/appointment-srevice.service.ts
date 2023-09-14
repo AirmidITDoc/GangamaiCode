@@ -318,8 +318,8 @@ public documentuploadInsert(employee){
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
-  public getOPDPrecriptionPrint(PrecriptionId) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1 ", PrecriptionId)
+  public getOPDPrecriptionPrint(VisitId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptAppointmentPrint1", VisitId)
   }
   
   public getOPPatient(employee) {
