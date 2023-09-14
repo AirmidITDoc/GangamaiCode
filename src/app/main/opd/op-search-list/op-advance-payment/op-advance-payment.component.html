@@ -49,45 +49,112 @@
 
     <!-- </div> -->
     <!-- </div> -->
-    <div class="header-container" style="display: flex; padding: 5px;">
-        <div fxFlex.gt-sm="100%" fxFlex>
-            <div fxlayout="row" style="background-color: white; ">
-                <!-- ================================ LABEL HEADER  -->
-                <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="padding: 0 9px; height: fit-content;height: 50px;width: 100%;">
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                       
-                    </div> -->
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="align-items: baseline;" fxLayoutAlign="space-between center "> 
-                        <h3 style="font-weight: bold; font-size: 16px; margin-top: 10px;margin-right: 20px;">Patient
-                            Information &nbsp;:
-                        </h3>
-
-                        <span class="label" style="margin-right: 10px;">OPD/IPD No &nbsp;:</span>
-                        <span class="data_input" style="margin-right:30px;">{{advanceData.advanceObj.OPD_IPD_Id}}</span>
-
-                        <span class="label" style="margin-right: 10px;"> Patient Name &nbsp; : </span>
-                        <span class="data_input" style="margin-right:30px;">{{advanceData.advanceObj.PatientName}}</span>
-
-                        <span class="label" style="margin-right: 10px;">Date &nbsp; :</span>
-                        <span class="data_input" style="margin-right: 5px;">{{advanceData.advanceObj.Date}}</span>
-                      
-                        <div style="border-style:double;border-color: blue;text-align: right;" >
-                        <span class="label" style="font-weight:bolder;font-size:large;font-style: italic;">Net Pay Amount &nbsp; :</span>
-                        <span class="data_input" style="font-weight: bolder;font-size: large;color: blue;font-style: italic;">{{netPayAmt}}</span>
+    <div>
+        <fieldset class="fieldset-div">
+            <legend>Patient Information</legend>
+            <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                <div class="patient-sub">
+                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item" style="width: 375px;">
+                            <h3 class="labels-h3">Patient Name</h3>
                         </div>
-
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}</h6>
+                        </div>
                     </div>
-                </mat-card>
-                <!-- ================================ LABEL HEADER  -->
+                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item" style="width: 375px;">
+                            <h3 class="labels-h3">Patient Category</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">Staff</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient-sub">
+                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Gender</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">Male</h6>
+                        </div>
+                    </div>
+                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Tariff</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">Hospital</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient-sub">
+                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Age</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">30</h6>
+                        </div>
+                    </div>
+                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Company</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">Airmid</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient-sub">
+                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Patient Source</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">Hospital</h6>
+                        </div>
+                    </div>
+                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="flex-item item-header">
+                            <h3 class="labels-h3">Doctor</h3>
+                        </div>
+                        <div class="flex-item-middle">
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div class="flex-item">
+                            <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-        <!-- //end first part -->
-
+        </fieldset>
     </div>
- 
     <!-- <div class="net-pay" style="margin-left: 10px;">
         <div style="width:100px; margin-bottom: 25px;">
             <span>NetPay Amt</span>
@@ -98,7 +165,7 @@
             </mat-form-field>
         </div>
     </div> -->
-    <div class="payment-container">
+    <div class="payment-container" style="margin-top: 10px;">
         <form [formGroup]="paymentForm">
             <div class="chips-container" style="margin-bottom: 20px;">
                 <mat-chip-list aria-label="Fish selection" selectable multiple>

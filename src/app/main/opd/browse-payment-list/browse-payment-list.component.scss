@@ -226,5 +226,8 @@ app-browse-payment-list{
 .p0{
     display: none;
   }
-
+  body.theme-default .accent{
+    background-color: #0479b4 !important;
+    // color: black !important;
+}
 }

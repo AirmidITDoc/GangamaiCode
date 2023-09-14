@@ -1,0 +1,1028 @@
+<div class="case-paper-main" fusePerfectScrollbar style="overflow: auto;">
+    <div class="dialog-content-wrapper">
+        <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center " style="height: 40px;">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon> -->
+
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="font-size: 20px;width: 83%; font-weight: 400;">
+                    Case Paper
+                </span>
+
+                <!-- <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button> -->
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                <div fxLayout="column" fxLayoutAlign="start none" style="border-style: groove;color: grey;width: 100%;">
+
+                    <div class="redio-container">
+
+                        <mat-form-field appearance="outline" style="width:60%;margin-left:15px;">
+                            <input type="text" name="RegId" formControlName="RegId"
+                                placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                [matAutocomplete]="auto" (input)="getSearchList()">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                (optionSelected)='getSelectedObj($event.option.value)'>
+                                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                    {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                    {{option.MobileNo}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
+                                Required field cannot be left blank
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+        <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                <form [formGroup]="caseFormGroup" style="width: 100%;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                               
+                                <div>
+                                    <fieldset class="fieldset-div">
+                                        <legend>Patient Information</legend>
+                                        <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item" style="width: 375px;">
+                                                        <h3 class="labels-h3">Patient Name</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">{{PatientName}}</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item" style="width: 375px;">
+                                                        <h3 class="labels-h3">Patient Category</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">Staff</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="patient-sub">
+                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Gender</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">Male</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Tariff</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">Hospital</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="patient-sub">
+                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Age</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">30</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Company</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">Airmid</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="patient-sub">
+                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Patient Source</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">Hospital</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div class="flex-item item-header">
+                                                        <h3 class="labels-h3">Doctor</h3>
+                                                    </div>
+                                                    <div class="flex-item-middle">
+                                                        <h6 class="labels-h6">:</h6>
+                                                    </div>
+                                                    <div class="flex-item">
+                                                        <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </mat-card>
+                            <!-- ================================ LABEL HEADER  -->
+                        </div>
+    
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <mat-drawer-container class="example-container">
+        <!--Middle Data-->
+        <div class="content">
+            <!-- CENTER -->
+            <div class="center p-24 pb-56">
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <div fxFlexFill fxLayout="column" fxLayoutGap="20px">
+                        <mat-card>
+                            <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="20px">
+
+                                <div fxlayout="row">
+                                    <!-- first row start-->
+
+                                    <div fxFlex.gt-sm="45%" fxFlex fxLayoutGap="20px"
+                                        style="background-color: white; width: 100%; ">
+
+                                        <form [formGroup]="caseFormGroup">
+
+                                            <mat-card style="height:250px !important;overflow: auto;">
+                                                <div fxLayout="column" fxFlex fxLayoutGap="20px">
+                                                    <!-- div column 2 start-->
+                                                    <div class="clinical-info-body">
+
+                                                        <div fxlayout="row" fxFlex fxLayoutGap="50px">
+                                                            <div class="clinical-info-1" style="margin-right: 10px;">
+                                                                <mat-form-field class="example-chip-list"
+                                                                    appearance="outline"
+                                                                    style="display:inline-flexbox; margin-bottom: 40px; width:100%;">
+                                                                    <mat-label>History</mat-label>
+                                                                    <mat-chip-list #historyChipList>
+                                                                        <mat-chip *ngFor="let ele of historySelected"
+                                                                            [selectable]="selectable"
+                                                                            [removable]="removable"
+                                                                            (removed)="remove(ele, historySelected)">
+                                                                            {{ele}}
+                                                                            <mat-icon matChipRemove
+                                                                                *ngIf="removable">cancel
+                                                                            </mat-icon>
+                                                                        </mat-chip>
+                                                                        <input #historyInput
+                                                                            formControlName="historyContoller"
+                                                                            [matAutocomplete]="auto1"
+                                                                            [matChipInputFor]="historyChipList"
+                                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                            (matChipInputTokenEnd)="addChips($event, historySelected, 'historyContoller')">
+                                                                    </mat-chip-list>
+                                                                    <mat-autocomplete #auto1="matAutocomplete"
+                                                                        (optionSelected)="selected($event, historySelected, 'historyContoller', 'historyInput')">
+                                                                        <mat-option
+                                                                            *ngFor="let element of filteredHistory | async"
+                                                                            [value]="element.PastHistoryDescr">
+                                                                            {{element.PastHistoryDescr}}
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>
+                                                                </mat-form-field>
+
+                                                                <mat-form-field class="example-chip-list"
+                                                                    appearance="outline"
+                                                                    style="display:inline-flexbox; margin-bottom: 40px; width:100%;">
+                                                                    <mat-label>Diagnosis</mat-label>
+                                                                    <mat-chip-list #diagnosisChipList>
+                                                                        <mat-chip *ngFor="let ele of diagnosisSelected"
+                                                                            [selectable]="selectable"
+                                                                            [removable]="removable"
+                                                                            (removed)="remove(ele, diagnosisSelected)">
+                                                                            {{ele}}
+                                                                            <mat-icon matChipRemove
+                                                                                *ngIf="removable">cancel
+                                                                            </mat-icon>
+                                                                        </mat-chip>
+                                                                        <input #diagnosisInput
+                                                                            formControlName="diagnosisContoller"
+                                                                            [matAutocomplete]="auto2"
+                                                                            [matChipInputFor]="diagnosisChipList"
+                                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                            (matChipInputTokenEnd)="addChips($event, diagnosisSelected, 'diagnosisContoller')">
+                                                                    </mat-chip-list>
+                                                                    <mat-autocomplete #auto2="matAutocomplete"
+                                                                        (optionSelected)="selectedD($event, diagnosisSelected, 'diagnosisContoller', 'diagnosisInput')">
+                                                                        <mat-option
+                                                                            *ngFor="let element of filteredDiagnosis | async"
+                                                                            [value]="element.DiagnosisDescr">
+                                                                            {{element.ComplaintName}}
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <!-- <div fxlayout="row" fxFlex fxLayoutGap="10px">
+                                                <div class="clinical-info-1" style="margin-right: 10px;">
+                                                    <mat-form-field class="example-chip-list" appearance="outline"
+                                                        style="display:initial;width:100%;">
+                                                        <mat-label>Diagnosis</mat-label>
+                                                        <mat-chip-list #diagnosisChipList>
+                                                            <mat-chip *ngFor="let ele of diagnosisSelected" [selectable]="selectable"
+                                                                [removable]="removable" (removed)="remove(ele, diagnosisSelected)">
+                                                                {{ele}}
+                                                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                            </mat-chip>
+                                                            <input #diagnosisInput formControlName="diagnosisContoller"
+                                                                [matAutocomplete]="auto2" [matChipInputFor]="diagnosisChipList"
+                                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                (matChipInputTokenEnd)="addChips($event, diagnosisSelected, 'diagnosisContoller')">
+                                                        </mat-chip-list>
+                                                        <mat-autocomplete #auto2="matAutocomplete"
+                                                            (optionSelected)="selectedD($event, diagnosisSelected, 'diagnosisContoller', 'diagnosisInput')">
+                                                            <mat-option *ngFor="let element of filteredDiagnosis | async"
+                                                                [value]="element.DiagnosisDescr">
+                                                                {{element.DiagnosisDescr}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                                </div>-->
+
+                                                    </div>
+
+                                                </div> <!-- div column2 end-->
+                                            </mat-card>
+                                        </form>
+                                    </div>
+
+
+                                    <div fxFlex.gt-sm="25%" fxFlex fxLayoutGap="20px"
+                                        style="background-color: white;padding-left: 20px;">
+                                        <form [formGroup]="caseFormGroup">
+                                            <mat-card style="height:250px !important;">
+                                                <table class="example-full-width" cellspacing="0">
+                                                    <tr style="padding: 5px 5px 5px 5px;">
+                                                        <td>
+                                                            <mat-form-field
+                                                                style="background-color: white; margin-left:5px;display:inline-flexbox; width:50%;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>Height</mat-label>
+                                                                <input matInput [(ngModel)]="Height"
+                                                                    formControlName="Height" name="Height"
+                                                                    type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field
+                                                                style="background-color: white; margin-left:5px;display:inline-flexbox; width:40%;margin-right: 10px;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>BSL</mat-label>
+                                                                <input matInput [(ngModel)]="BSL" formControlName="BSL"
+                                                                    name="BSL" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="padding: 5px 5px 5px 5px;">
+                                                        <td>
+                                                            <mat-form-field
+                                                                style="background-color: white; margin-left:5px;display:inline-flexbox; width:50%;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>Weight</mat-label>
+                                                                <input matInput [(ngModel)]="Weight"
+                                                                    formControlName="Weight" name="Weight"
+                                                                    type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                            style="background-color: white; margin-left:5px;display:inline-flexbox; width:40%;margin-right: 10px;"
+                                                                class="example-full-width">
+                                                                <mat-label>SpO2</mat-label>
+                                                                <input matInput [(ngModel)]="SpO2"
+                                                                    formControlName="SPO2" name="SPO2" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="padding: 5px 5px 5px 5px;">
+                                                        <td>
+                                                            <mat-form-field
+                                                                style="background-color: white; margin-left:5px;display:inline-flexbox; width:50%;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>Pulse</mat-label>
+                                                                <input matInput [(ngModel)]="Pluse"
+                                                                    formControlName="Pluse" name="Pluse" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field
+                                                            style="background-color: white; margin-left:5px;display:inline-flexbox; width:40%;margin-right: 10px;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>BMI</mat-label>
+                                                                <input matInput [(ngModel)]="BMI" formControlName="BMI"
+                                                                    name="BMI" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="padding: 5px 5px 5px 5px;">
+                                                        <td>
+                                                            <mat-form-field
+                                                                style="background-color: white; margin-left:5px;display:inline-flexbox; width:50%;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>B/p</mat-label>
+                                                                <input matInput [(ngModel)]="BP" formControlName="BP"
+                                                                    name="BP" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field
+                                                            style="background-color: white; margin-left:5px;display:inline-flexbox; width:40%;margin-right: 10px;"
+                                                                class="example-full-width" appearance="outline">
+                                                                <mat-label>Temp</mat-label>
+                                                                <input matInput [(ngModel)]="Temp"
+                                                                    formControlName="Temp" name="Temp" type="number">
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </mat-card>
+                                        </form>
+                                    </div>
+                                    <!-- 
+                                <span class="material-icons" (click)="drawer1.toggle()"
+                                style="cursor: pointer;color: #6b6565;">
+                                notifications_none 
+                                </span> -->
+                                    <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px"
+                                        style="background-color: white;padding-left: 10px; height:150px !important;">
+                                        <mat-card>
+                                            <mat-table class="table1" matSort [dataSource]="dataSource1"
+                                                [@animateStagger]="{value:'50'}"
+                                                style="height: 150px !important;overflow: auto;">
+
+                                                <ng-container matColumnDef="VisitId"
+                                                    style="width:80px;max-width:80px;min-width:80px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm style="width:80px;max-width:80px;min-width:80px;">
+                                                        VisitID </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        {{element.VisitId}} </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="VisitDate"
+                                                    style="background-color: rgb(157, 164, 164);"
+                                                    style="width:80px;max-width:80px;min-width:80px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm style="width:80px;max-width:80px;min-width:80px;">
+                                                        VisitDate
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                        style="width:80px;max-width:80px;min-width:80px;">
+                                                        {{element.VisitDate | date:'shortDate'}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="DocName"
+                                                    style="width:200px;max-width:200px;min-width:200px;">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm
+                                                        style="width:150px;max-width:150px;min-width:150px;">
+                                                        DoctorName </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
+                                                        style="width:200px;max-width:200px;min-width:200px;">
+                                                        {{element.DocName }} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- 
+                                            <ng-container matColumnDef="action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row">
+                                                    <button mat-icon-button (click)="onEditVisitTable(row)">
+                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                    </button>
+
+                                                </mat-cell>
+                                            </ng-container> -->
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                        </mat-spinner>
+                                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedVisitColumns
+                                            ;" class="element" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    (click)="drawer1.toggle()"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+
+                                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="4"
+                                                showFirstLastButtons></mat-paginator>
+
+                                            <!-- <div class="net-amt">
+                                            <span class="net-amt-label" style="font-weight:bold;">Already Refund Amount
+                                                :</span>&nbsp;
+                                           
+                                            <span class="net-amt-value"
+                                                style="font-weight:bold;">{{getRefundtotSum(dataSource1.data) |
+                                                currency:'INR' }}</span>
+                                        </div> -->
+                                        </mat-card>
+                                    </div>
+
+                                </div> <!-- first row end-->
+                                <br />
+
+                                <br />
+                                <div fxlayout="row">
+                                    <!-- second row start-->
+                                    <div fxFlex.gt-sm="70%" fxFlex fxLayoutGap="20px"
+                                        style="background-color: white; width: 100%; height:250px !important;">
+                                        <mat-tab-group style="background-color: white;width: 100%;">
+                                            <mat-tab>
+                                                <ng-template mat-tab-label
+                                                    style="color: black; font-size: 17px bold; height: 100px;font-weight: bolder; ">
+
+                                                    Prescription
+                                                </ng-template>
+                                                <mat-card>
+
+                                                    <div fxlayout="row"
+                                                        style="background-color: white; padding: 2px;height:200px;">
+
+                                                        <div class="dialog-content-wrapper">
+
+
+                                                            <form [formGroup]="caseFormGroup"
+                                                                style="font-weight: bold;width: 100%;">
+
+
+                                                                <div class="bill-amts" fxFlexFill fxLayout="column"
+                                                                    fxLayoutAlign="space-between">
+
+
+                                                                    <div fxLayout="column">
+
+                                                                        <div fxLayout="row">
+                                                                            <mat-form-field appearance="outline"
+                                                                                style="width:50%;">
+                                                                                <mat-label>Chief Complaint
+                                                                                </mat-label>
+                                                                                <input matInput display="block"
+                                                                                    [(ngModel)]="ChiefComplaint"
+                                                                                    formControlName="ChiefComplaint"
+                                                                                    name="ChiefComplaint">
+                                                                            </mat-form-field>&nbsp;
+
+                                                                            <mat-form-field appearance="outline"
+                                                                                style="width:50%;" class="select-field">
+                                                                                <mat-label>Select</mat-label>
+                                                                                <mat-select
+                                                                                    panelClass="selectPanelClass">
+                                                                                    <mat-option
+                                                                                        *ngFor="let element of historyOptions"
+                                                                                        [value]="element.value">
+                                                                                        {{element.viewValue}}
+                                                                                    </mat-option>
+                                                                                </mat-select>
+                                                                            </mat-form-field>&nbsp;
+
+                                                                            <button mat-stroked-button
+                                                                                style="height:35px; margin-top: 7px;">
+                                                                                <span class="material-icons">
+                                                                                    add
+                                                                                </span>
+                                                                            </button>
+
+                                                                            <!--<mat-form-field appearance="outline"
+                                                                                style="width:300px;margin-left:50px;">
+                                                                                <mat-label>Bill Date</mat-label>
+                                                                                <input matInput display="block"
+                                                                                    [(ngModel)]="BillDate"
+                                                                                    formControlName="BillDate"
+                                                                                    name="BillDate">
+                                                                            </mat-form-field>&nbsp; -->
+                                                                        </div>
+                                                                        <div fxLayout="row" style="width:100%">
+                                                                            <mat-table #table matSort
+                                                                                [dataSource]="dataSource"
+                                                                                [@animateStagger]="{value:'50'}"
+                                                                                style="overflow:auto; width:100%;height:220px !important;">
+
+                                                                                <ng-container matColumnDef="drugName"
+                                                                                    sticky>
+                                                                                    <mat-header-cell *matHeaderCellDef
+                                                                                        mat-sort-header fxHide
+                                                                                        fxShow.gt-sm>Drug Name
+                                                                                    </mat-header-cell>
+                                                                                    <mat-cell
+                                                                                        *matCellDef="let element; let i = index;"
+                                                                                        fxHide fxShow.gt-sm>
+                                                                                        <mat-form-field
+                                                                                            appearance="outline"
+                                                                                            class="drug-field"
+                                                                                            style="width: 90%; margin-right: 5px;">
+                                                                                            <input id="drug-{{i}}"
+                                                                                                type="text" #text
+                                                                                                matInput
+                                                                                                formControlName="drugController{{i}}"
+                                                                                                (focus)="drugChange($event, i)"
+                                                                                                [matAutocomplete]="auto"
+                                                                                                [ngModelOptions]="{standalone: true}"
+                                                                                                matAutocompletePosition="below">
+                                                                                            <mat-autocomplete
+                                                                                                #auto="matAutocomplete"
+                                                                                                [displayWith]="displayWith"
+                                                                                                showPanel="true"
+                                                                                                (optionsScroll)="onScroll()"
+                                                                                                (optionSelected)='getSelectedDrug($event.option.value, i)'
+                                                                                                panelWidth="50%">
+                                                                                                <mat-option
+                                                                                                    *ngFor="let option of filteredDrugs$ | async"
+                                                                                                    [value]="option">
+                                                                                                    {{option.ItemName}}
+                                                                                                    <b>|</b>
+                                                                                                    {{option.BalanceQty}}
+                                                                                                    <b>|</b>
+                                                                                                    {{option.UOM}}
+                                                                                                </mat-option>
+                                                                                            </mat-autocomplete>
+                                                                                        </mat-form-field>
+
+                                                                                        <!-- <mat-form-field appearance="outline" class="dose-field"
+                                                                                        style="width: 200px; margin-right: 5px;">
+                                                                                        <mat-select #singleSelect [(ngModel)]="element.drugName"
+                                                                                            [ngModelOptions]="{standalone: true}" (optionsScroll)="onScroll()">
+                                                                                            <mat-option>
+                                                                                                <ngx-mat-select-search [formControl]="drugFilterCtrl"
+                                                                                                    [placeholderLabel]="'Search'"
+                                                                                                    [noEntriesFoundLabel]="'No matching found'">
+                                                                                                </ngx-mat-select-search>
+                                                                                            </mat-option>
+                                                                                            <mat-option *ngFor="let element of filteredDrug | async" [value]="element">
+                                                                                                {{element.ItemName}}
+                                                                                            </mat-option>
+                                                                                        </mat-select>
+                                                                                    </mat-form-field> -->
+
+                                                                                        <!-- <mat-form-field appearance="outline" class="drug-field"
+                                                                                    style="width: 90%; margin-right: 5px;" *ngIf="element.isLocallyAdded">
+                                                                                        <input type="text" #text matInput
+                                                                                            formControlName="drugController2" [matAutocomplete]="auto">
+                                                                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith" showPanel="true"
+                                                                                            (optionsScroll)="onScroll()" (optionSelected)='getSelectedDrug($event.option.value)'
+                                                                                            panelWidth="250px">
+                                                                                            <mat-option *ngFor="let option of filteredDrugs1$ | async" [value]="option">
+                                                                                                {{option.ItemName}}
+                                                                                            </mat-option>
+                                                                                        </mat-autocomplete>
+                                                                                    </mat-form-field> -->
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="doseName">
+                                                                                    <mat-header-cell *matHeaderCellDef
+                                                                                        mat-sort-header sticky> Dose
+                                                                                        Name </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element"
+                                                                                        fxShow.gt-sm>
+                                                                                        <mat-form-field
+                                                                                            appearance="outline"
+                                                                                            class="dose-field"
+                                                                                            style="width: 200px; margin-right: 5px;">
+                                                                                            <mat-select #singleSelect
+                                                                                                [(ngModel)]="element.doseName"
+                                                                                                [ngModelOptions]="{standalone: true}">
+                                                                                                <mat-option>
+                                                                                                    <ngx-mat-select-search
+                                                                                                        [formControl]="doseFilterCtrl"
+                                                                                                        [placeholderLabel]="'Search'"
+                                                                                                        [noEntriesFoundLabel]="'No matching found'">
+                                                                                                    </ngx-mat-select-search>
+                                                                                                </mat-option>
+                                                                                                <mat-option
+                                                                                                    *ngFor="let element of filteredDose | async"
+                                                                                                    [value]="element">
+                                                                                                    {{element.DoseName}}
+                                                                                                </mat-option>
+                                                                                            </mat-select>
+                                                                                        </mat-form-field>
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="days1">
+                                                                                    <mat-header-cell *matHeaderCellDef
+                                                                                        mat-sort-header sticky> Days
+                                                                                    </mat-header-cell>
+                                                                                    <mat-cell
+                                                                                        *matCellDef="let element; let i = index"
+                                                                                        fxShow.gt-sm>
+                                                                                        <mat-form-field
+                                                                                            appearance="outline"
+                                                                                            style="width: 90%;">
+                                                                                            <input matInput
+                                                                                                [(ngModel)]="element.days1"
+                                                                                                [ngModelOptions]="{standalone: true}"
+                                                                                                name="days1">
+                                                                                        </mat-form-field>
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container
+                                                                                    matColumnDef="instruction">
+                                                                                    <mat-header-cell *matHeaderCellDef
+                                                                                        mat-sort-header> Instruction
+                                                                                    </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element"
+                                                                                        fxShow.gt-sm>
+                                                                                        <mat-form-field
+                                                                                            appearance="outline"
+                                                                                            style="width: 92%;">
+                                                                                            <input matInput
+                                                                                                [(ngModel)]="element.instruction"
+                                                                                                [ngModelOptions]="{standalone: true}"
+                                                                                                name="instruction">
+                                                                                        </mat-form-field>
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+
+                                                                                <ng-container matColumnDef="action"
+                                                                                    stickyEnd>
+                                                                                    <mat-header-cell *matHeaderCellDef
+                                                                                        style="color: white;">
+                                                                                        Action
+                                                                                    </mat-header-cell>
+                                                                                    <mat-cell
+                                                                                        *matCellDef="let element; let i = index"
+                                                                                        fxShow.gt-sm
+                                                                                        style="width: 60%;">
+                                                                                        <span
+                                                                                            *ngIf="element.isLocallyAdded"
+                                                                                            class="material-icons"
+                                                                                            style="cursor: pointer;"
+                                                                                            (click)="onDelete(element)">
+                                                                                            delete
+                                                                                        </span>
+
+                                                                                        <!-- <button mat-icon-button (click)="getPrint(element)" matTooltip="print" ><mat-icon>print</mat-icon></button> -->
+                                                                                        <button mat-stroked-button
+                                                                                            *ngIf="!element.isLocallyAdded"
+                                                                                            (click)="addEmptyRow(element)"
+                                                                                            style="height:30px; cursor: pointer;margin-bottom: 5px;">
+                                                                                            <span class="material-icons"
+                                                                                                style="margin-bottom: 5px ;">
+                                                                                                add
+                                                                                            </span>
+                                                                                        </button>
+
+
+
+                                                                                        <!-- <span *ngIf="!element.isLocallyAdded" class="material-icons" style="cursor: pointer;"
+                                                                                        (click)="addEmptyRow(element)">
+                                                                                        add
+                                                                                    </span> -->
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="loading">
+                                                                                    <mat-footer-cell *matFooterCellDef
+                                                                                        colspan="6">
+                                                                                        loading data...
+                                                                                    </mat-footer-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="noData">
+                                                                                    <mat-footer-cell *matFooterCellDef
+                                                                                        colspan="6">
+                                                                                        <!-- <mat-spinner *ngIf="isLoading=='no-data'" [diameter]='30'></mat-spinner> -->
+                                                                                        No Data found
+                                                                                    </mat-footer-cell>
+                                                                                </ng-container>
+
+                                                                                <mat-header-row class="accent"
+                                                                                    *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
+                                                                                </mat-header-row>
+                                                                                <mat-row
+                                                                                    *matRowDef="let row; columns: displayedPrescriptionColumns;"
+                                                                                    class="element"
+                                                                                    [@animate]="{value:'*',params:{y:'100%'}}">
+                                                                                </mat-row>
+                                                                                <mat-footer-row
+                                                                                    *matFooterRowDef="['loading']"
+                                                                                    [ngClass]="{'hide':dataSource!=null}">
+                                                                                </mat-footer-row>
+                                                                                <mat-footer-row
+                                                                                    *matFooterRowDef="['noData']"
+                                                                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                                                </mat-footer-row>
+                                                                            </mat-table>
+                                                                        </div>
+
+
+                                                                        <!-- <mat-form-field appearance="outline"
+                                                                            style="width:300px;">
+                                                                            <mat-label>Net Bill Amount</mat-label>
+                                                                            <input matInput [(ngModel)]="NetBillAmount"
+                                                                                formControlName="NetBillAmount"
+                                                                                name="NetBillAmount" readonly>
+                                                                            <mat-error class="error"
+                                                                                *ngIf="RefundOfBillFormGroup.get('NetBillAmount').invalid && RefundOfBillFormGroup.get('NetBillAmount').touched">
+                                                                                Net Bill BillAmount is required</mat-error>
+                                                                        </mat-form-field>&nbsp; -->
+
+                                                                        <!--***********  to add a row sample  start ******************-->
+                                                                        <!-- <div fxLayout="row">
+                                                                            <mat-form-field appearance="outline"
+                                                                                style="width:300px;">
+                                                                                <mat-label>Net Refund Amount</mat-label>
+                                                                                <input matInput [(ngModel)]="RefundAmount"
+                                                                                    (clisk)="calculateTotalRefund()"
+                                                                                    formControlName="RefundAmount"
+                                                                                    name="RefundAmount">
+                                                                                <mat-error class="error"
+                                                                                    *ngIf="RefundOfBillFormGroup.get('RefundAmount').invalid && RefundOfBillFormGroup.get('RefundAmount').touched">
+                                                                                    Net Bill RefundAmount is required
+                                                                                </mat-error>
+                                                                            </mat-form-field>&nbsp;
+
+                                                                            <mat-form-field appearance="outline"
+                                                                                style="width:300px;margin-left:50px;">
+                                                                                <mat-label>Balance Refund Amount</mat-label>
+                                                                                <input matInput
+                                                                                    [(ngModel)]="RefundBalAmount"
+                                                                                    formControlName="RefundBalAmount"
+                                                                                    name="RefundBalAmount" readonly>
+                                                                                <mat-error class="error"
+                                                                                    *ngIf="RefundOfBillFormGroup.get('RefundBalAmount').invalid && RefundOfBillFormGroup.get('RefundBalAmount').touched">
+                                                                                    Net Bill RefundAmount is required
+                                                                                </mat-error>
+                                                                            </mat-form-field>&nbsp;
+                                                                        </div> -->
+
+                                                                        <!--******************* to add a row sample end ****************-->
+
+                                                                    </div>
+
+
+                                                                </div>
+
+
+                                                            </form>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </mat-card>
+
+                                            </mat-tab>
+                                            <mat-tab>
+
+                                                <ng-template mat-tab-label
+                                                    style="color: black; font-size: 17px bold; font-weight: bolder; ">
+
+                                                    Clinical Details
+                                                </ng-template>
+
+                                                <form class="caseFormGroup">
+
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Favorite food</mat-label>
+                                                        <textarea matInput
+                                                            placeholder="Ex. It makes me feel..."></textarea>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Leave a comment</mat-label>
+                                                        <textarea matInput
+                                                            placeholder="Ex. It makes me feel..."></textarea>
+                                                    </mat-form-field>
+                                                </form>
+
+                                            </mat-tab>
+                                        </mat-tab-group>
+                                    </div>
+
+
+                                    <!-- <div fxFlex.gt-sm="25%" fxFlex fxLayoutGap="20px"
+                                    style="background-color: white; width: 100%; height: 500px !important;">
+                                    <form [formGroup]="caseFormGroup" style="font-weight: bold;">
+
+                                        <div fxLayout="row" fxLayoutGap="2px">
+
+                                            <mat-form-field appearance="outline" style="width:30%;"
+                                                class="select-field">
+                                                <mat-label>Refer Doctor Name</mat-label>
+                                                <mat-select panelClass="selectPanelClass">
+                                                    <mat-option *ngFor="let element of historyOptions"
+                                                        [value]="element.value">
+                                                        {{element.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>&nbsp;
+
+                                      
+                                        </div>
+
+
+                                        <div fxLayout="row" fxLayoutGap="2px">
+
+                                          
+
+                                          
+                                            <mat-form-field
+                                            style="background-color: white; margin-left:10px;display:inline-flexbox; width:50%;"
+                                            class="example-full-width" appearance="outline">
+                                            <mat-label>Investigation Advice</mat-label>
+                                            <textArea matInput></textArea>
+                                        </mat-form-field>
+
+                                        </div>
+                                    </form>
+                                </div> -->
+
+
+
+
+                                    <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="20px"
+                                        style="background-color: white; width: 100%; height: 300px !important;">
+
+                                        <button mat-stroked-button (click)="copy()"
+                                            style="height:30px; cursor: pointer;margin-bottom: 5px;">
+                                            Copy
+                                        </button>
+
+                                        <button mat-stroked-button (click)="openCreatePrescriptionTemplate()"
+                                            style="height:30px; cursor: pointer;margin-bottom: 5px;">
+                                            Create Prescription Template
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <!--second row end-->
+                                <div class="footer-navigation-container">
+                                    <div class="next-div" style="float: right;">
+                                        <button class="next-btn" [disabled]="caseFormGroup.invalid" (click)="onSave()"
+                                            style="border-radius: 16px;margin-left:100px;">Save</button>
+                                        <button class="footer-btn" (click)="onClose()"
+                                            style="border-radius: 16px;margin-left: 10px;">Close</button>
+                                        <button class="footer-btn"
+                                            style="border-radius: 16px;margin-left: 10px;width: fit-content;"
+                                            (click)="getView()">View
+                                            Report</button>
+                                        <button class="footer-btn" style="border-radius: 16px;margin-left: 10px;"
+                                            (click)="getPrint()">RePrint</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+                <!-- / CONTENT -->
+            </div>
+            <!-- / CENTER -->
+        </div>
+        <!--End of Middle Data-->
+
+    </mat-drawer-container>
+
+</div>
+
+
+<mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end"
+    style="height: 530px !important;margin-top: 120px !important;margin-right:10px;font-size: medium;width:800px;">
+    <mat-card>
+        <div class="service-table1">
+            <mat-table #table matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}"
+                style="height: 540px !important;width:800px;">
+
+                <ng-container matColumnDef="DrugName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> DrugName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        {{contact.DrugName}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="DoseName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Dose
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        {{contact.DoseName}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="QtyPerDay">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Qty/Day
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        {{contact.QtyPerDay}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="TotalQty">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalQty
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        {{contact.TotalQty}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="loading">
+
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                        loading data...
+                    </mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                        no data found...
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="displayClinicalColumns1; sticky: true">
+                </mat-header-row>
+                <mat-row *matRowDef="let contact; columns: displayClinicalColumns1;"
+                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="drawer1.toggle()">
+                </mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource3!=null}">
+                </mat-footer-row>
+                <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
+            </mat-footer-row> -->
+            </mat-table>
+        </div>
+    </mat-card>
+</mat-drawer>

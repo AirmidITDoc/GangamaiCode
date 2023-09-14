@@ -68,7 +68,7 @@ export class IPAdvanceComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   CashCounterList: any = [];
-
+  PatientHeaderObj: any;
   constructor(public _IpSearchListService: IPSearchListService,
     public _opappointmentService: OPSearhlistService,
     public _matDialog: MatDialog,
@@ -90,6 +90,8 @@ export class IPAdvanceComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      // this.PatientHeaderObj = this.data.vPatientHeaderObj;
+      this.PatientHeaderObj = this.advanceDataStored.storage;
       // console.log(this.selectedAdvanceObj);
     }
 

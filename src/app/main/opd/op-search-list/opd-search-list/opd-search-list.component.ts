@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation }
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { VisitMaster } from '../../appointment/appointment.component';
+import { AdvanceDetailObj, VisitMaster } from '../../appointment/appointment.component';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -99,6 +99,7 @@ export class OpdSearchListComponent implements OnInit {
     else if (this._ActRoute.url == '/opd/bill') {
       this.menuActions.push('Bill');
       this.menuActions.push('Payment');
+      this.menuActions.push('Case Paper');
     }
     else if (this._ActRoute.url == '/opd/medicalrecords') {
       this.menuActions.push('Case Paper');
@@ -275,31 +276,31 @@ get f() { return this._opSearchListService.myFilterform.controls; }
 
     //   });
     // }
-    // if (m == "Company Settlement") {
-    //   var m_data = {
-    //     RegNo: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId
-    //   }
-    //   this._opSearchListService.populateForm(m_data);
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-    //   const dialogRef = this._matDialog.open(CompanySettlementComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '600px',
-    //       width: '100%',
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
+    if (m == "Case Paper") {
+      var m_data = {
+        RegNo: contact.RegId,
+        AdmissionID: contact.VisitId,
+        PatientName: contact.PatientName,
+        Doctorname: contact.Doctorname,
+        AdmDateTime: contact.AdmDateTime,
+        AgeYear: contact.AgeYear,
+        ClassId: contact.ClassId,
+        TariffName: contact.TariffName,
+        TariffId: contact.TariffId
+      }
+      this._opSearchListService.populateForm(m_data);
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+      const dialogRef = this._matDialog.open(OPCasepaperComponent,
+        {
+          maxWidth: "95vw",
+          height: '900px',
+          width: '100%',
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
 
-    //   });
-    // }
+      });
+    }
 
     if (m == "Refund Of Bill") {
       // console.log(" This is for Refund of Bill pop : " + m);

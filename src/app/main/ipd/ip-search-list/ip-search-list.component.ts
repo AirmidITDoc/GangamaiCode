@@ -596,7 +596,7 @@ export class IPSearchListComponent implements OnInit {
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
 
-            maxWidth: "120vw",
+            maxWidth: "100vw",
             height: '890px',    //maxHeight: "170vh",
             // width: '100%',
           });
@@ -626,7 +626,7 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "85vw",
+            maxWidth: "95vw",
             height: '400px',
             width: '100%',
           });

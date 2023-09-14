@@ -1178,6 +1178,7 @@ debugger
           console.log(submitData);
           this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
             if (response) {
+              debugger
               Swal.fire('Bill successfully !', 'IP final bill generated successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
 
@@ -1682,10 +1683,10 @@ debugger
     
   }
 
-  getPrintDraft() {
-    
-    var D_data = {
-      "AdmissionID": 10528,// el
+  getPrintDraft(el) {
+    // 10528:
+        var D_data = {
+      "AdmissionID":  el
     }
     console.log(D_data);
 

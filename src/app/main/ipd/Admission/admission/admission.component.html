@@ -2,7 +2,7 @@
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
 
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;background-color: rgb(14, 97, 135);">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -48,8 +48,7 @@
                             <div class="content">
                                 <!-- SIDEBAR -->
                                 <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
-                                    style="width:30%; border-radius:4px;
-                                                                                                        margin-left:12px; background-color: white;height:99%;">
+                                    style="width:30%; border-radius:4px;margin-left:12px; background-color: white;height:99%;">
                                     <div>
                                         <!-- SIDEBAR HEADER -->
                                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
@@ -379,10 +378,13 @@
                                                             <mat-header-row class="accent"
                                                                 *matHeaderRowDef="displayedColumns; sticky: true">
                                                             </mat-header-row>
+
                                                             <mat-row
                                                                 *matRowDef="let contact; columns: displayedColumns;"
-                                                                class="contact"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                [ngClass]="contact.PatientType != 'Self' ? 'self-row' : ''"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}">
+                                                            </mat-row>
+
                                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                             </mat-footer-row>
@@ -390,7 +392,7 @@
                                                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                                         </mat-table>
                                                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                                            [pageSize]="16" showFirstLastButtons>
+                                                            [pageSize]="14" showFirstLastButtons>
                                                         </mat-paginator>
                                                     </div>
                                                 </div>
@@ -405,4 +407,4 @@
                             <!-- / CONTENT-->
                         </div>
 
-//
+                        //
