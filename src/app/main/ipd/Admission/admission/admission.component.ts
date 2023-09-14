@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
@@ -36,6 +36,7 @@ export class AdmissionComponent implements OnInit {
   reportPrintObj: Admission;
   searchFormGroup: FormGroup;
   isLoadings = false;
+
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Admission[] = [];
@@ -45,7 +46,7 @@ export class AdmissionComponent implements OnInit {
   screenFromString = 'admission-form';
   doctorNameCmbList:any=[];
   hasSelectedContacts: boolean;
-
+  disabled = false;
   isAlive = false;
   savedValue: number = null;
   isOpen = false;
@@ -113,7 +114,7 @@ export class AdmissionComponent implements OnInit {
   registration: any;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
-DoctorId:any=0;
+  DoctorId:any=0;
 
   options = [];
   optionsPrefix: any[] = [];
@@ -138,6 +139,8 @@ DoctorId:any=0;
   registerObj = new AdmissionPersonlModel({});
   bedObj = new Bed({});
   selectedPrefixId: any;
+
+
 
   filteredOptionsPrefix: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
@@ -207,30 +210,30 @@ DoctorId:any=0;
 
   menuActions: Array<string> = [];
   centered = false;
-  disabled = false;
   unbounded = false;
 
   radius: number;
   color: string;
-
-  formBuilder: any;
   filteredDoctor: any;
   dialogRef: any;
   accountService: any;
   isLoading: string;
-  
+ 
+ 
   constructor(public _AdmissionService: AdmissionService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    
+    private router: Router,
+    private formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored) {
       this.getAdmittedPatientList();
   }
 
   ngOnInit(): void {
-    
+
+   
     if (this.data) {
 
       this.registerObj = this.data.registerObj;
@@ -238,6 +241,7 @@ DoctorId:any=0;
       // console.log(this.registerObj);
 
      }
+
     this.isAlive = true;
   
     this.personalFormGroup = this.createPesonalForm();
@@ -273,8 +277,6 @@ DoctorId:any=0;
     this.getMaritalStatusList();
     this.getReligionList();
     this.getDepartmentList();
-    this.getCompanyList();
-    this.getSubTPACompList();
     this.getRelationshipList();
     this.getcityList1();
     this.getDoctorList();
@@ -294,6 +296,7 @@ DoctorId:any=0;
       this.menuActions.push('Emergency');
     }
   }
+
 
   ngOnDestroys() {
     this.isAlive = false;
@@ -343,17 +346,11 @@ DoctorId:any=0;
 
   createHospitalForm() {
     return this.formBuilder.group({
-      HospitalID: '',
       HospitalId: '',
       PatientTypeID: '',
-      PatientTypeId: '',
       TariffId: '',
-      CompanyId: '',
-      SubCompanyId: '',
       DoctorId: '',
-      DepartmentId: '',
       Departmentid: '',
-      DoctorID: '',
       DoctorIdOne: '',
       DoctorIdTwo: '',
     });
@@ -384,6 +381,7 @@ DoctorId:any=0;
     });
   }
 
+ 
   getSearchList() {
     debugger
 
@@ -392,13 +390,13 @@ DoctorId:any=0;
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-      
+        // debugger;
 
         this.filteredOptions = resData;
-        console.log( resData);
-         if (this.filteredOptions.length == 0) {
-           this.noOptionFound = true;
-         } else {
+        console.log(resData);
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
           this.noOptionFound = false;
         }
 
@@ -460,9 +458,7 @@ DoctorId:any=0;
       this.isDoctorSelected = false;
       return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
-    // const filterValue = value.toLowerCase();
-    // this.isDoctorSelected = false;
-    // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+   
   }
 
 
@@ -517,7 +513,6 @@ DoctorId:any=0;
 
   }
 
-  
   private _filterReligion(value: any): string[] {
     if (value) {
       const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase();
@@ -534,27 +529,12 @@ DoctorId:any=0;
 
   }
 
-    
-  private _filterCompany(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
-       return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-  private _filterSubCompany(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
-      return this.optionsSubCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-    }
-
-  }
   
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
   }
+
   getSelectedObj(obj) {
     // console.log('obj==', obj);
     this.registerObj = new AdmissionPersonlModel({});
@@ -570,7 +550,6 @@ DoctorId:any=0;
     this.registerObj = obj;
     this.setDropdownObjs();
   }
-
 
   setDropdownObjs() {
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
@@ -594,7 +573,6 @@ DoctorId:any=0;
     this.personalFormGroup.updateValueAndValidity();
   }
 
-
   getOptionTextPrefix(option){
     
     return option && option.PrefixName ? option.PrefixName : '';
@@ -603,12 +581,6 @@ DoctorId:any=0;
   getOptionTextCity(option) {
     return option.CityName;
   }
-
-  getOptionTextCompany(option) {
-    
-    return option && option.CompanyName ? option.CompanyName : '';
-  }
-
 
   getOptionTextDep(option) {
     
@@ -670,7 +642,7 @@ DoctorId:any=0;
     var m_data = {
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || '%',
-      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+      "Reg_No":  this._AdmissionService.myFilterform.get("RegNo").value || 0,
       "From_Dt":'01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt":'01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
       "MobileNo": '%'
@@ -687,7 +659,7 @@ DoctorId:any=0;
       "MobileNo": '%'
     }
     data=m_data1;
-   
+
   }
   console.log(data);
   
@@ -754,14 +726,12 @@ DoctorId:any=0;
 
       this.getHospitalList();
       this.getPrefixList();
-      // this.getDepartmentList();
-      // this.getcityList1();
-      // this.getWardList();
+      this.getDepartmentList();
+      this.getcityList1();
+      this.getWardList();
       this.AreaList();
       this.getMaritalStatusList();
       this.ReligionList();
-      // this.getCompanyList();
-      // this.getSubTPACompList();
       this.getRegistrationList();
       this.getPatientTypeList();
       this.getTariffList();
@@ -783,30 +753,6 @@ DoctorId:any=0;
     });
   }
 
-
-  getCompanyList() {
-      this._AdmissionService.getCompanyCombo().subscribe(data => {
-      this.CompanyList = data;
-      this.optionsCompany = this.CompanyList.slice();
-      this.filteredOptionsCompany = this.hospitalFormGroup.get('CompanyId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
-      );
-     
-    });
-
-  }
-  getSubTPACompList() {
-       this._AdmissionService.getSubTPACompCombo().subscribe(data => {
-      this.SubTPACompList = data;
-      this.optionsSubCompany = this.SubTPACompList.slice();
-      this.filteredOptionsSubCompany= this.hospitalFormGroup.get('SubCompanyId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSubCompany(value) : this.SubTPACompList.slice()),
-              
-      );
-    });
-  }
   getRelationshipList() {
     this._AdmissionService.getRelationshipCombo().subscribe(data => {
     this.RelationshipList = data;
@@ -1076,7 +1022,6 @@ DoctorId:any=0;
         );
       })
   }
-
 
 
   OnChangeBedList(wardObj) {
@@ -1532,7 +1477,6 @@ this.getSelectedObj(row);
     });
   }
 
-
   onClear() {
     this._AdmissionService.myFilterform.reset(
       {
@@ -1542,7 +1486,6 @@ this.getSelectedObj(row);
     );
   }
 
-  
   // toggle sidebar
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -1788,7 +1731,7 @@ debugger
     });
     
   }
-
+  
   transform1(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
@@ -2244,9 +2187,6 @@ export class AdmissionPersonlModel {
          }
   }
 }
-
-
-
 
 export class Editdetail {
   Departmentid: Number;
