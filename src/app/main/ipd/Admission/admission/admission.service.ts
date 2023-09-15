@@ -234,9 +234,7 @@ public getRegistrationList(employee)
   public getWardNameCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_WardClassMasterForCombo", {})
   }
-
-
-  // Admission Form Combobox
+ 
 
   //Prefix Combobox List
   public getPrefixCombo() {

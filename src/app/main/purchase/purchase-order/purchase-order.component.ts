@@ -22,6 +22,7 @@ import { FormControl } from '@angular/forms';
   
 })
 export class PurchaseOrderComponent implements OnInit {
+  [x: string]: any;
 
   sIsLoading: string = '';
   isLoading = true;
@@ -129,6 +130,7 @@ export class PurchaseOrderComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
 
   }
+
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -264,7 +266,6 @@ calculatePersc(){
 
 }
 
-
   highlight(contact){
     this.selectedRowIndex = contact.ItemID;
   }
@@ -280,7 +281,6 @@ calculatePersc(){
       .filter(i => i !== elm)
       .map((i, idx) => (i.position = (idx + 1), i));
   }
-
 
   toggleDisable() {
     this.disableTextbox = !this.disableTextbox;
@@ -338,14 +338,15 @@ getSelectedObj(obj) {
   this.UOM = obj.UOM;
   this.Rate = obj.Rate;
   this.TotalAmount = obj.TotalAmount;
-  this.Dis = obj.Dis;
-  this.DiscAmount = obj.DiscAmount;
-  this.GST = obj.GST;
-  this.GSTAmount = obj.GSTAmount;
+  this.Dis = 0;
+  this.DiscAmount = 0;
+  this.GST = 0;
+  this.GSTAmount = 0;
   this.NetAmount = obj.NetAmount;
   this.MRP = obj.MRP;
   this.Specification = obj.Specification;
 }
+
 
 onAdd(){
   this.dsItemNameList.data = [];

@@ -1183,8 +1183,7 @@ export class AdmissionComponent implements OnInit {
 
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
-      // let Query="Update M_DischargeTypeMaster set IsDeleted=1 where DischargeTypeId="+DischargeTypeId;
-
+     
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
       console.log(submissionObj);
 

@@ -96,25 +96,26 @@
                             <div class="discharge">
                                 <div fxlayout="row" fxFlex="80%">
                                     <h3 style="font-weight: bolder; font-size: 18px; margin: 0 0 5px;">Discharge Details
-                                     
+
                                     </h3>
-                                                                          
+
                                     <div style="width:55%;margin-left: 50px;margin-bottom: 30px;font-weight: bolder;">
                                         <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="DischargeDate"
                                         placeholder="Select Discharge Date" name="datetimepicker" floatLabelType='Auto'
                                          [(ngModel)]="Today" >
                                          </ejs-datetimepicker> -->
 
-                                         <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today" formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time"  name="datetimepicker"  floatLabelType='Auto'
-                                          style="width:85%;height:60px;">
-                                        </ejs-datetimepicker> 
+                                        <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
+                                            formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time"
+                                            name="datetimepicker" floatLabelType='Auto' style="width:85%;height:60px;">
+                                        </ejs-datetimepicker>
                                     </div>
-                                  
+
                                     <div>
                                         <!-- // <app-common-date [screenFrom]="screenFromString"-->
-                                        
 
-                                        <mat-form-field appearance="outline" fxFlex style="margin-left:40px;">
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex style="margin-left:40px;">
                                             <mat-label> Doctor Name</mat-label>
                                             <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
                                                 <mat-option>
@@ -128,9 +129,31 @@
                                                     {{element.DoctorName}}
                                                 </mat-option>
                                             </mat-select>
+                                        </mat-form-field> -->
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor Name" matInput formControlName="DoctorID"
+                                                [matAutocomplete]="autoDoctor" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDoctor="matAutocomplete"
+                                                [displayWith]="getOptionTextDoctor">
+                                                <mat-option *ngFor="let option of filteredOptionsDoctor | async"
+                                                    [value]="option">
+                                                    {{option.DoctorName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex
                                             style="margin-left: 30px;width:45%;">
                                             <mat-label>DischargeType Name</mat-label>
                                             <mat-select formControlName="DischargeTypeId" placeholder="Bank"
@@ -146,7 +169,31 @@
                                                     {{element.DischargeTypeName}}
                                                 </mat-option>
                                             </mat-select>
+                                        </mat-form-field> -->
+
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>DischargeTypeName</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select DischargeTypeName" matInput
+                                                formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
+                                                required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDisctype="matAutocomplete"
+                                                [displayWith]="getOptionTextDisctype">
+                                                <mat-option *ngFor="let option of filteredOptionsDisctype | async"
+                                                    [value]="option">
+                                                    {{option.DischargeTypeName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
+
 
 
                                         <mat-form-field appearance="outline" style="margin-left: 30px;width: 30%;">

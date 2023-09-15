@@ -4,14 +4,14 @@ import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search
 import { MatPaginator } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IPSearchListService } from '../ip-search-list.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../../advance';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -42,8 +42,17 @@ export class DischargeComponent implements OnInit {
   DischargeId:any;
   Today: Date=new Date();
 
+  filteredOptionsDoctor: Observable<string[]>;
+  filteredOptionsDisctype: Observable<string[]>;
+
+  optionsDoctor: any[] = [];
+  optionsDisctype: any[] = [];
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  isDoctorSelected:boolean = false;
+  isDistypeSelected:boolean = false;
   
   public dischargetypeFilterCtrl: FormControl = new FormControl();
   public filteredDischargetype: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -142,6 +151,34 @@ export class DischargeComponent implements OnInit {
     );
   }
 
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+       return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  private _filterDisctype(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DischargeTypeName ? value.DischargeTypeName.toLowerCase() : value.toLowerCase();
+       return this.optionsDisctype.filter(option => option.DischargeTypeName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextDoctor(option){
+    
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+  getOptionTextDisctype(option) {
+    
+    return option && option.DischargeTypeName ? option.DischargeTypeName : '';
+  }
+
 
   getDoctorList() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => { this.DoctorList = data; })
@@ -151,23 +188,49 @@ export class DischargeComponent implements OnInit {
     this._IpSearchListService.getDischargedoctorNameCombo().subscribe(data => { this.DischargeDoctorList = data; })
   }
 
+  // getDischargetypeCombo() {
+  //   //  this._IpSearchListService.getDischargetypeCombo().subscribe(data => { this.DischargeTypeList = data; })
+  //   this._IpSearchListService.getDischargetypeCombo().subscribe(data => {
+  //     this.DischargeTypeList = data;
+  //     this.filteredDischargetype.next(this.DischargeTypeList.slice());
+  //     this._IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(this.DischargeTypeList[0]);
+  //   });
+  // }
+
   getDischargetypeCombo() {
-    //  this._IpSearchListService.getDischargetypeCombo().subscribe(data => { this.DischargeTypeList = data; })
     this._IpSearchListService.getDischargetypeCombo().subscribe(data => {
-      this.DischargeTypeList = data;
-      this.filteredDischargetype.next(this.DischargeTypeList.slice());
-      this._IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(this.DischargeTypeList[0]);
-    });
-  }
+    this.DischargeTypeList = data;
+    this.optionsDisctype = this.DischargeTypeList.slice();
+    this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDisctype(value) : this.DischargeTypeList.slice()),
+    );
+   
+  });
+
+}
+
+  // getDoctor1List() {
+  //   this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //     this.filteredDoctorone.next(this.Doctor1List.slice());
+  //     this._IpSearchListService.mySaveForm.get('DoctorID').setValue(this.Doctor1List[0]);
+  //   });
+
+  // }
 
   getDoctor1List() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
-      this.Doctor1List = data;
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      this._IpSearchListService.mySaveForm.get('DoctorID').setValue(this.Doctor1List[0]);
-    });
+    this.Doctor1List = data;
+    this.optionsDoctor = this.Doctor1List.slice();
+    this.filteredOptionsDoctor = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDoctor(value) : this.Doctor1List.slice()),
+    );
+   
+  });
 
-  }
+}
   onClose() {
     this._IpSearchListService.mySaveForm.reset();
     this.dialogRef.close();
