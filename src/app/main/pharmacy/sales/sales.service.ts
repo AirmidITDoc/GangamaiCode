@@ -23,6 +23,7 @@ export class SalesService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
+      ItemId:'',
       ItemName:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
