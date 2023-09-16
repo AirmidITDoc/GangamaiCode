@@ -90,8 +90,7 @@ export class IPAdvanceComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.data.vPatientHeaderObj;
-      this.PatientHeaderObj = this.advanceDataStored.storage;
+       this.PatientHeaderObj = this.advanceDataStored.storage;
       // console.log(this.selectedAdvanceObj);
     }
 
@@ -103,7 +102,7 @@ export class IPAdvanceComponent implements OnInit {
   getAdvanceList() {
     this.isLoadingStr = 'loading';
     var m_data = {
-      "AdmissionID": this.selectedAdvanceObj.AdmissionID// this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || 0,
+      "AdmissionID": this.selectedAdvanceObj.AdmissionID
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
@@ -138,7 +137,6 @@ export class IPAdvanceComponent implements OnInit {
 
     let netAmt;
     netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-    // this.totalAmtOfNetAmt = netAmt;
     this.TotalAdvamt = netAmt;
     return netAmt;
   }
@@ -146,7 +144,6 @@ export class IPAdvanceComponent implements OnInit {
   getAdvavilable(element) {
     let netAmt;
     netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    // this.totalAmtOfNetAmt = netAmt;
     this.Advavilableamt = netAmt;
     return netAmt;
   }
@@ -163,7 +160,7 @@ export class IPAdvanceComponent implements OnInit {
       let advanceHeaderObj = {};
       advanceHeaderObj['AdvanceID'] = '0';
       advanceHeaderObj['Date'] = this.dateTimeObj.date;
-      advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegId,//this._IpSearchListService.myShowAdvanceForm.get("RegId").value || 0,
+      advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegId,
       advanceHeaderObj['OPD_IPD_Type'] = 1;
       advanceHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       advanceHeaderObj['AdvanceAmount'] = this.advanceAmount;
@@ -179,7 +176,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['Date'] = this.dateTimeObj.date;
       AdvanceDetObj['Time'] = this.dateTimeObj.time;
       AdvanceDetObj['AdvanceId'] = 0;
-      AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId,//this._IpSearchListService.myShowAdvanceForm.get("RegId").value || 0,
+      AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId,
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;
@@ -241,9 +238,7 @@ export class IPAdvanceComponent implements OnInit {
     }
     else {
       this.isLoading = 'submit';
-    //  console.log( this.dataSource.data[0]['AdvanceId']);
-      // let vAdvanceId = this.dataSource.data[0]['AdvanceId'];
-      console.log(this.vAdvanceId);
+   
       let AdvanceDetObj = {};
       AdvanceDetObj['AdvanceDetailID'] = '0';
       AdvanceDetObj['Date'] = this.dateTimeObj.date;
@@ -340,12 +335,7 @@ getTemplate() {
       let re = new RegExp(reString, "g");
       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
     }
-    // this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-    // this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
-    // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform(this.reportPrintObj.AdmissionDate));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-
+   
     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
     // this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
@@ -361,12 +351,6 @@ getTemplate() {
   });
 }
 
-
-transform(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform(value, 'dd/MM/yyyy ');
-  return value;
-}
 
 transform1(value: string) {
   var datePipe = new DatePipe("en-US");
@@ -398,12 +382,10 @@ getPrint(el) {
 }
 
 print() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
   let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
 
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  // popupWin.document.open();
+  
   popupWin.document.write(` <html>
     <head><style type="text/css">`);
   popupWin.document.write(`

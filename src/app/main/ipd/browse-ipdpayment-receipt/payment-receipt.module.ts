@@ -25,20 +25,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ViewBrowseIPDPaymentComponent } from './view-browse-ipdpayment/view-browse-ipdpayment.component';
-import { BrowseIPDPaymentReceiptComponent } from './browse-ipdpayment-receipt.component';
 import { PaymentReceiptService } from './payment-receipt.service';
+import { IpdPaymentreceiptComponent } from './ipd-paymentreceipt/ipd-paymentreceipt.component';
 
 
 
 const routes: Routes = [
-  { path: '**', component: BrowseIPDPaymentReceiptComponent },
+  { path: '**', component: IpdPaymentreceiptComponent },
 ];
 
 
 @NgModule({
   declarations: [
-    BrowseIPDPaymentReceiptComponent,
-    ViewBrowseIPDPaymentComponent
+        ViewBrowseIPDPaymentComponent,
+    IpdPaymentreceiptComponent
   ],
  
   imports: [
@@ -75,7 +75,7 @@ const routes: Routes = [
       
   ],
   entryComponents: [
-    BrowseIPDPaymentReceiptComponent,
+    IpdPaymentreceiptComponent,
   
   ]
 })

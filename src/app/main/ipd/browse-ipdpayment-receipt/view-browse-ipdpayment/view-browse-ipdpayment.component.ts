@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt.component';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDataStored } from '../../advance';
@@ -8,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PaymentReceiptService } from '../payment-receipt.service';
 import { fuseAnimations } from '@fuse/animations';
+import { BrowseIpdPaymentReceipt } from '../ipd-paymentreceipt/ipd-paymentreceipt.component';
 
 @Component({
   selector: 'app-view-browse-ipdpayment',

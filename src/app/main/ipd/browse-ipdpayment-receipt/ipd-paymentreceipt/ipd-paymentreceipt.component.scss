@@ -2,7 +2,7 @@
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
 }
-app-browse-ipdpayment-receipt {
+app-ipd-paymentreceipt {
     display: flex;
     flex: 1 1 auto;
     width: 100%;
@@ -53,69 +53,55 @@ app-browse-ipdpayment-receipt {
     border-radius: 50%;
 }
 
-app-browse-ipdpayment-receipt {
+app-ipd-paymentreceipt {
 .active-icon {
     border-radius: 50%;
 }
 .mat-header-row {
     width: 100%;
-    max-width: 1800px;
-    min-width: 1800px;  
+    max-width: 1700px;
+    min-width: 1700px;  
      min-height: 30px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width: 1800px;
-    min-width: 1800px;  
+    max-width: 1700px;
+    min-width: 1700px;  
     min-height: 30px;     
 }           
 
 
-.mat-column-RegId {
-    width:100px;
-    max-width: 100px;
-    min-width: 100px;
+.mat-column-RegNo {
+    width:70px;
+    max-width: 70px;
+    min-width: 70px;
 }
 
 .mat-column-PatientName {
-    width:350px;
-    max-width: 350px;
-    min-width: 350px;
-    text-align: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    // display: inline-block;
-    // margin-right: 7px;   
-    justify-content:left; 
+    width:250px;
+    max-width: 250px;
+    min-width: 250px;
+    justify-content:center;
 }
 .mat-column-TotalAmt {
     width: 110px;
     max-width: 110px;
     min-width: 110px;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-BalanceAmt {
     width: 90px;
     max-width: 90px;
     min-width: 90px;
-     justify-content:left;
+     justify-content:center;
 }
 
 .mat-column-Remark {
     width:100px;
     max-width: 100px;
     min-width: 100px;
-    text-align: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    display: inline-block;
-    // margin-right: 7px;   
-    justify-content:left; 
+    justify-content:center;
 }
 
 .mat-column-PaymentDate{
@@ -128,26 +114,26 @@ app-browse-ipdpayment-receipt {
     max-width:90px;
     min-width:90px;
     // text-align: center;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-ChequePayAmount{
     width: 90px;
     max-width:90px;
     min-width:90px;
     // text-align: center;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-CardPayAmount{
     width: 90px;
     max-width:90px;
     min-width:90px;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-AdvanceUsedAmount{
     width: 110px;
     max-width:110px;
     min-width:110px;
-    justify-content:left;
+    justify-content:center;
 }
 
 
@@ -172,21 +158,21 @@ app-browse-ipdpayment-receipt {
     max-width:90px;
     min-width:90px;
     // text-align: center;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-NEFTPayAmount{
     width: 100px;
     max-width:100px;
     min-width:100px;
     // text-align: center;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-PayTMAmount{
     width: 110px;
     max-width:110px;
     min-width:110px;
     // text-align: center;
-    justify-content:left;
+    justify-content:center;
 }
 .mat-column-UserName {
     width:110px;
@@ -198,8 +184,8 @@ app-browse-ipdpayment-receipt {
     width:170px;
     max-width: 170px;
     min-width: 170px;
-    text-align: left;
-    justify-content:left;
+    text-align: center;
+    justify-content:center;
 }
 
 .mat-icon-button {
@@ -216,11 +202,7 @@ app-browse-ipdpayment-receipt {
     height: 25px;
     padding: 0px 5px;
     text-align: left;
-    justify-content:left;
+    justify-content:center;
 }
 
-}
-body.theme-default .accent{
-    background-color: #0479b4 !important;
-    // color: black !important;
 }
