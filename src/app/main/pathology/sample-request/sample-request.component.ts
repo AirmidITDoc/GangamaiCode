@@ -56,10 +56,7 @@ export class SampleRequestComponent implements OnInit {
     'BedName',
     'IsTestCompted',
     'IsOnFileTest',
-
-
-    // 'action'
-
+  // 'action'
 
   ];
 

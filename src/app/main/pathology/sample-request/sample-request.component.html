@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;">
 
     <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll right-sidebar" style="height: 100%;"></div> -->
 
@@ -13,7 +13,7 @@
             </button>
 
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Sample Result List
+                Sample Request List
             </span>
         </div>
 
@@ -56,7 +56,7 @@
                         <!-- / SIDEBAR HEADER -->
 
                         <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                        <div class="content py-16 pl-10 p-12">
                             <div class="nav material2">
                                 <form [formGroup]="_PathologyService.myformSearch">
                                     <div fxLayout="column" fxLayoutAlign="start none">
@@ -133,7 +133,7 @@
                                     </div>
                                 </form>
 
-                                <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 200px;margin-left: 100px; padding-bottom: 10px;">
+                                <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 180px;margin-left: 100px; padding-bottom: 10px;">
           
                                     <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
                                   
@@ -355,8 +355,8 @@
                                                ReqDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.ReqDate | date:'short'}}
-                                                {{contact.ReqDate }}
+                                                {{contact.ReqDate}}
+                                                <!-- {{contact.ReqDate }} -->
                                             </mat-cell>
                                         </ng-container>
 
@@ -368,6 +368,7 @@
                                                 {{contact.ReqTime}}
                                             </mat-cell>
                                         </ng-container>
+
                                         <ng-container matColumnDef="ServiceName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ServiceName
                                             </mat-header-cell>

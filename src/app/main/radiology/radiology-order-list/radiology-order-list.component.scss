@@ -108,6 +108,10 @@
 
 app-radiology-order-list{
 
+    table1{
+        height: 250px !important;
+   
+
 button:disabled {
     color: #FFFFFF !important;
     background-color: #CCCCCC !important;
@@ -125,24 +129,22 @@ button:disabled {
     height: 280px !important;
      width: 100%;
 }
-#table2{
-    height: 180px !important;
-    width: 100%;
-}
+
 .mat-header-row {
     width: 100%;
-    max-width:1390px;
-    min-width:1390px; 
+    max-width:1690px;
+    min-width:1690px; 
     min-height: 20px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width:1390px;
-    min-width:1390px;   
+    max-width:1690px;
+    min-width:1690px;   
     min-height: 20px;  
     text-align: center;  
         
+}
 }
 // PatientData
 .mat-column-RadDate {
@@ -160,9 +162,9 @@ button:disabled {
 }
 
 .mat-column-RegNo {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
+    width:90px;
+    max-width:90px;
+    min-width:90px;
     justify-content:left;
 }
 .mat-column-PatientName {
@@ -187,7 +189,10 @@ button:disabled {
     min-width:100px;
     justify-content:center;
 }
-
+table2{
+    height: 180px !important;
+    width: 100%;
+}
 .mat-column-TestName {
     width:250px;
     max-width:250px;
