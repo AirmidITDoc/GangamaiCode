@@ -222,23 +222,23 @@ app-sample-collection {
 
         // PatientData
         .mat-column-DOA {
-            width: 120px;
-            max-width: 120px;
-            min-width: 120px;
+            width: 130px;
+            max-width: 130px;
+            min-width: 130px;
             justify-content: left;
         }
 
         .mat-column-DOT {
-            width: 120px;
-            max-width: 120px;
-            min-width: 120px;
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
             justify-content: left;
         }
 
         .mat-column-RegNo {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
+            width: 75px;
+            max-width: 75px;
+            min-width: 75px;
             justify-content: left;
         }
 
@@ -275,7 +275,7 @@ app-sample-collection {
             width: 100px;
             max-width: 100px;
             min-width: 100px;
-            justify-content: center;
+            justify-content: left;
         }
 
         .mat-column-DoctorName {
@@ -301,9 +301,9 @@ app-sample-collection {
         }
 
         .mat-column-WardName {
-            width: 250px;
-            max-width: 250px;
-            min-width: 250px;
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
             text-align: left;
             justify-content: left;
             white-space: nowrap;
