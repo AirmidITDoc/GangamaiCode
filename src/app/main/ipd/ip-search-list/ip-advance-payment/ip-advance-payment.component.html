@@ -26,31 +26,7 @@
 
     </div>
 
-    <!-- <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <div fxLayout="row" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"  fxLayoutAlign="space-between " style="height: 60px;">
-
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px; font-weight: 400;margin-top: 20px;">
-                Payment Transaction
-            </span>
-            <div fxLayout="column" fxLayout.gt-xs="row">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                style="border-color: red;"></app-common-date>
-            <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose()">
-                close
-            </span>
-           </div>
-          
-        </div>
-
-     
-
-    </div> -->
-
-    <!-- </div> -->
-    <!-- </div> -->
+  
     <div class="header-container" style="display: flex; padding: 5px;">
         <div fxFlex.gt-sm="100%" fxFlex>
             <div fxlayout="row" style="background-color: white; ">
@@ -189,6 +165,25 @@
                                 *ngIf="paymentForm.get('cardbankFilterCtrl').invalid && paymentForm.get('cardbankFilterCtrl').touched">
                                 Bank Name is required</mat-error> -->
                             </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Select Bank Name</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
+                                  formControlName="cardbankFilterCtrl" [matAutocomplete]="autoPrefix" required>
+                                <span matSuffix style="display: flex;">
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="personalFormGroup.get('cardbankFilterCtrl').setValue(''); isBankSelected = false;">close</mat-icon>
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="personalFormGroup.get('cardbankFilterCtrl').setValue(''); isBankSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoPrefix="matAutocomplete" [displayWith]="getOptionTextBank">
+                                  <mat-option *ngFor="let option of filteredOptionsBank | async" [value]="option"
+                                    (onSelectionChange)="onChangeGenderList(option)">
+                                    {{option.BankName}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
 
                         </div>
                         <div style="margin-right: 10px;">

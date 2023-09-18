@@ -23,6 +23,8 @@ export class SalesService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
+      ItemId:'',
+      ItemName:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -58,4 +60,7 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
   }
   
+  public getItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
+  }
 }

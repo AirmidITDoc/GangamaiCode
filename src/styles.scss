@@ -437,9 +437,105 @@ background: rgba(240, 239, 239, 0.15);
     background: rgb(142, 142, 143);
     // color:black;
   }
+// Body Them Color
+  body.theme-default .accent{
+    background-color: #0479b4 !important;
+    // color: black !important;
+}
 
-// end spinner
+// Button
 
+.footer-btn {
+    width: 80px;
+    font-size: 16px;
+    font-weight: 700px;
+    padding: 10px;
+    color:  rgb(247, 97, 97);
+    border-radius: 16px;
+    background-color:white;
+    border-color: rgb(247, 97, 97);
+    cursor: pointer;
+}
+.footer-btn:hover{
+    background-color: rgb(247, 97, 97);
+    color: white;
+   
+}
 
-// html, body { height: 80%;}
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Patient Details
+
+.patient-details mat-error {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
+}
+.labels-h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.labels-h6 {
+    font-size: 18px;
+}
+.form-field-labels {
+    font-size: 16px;
+}
+
+fieldset {
+    border-color: #039be5;// #fff9f9;
+}
+.fieldset-div {
+    background-color: #191a1c21;
+}
+legend {
+    padding: 10px;
+    font-size: 20px;
+}
+
+// .payment-container {
+//     width: 50% !important;
+//     min-width: 50% !important;
+//     max-width: 50% !important;
+// }
+
+.flex-item, .patient-sub {
+    flex-basis: 100%;
+}
+.flex-item-middle{
+    width: 5px;
+    margin-right: 8px;
+}
+.item-header {
+    width: 200px;
+}
+.field-row {
+    align-items: center;
+}
+.add-icon {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #3f94a6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+}
+.enable-1-add {
+    cursor: pointer;
+    pointer-events: visible;
+}
+.disable-1-add {
+    pointer-events: none;
+    // cursor: ar;
+}
+.remove-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 40px;
+    border: 4px solid #a64f3f;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}

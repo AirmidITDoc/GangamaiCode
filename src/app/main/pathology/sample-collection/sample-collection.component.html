@@ -5,7 +5,7 @@
     <!-- HEADER -->
 
     <!-- Start Sider  -->
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -40,7 +40,7 @@
 
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top:7px; background-color: white;height:95%;">
+        margin-left: 12px; margin-top:7px; background-color: white;height:95% !important;">
             <div class="content">
                 <div class="sidebar-content">
 
@@ -153,12 +153,12 @@
 
 
                 <div fxlayout="row">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                         <div fxFlex.gt-sm="100%" fxFlex>
 
                             <div fxlayout="row">
                                 <div style="width: 100%;background-color: white;">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                    <div  fxLayout="column" fxLayout.gt-xs="row"
                                         style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
                                         sticky>
                                         <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Lab Or Rad
@@ -184,7 +184,7 @@
 
 
                                     <mat-table #table matSort class="table1" [dataSource]="dataSource"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                         <ng-container matColumnDef="DOA">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
@@ -463,7 +463,7 @@
 
 
     <div fxLayout="row"
-        style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1500px; padding-bottom: 10px;">
+        style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1300px; padding-bottom: 10px;">
 
         <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()"
             style="border-radius: 16px;width: fit-content;">Send Data To LAB</button>

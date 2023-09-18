@@ -1,13 +1,13 @@
 app-sales {
     .table1 {
       height: 600px !important;
-      width: 1700px;
+      width: 100%;
     }
 
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-    }
+    // .table2 {
+    //   height: 600px !important;
+    //   width: 200px;
+    // }
   
     .mat-header-row {
       width:200;
@@ -20,89 +20,89 @@ app-sales {
     .mat-row {
       width: 100%;
       //max-width: 1600px;
-      min-width: 1400px;
+      min-width: 1000px;
       min-height: 30px;
      
     }
   
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
+    // .mat-column-FromStoreId {
+    //   width: 110px;
+    //   max-width: 110px;
+    //   min-width: 110px;
+    //   text-align: left;
   
-    }
+    // }
 
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
+    // .mat-column-IndentNo {
+    //   width: 110px;
+    //   max-width: 110px;
+    //   min-width: 110px;
+    //   text-align: left;
   
-    }
+    // }
   
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
+    // .mat-column-IndentDate {
+    //   width: 220px;
+    //   max-width: 220px;
+    //   min-width: 220px;
+    //   text-align: left;
+    // }
   
-    .mat-column-FromStoreName {
+    // .mat-column-FromStoreName {
+    //   width: 200px;
+    //   max-width: 200px;
+    //   min-width: 200px;
+    //   text-align: left;
+    // }
+
+    // .mat-column-ToStoreName {
+    //   width: 200px;
+    //   max-width: 200px;
+    //   min-width: 200px;
+    //   text-align: left;
+    // }
+
+
+    // .mat-column-Addedby {
+    //   width: 110px;
+    //   max-width: 110px;
+    //   min-width: 110px;
+    //   text-align: left;
+    // }
+
+    .mat-column-ItemId {
       width: 200px;
       max-width: 200px;
       min-width: 200px;
-      text-align: left;
-    }
-
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
       text-align: left;
     }
 
     .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
+      width: 790px;
+      max-width: 790px;
+      min-width: 790px;
       text-align: left;
     }
     
-    .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
+    .mat-column-BalanceQty {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
       text-align: left;
     }
   
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
+    // .mat-column-IssQty {
+    //   width: 150px;
+    //   max-width: 150px;
+    //   min-width: 150px;
+    //   text-align: left;
+    // }
+    // .mat-column-Bal {
+    //   width: 150px;
+    //   max-width: 150px;
+    //   min-width: 150px;
+    //   text-align: left;
+    // }
     .mat-column-action {
       width: 100px;
       max-width: 100px;

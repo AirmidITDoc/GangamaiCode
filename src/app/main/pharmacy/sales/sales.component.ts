@@ -25,12 +25,18 @@ export class SalesComponent implements OnInit {
   isLoading = true;
   Store1List:any=[];
   screenFromString = 'admission-form';
-
+  filteredOptions: any;
+  noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
-  
+  isItemIdSelected: boolean = false;
   dsIndentID = new MatTableDataSource<IndentID>();
 
+  ItemName:any;
+  ItemId:any;
+  BalanceQty:any;
+
   dsIndentList = new MatTableDataSource<IndentList>();
+  datasource= new MatTableDataSource<IndentList>();
 
   displayedColumns = [
     'FromStoreId',
@@ -64,7 +70,8 @@ export class SalesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIndentStoreList();
-    this.getIndentID() 
+    this.getIndentID();
+    
   }
   
   toggleSidebar(name): void {
@@ -78,18 +85,7 @@ export class SalesComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
+  
 
   getIndentID() {
     // this.sIsLoading = 'loading-data';
@@ -128,6 +124,40 @@ export class SalesComponent implements OnInit {
       });
   }
 
+  getSearchList(){
+    debugger
+
+    var m_data = {
+      "ItemName": `${this._IndentID.IndentSearchGroup.get('ItemId').value}%`,
+      "StoreId":12
+    }
+ 
+      this._IndentID.getItemList(m_data).subscribe(data => {
+      
+          this.filteredOptions = data;
+          console.log(data);
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+  
+        });
+  }
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+  }
+
+  getSelectedObj(obj) {
+    debugger
+    // this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId = obj.ItemId;
+    this.BalanceQty = obj.BalanceQty;
+    Swal.fire("Selected", this.ItemId + '/' + this.ItemName + '/' + this.BalanceQty);
+  }
 
   
 onclickrow(contact){
@@ -149,7 +179,9 @@ Swal.fire("Row selected :" + contact)
 }
 
 export class IndentList {
+  ItemId:any;
   ItemName: string;
+  BalanceQty:any
   Qty: number;
   IssQty:number;
   Bal:number;
@@ -162,7 +194,9 @@ export class IndentList {
    */
   constructor(IndentList) {
     {
+      this.ItemId = IndentList.ItemId || 0;
       this.ItemName = IndentList.ItemName || "";
+      this.BalanceQty = IndentList.BalanceQty || "";
       this.Qty = IndentList.Qty || 0;
       this.IssQty = IndentList.IssQty || 0;
       this.Bal = IndentList.Bal|| 0;

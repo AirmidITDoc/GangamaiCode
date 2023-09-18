@@ -333,7 +333,7 @@
                                                     Please enter valid Amount</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" flex>
+                                            <mat-form-field appearance="outline"  style="width: 400px;">
                                                 <mat-label>Reason Of Advacne</mat-label>
                                                 <input matInput formControlName="comment" name="comment">
                                                 <mat-error class="error"
@@ -341,7 +341,7 @@
                                                     Advance Amount is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" flex>
+                                            <mat-form-field appearance="outline" style="width: 400px;">
                                                 <mat-label>Cash Counter</mat-label>
                                                 <mat-select formControlName="CashCounterId" required>
                                                     <mat-option *ngFor="let m of CashCounterList" [value]="m">

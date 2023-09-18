@@ -94,8 +94,7 @@ export class IPAdvancePaymentComponent implements OnInit {
     private authServie: AuthenticationService,
 
   ) {
-    // dialogRef.disableClose = true;
-    // debugger;
+   
     this.advanceData = data;
     console.log(this.advanceData.advanceObj);
 
@@ -206,70 +205,6 @@ export class IPAdvancePaymentComponent implements OnInit {
         Validators.pattern("^[0-9]*$")
 
       ]],
-
-      // cardAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // cardNumberController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(16),
-      //   Validators.maxLength(16),
-      // ]],
-
-      // cardBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      //  cardDateController: [(new Date()).toISOString()],
-
-      // chequeAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-
-      // ]],
-      // chequeNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // chequeBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // chequeDateController: [(new Date()).toISOString()],
-      // neftAmountController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // neftDateController: [(new Date()).toISOString()],
-      // paytmAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")]],
-      // paytmMobileNoController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(10),
-      //   Validators.maxLength(10),
-      // ]],
-
-      // paytmDateController: [(new Date()).toISOString()],
-      // wrfAmountController: ['', [Validators.pattern('^[0-9]{2,8}$')]],
 
       paidAmountController: ['', [
         Validators.required,
