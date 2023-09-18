@@ -474,7 +474,7 @@ export class OPBillingComponent implements OnInit {
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "85vw",
-          height: '540px',
+          height: '640px',
           width: '100%',
           data: {
             advanceObj: PatientHeaderObj,

@@ -69,6 +69,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.paymentRowObj["cash"] = true;
     this.onPaymentChange(1, 'cash');
     this.paidAmt = this.netPayAmt;
+    this.onAddClick('cash');
   }
 
   getDateTime(dateTimeObj) {
@@ -143,18 +144,26 @@ export class OpPaymentNewComponent implements OnInit {
         break;
 
       case 'upi':
+        this.amount2 = this.netPayAmt - this.amount1;
+        this.getBalanceAmt();
         this.setThirdRowValidators(paymentOption);
         break;
 
       case 'neft':
+        this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
+        this.getBalanceAmt();
         this.setThirdRowValidators(paymentOption);
         break;
 
       case 'cheque':
+        this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
+        this.getBalanceAmt();
         this.setFourthRowValidators(paymentOption);
         break;
 
       case 'card':
+        this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
+        this.getBalanceAmt();
         this.setFifthRowValidators(paymentOption);
         break;
 
@@ -385,7 +394,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
     this.patientDetailsFormGrp.updateValueAndValidity();
   }
-
+  /**
   amountChange1(controlName) {
     let value = this.patientDetailsFormGrp.get(controlName).value;
     if (value && value > 0) {
@@ -416,7 +425,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
   amountChange5(controlName) {
     this.getBalanceAmt();
-  }
+  } */
   Paymentobj = {};
   onSubmit() {
     console.log(this.patientDetailsFormGrp);
@@ -699,6 +708,21 @@ export class OpPaymentNewComponent implements OnInit {
     return;
   }
 
+  secondAddEnable() {
+    return parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) < this.netPayAmt ? true : false;
+  }
+
+  thirdAddEnable() {
+    return parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) + parseInt(this.amount3.toString()) < this.netPayAmt ? true : false;
+  }
+
+  fourthAddEnable() {
+    if((parseInt(this.amount1.toString()) + parseInt(this.amount2.toString()) + parseInt(this.amount3.toString()) + parseInt(this.amount4.toString())) < this.netPayAmt) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   getBalanceAmt() {
     this.balanceAmt =
       this.netPayAmt - ((this.amount1 ? parseInt(this.amount1) : 0)
