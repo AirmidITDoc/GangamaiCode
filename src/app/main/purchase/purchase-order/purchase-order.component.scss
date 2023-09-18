@@ -1,17 +1,17 @@
 app-purchase-order {
     .table1 {
       height: 440px !important;
-      width: 1700px;
+      width: 100%;
     }
 
     .table2 {
       height: 440px !important;
-      width: 2000px;
+      width:100%;
     }
 
     .table3 {
       height: 350px !important;
-      width: 2000px;
+      width: 100%;
     }
 
     .highlightTableColor{
@@ -90,7 +90,6 @@ app-purchase-order {
       text-align: left;
     }
 
-
     .mat-column-SupplierName {
       width: 300px;
       max-width: 300px;
@@ -113,10 +112,17 @@ app-purchase-order {
     }
 
     .mat-column-ItemName {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
+      width: 260px;
+      max-width: 260px;
+      min-width: 260px;
       text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 7px;
+      justify-content:left; 
     }
     
     .mat-column-Qty {

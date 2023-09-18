@@ -93,7 +93,6 @@ export class RegAdmissionComponent implements OnInit {
   selectedGenderID: any;
   capturedImage: any;
   isLinear = true;
-  
   personalFormGroup: FormGroup;
   hospitalFormGroup: FormGroup;
   wardFormGroup: FormGroup;
@@ -526,13 +525,11 @@ DoctorId:any=0;
 
 
   getOptionTextPrefix(option){
-    
-    return option && option.PrefixName ? option.PrefixName : '';
+    return option.PrefixName;
   }
 
   getOptionTextCity(option) {
-    
-    return option && option.CityName ? option.CityName : '';
+    return option.CityName;
   }
 
   getOptionTextCompany(option) {

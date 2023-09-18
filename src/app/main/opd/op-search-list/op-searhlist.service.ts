@@ -472,8 +472,7 @@ public prescriptionDetails(visistId) {
       {value: 'cash', viewValue: 'Cash'},
       {value: 'cheque', viewValue: 'Cheque'},
       {value: 'upi', viewValue: 'UPI'},
-      {value: 'neft', viewValue: 'NEFT'},
-      {value: 'card', viewValue: 'Card'},
+      {value: 'net banking', viewValue: 'Net Banking'},
     ];
   }
 }

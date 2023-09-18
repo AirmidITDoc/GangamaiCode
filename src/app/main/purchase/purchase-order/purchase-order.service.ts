@@ -17,7 +17,7 @@ export class PurchaseOrderService {
   ) { 
     this.userFormGroup = this.getPurchaseOrderForm();
     this.PurchaseSearchGroup= this.PurchaseSearchFrom();
-    this.PurchaseSearchGroup= this.PurchaseSearchFrom();
+   
   }
 
   PurchaseSearchFrom() {

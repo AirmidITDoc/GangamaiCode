@@ -39,7 +39,7 @@
                 <div class="content">
                     <!-- SIDEBAR -->
                     <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:99%;">
+                      margin-left:12px; background-color: white;height:99%;">
                         <div>
                             <!-- SIDEBAR HEADER -->
                             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
@@ -260,61 +260,67 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="action" stickyEnd>
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                    style="color: white;">Action
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let row">
-                                                    <button mat-icon-button matTooltip="how_to_reg"
-                                                        (click)="getRecord(row,m)">
-                                                        <mat-icon>how_to_reg</mat-icon>
-                                                    </button>
-                                                    <button mat-icon-button matTooltip="print"
-                                                        (click)="getPrint(row,m)">
-                                                        <mat-icon>print</mat-icon>
-                                                    </button>
-                                                </mat-cell>
-                                            </ng-container>
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container> 
-                        
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
-                                                        [diameter]='30'>
-                                                    </mat-spinner>
-                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
-                                            
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                [ngClass]="contact.PatientType == 'Self' ? 'self-row' : ''"
-                                                [@animate]="{value:'*',params:{y:'100%'}}">
-                                            </mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                                        </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                                [pageSize]="16" showFirstLastButtons>
-                                            </mat-paginator>
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">Action
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let row">
+                                                        <button mat-icon-button matTooltip="how_to_reg"
+                                                            (click)="getRecord(row,m)">
+                                                            <mat-icon>how_to_reg</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="print"
+                                                            (click)="getPrint(row,m)">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container> 
+                            
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                            [diameter]='30'>
+                                                        </mat-spinner>
+                                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
+                                                
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="displayedColumns; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                    [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}">
+                                                </mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                            </mat-table>
+                                            <div style="margin-right: 20%;">
+                                                <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                                    showFirstLastButtons>
+                                                </mat-paginator>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div>
+                    </div> -->
                     <!-- CENTER -->
                 </div>
                 <!-- / USER -->
                 <!-- / CENTER -->
                 <!-- / CONTENT-->
             </div>
+            </div>
+            </div>
+            
         </mat-tab>
+
         <mat-tab>
             <ng-template mat-tab-label style="color: black; font-size: 17px bold; height: 100px; ">
                 Document Upload
@@ -524,4 +530,3 @@
     </mat-tab-group>
 </div>
 
-//
