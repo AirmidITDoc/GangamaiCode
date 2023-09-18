@@ -347,7 +347,6 @@ getSelectedObj(obj) {
   this.Specification = obj.Specification;
 }
 
-
 onAdd(){
   this.dsItemNameList.data = [];
   // this.chargeslist=this.chargeslist;
@@ -391,7 +390,7 @@ export class ItemNameList {
     NetAmount:number;
     MRP:number;
     Specification:string;
-  position: number;
+    position: number;
   /**
    * Constructor
    *

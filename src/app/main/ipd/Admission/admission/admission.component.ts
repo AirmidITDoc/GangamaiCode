@@ -141,8 +141,6 @@ export class AdmissionComponent implements OnInit {
   bedObj = new Bed({});
   selectedPrefixId: any;
 
-
-
   filteredOptionsPrefix: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsCity: Observable<string[]>;
@@ -190,8 +188,6 @@ export class AdmissionComponent implements OnInit {
     'ClassName',
     'CompanyName',
     'RelativeName',
-    // 'RelativePhoneNo',
-    // 'HospitalName',
     'IsMLC',
     'buttons'
   ];
@@ -217,9 +213,7 @@ export class AdmissionComponent implements OnInit {
   color: string;
   filteredDoctor: any;
   dialogRef: any;
-  
   isLoading: string;
- 
  
   constructor(public _AdmissionService: AdmissionService,
     public _matDialog: MatDialog,
@@ -443,8 +437,6 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-
- 
   private _filterCity(value: any): string[] {
     if (value) {
       const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
@@ -452,6 +444,7 @@ export class AdmissionComponent implements OnInit {
     }
 
   }
+
   private _filterDoc(value: any): string[] {
     if (value) {
       const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
@@ -460,7 +453,6 @@ export class AdmissionComponent implements OnInit {
     }
    
   }
-
 
   private _filterRefdoc(value: any): string[] {
     if (value) {
@@ -478,7 +470,6 @@ export class AdmissionComponent implements OnInit {
 
   }
   
-  
 
   private _filterWard(value: any): string[] {
     if (value) {
@@ -487,8 +478,6 @@ export class AdmissionComponent implements OnInit {
     }
 
   }
-
-  
 
   private _filterBed(value: any): string[] {
     if (value) {
@@ -505,6 +494,7 @@ export class AdmissionComponent implements OnInit {
     }
 
   }
+
   private _filterArea(value: any): string[] {
     if (value) {
       const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase();
@@ -529,7 +519,6 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
@@ -1105,7 +1094,7 @@ export class AdmissionComponent implements OnInit {
       let regInsert = {};
       let admissionNewInsert = {};
       regInsert['RegId'] = 0;
-      regInsert['regDate'] = this.dateTimeObj.date //this.registerObj.RegDate;
+      regInsert['regDate'] = this.dateTimeObj.date; //this.registerObj.RegDate;
       regInsert['regTime'] = this.dateTimeObj.time;
       regInsert['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       regInsert['firstName'] = this.registerObj.FirstName || '';

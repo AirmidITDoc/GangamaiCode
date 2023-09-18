@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { OpeningBalanceService } from './opening-balance.service';
 
 @Component({
   selector: 'app-opening-balance',
   templateUrl: './opening-balance.component.html',
   styleUrls: ['./opening-balance.component.scss']
 })
-export class OpeningBalanceComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class OpeningBalanceComponent {
+  
+    
+  constructor() {}
+  
 }

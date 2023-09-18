@@ -44,6 +44,7 @@ export class OpPaymentNewComponent implements OnInit {
   screenFromString = 'payment-form';
   paidAmt: number;
   balanceAmt: number;
+  getAmount: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -399,11 +400,11 @@ export class OpPaymentNewComponent implements OnInit {
     // } else {
     //   Paymentobj['CashPayAmount'] = 0
     // }
-    Paymentobj['CashPayAmount'] = this.getAmount("cash");// parseInt(this.cashAmount.toString());
-    Paymentobj['ChequePayAmount'] = this.getAmount("cheque");
-    Paymentobj['CardPayAmount'] = this.getAmount("card");
-    Paymentobj['NEFTPayAmount'] = this.getAmount("neft");
-    Paymentobj['PayTMAmount'] = this.getAmount("upi");
+    this.Paymentobj['CashPayAmount'] = this.getAmount("cash");// parseInt(this.cashAmount.toString());
+    this.Paymentobj['ChequePayAmount'] = this.getAmount("cheque");
+    this.Paymentobj['CardPayAmount'] = this.getAmount("card");
+    this. Paymentobj['NEFTPayAmount'] = this.getAmount("neft");
+    this. Paymentobj['PayTMAmount'] = this.getAmount("upi");
     if (this.patientDetailsFormGrp.get("paymentType1").value == "cheque") {
       // Paymentobj['ChequePayAmount'] = 0;
       this.Paymentobj['ChequeNo'] = 0;
@@ -414,7 +415,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['ChequeNo'] = "";
       // this.Paymentobj['BankName'] = "";//this.paymentForm.get('chequeBankNameController').value.BankName;
       this.Paymentobj['ChequeDate'] = "01/01/1900";
-    } */
+    } 
     /*if (this.patientDetailsFormGrp.get("paymentType1").value == "card") {
       // Paymentobj['CardPayAmount'] = 0;
       this.Paymentobj['CardNo'] = 0;
