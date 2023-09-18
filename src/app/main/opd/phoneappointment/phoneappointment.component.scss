@@ -62,7 +62,7 @@ app-phoneappointment {
 
     
   .table1{
-    height: 700px !important;
+    height:650px !important;
 }
   
   .mat-header-row {
@@ -198,5 +198,9 @@ app-phoneappointment {
 
 
 
-
   }
+  body.theme-default .accent{
+    background-color: #0479b4 !important;
+    // color: black !important;
+  }
+  

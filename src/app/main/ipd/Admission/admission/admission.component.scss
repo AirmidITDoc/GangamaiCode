@@ -64,7 +64,7 @@ app-admission {
 app-admission{
 
     .table1{
-height:700px !important;
+height:650px !important;
     }
 
 .mat-header-row {
@@ -394,26 +394,6 @@ height:700px !important;
 
 
 
-// .footer-btn {
-//     width: 80px;
-//     font-size: 16px;
-//     font-weight: 700px;
-//     padding: 10px;
-//     color:  rgb(247, 97, 97);
-//     border-radius: 16px;
-//     background-color:white;
-//     border-color: rgb(247, 97, 97);
-//     cursor: pointer;
-// }
-// .mat-option-text:hover{
-//     background-color:rgb(138, 138, 219);
-//     width:130px;
-   
-   
-// }
-
-
-
 .next-btn {
     width: 80px;
     font-size: 16px;
@@ -437,15 +417,6 @@ height:700px !important;
    
 }
 
-// button:disabled {
-//     color: white;
-//    background-color: #7bd3ff  !important;
-//    //background-color: #b7e6fd ;
-//     border-radius: 2px;
-//    // border: 1px solid #CCCCCC;
-//    border: 1px solid  #b7e6fd ;
-// }
-
 
 
 .header-container {
@@ -468,4 +439,14 @@ height:700px !important;
    border-radius: 2px;
    border: 1px solid  #b7e6fd ;
   }
+
+ 
+}
+
+body.theme-default .accent{
+    background-color: #0479b4 !important;
+    // color: black !important;
+}
+.self-row {
+    background-color: rgb(162, 216, 237) !important;
 }

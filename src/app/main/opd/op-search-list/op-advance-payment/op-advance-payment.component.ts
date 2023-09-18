@@ -68,7 +68,8 @@ export class OPAdvancePaymentComponent implements OnInit {
   dateTimeObj: any;
   PatientName: any;
   BillDate: any;
-
+  PatientHeaderObj:any;
+  
   //bANK filter
   public bankFilterCtrl: FormControl = new FormControl();
   public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -97,7 +98,8 @@ export class OPAdvancePaymentComponent implements OnInit {
     dialogRef.disableClose = true;
     // debugger;
     this.advanceData = data;
-    console.log(this.advanceData.advanceObj);
+    this.PatientHeaderObj = this.data.advanceObj;
+    // console.log(this.advanceData.advanceObj);
 
     if (this.advanceData.FromName == "Advance-Refund") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.RefundAmount);

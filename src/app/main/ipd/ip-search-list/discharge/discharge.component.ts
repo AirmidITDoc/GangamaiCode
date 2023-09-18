@@ -41,6 +41,7 @@ export class DischargeComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId:any;
   Today: Date=new Date();
+  PatientHeaderObj: any;
 
   filteredOptionsDoctor: Observable<string[]>;
   filteredOptionsDisctype: Observable<string[]>;
@@ -86,6 +87,7 @@ export class DischargeComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.PatientHeaderObj = this.advanceDataStored.storage;
     }
   
     this.getDischargetypeCombo();

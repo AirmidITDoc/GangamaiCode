@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NewCasepaperComponent } from './new-casepaper/new-casepaper.component';
 
 const appRoutes: Routes = [
   {
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
 },
 {
     path: "medicalrecords",
-    loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
+    loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
 },
 {
     path: "bill",
