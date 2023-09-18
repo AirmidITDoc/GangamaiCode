@@ -257,9 +257,9 @@ app-result-entry{
     min-width:60px;
 }
 .mat-column-DOA {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
+    width:90px;
+    max-width:90px;
+    min-width:90px;
     align-items: left;
 }
 
@@ -422,17 +422,16 @@ app-result-entry{
     }
 
     .mat-column-ServiceName {
-        width: 250px;
-        max-width:250px;
-        min-width:250px;
+        width: 350px;
+        max-width:350px;
+        min-width:350px;
         justify-content:flex-start;
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
         display: inline-block;
-        margin-top: 7px;
-        margin-right: 10px;  
+      
     }
     .mat-column-IsCompleted {
         width: 110px;
@@ -460,8 +459,7 @@ app-result-entry{
             text-overflow: ellipsis; 
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
-            margin-right: 10px;   
+          
         }
 
         .mat-column-PathReportID {

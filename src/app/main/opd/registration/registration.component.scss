@@ -66,14 +66,14 @@ app-registration {
   .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1480px;
+    min-width: 1680px;
     min-height: 30px;
   }
 
   .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1480px;
+    min-width: 1680px;
     min-height: 40px;
   }
 
@@ -117,8 +117,8 @@ app-registration {
   .mat-column-AgeYear {
     width: 100px;
     max-width: 100px;
-    min-width: 00px;
-    text-align: center;
+    min-width:100px;
+    text-align: left;
     
   }
 

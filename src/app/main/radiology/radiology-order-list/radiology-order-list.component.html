@@ -110,17 +110,17 @@
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search First Name</mat-label>
-                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput>
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search Last Name</mat-label>
-                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput>
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNoSearch</mat-label>
-                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput>
+                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
 
@@ -177,8 +177,8 @@
 
                                     </div>
 
-                                    <mat-table #table matSort [dataSource]="dataSource"
-                                        [@animateStagger]="{value:'50'}">
+                                    <mat-table #table matSort [dataSource]="dataSource" class="table1"
+                                        [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
                                         <ng-container matColumnDef="RegNo">
@@ -386,7 +386,7 @@
                                     </div>
 
                                     <mat-table class="table2" #table matSort [dataSource]="dataSource1"
-                                        [@animateStagger]="{value:'50'}" >
+                                        [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                         <ng-container matColumnDef="checkbox" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
