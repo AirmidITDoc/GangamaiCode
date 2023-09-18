@@ -5,7 +5,7 @@
     <!-- HEADER -->
 
     <!-- Start Sider  -->
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -40,7 +40,7 @@
 
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top:7px; background-color: white;height:95%;">
+        margin-left: 12px; margin-top:7px; background-color: white;height:95% !important;">
             <div class="content">
                 <div class="sidebar-content">
 
@@ -60,6 +60,7 @@
                             <div class="nav material2">
                                 <form [formGroup]="_PathologyService.myformSearch">
                                     <div fxLayout="column" fxLayoutAlign="start none">
+
                                         <mat-form-field appearance="outline" style="margin-top: 5px;">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
@@ -97,7 +98,7 @@
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search First Name</mat-label>
-                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput>
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
                                             <span class="error"
                                                 *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName is
                                                 required Enter only Alphabets</span>
@@ -105,7 +106,7 @@
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search Last Name</mat-label>
-                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput>
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
                                             <span class="error"
                                                 *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is
                                                 required Enter only Alphabets</span>
@@ -113,7 +114,7 @@
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNo</mat-label>
-                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput>
+                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
                                         <div style="margin-top: 20px;">
@@ -131,6 +132,13 @@
                                         </div>
                                     </div>
                                 </form>
+
+                                <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 200px;margin-left: 100px; padding-bottom: 10px;">
+          
+                                    <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
+                                  
+                           
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -536,11 +544,6 @@
     <!-- / CONTENT-->
 
     
-    <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1500px; padding-bottom: 10px;">
-          
-          <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
-        
- 
-    </div>
+    
     
 </div>

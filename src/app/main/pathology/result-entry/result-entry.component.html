@@ -6,7 +6,7 @@
 
     <!-- Start Sider  -->
 
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -97,7 +97,7 @@
                                         </div>
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Search First Name</mat-label>
-                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput>
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
                                             <span class="error"
                                                 *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName
                                                 is required Enter only Alphabets</span>
@@ -105,7 +105,7 @@
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search Last Name</mat-label>
-                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput>
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
                                             <span class="error"
                                                 *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName
                                                 is
@@ -114,7 +114,7 @@
 
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNo</mat-label>
-                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput>
+                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
 
@@ -363,7 +363,7 @@
 
                                         <h3 style="font-weight: bold; font-size: 14px; margin: 10 0 0px;">Test Details
                                         </h3>
-                                        <mat-label style="margin-left:600px;font-weight: bold;"> Test Status:
+                                        <mat-label style="margin-left:900px;font-weight: bold;"> Test Status:
                                         </mat-label>
 
                                         <form [formGroup]="_SampleService.myformSearch">
@@ -385,7 +385,7 @@
 
 
                                         </form>
-
+<!-- 
                                         
                                         <button style="float:right;margin-right: 1%" mat-raised-button color="accent"
                                             (click)="onExport1('Pdf')" matTooltip="Export To Pdf">
@@ -394,11 +394,11 @@
                                         <button  mat-raised-button color="accent"
                                             (click)="onExport1('Excel')" matTooltip="Export To Excel">
                                             <mat-icon>save_alt</mat-icon>
-                                        </button>
+                                        </button> -->
                                     </div>
 
                                     <mat-table class="table2" #table matSort [dataSource]="dataSource1"
-                                        [@animateStagger]="{value:'50'}" >
+                                        [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                         <ng-container matColumnDef="checkbox" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -564,7 +564,7 @@
 
                 </div>
                 <div fxlayout="row" style="margin-top: 10px;background-color: white;">
-                    <div style="margin-top: 2px; padding: 5px;width: 44%;">
+                    <div style="margin-top: 2px; padding: 5px;width:60%;">
                         <span style="font-weight: bold;"> Help :</span>&nbsp;
                         <mat-icon
                             style="font-size: 50px;width: 15px !important; height:15px !important;border-radius:100% ;"

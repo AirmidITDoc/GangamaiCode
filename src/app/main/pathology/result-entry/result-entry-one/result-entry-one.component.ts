@@ -42,7 +42,7 @@ export class ResultEntryOneComponent implements OnInit {
 
   otherForm: FormGroup;
   msg: any;
-  
+  PatientHeaderObj: any;
   selectedAdvanceObj: SampleDetailObj;
   screenFromString = 'opd-casepaper';
   hasSelectedContacts: boolean;
@@ -109,9 +109,9 @@ debugger;
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-      // this.TemplateDesc = this.selectedAdvanceObj.TemplateDesc;
+      this.PatientHeaderObj = this.advanceDataStored.storage;
     }
-
+   
 
 
     //For Diffrente List Dispaly(IP?OP)

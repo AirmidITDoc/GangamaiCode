@@ -322,13 +322,13 @@ app-sample-request {
     .table2 {
         .mat-header-row {
             width: 100%;
-            min-width: 1200px;
+            min-width: 1500px;
             min-height: 25px;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 1200px;
+            min-width: 1500px;
             min-height: 25px;
         }
 
@@ -363,9 +363,9 @@ app-sample-request {
         }
 
         .mat-column-ServiceName {
-            width: 250px;
-            max-width: 250px;
-            min-width: 250px;
+            width: 350px;
+            max-width: 350px;
+            min-width: 350px;
             text-align: left;
             // justify-content: left;
             white-space: nowrap;

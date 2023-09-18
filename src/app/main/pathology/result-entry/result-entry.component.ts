@@ -321,7 +321,7 @@ export class ResultEntryComponent implements OnInit {
     
   }
 
-  SearchTest(event){
+  SearchTest($event){
     debugger;
     var m_data = {
       "BillNo":this.SBillNo,
