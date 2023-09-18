@@ -18,13 +18,13 @@
                         {{selectedAdvanceObj.TariffName}} || Class : {{selectedAdvanceObj.ClassName}}
                     </span>
 
-                    <div fxLayout="row" fxLayoutAlign="start center" style="float: right; margin-right: 5px;  ">
-                        <diV style="margin-top:21px;">
+                    <div fxLayout="row"  style="float: right; margin-right: 5px;">
+                        <!-- <diV style="margin-top:21px;">
                             <span style="margin-right: 40px;color: aliceblue;font-weight: bold;">
                                 <app-common-date [screenFrom]="screenFromString"
                                     (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                             </span>
-                        </diV>&nbsp;&nbsp;
+                        </diV>&nbsp;&nbsp; -->
                         <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
                             close
                         </span>
@@ -167,7 +167,13 @@
                                                     (keydown.enter)="focusNextService()">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>
+
                                             </div>
+
+                                            <span style="margin-left:40px;font-weight: bold;border-color: black;">
+                                                <app-common-date [screenFrom]="screenFromString"
+                                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                            </span>
                                         </div>
                                     </form>
                                 </mat-card>
