@@ -281,13 +281,9 @@ debugger;
     });
   }
   else{
-debugger;
-   
     let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-
       this._IpSearchListService.getDischargeId(Query).subscribe(data => {
         this.DischargeId = data[0];
-       
         console.log(this.DischargeId);
       });
 
