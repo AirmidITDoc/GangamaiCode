@@ -58,7 +58,7 @@ app-browse-refund-list{
     width: 100%;
     
     .mat-table {
-        height: 600px !important;
+        // height: 600px !important;
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -105,9 +105,9 @@ app-browse-refund-list{
 
 app-browse-refund-list {
 
-.mat-table {
-    height: 700px !important  ;
-}
+// .mat-table {
+//     height: 700px !important  ;
+// }
 .active-icon {
     border-radius: 50%;
 }

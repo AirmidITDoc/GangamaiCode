@@ -68,7 +68,7 @@ export class AdmissionComponent implements OnInit {
   isReligionSelected: boolean = false;
   isMaritalSelected: boolean = false;
   isRelationshipSelected: boolean = false;
-
+  isSearchdoctorSelected: boolean = false;
 
   selectedAdvanceObj: AdvanceDetailObj;
   submitted = false;
@@ -133,6 +133,7 @@ export class AdmissionComponent implements OnInit {
   optionsMarital: any[] = [];
   optionsCompany: any[] = [];
   optionsSubCompany: any[] = [];
+  optionsSearchDoc: any[] = [];
 
   filteredOptions: any;
   showtable: boolean = false;
@@ -157,6 +158,8 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsMarital: Observable<string[]>;
   filteredOptionsCompany: Observable<string[]>;
   filteredOptionsSubCompany: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -464,6 +467,15 @@ export class AdmissionComponent implements OnInit {
     }
 
   }
+
+  private _filterSearchdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
 
   private _filterdoc2(value: any): string[] {
     if (value) {
@@ -853,16 +865,21 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  getDoctorList() {
-    this._AdmissionService.getDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
+  getOptionTextsearchDoctor(option) {
+    
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
 
-        data => {
-          this.DoctorList = data;
-          this.filteredDoctor.next(this.DoctorList.slice());
-        }
-      })
+  getDoctorList() {
+    this._AdmissionService.getDoctorMaster().subscribe(data => {
+      this.DoctorList = data;
+      console.log(data)
+      this.optionsSearchDoc = this.DoctorList.slice();
+      this.filteredOptionssearchDoctor = this._AdmissionService.myFilterform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchdoc(value) : this.DoctorList.slice()),
+      );
+    });
   }
 
   getDoctor1List() {

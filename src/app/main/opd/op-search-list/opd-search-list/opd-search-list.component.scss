@@ -6,7 +6,7 @@ app-opd-search-list {
     width: 100%;
     
     .mat-table {
-       height: 500px !important;
+    //    height: 500px !important;
         width: 100%;
         background: transparent;
         box-shadow: none;
@@ -52,9 +52,9 @@ app-opd-search-list {
 }
 
 app-opd-search-list {
-    .table1{
-        height: 700px !important;
-    }
+    // .table1{
+    //     height: 700px !important;
+    // }
 .mat-header-row {
     width: 100%;
     max-width: 1520px;

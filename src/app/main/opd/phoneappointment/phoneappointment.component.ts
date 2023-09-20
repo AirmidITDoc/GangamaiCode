@@ -145,7 +145,7 @@ newPhoneAppointment(){
   const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
     {
       maxWidth: "95vw",
-      height: '55%',
+      height: '65%',
       width: '100%',
     });
   dialogRef.afterClosed().subscribe(result => {
