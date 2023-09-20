@@ -188,14 +188,15 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
     insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
     insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-
+    insertBillUpdateBillNo1obj['CashCounterId'] = 1//this.InterimFormGroup.get('CashCounterId').value || 0,
+   // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
     let billDetailsInsert = [];
     
     this.dataSource.data.forEach((element) => {
       let billDetailsInsert1Obj = {};
 
     billDetailsInsert1Obj['billNo'] =0;
-    billDetailsInsert1Obj['chargesID'] = element.ChargesId;
+    billDetailsInsert1Obj['chargesId'] = element.ChargesId;
 
     billDetailsInsert.push(billDetailsInsert1Obj);
     });  
@@ -457,6 +458,8 @@ export class Bill {
   taxPer: any;
   taxAmount: any;
   discComments : String;
+  CashCounterId:any;
+  CompDiscAmt:any;
 
   constructor(Bill) {
     {
@@ -486,6 +489,8 @@ export class Bill {
       this.taxPer = Bill.taxPer || 0;
       this.taxAmount  = Bill.taxAmount  ||  0;
       this.discComments  = Bill.discComments  || '';
+      this.CashCounterId  = Bill.CashCounterId  || 0;
+      this.CompDiscAmt  = Bill.CompDiscAmt  || 0;
     }
   }
 }

@@ -504,16 +504,16 @@
 
                             <div fxLayout="row" style="width: 100%;margin-top: 3px;">
 
-                                <div style="text-align: right;margin-left:800px;">
+                                <div style="text-align: right;margin-left:600px;">
 
-                                    <mat-checkbox formControlName="GenerateBill" (checked)=false>
+                                    <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                         Generate Bill
                                     </mat-checkbox>
 
                                     <!-- <button class="next-btn" (click)="getInterimData()"  [disabled]="Ipbillform.invalid"
                                         style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button> -->
 
-                                    <button class="next-btn" (click)="getInterimData()" style="border-radius: 16px;width: 80px;">Interim</button>
+                                    <button class="next-btn" (click)="getInterimData()" style="border-radius: 16px;width: 80px;margin-left: 20px;">Interim</button>
 
                                     <button class="next-btn" (click)="onSave()" style="border-radius: 16px;" [disabled]="Ipbillform.invalid">
                                         Save

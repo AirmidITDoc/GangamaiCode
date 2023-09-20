@@ -280,7 +280,7 @@ export class IPBillingComponent implements OnInit {
     
       ConcessionId: [],
       Remark: [''],
-      GenerateBill: [0],
+      GenerateBill: [1],
       FinalAmount: '',
       CashCounterId: ['', Validators.required]
 
@@ -634,11 +634,11 @@ debugger
     if (this.interimArray.length > 0 && this.netPaybleAmt > 0) {
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
-        BillNo: 0,//this.selectedAdvanceObj.Bill,
+        BillNo: 0,
         BillDate: this.dateTimeObj.date,
         concessionReasonId: this.Ipbillform.get('ConcessionId').value || 0,
         tariffId: this.selectedAdvanceObj.TariffId,
-        RemarkofBill: this.Ipbillform.get('BillRemark').value || '',
+        RemarkofBill: this.Ipbillform.get('Remark').value || '',
         RegNo: this.selectedAdvanceObj.RegNo || 0,
         PatientName: this.selectedAdvanceObj.PatientName,
         Doctorname: this.selectedAdvanceObj.Doctorname,
@@ -650,12 +650,11 @@ debugger
         IsDischarged: this.selectedAdvanceObj.IsDischarged,
         IPDNo: this.selectedAdvanceObj.IPDNo,
         BedName: this.selectedAdvanceObj.BedName,
-        // WardName:this.selectedAdvanceObj.RoomName,
         CompanyId: this.selectedAdvanceObj.CompanyId,
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
         UnitId: this.selectedAdvanceObj.UnitId
       };
-      // console.log(xx);
+      console.log(xx);
       this.advanceDataStored.storage = new Bill(xx);
 
       console.log('this.interimArray==', this.interimArray);
@@ -1104,8 +1103,8 @@ debugger
         InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
         InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+       // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
         InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId || 0 ;
-
         let Billdetsarr = [];
 
         this.dataSource.data.forEach((element) => {
@@ -1239,6 +1238,7 @@ debugger
           InsertBillUpdateBillNoObj['TaxPer'] =0;// this.Ipbillform.get('Percentage').value || 0,
           InsertBillUpdateBillNoObj['TaxAmount'] =0// this.Ipbillform.get('Amount').value || 0,
           InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+          // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
           InsertBillUpdateBillNoObj['CashCounterId'] =  this.Ipbillform.get('CashCounterId').value.CashCounterId ;
 
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
@@ -1285,7 +1285,7 @@ debugger
   // }
 
   onSaveDraft() {
-    debugger;
+  
     // Swal.fire('Changes are not saved', '', 'info')
     // this.IntreamFinal=0;
     // let AdvanceAmount1 = 
@@ -1330,7 +1330,7 @@ debugger
       // }
       // console.log(this.FinalAmountpay);
       // console.log(this.AdminDiscamt);
-
+      debugger;
       this.isLoading = 'submit';
 
       let InsertDraftBillOb = {};
