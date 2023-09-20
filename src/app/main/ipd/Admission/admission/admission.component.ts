@@ -1146,7 +1146,7 @@ export class AdmissionComponent implements OnInit {
 
       admissionNewInsert['isDischarged'] = 0;
       admissionNewInsert['isBillGenerated'] = 0;
-      admissionNewInsert['companyId'] = 0;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionNewInsert['CompanyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionNewInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionNewInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
@@ -1170,8 +1170,6 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['AprovAmount'] = 0;
       admissionNewInsert['CompDOD'] = this.dateTimeObj.date;
       admissionNewInsert['IsPackagePatient'] = 0;
-
-
 
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
@@ -1229,7 +1227,7 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['isDischarged'] = 0;
       admissionInsert['isBillGenerated'] = 0;
-      admissionInsert['companyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionInsert['CompanyId'] = 2;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;

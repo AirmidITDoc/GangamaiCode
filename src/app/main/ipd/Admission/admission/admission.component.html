@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
   <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
     <div fxLayout="row" fxLayoutAlign="start center">
@@ -512,7 +512,7 @@
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="17%">
                         <mat-label>Birth date</mat-label>
                         <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
                           (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth"
@@ -523,7 +523,7 @@
                       </mat-form-field>
 
 
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="17%">
                         <mat-label>Age (Y)</mat-label>
                         <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput min="0"
                           [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number"
@@ -533,7 +533,7 @@
                           enter Age Year </mat-error>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="16%">
                         <mat-label>Age (M)</mat-label>
                         <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
                           [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
@@ -543,7 +543,7 @@
                           Please enter Age Month </mat-error>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="17%">
                         <mat-label>Age (D)</mat-label>
                         <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0"
                           minlength="1" maxlength="2" [ngModel]="registerObj.AgeDay"
@@ -555,10 +555,10 @@
 
 
 
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="17%">
                         <mat-label>Marital Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
-                          formControlName="MaritalStatusId" [matAutocomplete]="autoMarital" required>
+                          formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
                             (click)="personalFormGroup.get('MaritalStatusId').setValue(''); isMaritalSelected = false;">close</mat-icon>
@@ -572,11 +572,10 @@
                         </mat-autocomplete>
                       </mat-form-field>
 
-
-                      <mat-form-field appearance="outline" fxFlex="18%">
+                      <mat-form-field appearance="outline" fxFlex="17%">
                         <mat-label>Religion Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Religion" matInput
-                          formControlName="ReligionId" [matAutocomplete]="autoReligion" required>
+                          formControlName="ReligionId" [matAutocomplete]="autoReligion">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
                             (click)="personalFormGroup.get('ReligionId').setValue(''); isReligionSelected = false;">close</mat-icon>
@@ -969,11 +968,12 @@
                         <mat-label>Address</mat-label>
                         <input name="RelativeAddress" formControlName="RelativeAddress" placeholder="Address" matInput>
                       </mat-form-field>
+                      
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile No</mat-label>
                         <input name="RelatvieMobileNo" formControlName="RelatvieMobileNo" placeholder="Mobile No"
-                          max="9999999999" min="1000000000" maxlength="10" required="required" type="number"
-                          value="9876658688" matInput required>
+                          max="9999999999" min="1000000000" maxlength="10"  type="number"
+                          value="9876658688" matInput >
                         <mat-error class="error"
                           *ngIf="otherFormGroup.get('RelatvieMobileNo').invalid && otherFormGroup.get('RelatvieMobileNo').touched">
                           10
@@ -985,7 +985,7 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Relationship Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Relationship" matInput
-                          formControlName="RelationshipId" [matAutocomplete]="autoRelation" required>
+                          formControlName="RelationshipId" [matAutocomplete]="autoRelation" >
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
                             (click)="otherFormGroup.get('RelationshipId').setValue(''); isRelationshipSelected = false;">close</mat-icon>
@@ -1014,7 +1014,7 @@
                         </span>
                       </button>
                       <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
-                    </div>
+                    </div><br>
                   </div>
                 </form>
 
