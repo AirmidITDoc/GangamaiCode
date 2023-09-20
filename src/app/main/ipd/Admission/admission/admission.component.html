@@ -370,14 +370,56 @@
 
               <div style="padding-top: 15px;padding-left: 20px;">
 
-                <span style="margin-left: 400px;color: black;font-weight: bold;color: black;">
-                  <app-common-date [screenFrom]="screenFromString"
-                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                </span>
+                <div>
+
+                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none"
+                      style="width: 100%;">
+
+                      <div class="redio-container">
+                        <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
+                          (change)="onChangeReg($event)">&nbsp;&nbsp;
+                          <mat-radio-button value="registration" style="margin-bottom: 7px;">New Registration
+                          </mat-radio-button>
+                          <mat-radio-button value="registrered">Registered</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field appearance="outline" style="width:60%;margin-left:15px;"
+                          disabled="isRegSearchDisabled">
+                          <input type="text" name="RegId" formControlName="RegId"
+                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
+                            (input)="getSearchList()">
+                          <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                              (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                              (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                          </span>
+                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                            (optionSelected)='getSelectedObj($event.option.value)'>
+                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                              {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                              {{option.MobileNo}}
+                            </mat-option>
+                          </mat-autocomplete>
+                          <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
+                            Required field cannot be left blank
+                          </mat-error>
+                        </mat-form-field>
+
+                         <span style="float:right;color: black;font-weight: bold;color: black;">
+                            <app-common-date [screenFrom]="screenFromString"
+                              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                          </span> 
+
+                      </div>
+                    </div>
+                  </form>
+      
+                </div>
 
                 <form [formGroup]="personalFormGroup">
                   <input type="hidden" name="RegId" formControlName="RegId">
-
 
                   <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
                     style=" height: 35px;background-color:#33b5e5">
@@ -386,8 +428,11 @@
                       Details</span>
 
                   </div>
-                  <div style="padding: 7px;">
 
+                    <div style="padding: 7px;overflow-block: hover;">
+                      <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                        [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
+                        [matRippleColor]="color">
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -423,7 +468,6 @@
                           only
                           Alphabets</mat-error>
                       </mat-form-field>
-
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Middle Name</mat-label>
@@ -468,7 +512,7 @@
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Birth date</mat-label>
                         <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
                           (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth"
@@ -479,7 +523,7 @@
                       </mat-form-field>
 
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Age (Y)</mat-label>
                         <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput min="0"
                           [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number"
@@ -489,7 +533,7 @@
                           enter Age Year </mat-error>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Age (M)</mat-label>
                         <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
                           [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
@@ -499,7 +543,7 @@
                           Please enter Age Month </mat-error>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Age (D)</mat-label>
                         <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0"
                           minlength="1" maxlength="2" [ngModel]="registerObj.AgeDay"
@@ -511,7 +555,7 @@
 
 
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Marital Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
                           formControlName="MaritalStatusId" [matAutocomplete]="autoMarital" required>
@@ -529,7 +573,7 @@
                       </mat-form-field>
 
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex="18%">
                         <mat-label>Religion Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Religion" matInput
                           formControlName="ReligionId" [matAutocomplete]="autoReligion" required>
@@ -556,8 +600,6 @@
                           *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
                           enter Address </mat-error>
                       </mat-form-field>
-
-
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Area Name</mat-label>
@@ -593,10 +635,6 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-
-
-
-
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>State Name</mat-label>
@@ -657,10 +695,11 @@
                           required</mat-error>
                       </mat-form-field>
                     </div>
+                      </div>
                   </div>
 
-
                 </form>
+
                 <form [formGroup]="hospitalFormGroup">
                   <div>
 
@@ -670,7 +709,11 @@
                         style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Hospital
                         Details</span>
                     </div>
-                    <div style="padding: 7px;">
+                   
+                    <div style="padding: 7px;overflow-block: hover;">
+                      <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                        [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
+                        [matRippleColor]="color">
                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                         <mat-form-field appearance="outline" fxFlex>
@@ -822,10 +865,12 @@
 
                       </div>
                     </div>
+                    </div>
 
 
                   </div>
                 </form>
+
                 <form [formGroup]="wardFormGroup">
 
                   <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
@@ -833,7 +878,10 @@
                     <span style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Ward
                       Details </span>
                   </div>
-                  <div style="padding: 7px;">
+                  <div style="padding: 7px;overflow-block: hover;">
+                    <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                      [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
+                      [matRippleColor]="color">
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -891,8 +939,10 @@
                       </mat-form-field>
                     </div>
                   </div>
+                  </div>
 
                 </form>
+
                 <form [formGroup]="otherFormGroup">
 
                   <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
@@ -901,7 +951,11 @@
                     <span style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Other
                       Details</span>
                   </div>
-                  <div style="padding: 7px;">
+                  
+                  <div style="padding: 7px;overflow-block: hover;">
+                    <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                      [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
+                      [matRippleColor]="color">
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                       <mat-form-field appearance="outline" fxFlex>
@@ -947,6 +1001,7 @@
 
                     </div>
                   </div>
+                  </div><br>
 
                   <div class="footer-navigation-container" style=" float: right;">
                     <div class="next-div">

@@ -24,6 +24,7 @@ import { RegAdmissionComponent } from '../reg-admission/reg-admission.component'
 import { OPIPPatientModel } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { RFC_2822 } from 'moment';
 
 @Component({
   selector: 'app-admission',
@@ -1217,9 +1218,9 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['admissionTime'] = this.dateTimeObj.time;
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalID').value.HospitalID ? this.hospitalFormGroup.get('HospitalID').value.HospitalID : 0;
+      admissionInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
+      admissionInsert['refDocNameId'] = 2, //this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
 
       admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
       admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1243,8 +1244,8 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['isMLC'] = false;
       admissionInsert['motherName'] = '';
-      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
-      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
+      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorId').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
+      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorID').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
 
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;
