@@ -312,21 +312,12 @@
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-                                <!-- <mat-error class="error"
-                                *ngIf="paymentForm.get('chequeBankNameController').invalid && paymentForm.get('chequeBankNameController').touched">
-                                Bank Name is required</mat-error> -->
+                              
                             </mat-form-field>
 
                         </div>
                         <div style="margin-right: 10px;">
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="ChequeDate" [(ngModel)]="chequeDate" matInput [matDatepicker]="picker2"
-                                    formControlName="chequeDateController"  required>
-                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                            </mat-form-field> -->
-
+                          
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ChequeDate </mat-label>
@@ -374,9 +365,7 @@
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-                                <!-- <mat-error class="error"
-                                *ngIf="paymentForm.get('neftBankNameController').invalid && paymentForm.get('neftBankNameController').touched">
-                                Bank Name is required</mat-error> -->
+                               
                             </mat-form-field>
 
                         </div>
@@ -388,15 +377,7 @@
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </div>
-                        <!-- <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter Date</mat-label>
-                                <input name="NEFTDate" matInput [matDatepicker]="picker"
-                                    formControllName="neftDateController" [readonly]="true" required>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div> -->
+                       
                     </div>
                 </div>
                 <div *ngIf="chipsElements[4].state">
@@ -471,23 +452,14 @@
                             <input matInput #balanceAmnt formControlName="balanceAmountController"
                                 [(ngModel)]="balanceAmt" readonly>
                         </mat-form-field> &nbsp;
-                        <!-- <app-refund-of-advance [BalanceData]="balanceAmnt.value"> </app-refund-of-advance> -->
-
-                    
-                  
+                       
 
                         <mat-form-field appearance="outline" style="width: 180px;">
                             <mat-label>Comments</mat-label>
                             <input matInput formControlName="commentsController">
                         </mat-form-field> &nbsp;
                     </div>
-                    <!-- <div class="admini-checkbox" style="margin-top: 10px;">
-                        <mat-checkbox class="labels-style" formControlName="Iscredited"
-                            (change)='Adminchargeselect($event)' aria-label="Administrative Charges"
-                            style="font-weight: bold;">
-                            Is credited
-                        </mat-checkbox>
-                    </div>&nbsp; -->
+                 
                     <div class="save-payment">
                         <!-- <button type="submit" class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || !balanceAmt|| checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)" -->
                          

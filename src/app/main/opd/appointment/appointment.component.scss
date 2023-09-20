@@ -120,13 +120,13 @@ app-appointment{
 }
 
 app-appointment{
-.table1{
-        height:600px !important;
-}
+// .table1{
+//         height:600px !important;
+// }
 .mat-header-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1800px;  
+    min-width: 1500px;  
     min-height: 30px; 
       
 }
@@ -134,7 +134,7 @@ app-appointment{
 .mat-row {
     width: 100%;
     //max-width: 1600px;
-    min-width: 1800px;      
+    min-width: 1500px;      
     min-height: 30px;  
    
 }
@@ -599,7 +599,7 @@ h1, .h1 {
 }
  
 .self-row {
-    background-color: red !important;
+    background-color: lightgreen !important;
 }
 //   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular
 

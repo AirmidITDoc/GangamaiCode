@@ -20,12 +20,12 @@ export class OPAdvancePaymentComponent implements OnInit {
 
 
   chipsElements = [
-    { name: 'Cash', state: true },
-    { name: 'Card', state: false },
-    { name: 'Cheque', state: false },
-    { name: 'NEFT', state: false },
-    { name: 'UPI', state: false },
-    { name: 'Wrf Option', state: false }
+    { name: 'Cash', state: true, value: 0 },
+    { name: 'Card', state: false, value: 0 },
+    { name: 'Cheque', state: false, value: 0 },
+    { name: 'NEFT', state: false, value: 0 },
+    { name: 'UPI', state: false, value: 0 },
+    { name: 'Wrf Option', state: false, value: 0 }
   ];
 
   paidamt: any;
@@ -179,6 +179,15 @@ export class OPAdvancePaymentComponent implements OnInit {
       .subscribe(() => {
         this.filterchequebank();
       });
+    
+    this.chipsElements = [
+      { name: 'Cash', state: true, value: this.cashAmt },
+      { name: 'Card', state: false, value: this.cardAmt },
+      { name: 'Cheque', state: false, value: this.chequeAmt },
+      { name: 'NEFT', state: false, value: this.neftAmt },
+      { name: 'UPI', state: false, value: this.paytmAmt },
+      { name: 'Wrf Option', state: false, value: this.wrfAmt }
+    ];
   }
 
 
@@ -211,69 +220,7 @@ export class OPAdvancePaymentComponent implements OnInit {
 
       ]],
 
-      // cardAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // cardNumberController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(16),
-      //   Validators.maxLength(16),
-      // ]],
-
-      // cardBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      //  cardDateController: [(new Date()).toISOString()],
-
-      // chequeAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-
-      // ]],
-      // chequeNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // chequeBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // chequeDateController: [(new Date()).toISOString()],
-      // neftAmountController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftNumberController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")
-
-      // ]],
-      // neftBankNameController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      // ]],
-
-      // neftDateController: [(new Date()).toISOString()],
-      // paytmAmountController: ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$")]],
-      // paytmMobileNoController:['', [
-      //   Validators.required,
-      //   Validators.pattern("^[0-9]*$"),
-      //   Validators.minLength(10),
-      //   Validators.maxLength(10),
-      // ]],
-
-      // paytmDateController: [(new Date()).toISOString()],
-      // wrfAmountController: ['', [Validators.pattern('^[0-9]{2,8}$')]],
+      
 
       paidAmountController: ['', [
         Validators.required,
@@ -384,7 +331,6 @@ export class OPAdvancePaymentComponent implements OnInit {
       const controllers = this.paymentForm.controls;
       Object.keys(controllers).forEach(controlName => {
         const controlValue = this.paymentForm.get(controlName);
-        console.log(controlName);
         if (controlValue.untouched) {
           controlValue.markAsUntouched();
           controlValue.clearValidators();
@@ -427,12 +373,10 @@ export class OPAdvancePaymentComponent implements OnInit {
             ]);
             this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
             this.paymentForm.patchValue({ cardDateController: new Date() });
-            console.log("Line 398", this.paymentForm);
             break;
           }
           case 'Cheque':
             this.chequeAmt = 0;
-            console.log("406")
             this.paymentForm.controls['chequeAmountController'].setValidators([
               Validators.required,
               Validators.pattern("^[0-9]*$")
@@ -491,10 +435,10 @@ export class OPAdvancePaymentComponent implements OnInit {
             break;
 
           default:
-            console.log(460)
             break;
         }
         this.calculatePaidAmt();
+        this.setValues();
       }
       else {
         switch (chipName) {
@@ -509,7 +453,6 @@ export class OPAdvancePaymentComponent implements OnInit {
 
           case 'Card': {
             this.cardAmt = 0;
-            console.log("378")
             this.paymentForm.controls["cardAmountController"].clearValidators();
             this.paymentForm.controls["cardAmountController"].updateValueAndValidity();
             this.paymentForm.controls["cardNumberController"].clearValidators();
@@ -519,12 +462,10 @@ export class OPAdvancePaymentComponent implements OnInit {
             this.paymentForm.controls["cardBankNameController"].updateValueAndValidity();
             this.paymentForm.patchValue({ cardBankNameController: '' });
             this.paymentForm.patchValue({ cardDateController: new Date() });
-            console.log("Line 398", this.paymentForm);
             break;
           }
           case 'Cheque':
             this.chequeAmt = 0;
-            console.log("406")
             this.paymentForm.controls['chequeAmountController'].clearValidators();
             this.paymentForm.controls['chequeAmountController'].updateValueAndValidity();
 
@@ -570,24 +511,20 @@ export class OPAdvancePaymentComponent implements OnInit {
       }
     }
     // event.state = !event.state;
-    console.log('==', event);
+    console.log('==', event, '\n chipsElements==', this.chipsElements);
     // this.cdr.detectChanges();
   }
 
 
 
   calculatePaidAmt(controlNameParam?) {
-    debugger;
 
-
-    // console.log(controlNameParam != 'cashAmountController');
     Object.keys(this.paymentForm.controls).forEach(controlName => {
       if (controlNameParam == controlName) {
         this.paymentForm.get(controlNameParam).markAsTouched();
       } else {
         this.paymentForm.get(controlName).markAsUntouched();
       }
-
 
     });
 
@@ -604,17 +541,12 @@ export class OPAdvancePaymentComponent implements OnInit {
     this.balanceAmt = null;
 
    
-    paidAmtLocal = parseInt(this.cashAmt ? this.cashAmt.toString() : cashAmtLocal)
-      + parseInt(this.cardAmt ? this.cardAmt.toString() : cardAmtLocal)
-      + parseInt(this.chequeAmt ? this.chequeAmt.toString() : chequeAmtLocal)
-      + parseInt(this.neftAmt ? this.neftAmt.toString() : neftAmtLocal)
-      + parseInt(this.paytmAmt ? this.paytmAmt.toString() : paytmAmtLocal)
-      + parseInt(this.wrfAmt ? this.wrfAmt.toString() : wrfAmtLocal);
+    paidAmtLocal = this.getPaidAmt();
     console.log(paidAmtLocal)
     console.log(this.balanceAmt1)
 
     // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-    debugger;
+    // debugger;
     // if(chipName)
     //  if( paidAmtLocal > this.balanceAmt1){
     // Swal.fire("Amount chk")
@@ -622,8 +554,9 @@ export class OPAdvancePaymentComponent implements OnInit {
     if (paidAmtLocal > this.netPayAmt) {
       this.paidAmt = this.paidAmtPrev;
       this.balanceAmt = this.balanceAmtPrev;
-      var val = this.paymentForm.get(controlNameParam).value;
-
+      if(controlNameParam) {
+        var val = this.paymentForm.get(controlNameParam).value;
+      }
       // this.paymentForm.patchValue({controlNameParam:val.toString().substr(0, val.length - 1)});
       // return;
       // const controllers = this.paymentForm.controls;
@@ -852,7 +785,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         "IsSubmitFlag": true
       }
       console.log(IsSubmit);
-      this.dialogRef.close(IsSubmit);
+      // this.dialogRef.close(IsSubmit);
       // console.log('======================= Payment ======');
       // console.log(IsSubmit);
     }
@@ -915,6 +848,68 @@ export class OPAdvancePaymentComponent implements OnInit {
 
   onClose1() {
     this.dialogRef.close();
+  }
+
+  setValues() {
+    let selectedValues = this.chipsElements.filter((element) => element.state === true);
+    let trueValuesLength = selectedValues.length;
+    let latestElement = trueValuesLength - 1;
+    let latestChipName = selectedValues[latestElement].name;
+    this.chipsElements[0].value = this.cashAmt;
+    this.chipsElements[1].value = this.cardAmt;
+    this.chipsElements[2].value = this.chequeAmt;
+    this.chipsElements[3].value = this.neftAmt;
+    this.chipsElements[4].value = this.wrfAmt;
+    let totalAddedAmt = 0;
+    switch (latestChipName) {
+      case 'Card':
+        this.cardAmt = this.netPayAmt - parseInt(this.cashAmt.toString());
+        break;
+      case 'Cheque':
+        totalAddedAmt = selectedValues.reduce((accumulator, object) => {
+          return accumulator + object.value;
+        }, 0);
+        this.chequeAmt = this.netPayAmt - totalAddedAmt;
+        break;
+
+      case 'NEFT':
+        totalAddedAmt = selectedValues.reduce((accumulator, object) => {
+          return accumulator + object.value;
+        }, 0);
+        this.neftAmt = this.netPayAmt - totalAddedAmt;
+        break;
+
+      case 'UPI':
+        totalAddedAmt = selectedValues.reduce((accumulator, object) => {
+          return accumulator + object.value;
+        }, 0);
+        this.paytmAmt = this.netPayAmt - totalAddedAmt;
+        break;
+
+      case 'Wrf Option':
+        totalAddedAmt = selectedValues.reduce((accumulator, object) => {
+          return accumulator + object.value;
+        }, 0);
+        this.wrfAmt = this.netPayAmt - totalAddedAmt;
+        break;
+
+
+      default:
+        break;
+    }
+    this.paidAmt = this.getPaidAmt();
+    this.getBalanceAmt();
+  }
+
+  getPaidAmt(): number {
+    let sum = 0;
+    sum = (this.cashAmt ? parseInt(this.cashAmt.toString()) : 0)
+    + (this.cardAmt ? parseInt(this.cardAmt.toString()) : 0)
+    + (this.chequeAmt ? parseInt(this.chequeAmt.toString()) : 0)
+    + (this.neftAmt ? parseInt(this.neftAmt.toString()) : 0)
+    + (this.paytmAmt ? parseInt(this.paytmAmt.toString()) : 0)
+    + (this.wrfAmt ? parseInt(this.wrfAmt.toString()) : 0);
+    return sum;
   }
 }
 

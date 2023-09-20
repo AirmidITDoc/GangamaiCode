@@ -77,6 +77,11 @@
                                     required Enter only Digits</span>
                             </mat-form-field>
 
+                            <mat-slide-toggle name="IsDischarge"
+                            (change)="onChangeIsactive($event)"  
+                            [(ngModel)]="isChecked"                    
+                            formControlName="IsDischarge"> IsDischarge</mat-slide-toggle>
+                            
                             <div style="margin-top: 10px;">
                                 <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
                                     <mat-icon class="cleariconbutton">close</mat-icon>
@@ -106,10 +111,10 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
                                 <mat-table #table  class ="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="width: 100%;" >
@@ -261,7 +266,8 @@
                                 </ng-container>
             
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" 
+                                    [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>

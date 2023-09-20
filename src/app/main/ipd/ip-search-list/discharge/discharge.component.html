@@ -41,25 +41,25 @@
                                     <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                         <div class="patient-sub">
                                             <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 375px;">
+                                                <div class="flex-item" style="width: 250px;">
                                                     <h3 class="labels-h3">Patient Name</h3>
                                                 </div>
                                                 <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
+                                                    <h5 class="labels-h6">:</h5>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}</h6>
+                                                    <h5 class="labels-h6">{{PatientHeaderObj.PatientName}}</h5>
                                                 </div>
                                             </div>
                                             <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 375px;">
+                                                <div class="flex-item" style="width: 250px;">
                                                     <h3 class="labels-h3">Patient Category</h3>
                                                 </div>
                                                 <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
+                                                    <h4 class="labels-h6">:</h4>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">Staff</h6>
+                                                    <h4 class="labels-h6">Staff</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,7 +237,7 @@
 
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>DischargeTypeName</mat-label>
+                                            <mat-label>Discharge Type Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select DischargeTypeName" matInput
                                                 formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
@@ -257,17 +257,13 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-
-
-                                        <mat-form-field appearance="outline" style="margin-left: 30px;width: 30%;">
-                                            <mat-label>Modeofdischarge</mat-label>
-                                            <input name="Modeofdischarge" formControlName="Modeofdischarge"
-                                                placeholder="Modeofdischarge" matInput>
-                                            <!-- <mat-error
-                                              *ngIf="personalFormGroup.get('Modeofdischarge').invalid && personalFormGroup.get('Modeofdischarge').touched">
-                                              Please enter Age Month </mat-error> -->
+                                    </div>
+                                    <div>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Comments</mat-label>
+                                            <input name="Comments" formControlName="Modeofdischarge"
+                                                placeholder="Comments" matInput>
                                         </mat-form-field>
-
                                     </div>
                                 </div>
                             </div>

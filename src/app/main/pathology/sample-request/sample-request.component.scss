@@ -207,15 +207,16 @@ app-sample-request {
 
 
     .table1 {
+        height: 250px !important;
         .mat-header-row {
             width: 100%;
-            min-width: 800px;
+            min-width: 1000px;
             min-height: 25px;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 800px;
+            min-width: 1000px;
             min-height: 25px;
         }
 
@@ -241,8 +242,7 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
-            margin-right: 10px;
+          
         }
 
         .mat-column-AdmDate {
@@ -253,10 +253,18 @@ app-sample-request {
             // justify-content: center;
         }
 
-        .mat-column-ReqDate {
+        .mat-column-ReqTime {
             width: 150px;
             max-width: 150px;
             min-width: 150px;
+            text-align: center;
+            // justify-content: center;
+        }
+
+        .mat-column-ReqDate {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
             text-align: left;
             // justify-content: center;
         }
@@ -272,7 +280,7 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
+           
             margin-right: 10px;
         }
 
@@ -320,6 +328,7 @@ app-sample-request {
 
 
     .table2 {
+        height: 250px !important;
         .mat-header-row {
             width: 100%;
             min-width: 1500px;
@@ -339,9 +348,9 @@ app-sample-request {
         }
 
         .mat-column-ReqDate {
-            width: 90px;
-            max-width: 90px;
-            min-width: 90px;
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
             text-align: left;
             // justify-content: left;
         }
@@ -373,7 +382,7 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
+           
 
         }
 
@@ -389,7 +398,7 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
+           
         }
 
         .mat-column-BillingUser {
@@ -403,13 +412,13 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
+           
         }
 
         .mat-column-AddedByDate {
-            width: 150px;
-            max-width: 150px;
-            min-width: 150px;
+            width: 180px;
+            max-width: 180px;
+            min-width: 180px;
             text-align: left;
             //   justify-content: left;
             white-space: nowrap;
@@ -417,7 +426,7 @@ app-sample-request {
             text-overflow: ellipsis;
             overflow: hidden !important;
             display: inline-block;
-            margin-top: 7px;
+           
 
         }
 

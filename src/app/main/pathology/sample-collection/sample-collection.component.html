@@ -54,10 +54,9 @@
                         <!-- / SIDEBAR HEADER -->
 
                         <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                        <div class="content py-16 pl-10 p-12">
                             <div class="nav material2">
-                                <form [formGroup]="_SampleService.myformSearch" style="padding: 6px 6px 5px 5px;"
-                                    fusePerfectScrollbar>
+                                <form [formGroup]="_SampleService.myformSearch" style="padding: 6px 6px 5px 5px;">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <br />
                                         <mat-form-field appearance="outline" style="margin-bottom: 8px;">
@@ -131,6 +130,16 @@
                                         </div>
                                     </div>
                                 </form>
+
+                                <div fxLayout="row"
+                                    style="text-align: right;width: 100%;margin-top:170px;margin-left: 100px; padding-bottom: 10px;">
+
+                                    <button class="footer-btn" mat-raised-button fxLayoutAlign="center center"
+                                        (click)="onLABSave()" style="border-radius: 16px;width: fit-content;">Send Data
+                                        To LAB</button>
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,12 +159,12 @@
 
 
                 <div fxlayout="row">
-                    <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                         <div fxFlex.gt-sm="100%" fxFlex>
 
                             <div fxlayout="row">
                                 <div style="width: 100%;background-color: white;">
-                                    <div  fxLayout="column" fxLayout.gt-xs="row"
+                                    <div fxLayout="column" fxLayout.gt-xs="row"
                                         style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
                                         sticky>
                                         <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Lab Or Rad
@@ -312,7 +321,8 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
                                         style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
                                         sticky>
-                                        <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;"> Pathology Radiology Details
+                                        <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;"> Pathology
+                                            Radiology Details
                                         </h3>
                                         <!-- <div style="margin-left:900px;">
                                             <button mat-raised-button color="accent" style="margin-right:10px;"
@@ -331,23 +341,15 @@
                                     <mat-table class="table2" #table matSort [dataSource]="dataSource1"
                                         [@animateStagger]="{value:'50'}">
 
-
-
                                         <ng-container matColumnDef="DOA">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Admission Date
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-md>Admission Date
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.DOA | date:'shortDate'}}
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="PathTestID" sticky>
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PathTestID
-                </mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                    {{contact.PathTestID}}
-                </mat-cell>
-            </ng-container> -->
 
                                         <ng-container matColumnDef="ServiceName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TestName
@@ -445,7 +447,7 @@
                         &nbsp;IsNotPathology/ISNotRadiology/IsNotTestompleted &nbsp;&nbsp;
 
                         <mat-icon  style="font-size: 50px;width: 15px !important; height:15px !important;border-radius:100% ;"  class=" red-600 s-16">circle</mat-icon>&nbsp;Bill Generated -->
-                    <!-- </div>
+                <!-- </div>
 
 
                 </div> -->
@@ -460,12 +462,10 @@
 
 
     <div fxLayout="row"
-        style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1620px; padding-bottom: 25px;">
+        style="text-align: right;width: 100%;margin-top: 200px;margin-left: 1300px; padding-bottom: 10px;">
 
-        <button class="footer-btn" mat-raised-button  fxLayoutAlign="center center" (click)="onLABSave()"
+        <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()"
             style="border-radius: 16px;width: fit-content;">Send Data To LAB</button>
 
-
-    </div>
 
 </div>

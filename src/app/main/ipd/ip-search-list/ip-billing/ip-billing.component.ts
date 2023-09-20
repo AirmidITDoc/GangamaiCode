@@ -18,6 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatAccordion } from '@angular/material/expansion';
 import * as converter from 'number-to-words';
+import { InterimBillComponent } from '../interim-bill/interim-bill.component';
 
 
 @Component({
@@ -158,7 +159,6 @@ export class IPBillingComponent implements OnInit {
   printTemplate: any;
   ConcessionId: any;
 
-
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -208,13 +208,22 @@ export class IPBillingComponent implements OnInit {
     //  this.getIPBillinginformation();
     this.getCashCounterComboList();
     this.getConcessionReasonList();
-    this.drawer.toggle();
+    // this.drawer.toggle();
 
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterDoctor();
       });
+
+      if (this.selectedAdvanceObj.IsDischarged) {
+        this.Ipbillform.get('GenerateBill').enable();
+        this.Ipbillform.get('GenerateBill').setValue(true);
+      }
+      else {
+        this.Ipbillform.get('GenerateBill').disable();
+        this.Ipbillform.get('GenerateBill').setValue(false);
+      }
   }
 
 
@@ -421,15 +430,17 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  getDatewiseChargesList() {
+  getDatewiseChargesList(param) {
+    console.log(param);
     this.chargeslist = [];
     this.dataSource.data = [];
-    this.selectDate = this.datePipe.transform(this.Ipbillform.get("ChargeDate").value, "mm/dd/YYYY") || this.dateTimeObj.date;
-    console.log(this.selectDate);
-
+    // console.log(this.datePipe.transform(this.Ipbillform.get("ChargeDate")), "mm/dd/YYYY");
+    // console.log(this.datePipe.transform(param, "MM-dd-yyyy"));
+    // this.selectDate = this.datePipe.transform(param, "MM-dd-yyyy"); //this.datePipe.transform(this.Ipbillform.get("ChargeDate").value, "mm/dd/YYYY") || this.dateTimeObj.date;
+    // console.log(this.selectDate);
     this.isLoadingStr = 'loading';
-    // let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.selectDate +"' Order by Chargesid"
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='22/06/2022' Order by Chargesid"
+    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "MM-dd-yyyy") +"' Order by Chargesid"
+    //let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='22/06/2022' Order by Chargesid"
     console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
@@ -620,8 +631,6 @@ debugger
   }
 
   getInterimData() {
-   
-
     if (this.interimArray.length > 0 && this.netPaybleAmt > 0) {
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
@@ -650,14 +659,13 @@ debugger
       this.advanceDataStored.storage = new Bill(xx);
 
       console.log('this.interimArray==', this.interimArray);
-      //  this._matDialog.open(InterimComponent,
-      //    {
-      //      maxWidth: "85vw",
-      //      //maxHeight: "65vh",
-      //      width: '100%', height: "400px",
-      //      data: this.interimArray
-
-      //    });
+       this._matDialog.open(InterimBillComponent,
+         {
+           maxWidth: "85vw",
+           //maxHeight: "65vh",
+           width: '100%', height: "400px",
+           data: this.interimArray
+         });
     }
   }
 
@@ -1017,7 +1025,7 @@ debugger
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['AdvanceAmount'] =0// this.FinalAmountpay,//this.netPaybleAmt;
-        PatientHeaderObj['NetPayAmount'] =  this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['NetPayAmount'] =  this.Ipbillform.get('FinalAmount').value;
 
       //
      
@@ -1530,7 +1538,6 @@ debugger
   // }
 
   deleteTableRow(element) {
-    debugger;
     // console.log(element.ChargesId);
     // var m_data= {
     //   "G_ChargesId":element.ChargesId,
@@ -1728,8 +1735,8 @@ debugger
 
 
 
-  showAllFilter(event) {
-    console.log(event.value);
+  showAllFilter(event: any) {
+    console.log(event);
     this.isFilteredDateDisabled = event.value;
   }
 
@@ -1947,7 +1954,6 @@ debugger
           if (result.isConfirmed) {
             this.SaveBill();
           }
-
         })
 
       }

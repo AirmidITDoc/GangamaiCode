@@ -551,6 +551,11 @@ export class BrowseOPBillComponent implements OnInit {
     `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
+    if(this.reportPrintObjList.length > 0) {
+      if(this.reportPrintObjList[0].BalanceAmt === 0) {
+        popupWin.document.getElementById('idBalAmt').style.display = 'none';
+      }
+    }
     popupWin.document.close();
   }
 

@@ -263,7 +263,8 @@ export class IPSearchListComponent implements OnInit {
 
 
   getAdmittedPatientList() {
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value) {
+    debugger;
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
@@ -272,7 +273,7 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": "0",
+        "Admtd_Dschrgd_All": "0", //this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
@@ -292,7 +293,6 @@ export class IPSearchListComponent implements OnInit {
       }, 1000);
     }
     else {
-
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
@@ -301,7 +301,7 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": "1",
+        "Admtd_Dschrgd_All": "1", // this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
@@ -566,9 +566,6 @@ export class IPSearchListComponent implements OnInit {
       });
     }
     else if (m == "Bill") {
-
-      debugger;
-      // console.log(m);
       console.log(" This is for  Bill pop : " + m);
       let xx = {
         RegNo: contact.RegNo,
@@ -589,13 +586,11 @@ export class IPSearchListComponent implements OnInit {
         UnitId: contact.HospitalID
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      console.log(this.advanceDataStored.storage);
+      // console.log(this.advanceDataStored.storage);
       if (!contact.IsBillGenerated) {
-
-        console.log(this.advanceDataStored.storage);
+        // console.log(this.advanceDataStored.storage);
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
-
             maxWidth: "100vw",
             height: '890px',    //maxHeight: "170vh",
             // width: '100%',
@@ -607,7 +602,6 @@ export class IPSearchListComponent implements OnInit {
       } else { Swal.fire("Final Bill Already Generated") }
     }
     else if (m == "Discharge") {
-      debugger;
       if (!contact.IsDischarged) {
         let m_data = {
           "RegNo": contact.RegNo,
@@ -626,8 +620,8 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "95vw",
-            height: '400px',
+            maxWidth: "85vw",
+            height: '500px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -905,22 +899,22 @@ export class IPSearchListComponent implements OnInit {
 
 
 
-  onShow(event: MouseEvent) {
-    debugger;
-    //  console.log(this.IsDischarge);
+  // onShow(event: MouseEvent) {
+  //   debugger;
+  //   //  console.log(this.IsDischarge);
 
-    this.click = !this.click;
-    setTimeout(() => {
-      {
-        this.sIsLoading = 'loading-data';
-        console.log(this._IpSearchListService.myFilterform);
-        this.showClicked.emit(this._IpSearchListService.myFilterform);
-        this.click = false;
-      }
-    }, 1000);
-    this.MouseEvent = true;
+  //   this.click = !this.click;
+  //   setTimeout(() => {
+  //     {
+  //       this.sIsLoading = 'loading-data';
+  //       console.log(this._IpSearchListService.myFilterform);
+  //       this.showClicked.emit(this._IpSearchListService.myFilterform);
+  //       this.click = false;
+  //     }
+  //   }, 1000);
+  //   this.MouseEvent = true;
 
-  }
+  // }
 
 
   onClear() {
@@ -983,62 +977,40 @@ export class IPSearchListComponent implements OnInit {
   }
 
   getAdmittedDoctorCombo() {
-    debugger;
     this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
-      console.log(data);
       this.filtereddoctor.next(this.doctorNameCmbList.slice());
     });
   }
 
 
-  Listdisplay() {
-    this.click = !this.click;
-    setTimeout(() => {
-      {
-        this.sIsLoading = 'loading-data';
-        console.log(this._IpSearchListService.myFilterform);
-        this.showClicked.emit(this._IpSearchListService.myFilterform);
-        this.click = false;
-      }
-    }, 1000);
-    this.MouseEvent = true;
-  }
+  // Listdisplay() {
+  //   this.click = !this.click;
+  //   setTimeout(() => {
+  //     {
+  //       this.sIsLoading = 'loading-data';
+  //       console.log(this._IpSearchListService.myFilterform);
+  //       this.showClicked.emit(this._IpSearchListService.myFilterform);
+  //       this.click = false;
+  //     }
+  //   }, 1000);
+  //   this.MouseEvent = true;
+  // }
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
     console.log(SiderOption);
-    debugger;
     this.IsDischarge = SiderOption.checked;
-    // console.log(this.IsDischarge);
-
+    console.log(this.IsDischarge);
     if (SiderOption.checked == true) {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
-      // this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());
-      // this._IpSearchListService.myFilterform.get('end').setValue((new Date()).toISOString());
-      setTimeout(() => {
-        {
-          this.sIsLoading = 'loading-data';
-          console.log(this._IpSearchListService.myFilterform);
-          this.showClicked.emit(this._IpSearchListService.myFilterform);
-          this.click = false;
-        }
-      }, 1000);
-      this.MouseEvent = true;
+      this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());
+      this._IpSearchListService.myFilterform.get('end').setValue((new Date()).toISOString());
     }
     else {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(0);
-      // this._IpSearchListService.myFilterform.get('start').setValue(''),
-      // this._IpSearchListService.myFilterform.get('end').setValue('')
-
-      setTimeout(() => {
-        {
-          this.sIsLoading = 'loading-data';
-          console.log(this._IpSearchListService.myFilterform);
-          this.showClicked.emit(this._IpSearchListService.myFilterform);
-          this.click = false;
-        }
-      }, 1000);
+      this._IpSearchListService.myFilterform.get('start').setValue(''),
+      this._IpSearchListService.myFilterform.get('end').setValue('')
     }
   }
 }

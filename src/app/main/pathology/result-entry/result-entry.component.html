@@ -59,7 +59,7 @@
                         <!-- / SIDEBAR HEADER -->
 
                         <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                        <div class="content py-16 pl-10 p-12">
                             <div class="nav material2">
                                 <form [formGroup]="_SampleService.myformSearch">
                                     <div fxLayout="column" fxLayoutAlign="start none">
@@ -371,7 +371,7 @@
                                             <mat-radio-group name="StatusSearch" formControlName="TestStatusSearch"
                                                 value='2' fxLayoutAlign="center center"
                                                 style="float:left;font-size: x-large;">
-                                                <mat-radio-button value='1' (change)="SearchTest($event)"
+                                                <mat-radio-button value='1' (selectionChange)="SearchTest($event)"
                                                     style="font-size:30px;">Pending</mat-radio-button>
                                                 <mat-radio-button value='0' (change)="SearchTest($event)">Completed
                                                 </mat-radio-button>

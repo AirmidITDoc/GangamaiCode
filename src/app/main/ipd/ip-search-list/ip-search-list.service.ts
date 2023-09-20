@@ -510,16 +510,10 @@ constructor(public _httpClient:HttpClient,
   {
     return this._httpClient.post("Generic/GetByProc?procName=rptInv_StoreWPurchase_Range", params)
   }
-  
-
   // 
   public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
   }  
-
-
-
-  
 
   public getDischargedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)

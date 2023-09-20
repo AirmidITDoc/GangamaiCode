@@ -53,7 +53,7 @@
 
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" style="width:90%;">
-                        <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="ServiceId" matInput
+                        <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name" matInput
                             [matAutocomplete]="auto" (input)="getServiceListCombobox()" required>
 
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true"
@@ -226,22 +226,17 @@
                    </div> -->
                         <!-- (change)="khhhh = $event.checked" -->
                         <div class="filter-div" style="display: flex; align-items: center;">
-                            <mat-checkbox [(ngModel)]="isFilteredDateDisabled" (change)="getDatewiseChargesList()"
-                                aria-label="Remember Me" style="margin-right: 20px;">
+                            <mat-checkbox (change)="showAllFilter($event.value)" [(ngModel)]="isFilteredDateDisabled" aria-label="Remember Me" style="margin-right: 20px;">
                                 Show All Charges
                             </mat-checkbox>
                             <div>
                                 <form [formGroup]="Ipbillform">
-
-                                    <!-- (dateChange)="onChangeDateofBirth($event.value)" -->
-                                 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Choose date</mat-label>
                                         <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
-                                         [value]="currentDate" [readonly]="true">
+                                        (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate" [readonly]="true">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                          
                                       </mat-form-field>
                                 </form>
                             </div>
@@ -317,21 +312,22 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
+                                    {{contact.ConcessionPercentage}}
+                                    <!-- <mat-form-field appearance="legacy">
                                         <input matInput [(ngModel)]="contact.ConcessionPercentage"
                                             (keyup)="getDiscAmount(contact)">
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                 </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="DiscAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
+                                    {{contact.ConcessionAmount | currency:'INR' }}
+                                    <!-- <mat-form-field appearance="legacy">
                                         <input matInput [(ngModel)]="contact.DiscAmt" (keyup)="getDiscValue(contact)">
                                         <span matPrefix>₹</span>
-                                    </mat-form-field>
-
+                                    </mat-form-field> -->
                                 </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="NetAmount">
@@ -510,13 +506,15 @@
 
                                 <div style="text-align: right;margin-left:800px;">
 
-                                    <mat-checkbox aria-label="Remember Me" formControlName="GenerateBill"
-                                        (checked)=false>
+                                    <mat-checkbox formControlName="GenerateBill" (checked)=false>
                                         Generate Bill
                                     </mat-checkbox>
 
-                                    <button class="next-btn" (click)="onSaveDraft()"  [disabled]="Ipbillform.invalid"
-                                        style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button>
+                                    <!-- <button class="next-btn" (click)="getInterimData()"  [disabled]="Ipbillform.invalid"
+                                        style="border-radius: 16px;width: 80px;margin-left: 50px;">Interim</button> -->
+
+                                    <button class="next-btn" (click)="getInterimData()" style="border-radius: 16px;width: 80px;">Interim</button>
+
                                     <button class="next-btn" (click)="onSave()" style="border-radius: 16px;" [disabled]="Ipbillform.invalid">
                                         Save
                                     </button>
