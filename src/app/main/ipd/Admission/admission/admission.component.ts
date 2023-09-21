@@ -1163,7 +1163,7 @@ export class AdmissionComponent implements OnInit {
 
       admissionNewInsert['isDischarged'] = 0;
       admissionNewInsert['isBillGenerated'] = 0;
-      admissionNewInsert['CompanyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionNewInsert['CompanyId'] = 0;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionNewInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionNewInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
