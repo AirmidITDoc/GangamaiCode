@@ -34,8 +34,11 @@ export class SalePopupComponent implements OnInit {
   }
 
   highlight(row: any) {
-    this.selectedRowIndex = row.position;
-    console.log(this.selectedRowIndex);
+    if(row && row.position) {
+      this.selectedRowIndex = row.position;
+      console.log(this.selectedRowIndex);
+    }
+   
   }
 
   arrowUpEvent(row: object, index: number) {
