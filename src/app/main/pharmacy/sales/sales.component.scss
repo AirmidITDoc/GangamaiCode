@@ -78,9 +78,9 @@ app-sales {
     }
 
     .mat-column-ItemName {
-      width: 790px;
-      max-width: 790px;
-      min-width: 790px;
+      width: 400px;
+      max-width: 400px;
+      min-width: 400px;
       text-align: left;
     }
     
@@ -112,9 +112,13 @@ app-sales {
   
     }
     .mat-tab-group {
-  margin-bottom: 48px;
-    
-}
+      margin-bottom: 48px;
+        
+    }
+
+    .mat-header-cell {
+      color: white !important;
+    }
 
 // .table-row:selected {
 

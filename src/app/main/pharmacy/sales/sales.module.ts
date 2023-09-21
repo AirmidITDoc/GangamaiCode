@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { SalesComponent } from './sales.component';
+import { SalePopupComponent } from './sale-popup/sale-popup.component';
 
 const routes: Routes = [
   { 
@@ -46,6 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     SalesComponent,
+    SalePopupComponent,
     
     
     
