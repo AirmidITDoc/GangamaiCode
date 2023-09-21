@@ -937,12 +937,12 @@ export class AppointmentComponent implements OnInit {
         debugger
       
         var m_data={
-          "Keyword":`${this.personalFormGroup.get('RegId').value}%`
+          "Keyword":`${this.searchFormGroup.get('RegId').value}%`
         }
-        if (this.personalFormGroup.get('RegId').value.length >= 1) {
+        if (this.searchFormGroup.get('RegId').value.length >= 1) {
           this._AppointmentSreviceService.getRegistrationList(m_data).subscribe(resData => {
             this.filteredOptions = resData;
-            // console.log(resData)
+            console.log(resData)
             if (this.filteredOptions.length == 0) {
               this.noOptionFound = true;
             } else {

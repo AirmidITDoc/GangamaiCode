@@ -332,7 +332,7 @@
                             <div fxLayout="row" style="width: 100%;">
 
                                 <mat-form-field appearance="outline"
-                                    style="width:50%;margin-left:15px;margin-right: 20px;">
+                                    style="width:40%;margin-left:15px;margin-right: 20px;">
                                     <!-- <lable>Enter RegNo for Search<lable> -->
                                     <input type="text" name="RegId" formControlName="RegId"
                                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput
@@ -348,6 +348,11 @@
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
+
+                                <span style="margin-right: 10px;color: black;font-weight: bold;">
+                                  <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                </span>
                                 <!-- </div> -->
                                 <span style="margin-left: 20px;"> Patient Name : {{PatientName}}</span>
                             </div>
@@ -667,14 +672,14 @@
               
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
                                       style="padding-bottom: 10px;">
-                                      <mat-form-field appearance="outline" fxFlex>
+                                      <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Birth date</mat-label>
                                         <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
                                           (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth"
                                           [readonly]="true">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                                      </mat-form-field>
+                                      </mat-form-field> -->
               
               
                                       <mat-form-field appearance="outline" fxFlex>
