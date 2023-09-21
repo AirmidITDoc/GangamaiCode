@@ -66,7 +66,7 @@ export class IPSearchListComponent implements OnInit {
   sIsLoading: string = '';
 
   displayedColumns = [
-    // 'IsBillGenerated',
+    'IsBillGenerated',
     'RegNo',
     'PatientName',
     'DOA',
@@ -264,19 +264,21 @@ export class IPSearchListComponent implements OnInit {
 
   getAdmittedPatientList() {
     debugger;
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
+    console.log(this._IpSearchListService.myFilterform.get("IsDischarge").value);
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value) {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
-        "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+        "From_Dt":this.datePipe.transform((new Date()).toISOString() , "MM-dd-yyyy") || "01/01/1900",
+        "To_Dt": this.datePipe.transform((new Date()).toISOString(), "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": "0", //this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
+      console.log(D_data)
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
