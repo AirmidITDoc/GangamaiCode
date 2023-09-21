@@ -385,7 +385,7 @@
 
             <div class="form-div">
 
-              <div style="padding-top: 15px;padding-left: 20px;">
+              <div style="padding-top: 15px;padding-left:25px;">
 
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                   <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
@@ -394,7 +394,7 @@
                       &nbsp;&nbsp;
                       <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                         (change)="onChangeReg($event)">
-                        <mat-radio-button value="registration" style="margin-bottom: 7px;">New
+                        <mat-radio-button value="registration" style="padding-left:25px;margin-bottom: 7px;">New
                           Registration
                         </mat-radio-button>
                         <mat-radio-button value="registrered">Registered</mat-radio-button>
@@ -1036,6 +1036,7 @@
                 </div><br>
               </div>
             </form>
+            
           </mat-tab>
           
         </mat-tab-group>
@@ -1044,6 +1045,3 @@
   </div>
 
 </div>
-
-<!-- </div>
-</div> -->

@@ -1,6 +1,6 @@
 app-sales-return {
     .table1 {
-      height: 600px !important;
+      height: 300px !important;
       width: 1700px;
     }
 
@@ -9,6 +9,11 @@ app-sales-return {
       width: 2000px;
     }
   
+    .table3 {
+      height: 100px !important;
+      width: 100%;
+    }
+
     .mat-header-row {
       width:200;
       //max-width: 1600px;

@@ -789,9 +789,10 @@
 
                                         </div><br>
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <div class="table-footer">
+                                             <div class="net-amt">
 
-                                            <mat-radio-group name="Status" formControlName="Status" fxFlex="25%"
+                                                <mat-radio-group name="Status" formControlName="Status" fxFlex="25%"
                                                 value="false">
                                                 <mat-radio-button value="true" class="mr-sm-12">Before Disc &
                                                     Tax</mat-radio-button>
@@ -799,26 +800,22 @@
                                                     Tax</mat-radio-button>
                                             </mat-radio-group>
 
-                                            <mat-form-field appearance="outline" fxFlex="6%" >
-                                                <mat-label>Total Disc Amt : ₹ </mat-label>
-                                                <input matInput [(ngModel)]="Dis" name="Dis"
-                                                (keyup)="calculateDiscAmount()" formControlName="Dis"
-                                                id="Dis">
-                                            </mat-form-field>&nbsp;&nbsp;
-                                            
-                                            <mat-form-field appearance="outline" fxFlex="6%">
-                                                <mat-label> Total GST Amt : ₹</mat-label>
-                                                <input matInput [(ngModel)]="GSTAmount" name="GSTAmount"
-                                                readonly formControlName="GSTAmount">  
-                                            </mat-form-field>&nbsp;&nbsp;
+                                                <span class="net-amt-label" style="font-weight:bold;">Total Disc Amt: </span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceDisc(getItemNameList)
+                                                    | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+                 
+                                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Total GST Amt: </span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceGST(getItemNameList) |
+                                                    currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
 
-                                            <mat-form-field appearance="outline" fxFlex="6%">
-                                                <mat-label> Total Net Amt : ₹</mat-label>
-                                                <input name="NetAmount" formControlName="NetAmount" matInput
-                                                    [(ngModel)]="NetAmount">
-                                            </mat-form-field>
-
-                                        </div><br>
+                                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
+                                                    currency:'INR' }}</span>
+                                            </div>
+                                        </div>
 
                                         <div fxLayout="row" class="right">
 

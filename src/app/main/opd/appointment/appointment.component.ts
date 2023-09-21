@@ -934,25 +934,24 @@ export class AppointmentComponent implements OnInit {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
-   getSearchList() {
-        debugger
-      
-        var m_data={
-          "Keyword":`${this.searchFormGroup.get('RegId').value}%`
-        }
-        if (this.searchFormGroup.get('RegId').value.length >= 1) {
-          this._AppointmentSreviceService.getRegistrationList(m_data).subscribe(resData => {
-            this.filteredOptions = resData;
-            console.log(resData)
-            if (this.filteredOptions.length == 0) {
-              this.noOptionFound = true;
-            } else {
-              this.noOptionFound = false;
-            }
-    
-          });
-        }
-    
+  
+    getSearchList() {
+      var m_data = {
+        "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      }
+      if (this.searchFormGroup.get('RegId').value.length >= 1) {
+        this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptions=resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+  
+        });
+      }
+  
     }
 
     getOptionText(option) {

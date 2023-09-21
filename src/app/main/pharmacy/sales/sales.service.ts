@@ -63,4 +63,8 @@ export class SalesService {
   public getItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
   }
+
+  public getBatchList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",Param);
+  }
 }

@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { SalePopupComponent } from './sale-popup/sale-popup.component';
 
 @Component({
   selector: 'app-sales',
@@ -37,6 +38,7 @@ export class SalesComponent implements OnInit {
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource= new MatTableDataSource<IndentList>();
+  saleSelectedDatasource = new MatTableDataSource<IndentList>();
 
   displayedColumns = [
     'FromStoreId',
@@ -55,6 +57,14 @@ export class SalesComponent implements OnInit {
    'IssQty',
    'Bal',
   ];
+
+  selectedSaleDisplayedCol = [
+    'ItemName',
+    'BatchNo',
+    'BatchExpDate',
+    'BalanceQty',
+    'MRP',
+   ];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -160,9 +170,9 @@ export class SalesComponent implements OnInit {
   }
 
   
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
+  onclickrow(contact){
+    Swal.fire("Row selected :" + contact)
+  }
   getIndentStoreList(){
     debugger
    
@@ -176,12 +186,33 @@ Swal.fire("Row selected :" + contact)
   onClear(){
     
   }
+
+  getBatch() {
+    const dialogRef = this._matDialog.open(SalePopupComponent,
+      {
+        maxWidth: "700px",
+        minWidth: '700px',
+        width: '700px',
+        height: '500px',
+        data: {
+          "ItemId": this._IndentID.IndentSearchGroup.get('FromStoreId').value.StoreId,
+          "StoreId": 2// this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.saleSelectedDatasource.data = [];
+      this.saleSelectedDatasource.data = [result];// as IndentList[];
+    });
+  }
 }
 
 export class IndentList {
   ItemId:any;
   ItemName: string;
-  BalanceQty:any
+  BatchNo: string;
+  BatchExpDate: any;
+  BalanceQty:any;
+  UnitMRP: any;
   Qty: number;
   IssQty:number;
   Bal:number;
@@ -196,7 +227,10 @@ export class IndentList {
     {
       this.ItemId = IndentList.ItemId || 0;
       this.ItemName = IndentList.ItemName || "";
-      this.BalanceQty = IndentList.BalanceQty || "";
+      this.BatchNo = IndentList.BatchNo || "";
+      this.BatchExpDate = IndentList.BatchExpDate || "";
+      this.UnitMRP = IndentList.UnitMRP || "";
+      this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
       this.IssQty = IndentList.IssQty || 0;
       this.Bal = IndentList.Bal|| 0;
