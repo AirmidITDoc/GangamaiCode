@@ -38,7 +38,7 @@ export class PurchaseOrderComponent implements OnInit {
   showAutocomplete = false;
   noOptionFound: boolean = false;
   chargeslist: any = [];
-  
+
   state = false;
   optionsInc = null;
   allKeysIncomings = [
@@ -130,7 +130,6 @@ export class PurchaseOrderComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
 
   }
-
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -234,6 +233,31 @@ calculateTotalAmount() {
   }
 }
 
+getAdvanceNet(element) {
+
+  let NetAmount;
+  NetAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+  this.TotalAmount = this.NetAmount;
+  return NetAmount;
+}
+
+
+getAdvanceGST(element) {
+
+  let GSTAmount;
+  GSTAmount =  Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+  this.GSTAmount;
+  return GSTAmount;
+}
+
+getAdvanceDisc(element) {
+
+  let Dis;
+  Dis = parseInt(this.Dis).toString();
+  this.Dis;
+  return Dis;
+}
+
 calculateDiscAmount() {
   if (this.Dis) {
     this.DiscAmount = parseInt(this.Dis).toString();
@@ -334,7 +358,7 @@ getItemNameList(){
 getSelectedObj(obj) {
   this.ItemID=obj.ItemID;
   this.ItemName = obj.ItemName;
-  this.Qty = 32//obj.BalQty;
+  this.Qty = obj.Qty;
   this.UOM = obj.UOM;
   this.Rate = obj.Rate;
   this.TotalAmount = obj.TotalAmount;
