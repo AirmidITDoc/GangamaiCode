@@ -340,6 +340,11 @@
                         Required field cannot be left blank
                       </mat-error>
                     </mat-form-field>
+
+                    <span style="color: black;font-weight: bold;color: black;">
+                        <app-common-date [screenFrom]="screenFromString" style="float:right"
+                          (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </span>
                   </div>
 
 
