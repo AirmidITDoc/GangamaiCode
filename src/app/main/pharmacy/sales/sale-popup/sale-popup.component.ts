@@ -23,7 +23,7 @@ export class SalePopupComponent implements OnInit {
   ];;
   isLoadingStr: string = '';
   dataSource = new MatTableDataSource<SalesList>();
-  selectedRowIndex: any;
+  selectedRowIndex: number = 0;
   constructor(
     private dialogRef: MatDialogRef<SalePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,7 +36,7 @@ export class SalePopupComponent implements OnInit {
   highlight(row: any) {
     if(row && row.position) {
       this.selectedRowIndex = row.position;
-      console.log(this.selectedRowIndex);
+      // console.log(this.selectedRowIndex);
     }
    
   }
@@ -53,6 +53,9 @@ export class SalePopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSalesData();
+    setTimeout(() => {
+      document.getElementById('ele-1').focus();
+    }, 1000);
   }
 
   getSalesData() {
@@ -67,15 +70,21 @@ export class SalePopupComponent implements OnInit {
           element['position'] = index + 1;
         });
         this.dataSource.data = res as SalesList[];
-        console.log(this.dataSource);
+        this.highlight(this.dataSource.data[0]);
       } else {
         this.isLoadingStr = 'no-data';
       }
     });
   }
 
-  selectedRow(element: SalesList) {
-    this.dialogRef.close(element);
+  selectedRow(index?: number, ele?: SalesList) {
+    let selectedData;
+    if(index) {
+      selectedData = this.dataSource.data[index-1];
+    } else if(ele) {
+      selectedData = ele;
+    }
+    this.dialogRef.close(selectedData);
   }
 
 }
