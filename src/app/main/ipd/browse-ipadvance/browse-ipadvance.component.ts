@@ -75,7 +75,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
       this.printTemplate = resData[0].TempDesign;
      
        let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
-       'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','TariffName'];// resData[0].TempKeys;
+       'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','NEFTPayAmount','PayTMAmount','TariffName'];// resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
@@ -248,6 +248,19 @@ export class ReportPrintObj {
   AdvanceAmount: any;
   TariffName:any;
   AdmissionDate:any;
+  TransactionType:number;
+  PayDate:Date;
+  PaidAmount: number;
+  NEFTPayAmount:number;
+  PayTMAmount: number;
+  CardNo: any;
+  CardBankName:any;
+  ChequeNo:any;
+  PaymentDate: any;
+    CashPayAmount : number;
+    ChequePayAmount : number;
+    CardPayAmount : number;
+    AdvanceUsedAmount: number;
 }
 
 

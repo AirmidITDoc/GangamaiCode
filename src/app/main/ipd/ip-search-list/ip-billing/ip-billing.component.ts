@@ -1390,11 +1390,10 @@ debugger
         if (response) {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              console.log(response)
-              console.log(result)
+            
               this._matDialog.closeAll();
 
-              //  this.getPrintDraft(response);
+               this.getPrintDraft(response);
             }
           });
             //  this.deleteTableRow(this.dataSource.data);
@@ -1693,7 +1692,7 @@ debugger
   getPrintDraft(el) {
     // 10528:
         var D_data = {
-      "AdmissionID":  el
+      "AdmissionID": 10528// el
     }
     console.log(D_data);
 
