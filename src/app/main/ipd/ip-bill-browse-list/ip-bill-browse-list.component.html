@@ -336,33 +336,54 @@
                                 </mat-cell>
                             </ng-container> -->
 
-                                    <ng-container matColumnDef="action" stickyEnd>
+                                    <!-- <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <!-- <button mat-icon-button (click)="Billpayment(contact)">
-                                            <mat-icon>payment</mat-icon>
-                                        </button> -->
-                                            <!-- <button mat-icon-button matTooltip="Summary Bill Print"
-                                            (click)="getSummaryFinalBillPrint(contact)">
-                                            <mat-icon>print</mat-icon>
-                                        </button> -->
+                                         
                                             <button mat-icon-button (click)="getPrint(contact)"
                                                 matTooltip="Detail Bill Print">
                                                 <mat-icon>print</mat-icon>
                                             </button>
-                                            <button mat-icon-button class="material-icons" (click)="getPrint1(contact)"
-                                                matTooltip="Email">
+                                            <button mat-icon-button class="material-icons" (click)="getPrintDatewise(contact)"
+                                                matTooltip="Date wise">
                                                 <mat-icon>email</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button matTooltip="Report Delete"><mat-icon>delete</mat-icon></button>     -->
+                                            <button mat-icon-button matTooltip="Report Delete"><mat-icon>delete</mat-icon></button>    
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'SMS')" matTooltip="Message">
                                                 <mat-icon> message </mat-icon>
                                             </button>
 
                                         </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="buttons" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef
+                                            class="table-actions">Action</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <div fxFlex="row" fxLayoutAlign="center center">
+                                                <button mat-icon-button (click)="SubMenu(contact)">
+                                                    <mat-icon title="Add SubMenu"
+                                                        style="color: blue;">add_circle_outline</mat-icon>
+                                                </button>
+                                                <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
+                                                    aria-label="More" (click)="$event.stopPropagation();">
+                                                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                                                </button>
+                                                <mat-menu #moreMenu="matMenu">
+                                                    <ng-container *ngFor="let m of menuActions, let i=index">
+                                                        <!-- <button mat-icon-button (click)="onEdit(row)"><mat-icon title="Edit Menu">launch</mat-icon></button> -->
+                                                        <button mat-menu-item aria-label="remove"
+                                                            (click)="getRecord(contact,m)">
+                                                            <span>{{m}}</span>
+                                                        </button>
+                                                    </ng-container>
+                                                </mat-menu>
+                                            </div>
+                                        </mat-cell>
                                     </ng-container>
+
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">

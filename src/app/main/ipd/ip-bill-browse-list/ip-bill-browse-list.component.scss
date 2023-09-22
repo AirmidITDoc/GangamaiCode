@@ -256,29 +256,24 @@ app-ip-bill-browse-list{
     text-align: center;
     justify-content:center;
 }
-.mat-column-action {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
-    text-align: center;
-    justify-content:center;
+
+.mat-column-buttons {
+    color: white !important;
+    width:70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align:left;
+    justify-content:left;
 }
 
-.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width: 30px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
-}
-.mat-menu-item {
-    line-height: 25px;
-    height: 25px;
-    padding: 0px 5px;
-    text-align: left;
-    justify-content:center;
+.mat-column-action {
+    // color: white !important;
+    width:50px;
+    max-width: 50px;
+    min-width: 50px;
+    min-height: 25px;     
+    text-align:left;
+    justify-content:left;
 }
 
 .red-color {
