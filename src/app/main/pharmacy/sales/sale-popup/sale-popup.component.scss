@@ -9,9 +9,9 @@
 .mat-table {
     .mat-row {
         cursor: pointer;
-        &:hover {
-            background: white !important;
-        }
+        // &:hover {
+        //     background: white !important;
+        // }
     }
     .mat-header-cell {
         color: white !important;

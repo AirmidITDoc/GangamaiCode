@@ -194,6 +194,7 @@ export class SalesComponent implements OnInit {
         minWidth: '700px',
         width: '700px',
         height: '500px',
+        disableClose: true,
         data: {
           "ItemId": this._IndentID.IndentSearchGroup.get('FromStoreId').value.StoreId,
           "StoreId": 2// this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId

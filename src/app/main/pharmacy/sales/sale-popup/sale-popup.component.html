@@ -48,11 +48,11 @@
     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
         [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        (click)="highlight(row, i)"
+        (click)="selectedRow('', row)"
         tabindex="999"
         (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
         (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)"
-        (keyup.enter)="selectedRow(row)"></mat-row>
+        (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
     <mat-footer-row *matFooterRowDef="['noData']"
         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
