@@ -34,7 +34,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
-
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 const routes: Routes = [
   {
@@ -86,7 +86,8 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatDatepickerModule,
-        MatSliderModule
+        MatSliderModule,
+        MatButtonToggleModule
        
       ],
       providers: [

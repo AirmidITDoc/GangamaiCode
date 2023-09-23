@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts"  class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <mat-toolbar class="accent"
         style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
         <div fxLayout="row">
@@ -13,28 +13,21 @@
                 Clinical Care Chart
             </span>
         </div>
-
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-right:20px;">
-            <button mat-raised-button (click)="newCreateUser()">
-                <mat-icon color="warn" title="New User">how_to_reg</mat-icon>
-            </button>
-        </div>
     </mat-toolbar>
 
-    <div>
+    <div id="div-0">
 
         <table>
             <tr>
-             <td><mat-label>Patient Name:</mat-label></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             
-              <td><app-common-date [screenFrom]="screenFromString"
+             <td><mat-label>Patient Name:</mat-label></td>             
+              <td><app-common-date  class="button1" [screenFrom]="screenFromString"
                 (dateTimeEventEmitter)="getDateTime($event)">
                </app-common-date>
               </td>
             </tr>
             <tr>
-            <td><mat-label>MR No:</mat-label></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <td><app-common-date [screenFrom]="screenFromString"
+            <td><mat-label>MR No:</mat-label></td>
+              <td><app-common-date  class="button1" [screenFrom]="screenFromString"
                 (dateTimeEventEmitter)="getDateTime($event)">
                </app-common-date>
              </td>
@@ -58,20 +51,19 @@
 
             <mat-tab label="Pain Assessment">
 
-               
                 <div class="content">
-                    <div class="center " style="background-color:#ffffff;">
+                    <div class="center" style="background-color:#ffffff;">
                         <div layout="row" layout-xs="column" fxLayout="column" >
                                     <div fxFlexFill  fxLayout="column" fxLayout.gt-xs="row">
                                        
                                           <div>
-                                            <label>Assessment List </label>
+                                            <mat-label>Assessment List </mat-label>
                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                            
-                                            <label>Death Rate =</label>
+                                            <mat-label>Death Rate =</mat-label>
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Daily Weight </mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                                <input  name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
                                             </mat-form-field>   
                                           </div>
                                          </div>
@@ -83,14 +75,12 @@
                 <div class="table8">
                 <section  tabindex="0">
                     <table mat-table [dataSource]="dataSource8">
-
                         
                         <ng-container matColumnDef="GivenDate" sticky>
                             <th mat-header-cell *matHeaderCellDef> Given Date </th>
                             <td mat-cell *matCellDef="let element"> {{element.GivenDate}} </td>
                         </ng-container>
 
-                
                         <ng-container matColumnDef="GivenTime">
                             <th mat-header-cell *matHeaderCellDef> Given Time </th>
                             <td mat-cell *matCellDef="let element"> {{element.GivenTime}} </td>
@@ -122,21 +112,26 @@
                         <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
                     </table>
                     </section>
-                    </div>
+                    </div><br>
           
-                    <div class="img">
-                        <label > Patient Pain Assessment</label><br><br>
-                        <img src="assets/images/logos/pain.jpeg" width="50%" height="350%"><br>
+                    <mat-label class="slider" > Patient Pain Assessment</mat-label>
 
-                          <mat-slider >
+                    <div class="img" >
+                        <img src="assets/images/logos/pain.jpeg" width="50%" height="350%">
+                    </div>
+                  
+                    <div class="slider">
+                        <mat-slider  min="0" max="100000" step="1000" showTickMarks discrete [displayWith]="formatLabel">
                             <input matSliderThumb>
                           </mat-slider>
                     </div>
+                   
+                    <div class="button">
+                        <button mat-raised-button fxFlex="35%" (click)="($event)">Reporte Medication Error </button>&nbsp;&nbsp;
+                        <button mat-raised-button fxFlex="20%" (click)="($event)">Phlebits</button>&nbsp;&nbsp;
+                        <button mat-raised-button fxFlex="40%" (click)="($event)">Initial Nursing Assessment</button>&nbsp;&nbsp;
+                    </div>
                   
-
-                <button mat-raised-button fxFlex="15%" (click)="($event)">Reporte Medication Error </button>
-                <button mat-raised-button fxFlex="15%" (click)="($event)">Phlebits</button>
-                <button mat-raised-button fxFlex="15%" (click)="($event)">Initial Nursing Assessment</button>
               
             </mat-tab>
 
@@ -257,23 +252,23 @@
                         <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Temperature(F)</mat-label>
-                                <input name="Temperature" formControlName="Temperature" matInput (click)="getIndentID()">
+                                <input name="Temperature" formControlName="Temperature" matInput>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Pulse</mat-label>
-                                <input name="Pulse" formControlName="Pulse" matInput (click)="getIndentID()">
+                                <input name="Pulse" formControlName="Pulse" matInput >
                             </mat-form-field>
 
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Respiration</mat-label>
-                                <input name="Respiration" formControlName="Respiration" matInput  (click)="getIndentID()">
+                                <input name="Respiration" formControlName="Respiration" matInput >
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Blood Pressure</mat-label>
-                                <input name="Blood_Pressure" formControlName="Blood_Pressure" matInput  (click)="getIndentID()">
+                                <input name="Blood_Pressure" formControlName="Blood_Pressure" matInput  >
                             </mat-form-field>
 
                         </div><br>
@@ -311,12 +306,12 @@
                                         <input name="Pressure_Reading" formControlName="Pressure_Reading" matInput>
                                     </mat-form-field>
 
-                                    <section class="example-section" fxFlex>
-                                        <mat-checkbox class="example-margin" formControlName="Oral" [(ngModel)]="Oral">Oral</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <mat-checkbox class="example-margin" formControlName="ETT"  [(ngModel)]="ETT">ETT</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <mat-checkbox class="example-margin" formControlName="Tracheostomy" [(ngModel)]="Tracheostomy">Tracheostomy</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <mat-checkbox class="example-margin" formControlName="Nasal" [(ngModel)]="Nasal">Nasal</mat-checkbox>
-                                    </section>
+                                    <section class="example-section">
+                                        <mat-checkbox formControlName="Oral">Oral</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox formControlName="ETT">ETT</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox formControlName="Tracheostomy">Tracheostomy</mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-checkbox formControlName="Nasal">Nasal</mat-checkbox>
+                                     </section>
 
                                 
                                 </div>
@@ -506,18 +501,18 @@
                             <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>BSL</mat-label>
-                                    <input name="BSL" formControlName="BSL" matInput (click)="getIndentID()">
+                                    <input name="BSL" formControlName="BSL" matInput>
                                 </mat-form-field>
     
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Urine Sugar</mat-label>
-                                    <input name="Urine_Sugar" formControlName="Urine_Sugar" matInput (click)="getIndentID()">
+                                    <input name="Urine_Sugar" formControlName="Urine_Sugar" matInput >
                                 </mat-form-field>
     
     
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Urine Ketone</mat-label>
-                                    <input name="Urine_Sugar" formControlName="Respiration" matInput  (click)="getIndentID()">
+                                    <input name="Urine_Sugar" formControlName="Respiration" matInput >
                                 </mat-form-field>
     
                             </div><br>
@@ -535,7 +530,7 @@
                                             <mat-label>Intake Mode</mat-label>
                                             <mat-select   formControlName="Intake_Mode" required >
                                                 <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of StoreList"   [value]="m">
+                                                <mat-option *ngFor="let m of"   [value]="m">
                                                     {{m.StoreName}}
                                                 </mat-option>
                                             </mat-select>
@@ -548,12 +543,12 @@
                                     </div>
     
 
-                                   <Mat-label>To Be Filled By RMO : </Mat-label>
+                                   <mat-label>To Be Filled By RMO : </mat-label>
                                     <hr>
     
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                        
-                                        <Mat-label>Doctor / Consultant Info : </Mat-label>&nbsp;&nbsp;
+                                        <mat-label>Doctor / Consultant Info : </mat-label>&nbsp;&nbsp;
                 
                                         <hr>
                                         <mat-form-field appearance="outline" fxFlex="33%">
@@ -567,7 +562,7 @@
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                        
-                                        <Mat-label>Injection / Tablet: </Mat-label>&nbsp;&nbsp;
+                                        <mat-label>Injection / Tablet: </mat-label>&nbsp;&nbsp;
                                         <hr>
                                         <mat-form-field appearance="outline" fxFlex="33%">
                                             <mat-label>Injection</mat-label>
@@ -581,7 +576,7 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                        
-                                        <Mat-label></Mat-label>&nbsp;&nbsp;
+                                       
                                         <hr>
                                         <mat-form-field appearance="outline" fxFlex="33%">
                                             <mat-label>Tablet </mat-label>
@@ -619,7 +614,7 @@
                                     <mat-label>Mode</mat-label>
                                     <mat-select   formControlName="Mode" required >
                                         <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of StoreList"   [value]="m">
+                                        <mat-option *ngFor="let m of "   [value]="m">
                                             {{m.StoreName}}
                                         </mat-option>
                                     </mat-select>
@@ -737,8 +732,8 @@
                                         <button mat-raised-button fxFlex="7%" (click)="($event)">Ventilation Start</button>
                                     </div> 
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <button mat-raised-button  formControlName="Reset" (click)="($event)">Reset</button>
+                                    <div fxFlexFill fxLayout="column"  fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        <button mat-raised-button formControlName="Reset" (click)="($event)">Reset</button>
                                     </div>
                     
                                 </div>
@@ -1276,17 +1271,18 @@
             </mat-tab>
 
             <mat-tab label="Human Body"><br>
-             <form [formGroup]="" style="padding: 6px 6px 5px 5px;">  
+           
+                <form [formGroup]="" style="padding: 6px 6px 5px 5px;">  
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" formControlName="CVP" [(ngModel)]="CVP">Central Venous Pressure (CVP)</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin"  formControlName="ETT" [(ngModel)]="ETT">ENDOTRACHEAL TUBE (ETT)</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="RT" [(ngModel)]="RT">RT</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="RH_Intracath" [(ngModel)]="RH_Intracath">R.H Intracath</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="LH_Intracath" [(ngModel)]="LH_Intracath">L.H.Intracath</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="Foleys_Cathater" [(ngModel)]="Foleys_Cathater">Foleys Cathater</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="RL_Intracath" [(ngModel)]="RL_Intracath">R.L. Intracath</mat-checkbox><br><br>
-                    <mat-checkbox class="example-margin" formControlName="LL_Intracath"  [(ngModel)]="LL_Intracath">L.L. Intracath</mat-checkbox>
-                </section>
+                    <mat-checkbox formControlName="CVP">Central Venous Pressure (CVP)</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="ETT">ENDOTRACHEAL TUBE (ETT)</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="RT">RT</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="RH_Intracath">R.H Intracath</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="LH_Intracath">L.H.Intracath</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="Foleys_Cathater">Foleys Cathater</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="RL_Intracath">R.L. Intracath</mat-checkbox><br><br>
+                    <mat-checkbox formControlName="LL_Intracath">L.L. Intracath</mat-checkbox>
+                 </section>
              </form> 
             </mat-tab>
 
@@ -1468,7 +1464,7 @@
                             </div>
                         </form>
 
-                            <div class="table4">
+                            <div class="table5">
                                 <table mat-table  [dataSource]="dataSource6"  class="example-container1 mat-elevation-z8">
             
                                     <!--- Note that these columns can be defined in any order.
@@ -1759,35 +1755,35 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="20%">
                                         <section class="example-section">
-                                            <label class="example-margin">Eye Opening Response:</label>
+                                            <mat-label class="example-margin">Eye Opening Response:</mat-label>
                                             <mat-radio-group [(ngModel)]="labelPosition"><br>
-                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before">Pain(2)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="after1">  Verbal Stimuli(3)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before2">Spontaneous(4)</mat-radio-button>
+                                            <mat-radio-button  formControlName="None"        class="example-margin" value="None">None(1)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Pain"        class="example-margin" value="Pain">Pain(2)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Verbal"      class="example-margin" value="Verbal">  Verbal Stimuli(3)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Spontaneous" class="example-margin" value="Spontaneous">Spontaneous(4)</mat-radio-button>
                                             </mat-radio-group>
                                         </section>
 
                                         <section class="example-section">
-                                            <label class="example-margin">Verbal Response:</label>
+                                            <mat-label class="example-margin">Verbal Response:</mat-label>
                                             <mat-radio-group [(ngModel)]="labelPosition"><br>
-                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before">Incoherent (2)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="after1"> Inappropriate Words (3)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before2">Confused (4)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before2">Oriented (5)</mat-radio-button>
+                                            <mat-radio-button  formControlName="None1"         class="example-margin" value="None1">None(1)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Incoherent"    class="example-margin" value="Incoherent">Incoherent (2)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Inappropriate" class="example-margin" value="Inappropriate"> Inappropriate Words (3)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Confused"      class="example-margin" value="Confused">Confused (4)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Oriented"      class="example-margin" value="Oriented">Oriented (5)</mat-radio-button>
                                             </mat-radio-group>
                                         </section>
 
                                         <section class="example-section">
-                                            <label class="example-margin">Motor Response:</label>
+                                            <mat-label class="example-margin">Motor Response:</mat-label>
                                             <mat-radio-group [(ngModel)]="labelPosition"><br>
-                                            <mat-radio-button class="example-margin" value="after">None(1)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before">Extension To Pain or Decerebrate (2)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="after1">Flexion To Pain Or Decorticate (3)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before2">Withdraws From Pain (4)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="befor3">Localizes Pain (5)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="befor42">Obeys Commands (6)</mat-radio-button>
+                                            <mat-radio-button  formControlName="None2"      class="example-margin" value="None2">None(1)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Extension"  class="example-margin" value="Extension">Extension To Pain or Decerebrate (2)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Flexion"    class="example-margin" value="Flexion">Flexion To Pain Or Decorticate (3)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Withdraws"  class="example-margin" value="Withdraws">Withdraws From Pain (4)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Localizes"  class="example-margin" value="Localizes">Localizes Pain (5)</mat-radio-button><br>
+                                            <mat-radio-button  formControlName="Obeys"      class="example-margin" value="Obeys">Obeys Commands (6)</mat-radio-button>
                                             </mat-radio-group>
                                         </section>
 
@@ -1809,53 +1805,54 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10%">
                                         <section class="example-section">
-                                            <label class="example-margin">Chronic Health Points:</label>
+                                            <mat-label class="example-margin">Chronic Health Points:</mat-label>
                                             <p>If the patient has a history of severe order system insufficiency or is immunocompromised assign points as following :</p>
                                             <mat-radio-group [(ngModel)]="labelPosition">
-                                            <mat-radio-button class="example-margin" value="after">For Elective Postoperative Patients (2)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="before">For Non Operation / Emergency (5)</mat-radio-button><br>
-                                            <mat-radio-button class="example-margin" value="after1">None (0)</mat-radio-button><br>
+                                            <mat-radio-button formControlName="For_Elective" class="example-margin" value="after">For Elective Postoperative Patients (2)</mat-radio-button><br>
+                                            <mat-radio-button formControlName="For_Non" class="example-margin" value="before">For Non Operation / Emergency (5)</mat-radio-button><br>
+                                            <mat-radio-button formControlName="None0" class="example-margin" value="after1">None (0)</mat-radio-button><br>
                                             </mat-radio-group>
                                         </section>
                                          
                                           <div>
-                                            <label>Total GCS = </label>
+                                            <mat-label>Total GCS = </mat-label>
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label> Total GCS </mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput><br>
+                                                <input name=" Total_GCS" formControlName="Total_GCS" matInput><br>
                                             </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label>Death Rate =</label>
+                                            <mat-label>Death Rate =</mat-label>
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Death Rate</mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                                <input name="Death_Rate" formControlName="Death_Rate" matInput>
                                             </mat-form-field>  
                                           </div>
                                          </div><br>
 
                                          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                            <label>Apache Score: </label>
+                                            <mat-label>Apache Score: </mat-label>
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>A</mat-label>
-                                                <input name="Bodies" formControlName="Bodies" matInput>
+                                                <input name="A" formControlName="A" matInput>
                                             </mat-form-field>+
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>B</mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                                <input name="B" formControlName="B" matInput>
                                             </mat-form-field>+
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>C</mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                                <input name="C" formControlName="C" matInput>
                                             </mat-form-field> =
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Apache Score</mat-label>
-                                                <input name="Roported_TO_RMO" formControlName="Roported_TO_RMO" matInput>
+                                                <input name="Apache_Score" formControlName="Apache_Score" matInput>
                                             </mat-form-field>  
+                                      
                                         </div>
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                             <button mat-raised-button (click)="($event)">Reset</button>
                                             <button mat-raised-button (click)="($event)">Add</button>
-                                        </div>
+                                        </div> 
 
                                 </div>
                             </div>
@@ -1871,115 +1868,93 @@
                   <div class="content">
                     <div class="center " style="background-color:#ffffff;">
                         <div layout="row" layout-xs="column" fxLayout="column">
-                         <label>Behavior Score:</label><br>
+                         <mat-label>Behavior Score:</mat-label><br>
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
-                                <section class="example-section">
-                                    <label class="example-margin">0</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked1">Playing / Appropriate</mat-checkbox>
-                                      </section>
+                               
+                                  <section class="example-section">
+                                    <mat-label class="example-margin">0</mat-label><br><br>
+                                    <mat-checkbox formControlName="Playing">Playing / Appropriate</mat-checkbox><br>
+                                  </section>
+                                  
+                                  <section class="example-section">
+                                    <mat-label class="example-margin">1</mat-label><br><br>
+                                    <mat-checkbox formControlName="Sleeping">Sleeping</mat-checkbox><br>
                                   </section>
 
                                   <section class="example-section">
-                                    <label class="example-margin">1</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked2">Sleeping</mat-checkbox>
-                                      </section>
+                                    <mat-label class="example-margin">2</mat-label><br><br>
+                                    <mat-checkbox formControlName="Irritable">Irritable</mat-checkbox><br>
                                   </section>
 
                                   <section class="example-section">
-                                    <label class="example-margin">2</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked3">Irritable</mat-checkbox>
-                                      </section>
-                                  </section>
-
-                                  <section class="example-section">
-                                    <label class="example-margin">3</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked4">Reduced Response To Pain</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked">Lethargic / Confused</mat-checkbox>
-                                      </section>
+                                    <mat-label class="example-margin">3</mat-label><br><br>
+                                    <mat-checkbox formControlName="Irritable">Reduced Response To Pain</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Lethargic">Lethargic / Confused</mat-checkbox><br>
                                   </section>
 
                             </div><br><br>
 
-                            <label>Cardiovascular Score:</label><br>
+                            <mat-label>Cardiovascular Score:</mat-label><br>
 
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" [formGroup]="" fxLayoutGap="15%">
+                            
+                                  <section class="example-section">
+                                    <mat-label class="example-margin">0</mat-label><br><br>
+                                    <mat-checkbox formControlName="Pink">Pink</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Capillary">Capillary Refill 1-2 sec</mat-checkbox><br>
+                                 </section>
+
+                                  <section class="example-section">
+                                    <mat-label class="example-margin">1</mat-label><br><br>
+                                    <mat-checkbox formControlName="Pale">Pale or Dusky</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Capillary_sec">Capillary Refill 3 sec</mat-checkbox><br>
+                                  </section>
+                          
+                                  <section class="example-section">
+                                    <mat-label class="example-margin">2</mat-label><br><br>
+                                    <mat-checkbox formControlName="Grey">Grey Or Cyanotic</mat-checkbox><br>
+                                    <mat-checkbox formControlName="CapillaryRefill">Capillary Refill 4 sec</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Tachycardia">Tachycardia of 20 Above Normal Rate</mat-checkbox><br>
+                                  </section>
+                                  
                                 <section class="example-section">
-                                    <label class="example-margin">0</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked5">Pink</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked6">Capillary Refill 1-2 sec</mat-checkbox>
-                                      </section>
-                                  </section>
-
-                                  <section class="example-section">
-                                    <label class="example-margin">1</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked7">Pale or Dusky</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked8">Capillary Refill 3 sec</mat-checkbox>
-                                      </section>
-                                  </section>
-
-                                  <section class="example-section">
-                                    <label class="example-margin">2</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked9">Grey Or Cyanotic</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked11">Capillary Refill 4 sec</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked22">Tachycardia of 20 Above Normal Rate</mat-checkbox>
-                                      </section>
-                                  </section>
-
-                                  <section class="example-section">
-                                    <label class="example-margin">3</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked33">Gray Ccyanotic and Molted</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked44">Capillary Refill 5 sec and Above</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked55">Tachycardia of 30 Above Normal Rate</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked66">Bradcardia</mat-checkbox>
-                                      </section>
-                                  </section>
-
+                                    <mat-label class="example-margin">3</mat-label><br><br>
+                                    <mat-checkbox formControlName="Gray_Ccyanotic">Gray Ccyanotic and Molted</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Capillary_Refill">Capillary Refill 5 sec and Above</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Tachycardia">Tachycardia of 30 Above Normal Rate</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Bradcardia">Bradcardia</mat-checkbox><br>
+                                </section>
                             </div><br><br>
                             
-                            <label>Respiratory Score:</label><br>
+                            <mat-label>Respiratory Score:</mat-label><br>
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15%">
+      
                                 <section class="example-section">
-                                    <label class="example-margin">0</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked77">With Normal Parameters</mat-checkbox>
-                                      </section>
-                                  </section>
+                                    <mat-label class="example-margin">0</mat-label><br><br>
+                                    <mat-checkbox formControlName="Normal_Parameters1">With Normal Parameters</mat-checkbox><br>
+                                 </section>
 
                                   <section class="example-section">
-                                    <label class="example-margin">1</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked88">> 10 Normal Parameters</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked99"> Using Accessory Muscles</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked111"> 30 + %Fio2 Or 3 + Liters / min</mat-checkbox>
-                                      </section>
+                                    <mat-label class="example-margin">1</mat-label><br><br>
+                                    <mat-checkbox formControlName="Normal_Parameters">> 10 Normal Parameters</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Using_Accessory">Using Accessory Muscles</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Liters">30 + %Fio2 Or 3 + Liters / min</mat-checkbox><br>
                                   </section>
-
+                          
                                   <section class="example-section">
-                                    <label class="example-margin">2</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked222">> 20 Normal Parameters</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked333">Retractions</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked444">40 + %Fio2 Or 6 + Liters/min</mat-checkbox>
-                                      </section>
+                                    <mat-label class="example-margin">2</mat-label><br><br>
+                                    <mat-checkbox formControlName="Parameters">> 20 Normal Parameters</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Retractions">Retractions</mat-checkbox><br>
+                                    <mat-checkbox formControlName="Liters_min">40 + %Fio2 Or 6 + Liters/min</mat-checkbox><br>
                                   </section>
-
-                                  <section class="example-section">
-                                    <label class="example-margin">3</label><br><br>
-                                    <section class="example-section">
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked555">b>= Normal Parameters With Retractions</mat-checkbox><br>
-                                        <mat-checkbox class="example-margin" [(ngModel)]="checked666">50 + %Fio2 Or 8 + Liters / min</mat-checkbox>
-                                      </section>
-                                  </section>
+                                  
+                                   <section class="example-section">
+                                        <mat-label class="example-margin">3</mat-label><br><br>
+                                        <mat-checkbox formControlName="Normal_Parameters">b>= Normal Parameters With Retractions</mat-checkbox><br>
+                                        <mat-checkbox formControlName="Liters">50 + %Fio2 Or 8 + Liters / min</mat-checkbox><br>
+                                    </section>
 
                             </div>
 
