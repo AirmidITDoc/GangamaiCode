@@ -7,6 +7,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialysisComponent implements OnInit {
 
+
+  disabled = false;
+  screenFromString = 'admission-form';
+  labelPosition: 'before' | 'after' = 'after';
+  filteredOptions:any;
+  dateTimeObj: any;
+
+  formatLabel(value: number): string {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'cvbvcbk';
+    }
+    return `${value}`;
+  }
+
+  private _fuseSidebarService: any;
+  getDateTime(dateTimeObj) {
+    // console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
+  
+  onScroll() {
+    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
+    // this.nextPage$.next();
+  }
+
   displayedColumns = [
     'Date',
     'Time',

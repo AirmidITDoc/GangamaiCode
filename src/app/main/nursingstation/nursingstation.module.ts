@@ -27,10 +27,10 @@ const approtes: Routes = [
 },
 
 
-// {
-//   path: "dialysis",
-//   loadChildren: () => import("./dialysis/dialysis.module").then((m)=>m.DialysisModule), 
-// },
+{
+  path: "dialysis",
+  loadChildren: () => import("./dialysis/dialysis.module").then((m)=>m.DialysisModule), 
+},
 // {
 //   path:"dialysissms",
 //   loadChildren: () => import("./dialysis-sms/dialysis-sms.module").then((m)=>m.DialysisSmsModule), 

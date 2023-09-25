@@ -11,6 +11,8 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -32,12 +34,14 @@ export class PurchaseOrderComponent implements OnInit {
   screenFromString = 'admission-form';
   ItemID:any=0;
   labelPosition: 'before' | 'after' = 'after';
-
+  isSupplierSelected: boolean = false;
+  isPaymentSelected : boolean = false;
   filteredOptions: any;
   ItemnameList = [];
   showAutocomplete = false;
   noOptionFound: boolean = false;
   chargeslist: any = [];
+  optionsMarital: any[] = [];
 
   state = false;
   optionsInc = null;
@@ -105,7 +109,9 @@ export class PurchaseOrderComponent implements OnInit {
   GSTAmount: any =0;
   MRP: any=0;
   selectedRowIndex: any;
-  
+  filteredoptionsSupplier: Observable<string[]>;
+  filteredoptionsPayment: Observable<string[]>;
+
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
@@ -117,10 +123,11 @@ export class PurchaseOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getItemNameList();
-    this.getToStoreSearchList();
+    this.getPaymentSearchCombo();
     this.getFromStoreSearchList();
-    this.getPurchaseOrder() 
-    this.getSupplierSearchList()
+    this.getPurchaseOrder(); 
+    this.getSupplierSearchCombo();
+    this.getToStoreSearchList();
   }
   
   getOptionText(option) {
@@ -130,6 +137,7 @@ export class PurchaseOrderComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
 
   }
+
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -149,7 +157,7 @@ export class PurchaseOrderComponent implements OnInit {
        "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "IsVerify": 0 ,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('Supplier_Id').value.Supplier_Id || 0,
+       "SupplierId": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
       this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
@@ -241,7 +249,6 @@ getAdvanceNet(element) {
   return NetAmount;
 }
 
-
 getAdvanceGST(element) {
 
   let GSTAmount;
@@ -321,10 +328,62 @@ getToStoreSearchList() {
   });
 }
 
-getSupplierSearchList() {
+// getSupplierSearchList() {
+//   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
+//     this.SupplierList = data;
+//   });
+// }
+
+getOptionTextSupplier(option) {
+  return option && option.SupplierName ? option.SupplierName : '';
+
+}
+
+getOptionTextPayment(option) {
+  return option && option.StoreName ? option.StoreName : '';
+
+}
+
+getSupplierSearchCombo() {
+debugger
   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
     this.SupplierList = data;
+    console.log(data);
+    this.optionsMarital = this.SupplierList.slice();
+    this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+    );
+
   });
+}
+
+getPaymentSearchCombo() {
+  debugger
+    this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList = data;
+      console.log(data);
+      this.optionsPayment = this.ToStoreList.slice();
+      this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
+      );
+  
+    });
+  }
+
+private _filterSupplier(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
+    return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+  }
+}
+
+private _filterPayment(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+    return this.optionsPayment.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+  }
 }
 
 getFromStoreSearchList() {
@@ -336,6 +395,7 @@ getFromStoreSearchList() {
     this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
   });
 }
+
 
 getItemNameList(){
   var Param = {

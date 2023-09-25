@@ -37,6 +37,13 @@
     overflow: auto;
   }
 
+  .table5 {
+    height: 300px;
+    width: 2040px;
+    max-width: 100%;
+    overflow: auto;
+  }
+
   .table4 {
     height: 300px;
     width: 2030px;
@@ -68,4 +75,34 @@
   mat-slider {
     width: 1000px;
   }
+
+  #div-0 { margin: 20px; }
+
+  .img {
+     display: flex;
+     justify-content: center;
+    }
+
+    .patient{
+      display: flex;
+      justify-content: center;
+     }
+
+    .slider {
+      display: flex;
+      justify-content: center;
+     }
+
+    .button
+    {
+      float: right;
+      margin-left: 100px;
+      padding: 20px;
+    } 
+
+    .button1
+    {
+      float: right;
+    } 
+
   

@@ -24,7 +24,7 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
-      Supplier_Id:'',
+      SupplierId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });

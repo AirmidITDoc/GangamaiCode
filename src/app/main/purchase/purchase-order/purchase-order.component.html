@@ -23,7 +23,7 @@
                 <mat-tab-group>
 
                     <mat-tab>
-                        <ng-template mat-tab-label style="color: black; font-size: 16px bold; height: 100px; ">
+                        <ng-template mat-tab-label  style="color: black; font-size: 16px bold; height: 100px; ">
                             Purchase Order List
                         </ng-template>
 
@@ -87,8 +87,8 @@
 
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Supplier Id</mat-label>
-                                                            <mat-select formControlName="Supplier_Id"
-                                                                name="Supplier_Id">
+                                                            <mat-select formControlName="SupplierId"
+                                                                name="SupplierId">
                                                                 <mat-option></mat-option>
                                                                 <mat-option *ngFor="let m of SupplierList" [value]="m">
                                                                     {{m.SupplierName}}
@@ -360,16 +360,14 @@
                     </mat-tab>
 
                     <mat-tab>
-
-                        <ng-template mat-tab-label style="color: black; font-size: 17px bold; height: 100px; ">
+                        <ng-template  mat-tab-label  style="color: black; font-size: 17px bold; height: 100px; ">
                             New Purchase Order List
                         </ng-template>
 
                         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
                             <div class="content">
-                                <!-- SIDEBAR -->
-
+                           
                                 <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                                     <div class="content-card" style="border-radius:4px;">
@@ -395,14 +393,20 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Supplier Name</mat-label>
-                                                            <mat-select formControlName="Supplier_Id" name="Supplier_Id"
-                                                                required>
-                                                                <mat-option></mat-option>
-                                                                <mat-option *ngFor="let m of SupplierList" [value]="m">
-                                                                    {{m.SupplierName}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Supplier" matInput
+                                                              formControlName="SupplierId" [matAutocomplete]="autoMarital">
+                                                            <span matSuffix style="display: flex;">
+                                                              <mat-icon class="mat-icon-close"
+                                                                (click)="_PurchaseOrder.PurchaseSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                              <mat-icon class="mat-icon-close"
+                                                                (click)="_PurchaseOrder.PurchaseSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoMarital="matAutocomplete" [displayWith]="getOptionTextSupplier">
+                                                              <mat-option *ngFor="let option of filteredoptionsSupplier | async" [value]="option">
+                                                                {{option.SupplierName}}
+                                                              </mat-option>
+                                                            </mat-autocomplete>
+                                                          </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Freight</mat-label>
@@ -440,8 +444,8 @@
                                                                 <mat-option value="ECS">ECS</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex>
+                                           
+                                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Payment Terms</mat-label>
                                                             <mat-select formControlName="ToStoreId" name="ToStoreId">
                                                                 <mat-option></mat-option>
@@ -449,7 +453,25 @@
                                                                     {{m.StoreName}}
                                                                 </mat-option>
                                                             </mat-select>
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
+
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                                            <mat-label>Payment Terms</mat-label>
+                                                            <input matAutocompletePosition="below" type="text" placeholder="Select Payment" matInput
+                                                              formControlName="ToStoreId" [matAutocomplete]="autoMarital">
+                                                            <span matSuffix style="display: flex;">
+                                                              <mat-icon class="mat-icon-close"
+                                                                (click)="_PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
+                                                              <mat-icon class="mat-icon-close"
+                                                                (click)="_PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoMarital="matAutocomplete" [displayWith]="getOptionTextPayment">
+                                                              <mat-option *ngFor="let option of filteredoptionsPayment | async" [value]="option">
+                                                                {{option.StoreName}}
+                                                              </mat-option>
+                                                            </mat-autocomplete>
+                                                          </mat-form-field>
+
 
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Tax Nature</mat-label>
@@ -469,15 +491,13 @@
                                             </div>
 
 
-                                            <div fxLayout="column" fxLayoutAlign="start none">
+                                      <div fxLayout="column" fxLayoutAlign="start none">
 
                                                 <form [formGroup]="_PurchaseOrder.userFormGroup"
                                                     style="padding: 6px 6px 5px 5px;">
 
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         fxLayoutGap="4px">
-
-
 
                                                         <mat-form-field appearance="outline" style="width: 25%;">
                                                             <input type="text" name="ItemName"
@@ -577,9 +597,6 @@
                                                             <button mat-raised-button (click)="onAdd()">Add</button>
                                                         </div>
 
-
-
-
                                                     </div>
                                                 </form>
                                             </div>
@@ -596,7 +613,7 @@
                                                             class="backgroundBlur">
                                                             <div class="spinner-border text-danger"></div>
                                                         </div>
-                                                        <!-- sppinner -->
+                                                      
                                                         <mat-table #table class="table3" matSort
                                                             [dataSource]="dsItemNameList"
                                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
@@ -758,8 +775,8 @@
                                         </div>
                                         <hr>
 
-                                    <form [formGroup]="_PurchaseOrder.userFormGroup"
-                                        style="padding: 6px 6px 5px 5px;">
+                                     <form [formGroup]="_PurchaseOrder.userFormGroup"
+                                        style="padding: 6px 6px 5px 5px;"> 
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -779,7 +796,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="25%">
                                                 <mat-label>Other Tax</mat-label>
-                                                <input matInput>
+                                                <input matInput placeholder="Other Tax">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="25%">
@@ -798,19 +815,19 @@
                                                     Tax</mat-radio-button>
                                                 <mat-radio-button value="false" class="mr-sm-12">After Disc &
                                                     Tax</mat-radio-button>
-                                            </mat-radio-group>
+                                                </mat-radio-group>
 
-                                                <span class="net-amt-label" style="font-weight:bold;">Total Disc Amt: </span>&nbsp;
+                                                <span class="net-amt-mat-label" style="font-weight:bold;">Total Disc Amt: </span>&nbsp;
                                                 <span class="net-amt-value"
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceDisc(getItemNameList)
                                                     | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
                  
-                                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Total GST Amt: </span>&nbsp;
+                                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total GST Amt: </span>&nbsp;
                                                 <span class="net-amt-value"
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceGST(getItemNameList) |
                                                     currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
 
-                                                <span class="net-amt-label" style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
+                                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
                                                 <span class="net-amt-value"
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
                                                     currency:'INR' }}</span>
@@ -824,19 +841,16 @@
                                             <button class="footer-btn" style="border-radius: 16px;"
                                                 (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>
-                                        
-                                        </form>
+                                    
+                                  </form> 
 
                                     </div>
                                 </div>
-                                <!-- CENTER -->
+                               
 
                             </div>
-
-                            <!-- / USER -->
-                            <!-- / CENTER -->
-                            <!-- / CONTENT-->
-                        </div>
+                        
+                        </div> 
 
                     </mat-tab>
 
