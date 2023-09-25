@@ -362,8 +362,8 @@ export class AdmissionComponent implements OnInit {
   wardForm() {
     return this.formBuilder.group({
       RoomId: '',
-      BedId: '',
-      ClassId: '',
+      BedId: ['',[Validators.required]],
+      ClassId:['',[Validators.required]],
     });
   }
 
@@ -371,7 +371,7 @@ export class AdmissionComponent implements OnInit {
     return this.formBuilder.group({
       RelativeName: '',
       RelativeAddress: '',
-      RelatvieMobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
     });
   }
@@ -384,23 +384,17 @@ export class AdmissionComponent implements OnInit {
 
 
   getSearchList() {
-    debugger
-
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
-
         this.filteredOptions = resData;
-        console.log(resData);
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
-
       });
     }
 
@@ -557,6 +551,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   setDropdownObjs() {
+    debugger;
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
@@ -579,7 +574,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextPrefix(option) {
-
     return option && option.PrefixName ? option.PrefixName : '';
   }
 
@@ -588,24 +582,20 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextDep(option) {
-
     return option && option.departmentName ? option.departmentName : '';
   }
 
   getOptionTextRefDoc(option) {
     return option && option.DoctorName ? option.DoctorName : '';
-
   }
 
   
   getOptionTextDoc(option) {
-    
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
 
   getOptionTextWard(option) {
-
     return option && option.RoomName ? option.RoomName : '';
   }
 
@@ -615,7 +605,6 @@ export class AdmissionComponent implements OnInit {
 
   getOptionTextArea(option) {
     return option && option.AreaName ? option.AreaName : '';
-
   }
 
   getOptionTextReligion(option) {
@@ -629,11 +618,9 @@ export class AdmissionComponent implements OnInit {
 
   getOptionTextSubCompany(option) {
     return option && option.CompanyName ? option.CompanyName : '';
-
   }
 
   getOptionTextBed(option) {
-
     return option && option.BedName ? option.BedName : '';
   }
   getOptionTextRelationship(option) {
@@ -643,7 +630,6 @@ export class AdmissionComponent implements OnInit {
 
 
   getOPIPPatientList() {
-
     let data;
     if ((this._AdmissionService.myFilterform.get('RegNo').value != "") || (this._AdmissionService.myFilterform.get('FirstName').value !== "") || (this._AdmissionService.myFilterform.get('LastName').value != "")) {
       this.sIsLoading = 'loading-data';
@@ -734,6 +720,8 @@ export class AdmissionComponent implements OnInit {
 
       this.getHospitalList();
       this.getPrefixList();
+      this.getPatientTypeList();
+      this.getTariffList();
       this.getDepartmentList();
       this.getcityList1();
       this.getWardList();
@@ -960,19 +948,23 @@ export class AdmissionComponent implements OnInit {
 
 
   onChangeCityList(CityObj) {
-
-    debugger
+    debugger;
     if (CityObj) {
-      this._AdmissionService.getStateList(CityObj.CityId).subscribe((data: any) => {
+      this._AdmissionService.getStateList(CityObj).subscribe((data: any) => {
         this.stateList = data;
+        // this.selectedState = this.stateList[0].StateName;
         this.selectedState = this.stateList[0].StateName;
-
+        this.selectedStateID = this.stateList[0].StateId;
         this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
         this.selectedStateID = this.stateList[0].StateId;
         this.onChangeCountryList(this.selectedStateID);
-
       });
-
+    }
+    else {
+      this.selectedState = null;
+      this.selectedStateID = null;
+      this.selectedCountry = null;
+      this.selectedCountryID = null;
     }
   }
 
@@ -1015,7 +1007,6 @@ export class AdmissionComponent implements OnInit {
       this._AdmissionService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
         this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-
         this.selectedGenderID = this.GenderList[0].GenderId;
       });
     }
@@ -1023,8 +1014,7 @@ export class AdmissionComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
-    // ;
-        this.isDepartmentSelected = true;
+    this.isDepartmentSelected = true;
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
@@ -1036,8 +1026,6 @@ export class AdmissionComponent implements OnInit {
       })
   }
 
-
-
   OnChangeBedList(wardObj) {
     debugger
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
@@ -1048,30 +1036,22 @@ export class AdmissionComponent implements OnInit {
         map(value => value ? this._filterBed(value) : this.BedList.slice()),
       );
     });
-
-    this._AdmissionService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
+      this._AdmissionService.getBedClassCombo(wardObj.RoomId).subscribe(data => {
       this.BedClassList = data;
       this.wardFormGroup.get('ClassId').setValue(this.BedClassList[0]);
     })
   }
 
-
-
   onBedChange(value) {
     this.bedObj = value;
   }
 
-
-
   onSubmit() {
     this.submitted = true;
-
   }
 
 
-
   onChangePatient(value) {
-
     if (value.PatientTypeId == 2) {
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
@@ -1237,7 +1217,7 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['admissionDate'] = this.dateTimeObj.date;
       admissionInsert['admissionTime'] = this.dateTimeObj.time;
 
-      admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
       admissionInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionInsert['refDocNameId'] = 2, //this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
@@ -1303,7 +1283,6 @@ export class AdmissionComponent implements OnInit {
 
   onEdit(row) {
     console.log(row);
-
     this.registerObj = row;
     this.getSelectedObj(row);
   }

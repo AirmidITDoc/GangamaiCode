@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
   <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
     <div fxLayout="row" fxLayoutAlign="start center">
@@ -738,7 +738,7 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Hospital Name</mat-label>
-                        <mat-select name="HospitalId" formControlName="HospitalId">
+                        <mat-select name="HospitalId" formControlName="HospitalId" required>
                           <mat-option></mat-option>
                           <mat-option *ngFor="let m of HospitalList" [value]="m">
                             {{m.HospitalName}}
@@ -748,7 +748,7 @@
 
                       <mat-form-field appearance="outline" fxFlex=30%>
                         <mat-label>Patient Type</mat-label>
-                        <mat-select formControlName="PatientTypeID" (selectionChange)="onChangePatient($event.value)">
+                        <mat-select formControlName="PatientTypeID" (selectionChange)="onChangePatient($event.value)" required>
                           <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
                             {{Doc.PatientType}}
                           </mat-option>
