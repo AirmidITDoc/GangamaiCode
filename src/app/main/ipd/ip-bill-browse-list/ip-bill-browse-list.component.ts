@@ -502,8 +502,11 @@ export class IPBillBrowseListComponent implements OnInit {
         else
           docname = '';
         var strabc = `  
-   
-<div style="display:flex;margin:8px 0">
+        
+    <div style="display:flex;width:280px;margin-left:20px;">
+        <div>`+ objreportPrint.GroupName + `</div>
+    </div>
+   <div style="display:flex;margin:8px 0">
     <div style="display:flex;width:80px;margin-left:20px;">
         <div>`+ i + `</div>
     </div>
@@ -529,11 +532,11 @@ export class IPBillBrowseListComponent implements OnInit {
 
       console.log(objPrintWordInfo);
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform1(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform1(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
 
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
@@ -615,9 +618,37 @@ export class IPBillBrowseListComponent implements OnInit {
       `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
       </html>`);
+      if(this.reportPrintObjList.length > 0) {
+        if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
+          popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
+        }
+      }
     popupWin.document.close();
   }
 
+  // printfinalbill(){
+    
+  //   let popupWin, printContents;
+
+  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  //   // popupWin.document.open();
+  //   popupWin.document.write(` <html>
+  //     <head><style type="text/css">`);
+  //   popupWin.document.write(`
+  //       </style>
+  //           <title></title>
+  //       </head>
+  //     `);
+  //   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+  //     </html>`);
+
+  //     if(this.reportPrintObjList.length > 0) {
+  //       if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
+  //         popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
+  //       }
+  //     }
+  //   popupWin.document.close();
+  // }
 
 
   getSummaryFinalBillPrint(el) {
@@ -686,12 +717,11 @@ export class IPBillBrowseListComponent implements OnInit {
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform1(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform1(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
      
       this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
 
@@ -758,11 +788,11 @@ export class IPBillBrowseListComponent implements OnInit {
       var objPrintWordInfo = this.reportPrintObjList[0];
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.PaidAmount));
    
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform1(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform1(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
      
       this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
 
@@ -825,14 +855,11 @@ export class IPBillBrowseListComponent implements OnInit {
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.PaidAmount));
-      // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transformdraft2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(objPrintWordInfo.AdmissionTime));
-      // this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transformdraft1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
 
       //console.log(this.printTemplate);
@@ -905,7 +932,7 @@ export class IPBillBrowseListComponent implements OnInit {
       }
       let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
       this.subscriptionArr.push(
-        this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
+        this._IpBillBrowseListService.getIPBILLBrowsedatewisePrint(D_data).subscribe(res => {
           console.log(res);
           this.reportPrintObjList = res as ReportPrintObj[];
           this.reportPrintObj = res[0] as ReportPrintObj;
@@ -923,7 +950,7 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
   getFinalbilldatewiseTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=3';
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=34';
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
@@ -946,7 +973,7 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = '';
         var strabc = ` 
     <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ this.datePipe.transform((new Date()), 'dd/MM/yyyy') + `</div>
+        <div>`+ this.datePipe.transform(objreportPrint.ChargesDate, 'dd/MM/yyyy') + `</div>
     </div>
 <div style="display:flex;margin:8px 0">
     <div style="display:flex;width:80px;margin-left:20px;">
@@ -974,24 +1001,11 @@ export class IPBillBrowseListComponent implements OnInit {
 
       console.log(objPrintWordInfo);
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(objPrintWordInfo.BillDate));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(objPrintWordInfo.BillDate));
-      // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(objPrintWordInfo.AdmissionDate));
-      // this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPaiAmdount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPayTMPayAmount', '₹' + (objPrintWordInfo.PayTMPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrCashPayAmount', '₹' + (objPrintWordInfo.CashPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrChequePayAmount', '₹' + (objPrintWordInfo.ChequePayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount', '₹' + (objPrintWordInfo.NEFTPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceBalAmount', '₹' + (objPrintWordInfo.AdvanceBalAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceRefundAmount', '₹' + (objPrintWordInfo.AdvanceRefundAmount.toFixed(2)));
-
-
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
 
       //console.log(this.printTemplate);
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
@@ -1007,7 +1021,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
   getFinalbillwardwiseTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=3';
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=35';
     this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
@@ -1058,23 +1072,12 @@ export class IPBillBrowseListComponent implements OnInit {
 
       console.log(objPrintWordInfo);
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(objPrintWordInfo.BillDate));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(objPrintWordInfo.BillDate));
-      // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(objPrintWordInfo.AdmissionDate));
-      // this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPaiAmdount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPayTMPayAmount', '₹' + (objPrintWordInfo.PayTMPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrCashPayAmount', '₹' + (objPrintWordInfo.CashPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrChequePayAmount', '₹' + (objPrintWordInfo.ChequePayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount', '₹' + (objPrintWordInfo.NEFTPayAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceBalAmount', '₹' + (objPrintWordInfo.AdvanceBalAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrAdvanceRefundAmount', '₹' + (objPrintWordInfo.AdvanceRefundAmount.toFixed(2)));
-
+      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+  
 
 
       //console.log(this.printTemplate);
@@ -1251,5 +1254,10 @@ export class ReportPrintObj {
   RegId: any;
   Doctorname: any;
   TariffName: any;
+  AdvanceNo:any;
+  PaymentTime:any;
+  BalanceAmount:any;
+  UsedAmount:any;
+  ChargesDate:any;
 }
 
