@@ -1,4 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+  
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
@@ -9,16 +10,10 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Refund Of Bill
+              Browse Refund Of Bill
             </span>
-
         </div>
-
-
-
-
     </mat-toolbar>
-
     <!-- / HEADER -->
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
@@ -39,53 +34,53 @@
                 <div>
                     <div class="nav material2">
                         <form [formGroup]="_IPBrowseRefundofBillService.myFilterform" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getBrowseIPDRefundbillList()">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChange)="getBrowseIPDRefundbillList()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                        fusePerfectScrollbar>
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                            <br />
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getBrowseIPDRefundbillList()">
+                                    <input matEndDate formControlName="end" placeholder="End date"
+                                        (dateChange)="getBrowseIPDRefundbillList()">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Bill No</mat-label>
-                                    <input name="PBillNo" formControlName="PBillNo" matInput>
-                                </mat-form-field> -->
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Bill No</mat-label>
+                                <input name="PBillNo" formControlName="PBillNo" matInput>
+                            </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseIPDRefundbillList()">
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Reg No</mat-label>
+                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseIPDRefundbillList()">
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getBrowseIPDRefundbillList()">
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input name="FirstName" formControlName="FirstName" matInput (keyup)="getBrowseIPDRefundbillList()">
+                            </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput (keyup)="getBrowseIPDRefundbillList()">
-                                </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input name="LastName" formControlName="LastName" matInput (keyup)="getBrowseIPDRefundbillList()">
+                            </mat-form-field>
 
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                        matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton"
-                                        (click)="getBrowseIPDRefundbillList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                    matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>&nbsp;
+                                <button mat-raised-button class="searchButton"
+                                    (click)="getBrowseIPDRefundbillList()" matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
                             </div>
+                        </div>
 
-                        </form>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -104,12 +99,12 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
                                     <ng-container matColumnDef="RegNo">
@@ -244,7 +239,7 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
@@ -259,4 +254,3 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
-//

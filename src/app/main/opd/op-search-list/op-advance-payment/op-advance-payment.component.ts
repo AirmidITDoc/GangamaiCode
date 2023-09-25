@@ -759,7 +759,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
         Paymentobj['CashCounterId'] = 0;
@@ -785,7 +785,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         "IsSubmitFlag": true
       }
       console.log(IsSubmit);
-      // this.dialogRef.close(IsSubmit);
+      this.dialogRef.close(IsSubmit);
       // console.log('======================= Payment ======');
       // console.log(IsSubmit);
     }

@@ -35,7 +35,8 @@ export class IPAdvanceComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
   currentDate = new Date();
-
+  reportPrintObjList: ReportPrintObj[] = [];
+  reportPrintsummaryObjList: ReportPrintObj[] = [];
   displayedColumns = [
     'Date',
     'AdvanceNo',
@@ -65,6 +66,7 @@ export class IPAdvanceComponent implements OnInit {
   Advavilableamt: any;
   vAdvanceId  :any;
   reportPrintObj: ReportPrintObj;
+ reportPrintsummaryObj: ReportPrintObj;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   CashCounterList: any = [];
@@ -100,6 +102,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   getAdvanceList() {
+    debugger
     this.isLoadingStr = 'loading';
     var m_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
@@ -397,6 +400,110 @@ print() {
     </html>`);
   popupWin.document.close();
 }
+
+
+AdvSummaryPrint(){
+    debugger
+  var D_data = {
+    // "From_Dt" : "01/01/1900",//this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
+    // "To_Dt" :"01/01/1900",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+    "Reg_No": 26,//this.selectedAdvanceObj.RegNo || 0,
+    "PBillNo": '%'//this.selectedAdvanceObj.BillNo || '%'
+  }
+  console.log(D_data);
+  let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+  this.subscriptionArr.push(
+    this._IpSearchListService.getIpdAdvanceSummaryPrint(D_data).subscribe(res => {
+    
+      this.reportPrintsummaryObjList = res as ReportPrintObj[];
+      this.reportPrintsummaryObj = res[0] as ReportPrintObj;
+
+      console.log(this.reportPrintsummaryObj);
+      this.getTemplateadvsummary();
+
+
+    })
+  );
+}
+
+
+
+
+
+getTemplateadvsummary() {
+  debugger
+let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=33';
+this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
+
+this.printTemplate = resData[0].TempDesign;
+let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'AdvanceNo', 'RegNo', 'Date', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'IPDNo', 'AdmissionDate', 'PatientType','AdvanceNo', 'AdvanceAmount','PaymentTime','UsedAmount','BalanceAmount', 'reason', 'Addedby',
+'CardNo', 'CardPayAmount', 'CardDate', 'CardBankName', 'BankName', 'ChequeNo', 'ChequePayAmount', 'ChequeDate', 'CashPayAmount', 'TariffName']; // resData[0].TempKeys;
+for (let i = 0; i < keysArray.length; i++) {
+  let reString = "{{" + keysArray[i] + "}}";
+  let re = new RegExp(reString, "g");
+  this.printTemplate = this.printTemplate.replace(re, this.reportPrintsummaryObj[keysArray[i]]);
+}
+var strrowslist = "";
+for (let i = 1; i <= this.reportPrintsummaryObjList.length; i++) {
+  var objreportPrint = this.reportPrintsummaryObjList[i - 1];
+  console.log(objreportPrint);
+  // var strabc = ` <hr >
+
+  var strabc = ` 
+     <div style="display:flex;margin:8px 0">
+         <div style="display:flex;width:60px;margin-left:20px;">
+             <div>`+ i + `</div> 
+         </div>
+         <div style="display:flex;width:100px;">
+             <div>`+ objreportPrint.AdvanceNo + `</div> 
+         </div>
+         <div style="display:flex;width:200px;">
+             <div>`+ objreportPrint.PaymentTime + `</div> 
+         </div>
+         <div style="display:flex;width:200px;justify-content: center;">
+         <div>`+ objreportPrint.AdvanceAmount + `</div>
+         </div>
+         <div style="display:flex;width:200px;justify-content: center;">
+         <div>`+ '₹' + objreportPrint.UsedAmount + `</div> 
+         </div>
+         <div style="display:flex;width:200px;justify-content: center;">
+             <div>`+ objreportPrint.BalanceAmount + `</div> 
+         </div>
+      </div>`;
+  strrowslist += strabc;
+}
+var objPrintWordInfo = this.reportPrintsummaryObjList[0];
+console.log(strrowslist);
+this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.TotalAdvamt));
+//  this.printTemplate = this.printTemplate.replace('StrBillDates', this.transformdraft2(objPrintWordInfo.BillDate));
+//  this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformdraft(objPrintWordInfo.BillDate));
+//  this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transformdraft1(objPrintWordInfo.AdmissionDate));
+//  this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transformdraft1(objPrintWordInfo.DischargeDate));
+ this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+//  this.printTemplate = this.printTemplate.replace('StrTotalBillAmt', '₹' + (objPrintWordInfo.TotalBillAmt.toFixed(2)));
+//  this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+//  this.printTemplate = this.printTemplate.replace('StrConcessionAmount', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+ this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (this.TotalAdvamt.toFixed(2)));
+//  this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (parseInt(this.BalanceAmt).toFixed(2)));
+
+
+this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+setTimeout(() => {
+  this.print();
+}, 1000);
+});
+}
+
+
+transform2(value: string) {
+  var datePipe = new DatePipe("en-US");
+  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+  return value;
+}
+
+
 
 onClose() {
   this.dialogRef.close();

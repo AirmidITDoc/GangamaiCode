@@ -124,8 +124,8 @@
                         <div class="spinner-border text-danger"></div>
 
                     </div>
-                    <mat-table #table matSort class="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                        style="height:600px;">
+                    <mat-table #table matSort table="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                        style="overflow: auto;width: 100%;">
                         <ng-container matColumnDef="RegNo">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style="margin-top: 8px;">
                                 RegNo</mat-header-cell>
@@ -319,3 +319,5 @@
 </div>
 
 //
+
+TempDesign

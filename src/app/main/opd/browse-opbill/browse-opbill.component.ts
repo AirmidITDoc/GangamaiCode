@@ -51,7 +51,7 @@ export class BrowseOPBillComponent implements OnInit {
   displayedColumns = [
     
     'chkBalanceAmt',
-    "Bill",
+    // "Bill",
     'BillDate',
     'BillNo',
     'RegNo',
@@ -92,6 +92,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
   NewBillpayment(SelectedRecordValue){
+    debugger
     console.log(SelectedRecordValue);
     // let PatientHeaderObj = {};
     // PatientHeaderObj['Date'] = contact.BillDate;
@@ -102,20 +103,20 @@ export class BrowseOPBillComponent implements OnInit {
 
      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "90vw",
-          height: '640px',
+          maxWidth: "100vw",
+          height: '740px',
           width: '100%',
           data: {
             vPatientHeaderObj: SelectedRecordValue,
             FromName: "OP-Bill"
           }
         });
-
+debugger
     dialogRef.afterClosed().subscribe(result => {
 
       let updateBillobj = {};
       updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
-      updateBillobj['BillBalAmount'] = 0;
+      updateBillobj['BillBalAmount'] = result.BalAmt;
 
       const updateBill = new UpdateBill(updateBillobj);
       let CreditPaymentobj = {};
@@ -136,7 +137,7 @@ export class BrowseOPBillComponent implements OnInit {
       CreditPaymentobj['AdvanceUsedAmount'] = 0;
       CreditPaymentobj['AdvanceId'] = 0;
       CreditPaymentobj['RefundId'] = 0;
-      CreditPaymentobj['TransactionType'] = 0;
+      CreditPaymentobj['TransactionType'] =result.submitDataPay.ipPaymentInsert.TransactionType || 0;
       CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
       CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
       CreditPaymentobj['IsCancelled'] = 0;
@@ -153,8 +154,8 @@ export class BrowseOPBillComponent implements OnInit {
       CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
       CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
       CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-      // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      // CreditPaymentobj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.paidAmountController || '',//this.paymentForm.get('paidAmountController').value;
+      // CreditPaymentobj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || '';//this.paymentForm.get('balanceAmountController').value;
 
       console.log(CreditPaymentobj)
       const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);

@@ -723,6 +723,10 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info",employee)
   }
 
+  public getIpdAdvanceSummaryPrint(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=RptIPDAdvanceBillsummary",employee)
+  }
+
   fieldValidations() {
     return [
       {

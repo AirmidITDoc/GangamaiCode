@@ -113,8 +113,8 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    class="table1">
+                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                                [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
                                     <ng-container matColumnDef="RefundDate">
