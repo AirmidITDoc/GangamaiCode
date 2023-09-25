@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
   <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
     <div fxLayout="row" fxLayoutAlign="start center">
@@ -118,14 +118,14 @@
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Doctor Name</mat-label>
                               <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                                formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                formControlName="searchDoctorId" [matAutocomplete]="autosearchDoctor" required>
                               <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
-                                  (click)="_AdmissionService.myFilterform.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                  (click)="_AdmissionService.myFilterform.get('searchDoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
-                                  (click)="_AdmissionService.myFilterform.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                  (click)="_AdmissionService.myFilterform.get('searchDoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
                               </span>
-                              <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextsearchDoctor">
+                              <mat-autocomplete #autosearchDoctor="matAutocomplete" [displayWith]="getOptionTextsearchDoctor">
                                 <mat-option *ngFor="let option of filteredOptionssearchDoctor | async" [value]="option">
                                   {{option.DoctorName}}
                                 </mat-option>
@@ -361,7 +361,7 @@
                               <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                             </mat-table>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="13" showFirstLastButtons>
                             </mat-paginator>
                           </div>
                         </div>
@@ -839,8 +839,7 @@
                         <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
                           <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
                             (onSelectionChange)="isDoctorSelected = true;">
-                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId
-                            }}
+                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId}}
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>

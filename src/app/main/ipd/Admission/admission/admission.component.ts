@@ -97,6 +97,7 @@ export class AdmissionComponent implements OnInit {
   cityList: any = [];
   stateList: any = [];
   countryList: any = [];
+  searchDoctorList: any = [];
 
   selectedState = "";
   selectedStateID: any;
@@ -596,9 +597,12 @@ export class AdmissionComponent implements OnInit {
 
   }
 
+  
   getOptionTextDoc(option) {
-    return option.Doctorname;
+    
+    return option && option.Doctorname ? option.Doctorname : '';
   }
+
 
   getOptionTextWard(option) {
 
@@ -872,12 +876,12 @@ export class AdmissionComponent implements OnInit {
 
   getDoctorList() {
     this._AdmissionService.getDoctorMaster().subscribe(data => {
-      this.DoctorList = data;
+      this.searchDoctorList = data;
       console.log(data)
-      this.optionsSearchDoc = this.DoctorList.slice();
-      this.filteredOptionssearchDoctor = this._AdmissionService.myFilterform.get('DoctorId').valueChanges.pipe(
+      this.optionsSearchDoc = this.searchDoctorList.slice();
+      this.filteredOptionssearchDoctor = this._AdmissionService.myFilterform.get('searchDoctorId').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterSearchdoc(value) : this.DoctorList.slice()),
+        map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
       );
     });
   }
@@ -1020,7 +1024,7 @@ export class AdmissionComponent implements OnInit {
 
   OnChangeDoctorList(departmentObj) {
     // ;
-    this.isDepartmentSelected = true;
+        this.isDepartmentSelected = true;
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
@@ -1031,6 +1035,7 @@ export class AdmissionComponent implements OnInit {
         );
       })
   }
+
 
 
   OnChangeBedList(wardObj) {
