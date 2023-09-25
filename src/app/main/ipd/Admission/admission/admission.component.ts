@@ -61,9 +61,13 @@ export class AdmissionComponent implements OnInit {
   isCompanySelected: boolean = false;
   isSubCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
+
+  isAdmittedDoctor1Selected: boolean = false;
+  isAdmittedDoctor2Selected: boolean = false;
   isRefDoctorSelected: boolean = false;
-  isRefDoctor2Selected: boolean = false;
+  // isRefDoctor2Selected: boolean = false;
   isDoctorSelected: boolean = false;
+
   isAreaSelected: boolean = false;
   isReligionSelected: boolean = false;
   isMaritalSelected: boolean = false;
@@ -355,7 +359,10 @@ export class AdmissionComponent implements OnInit {
       Departmentid: '',
       DoctorIdOne: '',
       DoctorIdTwo: '',
-      SubCompanyId:''
+      SubCompanyId:'',
+      admittedDoctor1:0,
+      admittedDoctor2:0,
+      refDoctorId:0
     });
   }
 
@@ -378,7 +385,8 @@ export class AdmissionComponent implements OnInit {
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
+      RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
+      HospitalId:[0,[Validators.required]]
     });
   }
 
@@ -568,7 +576,7 @@ export class AdmissionComponent implements OnInit {
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
 
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-    this.onChangeCityList(this.registerObj.CityId);
+    this.onChangeCityList(this.registerObj);
 
     this.personalFormGroup.updateValueAndValidity();
   }
@@ -653,10 +661,7 @@ export class AdmissionComponent implements OnInit {
         "MobileNo": '%'
       }
       data = m_data1;
-
     }
-    console.log(data);
-
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._AdmissionService.getOPPatient(data).subscribe(Visit => {
@@ -674,6 +679,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   onChangeReg(event) {
+    debugger;
     if (event.value == 'registration') {
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
@@ -697,6 +703,8 @@ export class AdmissionComponent implements OnInit {
       this.getPrefixList();
       this.getPatientTypeList();
       this.getTariffList();
+
+      this.getcityList1();
       this.Regdisplay = false;
       this.showtable = false;
 
@@ -717,22 +725,25 @@ export class AdmissionComponent implements OnInit {
 
       this.otherFormGroup = this.otherForm();
       this.otherFormGroup.markAllAsTouched();
-
+   
       this.getHospitalList();
-      this.getPrefixList();
       this.getPatientTypeList();
       this.getTariffList();
+      this.getPrefixList();
+
       this.getDepartmentList();
       this.getcityList1();
       this.getWardList();
       this.AreaList();
       this.getMaritalStatusList();
       this.ReligionList();
-      this.getRegistrationList();
-      this.getPatientTypeList();
-      this.getTariffList();
+      
+      // this.getRegistrationList();
+
       this.showtable = true;
     }
+
+   
   }
 
   item1: any;
@@ -745,7 +756,7 @@ export class AdmissionComponent implements OnInit {
   getHospitalList() {
     this._AdmissionService.getHospitalCombo().subscribe(data => {
       this.HospitalList = data;
-      this.hospitalFormGroup.get('HospitalId').setValue(this.HospitalList[0]);
+      this.searchFormGroup.get('HospitalId').setValue(this.HospitalList[0]);
     });
   }
 
@@ -843,7 +854,6 @@ export class AdmissionComponent implements OnInit {
 
 
   getcityList1() {
-
     this._AdmissionService.getCityList().subscribe(data => {
       this.cityList = data;
       this.optionsCity = this.cityList.slice();
@@ -851,14 +861,11 @@ export class AdmissionComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterCity(value) : this.cityList.slice()),
       );
-
     });
 
   }
 
-
   getOptionTextsearchDoctor(option) {
-    
     return option && option.Doctorname ? option.Doctorname : '';
   }
 
@@ -878,7 +885,7 @@ export class AdmissionComponent implements OnInit {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
       this.optionsRefDoc = this.Doctor1List.slice();
-      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('DoctorID').valueChanges.pipe(
+      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
       );
@@ -891,7 +898,7 @@ export class AdmissionComponent implements OnInit {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
       this.optionsDoc2 = this.Doctor2List.slice();
-      this.filteredOptionsDoc2 = this.hospitalFormGroup.get('DoctorIdTwo').valueChanges.pipe(
+      this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterRefdoc(value) : this.Doctor2List.slice()),
       );
@@ -911,20 +918,15 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-  getRegistrationList() {
-
-    var m_data = {
-
-      "F_Name": 'p%',
-      "L_Name": '%',
-      "Reg_No": '0',
-
-    }
-    console.log(m_data);
-    this._AdmissionService.getRegistrationList(m_data).subscribe(Visit => {
-
-    });
-  }
+  // getRegistrationList() {
+  //   var m_data = {
+  //     "F_Name": 'p%',
+  //     "L_Name": '%',
+  //     "Reg_No": '0',
+  //   }
+  //   this._AdmissionService.getRegistrationList(m_data).subscribe(Visit => {
+  //   });
+  // }
 
   getPatientTypeList() {
     this._AdmissionService.getPatientTypeCombo().subscribe(data => {
@@ -948,11 +950,9 @@ export class AdmissionComponent implements OnInit {
 
 
   onChangeCityList(CityObj) {
-    debugger;
     if (CityObj) {
-      this._AdmissionService.getStateList(CityObj).subscribe((data: any) => {
+      this._AdmissionService.getStateList(CityObj.CityId).subscribe((data: any) => {
         this.stateList = data;
-        // this.selectedState = this.stateList[0].StateName;
         this.selectedState = this.stateList[0].StateName;
         this.selectedStateID = this.stateList[0].StateId;
         this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
@@ -968,7 +968,6 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
-
   onChangeCountryList(StateId) {
     if (StateId > 0) {
       this._AdmissionService.getCountryList(StateId).subscribe(data => {
@@ -981,12 +980,9 @@ export class AdmissionComponent implements OnInit {
   }
   // RegistrationListComponent
   searchRegList() {
-
     this.showtable = true;
-    // this.getOPIPPatientList()
     this.setDropdownObjs();
   }
-
 
   onChangeDateofBirth(DateOfBirth) {
     if (DateOfBirth) {
@@ -1115,7 +1111,7 @@ export class AdmissionComponent implements OnInit {
       regInsert['mobileNo'] = this.registerObj.MobileNo || '';
       regInsert['addedBy'] = this.accountService.currentUserValue.user.id;
       regInsert['UpdatedBy'] = 0,// this.accountService.currentUserValue.user.id;
-        regInsert['ageYear'] = this.registerObj.AgeYear || '';
+      regInsert['ageYear'] = this.registerObj.AgeYear || '';
       regInsert['ageMonth'] = this.registerObj.AgeMonth || '';
       regInsert['ageDay'] = this.registerObj.AgeDay || '';
       regInsert['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
@@ -1137,9 +1133,9 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['admissionTime'] = this.dateTimeObj.time;
 
       admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionNewInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionNewInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionNewInsert['refDocNameId'] = 2;//this.hospitalFormGroup.get('DoctorID').value.DoctorID || 0 ;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+      admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0 ;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       admissionNewInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
       admissionNewInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1163,8 +1159,8 @@ export class AdmissionComponent implements OnInit {
 
       admissionNewInsert['isMLC'] = false;
       admissionNewInsert['motherName'] = '';
-      admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
+      admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID : 0;
+      admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID : 0;
       admissionNewInsert['RefByTypeId'] = 0;
       admissionNewInsert['RefByName'] = 0;
       admissionNewInsert['SubTpaComId'] = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
@@ -1218,9 +1214,9 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['admissionTime'] = this.dateTimeObj.time;
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
-      admissionInsert['hospitalID'] = this.hospitalFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionInsert['refDocNameId'] = 2, //this.hospitalFormGroup.get('DoctorID').value.DoctorID ? this.hospitalFormGroup.get('DoctorID').value.DoctorID : 0;
+      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID ? this.hospitalFormGroup.get('refDoctorId').value.DoctorID : 0;
 
       admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
       admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
@@ -1244,8 +1240,8 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['isMLC'] = false;
       admissionInsert['motherName'] = '';
-      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('DoctorId').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('DoctorID').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
+      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorIdOne ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
+      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorIdTwo ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
 
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;

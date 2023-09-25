@@ -1,6 +1,6 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
-  <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+  <!-- <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
     <div fxLayout="row" fxLayoutAlign="start center">
       <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
         style="color: white;">
@@ -19,7 +19,7 @@
 
     </button>
 
-  </mat-toolbar>
+  </mat-toolbar> -->
 
   <!-- / SELECTED BAR -->
 
@@ -383,10 +383,8 @@
               New Admission
             </ng-template>
 
-            <div class="form-div">
-
-              <div style="padding-top: 15px;padding-left:25px;">
-
+            <div style="padding: 3px;">
+              <div style="padding-top: 5px;padding-left:10px; padding-bottom: 5px;">
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                   <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
@@ -400,7 +398,7 @@
                         <mat-radio-button value="registrered">Registered</mat-radio-button>
                       </mat-radio-group>
 
-                      <mat-form-field appearance="outline" style="width:60%;margin-left:15px;"
+                      <mat-form-field appearance="outline" style="width:30%;margin-left:15px;"
                         disabled="isRegSearchDisabled">
                         <input type="text" name="RegId" formControlName="RegId"
                           placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
@@ -424,6 +422,16 @@
                         </mat-error>
                       </mat-form-field>
                       
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Hospital Name</mat-label>
+                        <mat-select name="HospitalId" formControlName="HospitalId" required>
+                          <mat-option></mat-option>
+                          <mat-option *ngFor="let m of HospitalList" [value]="m">
+                            {{m.HospitalName}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      
                       <span style="color: black;font-weight: bold;color: black;">
                         <app-common-date [screenFrom]="screenFromString" style="float:right"
                           (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
@@ -432,8 +440,7 @@
                     </div>
 
                   </div>
-                </form><br>
-
+                </form>
               </div>
             </div>
             <!-- </form> -->
@@ -444,14 +451,14 @@
               <input type="hidden" name="RegId" formControlName="RegId">
 
               <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-                style=" height: 35px;background-color:#0479b4">
-                <span style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Personal
+                style=" height: 25px;background-color:#0479b4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
                   Details</span>
 
               </div>
 
               <div style="padding: 7px;overflow-block: hover;">
-                <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                <div class="example-ripple-container mat-elevation-z4" style="padding: 8px;" matRipple [matRippleCentered]="centered"
                   [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
                   [matRippleColor]="color">
 
@@ -502,6 +509,7 @@
                         Enter
                         only Alphabets</mat-error>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Last Name</mat-label>
                       <input name="LastName" formControlName="LastName" placeholder="Last Name"
@@ -530,10 +538,45 @@
                       </mat-error>
                     </mat-form-field>
 
+                    
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Marital Name</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
+                        formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="personalFormGroup.get('MaritalStatusId').setValue(''); isMaritalSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="personalFormGroup.get('MaritalStatusId').setValue(''); isMaritalSelected = false;">search</mat-icon>
+                      </span>
+                      <mat-autocomplete #autoMarital="matAutocomplete" [displayWith]="getOptionTextMarital">
+                        <mat-option *ngFor="let option of filteredOptionsMarital | async" [value]="option">
+                          {{option.MaritalStatusName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Religion Name</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Religion" matInput
+                        formControlName="ReligionId" [matAutocomplete]="autoReligion">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="personalFormGroup.get('ReligionId').setValue(''); isReligionSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="personalFormGroup.get('ReligionId').setValue(''); isReligionSelected = false;">search</mat-icon>
+                      </span>
+                      <mat-autocomplete #autoReligion="matAutocomplete" [displayWith]="getOptionTextReligion">
+                        <mat-option *ngFor="let option of filteredOptionsReligion | async" [value]="option">
+                          {{option.ReligionName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    
                   </div>
 
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                    <mat-form-field appearance="outline" fxFlex="17%">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Birth date</mat-label>
                       <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
                         (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth"
@@ -544,7 +587,7 @@
                     </mat-form-field>
 
 
-                    <mat-form-field appearance="outline" fxFlex="17%">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Age (Y)</mat-label>
                       <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput min="0"
                         [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number"
@@ -554,7 +597,7 @@
                         enter Age Year </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="16%">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Age (M)</mat-label>
                       <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
                         [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
@@ -564,7 +607,7 @@
                         Please enter Age Month </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="17%">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Age (D)</mat-label>
                       <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0" minlength="1"
                         maxlength="2" [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event"
@@ -574,9 +617,36 @@
                         Please enter Age Day </mat-error>
                     </mat-form-field>
 
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Pan Card No.</mat-label>
+                      <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No."
+                        [ngModel]="registerObj.Pancardno | trim" (ngModelChange)="registerObj.Pancardno = $event"
+                        matInput>
+                    </mat-form-field>
 
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Phone Number</mat-label>
+                      <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
+                        [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" maxlength="10" type="number"
+                        value="9876658688">
+                      <mat-error class="error"
+                        *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
+                        number is required
+                      </mat-error>
+                    </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="17%">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Mobile Number</mat-label>
+                      <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                        [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10"
+                        required="required" type="number" value="9876658688">
+                      <mat-error class="error"
+                        *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                        digits Mobile number is
+                        required</mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="17%">
                       <mat-label>Marital Name</mat-label>
                       <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
                         formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
@@ -608,7 +678,7 @@
                           {{option.ReligionName}}
                         </mat-option>
                       </mat-autocomplete>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
 
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
@@ -676,21 +746,16 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
+                    
                   </div>
 
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                  <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Pan Card No.</mat-label>
                       <input name="Pancardno" formControlName="Pancardno" placeholder="PAN Card No."
                         [ngModel]="registerObj.Pancardno | trim" (ngModelChange)="registerObj.Pancardno = $event"
                         matInput>
-                      <!-- [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('Pancardno').errors }" -->
-                      <!-- <mat-error class="error"
-                                        *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">
-                                        12 digits
-                                        AadharCardNo is
-                                        required</mat-error> -->
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex>
@@ -714,7 +779,7 @@
                         digits Mobile number is
                         required</mat-error>
                     </mat-form-field>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -724,29 +789,21 @@
               <div>
 
                 <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-                  style=" height: 35px;background-color:#0479b4">
+                  style=" height: 25px;background-color:#0479b4">
                   <span
-                    style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Hospital
+                    style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Hospital
                     Details</span>
                 </div>
 
                 <div style="padding: 7px;overflow-block: hover;">
-                  <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                  <div class="example-ripple-container mat-elevation-z4" style="padding: 8px;" matRipple [matRippleCentered]="centered"
                     [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
                     [matRippleColor]="color">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Hospital Name</mat-label>
-                        <mat-select name="HospitalId" formControlName="HospitalId" required>
-                          <mat-option></mat-option>
-                          <mat-option *ngFor="let m of HospitalList" [value]="m">
-                            {{m.HospitalName}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                   
 
-                      <mat-form-field appearance="outline" fxFlex=30%>
+                      <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Patient Type</mat-label>
                         <mat-select formControlName="PatientTypeID" (selectionChange)="onChangePatient($event.value)" required>
                           <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
@@ -756,7 +813,7 @@
                       </mat-form-field>
 
 
-                      <mat-form-field appearance="outline" fxFlex=30%>
+                      <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Tariff Name</mat-label>
                         <mat-select formControlName="TariffId">
                           <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
@@ -764,47 +821,128 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Department</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                          formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                          <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                            (onSelectionChange)="OnChangeDoctorList(option)">
+                            {{option.departmentName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Doctor Name</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
+                          formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                        </span>
+
+                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                          <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                            (onSelectionChange)="isDoctorSelected = true;">
+                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Admitted Doctor 1</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Admitted Doctor 1" matInput
+                          formControlName="admittedDoctor1" [matAutocomplete]="autoRefdoc">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                          <mat-option *ngFor="let option of filteredOptionsRefDoc | async" [value]="option">
+                            {{option.DoctorName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Admitted Doctor 2</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Admitted Doctor 2 " matInput
+                          formControlName="admittedDoctor2" [matAutocomplete]="autodoc2">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('admittedDoctor2').setValue(''); isAdmittedDoctor2Selected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('admittedDoctor2').setValue(''); isAdmittedDoctor2Selected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
+                          <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
+                            {{option.DoctorName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+                      
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Ref Doctor Name</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor " matInput
+                          formControlName="refDoctorId" [matAutocomplete]="autodoc2">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
+                          <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
+                            {{option.DoctorName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" *ngIf="isCompanySelected">
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Company Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
-                          formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
-                          <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
-                            {{option.CompanyName}}
+                      <mat-form-field appearance="outline" #Company fxFlex>
+                        <mat-label>Company Name </mat-label>
+                        <mat-select formControlName="CompanyId" placeholder="Bank" #singleSelect>
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="companyFilterCtrl" [placeholderLabel]="'Search'"
+                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                           </mat-option>
-                        </mat-autocomplete>
+                          <mat-option *ngFor="let element of filteredCompany | async" [value]="element">
+                            {{element.CompanyName}}
+                          </mat-option>
+                        </mat-select>
                       </mat-form-field>
-
+    
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Sub Company Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Sub Company" matInput
-                          formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="hospitalFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSubCompany="matAutocomplete" [displayWith]="getOptionTextSubCompany">
-                          <mat-option *ngFor="let option of filteredOptionsSubCompany | async" [value]="option">
-                            {{option.CompanyName}}
+                        <mat-select name="SubCompanyId" formControlName="SubCompanyId">
+                          <mat-option></mat-option>
+                          <mat-option *ngFor="let group of SubTPACompList" [value]="group">
+                            {{group.CompanyName}}
                           </mat-option>
-                        </mat-autocomplete>
+                        </mat-select>
+    
                       </mat-form-field>
-
                     </div>
-
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Department</mat-label>
@@ -881,7 +1019,7 @@
                         </mat-autocomplete>
                       </mat-form-field>
 
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -892,12 +1030,12 @@
             <form [formGroup]="wardFormGroup">
 
               <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-                style=" height: 35px;background-color:#0479b4">
-                <span style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Ward
+                style=" height: 25px;background-color:#0479b4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Ward
                   Details </span>
               </div>
               <div style="padding: 7px;overflow-block: hover;">
-                <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                <div class="example-ripple-container mat-elevation-z4" style="padding: 8px;" matRipple [matRippleCentered]="centered"
                   [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
                   [matRippleColor]="color">
 
@@ -964,14 +1102,13 @@
             <form [formGroup]="otherFormGroup">
 
               <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-                style=" height: 35px;background-color:#0479b4">
-                <!-- <span style="font-size:18px; font-weight: 500; color:white;padding:7px;">Other Details </span> -->
-                <span style="font-size:18px; font-style: italic;font-weight: normal; color:white;padding:7px;">Other
+                style=" height: 25px;background-color:#0479b4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Other
                   Details</span>
               </div>
 
               <div style="padding: 7px;overflow-block: hover;">
-                <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="centered"
+                <div class="example-ripple-container mat-elevation-z4" style="padding: 8px;" matRipple [matRippleCentered]="centered"
                   [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded" [matRippleRadius]="radius"
                   [matRippleColor]="color">
 
