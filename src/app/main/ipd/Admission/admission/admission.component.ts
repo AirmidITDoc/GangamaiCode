@@ -471,8 +471,8 @@ export class AdmissionComponent implements OnInit {
 
   private _filterSearchdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -871,7 +871,7 @@ export class AdmissionComponent implements OnInit {
 
   getOptionTextsearchDoctor(option) {
     
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getDoctorList() {
@@ -1433,14 +1433,14 @@ export class AdmissionComponent implements OnInit {
   }
 
   getAdmittedPatientList() {
-
+debugger
     this.sIsLoading = 'loading-data';
     var D_data = {
 
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
-      "Doctor_Id": this._AdmissionService.myFilterform.get("DoctorId").value || "0",
+      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorId || "0",
       "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": "0",
