@@ -351,15 +351,16 @@ export class AdmissionComponent implements OnInit {
 
   createHospitalForm() {
     return this.formBuilder.group({
-      HospitalId: '',
-      PatientTypeID: '',
-      TariffId: '',
+      HospitalId: 0,
+      PatientTypeID: 0,
+      TariffId: 0,
       DoctorId: '',
       DoctorID:'',
       Departmentid: '',
-      DoctorIdOne: '',
-      DoctorIdTwo: '',
-      SubCompanyId:'',
+      // DoctorIdOne: '',
+      // DoctorIdTwo: '',
+      CompanyId:0,
+      SubCompanyId:0,
       admittedDoctor1:0,
       admittedDoctor2:0,
       refDoctorId:0
@@ -1144,7 +1145,7 @@ export class AdmissionComponent implements OnInit {
 
       admissionNewInsert['isDischarged'] = 0;
       admissionNewInsert['isBillGenerated'] = 0;
-      admissionNewInsert['CompanyId'] = 0;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionNewInsert['CompanyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionNewInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionNewInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
@@ -1225,7 +1226,7 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['isDischarged'] = 0;
       admissionInsert['isBillGenerated'] = 0;
-      admissionInsert['CompanyId'] = 2;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionInsert['CompanyId'] = this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;

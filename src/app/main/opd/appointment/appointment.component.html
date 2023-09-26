@@ -174,7 +174,9 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bill
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <mat-icon (click)="Billpayment(contact)">payment</mat-icon>
+                            <button mat-icon-button matTooltip="Bill" (click)="Billpayment(contact)">
+                              <mat-icon>payment</mat-icon>
+                            </button>
                           </mat-cell>
                         </ng-container>
 
@@ -312,7 +314,7 @@
                   <div class="redio-container">
                     <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                       (change)="onChangeReg($event)">
-                      <mat-radio-button value="registration" style="margin-bottom: 7px;">New Registration
+                      <mat-radio-button value="registration" style="margin-top: 10px;">New Registration
                       </mat-radio-button>
                       <mat-radio-button value="registrered">Registered</mat-radio-button>
                     </mat-radio-group>

@@ -384,17 +384,17 @@
             </ng-template>
 
             <div style="padding: 3px;">
-              <div style="padding-top: 5px;padding-left:10px; padding-bottom: 5px;">
+              <div fxFlex fxFlex.gt-sm fxLayout="row" fxLayout.gt-xs="column"
+              style="width:100%; ;margin-left: 1px; margin-right: 5px; margin-top: 7px;margin-left: 7px;overflow: auto ;background-color:white !important; "
+              fusePerfectScrollbar>
+
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                   <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
                     <div class="redio-container">
-                      &nbsp;&nbsp;
-                      <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
+                      <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio" style="margin-top: 12px;"
                         (change)="onChangeReg($event)">
-                        <mat-radio-button value="registration" style="padding-left:25px;margin-bottom: 7px;">New
-                          Registration
-                        </mat-radio-button>
+                        <mat-radio-button value="registration">New Registration </mat-radio-button>
                         <mat-radio-button value="registrered">Registered</mat-radio-button>
                       </mat-radio-group>
 
@@ -843,7 +843,7 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Doctor Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput
                           formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
