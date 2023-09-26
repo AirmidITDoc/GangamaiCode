@@ -916,12 +916,16 @@ export class OPAdvancePaymentComponent implements OnInit {
 export class UpdateBill {
   BillNo: number;
   BillBalAmount: number;
- 
+  advanceDetailID:any;
+  usedAmount:any;
+  balanceAmount:any;
 
   constructor(UpdateBill) {
     this.BillNo = UpdateBill.BillNo || 0;
     this.BillBalAmount = UpdateBill.BillBalAmount || 0;
-    
+    this.advanceDetailID = UpdateBill.advanceDetailID || 0;
+    this.usedAmount = UpdateBill.usedAmount || 0;
+    this.balanceAmount = UpdateBill.balanceAmount || 0;
   }
 }
 

@@ -222,12 +222,27 @@ printpayment() {
   `);
   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
   </html>`);
-  // if(this.reportPrintObj.length > 0) {
-    if(this.reportPrintObj.BalanceAmt === 0) {
-      popupWin.document.getElementById('idBalamt').style.display = 'none';
-    }
-  // }
-
+  if(this.reportPrintObj.CashPayAmount === 0) {
+    popupWin.document.getElementById('idCashpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.CardPayAmount === 0) {
+    popupWin.document.getElementById('idCardpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.ChequePayAmount === 0) {
+    popupWin.document.getElementById('idChequepay').style.display = 'none';
+  }
+  if(this.reportPrintObj.NEFTPayAmount === 0) {
+    popupWin.document.getElementById('idNeftpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.PayTMAmount === 0) {
+    popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.ReferDr === "") {
+    popupWin.document.getElementById('idrefdr').style.display = 'none';
+  }
+  if(this.reportPrintObj.Remark === "") {
+    popupWin.document.getElementById('idremark').style.display = 'none';
+  }
   popupWin.document.close();
 }
 
@@ -264,9 +279,9 @@ printSettlement() {
     if(this.reportPrintObj.PayTMAmount === 0) {
       popupWin.document.getElementById('idPaytmpay').style.display = 'none';
     }
-    // if(this.reportPrintObj.BalanceAmt === 0) {
-    //   popupWin.document.getElementById('idBalamt').style.display = 'none';
-    // }
+    if(this.reportPrintObj.ReferDr === "") {
+      popupWin.document.getElementById('idrefdr').style.display = 'none';
+    }
 
   // }
 

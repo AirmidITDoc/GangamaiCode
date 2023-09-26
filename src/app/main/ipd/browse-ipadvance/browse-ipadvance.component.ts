@@ -74,14 +74,14 @@ export class BrowseIPAdvanceComponent implements OnInit {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
      
-       let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby',
+       let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby','Remark',
        'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','NEFTPayAmount','PayTMAmount','TariffName'];// resData[0].TempKeys;
         for (let i = 0; i < keysArray.length; i++) {
           let reString = "{{" + keysArray[i] + "}}";
           let re = new RegExp(reString, "g");
           this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
-debugger;
+
         // var objPrintWordInfo = this.reportPrintObj[0];
         this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
 
@@ -102,6 +102,7 @@ debugger;
 
 
   onShow_IpdAdvance(){
+    debugger
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
@@ -114,6 +115,7 @@ debugger;
     console.log(D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
         this.dataArray = Visit;
+        console.log(this.dataArray)
       });
   }
 
@@ -176,6 +178,26 @@ debugger;
     `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
+
+    if(this.reportPrintObj.CashPayAmount === 0) {
+      popupWin.document.getElementById('idCashpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.CardPayAmount === 0) {
+      popupWin.document.getElementById('idCardpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.ChequePayAmount === 0) {
+      popupWin.document.getElementById('idChequepay').style.display = 'none';
+    }
+    if(this.reportPrintObj.NEFTPayAmount === 0) {
+      popupWin.document.getElementById('idNeftpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.PayTMAmount === 0) {
+      popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+    }
+    
+    if(this.reportPrintObj.reason=== '') {
+      popupWin.document.getElementById('idremark').style.display = 'none';
+    }
     popupWin.document.close();
   }
 
@@ -261,6 +283,8 @@ export class ReportPrintObj {
     ChequePayAmount : number;
     CardPayAmount : number;
     AdvanceUsedAmount: number;
+    Remark:any;
+    reason:any;
 }
 
 

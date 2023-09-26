@@ -1,6 +1,5 @@
 import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
 import { Subscription } from 'rxjs';
 import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +17,8 @@ import { AdvanceDetail, AdvanceDetailObj } from '../ip-search-list.component';
 import { Router } from '@angular/router';
 import * as converter from 'number-to-words';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { ReportPrintObj } from '../../browse-ipadvance/browse-ipadvance.component';
 
 
 @Component({
@@ -203,14 +204,18 @@ export class IPAdvanceComponent implements OnInit {
       const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
       const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
 
-      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "85vw",
-          height: '540px',
+          maxWidth: "100vw",
+          height: '740px',
           width: '100%',
+          // data: {
+          //   patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
+          //   advanceObj: PatientHeaderObj,
+          //   FromName: "Advance"
+          // }
           data: {
-            patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
-            advanceObj: PatientHeaderObj,
+            vPatientHeaderObj: PatientHeaderObj,
             FromName: "Advance"
           }
         });
@@ -276,14 +281,18 @@ export class IPAdvanceComponent implements OnInit {
       const advanceHeaderUpdate = new AdvanceHeaderUpdate(advanceHeaderObj);
       const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
 
-      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "85vw",
-          height: '540px',
+          maxWidth: "100vw",
+          height: '740px',
           width: '100%',
-          data: {
-            patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
-            advanceObj: PatientHeaderObj,
+          // data: {
+          //   patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
+          //   advanceObj: PatientHeaderObj,
+          //   FromName: "Advance"
+          // }
+           data: {
+            vPatientHeaderObj: PatientHeaderObj,
             FromName: "Advance"
           }
         });
@@ -327,32 +336,33 @@ convertToWord(e){
 }
 
 getTemplate() {
-  let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=1';
+  let query = 'select tempId,TempDesign,JSON_QUERY(TempKeys) as TempKeys from Tg_Htl_Tmp where TempId=1';
   this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
+    console.log(resData);
     this.printTemplate = resData[0].TempDesign;
-    // let keysArray = ['HospitalName','HospAddress','AdvanceNo','RegNo','Date','PatientName','AgeDay','AgeMonth','Age','TariffName','CompanyName','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby']; // resData[0].TempKeys;
-    let keysArray = ['HospitalName', 'HospAddress', 'Phone', 'EmailId', 'AdvanceNo', 'RegNo', 'Date', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'IPDNo', 'AdmissionDate', 'PatientType', 'AdvanceAmount', 'reason', 'Addedby',
-      'CardNo', 'CardPayAmount', 'CardDate', 'CardBankName', 'BankName', 'ChequeNo', 'ChequePayAmount', 'ChequeDate', 'CashPayAmount', 'TariffName']; // resData[0].TempKeys;
-    for (let i = 0; i < keysArray.length; i++) {
-      let reString = "{{" + keysArray[i] + "}}";
-      let re = new RegExp(reString, "g");
-      this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-    }
    
-    this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-    // this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
-    this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
-    // this.printTemplate = this.printTemplate.replace('StrDate', this.transform(this.reportPrintObj.Date));
-    // this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform(this.reportPrintObj.AdmissionDate));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transformpay(this.reportPrintObj.PaymentDate));
+     let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby','Remark',
+     'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','NEFTPayAmount','PayTMAmount','TariffName'];// resData[0].TempKeys;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
 
-    this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      // var objPrintWordInfo = this.reportPrintObj[0];
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
 
-    setTimeout(() => {
-      this.print();
-    }, 1000);
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(new Date().toString()));
+      this.printTemplate = this.printTemplate.replace('StrAddmissionDate', this.transform1(this.reportPrintObj.AdmissionDate));
+      // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(this.reportPrintObj.Date));
+
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      setTimeout(() => {
+        this.print();
+      }, 1000);
   });
 }
+
 
 
 transform1(value: string) {
@@ -385,116 +395,138 @@ getPrint(el) {
 }
 
 print() {
+  // HospitalName, HospitalAddress, AdvanceNo, PatientName
   let popupWin, printContents;
+  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
 
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  
+  // popupWin.document.open();
   popupWin.document.write(` <html>
-    <head><style type="text/css">`);
+  <head><style type="text/css">`);
   popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
+    </style>
+        <title></title>
+    </head>
+  `);
   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
+  </html>`);
+
+  if(this.reportPrintObj.CashPayAmount === 0) {
+    popupWin.document.getElementById('idCashpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.CardPayAmount === 0) {
+    popupWin.document.getElementById('idCardpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.ChequePayAmount === 0) {
+    popupWin.document.getElementById('idChequepay').style.display = 'none';
+  }
+  if(this.reportPrintObj.NEFTPayAmount === 0) {
+    popupWin.document.getElementById('idNeftpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.PayTMAmount === 0) {
+    popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+  }
+  
+  if(this.reportPrintObj.reason=== '') {
+    popupWin.document.getElementById('idremark').style.display = 'none';
+  }
   popupWin.document.close();
 }
+AdvSummaryPrint(){}
 
-
-AdvSummaryPrint(){
-    debugger
-  var D_data = {
-    // "From_Dt" : "01/01/1900",//this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-    // "To_Dt" :"01/01/1900",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
-    "Reg_No": 26,//this.selectedAdvanceObj.RegNo || 0,
-    "PBillNo": '%'//this.selectedAdvanceObj.BillNo || '%'
-  }
-  console.log(D_data);
-  let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-  this.subscriptionArr.push(
-    this._IpSearchListService.getIpdAdvanceSummaryPrint(D_data).subscribe(res => {
+// AdvSummaryPrint(){
+//     debugger
+//   var D_data = {
+//     // "From_Dt" : "01/01/1900",//this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
+//     // "To_Dt" :"01/01/1900",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+//     "Reg_No": 26,//this.selectedAdvanceObj.RegNo || 0,
+//     "PBillNo": '%'//this.selectedAdvanceObj.BillNo || '%'
+//   }
+//   console.log(D_data);
+//   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+//   this.subscriptionArr.push(
+//     this._IpSearchListService.getIpdAdvanceSummaryPrint(D_data).subscribe(res => {
     
-      this.reportPrintsummaryObjList = res as ReportPrintObj[];
-      this.reportPrintsummaryObj = res[0] as ReportPrintObj;
+//       this.reportPrintsummaryObjList = res as ReportPrintObj[];
+//       this.reportPrintsummaryObj = res[0] as ReportPrintObj;
 
-      console.log(this.reportPrintsummaryObj);
-      this.getTemplateadvsummary();
-
-
-    })
-  );
-}
+//       console.log(this.reportPrintsummaryObj);
+//       this.getTemplateadvsummary();
 
 
+//     })
+//   );
+// }
 
 
 
-getTemplateadvsummary() {
-  debugger
-let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=33';
-this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-
-this.printTemplate = resData[0].TempDesign;
-let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'AdvanceNo', 'RegNo', 'Date', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'IPDNo', 'AdmissionDate', 'PatientType','AdvanceNo', 'AdvanceAmount','PaymentTime','UsedAmount','BalanceAmount', 'reason', 'Addedby',
-'CardNo', 'CardPayAmount', 'CardDate', 'CardBankName', 'BankName', 'ChequeNo', 'ChequePayAmount', 'ChequeDate', 'CashPayAmount', 'TariffName']; // resData[0].TempKeys;
-for (let i = 0; i < keysArray.length; i++) {
-  let reString = "{{" + keysArray[i] + "}}";
-  let re = new RegExp(reString, "g");
-  this.printTemplate = this.printTemplate.replace(re, this.reportPrintsummaryObj[keysArray[i]]);
-}
-var strrowslist = "";
-for (let i = 1; i <= this.reportPrintsummaryObjList.length; i++) {
-  var objreportPrint = this.reportPrintsummaryObjList[i - 1];
-  console.log(objreportPrint);
-  // var strabc = ` <hr >
-
-  var strabc = ` 
-     <div style="display:flex;margin:8px 0">
-         <div style="display:flex;width:60px;margin-left:20px;">
-             <div>`+ i + `</div> 
-         </div>
-         <div style="display:flex;width:100px;">
-             <div>`+ objreportPrint.AdvanceNo + `</div> 
-         </div>
-         <div style="display:flex;width:200px;">
-             <div>`+ objreportPrint.PaymentTime + `</div> 
-         </div>
-         <div style="display:flex;width:200px;justify-content: center;">
-         <div>`+ objreportPrint.AdvanceAmount + `</div>
-         </div>
-         <div style="display:flex;width:200px;justify-content: center;">
-         <div>`+ '₹' + objreportPrint.UsedAmount + `</div> 
-         </div>
-         <div style="display:flex;width:200px;justify-content: center;">
-             <div>`+ objreportPrint.BalanceAmount + `</div> 
-         </div>
-      </div>`;
-  strrowslist += strabc;
-}
-var objPrintWordInfo = this.reportPrintsummaryObjList[0];
-console.log(strrowslist);
-this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.TotalAdvamt));
-//  this.printTemplate = this.printTemplate.replace('StrBillDates', this.transformdraft2(objPrintWordInfo.BillDate));
-//  this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformdraft(objPrintWordInfo.BillDate));
-//  this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transformdraft1(objPrintWordInfo.AdmissionDate));
-//  this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transformdraft1(objPrintWordInfo.DischargeDate));
- this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-//  this.printTemplate = this.printTemplate.replace('StrTotalBillAmt', '₹' + (objPrintWordInfo.TotalBillAmt.toFixed(2)));
-//  this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-//  this.printTemplate = this.printTemplate.replace('StrConcessionAmount', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
- this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (this.TotalAdvamt.toFixed(2)));
-//  this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (parseInt(this.BalanceAmt).toFixed(2)));
 
 
-this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+// getTemplateadvsummary() {
+//   debugger
+// let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=33';
+// this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
 
-this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-setTimeout(() => {
-  this.print();
-}, 1000);
-});
-}
+// this.printTemplate = resData[0].TempDesign;
+// let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'AdvanceNo', 'RegNo', 'Date', 'PatientName', 'AgeDay', 'AgeMonth', 'Age', 'IPDNo', 'AdmissionDate', 'PatientType','AdvanceNo', 'AdvanceAmount','PaymentTime','UsedAmount','BalanceAmount', 'reason', 'Addedby',
+// 'CardNo', 'CardPayAmount', 'CardDate', 'CardBankName', 'BankName', 'ChequeNo', 'ChequePayAmount', 'ChequeDate', 'CashPayAmount', 'TariffName']; // resData[0].TempKeys;
+// for (let i = 0; i < keysArray.length; i++) {
+//   let reString = "{{" + keysArray[i] + "}}";
+//   let re = new RegExp(reString, "g");
+//   this.printTemplate = this.printTemplate.replace(re, this.reportPrintsummaryObj[keysArray[i]]);
+// }
+// var strrowslist = "";
+// for (let i = 1; i <= this.reportPrintsummaryObjList.length; i++) {
+//   var objreportPrint = this.reportPrintsummaryObjList[i - 1];
+//   console.log(objreportPrint);
+//   // var strabc = ` <hr >
+
+//   var strabc = ` 
+//      <div style="display:flex;margin:8px 0">
+//          <div style="display:flex;width:60px;margin-left:20px;">
+//              <div>`+ i + `</div> 
+//          </div>
+//          <div style="display:flex;width:100px;">
+//              <div>`+ objreportPrint.AdvanceNo + `</div> 
+//          </div>
+//          <div style="display:flex;width:200px;">
+//              <div>`+ objreportPrint.PaymentTime + `</div> 
+//          </div>
+//          <div style="display:flex;width:200px;justify-content: center;">
+//          <div>`+ objreportPrint.AdvanceAmount + `</div>
+//          </div>
+//          <div style="display:flex;width:200px;justify-content: center;">
+//          <div>`+ '₹' + objreportPrint.UsedAmount + `</div> 
+//          </div>
+//          <div style="display:flex;width:200px;justify-content: center;">
+//              <div>`+ objreportPrint.BalanceAmount + `</div> 
+//          </div>
+//       </div>`;
+//   strrowslist += strabc;
+// }
+// var objPrintWordInfo = this.reportPrintsummaryObjList[0];
+// console.log(strrowslist);
+// this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.TotalAdvamt));
+// //  this.printTemplate = this.printTemplate.replace('StrBillDates', this.transformdraft2(objPrintWordInfo.BillDate));
+// //  this.printTemplate = this.printTemplate.replace('StrBillDate', this.transformdraft(objPrintWordInfo.BillDate));
+// //  this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transformdraft1(objPrintWordInfo.AdmissionDate));
+// //  this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transformdraft1(objPrintWordInfo.DischargeDate));
+//  this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+// //  this.printTemplate = this.printTemplate.replace('StrTotalBillAmt', '₹' + (objPrintWordInfo.TotalBillAmt.toFixed(2)));
+// //  this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+// //  this.printTemplate = this.printTemplate.replace('StrConcessionAmount', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+//  this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (this.TotalAdvamt.toFixed(2)));
+// //  this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (parseInt(this.BalanceAmt).toFixed(2)));
+
+
+// this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+// this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+// setTimeout(() => {
+//   this.print();
+// }, 1000);
+// });
+// }
 
 
 transform2(value: string) {

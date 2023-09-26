@@ -84,26 +84,26 @@ export class OpPaymentNewComponent implements OnInit {
     
     this.advanceData = this.data.vPatientHeaderObj;
  debugger
-    // console.log(this.advanceData);
+    console.log(this.advanceData);
 
-    if (this.PatientHeaderObj.FromName == "Advance") {
-      this.netPayAmt = parseInt(this.advanceData.RefundAmount);
-      this.cashAmt = parseInt(this.advanceData.RefundAmount);
-      this.paidAmt = parseInt(this.advanceData.RefundAmount);
+    if (this.data.FromName == "Advance") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
       this.Paymentobj['TransactionType'] = 1;
       this.getBalanceAmt();
     }
-    if (this.PatientHeaderObj.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
-      this.netPayAmt = parseInt(this.advanceData.NetPayableAmt);
-      this.cashAmt = parseInt(this.advanceData.NetPayableAmt);
-      this.paidAmt = parseInt(this.advanceData.NetPayableAmt);
+    if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
       this.PatientName = this.advanceData.PatientName;
       this.BillDate = this.advanceData.Date;
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 0;
-      Swal.fire(this.Paymentobj);
+     
     }
     // if (this.PatientHeaderObj.FromName == "IP-Bill") {
     //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
@@ -127,16 +127,22 @@ export class OpPaymentNewComponent implements OnInit {
   ngOnInit(): void {
 
     this.patientDetailsFormGrp = this.createForm();
-    this.PatientHeaderObj = this.data.vPatientHeaderObj;
-    // console.log(this.PatientHeaderObj);
-
+   
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-    this.amount1 = this.netPayAmt = parseInt(this.PatientHeaderObj.NetPayableAmt);
+    this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
 
     this.paymentRowObj["cash"] = true;
     this.onPaymentChange(1, 'cash');
     this.paidAmt = this.netPayAmt;
     this.onAddClick('cash');
+
+// debugger
+//     this.advanceData = this.data.vPatientHeaderObj;
+//     console.log(this.advanceData)
+//     this.PatientHeaderObj = this.data.vPatientHeaderObj;
+//     this.netPayAmt = this.advanceData.NetPayAmount;
+//     this.cashAmt = this.advanceData.NetPayAmount;
+//     console.log(this.netPayAmt)
   }
 
   getDateTime(dateTimeObj) {
@@ -850,6 +856,9 @@ export class OpPaymentNewComponent implements OnInit {
     this.getUpiObj('upi');
     this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
     this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+    
+    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+    this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
 
     const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
     let submitDataPay = {

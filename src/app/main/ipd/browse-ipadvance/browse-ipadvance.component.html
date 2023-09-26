@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-  
+
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
@@ -109,7 +109,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div> -->
                                 <!-- sppinner -->
-                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                                <mat-table #table matSort table="table1" [dataSource]="dataArray"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
                                     <!-- Checkbox Column -->
@@ -264,3 +264,5 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
+
+TempDesign

@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { UpdateBill } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { Router } from '@angular/router';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -183,13 +184,13 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "95vw",
         height: '740px',
         width: '100%',
         data: {
-          advanceObj: PatientHeaderObj,
+          vPatientHeaderObj: contact,
           FromName: "IP-Bill"
         }
       });
@@ -200,7 +201,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
       updateIpBillobj['BillNo'] = contact.BillNo;
-      updateIpBillobj['BillBalAmount'] = 0;
+      updateIpBillobj['BillBalAmount'] =result.submitDataPay.ipPaymentInsert.balanceAmountController
 
       const updateIpBill = new UpdateBill(updateIpBillobj);
 
@@ -210,7 +211,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
       iPsettlementAdvanceDetailUpdateobj['advanceDetailID'] = contact.BillNo;
       iPsettlementAdvanceDetailUpdateobj['usedAmount'] = 0;
-      iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = 0;
+      iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
 
       const iPsettlementAdvanceDetailUpdate = new UpdateBill(iPsettlementAdvanceDetailUpdateobj);
    
@@ -219,7 +220,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
       iPsettlementAdvanceHeaderUpdateobj['advanceId'] = contact.BillNo;
       iPsettlementAdvanceHeaderUpdateobj['advanceUsedAmount'] = 0;
-      iPsettlementAdvanceHeaderUpdateobj['balanceAmount'] = contact.BillNo;
+      iPsettlementAdvanceHeaderUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
 
       const iPsettlementAdvanceHeaderUpdate = new UpdateBill(iPsettlementAdvanceHeaderUpdateobj);
 
@@ -268,7 +269,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
       let Data = {
         "updateIpBill": updateIpBill,
-        "paymentInsert": ipPaymentInsert,
+        "ipPaymentCreditUpdat": ipPaymentInsert,
         "iPsettlementAdvanceDetailUpdate":iPsettlementAdvanceDetailUpdate,
         "iPsettlementAdvanceHeaderUpdate":iPsettlementAdvanceHeaderUpdate
       };

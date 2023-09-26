@@ -471,13 +471,13 @@ export class OPBillingComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
     if (!this.BillingForm.get('cashpay').value) {
-      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "85vw",
-          height: '640px',
+          maxWidth: "100vw",
+          height: '740px',
           width: '100%',
           data: {
-            advanceObj: PatientHeaderObj,
+            vPatientHeaderObj: PatientHeaderObj,
             FromName: "OP-Bill"
           }
         });
@@ -927,6 +927,17 @@ export class OPBillingComponent implements OnInit {
     `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
+    if(this.reportPrintObjList.length > 0) {
+      // if(this.reportPrintObjList[0].BalanceAmt === 0) {
+      //   popupWin.document.getElementById('trAmountBalance').style.display = 'none';
+      // }
+      if(this.reportPrintObjList[0].ConcessionAmt === 0) {
+        popupWin.document.getElementById('trAmountconcession').style.display = 'none';
+      }
+      if(this.reportPrintObjList[0].BalanceAmt === 0) {
+        popupWin.document.getElementById('divAmountBalance').style.display = 'none';
+      }
+    }
     popupWin.document.close();
   }
 
