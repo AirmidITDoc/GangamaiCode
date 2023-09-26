@@ -191,7 +191,7 @@ transform2(value: string) {
 }
 
 getPrint(el) {
-  
+  debugger
    var D_data = {
      "PaymentId": el.PaymentId,
    }
@@ -201,7 +201,7 @@ getPrint(el) {
      this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
        if(res){
        this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-       
+       console.log(this.reportPrintObj)
       this.getTemplate();
       }
               
@@ -228,6 +228,29 @@ print() {
   `);
   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
   </html>`);
+
+  if(this.reportPrintObj.CashPayAmount === 0) {
+    popupWin.document.getElementById('idCashpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.CardPayAmount === 0) {
+    popupWin.document.getElementById('idCardpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.ChequePayAmount === 0) {
+    popupWin.document.getElementById('idChequepay').style.display = 'none';
+  }
+  if(this.reportPrintObj.NEFTPayAmount === 0) {
+    popupWin.document.getElementById('idNeftpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.PayTMAmount === 0) {
+    popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.PayTMAmount === 0) {
+    popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+  }
+  if(this.reportPrintObj.Remark === '') {
+    popupWin.document.getElementById('idremark').style.display = 'none';
+  }
+  
   popupWin.document.close();
 }
 

@@ -1,4 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+  
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
@@ -11,17 +12,8 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 IP Advance List
             </span>
-
-            <!-- <button mat-raised-button (click)="newRegistration()" fxLayoutAlign="center center" style="margin-left: 1300px;">
-        <mat-icon color="Primary" title=" Registration Form ">how_to_reg</mat-icon>
-    </button> -->
         </div>
-
-
-
-
     </mat-toolbar>
-
     <!-- / HEADER -->
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
@@ -112,12 +104,14 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <!-- sppinner -->
-                                <mat-table #table matSort [dataSource]="dataArray" [@animateStagger]="{value:'50'}">
+                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
+
                                     <!-- Checkbox Column -->
                                     <!-- <ng-container matColumnDef="checkbox">
                                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -255,7 +249,7 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
@@ -270,5 +264,3 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
-//
-<!-- <div id="print-section" class="printed-div" style="padding:20px;height:550px"><div><div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/Hospital_logo.jpeg" width="90"><div><div style="font-weight:700;font-size:28px;text-align:left;width:1100px;margin-left:300px;font-family:Times New Roman">{{HospitalName}}</div><div style="color:#464343;text-align:left;font-size:18px;width:1100px;margin-left:190px">{{HospAddress}}</div><div style="color:#464343;text-align:left;margin-left:350px">Call :-{{Phone}}</div><div style="color:#464343;text-align:left;width:1100px;margin-left:220px">E-mail ID : {{EmailId}}</div></div></div><div style="margin-left:430px;padding:8px;margin-top:5px"><span style="font-weight:700">IP Advance Receipt</span><span style="margin-left:210px">PrintDate : StrPrintDate</span></div></div><hr><div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:400px"><div style="width:150px">Receipt No</div><div style="width:10px;font-weight:700">:</div></div><div style="display:flex;width:250px"><div style="width:40px">MR.No</div><div style="width:10px;font-weight:700">:</div></div><div style="display:flex;width:350px"><div style="width:100px">Date</div><div style="width:10px;font-weight:700">:</div><div>{{AdmissionDate}}</div></div></div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:400px"><div style="width:150px">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>{{PatientType}}</div></div><div style="display:flex;width:350px"><div style="width:100px">DOA/Time</div><div style="width:10px;font-weight:700">:</div><div>{{AdmissionDate}}</div></div></div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:400px"><div style="width:150px">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>{{PatientName}}</div></div><div style="display:flex;width:350px"><div style="width:100px">Age(Year)</div><div style="width:10px;font-weight:700">:</div><div>{{Age}}</div></div></div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:300px"><div style="width:150px">IPD.No</div><div style="width:10px;font-weight:700">:</div><div>{{IPDNo}}</div></div></div><hr><div style="display:flex;justify-content:space-between"><div style="display:flex;width:1000px"><div style="width:150px">Advance Amount</div><div style="width:10px;font-weight:700">:</div><div style="width:400px;text-transform:capitalize;font-weight:700;margin-left:10px">{{AdvanceAmount}}</div></div></div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:1000px"><div style="width:150px;font-weight:700">Amount in word</div><div style="width:10px;font-weight:700">:</div><div style="width:400px;text-transform:capitalize;font-weight:700;margin-left:10px">StrTotalPaidAmountInWords Only</div></div></div><div style="display:flex;justify-content:space-between"><div style="display:flex;width:1000px"><div style="width:150px;font-weight:700">Reason Of Advance</div><div style="width:10px;font-weight:700">:</div><div style="width:400px;text-transform:capitalize;font-weight:700;margin-left:10px">{{reason}}</div></div></div><hr><div style="display:flex;justify-content:space-between;margin-left:800px"><div style="position:relative;top:100px"><div style="font-weight:700;font-size:16px;text-align:right;margin-right:50px">{{Addedby}}</div><div style="display:flex;width:100px;float:right">Cashier</div></div></div></div> -->

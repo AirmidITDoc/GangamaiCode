@@ -549,7 +549,8 @@ DoctorId:any=0;
   }
 
   getOptionTextDoc(option) {
-    return option.Doctorname;
+    
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   getOptionTextWard(option) {
@@ -1052,7 +1053,7 @@ DoctorId:any=0;
 
   onChangePatient(value) {
     
-    if (value.PatientTypeId == 2) {
+    if (value.PatientTypeId == 2 || 3) {
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
       this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();

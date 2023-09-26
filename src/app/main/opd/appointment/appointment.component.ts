@@ -636,20 +636,21 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    console.log(value);
+  debugger
 
-    if (value.PatientTypeId == 2) {
+    if (value.PatientTypeId == 2 || value.PatientTypeId == 3) {
+     
+      this._opappointmentService.getCompanyCombo();
+      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+    } else {
+      this.isCompanySelected = false;
       this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
       this.VisitFormGroup.get('CompanyId').clearValidators();
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
       this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-      this.isCompanySelected = true;
-    } else {
-      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
-      // this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[0]);
-      this._opappointmentService.getCompanyCombo();
-      this.isCompanySelected = false;
+     
     }
 
   }
@@ -1705,7 +1706,7 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
   }
   
   OnChangeDoctorList(departmentObj) {
-  
+  debugger
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {

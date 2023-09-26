@@ -35,7 +35,9 @@ public getTemplate(query) {
 public getIPBILLBrowsePrint(BillNo) {
   return this._httpClient.post("Generic/GetByProc?procName=rptIPDFinalBill", BillNo)
 }  
-
+public getIPBILLBrowsedatewisePrint(BillNo) {
+  return this._httpClient.post("Generic/GetByProc?procName=rptIPDFinalBillWithDateWise", BillNo)
+}
    
     // company Master Combobox List
     public getCompanyMasterCombo() {

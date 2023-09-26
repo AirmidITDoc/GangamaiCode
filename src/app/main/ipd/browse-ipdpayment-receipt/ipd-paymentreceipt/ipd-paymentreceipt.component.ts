@@ -206,7 +206,7 @@ getViewbill(contact)
 
 
 
-print() {
+printpayment() {
   // HospitalName, HospitalAddress, AdvanceNo, PatientName
   let popupWin, printContents;
   // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
@@ -222,6 +222,54 @@ print() {
   `);
   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
   </html>`);
+  // if(this.reportPrintObj.length > 0) {
+    if(this.reportPrintObj.BalanceAmt === 0) {
+      popupWin.document.getElementById('idBalamt').style.display = 'none';
+    }
+  // }
+
+  popupWin.document.close();
+}
+
+
+printSettlement() {
+  // HospitalName, HospitalAddress, AdvanceNo, PatientName
+  let popupWin, printContents;
+  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
+
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  // popupWin.document.open();
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+  </html>`);
+  // if(this.reportPrintObj.length > 0) {
+    if(this.reportPrintObj.CashPayAmount === 0) {
+      popupWin.document.getElementById('idCashpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.CardPayAmount === 0) {
+      popupWin.document.getElementById('idCardpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.ChequePayAmount === 0) {
+      popupWin.document.getElementById('idChequepay').style.display = 'none';
+    }
+    if(this.reportPrintObj.NEFTPayAmount === 0) {
+      popupWin.document.getElementById('idNeftpay').style.display = 'none';
+    }
+    if(this.reportPrintObj.PayTMAmount === 0) {
+      popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+    }
+    // if(this.reportPrintObj.BalanceAmt === 0) {
+    //   popupWin.document.getElementById('idBalamt').style.display = 'none';
+    // }
+
+  // }
+
   popupWin.document.close();
 }
 
@@ -243,11 +291,9 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
     // this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
     // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
-    // this.printTemplate = this.printTemplate.replace('StrCashpay','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-    // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+ 
     setTimeout(() => {
-      this.print();
+      this.printSettlement();
     }, 5);
 });
 }
@@ -274,7 +320,7 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
     // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
     // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
     setTimeout(() => {
-      this.print();
+      this.printpayment();
     }, 5);
 });
 }
@@ -305,7 +351,7 @@ debugger
 var D_data = {
 "PaymentId":el.PaymentId,//206
 }
-// console.log(el);
+
 let printContents; 
 this.subscriptionArr.push(
 this._BrowseIPDPaymentReceiptService.getBrowseIPDPaymentReceiptPrint(D_data).subscribe(res => {

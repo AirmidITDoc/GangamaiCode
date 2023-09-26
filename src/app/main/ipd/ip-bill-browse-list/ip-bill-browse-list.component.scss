@@ -1,125 +1,15 @@
 @import "src/@fuse/scss/fuse";
 
-
-.mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
-}
-
-:host {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-    height: 100%;
-    
-    .mat-form-field {
-        margin-right: 12px;
-      }
-
-    .sidebar-content {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        background-color: white;    
-            
-        @include media-breakpoint(gt-sm) {
-            //prasad
-            // padding: 24px 4px 24px 24px;
-            padding: 12px 0 12px 12px;
-        }
-
-        .card {
-            display: flex;
-            flex-direction: column;
-            flex: 0 1 auto;
-            padding: 0;
-            border-radius: 8px;
-
-            @include media-breakpoint(gt-sm) {
-                @include mat-elevation(1);
-            }
-
-            > .header {
-                flex: 0 1 auto;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            }
-
-            > .content {
-                flex: 0 1 auto;
-            }
-
-            // .mat-form-field-wrapper {
-            //     padding-bottom: 0.34375em;
-            // }
-        }
-    }
-}
-
-#IPBillList{
-    .mat-expansion-panel-header {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-    }
-    
-    .mat-tab-labels {
-        height: 40px;
-        .mat-tab-label {
-            height: 35px;
-        }
-    }
-
-    .mat-form-field-wrapper {
-        padding-bottom: 0.34375em;
-    }
-
-    .logo {
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    
-    .navbar{
-        justify-content: space-between;
-    }
-    .icon{
-        padding-right: 1rem;
-    }
-    
-    .left-icon{
-        color:white;
-    }
-    
-    
-    .logo-text {
-        margin-right: 10px;
-    }
-    
-    h1, .h1 {
-        font-size: 20px;
-        color: white;
-    }
-    
-    
-    
-
-
-}
-
-
-app-ipd-bil-browse-list {
-
+app-ip-bill-browse-list {
     display: flex;
     flex: 1 1 auto;
     width: 100%;
     
     .mat-table {
-       
-    //    height: 600px !important;
+    //    height: 500px !important;
         width: 100%;
         background: transparent;
         box-shadow: none;
-     
 
         .mat-column-checkbox {
             flex: 0 1 64px;
@@ -140,7 +30,7 @@ app-ipd-bil-browse-list {
            
             .mat-cell {
                 min-width: 0;
-               // white-space: nowrap; 
+                white-space: nowrap; 
                 overflow: hidden;
                 text-overflow: ellipsis; 
                 overflow: hidden !important;
@@ -160,132 +50,132 @@ app-ipd-bil-browse-list {
 .active-icon {
     border-radius: 50%;
 }
+
 app-ip-bill-browse-list{
 
-.table1{
-    height: 700px !important;
-}
-.active-icon {
-    border-radius: 50%;
-}
-
-.mat-header-row {
-    width: 100%;
-    //max-width: 1500px;
-    min-width: 1630px;  
-     min-height: 30px;     
-}
-
-.mat-row {
-    width: 100%;
-    //max-width: 1500px;
-    min-width: 1630px;
-    min-height: 30px;            
-}
-
-.mat-column-BillDate {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: center;
-    justify-content:center;
+    // .table1{
+    //     height: 700px !important;
+    // }
+    .active-icon {
+        border-radius: 50%;
+    }
     
-}
-
-.mat-column-RegID {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
-    text-align: center;
-}
-
-.mat-column-SelfOrCompany {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    text-align: center;
-    justify-content:center;
-}
-
-.mat-column-InterimOrFinal {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: center;
-    justify-content:center;
-}
-
-
-.mat-column-BalanceAmt {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: center;
-    justify-content:center;
-}
-
-.mat-column-PBillNo {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
-    text-align: center;
-    justify-content:center;
-}
-.mat-column-PatientName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
-    justify-content:flex-start;
-    margin-right: 12px;
-    text-align: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px; 
-    justify-content:left; 
-}
-
-.mat-column-TotalAmt, .mat-column-ConcessionAmt ,.mat-column-NetPayableAmt,
-.mat-column-CashPay,.mat-column-CardPay, .mat-column-PayTMPay,
-.mat-column-NEFTPay,.mat-column-ChequePay,.mat-column-AdvPay,.mat-icon-action {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    text-align: center;
-    justify-content:center;
-}
-
-.mat-column-buttons {
-    color: white !important;
-    width:70px;
-    max-width: 70px;
-    min-width: 70px;
-    text-align:left;
-    justify-content:left;
-}
-
-.mat-column-action {
-    // color: white !important;
-    width:50px;
-    max-width: 50px;
-    min-width: 50px;
-    min-height: 25px;     
-    text-align:left;
-    justify-content:left;
-}
-
-.red-color {
-    color:#C73866;
-}
-
-.green-color {
-    color:green;
-}
-
-.peach-color {
-    color:#FE676E;
-}
-}
-
+    .mat-header-row {
+        width: 100%;
+        //max-width: 1500px;
+        min-width: 1630px;  
+         min-height: 30px;     
+    }
+    
+    .mat-row {
+        width: 100%;
+        //max-width: 1500px;
+        min-width: 1630px;
+        min-height: 30px;            
+    }
+    
+    .mat-column-BillDate {
+        width:90px;
+        max-width:90px;
+        min-width:90px;
+        text-align: center;
+        justify-content:center;
+        
+    }
+    
+    .mat-column-RegID {
+        width:80px;
+        max-width:80px;
+        min-width:80px;
+        text-align: center;
+    }
+    
+    .mat-column-SelfOrCompany {
+        width:100px;
+        max-width:100px;
+        min-width:100px;
+        text-align: center;
+        justify-content:center;
+    }
+    
+    .mat-column-InterimOrFinal {
+        width:90px;
+        max-width:90px;
+        min-width:90px;
+        text-align: center;
+        justify-content:center;
+    }
+    
+    
+    .mat-column-BalanceAmt {
+        width:90px;
+        max-width:90px;
+        min-width:90px;
+        text-align: center;
+        justify-content:center;
+    }
+    
+    .mat-column-PBillNo {
+        width:80px;
+        max-width:80px;
+        min-width:80px;
+        text-align: center;
+        justify-content:center;
+    }
+    .mat-column-PatientName {
+        width:250px;
+        max-width:250px;
+        min-width:250px;
+        justify-content:flex-start;
+        margin-right: 12px;
+        text-align: left;
+        white-space: nowrap; 
+        // overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 7px; 
+        justify-content:left; 
+    }
+    
+    .mat-column-TotalAmt, .mat-column-ConcessionAmt ,.mat-column-NetPayableAmt,
+    .mat-column-CashPay,.mat-column-CardPay, .mat-column-PayTMPay,
+    .mat-column-NEFTPay,.mat-column-ChequePay,.mat-column-AdvPay,.mat-icon-action {
+        width:100px;
+        max-width:100px;
+        min-width:100px;
+        text-align: center;
+        justify-content:center;
+    }
+    
+    .mat-column-buttons {
+        color: white !important;
+        width:70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align:left;
+        justify-content:left;
+    }
+    
+    .mat-column-action {
+        // color: white !important;
+        width:50px;
+        max-width: 50px;
+        min-width: 50px;
+        min-height: 25px;     
+        text-align:left;
+        justify-content:left;
+    }
+    
+    .red-color {
+        color:#C73866;
+    }
+    
+    .green-color {
+        color:green;
+    }
+    
+    .peach-color {
+        color:#FE676E;
+    }
+    }
