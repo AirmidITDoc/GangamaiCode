@@ -51,7 +51,7 @@ export class BrowseOPBillComponent implements OnInit {
   displayedColumns = [
     
     'chkBalanceAmt',
-    "Bill",
+    // "Bill",
     'BillDate',
     'BillNo',
     'RegNo',
@@ -68,8 +68,6 @@ export class BrowseOPBillComponent implements OnInit {
   showSpinner = false;
   tablehide = false;
   tableshow = true;
-
-
 
 
   constructor(private _fuseSidebarService: FuseSidebarService,
@@ -92,18 +90,11 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
   NewBillpayment(SelectedRecordValue){
-    console.log(SelectedRecordValue);
-    // let PatientHeaderObj = {};
-    // PatientHeaderObj['Date'] = contact.BillDate;
-    // PatientHeaderObj['PatientName'] = contact.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
-    // PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
-    // PatientHeaderObj['BillId'] =contact.BillNo;
-
-     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    // console.log(SelectedRecordValue)
+       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
-          maxWidth: "90vw",
-          height: '640px',
+          maxWidth: "100vw",
+          height: '600px',
           width: '100%',
           data: {
             vPatientHeaderObj: SelectedRecordValue,
@@ -115,7 +106,7 @@ export class BrowseOPBillComponent implements OnInit {
 
       let updateBillobj = {};
       updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
-      updateBillobj['BillBalAmount'] = 0;
+      updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
       const updateBill = new UpdateBill(updateBillobj);
       let CreditPaymentobj = {};
@@ -136,7 +127,7 @@ export class BrowseOPBillComponent implements OnInit {
       CreditPaymentobj['AdvanceUsedAmount'] = 0;
       CreditPaymentobj['AdvanceId'] = 0;
       CreditPaymentobj['RefundId'] = 0;
-      CreditPaymentobj['TransactionType'] = 0;
+      CreditPaymentobj['TransactionType'] =result.submitDataPay.ipPaymentInsert.TransactionType || 0;
       CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
       CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
       CreditPaymentobj['IsCancelled'] = 0;
@@ -153,8 +144,8 @@ export class BrowseOPBillComponent implements OnInit {
       CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
       CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
       CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-      // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-      // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      // CreditPaymentobj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.paidAmountController || '',//this.paymentForm.get('paidAmountController').value;
+      // CreditPaymentobj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || '';//this.paymentForm.get('balanceAmountController').value;
 
       console.log(CreditPaymentobj)
       const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
@@ -172,7 +163,7 @@ export class BrowseOPBillComponent implements OnInit {
           Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               // let m = response;
-              // this.getPrint(m);
+              this.getpaymentPrint(response);
               this._matDialog.closeAll();
             }
           });
@@ -210,7 +201,7 @@ export class BrowseOPBillComponent implements OnInit {
 
         
         updateBillobj['BillNo'] = contact.BillNo;
-        updateBillobj['BillBalAmount'] = 0;
+        updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
 
         const updateBill = new UpdateBill(updateBillobj);
              
@@ -535,7 +526,27 @@ export class BrowseOPBillComponent implements OnInit {
       })
     );
   }
+  getpaymentPrint(el){
+    debugger;
+    var D_data = {
+      "BillNo": el.BillNo,
+      
+    }
+  
+    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+    this.subscriptionArr.push(
+      this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
 
+        this.reportPrintObjList = res as BrowseOPDBill[];
+        console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as BrowseOPDBill;
+
+        this.getTemplate();
+
+
+      })
+    );
+  }
   // PRINT 
   print() {
     

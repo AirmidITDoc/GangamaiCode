@@ -636,27 +636,21 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    console.log(value);
-
-    if (value.PatientTypeId == 2) {
+    if (value.PatientTypeId !== 1) {
+      this._opappointmentService.getCompanyCombo();
+      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+    } else {
+      this.isCompanySelected = false;
       this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
       this.VisitFormGroup.get('CompanyId').clearValidators();
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
       this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-      this.isCompanySelected = true;
-    } else {
-      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
-      // this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[0]);
-      this._opappointmentService.getCompanyCombo();
-      this.isCompanySelected = false;
     }
-
   }
-
   onEdit(row) {
-    console.log(row);
-
+    // console.log(row);
     this.registerObj = row;
     this.getSelectedObj(row);
   }
@@ -1656,8 +1650,24 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
   onClose() {
 
-    //this._opappointmentService.mySaveForm.reset();
+    this.registerObj = new RegInsert({});
+    this.personalFormGroup.reset();
+    this.personalFormGroup.get('RegId').reset();
+    this.searchFormGroup.get('RegId').disable();
 
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
+    this.VisitFormGroup = this.createVisitdetailForm();
+    this.VisitFormGroup.markAllAsTouched();
+
+    this.getHospitalList1();
+    this.getHospitalList();
+    this.getTariffList();
+    this.getPatientTypeList();
+    this.getPrefixList();
+    this.getDepartmentList();
+    this.getcityList1();
+    
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -1705,7 +1715,7 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
   }
   
   OnChangeDoctorList(departmentObj) {
-  
+  debugger
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {

@@ -759,7 +759,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
         Paymentobj['CashCounterId'] = 0;
@@ -785,7 +785,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         "IsSubmitFlag": true
       }
       console.log(IsSubmit);
-      // this.dialogRef.close(IsSubmit);
+      this.dialogRef.close(IsSubmit);
       // console.log('======================= Payment ======');
       // console.log(IsSubmit);
     }
@@ -917,11 +917,25 @@ export class UpdateBill {
   BillNo: number;
   BillBalAmount: number;
  
-
   constructor(UpdateBill) {
     this.BillNo = UpdateBill.BillNo || 0;
     this.BillBalAmount = UpdateBill.BillBalAmount || 0;
-    
+   
+  }
+}
+
+
+export class Advheaderdetail {
+  
+  advanceDetailID:any;
+  usedAmount:any;
+  balanceAmount:any;
+
+  constructor(Advheaderdetail) {
+   
+    this.advanceDetailID = Advheaderdetail.advanceDetailID || 0;
+    this.usedAmount = Advheaderdetail.usedAmount || 0;
+    this.balanceAmount = Advheaderdetail.balanceAmount || 0;
   }
 }
 

@@ -264,8 +264,11 @@ export class IPSearchListComponent implements OnInit {
 
   getAdmittedPatientList() {
     debugger;
-    console.log(this._IpSearchListService.myFilterform.get("IsDischarge").value);
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value) {
+    // console.log(this._IpSearchListService.myFilterform.get("IsDischarge").value);
+
+    // let Isdischargeflag = this._IpSearchListService.myFilterform.get("IsDischarge").value;
+
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "false") {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
@@ -274,7 +277,7 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
         "From_Dt":this.datePipe.transform((new Date()).toISOString() , "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform((new Date()).toISOString(), "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": "0", //this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "Admtd_Dschrgd_All": 0, //this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
@@ -303,7 +306,7 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": "1", // this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "Admtd_Dschrgd_All": 1, // this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
