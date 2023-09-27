@@ -90,11 +90,11 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
   NewBillpayment(SelectedRecordValue){
-    console.log(SelectedRecordValue)
+    // console.log(SelectedRecordValue)
        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
           maxWidth: "100vw",
-          height: '740px',
+          height: '600px',
           width: '100%',
           data: {
             vPatientHeaderObj: SelectedRecordValue,
