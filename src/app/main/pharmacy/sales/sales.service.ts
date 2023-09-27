@@ -21,12 +21,11 @@ export class SalesService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
+      StoreId: '',
       ItemId:'',
-      ItemName:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      // ItemName:'',
+      // start: [(new Date()).toISOString()],
+      // end: [(new Date()).toISOString()],
     });
   }
   

@@ -29,8 +29,7 @@ export class SalePopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public salesService: SalesService,
   ) {
-
-
+    console.log(data);
   }
 
   highlight(row: any) {
@@ -115,7 +114,6 @@ export class SalesList {
       this.PurchaseRate = IndentList.PurchaseRate || "";
       this.position = IndentList.position || 0;
       this.ItemName = IndentList.ItemName || "";
-
       this.ConversionFactor = IndentList.ConversionFactor || '';
       // this.Bal = IndentList.Bal|| 0;
       // this.StoreId = IndentList.StoreId || 0;
