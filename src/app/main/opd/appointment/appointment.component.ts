@@ -1650,8 +1650,24 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
   onClose() {
 
-    //this._opappointmentService.mySaveForm.reset();
+    this.registerObj = new RegInsert({});
+    this.personalFormGroup.reset();
+    this.personalFormGroup.get('RegId').reset();
+    this.searchFormGroup.get('RegId').disable();
 
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
+    this.VisitFormGroup = this.createVisitdetailForm();
+    this.VisitFormGroup.markAllAsTouched();
+
+    this.getHospitalList1();
+    this.getHospitalList();
+    this.getTariffList();
+    this.getPatientTypeList();
+    this.getPrefixList();
+    this.getDepartmentList();
+    this.getcityList1();
+    
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
