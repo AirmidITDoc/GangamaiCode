@@ -872,6 +872,8 @@ export class OpPaymentNewComponent implements OnInit {
   onClose1() {
     debugger
 
+    if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {}
+
     let Paymentobj = {};
     // Paymentobj['PaymentId'] = 0;
     Paymentobj['BillNo'] = 0,// this.billNo;

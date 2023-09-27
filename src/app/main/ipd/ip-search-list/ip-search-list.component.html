@@ -81,9 +81,9 @@
                                     <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
                                         required Enter only Digits</span>
                                 </mat-form-field>
-
+                                <!-- [(ngModel)]="isChecked" -->
                                 <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
-                                    [(ngModel)]="isChecked" formControlName="IsDischarge">
+                                     formControlName="IsDischarge">
                                     IsDischarge</mat-slide-toggle>
 
                                 <div style="margin-top: 10px;">

@@ -284,7 +284,7 @@ export class IPAdvanceComponent implements OnInit {
       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
           maxWidth: "100vw",
-          height: '740px',
+          height: '600px',
           width: '100%',
           // data: {
           //   patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,

@@ -1,23 +1,34 @@
-<div class="parent-container" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar style="overflow: auto;">
+<div class="parent-container" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
     <fieldset style="font-size: 17px;">
         <form [formGroup]="patientDetailsFormGrp">
-        <legend>Bill Information</legend>
-        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-        style="border-color: red;"></app-common-date>
+        <span style="font-family: sans-serif;font-weight: bold;font-size: large;">Bill Information</span>
+       
         <div>
             <fieldset class="fieldset-div">
                 <legend>Patient Information</legend>
+                <span style="float: right;">
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                    style="border-color: red;"></app-common-date></span>
                 <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                     <div class="patient-sub">
                         <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item" style="width: 375px;">
+                            <div class="flex-item" style="width: 275px;">
                                 <h3 class="labels-h3">Patient Name</h3>
                             </div>
                             <div class="flex-item-middle">
                                 <h6 class="labels-h6">:</h6>
                             </div>
                             <div class="flex-item">
-                                <h6 class="labels-h6">{{advanceData.PatientName}}</h6>
+                                <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}</h6>
+                            </div>
+                            <div class="flex-item item-header">
+                                <h3 class="labels-h3">Gender / Age</h3>
+                            </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">Male / 44</h6>
                             </div>
                         </div>
                         <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
@@ -33,55 +44,7 @@
                         </div>
                     </div>
 
-                    <div class="patient-sub">
-                        <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item item-header">
-                                <h3 class="labels-h3">Gender</h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
-                            </div>
-                            <div class="flex-item">
-                                <h6 class="labels-h6">Male</h6>
-                            </div>
-                        </div>
-                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item item-header">
-                                <h3 class="labels-h3">Tariff</h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
-                            </div>
-                            <div class="flex-item">
-                                <h6 class="labels-h6">Hospital</h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="patient-sub">
-                        <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item item-header">
-                                <h3 class="labels-h3">Age</h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
-                            </div>
-                            <div class="flex-item">
-                                <h6 class="labels-h6">30</h6>
-                            </div>
-                        </div>
-                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item item-header">
-                                <h3 class="labels-h3">Company</h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
-                            </div>
-                            <div class="flex-item">
-                                <h6 class="labels-h6">Airmid</h6>
-                            </div>
-                        </div>
-                    </div>
+                                   
 
                     <div class="patient-sub">
                         <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
@@ -94,8 +57,28 @@
                             <div class="flex-item">
                                 <h6 class="labels-h6">Hospital</h6>
                             </div>
+
+                            <div class="flex-item item-header">
+                                <h3 class="labels-h3">Company</h3>
+                            </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">Airmid</h6>
+                            </div>
                         </div>
                         <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="flex-item item-header">
+                                <h3 class="labels-h3">Tariff</h3>
+                            </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">Hospital</h6>
+                            </div>
+
                             <div class="flex-item item-header">
                                 <h3 class="labels-h3">Doctor</h3>
                             </div>
@@ -118,20 +101,42 @@
                         <div class="bill-header" fxFlex="200px">
                             <h3 class="labels-h3">Advance Available</h3>
                         </div>
+                        <!-- <div>
+                            <h6 class="labels-h6">:</h6>
+                        </div> -->
+                        <div fxFlex="100px">
+                            <h6 class="labels-h6">0</h6>
+                        </div>
+                        <div fxFlex="300px">
+                            <mat-checkbox><h3 class="labels-h3">Consume Advance</h3></mat-checkbox>
+                        </div>
+
+                        <div fxFlex="150px">
+                            <h3 class="labels-h3">Bill Amount</h3>
+                        </div>
                         <div>
                             <h6 class="labels-h6">:</h6>
                         </div>
+                        <div fxFlex="100px">
+                          <h6 class="labels-h6">  <i class="fas fa-indian-rupee-sign" style="margin-right: 5px;"></i>{{netPayAmt}}</h6>
+                        </div>
+
                         <div fxFlex="200px">
-                            <h6 class="labels-h6">0</h6>
+                            <h3 class="labels-h3">Net Pay Amount</h3>
+                        </div>
+                        <div>
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div fxFlex="100px">
+                          
+                            <h6 class="labels-h6">  <i class="fas fa-indian-rupee-sign" style="margin-right: 5px;"></i>{{netPayAmt}}</h6>
                         </div>
                     </div>
-
+<!-- 
                     <div class="patient-bill-info" fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-between center">
-                        <div fxFlex="200px">
-                            <mat-checkbox><h3 class="labels-h3">Consume Advance</h3></mat-checkbox>
-                        </div>
-                    </div>
-
+                       
+                    </div> -->
+<!-- 
                     <div class="patient-bill-info" fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-between center">
                         <div fxFlex="150px">
                             <h3 class="labels-h3">Bill Amount</h3>
@@ -139,13 +144,24 @@
                         <div>
                             <h6 class="labels-h6">:</h6>
                         </div>
-                        <div fxFlex="200px">
+                        <div fxFlex="100px">
                             <i class="fas fa-indian-rupee-sign" style="margin-right: 5px;"></i>
                             <h6 class="labels-h6">{{netPayAmt}}</h6>
                         </div>
-                    </div>
 
-                    <div class="patient-bill-info" fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-between center">
+                        <div fxFlex="100px">
+                            <h3 class="labels-h3">Net Pay Amount</h3>
+                        </div>
+                        <div>
+                            <h6 class="labels-h6">:</h6>
+                        </div>
+                        <div fxFlex="100px">
+                            <i class="fas fa-indian-rupee-sign" style="margin-right: 5px;"></i>
+                            <h6 class="labels-h6">{{netPayAmt}}</h6>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="patient-bill-info" fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-between center">
                         <div fxFlex="200px">
                             <h3 class="labels-h3">Net Pay Amount</h3>
                         </div>
@@ -156,7 +172,7 @@
                             <i class="fas fa-indian-rupee-sign" style="margin-right: 5px;"></i>
                             <h6 class="labels-h6">{{netPayAmt}}</h6>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </fieldset>
         </div>
@@ -165,7 +181,7 @@
             <fieldset>
                 <legend>Payment Details</legend>
                          <!-- First Row 1 -->
-                        <div fxFlexFill fxLayout="column" class="patient-details" fxLayoutGap="15px">
+                        <div  fxLayout="column" class="patient-details" fxLayoutGap="15px" >
 
                         <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row payment-container" *ngIf="paymentRowObj.cash">
                             <mat-form-field appearance="outline" fxFlex="16%">
@@ -192,9 +208,6 @@
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName1">
                                 </mat-form-field>
-
-                               
-
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
@@ -247,7 +260,7 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline"  fxFlex="16%">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                       formControlName="bankName2" [matAutocomplete]="bankName2" required>
