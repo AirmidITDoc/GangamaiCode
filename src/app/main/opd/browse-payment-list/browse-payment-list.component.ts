@@ -173,7 +173,7 @@ getTemplate() {
 
       this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
+      this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       
       setTimeout(() => {
