@@ -174,7 +174,7 @@ export class SalesComponent implements OnInit {
   gePharStoreList() {
     this._salesService.getStoreFromList().subscribe(data => {
       this.Store1List = data;
-      this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+      this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[20]);
     });
   }
 
