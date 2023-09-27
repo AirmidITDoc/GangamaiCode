@@ -935,7 +935,7 @@ export class OPBillingComponent implements OnInit {
         popupWin.document.getElementById('trAmountconcession').style.display = 'none';
       }
       if(this.reportPrintObjList[0].BalanceAmt === 0) {
-        popupWin.document.getElementById('divAmountBalance').style.display = 'none';
+        popupWin.document.getElementById('idBalAmt').style.display = 'none';
       }
     }
     popupWin.document.close();

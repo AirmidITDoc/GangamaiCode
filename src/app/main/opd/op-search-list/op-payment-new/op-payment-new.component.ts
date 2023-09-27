@@ -95,7 +95,8 @@ export class OpPaymentNewComponent implements OnInit {
       this.getBalanceAmt();
     }
     if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
@@ -127,10 +128,10 @@ export class OpPaymentNewComponent implements OnInit {
   ngOnInit(): void {
 
     this.patientDetailsFormGrp = this.createForm();
-   
+   debugger
     this.selectedPaymnet1 = this.paymentArr1[0].value;
-    this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-
+    this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+    this.getBalanceAmt();
     this.paymentRowObj["cash"] = true;
     this.onPaymentChange(1, 'cash');
     this.paidAmt = this.netPayAmt;
@@ -837,17 +838,6 @@ export class OpPaymentNewComponent implements OnInit {
 
   saveClicked() {
     debugger
-    // if(this.PatientHeaderObj.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill" ){
-    //   this.Paymentobj['TransactionType'] = 0;
-    // }
-  
-    // if(this.PatientHeaderObj.FromName == "Advance"){
-    //   this.Paymentobj['TransactionType'] = 1;
-    // }
-    // if(this.PatientHeaderObj.FromName == "Refund"){
-    //   this.Paymentobj['TransactionType'] = 2;
-    // }
-  
 
     this.getCashObj('cash');
     this.getChequeObj('cheque');
@@ -932,6 +922,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getBalanceAmt() {
+    debugger
     this.balanceAmt = this.netPayAmt - ((this.amount1 ? parseInt(this.amount1) : 0)
       + (this.amount2 ? parseInt(this.amount2) : 0)
       + (this.amount3 ? parseInt(this.amount3) : 0)

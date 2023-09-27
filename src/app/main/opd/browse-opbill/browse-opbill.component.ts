@@ -70,8 +70,6 @@ export class BrowseOPBillComponent implements OnInit {
   tableshow = true;
 
 
-
-
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _BrowseOPDBillsService: BrowseOPBillService,
     public datePipe: DatePipe,
@@ -92,6 +90,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
   NewBillpayment(SelectedRecordValue){
+    console.log(SelectedRecordValue)
        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
           maxWidth: "100vw",
@@ -202,7 +201,7 @@ export class BrowseOPBillComponent implements OnInit {
 
         
         updateBillobj['BillNo'] = contact.BillNo;
-        updateBillobj['BillBalAmount'] = 0;
+        updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
 
         const updateBill = new UpdateBill(updateBillobj);
              

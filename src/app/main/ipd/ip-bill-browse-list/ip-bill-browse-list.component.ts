@@ -20,7 +20,7 @@ import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
-import { UpdateBill } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { Advheaderdetail, UpdateBill } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { Router } from '@angular/router';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
@@ -201,7 +201,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
       updateIpBillobj['BillNo'] = contact.BillNo;
-      updateIpBillobj['BillBalAmount'] =result.submitDataPay.ipPaymentInsert.balanceAmountController
+      updateIpBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
 
       const updateIpBill = new UpdateBill(updateIpBillobj);
 
@@ -213,7 +213,7 @@ export class IPBillBrowseListComponent implements OnInit {
       iPsettlementAdvanceDetailUpdateobj['usedAmount'] = 0;
       iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
 
-      const iPsettlementAdvanceDetailUpdate = new UpdateBill(iPsettlementAdvanceDetailUpdateobj);
+      const iPsettlementAdvanceDetailUpdate = new Advheaderdetail(iPsettlementAdvanceDetailUpdateobj);
    
 
       let iPsettlementAdvanceHeaderUpdateobj = {};
