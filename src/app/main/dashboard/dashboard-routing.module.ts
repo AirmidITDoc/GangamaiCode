@@ -5,6 +5,7 @@ import { PathologyDashboardComponent } from './pathology-dashboard/pathology-das
 import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
+import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'Pharmacy-dashboard',
     component: PharmacyDashboardComponent
+  },
+  {
+    path: 'bed-occupancy',
+    component: BedOccupancyComponent
   }
 
 ];

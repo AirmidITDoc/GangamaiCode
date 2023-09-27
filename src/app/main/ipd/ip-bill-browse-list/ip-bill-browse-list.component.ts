@@ -494,6 +494,11 @@ export class IPBillBrowseListComponent implements OnInit {
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
       var strrowslist = "";
+      let grpName = [];
+      // for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      //   var objreportPrint = this.reportPrintObjList[i - 1];
+      //   grpName.push(objreportPrint.GroupName);
+      // }
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         var objreportPrint = this.reportPrintObjList[i - 1];
 
@@ -502,6 +507,9 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
+        //   <div style="display:flex;width:280px;margin-left:20px;" *ngIf="objreportPrint.GroupName == 'Miscellaneous Charges'">
+        //   <div ng-hide="`+objreportPrint.GroupName == 'Miscellaneous Charges'+`">`+ objreportPrint.GroupName + `</div>
+        // </div>
         var strabc = `  
         
     <div style="display:flex;width:280px;margin-left:20px;">
