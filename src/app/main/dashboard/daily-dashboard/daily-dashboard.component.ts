@@ -4,6 +4,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import Chart, { ChartColor } from 'chart.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-daily-dashboard',
@@ -33,7 +34,8 @@ export class DailyDashboardComponent implements OnInit {
 
   constructor(
     public _dashboardServices: DashboardService,
-    public _accountServices: AuthenticationService
+    public _accountServices: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -255,6 +257,11 @@ export class DailyDashboardComponent implements OnInit {
         },
       },
     })
+  }
+
+  getBedOccupancy() {
+    console.log('asdad')
+    this.router.navigate(['/dashboard/bed-occupancy']);
   }
 }
 

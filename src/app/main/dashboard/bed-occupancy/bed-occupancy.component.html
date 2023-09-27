@@ -1,0 +1,86 @@
+<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent p-12 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+
+                <span class="mat-display-1 my-0 my-sm-12 welcome-message"
+                    [@animate]="{value:'*',params:{x:'50px'}}">Welcome back!
+                </span>
+
+                <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </div>
+
+
+        </div>
+        <div class="ward-dashboard" fxLayout="row wrap" fxLayoutGap="15px grid">
+            <div class="ward-main-conatiner" *ngFor="let ele of warDataArr" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" (click)="onSelectWard(ele)">
+                <div class="ward-container" fxLayout="column" fxLayoutAlign="space-evenly">
+                    <div>
+                        {{ele.RoomName}}
+                    </div>
+                    <div>
+                        W{{ele.RoomId}}
+                    </div>
+                </div>
+                <div
+                    [ngClass]="ele.isSelected ? 'ward-details-container ward-orange' : 'ward-details-container ward-white'">
+                    <div class="detail-div" fxLayout="column" fxLayoutGap="15px">
+                        <div style="text-align: center;">
+                            <span class="labels">Ward Charges: </span><span class="ward-value-class">1500/-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <span class="labels">Total Room: 0</span>
+                            </div>
+                            <div>
+                                <span class="labels">Total Beds: 0</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <span class="ward-value-class">Occupied: {{ele.OccuipedCount}}</span>
+                            </div>
+                            <div>
+                                <span class="ward-value-class">Available: {{ele.AvailableCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ward-availibility" fxLayout="row wrap" fxLayoutGap="15px grid">
+            <div class="ward-avail-details" fxFlex="20%" *ngFor="let ele of warItemArr">
+                <div style="margin-bottom: 10px;">
+                    <span
+                        [ngClass]="ele.IsAvailible ? 'ward-status status-green' : 'ward-status status-orange'">{{ele.IsAvailible
+                        ? 'Available' : 'Occupied'}}</span>
+                </div>
+                <div>
+                    <span class="ward-status">Bed : {{ele.BedName}}</span>
+                </div>
+                <hr>
+                <div class="avail-icon">
+                    <mat-icon [ngClass]="ele.IsAvailible ? 'avail-icon-name icon-green' : 'avail-icon-name icon-orange'">{{ele.IsAvailible ? 'person' : 'person_add'}}</mat-icon>
+                </div>
+                <div *ngIf="!ele.IsAvailible">
+                    <hr>
+                    <div style="margin-bottom: 10px;">
+                        <span class="ward-status">{{ele.PatientName}}</span>
+                    </div>
+                    <div>
+                        <span>{{ele.RegNo}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

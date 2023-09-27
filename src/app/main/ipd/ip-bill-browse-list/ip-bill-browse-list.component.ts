@@ -493,6 +493,11 @@ export class IPBillBrowseListComponent implements OnInit {
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
       var strrowslist = "";
+      let grpName = [];
+      // for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      //   var objreportPrint = this.reportPrintObjList[i - 1];
+      //   grpName.push(objreportPrint.GroupName);
+      // }
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         var objreportPrint = this.reportPrintObjList[i - 1];
 
@@ -501,28 +506,33 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
+        //   <div style="display:flex;width:280px;margin-left:20px;" *ngIf="objreportPrint.GroupName == 'Miscellaneous Charges'">
+        //   <div ng-hide="`+objreportPrint.GroupName == 'Miscellaneous Charges'+`">`+ objreportPrint.GroupName + `</div>
+        // </div>
         var strabc = `  
-   
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div>
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> 
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> 
-    </div>
-    <div style="display:flex;width:70px;justify-content: right;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> 
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
-        <div>`+ objreportPrint.Qty + `</div> 
-    </div>
-    <div style="display:flex;width:110px;justify-content: right;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> 
-    </div>
-</div>`;
+        <div style="display:flex;width:280px;margin-left:20px;" *ngIf="objreportPrint.GroupName == 'Miscellaneous Charges'">
+          <div>`+ objreportPrint.GroupName + `</div>
+        </div>
+        <div style="display:flex;margin:8px 0">
+            <div style="display:flex;width:80px;margin-left:20px;">
+                <div>`+ i + `</div>
+            </div>
+            <div style="display:flex;width:300px;margin-left:10px;">
+                <div>`+ objreportPrint.ServiceName + `</div> 
+            </div>
+            <div style="display:flex;width:300px;margin-left:10px;">
+            <div>`+ docname + `</div> 
+            </div>
+            <div style="display:flex;width:70px;justify-content: right;">
+            <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> 
+            </div>
+            <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
+                <div>`+ objreportPrint.Qty + `</div> 
+            </div>
+            <div style="display:flex;width:110px;justify-content: right;">
+                <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> 
+            </div>
+        </div>`;
         strrowslist += strabc;
       }
       var objPrintWordInfo = this.reportPrintObjList[0];

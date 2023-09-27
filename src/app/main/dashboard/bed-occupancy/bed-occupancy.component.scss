@@ -1,0 +1,196 @@
+#dashboard-project {
+
+    .mat-display-1,
+    .mat-typography .mat-display-1 {
+        font: 300 25px/40px Muli, Helvetica Neue, Arial, sans-serif;
+        letter-spacing: normal;
+        margin: 0 0 64px;
+    }
+
+    >.sidebar {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+    }
+
+    >.center {
+
+        >.header {
+            height: 80px;
+            min-height: 80px;
+            max-height: 160px;
+
+            .selected-project {
+                background: rgba(0, 0, 0, 0.12);
+                color: #FFFFFF;
+                padding: 8px 16px;
+                height: 40px;
+                line-height: 24px;
+                font-size: 16px;
+                border-radius: 8px 0 0 0;
+            }
+
+            .project-selector {
+                margin-left: 1px;
+                background: rgba(0, 0, 0, 0.12);
+                border-radius: 0 8px 0 0;
+
+                mat-icon {
+                    color: #FFFFFF;
+                }
+            }
+        }
+
+        >.content {
+            flex: 1;
+            display: block !important;
+
+            mat-tab-group {
+                height: 100%;
+
+                .mat-tab-body-wrapper {
+                    flex-grow: 1;
+                }
+            }
+
+            .mat-tab-label-container {
+                padding: 0 24px;
+            }
+        }
+    }
+
+    .widget {
+
+        &.widget5 {
+
+            .gridline-path.gridline-path-horizontal {
+                display: none;
+            }
+        }
+    }
+
+    .fuse-widget-front {
+        height: fit-content;
+        max-height: fit-content;
+        min-height: fit-content;
+    }
+}
+
+.ward-dashboard {
+    margin: 0 15px 0 15px !important;
+}
+
+.ward-main-conatiner {
+    position: relative;
+    padding: 12px;
+    width: 300px;
+    margin-top: 70px;
+    cursor: pointer;
+}
+
+.ward-container {
+    width: 270px;
+    height: 80px;
+    background-color: #71b4ef;
+    position: absolute;
+    top: -45px;
+    left: 30px;
+    // font-size: 20px;
+    padding: 0 20px;
+
+    @media (min-width: 768px) and (max-width: 1024px){
+        width: 160px;
+    }
+}
+
+.ward-details-container {
+    // width: 300px;
+    height: 200px;
+    // background-color: white;
+}
+
+.ward-white {
+    background-color: white;
+}
+
+.ward-orange {
+    background-color: #e98f29;
+}
+
+.ward-container,
+.ward-details-container,
+.ward-avail-details {
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 6px;
+}
+
+.detail-div {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    padding: 0px 40px 0px 20px;
+    // font-size: 20px;
+}
+
+.ward-value-class {
+    font-weight: bold;
+    color: #4f4a4a;
+}
+
+.labels {
+    color: #635a5a;
+}
+
+.ward-availibility {
+    padding: 0 12px 30px 12px;
+}
+
+.ward-avail-details {
+    margin-top: 20px;
+    margin-right: 15px;
+    // width: 280px;
+    max-width: 280px !important;
+    padding: 20px !important;
+    height: fit-content;
+    background-color: white;
+}
+
+.ward-status {
+    // font-size: 20px;
+    font-weight: bold;
+}
+
+.status-green {
+    color: green;
+}
+
+.status-orange {
+    color: #df9308;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    color: #aba6a6;
+    background-color: #aba6a6;
+}
+
+.avail-icon {
+    height: 80px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.avail-icon-name {
+    width: 100px;
+    height: 50px;
+    font-size: 61px;
+}
+
+.icon-green {
+    color: #07ad07;
+}
+.icon-orange {
+    color: orange;
+}
