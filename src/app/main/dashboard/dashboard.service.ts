@@ -24,4 +24,12 @@ export class DashboardService {
   {
     return this._httpClient.post("Generic/GetByProc?procName=rptIP_DepartmentChart_Range", params)
   }
+
+  public getWard(params) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_WardWiseBedOccupancy_1", params)
+  }
+
+  public getWardDetails(params) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BedOccupancyList_1", params)
+  }
 }

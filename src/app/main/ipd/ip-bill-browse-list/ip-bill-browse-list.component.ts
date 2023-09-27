@@ -495,6 +495,11 @@ export class IPBillBrowseListComponent implements OnInit {
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
       var strrowslist = "";
+      let grpName = [];
+      // for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      //   var objreportPrint = this.reportPrintObjList[i - 1];
+      //   grpName.push(objreportPrint.GroupName);
+      // }
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         var objreportPrint = this.reportPrintObjList[i - 1];
 
