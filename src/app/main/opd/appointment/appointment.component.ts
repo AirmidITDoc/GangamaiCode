@@ -636,10 +636,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-  debugger
-
-    if (value.PatientTypeId == 2 || value.PatientTypeId == 3) {
-     
+    if (value.PatientTypeId !== 1) {
       this._opappointmentService.getCompanyCombo();
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
       this.isCompanySelected = true;
@@ -650,14 +647,10 @@ export class AppointmentComponent implements OnInit {
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
       this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-     
     }
-
   }
-
   onEdit(row) {
-    console.log(row);
-
+    // console.log(row);
     this.registerObj = row;
     this.getSelectedObj(row);
   }

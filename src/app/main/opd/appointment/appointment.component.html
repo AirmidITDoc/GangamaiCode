@@ -433,6 +433,36 @@
                             Gender is required</span>
                         </mat-error>
                       </mat-form-field>
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Marital Status</mat-label>
+                        <mat-select formControlName="MaritalStatusId" placeholder="Bank" #singleSelect>
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="maritalstatusFilterCtrl" [placeholderLabel]="'Search'"
+                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let element of filteredMaritalstatus | async" [value]="element">
+                            {{element.MaritalStatusName}}
+                          </mat-option>
+                        </mat-select>
+
+                      </mat-form-field>
+
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Religion Name</mat-label>
+                        <mat-select formControlName="ReligionId" placeholder="Bank" #singleSelect>
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="religionFilterCtrl" [placeholderLabel]="'Search'"
+                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let element of filteredReligion | async" [value]="element">
+                            {{element.ReligionName}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
@@ -478,34 +508,37 @@
                           Please enter Age Day </mat-error>
                       </mat-form-field>
 
-
                       <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Marital Status</mat-label>
-                        <mat-select formControlName="MaritalStatusId" placeholder="Bank" #singleSelect>
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="maritalstatusFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                          </mat-option>
-                          <mat-option *ngFor="let element of filteredMaritalstatus | async" [value]="element">
-                            {{element.MaritalStatusName}}
-                          </mat-option>
-                        </mat-select>
-
+                        <mat-label>Pan Card No</mat-label>
+                        <input name="PanCardNo" formControlName="PanCardNo" placeholder="PanCardNo Number" matInput
+                          [(ngModel)]="registerObj.PanCardNo" value="987665868800" maxlength="12">
+                        <mat-error class="error"
+                          *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12
+                          digits Pan Card No is required</mat-error>
                       </mat-form-field>
 
 
                       <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Religion Name</mat-label>
-                        <mat-select formControlName="ReligionId" placeholder="Bank" #singleSelect>
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="religionFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                          </mat-option>
-                          <mat-option *ngFor="let element of filteredReligion | async" [value]="element">
-                            {{element.ReligionName}}
-                          </mat-option>
-                        </mat-select>
+                        <mat-label>Phone Number</mat-label>
+                        <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
+                          [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number"
+                          value="9876658688">
                       </mat-form-field>
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Mobile Number</mat-label>
+                        <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required"
+                          type="number" value="MobileNo.length">
+                        <mat-error class="error"
+                          *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                          digits Mobile number is
+                          required</mat-error>
+                      </mat-form-field>
+
+
+
+                    
 
                     </div>
 
@@ -584,35 +617,6 @@
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
                       style="padding-bottom: 10px;">
-
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Pan Card No</mat-label>
-                        <input name="PanCardNo" formControlName="PanCardNo" placeholder="PanCardNo Number" matInput
-                          [(ngModel)]="registerObj.PanCardNo" value="987665868800" maxlength="12">
-                        <mat-error class="error"
-                          *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12
-                          digits Pan Card No is required</mat-error>
-                      </mat-form-field>
-
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Phone Number</mat-label>
-                        <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
-                          [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number"
-                          value="9876658688">
-                      </mat-form-field>
-
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Mobile Number</mat-label>
-                        <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required"
-                          type="number" value="MobileNo.length">
-                        <mat-error class="error"
-                          *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                          digits Mobile number is
-                          required</mat-error>
-                      </mat-form-field>
 
 
                     </div>
