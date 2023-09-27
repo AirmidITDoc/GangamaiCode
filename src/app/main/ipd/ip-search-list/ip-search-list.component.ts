@@ -264,10 +264,7 @@ export class IPSearchListComponent implements OnInit {
 
   getAdmittedPatientList() {
     debugger;
-    // console.log(this._IpSearchListService.myFilterform.get("IsDischarge").value);
-
-    // let Isdischargeflag = this._IpSearchListService.myFilterform.get("IsDischarge").value;
-
+   
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "false") {
       this.isLoadingStr = 'loading';
       var D_data = {
@@ -1004,9 +1001,10 @@ export class IPSearchListComponent implements OnInit {
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
-    console.log(SiderOption);
+  debugger
     this.IsDischarge = SiderOption.checked;
-    console.log(this.IsDischarge);
+    // console.log(this.IsDischarge);
+
     if (SiderOption.checked == true) {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
       this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());

@@ -68,7 +68,7 @@ export class OpPaymentNewComponent implements OnInit {
   filteredOptionsBank1: Observable<string[]>;
   optionsBank1: any[] = [];
   isBank1elected1: boolean = false;
-
+IsCreditflag : boolean=false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,6 +93,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.billNo = parseInt(this.advanceData.BillId);
       this.Paymentobj['TransactionType'] = 1;
       this.getBalanceAmt();
+      this.IsCreditflag=true;
     }
     if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
 
@@ -104,18 +105,19 @@ export class OpPaymentNewComponent implements OnInit {
       this.BillDate = this.advanceData.Date;
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 0;
-     
+      this.IsCreditflag=false
     }
-    // if (this.PatientHeaderObj.FromName == "IP-Bill") {
-    //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.paidAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.billNo = parseInt(this.advanceData.BillId);
-    //   this.PatientName = this.advanceData.PatientName;
-    //   this.BillDate = this.advanceData.Date;
-    //   this.getBalanceAmt();
-    //   this.Paymentobj['TransactionType'] = 0;
-    // }
+    if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+      this.cashAmt = parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.BillId);
+      this.PatientName = this.advanceData.PatientName;
+      this.BillDate = this.advanceData.Date;
+      this.getBalanceAmt();
+      this.Paymentobj['TransactionType'] = 0;
+      this.IsCreditflag=true;
+    }
     else {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -872,10 +874,10 @@ export class OpPaymentNewComponent implements OnInit {
   onClose1() {
     debugger
 
-    if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {}
+    if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
 
     let Paymentobj = {};
-    // Paymentobj['PaymentId'] = 0;
+    
     Paymentobj['BillNo'] = 0,// this.billNo;
       Paymentobj['ReceiptNo'] = '',//'RE';
       Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
@@ -918,9 +920,17 @@ export class OpPaymentNewComponent implements OnInit {
 
     let IsSubmit = {
       "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": false
+      "IsSubmitFlag": this.IsCreditflag
     }
     this.dialogRef.close(IsSubmit);
+  }
+  else{
+    let IsSubmit = {
+      // "submitDataPay": submitDataPay1,
+      "IsSubmitFlag": this.IsCreditflag
+    }
+    this.dialogRef.close(IsSubmit);
+  }
   }
 
   getBalanceAmt() {

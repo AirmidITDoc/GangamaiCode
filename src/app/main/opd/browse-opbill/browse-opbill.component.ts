@@ -39,17 +39,17 @@ export class BrowseOPBillComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   selectedAdvanceObj: BrowseOPDBill;
   numberInWords!: string;
-   value = 123;
+  value = 123;
   BrowseOPDBillsList: any;
   msg: any;
 
   isLoading = true;
 
   displayedColumns = [
-    
+
     'chkBalanceAmt',
     // "Bill",
     'BillDate',
@@ -76,7 +76,7 @@ export class BrowseOPBillComponent implements OnInit {
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
-    
+
   ) { }
 
   ngOnInit(): void {
@@ -89,363 +89,369 @@ export class BrowseOPBillComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  NewBillpayment(SelectedRecordValue){
+  NewBillpayment(SelectedRecordValue) {
     // console.log(SelectedRecordValue)
-       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-        {
-          maxWidth: "100vw",
-          height: '600px',
-          width: '100%',
-          data: {
-            vPatientHeaderObj: SelectedRecordValue,
-            FromName: "OP-Bill"
-          }
-        });
+    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      {
+        maxWidth: "100vw",
+        height: '600px',
+        width: '100%',
+        data: {
+          vPatientHeaderObj: SelectedRecordValue,
+          FromName: "SETTLEMENT"
+        }
+      });
 
     dialogRef.afterClosed().subscribe(result => {
-
-      let updateBillobj = {};
-      updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
-      updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
-
-      const updateBill = new UpdateBill(updateBillobj);
-      let CreditPaymentobj = {};
-      CreditPaymentobj['paymentId'] = 0;
-      CreditPaymentobj['BillNo'] = SelectedRecordValue.BillNo;
-      CreditPaymentobj['ReceiptNo'] = '';
-      CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-      CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
-      CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
-      CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
-      CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
-      CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
-      CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
-      CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
-      CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
-      CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
-      CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
-      CreditPaymentobj['AdvanceUsedAmount'] = 0;
-      CreditPaymentobj['AdvanceId'] = 0;
-      CreditPaymentobj['RefundId'] = 0;
-      CreditPaymentobj['TransactionType'] =result.submitDataPay.ipPaymentInsert.TransactionType || 0;
-      CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-      CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      CreditPaymentobj['IsCancelled'] = 0;
-      CreditPaymentobj['IsCancelledBy'] = 0;
-      CreditPaymentobj['IsCancelledDate'] = this.currentDate;
-      // CreditPaymentobj['CashCounterId'] = 0;
-      // CreditPaymentobj['IsSelfORCompany'] = 0;
-      // CreditPaymentobj['CompanyId'] = 0;
-      CreditPaymentobj['opD_IPD_Type'] = 0;
-      CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-      CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-      CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-      CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
-      CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
-      CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
-      CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-      // CreditPaymentobj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.paidAmountController || '',//this.paymentForm.get('paidAmountController').value;
-      // CreditPaymentobj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || '';//this.paymentForm.get('balanceAmountController').value;
-
-      console.log(CreditPaymentobj)
-      const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
-
-        let Data = {
-        "updateBill":updateBill,
-        "paymentCreditUpdate": ipPaymentInsert
-      }; 
-
-    
-      console.log(Data);
-
-      this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-        if (response) {
-          Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              // let m = response;
-              this.getpaymentPrint(response);
-              this._matDialog.closeAll();
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-        }
-        
-      });
-    });
-  
-}
-
-  Billpayment(contact){
-      let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = contact.BillDate;
-      PatientHeaderObj['PatientName'] = contact.PatientName;
-      PatientHeaderObj['OPD_IPD_Id'] =contact.OPD_IPD_ID;
-      PatientHeaderObj['NetPayAmount'] =contact.NetPayableAmt;
-      PatientHeaderObj['BillId'] =contact.BillNo;
-  
-       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-          {
-            maxWidth: "90vw",
-            height: '640px',
-            width: '100%',
-            data: {
-              advanceObj: PatientHeaderObj,
-              FromName: "OP-Bill"
-            }
-          });
-
-      dialogRef.afterClosed().subscribe(result => {
-
-        let updateBillobj = {};
-
-        
-        updateBillobj['BillNo'] = contact.BillNo;
-        updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
-
-        const updateBill = new UpdateBill(updateBillobj);
-             
-        debugger
-        let CreditPaymentobj = {};
-        CreditPaymentobj['paymentId'] = 0;
-        CreditPaymentobj['BillNo'] = contact.BillNo;
-        CreditPaymentobj['ReceiptNo'] = '';
-        CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-        CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
-        CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
-        CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
-        CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
-        CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
-        CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
-        CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
-        CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
-        CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
-        CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
-        CreditPaymentobj['AdvanceUsedAmount'] = 0;
-        CreditPaymentobj['AdvanceId'] = 0;
-        CreditPaymentobj['RefundId'] = 0;
-        CreditPaymentobj['TransactionType'] = 0;
-        CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-        CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-        CreditPaymentobj['IsCancelled'] = 0;
-        CreditPaymentobj['IsCancelledBy'] = 0;
-        CreditPaymentobj['IsCancelledDate'] = this.currentDate;
-        // CreditPaymentobj['CashCounterId'] = 0;
-        // CreditPaymentobj['IsSelfORCompany'] = 0;
-        // CreditPaymentobj['CompanyId'] = 0;
-        CreditPaymentobj['opD_IPD_Type'] = 0;
-        CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-        CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-        CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-        CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
-        CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
-        CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
-        CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-        // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-        // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
-
-        console.log(CreditPaymentobj)
-        const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
-
-          let Data = {
-          "updateBill":updateBill,
-          "paymentCreditUpdate": ipPaymentInsert
-        }; 
+      debugger
+      if (result.IsSubmitFlag == true) {
 
       
-        console.log(Data);
+            let updateBillobj = {};
+            updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
+            updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
-        this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-          if (response) {
-            Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                // let m = response;
-                // this.getPrint(m);
-                this._matDialog.closeAll();
+            const updateBill = new UpdateBill(updateBillobj);
+            let CreditPaymentobj = {};
+            CreditPaymentobj['paymentId'] = 0;
+            CreditPaymentobj['BillNo'] = SelectedRecordValue.BillNo;
+            CreditPaymentobj['ReceiptNo'] = '';
+            CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+            CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+            CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+            CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+            CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+            CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+            CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+            CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+            CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+            CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+            CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+            CreditPaymentobj['AdvanceUsedAmount'] = 0;
+            CreditPaymentobj['AdvanceId'] = 0;
+            CreditPaymentobj['RefundId'] = 0;
+            CreditPaymentobj['TransactionType'] = result.submitDataPay.ipPaymentInsert.TransactionType || 0;
+            CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+            CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+              CreditPaymentobj['IsCancelled'] = 0;
+            CreditPaymentobj['IsCancelledBy'] = 0;
+            CreditPaymentobj['IsCancelledDate'] = this.currentDate;
+            // CreditPaymentobj['CashCounterId'] = 0;
+            // CreditPaymentobj['IsSelfORCompany'] = 0;
+            // CreditPaymentobj['CompanyId'] = 0;
+            CreditPaymentobj['opD_IPD_Type'] = 0;
+            CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+            CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+            CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+            CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+            CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+            CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+            CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+            // CreditPaymentobj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.paidAmountController || '',//this.paymentForm.get('paidAmountController').value;
+            // CreditPaymentobj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || '';//this.paymentForm.get('balanceAmountController').value;
+
+            console.log(CreditPaymentobj)
+            const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+
+            let Data = {
+              "updateBill": updateBill,
+              "paymentCreditUpdate": ipPaymentInsert
+            };
+
+            this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
+              if (response) {
+                Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+                  if (result.isConfirmed) {
+                    // let m = response;
+                    // this.getpaymentPrint(response);
+                    this._matDialog.closeAll();
+                  }
+                });
               }
+              else {
+                Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+              }
+
             });
-          } else {
-            Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+
           }
-          
+          else {
+            Swal.fire('Payment not Done.....');
+          }
         });
-      });
-    
-  }
-  onShow(event: MouseEvent) {
-        this.click = !this.click;
-    
-    setTimeout(() => {
-      {
-        this.isLoadingStr = 'loading-data';
-
-        this.getBrowseOPDBillsList();
-      }
-
-    }, 1000);
-    this.MouseEvent = true;
-    this.click = true;
-
-  }
-
-
-
-  onClear() {
-
-    this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset('');
-  }
-
-
-
-  getBrowseOPDBillsList() {
-    this.isLoadingStr = 'loading';
-    var D_data = {
-      "F_Name": (this._BrowseOPDBillsService.myFilterform.get("FirstName").value).trim() + '%' || "%",
-      "L_Name": (this._BrowseOPDBillsService.myFilterform.get("LastName").value).trim() + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
+         
     }
-    setTimeout(() => {
-      this.isLoadingStr = 'loading';
-      this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
-        this.dataSource.data = Visit as BrowseOPDBill[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-      },
-        error => {
-          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-        });
-    }, 1000);
 
-    // this.onClear();
-  }
+Billpayment(contact){
+  let PatientHeaderObj = {};
+  PatientHeaderObj['Date'] = contact.BillDate;
+  PatientHeaderObj['PatientName'] = contact.PatientName;
+  PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+  PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+  PatientHeaderObj['BillId'] = contact.BillNo;
 
-
-
-  onExport(exprtType) {
-    // let columnList=[];
-    // if(this.dataSource.data.length == 0){
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else{
-    //   var excelData = [];
-    //   var a=1;
-    //   for(var i=0;i<this.dataSource.data.length;i++){
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-    //       "Bill Date" :this.dataSource.data[i]["BillDate"],
-    //       "PBill No" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"]:"N/A",
-    //       "RegNo " :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"] :"N/A",
-    //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
-    //       "Total Amt" :this.dataSource.data[i]["TotalAmt"] ? this.dataSource.data[i]["TotalAmt"]:"N/A",
-    //       "Concession Amt" :this.dataSource.data[i]["ConcessionAmt"] ? this.dataSource.data[i]["ConcessionAmt"]:"N/A",
-    //       "NetPayable Amt" :this.dataSource.data[i]["NetPayableAmt"] ? this.dataSource.data[i]["NetPayableAmt"]:"N/A",
-    //       "PaidAmount" :this.dataSource.data[i]["PaidAmount"] ? this.dataSource.data[i]["PaidAmount"]:"N/A",
-    //       "BalanceAmt" :this.dataSource.data[i]["BalanceAmt"]?this.dataSource.data[i]["BalanceAmt"]:"N/A",
-    //       "chkBalanceAmt" :this.dataSource.data[i]["chkBalanceAmt"]?this.dataSource.data[i]["chkBalanceAmt"]:"N/A"
-    //     };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "OutDoor-Bill-List " + new Date() +".xlsx";
-    //   if(exprtType =="Excel"){
-    //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if(excelData.length > 0){ 
-    //       var columnsIn = excelData[0]; 
-    //       console.log(columnsIn);
-    //       for(var key in columnsIn){
-    //         let headerLength = {wch:(key.length+1)};
-    //         let columnLength = headerLength;
-    //         try{
-    //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //         }
-    //         catch{
-    //           columnLength = headerLength;
-    //         }
-    //         if(headerLength["wch"] <= columnLength["wch"]){
-    //           wscols.push(columnLength)
-    //         }
-    //         else{
-    //           wscols.push(headerLength)
-    //         }
-    //       } 
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }else{
-    //     let doc = new jsPDF('p','pt', 'a4');
-    //     doc.page = 0;
-    //     var col=[];
-    //     for (var k in excelData[0]) col.push(k);
-    //       console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
-    //     });
-
-    //     doc.autoTable(col, rows,{
-    //       margin:{left:5,right:5,top:5},
-    //       theme:"grid",
-    //       styles: {
-    //         fontSize: 3
-    //       }});
-    //     doc.setFontSize(3);
-    //     // doc.save("Indoor-Patient-List.pdf");
-    //     window.open(URL.createObjectURL(doc.output("blob")))
-    //   }
-    // }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-  
-    this.dataSource.data = changes.dataArray.currentValue as BrowseOPDBill[];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
-
-
-
-
-  getTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
-    this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone','EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName','Address','MobileNo']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+  const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    {
+      maxWidth: "90vw",
+      height: '640px',
+      width: '100%',
+      data: {
+        advanceObj: PatientHeaderObj,
+        FromName: "OP-Bill"
       }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
+    });
 
-        console.log(objreportPrint);
-        // Chargedocname
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
+  dialogRef.afterClosed().subscribe(result => {
 
-          // <hr style="border-color:white" >
-        var strabc = ` <div style="display:flex;margin:8px 0">
+    let updateBillobj = {};
+
+
+    updateBillobj['BillNo'] = contact.BillNo;
+    updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
+
+    const updateBill = new UpdateBill(updateBillobj);
+
+    debugger
+    let CreditPaymentobj = {};
+    CreditPaymentobj['paymentId'] = 0;
+    CreditPaymentobj['BillNo'] = contact.BillNo;
+    CreditPaymentobj['ReceiptNo'] = '';
+    CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+    CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+    CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+    CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+    CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+    CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+    CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+    CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+    CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+    CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+    CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+    CreditPaymentobj['AdvanceUsedAmount'] = 0;
+    CreditPaymentobj['AdvanceId'] = 0;
+    CreditPaymentobj['RefundId'] = 0;
+    CreditPaymentobj['TransactionType'] = 0;
+    CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+    CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      CreditPaymentobj['IsCancelled'] = 0;
+    CreditPaymentobj['IsCancelledBy'] = 0;
+    CreditPaymentobj['IsCancelledDate'] = this.currentDate;
+    // CreditPaymentobj['CashCounterId'] = 0;
+    // CreditPaymentobj['IsSelfORCompany'] = 0;
+    // CreditPaymentobj['CompanyId'] = 0;
+    CreditPaymentobj['opD_IPD_Type'] = 0;
+    CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+    CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+    CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+    CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+    CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+    CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+    CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+    // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+    // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+
+    console.log(CreditPaymentobj)
+    const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+
+    let Data = {
+      "updateBill": updateBill,
+      "paymentCreditUpdate": ipPaymentInsert
+    };
+
+
+    console.log(Data);
+
+    this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
+      if (response) {
+        Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            // let m = response;
+            // this.getPrint(m);
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+      }
+
+    });
+  });
+
+}
+onShow(event: MouseEvent) {
+  this.click = !this.click;
+
+  setTimeout(() => {
+    {
+      this.isLoadingStr = 'loading-data';
+
+      this.getBrowseOPDBillsList();
+    }
+
+  }, 1000);
+  this.MouseEvent = true;
+  this.click = true;
+
+}
+
+
+
+onClear() {
+
+  this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
+  this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
+  this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
+  this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset('');
+}
+
+
+
+getBrowseOPDBillsList() {
+  this.isLoadingStr = 'loading';
+  var D_data = {
+    "F_Name": (this._BrowseOPDBillsService.myFilterform.get("FirstName").value).trim() + '%' || "%",
+    "L_Name": (this._BrowseOPDBillsService.myFilterform.get("LastName").value).trim() + '%' || "%",
+    "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
+    "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
+    "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
+    "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
+  }
+  setTimeout(() => {
+    this.isLoadingStr = 'loading';
+    this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
+      this.dataSource.data = Visit as BrowseOPDBill[];
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+    },
+      error => {
+        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+      });
+  }, 1000);
+
+  // this.onClear();
+}
+
+
+
+onExport(exprtType) {
+  // let columnList=[];
+  // if(this.dataSource.data.length == 0){
+  //   // this.toastr.error("No Data Found");
+  //   Swal.fire('Error !', 'No Data Found', 'error');
+  // }
+  // else{
+  //   var excelData = [];
+  //   var a=1;
+  //   for(var i=0;i<this.dataSource.data.length;i++){
+  //     let singleEntry = {
+  //       // "Sr No":a+i,
+  //       "Bill Date" :this.dataSource.data[i]["BillDate"],
+  //       "PBill No" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"]:"N/A",
+  //       "RegNo " :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"] :"N/A",
+  //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
+  //       "Total Amt" :this.dataSource.data[i]["TotalAmt"] ? this.dataSource.data[i]["TotalAmt"]:"N/A",
+  //       "Concession Amt" :this.dataSource.data[i]["ConcessionAmt"] ? this.dataSource.data[i]["ConcessionAmt"]:"N/A",
+  //       "NetPayable Amt" :this.dataSource.data[i]["NetPayableAmt"] ? this.dataSource.data[i]["NetPayableAmt"]:"N/A",
+  //       "PaidAmount" :this.dataSource.data[i]["PaidAmount"] ? this.dataSource.data[i]["PaidAmount"]:"N/A",
+  //       "BalanceAmt" :this.dataSource.data[i]["BalanceAmt"]?this.dataSource.data[i]["BalanceAmt"]:"N/A",
+  //       "chkBalanceAmt" :this.dataSource.data[i]["chkBalanceAmt"]?this.dataSource.data[i]["chkBalanceAmt"]:"N/A"
+  //     };
+  //     excelData.push(singleEntry);
+  //   }
+  //   var fileName = "OutDoor-Bill-List " + new Date() +".xlsx";
+  //   if(exprtType =="Excel"){
+  //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
+  //     var wscols = [];
+  //     if(excelData.length > 0){ 
+  //       var columnsIn = excelData[0]; 
+  //       console.log(columnsIn);
+  //       for(var key in columnsIn){
+  //         let headerLength = {wch:(key.length+1)};
+  //         let columnLength = headerLength;
+  //         try{
+  //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
+  //         }
+  //         catch{
+  //           columnLength = headerLength;
+  //         }
+  //         if(headerLength["wch"] <= columnLength["wch"]){
+  //           wscols.push(columnLength)
+  //         }
+  //         else{
+  //           wscols.push(headerLength)
+  //         }
+  //       } 
+  //     }
+  //     ws['!cols'] = wscols;
+  //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  //     XLSX.writeFile(wb, fileName);
+  //   }else{
+  //     let doc = new jsPDF('p','pt', 'a4');
+  //     doc.page = 0;
+  //     var col=[];
+  //     for (var k in excelData[0]) col.push(k);
+  //       console.log(col.length)
+  //     var rows = [];
+  //     excelData.forEach(obj => {
+  //       console.log(obj)
+  //       let arr = [];
+  //       col.forEach(col => {
+  //         arr.push(obj[col]);
+  //       });
+  //       rows.push(arr);
+  //     });
+
+  //     doc.autoTable(col, rows,{
+  //       margin:{left:5,right:5,top:5},
+  //       theme:"grid",
+  //       styles: {
+  //         fontSize: 3
+  //       }});
+  //     doc.setFontSize(3);
+  //     // doc.save("Indoor-Patient-List.pdf");
+  //     window.open(URL.createObjectURL(doc.output("blob")))
+  //   }
+  // }
+}
+
+ngOnChanges(changes: SimpleChanges) {
+
+  this.dataSource.data = changes.dataArray.currentValue as BrowseOPDBill[];
+  this.dataSource.sort = this.sort;
+  this.dataSource.paginator = this.paginator;
+}
+
+
+
+
+getTemplate() {
+  let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
+  this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
+
+    this.printTemplate = resData[0].TempDesign;
+    let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName', 'Address', 'MobileNo']; // resData[0].TempKeys;
+
+    for (let i = 0; i < keysArray.length; i++) {
+      let reString = "{{" + keysArray[i] + "}}";
+      let re = new RegExp(reString, "g");
+      this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+    }
+    var strrowslist = "";
+    for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      var objreportPrint = this.reportPrintObjList[i - 1];
+
+      console.log(objreportPrint);
+      // Chargedocname
+      let docname;
+      if (objreportPrint.ChargesDoctorName)
+        docname = objreportPrint.ChargesDoctorName;
+      else
+        docname = '';
+
+      // <hr style="border-color:white" >
+      var strabc = ` <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:60px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
@@ -465,178 +471,178 @@ export class BrowseOPBillComponent implements OnInit {
             <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
         </div>
         </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-
-      // this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-  transformBilld(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(this.reportPrintObj.BillDate, 'dd/MM/yyyy');
-    return value;
-  }
-  convertToWord(e) {
-    
-    return converter.toWords(e);
-  }
-  // GET DATA FROM DATABASE 
-
-
-  getPrint(el) {
-    debugger;
-    var D_data = {
-      "BillNo": el.BillNo,
-      
+      strrowslist += strabc;
     }
-  
-    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-    this.subscriptionArr.push(
-      this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
+    var objPrintWordInfo = this.reportPrintObjList[0];
 
-        this.reportPrintObjList = res as BrowseOPDBill[];
-        console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as BrowseOPDBill;
+    this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
 
-        this.getTemplate();
+    // this.printTemplate = this.printTemplate.replace('StrBalanceAmt', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
+    // this.printTemplate = this.printTemplate.replace('StrTotalBillAmount', '₹' + (objPrintWordInfo.TotalBillAmount.toFixed(2)));
+    // this.printTemplate = this.printTemplate.replace('StrConcessionAmt', '₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
+    // this.printTemplate = this.printTemplate.replace('StrNetPayableAmt', '₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
+    // this.printTemplate = this.printTemplate.replace('StrPaidAmount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
+    // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(objPrintWordInfo.BillDate));
+    this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+    this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+    this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+    setTimeout(() => {
+      this.print();
+    }, 1000);
+  });
+}
+
+transform2(value: string) {
+  var datePipe = new DatePipe("en-US");
+  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+  return value;
+}
+transformBilld(value: string) {
+  var datePipe = new DatePipe("en-US");
+  value = datePipe.transform(this.reportPrintObj.BillDate, 'dd/MM/yyyy');
+  return value;
+}
+convertToWord(e) {
+
+  return converter.toWords(e);
+}
+// GET DATA FROM DATABASE 
 
 
-      })
-    );
+getPrint(el) {
+  debugger;
+  var D_data = {
+    "BillNo": el.BillNo,
+
   }
-  getpaymentPrint(el){
-    debugger;
-    var D_data = {
-      "BillNo": el.BillNo,
-      
-    }
-  
-    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-    this.subscriptionArr.push(
-      this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
 
-        this.reportPrintObjList = res as BrowseOPDBill[];
-        console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as BrowseOPDBill;
+  let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+  this.subscriptionArr.push(
+    this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
 
-        this.getTemplate();
+      this.reportPrintObjList = res as BrowseOPDBill[];
+      console.log(this.reportPrintObjList);
+      this.reportPrintObj = res[0] as BrowseOPDBill;
+
+      this.getTemplate();
 
 
-      })
-    );
+    })
+  );
+}
+getpaymentPrint(el){
+  debugger;
+  var D_data = {
+    "BillNo": el.BillNo,
+
   }
-  // PRINT 
-  print() {
-    
-    let popupWin, printContents;
-    
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-        popupWin.document.write(` <html>
+
+  let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+  this.subscriptionArr.push(
+    this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
+
+      this.reportPrintObjList = res as BrowseOPDBill[];
+      console.log(this.reportPrintObjList);
+      this.reportPrintObj = res[0] as BrowseOPDBill;
+
+      this.getTemplate();
+
+
+    })
+  );
+}
+// PRINT 
+print() {
+
+  let popupWin, printContents;
+
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  popupWin.document.write(` <html>
     <head><style type="text/css">`);
-    popupWin.document.write(`
+  popupWin.document.write(`
       </style>
           <title></title>
       </head>
     `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
-    if(this.reportPrintObjList.length > 0) {
-      if(this.reportPrintObjList[0].BalanceAmt === 0) {
-        popupWin.document.getElementById('idBalAmt').style.display = 'none';
-      }
+  if (this.reportPrintObjList.length > 0) {
+    if (this.reportPrintObjList[0].BalanceAmt === 0) {
+      popupWin.document.getElementById('idBalAmt').style.display = 'none';
     }
-    popupWin.document.close();
   }
+  popupWin.document.close();
+}
 
 
 
 
 
-  getViewbill(contact) {
-    console.log(contact);
-    let xx = {
+getViewbill(contact) {
+  console.log(contact);
+  let xx = {
 
-      RegNo: contact.RegId,
-      AdmissionID: contact.VisitId,
-      PatientName: contact.PatientName,
-      Doctorname: contact.Doctorname,
-      AdmDateTime: contact.AdmDateTime,
-      AgeYear: contact.AgeYear,
-      ClassId: contact.ClassId,
-      TariffName: contact.TariffName,
-      TariffId: contact.TariffId,
-      HospitalAddress: contact.HospitalAddress,
-      BDate: contact.BDate,
-      BalanceAmt: contact.BalanceAmt,
-      TotalAmt: contact.TotalAmt,
-      BillDate: contact.BillDate,
-      BillNo: contact.BillNo,
-      ConcessionAmt: contact.ConcessionAmt,
-      HospitalName: contact.HospitalName,
-      NetPayableAmt: contact.NetPayableAmt,
-      OPD_IPD_ID: contact.OPD_IPD_ID,
-      OPD_IPD_Type: contact.OPD_IPD_Type,
-      PBillNo: contact.PBillNo,
-      PaidAmount: contact.PaidAmount,
-      VisitDate: contact.VisitDate,
-      TotalBillAmount: contact.TotalBillAmount,
-      TransactionType: contact.TransactionType,
-      ConsultantDocName: contact.ConsultantDocName,
-      DepartmentName: contact.DepartmentName,
-      AddedByName: contact.AddedByName,
-      NetAmount: contact.NetAmount,
-      ServiceName: contact.ServiceName,
-      Price: contact.Price,
-      Qty: contact.Qty,
+    RegNo: contact.RegId,
+    AdmissionID: contact.VisitId,
+    PatientName: contact.PatientName,
+    Doctorname: contact.Doctorname,
+    AdmDateTime: contact.AdmDateTime,
+    AgeYear: contact.AgeYear,
+    ClassId: contact.ClassId,
+    TariffName: contact.TariffName,
+    TariffId: contact.TariffId,
+    HospitalAddress: contact.HospitalAddress,
+    BDate: contact.BDate,
+    BalanceAmt: contact.BalanceAmt,
+    TotalAmt: contact.TotalAmt,
+    BillDate: contact.BillDate,
+    BillNo: contact.BillNo,
+    ConcessionAmt: contact.ConcessionAmt,
+    HospitalName: contact.HospitalName,
+    NetPayableAmt: contact.NetPayableAmt,
+    OPD_IPD_ID: contact.OPD_IPD_ID,
+    OPD_IPD_Type: contact.OPD_IPD_Type,
+    PBillNo: contact.PBillNo,
+    PaidAmount: contact.PaidAmount,
+    VisitDate: contact.VisitDate,
+    TotalBillAmount: contact.TotalBillAmount,
+    TransactionType: contact.TransactionType,
+    ConsultantDocName: contact.ConsultantDocName,
+    DepartmentName: contact.DepartmentName,
+    AddedByName: contact.AddedByName,
+    NetAmount: contact.NetAmount,
+    ServiceName: contact.ServiceName,
+    Price: contact.Price,
+    Qty: contact.Qty,
 
 
 
-    };
-    this.advanceDataStored.storage = new BrowseOPDBill(xx);
-    const dialogRef = this._matDialog.open(ViewOPBillComponent,
-      {
-        maxWidth: "80vw",
-        maxHeight: "100vh", width: '100%', height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+  };
+  this.advanceDataStored.storage = new BrowseOPDBill(xx);
+  const dialogRef = this._matDialog.open(ViewOPBillComponent,
+    {
+      maxWidth: "80vw",
+      maxHeight: "100vh", width: '100%', height: "100%"
     });
-  }
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+  });
+}
 
 
 
-  getRecord(el, i) {
-    // console.log(el,i);
-    // this._matDialog.open(SmsEmailTemplateComponent, {
-    //   data: i,
-    //   width: '40%',
-    //   height: "fit-content",
-    //   autoFocus: false
-    // });
+getRecord(el, i) {
+  // console.log(el,i);
+  // this._matDialog.open(SmsEmailTemplateComponent, {
+  //   data: i,
+  //   width: '40%',
+  //   height: "fit-content",
+  //   autoFocus: false
+  // });
 
-  }
+}
 
 
 }
@@ -657,7 +663,7 @@ export class ReportPrintObj {
 
 export class BrowseOPDBill {
   BillNo: Number;
-  
+
   RegId: number;
   RegNo: number;
   PatientName: string;
@@ -678,7 +684,7 @@ export class BrowseOPDBill {
   HospitalName: string;
   HospitalAddress: string;
   Phone: number;
-  EmailId:any;
+  EmailId: any;
   ChargesDoctorName: string;
   TotalBillAmount: number;
   ConsultantDocName: string;
@@ -690,9 +696,9 @@ export class BrowseOPDBill {
   VisitDate: Date;
   BalanceAmt: number;
   AddedByName: string;
-Department:any;
-Address:any;
-MobileNo:any;
+  Department: any;
+  Address: any;
+  MobileNo: any;
   //PayTMAmount:number;
   //NEFTPayAmount:number;
   /**
@@ -740,7 +746,7 @@ MobileNo:any;
 
       this.Address = BrowseOPDBill.Address || '';
       this.Department = BrowseOPDBill.Department || '';
-      this.MobileNo=BrowseOPDBill.MobileNo || '';
+      this.MobileNo = BrowseOPDBill.MobileNo || '';
     }
   }
 

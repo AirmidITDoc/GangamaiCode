@@ -209,11 +209,7 @@ export class IPAdvanceComponent implements OnInit {
           maxWidth: "100vw",
           height: '740px',
           width: '100%',
-          // data: {
-          //   patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
-          //   advanceObj: PatientHeaderObj,
-          //   FromName: "Advance"
-          // }
+       
           data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "Advance"

@@ -69,6 +69,7 @@ export class IPBillBrowseListComponent implements OnInit {
   reportPrintObjList: ReportPrintObj[] = [];
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
+  Groupname:any;
 
 
   displayedColumns = [
@@ -502,11 +503,11 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
+          // <div style="display:flex;width:280px;margin-left:20px;">
+    //     <div>`+ objreportPrint.GroupName + `</div>
+    // </div>
         var strabc = `  
         
-    <div style="display:flex;width:280px;margin-left:20px;">
-        <div>`+ objreportPrint.GroupName + `</div>
-    </div>
    <div style="display:flex;margin:8px 0">
     <div style="display:flex;width:80px;margin-left:20px;">
         <div>`+ i + `</div>
@@ -538,14 +539,15 @@ export class IPBillBrowseListComponent implements OnInit {
       this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
       this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
+      this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
 
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      console.log(this.printTemplate);
+      // console.log(this.printTemplate);
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       this.isShow = true;
       setTimeout(() => {
-        this.print();
+        // this.print();
+        this.printfinalbill();
       }, 1000);
     });
   }
@@ -620,36 +622,48 @@ export class IPBillBrowseListComponent implements OnInit {
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
       </html>`);
       if(this.reportPrintObjList.length > 0) {
-        if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
-          popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
-        }
+        // console.log(this.reportPrintObjList.length)
+        // if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
+        //   popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
+        // }
       }
     popupWin.document.close();
   }
 
-  // printfinalbill(){
-    
-  //   let popupWin, printContents;
+  printfinalbill(){
+  
+    let popupWin, printContents;
 
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  //   // popupWin.document.open();
-  //   popupWin.document.write(` <html>
-  //     <head><style type="text/css">`);
-  //   popupWin.document.write(`
-  //       </style>
-  //           <title></title>
-  //       </head>
-  //     `);
-  //   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  //     </html>`);
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    // popupWin.document.open();
+    popupWin.document.write(` <html>
+      <head><style type="text/css">`);
+    popupWin.document.write(`
+        </style>
+            <title></title>
+        </head>
+      `);
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+      </html>`);
+      if(this.reportPrintObjList.length > 0) {
+      
+        this.reportPrintObjList.forEach((element) => {
+          debugger
+         
+         this.Groupname = element.GroupName;
+         if(element.GenderName == this.Groupname)
+         {
+          console.log(this.Groupname )
+          popupWin.document.getElementById('idgroup').style.display = 'none';
+         }
+        });
 
-  //     if(this.reportPrintObjList.length > 0) {
-  //       if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
-  //         popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
-  //       }
-  //     }
-  //   popupWin.document.close();
-  // }
+        // if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
+        //   popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
+        // }
+      }
+    popupWin.document.close();
+  }
 
 
   getSummaryFinalBillPrint(el) {
