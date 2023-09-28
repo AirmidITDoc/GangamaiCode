@@ -1,12 +1,12 @@
 app-good-receiptnote {
     .table1 {
-      height: 600px !important;
-      width: 1700px;
+      height: 250px !important;
+      width: 100%;
     }
 
     .table2 {
-      height: 600px !important;
-      width: 2000px;
+      height: 180px !important;
+      width: 100%;
     }
     .table3 {
       height: 200px !important;
@@ -14,9 +14,9 @@ app-good-receiptnote {
     }
   
     .mat-header-row {
-      width:200;
+      width:100%;
       //max-width: 1600px;
-      min-width: 1000px;
+      min-width: 100%;
       min-height: 30px;
       background-color: blue;
     }

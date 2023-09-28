@@ -32,7 +32,7 @@
                             <div class="content">
                                 <!-- SIDEBAR -->
                                 <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                                          margin-left:12px; background-color: white;height:50%;">
+                                          margin-left:12px; background-color: white;height:80%;">
                                     <div>
                                         <!-- SIDEBAR HEADER -->
                                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
@@ -46,7 +46,7 @@
                                             <div class="nav material2">
 
                                                 <form [formGroup]="_GRNList.GRNSearchGroup"
-                                                    style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                                                    style="padding: 6px 6px 5px 5px;" >
                                                     <div fxLayout="column" fxLayoutAlign="start none">
                                                         <br />
 
@@ -127,9 +127,7 @@
                                         </div>
                                     </div>
                                 </fuse-sidebar>
-                                <!-- / SIDEBAR -->
-                                <!-- CENTER -->
-                                <!-- CENTER -->
+                            
 
                                 <div class="center p-12 pb-56" fxFlexAlign="start center">
 
@@ -149,7 +147,6 @@
                                                         <mat-table #table class="table1" matSort
                                                             [dataSource]="dsGRNList" [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto;">
-
 
 
                                                             <ng-container matColumnDef="FromStoreId">
@@ -267,7 +264,7 @@
                                                                     <div class="spinner-border text-danger"></div>
                                                                 </div>
                                                                 <!-- sppinner -->
-                                                                <mat-table #table class="table1" matSort
+                                                                <mat-table #table class="table2" matSort
                                                                     [dataSource]="dsGrnItemList"
                                                                     [@animateStagger]="{value:'50'}"
                                                                     style="overflow:auto;">
@@ -442,21 +439,6 @@
 
                                                     </div>
 
-                                                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                        fxLayoutGap="4px">
-
-                                                     
-                                                        <mat-form-field appearance="outline" fxFlex="35%">
-                                                            <mat-label>GRN ID</mat-label>
-                                                            <input matInput placeholder="Placeholder">
-                                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                        
-                                                        <button mat-raised-button>Add Supplier</button>
-                                                        <button mat-raised-button>Add Item</button>
-                                                      
-
-                                                    </div> -->
                                                 </form>
 
                                                 <div fxLayout="column" fxLayoutAlign="start none">
@@ -506,7 +488,6 @@
                                                                 <input matInput placeholder="Placeholder">
                                                             </mat-form-field>
 
-                                                            
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>MRP</mat-label>
                                                                 <input matInput placeholder="Placeholder">
@@ -525,7 +506,7 @@
                                                         </div>
 
                                                         <div fxLayout="row" >
-                                                        <div> 
+                                                     
                                                             <mat-form-field appearance="outline"  fxFlex="3%">
                                                                 <mat-label>Disc %</mat-label>
                                                                 <input matInput placeholder="Placeholder">
@@ -592,7 +573,7 @@
                                                                 </mat-form-field>&nbsp;
 
                                                                 <button mat-raised-button (click)="onAdd()">Add</button>
-                                                        </div>
+                                                        
                                                         </div>
                                                     </form> 
                                                 </div>
@@ -701,21 +682,29 @@
                                                         class="mr-sm-12">GST On Pur + FreeQty</mat-radio-button>
                                                    </mat-radio-group>
 
+                                                   <mat-form-field appearance="outline" fxFlex="16%">
+                                                    <mat-label>GST Amt</mat-label>
+                                                    <input matInput placeholder="Placeholder">
+                                                </mat-form-field>
+
+                                                
+
                                                     <mat-form-field appearance="outline" fxFlex="16%">
                                                         <mat-label>CGST Amt</mat-label>
                                                         <input matInput placeholder="Placeholder">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Debit Amt</mat-label>
+                                                        <mat-label>SGST Amt</mat-label>
                                                         <input matInput placeholder="Placeholder">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>GST Amt</mat-label>
+                                                        <mat-label>IGST Amt</mat-label>
                                                         <input matInput placeholder="Placeholder">
                                                     </mat-form-field>
 
+                                                
                                                     <mat-form-field appearance="outline" fxFlex="16%">
                                                         <mat-label>Total Amount</mat-label>
                                                         <input matInput placeholder="Placeholder">
@@ -738,10 +727,13 @@
                                                     class="mr-sm-12">GST After 2 Disc</mat-radio-button>
                                                </mat-radio-group>
 
+                                             
+
                                                 <mat-form-field appearance="outline" fxFlex="16%">
-                                                    <mat-label>SGST Amt</mat-label>
+                                                    <mat-label>Debit Amt</mat-label>
                                                     <input matInput placeholder="Placeholder">
                                                 </mat-form-field>
+
 
                                                 <mat-form-field appearance="outline" fxFlex="16%">
                                                     <mat-label>Credit Amt</mat-label>
@@ -785,11 +777,6 @@
     
                                                     <mat-form-field appearance="outline" fxFlex="16%">
                                                         <mat-label>Bill Disc Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>IGST Amt</mat-label>
                                                         <input matInput placeholder="Placeholder">
                                                     </mat-form-field>
 
