@@ -32,7 +32,7 @@
                             <div class="content">
                                 <!-- SIDEBAR -->
                                 <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                                          margin-left:12px; background-color: white;height:50%;">
+                                          margin-left:12px; background-color: white;height:80%;">
                                     <div>
                                         <!-- SIDEBAR HEADER -->
                                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
@@ -270,7 +270,7 @@
                                                                     <div class="spinner-border text-danger"></div>
                                                                 </div>
                                                                 <!-- sppinner -->
-                                                                <mat-table #table class="table1" matSort
+                                                                <mat-table #table class="table2" matSort
                                                                     [dataSource]="dsPurchaseItemList"
                                                                     [@animateStagger]="{value:'50'}"
                                                                     style="overflow:auto;">
@@ -817,8 +817,8 @@
                                                     Tax</mat-radio-button>
                                                 </mat-radio-group>
 
-                                                <span class="net-amt-mat-label" style="font-weight:bold;">Total Disc Amt: </span>&nbsp;
-                                                <span class="net-amt-value"
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Disc Amt: </span>&nbsp;
+                                                <span class="net-amt-value" 
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceDisc(getItemNameList)
                                                     | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
                  
@@ -827,20 +827,22 @@
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceGST(getItemNameList) |
                                                     currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
 
-                                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
                                                 <span class="net-amt-value"
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
                                                     currency:'INR' }}</span>
+
+                                                        <button class="next-btn" style="border-radius: 16px;margin-left: 400px;" 
+                                                            [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
+                                                        <button class="footer-btn" style="border-radius: 16px;"
+                                                            (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                                   
                                             </div>
+
+                                          
                                         </div>
 
-                                        <div fxLayout="row" class="right">
-
-                                            <button class="next-btn" style="border-radius: 16px;"
-                                                [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
-                                            <button class="footer-btn" style="border-radius: 16px;"
-                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                        </div>
+                                    
                                     
                                   </form> 
 
