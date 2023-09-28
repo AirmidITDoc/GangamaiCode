@@ -34,9 +34,8 @@ export class AppointmentSreviceService {
       DoctorId:'',
       DoctorName:'',
       IsMark: 2,
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
     });
   }
 

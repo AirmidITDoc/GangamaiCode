@@ -82,20 +82,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  
-
-  onChangeDateofBirth(DateOfBirth) {
-    if (DateOfBirth) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
-      this._GRNList.GRNSearchGroup.get('DateOfBirth').setValue(DateOfBirth);
-    }
-
+  onAdd(){
+    
   }
   getGRNList() {
     // this.sIsLoading = 'loading-data';

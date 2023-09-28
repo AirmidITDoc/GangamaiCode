@@ -54,9 +54,9 @@
                       <mat-form-field appearance="outline">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate formControlName="start" placeholder="Start date"
+                          <input matStartDate formControlName="startdate" placeholder="Start date"
                             (dateChange)="getVisitList()" required>
-                          <input matEndDate formControlName="end" placeholder="End date">
+                          <input matEndDate formControlName="enddate" placeholder="End date">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -80,7 +80,7 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Doctor Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                          formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor" required>
+                          formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
                             (click)="_AppointmentSreviceService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
@@ -95,6 +95,9 @@
                         </mat-autocomplete>
                       </mat-form-field>
 
+                      <!-- <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
+                      formControlName="IsDischarge" [(ngModel)]="isChecked">
+                      IsDischarge</mat-slide-toggle> -->
 
                       <div style="margin-top: 10px;">
                         <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
