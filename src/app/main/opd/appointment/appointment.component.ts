@@ -774,8 +774,8 @@ export class AppointmentComponent implements OnInit {
             L_Name:this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
             Reg_No:this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
             Doctor_Id:this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
-            From_Dt: this.datePipe.transform( this._AppointmentSreviceService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000" ) || "01/01/1900",
-            To_Dt:this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+            From_Dt: this.datePipe.transform( this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000" ) || "01/01/1900",
+            To_Dt:this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value,"yyyy-MM-dd 00:00:00.000") || "01/01/1900",
             IsMark:this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
         };
         setTimeout(() => {
@@ -793,25 +793,24 @@ export class AppointmentComponent implements OnInit {
                 );
         }, 1000);
 
-        this.sIsLoading = 'loading-data';
-        var D_data = {
-          "F_Name": this._opappointmentService.myFilterform.get("FirstName").value.trim() + '%' || '%',
-          "L_Name": this._opappointmentService.myFilterform.get("LastName").value.trim() + '%' || '%',
-          "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
-          "Doctor_Id": this._opappointmentService.myFilterform.get("DoctorId").value || 0,
-          "From_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-          "To_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-          "IsMark": this._opappointmentService.myFilterform.get("IsMark").value || 0,
-    
-        }
-        console.log(D_data);
-        this._opappointmentService.getAppointmentList(D_data).subscribe(Visit => {
-          this.dataArray = Visit;
-          this.sIsLoading = '';
-        },
-          error => {
-            this.sIsLoading = '';
-          });
+        // this.sIsLoading = 'loading-data';
+        // var D_data = {
+        //   "F_Name": this._opappointmentService.myFilterform.get("FirstName").value.trim() + '%' || '%',
+        //   "L_Name": this._opappointmentService.myFilterform.get("LastName").value.trim() + '%' || '%',
+        //   "Reg_No": this._opappointmentService.myFilterform.get("RegNo").value || 0,
+        //   "Doctor_Id": this._opappointmentService.myFilterform.get("DoctorId").value || 0,
+        //   "From_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        //   "To_Dt": this.datePipe.transform(this._opappointmentService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        //   "IsMark": this._opappointmentService.myFilterform.get("IsMark").value || 0,
+        // }
+        // console.log(D_data);
+        // this._opappointmentService.getAppointmentList(D_data).subscribe(Visit => {
+        //   this.dataArray = Visit;
+        //   this.sIsLoading = '';
+        // },
+        //   error => {
+        //     this.sIsLoading = '';
+        //   });
     }
 
     
