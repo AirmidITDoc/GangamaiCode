@@ -831,16 +831,19 @@
                                                 <span class="net-amt-value"
                                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
                                                     currency:'INR' }}</span>
+
+                                                   
+                                                        <button class="next-btn" style="border-radius: 16px;" 
+                                                            [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
+                                                        <button class="footer-btn" style="border-radius: 16px;"
+                                                            (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                                   
                                             </div>
+
+                                          
                                         </div>
 
-                                        <div fxLayout="row" class="right">
-
-                                            <button class="next-btn" style="border-radius: 16px;"
-                                                [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
-                                            <button class="footer-btn" style="border-radius: 16px;"
-                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                        </div>
+                                    
                                     
                                   </form> 
 

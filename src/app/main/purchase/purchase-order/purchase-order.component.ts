@@ -242,7 +242,6 @@ calculateTotalAmount() {
 }
 
 getAdvanceNet(element) {
-
   let NetAmount;
   NetAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
   this.TotalAmount = this.NetAmount;
