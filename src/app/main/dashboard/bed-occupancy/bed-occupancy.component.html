@@ -9,7 +9,7 @@
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
                 <span class="mat-display-1 my-0 my-sm-12 welcome-message"
-                    [@animate]="{value:'*',params:{x:'50px'}}">Welcome back!
+                    [@animate]="{value:'*',params:{x:'50px'}}">Bed Occupancy Dashboard
                 </span>
 
                 <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
@@ -20,13 +20,13 @@
 
         </div>
         <div class="ward-dashboard" fxLayout="row wrap" fxLayoutGap="15px grid">
-            <div class="ward-main-conatiner" *ngFor="let ele of warDataArr" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" (click)="onSelectWard(ele)">
+            <div class="ward-main-conatiner" *ngFor="let ele of warDataArr" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" (click)="onSelectWard(ele)">
                 <div class="ward-container" fxLayout="column" fxLayoutAlign="space-evenly">
                     <div>
                         {{ele.RoomName}}
                     </div>
                     <div>
-                        W{{ele.RoomId}}
+                        {{ele.LocationName}}
                     </div>
                 </div>
                 <div
@@ -56,6 +56,7 @@
             </div>
         </div>
 
+        
         <div class="ward-availibility" fxLayout="row wrap" fxLayoutGap="15px grid">
             <div class="ward-avail-details" fxFlex="20%" *ngFor="let ele of warItemArr">
                 <div style="margin-bottom: 10px;">
@@ -73,10 +74,10 @@
                 <div *ngIf="!ele.IsAvailible">
                     <hr>
                     <div style="margin-bottom: 10px;">
-                        <span class="ward-status">{{ele.PatientName}}</span>
+                        <span class="ward-status">{{ele.RegNo}}:{{ele.PatientName}}</span>
                     </div>
                     <div>
-                        <span>{{ele.RegNo}}</span>
+                        <span>{{ele.DoctorName}}</span>
                     </div>
                 </div>
             </div>
