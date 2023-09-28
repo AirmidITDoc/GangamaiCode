@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -27,6 +28,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   FromStoreList:any;
   SupplierList:any;
   screenFromString = 'admission-form';
+  registerObj = new RegInsert({});
 
   labelPosition: 'before' | 'after' = 'after';
   
@@ -58,6 +60,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+   
     
   ) { }
 
@@ -81,6 +84,19 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   
 
+  onChangeDateofBirth(DateOfBirth) {
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+      this.registerObj.DateofBirth = DateOfBirth;
+      this._GRNList.GRNSearchGroup.get('DateOfBirth').setValue(DateOfBirth);
+    }
+
+  }
   getGRNList() {
     // this.sIsLoading = 'loading-data';
     var Param = {
