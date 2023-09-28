@@ -131,6 +131,22 @@
                             <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                               class="table1" style="overflow: auto;">
 
+                              <ng-container matColumnDef="IsMLC" sticky>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">IsMLC
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                  <mat-icon
+                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                    *ngIf="contact.IsMLC=='0' " matTooltip="IsMLC" class=" orange-600 s-16 ">circle
+                                  </mat-icon>
+                                  <mat-icon
+                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                    *ngIf="contact.IsMLC=='1' " matTooltip="IsNotMLC" class="green-600 s-16 ">circle
+                                  </mat-icon>
+
+                                </mat-cell>
+                              </ng-container>
+                              
                               <ng-container matColumnDef="RegNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg
                                   No</mat-header-cell>
@@ -240,21 +256,7 @@
                               </ng-container>
 
 
-                              <ng-container matColumnDef="IsMLC" sticky>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">IsMLC
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                  <mat-icon
-                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                    *ngIf="contact.IsMLC=='0' " matTooltip="IsMLC" class=" orange-600 s-16 ">circle
-                                  </mat-icon>
-                                  <mat-icon
-                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                    *ngIf="contact.IsMLC=='1' " matTooltip="IsNotMLC" class="green-600 s-16 ">circle
-                                  </mat-icon>
-
-                                </mat-cell>
-                              </ng-container>
+                            
 
                               <ng-container matColumnDef="buttons" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
@@ -298,7 +300,9 @@
 
                               <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                               </mat-header-row>
-                              <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                              <mat-row *matRowDef="let contact; columns: displayedColumns;" 
+                                class="contact"
+                                [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                               <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

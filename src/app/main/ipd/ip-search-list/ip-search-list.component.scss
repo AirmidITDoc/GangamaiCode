@@ -23,9 +23,9 @@ app-ip-search-list{
 }
 
 .mat-column-IsBillGenerated {
-    width: 130px;
-    max-width: 130px;
-    min-width: 130px;
+    width: 60px;
+    max-width: 60px;
+    min-width: 60px;
     text-align:left;
 }
 .mat-column-RegNo {
@@ -129,6 +129,10 @@ app-ip-search-list{
     margin-top: 7px;
     margin-right: 20px;   
     justify-content:left; 
+}
+
+.self-row {
+    background-color: lightgreen !important;
 }
 
 }

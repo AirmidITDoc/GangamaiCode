@@ -137,6 +137,7 @@ export class IPSearchListComponent implements OnInit {
    
   }
   get f() { return this._IpSearchListService.myFilterform.controls; }
+  
   ngOnChanges(changes: SimpleChanges) {
  
     this.click = !this.click;
@@ -149,8 +150,6 @@ export class IPSearchListComponent implements OnInit {
       }
     }, 500);
     this.MouseEvent = true;
-
-
   }
 
  
@@ -160,22 +159,19 @@ export class IPSearchListComponent implements OnInit {
 
 
   getAdmittedPatientList() {
-    debugger;
-   
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "false") {
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0") {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
-        "From_Dt":this.datePipe.transform((new Date()).toISOString() , "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform((new Date()).toISOString(), "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": 0, //this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+        "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
-      console.log(D_data)
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
@@ -200,7 +196,7 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": 1, // this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
       }
@@ -455,8 +451,9 @@ export class IPSearchListComponent implements OnInit {
         
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
-            maxWidth: "100vw",
-            height: '890px',   
+            maxWidth: "90%",
+            width:'90%',
+            height: '90%',   
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
