@@ -424,12 +424,6 @@
                                                             <mat-datepicker #picker></mat-datepicker>
                                                         </mat-form-field>
 
-
-                                                    </div>
-
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                        fxLayoutGap="4px">
-
                                                         <mat-form-field appearance="outline" fxFlex="35%">
                                                             <mat-label>Gate Entry No</mat-label>
                                                             <input matInput placeholder="Placeholder">
@@ -444,6 +438,14 @@
                                                                 class="mr-sm-12">Cash</mat-radio-button>
                                                         </mat-radio-group>
 
+
+
+                                                    </div>
+
+                                                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                        fxLayoutGap="4px">
+
+                                                     
                                                         <mat-form-field appearance="outline" fxFlex="35%">
                                                             <mat-label>GRN ID</mat-label>
                                                             <input matInput placeholder="Placeholder">
@@ -454,7 +456,7 @@
                                                         <button mat-raised-button>Add Item</button>
                                                       
 
-                                                    </div>
+                                                    </div> -->
                                                 </form>
 
                                                 <div fxLayout="column" fxLayoutAlign="start none">
@@ -476,12 +478,12 @@
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>UOM</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput placeholder="Placeholder" readonly>
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>HSN Code</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput placeholder="Placeholder" >
                                                             </mat-form-field>
                                                             
                                                             <mat-form-field appearance="outline" fxFlex="7%">
@@ -517,110 +519,86 @@
 
                                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                                 <mat-label>Total Amount</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput placeholder="Placeholder" readonly>
                                                             </mat-form-field>
 
                                                         </div>
 
-                                                        <div  fxLayout="row" style="float:right;">
-                                                        <div style="margin-left:41%;"> 
-                                                            <mat-form-field appearance="outline"  fxFlex="13%">
+                                                        <div fxLayout="row" >
+                                                        <div> 
+                                                            <mat-form-field appearance="outline"  fxFlex="3%">
                                                                 <mat-label>Disc %</mat-label>
                                                                 <input matInput placeholder="Placeholder">
                                                             </mat-form-field>&nbsp;
                                                             
-                                                            <mat-form-field appearance="outline" fxFlex="13%">
+                                                            <mat-form-field appearance="outline" fxFlex="5%">
                                                                 <mat-label>Dis Amount </mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput placeholder="Placeholder" readonly>
                                                             </mat-form-field>&nbsp;
-
                                                             
-                                                            <mat-form-field appearance="outline" fxFlex="13%">
+                                                            <mat-form-field appearance="outline" fxFlex="3%">
                                                                 <mat-label>Disc %</mat-label>
                                                                 <input matInput placeholder="Placeholder">
                                                             </mat-form-field>&nbsp;
 
-                                                            <mat-form-field appearance="outline" fxFlex="19%">
+                                                            <mat-form-field appearance="outline" fxFlex="5%">
                                                                 <mat-label>Dis Amount </mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput placeholder="Placeholder" readonly>
                                                             </mat-form-field>
         
-                                                        </div>
-                                                        </div><br><br><br>
-                                                        
-                                                   <div fxLayout="row" style="float:right;">
-                                                            <div style="margin-left:41%;"> 
-                                                                <mat-form-field appearance="outline"  fxFlex="17%">
+                                                               <!-- <mat-form-field appearance="outline"  fxFlex="3%">
                                                                     <mat-label>GST %</mat-label>
                                                                     <input matInput placeholder="Placeholder">
-                                                                </mat-form-field>&nbsp;
+                                                                </mat-form-field>&nbsp; -->
                                                                 
-                                                                <mat-form-field appearance="outline" fxFlex="17%">
+                                                                <mat-form-field appearance="outline" fxFlex="3%">
                                                                     <mat-label>CGST  </mat-label>
                                                                     <input matInput placeholder="Placeholder">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="23%">
+                                                                <mat-form-field appearance="outline" fxFlex="5%">
                                                                     <mat-label>CGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                    <input matInput placeholder="Placeholder" readonly>
                                                                 </mat-form-field>&nbsp;
-                                                            
-                                                            </div>
-                                                        </div><br><br><br>
 
-
-                                                        <div fxLayout="row" style="float:right;">
-                                                            <div style="margin-left:41%;"> 
-                                                                <mat-form-field appearance="outline"  fxFlex="17%">
+                                                                <!-- <mat-form-field appearance="outline"  fxFlex="3%">
                                                                     <mat-label>GST %</mat-label>
                                                                     <input matInput placeholder="Placeholder">
-                                                                </mat-form-field>&nbsp;
+                                                                </mat-form-field>&nbsp; -->
                                                                 
-                                                                <mat-form-field appearance="outline" fxFlex="17%">
+                                                                <mat-form-field appearance="outline" fxFlex="5%">
                                                                     <mat-label>SGST  </mat-label>
                                                                     <input matInput placeholder="Placeholder">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="23%">
+                                                                <mat-form-field appearance="outline" fxFlex="5%">
                                                                     <mat-label>SGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                    <input matInput placeholder="Placeholder" readonly>
                                                                 </mat-form-field>&nbsp;
-                                                            
-                                                            </div>
-                                                        </div><br><br><br>
 
-                                                        <div fxLayout="row" style="float:right;">
-                                                            <div style="margin-left:39%;"> 
-                                                            
-                                                                <mat-form-field appearance="outline" fxFlex="26%">
+                                                                <mat-form-field appearance="outline" fxFlex="3%">
                                                                     <mat-label>IGST  </mat-label>
                                                                     <input matInput placeholder="Placeholder">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="34%">
+                                                                <mat-form-field appearance="outline" fxFlex="5%">
                                                                     <mat-label>IGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                    <input matInput placeholder="Placeholder" readonly>
                                                                 </mat-form-field>&nbsp;
                                                             
-                                                            </div>
-                                                        </div><br><br><br>
-
-                                                        <div fxLayout="row" style="float:right;">
-                                                            <div style="margin-left:33%;"> 
-                                                            
-                                                                <mat-form-field appearance="outline" fxFlex="63%">
+                                                                <mat-form-field appearance="outline" fxFlex="5%">
                                                                     <mat-label>Net Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                    <input matInput placeholder="Placeholder" readonly>
                                                                 </mat-form-field>&nbsp;
-                                                            
-                                                            </div>
+
+                                                                <button mat-raised-button (click)="onAdd()">Add</button>
                                                         </div>
-  
+                                                        </div>
                                                     </form> 
                                                 </div>
 
                                             </div>
-                                        </div><br>
+                                        </div>
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                         fxLayoutGap="30px">
