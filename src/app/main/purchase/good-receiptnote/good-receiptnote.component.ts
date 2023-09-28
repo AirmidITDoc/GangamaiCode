@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -27,6 +28,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   FromStoreList:any;
   SupplierList:any;
   screenFromString = 'admission-form';
+  registerObj = new RegInsert({});
 
   labelPosition: 'before' | 'after' = 'after';
   
@@ -58,6 +60,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+   
     
   ) { }
 
@@ -79,8 +82,9 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  
-
+  onAdd(){
+    
+  }
   getGRNList() {
     // this.sIsLoading = 'loading-data';
     var Param = {
