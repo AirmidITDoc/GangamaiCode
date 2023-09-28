@@ -106,11 +106,7 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                              
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -184,31 +180,6 @@
                                         </mat-cell>
                                     </ng-container>
 
-
-                                    <!-- 
-                                    <ng-container matColumnDef="PBillNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                            fxShow.gt-sm>PBillNo</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PBillNo}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ReceiptNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                            fxShow.gt-sm>ReceiptNo</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ReceiptNo}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="PayDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                            fxShow.gt-sm>PayDate</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PayDate}}
-                                        </mat-cell>
-                                    </ng-container> -->
 
                                     <ng-container matColumnDef="PaidAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -303,11 +274,5 @@
         </div>
         <!-- CENTER -->
     </div>
-    <!-- / USER -->
-    <!-- / CENTER -->
-    <!-- / CONTENT-->
+ 
 </div>
-
-
-TempDesign
-TempDesign

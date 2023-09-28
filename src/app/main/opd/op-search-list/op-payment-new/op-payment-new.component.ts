@@ -79,12 +79,10 @@ IsCreditflag : boolean=false
     private accountService: AuthenticationService,
   ) {
     this.nowDate = new Date();
-    // this.advanceData = data;
     this.PatientHeaderObj = data;
     
     this.advanceData = this.data.vPatientHeaderObj;
- debugger
-    console.log(this.advanceData);
+    
 
     if (this.data.FromName == "Advance") {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
@@ -138,14 +136,8 @@ IsCreditflag : boolean=false
     this.onPaymentChange(1, 'cash');
     this.paidAmt = this.netPayAmt;
     this.onAddClick('cash');
+    this.getBankNameList1();
 
-// debugger
-//     this.advanceData = this.data.vPatientHeaderObj;
-//     console.log(this.advanceData)
-//     this.PatientHeaderObj = this.data.vPatientHeaderObj;
-//     this.netPayAmt = this.advanceData.NetPayAmount;
-//     this.cashAmt = this.advanceData.NetPayAmount;
-//     console.log(this.netPayAmt)
   }
 
   getDateTime(dateTimeObj) {
@@ -160,8 +152,7 @@ IsCreditflag : boolean=false
       referenceNumber1: [],
       bankName1: [],
       regDate1: [(new Date()).toISOString()],
-      // regDate2: [(new Date()).toISOString()],
-
+      
       paymentType2: [],
       amount2: [],
       referenceNo2: [],
@@ -532,8 +523,7 @@ IsCreditflag : boolean=false
   } */
   Paymentobj = {};
   onSubmit() {
-    console.log(this.patientDetailsFormGrp);
-    // let Paymentobj = {};
+  
     this.Paymentobj['BillNo'] = this.PatientHeaderObj.billNo;
     this.Paymentobj['ReceiptNo'] = '';
     this.Paymentobj['PaymentDate'] = ""; //this.dateTimeObj.date;

@@ -124,11 +124,7 @@
 
                   <div fxlayout="row">
                     <div style="width: 100%;">
-                      <!-- <div matColumnDef="loading"
-                                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                                                class="backgroundBlur">
-                                                                <div class="spinner-border text-danger"></div>
-                                                            </div> -->
+                    
                       <mat-table #table matSort table="table1" [dataSource]="dataSource"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
@@ -669,29 +665,43 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" *ngIf="isCompanySelected"
                       style="padding-bottom: 10px;">
 
-                      <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
+                   
+                      <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Company Name </mat-label>
-                        <mat-select formControlName="CompanyId" placeholder="Company" #singleSelect>
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="companyFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
+                          formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
+                          <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
+                            {{option.CompanyName}}
                           </mat-option>
-                          <mat-option *ngFor="let element of filteredCompany | async" [value]="element">
-                            {{element.CompanyName}}
-                          </mat-option>
-                        </mat-select>
-
+                        </mat-autocomplete>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
-                        <mat-label>Sub Company Name</mat-label>
-                        <mat-select name="SubCompanyId" formControlName="SubCompanyId">
-                          <mat-option></mat-option>
-                          <mat-option *ngFor="let group of SubTPACompList" [value]="group">
-                            {{group.CompanyName}}
+                       
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Sub Company Name </mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select SubCompany" matInput
+                          formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoSubCompany="matAutocomplete" [displayWith]="getOptionTextSubCompany">
+                          <mat-option *ngFor="let option of filteredOptionsSubCompany | async" [value]="option">
+                            {{option.CompanyName}}
                           </mat-option>
-                        </mat-select>
+                        </mat-autocomplete>
                       </mat-form-field>
+
+                    
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-bottom: 10px;">
@@ -872,16 +882,7 @@
                         </ng-container>
                       </div>
                     </div>
-                    <!-- 
-                                                    <div *ngFor='let url of images' class="img-div" fxLayout="column">
-                                                        
-                                                        <img [src]="url" height="200px" width="200px" class="view-image"
-                                                            (click)="onViewImage(url, 'img')">
-                                                        
-                                                        
-                                                        <mat-icon aria-hidden="false" style="color: red;margin-right: 20px;"
-                                                            (click)="removeImage(url)">delete</mat-icon>
-                                                    </div> -->
+                   
 
                   </div>
 
@@ -937,12 +938,7 @@
                             Action
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact">
-                            <!-- <button mat-icon-button
-                                                                        (click)="onViewImage(contact, 'pdf')"
-                                                                        matTooltip="View">
-                                                                        <mat-icon
-                                                                            style="color: black;">camera_alt</mat-icon>
-                                                                    </button> -->
+                          
                             <button mat-icon-button (click)="deleteTableRow(contact)" color="warn">
                               <mat-icon>delete_outline</mat-icon>
                             </button>

@@ -117,11 +117,7 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                             
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -156,21 +152,6 @@
                                         </mat-cell>
                                     </ng-container>
 
-
-                                    <!-- <ng-container matColumnDef="PatientOldNew">
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">PatientOldNew</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" >
-                                  {{contact.PatientOldNew}}  -->
-                                    <!-- <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
-                                    <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='0' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
-                                        
-                                </mat-cell>
-                            </ng-container>  -->
-
-
-
-
-
                                     <ng-container matColumnDef="DOA">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                             fxShow.gt-md>Date</mat-header-cell>
@@ -202,11 +183,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md> {{contact.Doctorname}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- <ng-container matColumnDef="DoctorName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact"  fxShow.gt-md> {{contact.DoctorName}} </mat-cell>
-                            </ng-container> -->
+                                 
 
                                     <ng-container matColumnDef="RefDocName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Ref Doc
@@ -236,15 +213,6 @@
                                         </mat-cell>
                                     </ng-container>
 
-
-                                    <!-- <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <button mat-icon-button [routerLink]="['/auth/menu-main/menu-master',row.menu_master_id]">
-                                        <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container> -->
 
                                     <ng-container matColumnDef="buttons" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef

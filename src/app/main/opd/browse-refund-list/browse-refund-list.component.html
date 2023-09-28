@@ -161,9 +161,7 @@
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <!-- <span style="color: #827a7a;" class="material-icons" (click)="getPrint(contact)">
-                                             print
-                                         </span> -->
+                                           
                                             <button mat-icon-button (click)="getViewbill(contact)"
                                                 matTooltip="how_to_reg"><mat-icon>how_to_reg</mat-icon></button>
                                             <button mat-icon-button class="material-icons" (click)="getPrint(contact)"
@@ -174,7 +172,7 @@
                                                 (click)="getRecord(contact,'EMAIL')" matTooltip="email">
                                                 <mat-icon>email</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button ><mat-icon> assignment_returned </mat-icon></button>     -->
+                                         
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'SMS')" matTooltip="message">
                                                 <mat-icon> message </mat-icon>
@@ -214,8 +212,6 @@
         </div>
         <!-- CENTER -->
     </div>
-    <!-- / USER -->
-    <!-- / CENTER -->
-    <!-- / CONTENT-->
+
 </div>
-//
+

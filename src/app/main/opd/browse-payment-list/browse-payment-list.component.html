@@ -157,13 +157,6 @@
                             </mat-cell>
                         </ng-container>
 
-                        <!-- <ng-container matColumnDef="Remark">
-                       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Remark</mat-header-cell>
-                       <mat-cell *matCellDef="let contact"  fxHide fxShow.gt-sm>
-                           {{contact.Remark}}
-                       </mat-cell>
-                   </ng-container> -->
-
                         <ng-container matColumnDef="PaymentDate">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                             </mat-header-cell>
@@ -260,9 +253,7 @@
                             <mat-header-cell *matHeaderCellDef style="color: white;">Action
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact">
-                                <!-- <span style="color: #827a7a;" class="material-icons" (click)="getPrint(contact)">
-                               print
-                           </span> -->
+                              
                                 <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg">
                                     <mat-icon>how_to_reg</mat-icon>
                                 </button>
@@ -270,16 +261,7 @@
                                     matTooltip="print">
                                     <mat-icon>print</mat-icon>
                                 </button>
-                                <!-- <button mat-icon-button class="material-icons" (click)="getRecord(contact,'EMAIL')"
-                                    matTooltip="email">
-                                    <mat-icon>email</mat-icon>
-                                </button>
-                                <button mat-icon-button class="material-icons" (click)="getViewbill(contact)" 
-                                    matTooltip="message">
-                                    <mat-icon> message </mat-icon>
-                                </button> -->
-
-                                <!-- (click)="getRecord(contact,'SMS')" -->
+                              
                             </mat-cell>
                         </ng-container>
 

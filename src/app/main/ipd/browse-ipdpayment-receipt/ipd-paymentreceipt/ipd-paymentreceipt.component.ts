@@ -69,14 +69,12 @@ constructor(private _fuseSidebarService: FuseSidebarService,
   private advanceDataStored: AdvanceDataStored,) { }
 
 ngOnInit(): void {
-  // debugger;
-  this.getBrowseIPDPaymentReceiptList();
+this.getBrowseIPDPaymentReceiptList();
 }
 
 
 onShow(event: MouseEvent) {
-  //debugger;
-
+ 
   this.click = !this.click;
   setTimeout(() => {
     {
@@ -113,8 +111,7 @@ toggleSidebar(name): void {
 }
 
 ngOnChanges(changes: SimpleChanges) {
-  // changes.prop contains the old and the new value...
-  // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
+ 
   this.dataSource.data = changes.dataArray.currentValue as BrowseIpdPaymentReceipt[];
   this.dataSource.sort = this.sort;
   this.dataSource.paginator = this.paginator;
@@ -207,10 +204,8 @@ getViewbill(contact)
 
 
 printpayment() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
   let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+  
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
   // popupWin.document.open();
   popupWin.document.write(` <html>
@@ -248,10 +243,8 @@ printpayment() {
 
 
 printSettlement() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
-  let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+    let popupWin, printContents;
+  
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
   // popupWin.document.open();
   popupWin.document.write(` <html>
@@ -263,7 +256,7 @@ printSettlement() {
   `);
   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
   </html>`);
-  // if(this.reportPrintObj.length > 0) {
+  
     if(this.reportPrintObj.CashPayAmount === 0) {
       popupWin.document.getElementById('idCashpay').style.display = 'none';
     }
@@ -283,8 +276,7 @@ printSettlement() {
       popupWin.document.getElementById('idrefdr').style.display = 'none';
     }
 
-  // }
-
+ 
   popupWin.document.close();
 }
 
@@ -301,12 +293,9 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
     }
     this.printTemplate = this.printTemplate.replace('StrTotalTotalAmtInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
-    // this.printTemplate = this.printTemplate.replace('StrTotalAmt','₹' + (this.reportPrintObj.TotalAmt.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
+   
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
-    // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
- 
+    
     setTimeout(() => {
       this.printSettlement();
     }, 5);
@@ -326,14 +315,8 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
     }
     this.printTemplate = this.printTemplate.replace('StrTotalTotalAmtInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
-    // this.printTemplate = this.printTemplate.replace('StrTotalAmt','₹' + (this.reportPrintObj.TotalAmt.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentAmount','₹' + (this.reportPrintObj.PaidAmount.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrCashPayAmount','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
+   
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
-    // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
-    // this.printTemplate = this.printTemplate.replace('StrCashpay','₹' + (this.reportPrintObj.CashPayAmount.toFixed(2)));
-    // this.printTemplate = this.printTemplate.replace('StrPaymentDate', this.transform(this.reportPrintObj.PaymentDate));
-    // this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
     setTimeout(() => {
       this.printpayment();
     }, 5);
@@ -341,7 +324,7 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
 }
 
 convertToWord(e){
-// this.numberInWords= converter.toWords(this.mynumber);
+
  return converter.toWords(e);
    }
 
@@ -374,9 +357,7 @@ this._BrowseIPDPaymentReceiptService.getBrowseIPDPaymentReceiptPrint(D_data).sub
   this.reportPrintObj = res[0] as BrowseIpdPaymentReceipt;
   
  }
-//  this.getPaymentTemplate();
 
-// debugger
  if(el.PatientTypeID !== 2){
   this.getSettlementTemplate();
   

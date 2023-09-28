@@ -115,7 +115,7 @@ getBrowseOpdPaymentReceiptList(){
     "ReceiptNo":this._BrowseOpdPaymentReceiptService.myFilterform.get("ReceiptNo").value || 0,
 
   }
-   console.log(D_data);
+   
   this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptList(D_data).subscribe(Visit=> {
       
       this.dataSource.data =Visit as BrowseOpdPaymentReceipt[];
@@ -191,7 +191,7 @@ transform2(value: string) {
 }
 
 getPrint(el) {
-  debugger
+  
    var D_data = {
      "PaymentId": el.PaymentId,
    }
@@ -201,7 +201,7 @@ getPrint(el) {
      this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
        if(res){
        this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-       console.log(this.reportPrintObj)
+       
       this.getTemplate();
       }
               

@@ -252,18 +252,18 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName2">
                                     <mat-error *ngIf="patientDetailsFormGrp.get('bankName2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <!-- <mat-form-field appearance="outline"  fxFlex="16%">
+                                <mat-form-field appearance="outline"  fxFlex="16%">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
-                                      formControlName="bankName2" [matAutocomplete]="bankName2" required>
+                                      formControlName="bankName2" [matAutocomplete]="autoBank2" required>
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
                                         (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank1elected = false;">close</mat-icon>
@@ -275,7 +275,7 @@
                                         {{option.BankName}}
                                       </mat-option>
                                     </mat-autocomplete>
-                                  </mat-form-field> -->
+                                  </mat-form-field>
 
 
                                 <mat-form-field appearance="outline" fxFlex="16%">

@@ -125,41 +125,7 @@ export class RegistrationComponent implements OnInit {
   
 onEdit(row){
   console.log(row);
-    // var m_data = {
-    //   "RegNo":row.RegNo,
-    //   "RegId":row.RegId,
-    //   "PrefixID":row.PrefixID,
-    //   "PrefixName":row.PrefixName,
-    //   "FirstName":row.FirstName.trim(),
-    //   "MiddleName":row.MiddleName.trim(),
-    //   "LastName":row.LastName.trim(),
-    //   "PatientName":row.PatientName.trim(),
-    //   "DateofBirth":row.DateofBirth,
-    //   "MaritalStatusId":row.MaritalStatusId,
-    //   "AadharCardNo":row.AadharCardNo,
-    //   "Age":row.Age,
-    //   "AgeDay":row.AgeDay.trim(),
-    //   "AgeMonth":row.AgeMonth.trim(),
-    //   "AgeYear":row.AgeYear.trim(),
-    //   "Address":row.Address.trim(),
-    //   "AreaId":row.AreaId,
-    //   "City":row.City.trim(),
-    //   "CityId":row.CityId,
-    //   "StateId":row.StateId,
-    //   "CountryId":row.CountryId,
-    //   "PhoneNo":row.PhoneNo.trim(),
-    //   "MobileNo":row.MobileNo.trim(),
-    //   "GenderId":row.GenderId,
-    //   "GenderName":row.GenderName,
-    //   "ReligionId":row.ReligionId,
-    //   "IsCharity":0,
-    //   "PinNo":row.PinNo,
-    //   "RegDate":row.RegDate,
-    //   "RegNoWithPrefix":row.RegNoWithPrefix,
-    //   "RegTime":row.RegTime.trim()
-    // }
-  
-    // console.log(m_data);
+   
     this._registrationService.populateFormpersonal(row);
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 

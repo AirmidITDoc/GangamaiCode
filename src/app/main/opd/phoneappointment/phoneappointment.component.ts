@@ -53,9 +53,6 @@ export class PhoneappointmentComponent implements OnInit {
   dataSource = new MatTableDataSource<PhoneAppointmentlist>();
   menuActions: Array<string> = [];
 
-  // public doctorFilterCtrl: FormControl = new FormControl();
-  // public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  // private _onDestroy = new Subject<void>();
 
   constructor(
     public _phoneAppointService: PhoneAppointListService,
@@ -109,16 +106,9 @@ export class PhoneappointmentComponent implements OnInit {
   }
 
   
-
   getOptionTextDoctor(option){
     return option && option.DoctorName ? option.DoctorName : '';
   }
-
-
-
-
-
-
 
   // get phone appointment list on Button click
   getPhoneAppointList() {
@@ -192,35 +182,3 @@ export class PhoneAppointmentlist {
   }
 }
 
-
-// export class PhoneApplistMaster {
-//   PhoneAppId: number;
-//   PatientName: string;
-//   AppDate: Date;
-//   Address:string;
-//   PhAppDate: Date;
-//   MobileNo :string;
-//   DepartmentName :string;
-//   DoctorName :string;
-//   IsCancelled : boolean;
-  
-//   /**
-//    * Constructor
-//    *
-//    * @param contact
-//    */
-//   constructor(PhoneApplistMaster) {
-//       {
-//           this.PhoneAppId = PhoneApplistMaster.PhoneAppId || '';
-//           this.PatientName = PhoneApplistMaster.PatientName || '';
-//           this.AppDate = PhoneApplistMaster.AppDate || '';
-//           this.Address = PhoneApplistMaster.Address || '';
-//           this.PhAppDate = PhoneApplistMaster.PhAppDate || '';
-//           this.MobileNo = PhoneApplistMaster.MobileNo || '';
-//           this.DepartmentName= PhoneApplistMaster.DepartmentName ||'';
-//           this.DoctorName= PhoneApplistMaster.DoctorName ||'';
-//           this.IsCancelled = PhoneApplistMaster.IsCancelled ||'';
-          
-//       }
-//   }
-//   }

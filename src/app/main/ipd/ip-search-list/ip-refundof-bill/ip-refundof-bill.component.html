@@ -63,18 +63,6 @@
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                     {{element.RefundAmount | currency:'INR'}} </mat-cell>
                                             </ng-container>
-
-                                            <!-- <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Action
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                </button>
-
-                                            </mat-cell>
-                                        </ng-container> -->
-
                                             <ng-container matColumnDef="loading">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                     loading data...
@@ -197,13 +185,13 @@
 
                                             <div fxlayout="row"
                                                 style="background-color: white; padding: 2px;height:200px;">
-                                                <!-- <form [formGroup]="_IpSearchListService.myShowAdvanceForm"> -->
+                                                
                                                 <div class="dialog-content-wrapper">
 
-                                                    <!-- <mat-tab-group mat-align-tabs="start" class="tabs-group" mat-stretch-tabs> -->
+                                                    
                                                     <form [formGroup]="RefundOfBillFormGroup"
                                                         style="font-weight: bold;width: 100%;">
-                                                        <!-- <mat-tab label="Bill Details"> -->
+                                                       
 
                                                         <div class="bill-amts" fxFlexFill fxLayout="column"
                                                             >
@@ -214,17 +202,6 @@
 
                                                                 <div fxLayout="column">
 
-                                                                    <!-- <mat-form-field appearance="outline"
-                                                                            style="width:300px;">
-                                                                            <mat-label>{{thing.label}}</mat-label>
-                                                                            <input matInput display="block"
-                                                                                [(ngModel)]="thing.name"
-                                                                                formControlName={{thing.name}}
-                                                                                name={{thing.name}}
-                                                                                (keyup.enter)="onKeypressEvent($event.target)"
-                                                                                readonly>
-                                                                        </mat-form-field>&nbsp;
-                                                                    -->
                                                                     <div fxLayout="row">
                                                                         <mat-form-field appearance="outline"
                                                                             style="width:300px;">
@@ -286,88 +263,17 @@
                                                                     </div>
                                                                 </div>
 
-
-                                                                <!-- </div> -->
                                                             </div>
 
 
                                                         </div>
 
-                                                        <!-- </mat-tab> -->
+                                                        
                                                     </form>
-                                                    <!-- <form [formGroup]="myRefundBillForm">
-                                                <mat-tab label="Service Details">
-                        
-                                                    <div class="service-amts" fxFlexFill fxLayout="column">
-                        
-                                                        <div fxLayout="row" fxLayoutGap="1px">
-                        
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Service Name</mat-label>
-                                                                <mat-select formControlName="ServiceId">
-                                                                    <mat-option *ngFor="let Doc of serviceNameCmbList" [value]="Doc.serviceId">
-                                                                        {{Doc.ServiceName}}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                        
-                        
-                                                            <mat-form-field appearance="outline">
-                                                                <mat-label>Select Service</mat-label>
-                                                                <input #mediInput type="text" placeholder="Pick one" aria-label="Selected Value"
-                                                                    matInput [formControl]="myRefundBillForm" [matAutocomplete]="auto"
-                                                                    (ngModelChange)="updatedVal($event)" />
-                                                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                                                    <mat-option *ngFor="let option of filteredOptions | async"
-                                                                        [value]="option.ServiceShortDesc"
-                                                                        (onSelectionChange)="mediInput.value !=undefined && onOptionSelected(option)"
-                                                                        [ngClass]="{'hide-autocomplete': !showAutocomplete}">
-                                                                        <span>{{option.ServiceName}}</span> |
-                                                                        <small>Price: {{option.Price}}</small>
-                                                                        <small>TariffId :{{option.TariffId}}</small>
-                                                                    </mat-option>
-                                                                </mat-autocomplete>
-                                                            </mat-form-field>
-                        
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Price</mat-label>
-                                                                <input matInput [(ngModel)]="b_price" name="bPrice"
-                                                                    (keyup)="calculateTotalAmt()" formControlName="price">
-                                                            </mat-form-field>
-                        
-                        
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Qty</mat-label>
-                                                                <input matInput [(ngModel)]="b_qty" name="bQty" (keyup)="calculateTotalAmt()"
-                                                                    formControlName="qty">
-                                                            </mat-form-field>
-                        
-                        
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>TotalAmt</mat-label>
-                                                                <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
-                                                                    formControlName="totalAmount">
-                                                            </mat-form-field>
-                        
-                        
-                                                        </div>
-                                                        <div fxFlex.gt-sm="20%">
-                                                            <mat-form-field appearance="outline" fxFlex="20%">
-                                                                <mat-label>Doctor Name</mat-label>
-                                                                <mat-select formControlName="DoctorId">
-                                                                    <mat-option *ngFor="let Doc of doctorNameCmbList" [value]="Doc.DoctorId">
-                                                                        {{Doc.DoctorName}}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                </mat-tab>
-                                            </form> -->
-                                                    <!-- </mat-tab-group> -->
+                                                  
 
                                                 </div>
-                                                <!-- </form> -->
+                                               
                                             </div>
                                         </mat-card>
 
@@ -384,31 +290,7 @@
                                                 [@animateStagger]="{value:'50'}"
                                                 style="height:80% !important;margin-left: 5px;overflow: auto;">
 
-                                                <!-- <ng-container matColumnDef="ChargesId">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Charges Id  </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                    {{element.ChargesId}} </mat-cell>
-                                            </ng-container>
-                                         
-                                            <ng-container matColumnDef="ChargesDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ChargesDate
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ChargesDate |
-                                                    date}}
-                                                </mat-cell>
-                                            </ng-container> -->
-                                                <!-- <ng-container matColumnDef="checkbox" sticky>
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                    <span class="material-icons" (onclick)="Serviceselect(contact,$event)">
-                                                        cached
-                                                    </span>
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                                    </mat-checkbox>
-                                                </mat-cell>
-                                            </ng-container> -->
+                                            
                                                 <ng-container matColumnDef="ServiceId">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
@@ -518,17 +400,9 @@
                                                         currency:'INR' }}</span>
                                                 </div>
 
-                                                <!-- <div class="net-amt">
-                                                    <span class="net-amt-label">Total of Selected Items:</span>&nbsp;
-                                                    <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
-                                                <!-- <span class="net-amt-value">{{getSelectedServicetotSum(contact) | currency:'INR' }}</span> -->
-                                                <!-- </div> -->
+                                                
                                             </div>
                                         </div>
-
-                                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="6" showFirstLastButtons sticky>
-                                        </mat-paginator>
-                                  -->
 
                                     </mat-tab>
                                 </mat-tab-group>
@@ -544,11 +418,6 @@
 
                                         </mat-form-field>&nbsp;
 
-                                        <!-- <mat-form-field appearance="outline" style="width:30%;">
-                                        <mat-label>Refund Bal Amount</mat-label>
-                                        <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount"
-                                            name="RefundBalAmount" required>
-                                    </mat-form-field>&nbsp; -->
                                     <mat-form-field appearance="outline" style="width:1300px;">
                                         <mat-label>Remark</mat-label>
                                         <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark">
