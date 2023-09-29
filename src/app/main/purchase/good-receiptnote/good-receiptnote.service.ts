@@ -9,13 +9,13 @@ export class GoodReceiptnoteService {
 
   userFormGroup: FormGroup;
   GRNSearchGroup :FormGroup;
-
+  GRNForm:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.GRNList();
+    this.userFormGroup = this.getGRNForm();
     this.GRNSearchGroup= this.GRNSearchFrom();
   }
 
@@ -29,15 +29,27 @@ export class GoodReceiptnoteService {
     });
   }
   
-  GRNList() {
+  getGRNForm() {
     return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
+      ItemName:[''],
+      UOM:[''],
+      HSNCode:[''],
+      BatchNo:[''],
+      Qty:[''],
+      ExpDate:[''],
+      MRP:[''],
+      FreeQty:[''],
+      Rate:[''],
+      TotalAmount:[''],
+      Disc:[''],
+      DisAmount:[''],
+      CGST:[''],
+      CGSTAmoun:[''],
+      SGST:[''],
+      SGSTAmount:[''],
+      IGST:[''],
+      IGSTAmount:[''],
+      NetAmount:[''],
       
     });
   }
@@ -45,7 +57,6 @@ export class GoodReceiptnoteService {
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
   }
-
 
   public getGrnItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
@@ -61,6 +72,10 @@ export class GoodReceiptnoteService {
   
   public getSupplierSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
+  }
+
+    public getItemNameList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
   
 }
