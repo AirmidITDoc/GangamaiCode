@@ -300,8 +300,8 @@ export class AdmissionComponent implements OnInit {
       this.menuActions.push('Update TPA Company Information');
       this.menuActions.push('Print Patient Card');
       this.menuActions.push('Print Patient Sticker');
-      this.menuActions.push('Prefix Demo');
-      this.menuActions.push('Emergency');
+      // this.menuActions.push('Prefix Demo');
+      // this.menuActions.push('Emergency');
     }
   }
 
@@ -1083,7 +1083,7 @@ export class AdmissionComponent implements OnInit {
 
 
   onChangePatient(value) {
-    if (value.PatientTypeId == 2) {
+    if (value.PatientTypeId !== 1) {
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
       this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
@@ -1095,9 +1095,46 @@ export class AdmissionComponent implements OnInit {
     }
   }
 
-  onClose() {
-    this._AdmissionService.mySaveForm.reset();
-    this.dialogRef.close();
+  onReset() {
+    // this._AdmissionService.mySaveForm.reset();
+    this.personalFormGroup.get('RegId').reset();
+    this.personalFormGroup.get('RegId').disable();
+    this.isRegSearchDisabled = true;
+    this.registerObj = new AdmissionPersonlModel({});
+    this.personalFormGroup.reset();
+
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
+
+    this.hospitalFormGroup = this.createHospitalForm();
+    this.hospitalFormGroup.markAllAsTouched();
+
+    this.wardFormGroup = this.wardForm();
+    this.wardFormGroup.markAllAsTouched();
+
+    this.otherFormGroup = this.otherForm();
+    this.otherFormGroup.markAllAsTouched()
+
+    this.getHospitalList();
+    this.getPrefixList();
+    this.getPatientTypeList();
+    this.getTariffList();
+
+    this.getcityList1();
+    
+    // this.isCompanySelected = true;
+    // this.hospitalFormGroup.get('CompanyId').clearValidators();
+    // this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+    // this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+    // this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+
+    this.isCompanySelected = false;
+    this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+    this.hospitalFormGroup.get('CompanyId').clearValidators();
+    this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+    this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+    this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+  
   }
 
   nextClicked(formGroupName) {
@@ -1113,14 +1150,14 @@ export class AdmissionComponent implements OnInit {
       return;
     }
     if (formGroupName == this.otherFormGroup) {
-      this.submitAdmissionForm();
+      this.OnSaveAdmission();
       return;
     }
     this.admissionFormStepper.next();
   }
 
 
-  submitAdmissionForm() {
+ OnSaveAdmission() {
     
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
@@ -1270,16 +1307,15 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;
-      admissionInsert['SubTpaComId'] = 0;
+      admissionInsert['SubTpaComId'] = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
       admissionInsert['PolicyNo'] = 0; //this.hospitalFormGroup.get('PolicyNo').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
       admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
 
       admissionInsert['CompDOD'] = this.dateTimeObj.date;
       admissionInsert['IsPackagePatient'] = 0;
-
-
       submissionObj['admissionInsert'] = admissionInsert;
       submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
         console.log(submissionObj);
