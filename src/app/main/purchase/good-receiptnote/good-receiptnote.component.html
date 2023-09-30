@@ -354,8 +354,7 @@
                             New GRN List
                         </ng-template>
 
-
-                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                        <div id="contacts"   class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
                             <div class="content">
                                 <!-- SIDEBAR -->
@@ -435,111 +434,126 @@
                                                                 class="mr-sm-12">Cash</mat-radio-button>
                                                         </mat-radio-group>
 
-
-
                                                     </div>
 
                                                 </form>
 
                                                 <div fxLayout="column" fxLayoutAlign="start none">
 
-                                                    <form>
-
+                                                    <form  [formGroup]="_GRNList.userFormGroup"
+                                                    style="padding: 6px 6px 5px 5px;">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="4px">
 
-                                                            <mat-form-field appearance="outline" fxFlex="35%">
-                                                                <mat-label>Item Name</mat-label>
-                                                                <mat-select formControlName="Freight" name="Freight">
-                                                                    <mat-option value="NILL">NILL</mat-option>
-                                                                    <mat-option value="240">RS 240</mat-option>
-                                                                    <mat-option value="2500">RS 2500</mat-option>
-                                                                    <mat-option value="360">RS 360</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
+                                                            <mat-form-field appearance="outline" style="width: 25%;">
+                                                                <input type="text" name="ItemName"
+                                                                    formControlName="ItemName" placeholder="Item Name"
+                                                                    matInput 
+                                                                    [matAutocomplete]="auto" (input)="getItemNameList()"
+                                                                    required id="myInput">
+    
+                                                                <mat-autocomplete #auto="matAutocomplete"
+                                                                    [displayWith]="getOptionText" showPanel="true"
+                                                                    (optionsScroll)="onScroll()"
+                                                                    (optionSelected)='getSelectedObj($event.option.value)'
+                                                                    fxFlex="5%">
+                                                                    <mat-option *ngFor="let option of filteredOptions"
+                                                                        [value]="option" style="width: 500px;">
+                                                                        {{option.ItemName}} | BalQty {{option.Qty}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                                <mat-hint>
+                                                                    <span *ngIf="noOptionFound" style="color: #f44336;">No
+                                                                        data
+                                                                        Found</span>
+                                                                </mat-hint>
+                                                            </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>UOM</mat-label>
-                                                                <input matInput placeholder="Placeholder" readonly>
-                                                            </mat-form-field>
+                                                                <input matInput [(ngModel)]="UOM" name="UOM"
+                                                                    formControlName="UOM"   id="UOM">
+                                                            </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>HSN Code</mat-label>
-                                                                <input matInput placeholder="Placeholder" >
+                                                                <input matInput [(ngModel)]="HSNCode" name="HSNCode"
+                                                                formControlName="HSNCode"   id="HSNCode">
                                                             </mat-form-field>
                                                             
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Batch No</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="BatchNo" name="BatchNo"
+                                                                formControlName="BatchNo"   id="BatchNo">
                                                             </mat-form-field>
                                                            
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Exp. Date</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="ExpDate" name="ExpDate"
+                                                                formControlName="ExpDate"   id="ExpDate">
                                                             </mat-form-field>
                                                             
                                                             <mat-form-field appearance="outline" fxFlex="7%">
-                                                                <mat-label>Oty</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <mat-label>Qty</mat-label>
+                                                                <input matInput [(ngModel)]="Qty" name="Qty"
+                                                                formControlName="Qty"   id="Qty">
                                                             </mat-form-field>
                                                             
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Free Qty </mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="FreeQty" name="FreeQty"
+                                                                formControlName="FreeQty"   id="FreeQty">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>MRP</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="MRP" name="MRP"
+                                                                formControlName="MRP"   id="MRP">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Rate </mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="Rate" name="Rate"
+                                                                formControlName="Rate"   id="Rate">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                                 <mat-label>Total Amount</mat-label>
-                                                                <input matInput placeholder="Placeholder" readonly>
+                                                                <input matInput [(ngModel)]="TotalAmount" name="TotalAmount"
+                                                                formControlName="TotalAmount"   id="TotalAmount" readonly>
                                                             </mat-form-field>
 
                                                         </div>
 
                                                         <div fxLayout="row" >
                                                      
-                                                            <mat-form-field appearance="outline"  fxFlex="3%">
+                                                            <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>Disc %</mat-label>
-                                                                <input matInput placeholder="Placeholder">
-                                                            </mat-form-field>&nbsp;
-                                                            
-                                                            <mat-form-field appearance="outline" fxFlex="5%">
-                                                                <mat-label>Dis Amount </mat-label>
-                                                                <input matInput placeholder="Placeholder" readonly>
-                                                            </mat-form-field>&nbsp;
-                                                            
-                                                            <mat-form-field appearance="outline" fxFlex="3%">
-                                                                <mat-label>Disc %</mat-label>
-                                                                <input matInput placeholder="Placeholder">
+                                                                <input matInput [(ngModel)]="Disc" name="Disc"
+                                                                formControlName="Disc"   id="Disc">
                                                             </mat-form-field>&nbsp;
 
-                                                            <mat-form-field appearance="outline" fxFlex="5%">
+                                                            <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>Dis Amount </mat-label>
-                                                                <input matInput placeholder="Placeholder" readonly>
-                                                            </mat-form-field>
+                                                                <input matInput [(ngModel)]="DisAmount" name="DisAmount"
+                                                                formControlName="DisAmount"   id="DisAmount" readonly>
+                                                            </mat-form-field>&nbsp;
         
                                                                <!-- <mat-form-field appearance="outline"  fxFlex="3%">
                                                                     <mat-label>GST %</mat-label>
                                                                     <input matInput placeholder="Placeholder">
                                                                 </mat-form-field>&nbsp; -->
                                                                 
-                                                                <mat-form-field appearance="outline" fxFlex="3%">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                                     <mat-label>CGST  </mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                    <input matInput [(ngModel)]="CGST" name="CGST"
+                                                                    formControlName="CGST"   id="CGST">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="5%">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                                     <mat-label>CGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder" readonly>
+                                                                    <input matInput [(ngModel)]="CGSTAmount" name="CGSTAmount"
+                                                                    formControlName="CGSTAmount"   id="CGSTAmount" readonly>
                                                                 </mat-form-field>&nbsp;
 
                                                                 <!-- <mat-form-field appearance="outline"  fxFlex="3%">
@@ -547,29 +561,34 @@
                                                                     <input matInput placeholder="Placeholder">
                                                                 </mat-form-field>&nbsp; -->
                                                                 
-                                                                <mat-form-field appearance="outline" fxFlex="5%">
-                                                                    <mat-label>SGST  </mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
+                                                                    <mat-label>SGST </mat-label>
+                                                                    <input matInput [(ngModel)]="SGST" name="SGST"
+                                                                    formControlName="SGST"   id="SGST">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="5%">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                                     <mat-label>SGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder" readonly>
+                                                                    <input matInput [(ngModel)]="SGSTAmount" name="SGSTAmount"
+                                                                    formControlName="SGSTAmount"   id="SGSTAmount" readonly>
                                                                 </mat-form-field>&nbsp;
 
-                                                                <mat-form-field appearance="outline" fxFlex="3%">
-                                                                    <mat-label>IGST  </mat-label>
-                                                                    <input matInput placeholder="Placeholder">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
+                                                                    <mat-label>IGST</mat-label>
+                                                                    <input matInput [(ngModel)]="IGST" name="IGST"
+                                                                    formControlName="IGST"   id="IGST">
                                                                 </mat-form-field>&nbsp;
         
-                                                                <mat-form-field appearance="outline" fxFlex="5%">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                                     <mat-label>IGST Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder" readonly>
+                                                                    <input matInput [(ngModel)]="IGSTAmount" name="IGSTAmount"
+                                                                    formControlName="IGSTAmount"   id="IGSTAmount" readonly>
                                                                 </mat-form-field>&nbsp;
                                                             
-                                                                <mat-form-field appearance="outline" fxFlex="5%">
+                                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                                     <mat-label>Net Amount</mat-label>
-                                                                    <input matInput placeholder="Placeholder" readonly>
+                                                                    <input matInput [(ngModel)]="NetAmount" name="NetAmount"
+                                                                    formControlName="NetAmount"   id="NetAmount" readonly>
                                                                 </mat-form-field>&nbsp;
 
                                                                 <button mat-raised-button (click)="onAdd()">Add</button>
@@ -581,7 +600,7 @@
                                             </div>
                                         </div>
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                         fxLayoutGap="30px">
                                         <div fxFlex.gt-sm="100%" fxFlex>
 
@@ -592,9 +611,9 @@
                                                         class="backgroundBlur">
                                                         <div class="spinner-border text-danger"></div>
                                                     </div>
-                                                    <!-- sppinner -->
+                                                   
                                                     <mat-table #table class="table3" matSort
-                                                        [dataSource]="dsGrnItemList"
+                                                        [dataSource]="dsItemNameList"
                                                         [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto;">
                                                         <ng-container matColumnDef="ItemName">
@@ -608,23 +627,183 @@
                                                             </mat-cell>
                                                         </ng-container>
 
+                                                        <ng-container matColumnDef="UOM">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                UOM</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.UOM}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="HSNCode">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                HSNCode</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.HSNCode}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
                                                         <ng-container matColumnDef="BatchNo">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header fxShow.gt-sm>
                                                                 BatchNo</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact"
                                                                 fxShow.gt-sm>
+                                                                {{contact.BatchNo}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="ExpDate">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                ExpDate</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.ExpDate}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Qty">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                Qty</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
                                                                 {{contact.Qty}}
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="ReceiveQty">
+                                                        <ng-container matColumnDef="FreeQty">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header fxShow.gt-sm>
-                                                                ReceiveQty</mat-header-cell>
+                                                                FreeQty</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact"
                                                                 fxShow.gt-sm>
-                                                                {{contact.ReceiveQty}}
+                                                                {{contact.FreeQty}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="MRP">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                MRP</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.MRP}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Rate">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                Rate</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.Rate}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="TotalAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                TotalAmount </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.TotalAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Disc">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                Disc</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.Disc}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="DisAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                DisAmount</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.DisAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="CGST">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                CGST</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.CGST}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="CGSTAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                CGSTAmount</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.CGSTAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="SGST">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                SGST</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.SGST}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="SGSTAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                SGSTAmount</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.SGSTAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="IGST">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                IGST</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.IGST}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="IGSTAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                IGSTAmount</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.IGSTAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="NetAmount">
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                mat-sort-header fxShow.gt-sm>
+                                                                NetAmount</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"
+                                                                fxShow.gt-sm>
+                                                                {{contact.NetAmount}}
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -641,10 +820,10 @@
                                                         </ng-container>
 
                                                         <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                            *matHeaderRowDef="displayedColumns2; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row
-                                                            *matRowDef="let contact; columns: displayedColumns1;"
+                                                            *matRowDef="let contact; columns: displayedColumns2;"
                                                             class="contact"
                                                             [@animate]="{value:'*',params:{y:'100%'}}"
                                                             appHighlight></mat-row>
@@ -662,7 +841,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
+                                        </div> 
 
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <form>
@@ -671,7 +850,7 @@
                                                     fxLayoutGap="4px">
 
                                                     <mat-radio-group name="Status" formControlName="Status"
-                                                    fxFlex="35%" value="false">
+                                                    fxFlex="60%" value="false">
                                                        <mat-radio-button value="Credit"
                                                         class="mr-sm-12">GST Before Disc</mat-radio-button>
 
@@ -680,126 +859,90 @@
 
                                                         <mat-radio-button value="Credit"
                                                         class="mr-sm-12">GST On Pur + FreeQty</mat-radio-button>
+
+                                                        <mat-radio-button value="Credit"
+                                                        class="mr-sm-12">GST On MRP</mat-radio-button>
+    
+                                                        <mat-radio-button value="Credit"
+                                                        class="mr-sm-12">GST On MRP + FreeQty </mat-radio-button>
+    
+                                                        <mat-radio-button value="Credit"
+                                                        class="mr-sm-12">GST After 2 Disc</mat-radio-button>
                                                    </mat-radio-group>
 
-                                                   <mat-form-field appearance="outline" fxFlex="16%">
-                                                    <mat-label>GST Amt</mat-label>
-                                                    <input matInput placeholder="Placeholder">
-                                                </mat-form-field>
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">GST Amt: </span>&nbsp;
+                                                <span class="net-amt-value" 
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 
+                                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">CGST Amt: </span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">SGST Amt: </span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>CGST Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">IGST Amt:</span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>SGST Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>IGST Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Total Amount</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                </div>
+                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Amount:</span>&nbsp;
+                                                <span class="net-amt-value"
+                                                    style="margin-left:10px;font-weight:bolder;color: blue;"></span>
+                                       
+                                                </div><br>
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                 fxLayoutGap="4px">
 
-                                                <mat-radio-group name="Status" formControlName="Status"
-                                                fxFlex="35%" value="false">
-                                                   <mat-radio-button value="Credit"
-                                                    class="mr-sm-12">GST On MRP</mat-radio-button>
-
-                                                    <mat-radio-button value="Credit"
-                                                    class="mr-sm-12">GST On MRP + FreeQty </mat-radio-button>
-
-                                                    <mat-radio-button value="Credit"
-                                                    class="mr-sm-12">GST After 2 Disc</mat-radio-button>
-                                               </mat-radio-group>
-
-                                             
-
-                                                <mat-form-field appearance="outline" fxFlex="16%">
+                                                <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>Debit Amt</mat-label>
                                                     <input matInput placeholder="Placeholder">
                                                 </mat-form-field>
 
-
-                                                <mat-form-field appearance="outline" fxFlex="16%">
+                                                <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>Credit Amt</mat-label>
                                                     <input matInput placeholder="Placeholder">
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="16%">
+                                                <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>Disc Amt</mat-label>
                                                     <input matInput placeholder="Placeholder">
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="16%">
+                                                <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>Net Pay Amt</mat-label>
                                                     <input matInput placeholder="Placeholder">
                                                 </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="12%">
+                                                    <mat-label>Remark</mat-label>
+                                                    <input matInput placeholder="Placeholder">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="12%">
+                                                    <mat-label>Received By</mat-label>
+                                                    <input matInput placeholder="Placeholder">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="12%">
+                                                    <mat-label>Other Charges</mat-label>
+                                                    <input matInput placeholder="Placeholder">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="12%">
+                                                    <mat-label>Rounding Amt</mat-label>
+                                                    <input matInput placeholder="Placeholder">
+                                                </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                <button class="next-btn" style="border-radius: 14px;height:2%">Save</button>
+                                                <button class="footer-btn" style="border-radius: 14px;height:2%">Close</button>&nbsp;&nbsp;
 
                                             </div>
 
                                             </form>
 
                                         </div>
-
-                                        <div fxLayout="column" fxLayoutAlign="start none">
-                                            <form>
-
-                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                                    fxLayoutGap="4px">
-
-                                                    <mat-form-field appearance="outline" fxFlex="40%">
-                                                        <mat-label>Remark</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Received By</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-    
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Bill Disc Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Other Charges</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label>Rounding Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
-                                                    </mat-form-field>
-
-                                                </div>
-
-                                                <div fxLayout="row" style="float:right">
-                                                    <button class="next-btn" >Save</button>
-                                                    <button class="footer-btn">Close</button>&nbsp;&nbsp;
-                                                </div>
-                                            </form>
-
-                                        </div>
-
                                     </div>
                                 </div>
                                 <!-- CENTER -->
