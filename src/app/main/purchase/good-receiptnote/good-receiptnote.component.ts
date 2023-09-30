@@ -11,6 +11,9 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+import { Observable } from 'rxjs/internal/Observable';
+import { startWith } from 'rxjs/internal/operators/startWith';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -28,6 +31,8 @@ export class GoodReceiptnoteComponent implements OnInit {
   FromStoreList:any;
   SupplierList:any;
   screenFromString = 'admission-form';
+  isPaymentSelected : boolean = false;
+  isSupplierSelected: boolean = false;
   registerObj = new RegInsert({});
   chargeslist: any = [];
 
@@ -40,17 +45,41 @@ export class GoodReceiptnoteComponent implements OnInit {
   dsItemNameList = new MatTableDataSource<ItemNameList>();
 
   displayedColumns = [
-    'GRNID',
-    'SupplierName',
-    'StoreName',
+    'GrnNumber',
     'GRNDate',
+    'InvoiceNo',
+    'SupplierName',
+    'TotalAmount',
+    'TotalDiscAmount',
+    'TotalVATAmount',
+    'NetAmount',
+    'RoundingAmt',
+    'DebitNote',
+    'CreditNote',
+    'InvDate',
+    'Cash_CreditType',
+    'ReceivedBy',
+    'IsClosed',
     'action',
   ];
 
   displayedColumns1 = [
-   'ItemName',
-   'BatchNo',
-   'ReceiveQty',
+    
+    "ItemName",
+    "BatchNo",
+    "BatchExpDate",
+    "ReceiveQty",
+    "FreeQty",
+    "MRP",
+    "Rate",
+    "TotalAmount",
+    "ConversionFactor",
+    "VatPercentage",
+    "DiscPercentage",
+    "LandedRate",
+    "NetAmount",
+    "TotalQty",
+   
   ];
 
   displayedColumns2 = [
@@ -98,6 +127,12 @@ export class GoodReceiptnoteComponent implements OnInit {
   IGST: any=0;
   IGSTAmount: any=0;
   NetAmount: any=0;
+  filteredoptionsToStore: Observable<string[]>;
+  filteredoptionsSupplier: Observable<string[]>;
+  optionsToStore: any;
+  optionsFrom: any;
+  optionsMarital: any;
+  optionsSupplier: any;
 
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -111,8 +146,11 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getToStoreSearchList();
-    this.getSupplierSearchList();
+    // this.getSupplierSearchList();
+    this.getSupplierSearchCombo();
     this.getFromStoreSearchList();
+    this.getToStoreSearchCombo();
+    this.getSupplierSearchCombo();
     this.getGRNList() 
   }
   
@@ -182,7 +220,16 @@ onAdd(){
     this.dateTimeObj = dateTimeObj;
   }
 
- 
+  getOptionTextPayment(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  
+  }
+
+
+getOptionTextSupplier(option) {
+  return option && option.SupplierName ? option.SupplierName : '';
+
+}
 
   getOptionText(option) {
     
@@ -198,12 +245,12 @@ onAdd(){
       "ToStoreId": this._GRNList.GRNSearchGroup.get('ToStoreId').value.ToStoreId || 0,
        "From_Dt": this.datePipe.transform(this._GRNList.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._GRNList.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "IsVerify": 0 ,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-       "Supplier_Id": this._GRNList.GRNSearchGroup.get('Supplier_Id').value. Supplier_Id || 0,
+       "IsVerify": this._GRNList.GRNSearchGroup.get("Status").value || 0,
+       "Supplier_Id": this._GRNList.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
     }
+    console.log(Param);
       this._GRNList.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
-      console.log(this.dsGRNList.data)
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -213,16 +260,59 @@ onAdd(){
       });
   }
 
+
+  getToStoreSearchCombo() {
+      this._GRNList.getToStoreSearchList().subscribe(data => {
+        this.ToStoreList = data;
+        console.log(data);
+        this.optionsToStore = this.ToStoreList.slice();
+        this.filteredoptionsToStore = this._GRNList.GRNSearchGroup.get('ToStoreId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterStore(value) : this.ToStoreList.slice()),
+        );
+    
+      });
+    }
+
+    getSupplierSearchCombo() {
+      debugger
+        this._GRNList.getSupplierSearchList().subscribe(data => {
+          this.SupplierList = data;
+          console.log(data);
+          this.optionsSupplier = this.SupplierList.slice();
+          this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('Supplier_Id').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+          );
+      
+        });
+      }
+
+    private _filterStore(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.optionsToStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+      }
+    }
+
+    private _filterSupplier(value: any): string[] {
+     if (value) {
+    const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
+    return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+  }
+}
+    
   getGrnItemList(Params){
     this.sIsLoading = 'loading-data';
     var Param = {
-      "GrnId": Params.GrnId 
+      "GrnId": Params.GRNID 
     }
       this._GRNList.getGrnItemList(Param).subscribe(data => {
       this.dsGrnItemList.data = data as GrnItemList[];
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
+      // console.log(this.dsGrnItemList.data)
     },
       error => {
         this.sIsLoading = '';
@@ -240,9 +330,10 @@ getToStoreSearchList() {
   });
 }
 
-getSupplierSearchList() {
+getSupplierSearchList1() {
   this._GRNList.getSupplierSearchList().subscribe(data => {
     this.SupplierList = data;
+    console.log(this.SupplierList);
   });
 }
 
@@ -281,34 +372,23 @@ getItemNameList(){
   }
 }
 
-export class GrnItemList {
-  ItemName: string;
-  BatchNo: number;
-  ReceiveQty:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param GrnItemList
-   */
-  constructor(GrnItemList) {
-    {
-      this.ItemName = GrnItemList.ItemName || "";
-      this.BatchNo = GrnItemList.BatchNo || 0;
-      this.ReceiveQty = GrnItemList.ReceiveQty || 0;
-      this.StoreId = GrnItemList.StoreId || 0;
-      this.StoreName =GrnItemList.StoreName || '';
-    }
-  }
-}
 export class GRNList {
-  GRNID: number;
-  SupplierName: number;
-  StoreName:string;
-  GRNDate:number;
-  SupplierId:any;
- 
+  GrnNumber: number;
+  GRNDate: number;
+  InvoiceNo:number;
+  SupplierName:string;
+  TotalAmount:number;
+  TotalDiscAmount:number;
+  TotalVATAmount:number;
+  NetAmount:number;
+  RoundingAmt:number;
+  DebitNote:number;
+  CreditNote:number;
+  InvDate:number;
+  Cash_CreditType:string;
+  ReceivedBy:any;
+  IsClosed:any;
+
   /**
    * Constructor
    *
@@ -316,15 +396,69 @@ export class GRNList {
    */
   constructor(GRNList) {
     {
-      this.GRNID = GRNList.GRNID || 0;
-      this.SupplierName = GRNList.SupplierName || "";
-      this.StoreName = GRNList.StoreName || "";
+      this.GrnNumber = GRNList.GrnNumber || 0;
       this.GRNDate = GRNList.GRNDate || 0;
-      this.SupplierId = GRNList.SupplierId || 0;
-      this.SupplierId = GRNList.SupplierId || 0 ;
+      this.InvoiceNo = GRNList.InvoiceNo || 0;
+      this.SupplierName = GRNList.SupplierName ||"";
+      this.TotalAmount = GRNList.TotalAmount || 0 ;
+      this.TotalDiscAmount = GRNList.TotalDiscAmount || 0;
+      this.TotalVATAmount = GRNList.TotalVATAmount || 0;
+      this.NetAmount = GRNList.NetAmount || 0;
+      this.RoundingAmt = GRNList.RoundingAmt || 0 ;
+      this.DebitNote = GRNList.DebitNote || 0;
+      this.CreditNote = GRNList.CreditNote || 0;
+      this.InvDate = GRNList.InvDate || 0;
+      this.Cash_CreditType = GRNList.Cash_CreditType || "";
+      this.ReceivedBy = GRNList.ReceivedBy || 0;
+      this.IsClosed = GRNList.IsClosed || 0 ;
+
     }
   }
 }
+
+    export class GrnItemList {
+     
+      ItemName: string;
+      BatchNo: number;
+      BatchExpDate: number;
+      ReceiveQty: number;
+      FreeQty: number;
+      MRP: number;
+      Rate: number;
+      TotalAmount: number;
+      ConversionFactor: number;
+      VatPercentage: number;
+      DiscPercentage: number;
+      LandedRate: number;
+      NetAmount: number;
+      TotalQty: number;
+      
+      /**
+       * Constructor
+       *
+       * @param GrnItemList
+       */
+      constructor(GrnItemList) {
+        {
+         
+          this.ItemName = GrnItemList.ItemName || "";
+          this.BatchNo = GrnItemList.BatchNo || 0;
+          this.BatchExpDate = GrnItemList.BatchExpDate || 0;
+          this.ReceiveQty =GrnItemList.ReceiveQty || 0;
+          this.FreeQty = GrnItemList.FreeQty || 0;
+          this.MRP = GrnItemList.MRP || 0;
+          this.Rate = GrnItemList.Rate || 0;
+          this.TotalAmount = GrnItemList.TotalAmount || 0;
+          this.ConversionFactor = GrnItemList.ConversionFactor || 0;
+          this.VatPercentage = GrnItemList.VatPercentage || 0;
+          this.DiscPercentage = GrnItemList.DiscPercentage || 0;
+          this.LandedRate = GrnItemList.LandedRate || 0;
+          this.NetAmount = GrnItemList.NetAmount || 0;
+          this.TotalQty = GrnItemList.TotalQty || 0;
+        
+        }
+      }
+    }
 
  export class ItemNameList {
  

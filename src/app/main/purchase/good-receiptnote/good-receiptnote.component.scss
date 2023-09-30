@@ -1,11 +1,13 @@
+@import "src/@fuse/scss/fuse";
+
 app-good-receiptnote {
     .table1 {
-      height: 250px !important;
+      height: 280px !important;
       width: 100%;
     }
 
     .table2 {
-      height: 180px !important;
+      height: 220px !important;
       width: 100%;
     }
     .table3 {
@@ -14,97 +16,232 @@ app-good-receiptnote {
     }
   
     .mat-header-row {
-      width:100%;
+      width:130%;
       //max-width: 1600px;
       min-width: 100%;
       min-height: 30px;
       background-color: blue;
     }
-  
+
     .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
+    width: 100%;
+    min-width: 1500px;  
+    min-height: 30px; 
     }
   
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
+    .mat-column-GrnNumber {
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
       text-align: left;
     }
   
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
+   .mat-column-GRNDate {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
     }
-
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+  
+    .mat-column-InvoiceNo {
+      width: 130px;
+      max-width: 130px;
+      min-width: 130px;
       text-align: left;
     }
     
-    .mat-column-IssQty {
-      width: 60px;
-      max-width: 60px;
-      min-width: 60px;
+    .mat-column-SupplierName {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 7px;
+      justify-content:left; 
+    }
+    .mat-column-TotalAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
       text-align: left;
     }
-
-    .mat-column-Bal {
-      width: 60px;
-      max-width: 60px;
-      min-width: 60px;
+    
+    .mat-column-TotalDiscAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-TotalVATAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    
+    .mat-column-NetAmount {
+      width: 130px;
+      max-width: 130px;
+      min-width: 130px;
+      text-align: left;
+    }
+    .mat-column-RoundingAmt {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    
+    .mat-column-DebitNote {
+      width: 70px;
+      max-width: 70px;
+      min-width: 70px;
+      text-align: center;
+    }
+    .mat-column-CreditNote {
+      width: 70px;
+      max-width: 70px;
+      min-width: 70px;
+      text-align: center;
+    }
+    
+    .mat-column-InvDate {
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
+      text-align: left;
+    }
+    .mat-column-Cash_CreditType {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }
+ 
+    .mat-column-ReceivedBy {
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
+      text-align: left;
+    }
+  
+    .mat-column-IsClosed {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: left;
     }
 
     .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: center;
       justify-content: center;
     }
+  
     .mat-tab-group {
      margin-bottom: 48px;
    }
 
+   .mat-column-ItemName {
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 7px;
+      justify-content:left; 
+  }
+ 
+  .mat-column-BatchNo {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: left;
+  }
+ 
+  .mat-column-BatchExpDate {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+  }
+  .mat-column-ReceiveQty {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-FreeQty {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-MRP {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: left;
+  }
+  .mat-column-Rate {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: left;
+  }
+  .mat-column-TotalAmount {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-ConversionFactor {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+  }
+
+    .mat-column-VatPercentage {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-DiscPercentage {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+   .mat-column-LandedRate {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-NetAmount {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-TotalQty {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
    .mat-column-ItemName {
     width: 230px;
     max-width: 230px;
@@ -118,10 +255,10 @@ app-good-receiptnote {
     margin-top: 7px;
     justify-content:left; 
   }
-   .mat-column-UOM {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+   .mat-column-DiscPercentage {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
   .mat-column-HSNCode {
@@ -137,9 +274,9 @@ app-good-receiptnote {
     text-align: left;
   }
   .mat-column-ExpDate {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
 
@@ -157,15 +294,15 @@ app-good-receiptnote {
     text-align: left;
   }
   .mat-column-MRP {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
   .mat-column-Rate {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
 
@@ -190,9 +327,9 @@ app-good-receiptnote {
   }
 
   .mat-column-CGST {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
   .mat-column-CGSTAmount {
@@ -202,9 +339,9 @@ app-good-receiptnote {
     text-align: left;
   }
   .mat-column-SGST {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
   .mat-column-SGSTAmount {
@@ -214,9 +351,9 @@ app-good-receiptnote {
     text-align: left;
   }
   .mat-column-IGST {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }
   .mat-column-IGSTAmount {
