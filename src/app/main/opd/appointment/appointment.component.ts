@@ -179,13 +179,16 @@ export class AppointmentComponent implements OnInit {
     doctorNameCmbList:any=[];
 
     optionsDoctor: any[] = [];
+    optionsArea: any[] = [];
 
     filteredOptionsDoctor: Observable<string[]>;
     isDoctorSelected:boolean = false;
     isCompanySelected:boolean = false;
     filteredOptionsCompany: Observable<string[]>;
     filteredOptionsSubCompany: Observable<string[]>;
+    filteredOptionsArea: Observable<string[]>;
     isSubCompanySelected:boolean = false;
+    isAreaSelected:boolean = false;
 
 
   @ViewChild('attachments') attachment: any;
@@ -313,13 +316,7 @@ export class AppointmentComponent implements OnInit {
           this.filterMaritalstatus();
         });
   
-      this.areaFilterCtrl.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterArea();
-        });
-  
-      
+           
       this.hospitalFilterCtrl.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
@@ -465,6 +462,14 @@ export class AppointmentComponent implements OnInit {
       return this.optionsPurpose.filter(option => option.PurposeName.toLowerCase().includes(filterValue));
     }
 
+  }
+
+  private _filterArea(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase();
+      
+      return this.optionsArea.filter(option => option.AreaName.toLowerCase().includes(filterValue));
+    }
   }
 
     createPesonalForm() {
@@ -682,16 +687,17 @@ export class AppointmentComponent implements OnInit {
     })
   }
 
+
+    
   getAreaList() {
     this._opappointmentService.getAreaCombo().subscribe(data => {
       this.AreaList = data;
-      this.filteredArea.next(this.AreaList.slice());
-      if (this.registerObj) {
-
-        const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-      }
+      this.optionsArea = this.AreaList.slice();
+      this.filteredOptionsArea = this.personalFormGroup.get('AreaId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterArea(value) : this.AreaList.slice()),
+      );
+      
     });
   }
 
@@ -963,7 +969,13 @@ export class AppointmentComponent implements OnInit {
     return option && option.CompanyName ? option.CompanyName : '';
   }
   
+  getOptionTextArea(option) {
+    
+    return option && option.AreaName ? option.AreaName : '';
+  }
+
     getSearchList() {
+      debugger
       var m_data = {
         "Keyword": `${this.searchFormGroup.get('RegId').value}%`
       }

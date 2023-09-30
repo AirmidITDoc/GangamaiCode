@@ -527,7 +527,7 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile Number</mat-label>
                         <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required"
+                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" ng-maxlength="5"
                           type="number" value="MobileNo.length">
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
@@ -535,9 +535,6 @@
                           required</mat-error>
                       </mat-form-field>
 
-
-
-                    
 
                     </div>
 
@@ -556,7 +553,7 @@
                           enter Address </mat-error>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" fxFlex>
+                      <!-- <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Area Name</mat-label>
                         <mat-select formControlName="AreaId" placeholder="Bank" #singleSelect>
                           <mat-option>
@@ -565,9 +562,28 @@
                           </mat-option>
                           <mat-option *ngFor="let element of filteredArea | async" [value]="element">
                             {{element.AreaName}}
-                          </mat-option>
+                          </mat-option>mobil
                         </mat-select>
+                      </mat-form-field> -->
+
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Area Name</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput
+                          formControlName="AreaId" [matAutocomplete]="autoArea" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="personalFormGroup.get('AreaId').setValue(''); isAreaSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="personalFormGroup.get('AreaId').setValue(''); isAreaSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="getOptionTextArea">
+                          <mat-option *ngFor="let option of filteredOptionsArea | async" [value]="option">
+                            {{option.AreaName}}
+                          </mat-option>
+                        </mat-autocomplete>
                       </mat-form-field>
+
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>City</mat-label>
