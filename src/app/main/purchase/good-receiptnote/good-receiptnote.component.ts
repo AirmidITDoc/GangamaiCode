@@ -280,7 +280,7 @@ getOptionTextSupplier(option) {
           this.SupplierList = data;
           console.log(data);
           this.optionsSupplier = this.SupplierList.slice();
-          this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
+          this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('Supplier_Id').valueChanges.pipe(
             startWith(''),
             map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
           );
