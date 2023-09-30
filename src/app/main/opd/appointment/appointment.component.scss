@@ -30,6 +30,18 @@ app-appointment{
     min-width: 50px;
     text-align: center;
 }
+.mat-column-Edit {
+  width:50px;
+  max-width: 50px;
+  min-width:50px;
+  text-align: center;
+}
+.mat-column-Bill {
+    width:50px;
+    max-width: 50px;
+    min-width:50px;
+    text-align: center;
+}
 
 .mat-column-RegNoWithPrefix {
     width:100px;
@@ -38,12 +50,6 @@ app-appointment{
     text-align: center;
 }
 
-.mat-column-Bill {
-    width:50px;
-    max-width: 50px;
-    min-width:50px;
-    text-align: center;
-}
 
 .mat-column-PatientName {
    

@@ -207,6 +207,7 @@ export class AppointmentComponent implements OnInit {
     displayedColumns = [
         "PatientOldNew",
         "MPbillNo",
+        "Edit",
         "Bill",
         "RegNoWithPrefix",
         "PatientName",
@@ -962,6 +963,26 @@ export class AppointmentComponent implements OnInit {
   
     }
 
+    
+    getPhoneAppointmentList() {
+      var m_data = {
+        "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      }
+      if (this.searchFormGroup.get('RegId').value.length >= 1) {
+        this._opappointmentService.getPhoneAppointmentList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptions=resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+  
+        });
+      }
+  
+    }
+
     getOptionText(option) {
         if (!option) return '';
         return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
@@ -969,8 +990,6 @@ export class AppointmentComponent implements OnInit {
     
 
     getSelectedObj(obj) {
-      ;
-     
       obj.AgeDay = obj.AgeDay.trim();
       obj.AgeMonth = obj.AgeDay.trim();
       obj.AgeYear =obj.AgeYear.trim();

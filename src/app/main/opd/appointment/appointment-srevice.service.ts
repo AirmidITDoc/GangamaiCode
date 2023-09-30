@@ -295,6 +295,11 @@ public documentuploadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
   }
 
+  //registration list 
+  public getPhoneAppointmentList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+  }
+
   public UpdateQueryByStatement(query) {
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
   }
