@@ -1,3 +1,8 @@
+
+<!-- <div appInfohead></div> -->
+
+<!-- <span><app-header (dateTimeEventEmitter)="addData($event)"></app-header></span> -->
+
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
   <mat-toolbar class="accent"
@@ -468,11 +473,11 @@
                       style="padding-bottom: 10px;">
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Birth date</mat-label>
-                        <input name="DateOfBirth" matInput [matDatepicker]="picker" formControllName="DateOfBirth"
+                        <input name="DateOfBirth" matInput [matDatepicker]="picker1" formControllName="DateOfBirth"
                           (dateChange)="onChangeDateofBirth($event.value)" [value]="registerObj.DateofBirth"
                           [readonly]="true">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
                       </mat-form-field>
 
 
@@ -480,7 +485,7 @@
                         <mat-label>Age (Y)</mat-label>
                         <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
                           [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" required
-                          type="number" maxlength="4">
+                          type="number" maxlength="4"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                           enter Age Year </mat-error>
@@ -491,7 +496,7 @@
                         <mat-label>Age (M)</mat-label>
                         <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
                           [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
-                          maxlength="2">
+                          maxlength="2"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
                           Please enter Age Month </mat-error>
@@ -501,7 +506,7 @@
                         <mat-label>Age (D)</mat-label>
                         <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
                           [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number"
-                          maxlength="2">
+                          maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);" >
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
                           Please enter Age Day </mat-error>
@@ -527,7 +532,7 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile Number</mat-label>
                         <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" ng-maxlength="5"
+                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
                           type="number" value="MobileNo.length">
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
@@ -562,7 +567,7 @@
                           </mat-option>
                           <mat-option *ngFor="let element of filteredArea | async" [value]="element">
                             {{element.AreaName}}
-                          </mat-option>mobil
+                          </mat-option>
                         </mat-select>
                       </mat-form-field> -->
 
