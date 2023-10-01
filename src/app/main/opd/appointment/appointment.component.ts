@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
+import { Component, ElementRef, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -30,6 +30,7 @@ import { AdvanceDataStored } from "app/main/ipd/advance";
 import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
 import { MatStepper } from "@angular/material/stepper";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 
 
 export class DocData {
@@ -259,6 +260,7 @@ export class AppointmentComponent implements OnInit {
         public matDialog: MatDialog,
 
         private advanceDataStored: AdvanceDataStored,
+        private reportDownloadService: ExcelDownloadService
 
     ){ 
       this.getVisitList();
@@ -1865,6 +1867,10 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
        });
   
+}
+exportReport() {
+  let exportHeaders = ['RegNoWithPrefix', 'PatientName', 'DVisitDate', 'VisitTime', 'OPDNo', 'Doctorname', 'RefDocName', 'PatientType'];
+  this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'appointment');
 }
 
 }

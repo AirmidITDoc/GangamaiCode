@@ -132,7 +132,11 @@
 
                   <div fxlayout="row">
                     <div style="width: 100%;">
-                    
+                      <div>
+                        <button mat-raised-button (click)="exportReport()"
+                          style="background-color: aliceblue;color: brown;">Export Table
+                        </button>
+                      </div>
                       <mat-table #table matSort table="table1" [dataSource]="dataSource"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 

@@ -12,6 +12,7 @@ import { SmsEmailTemplateComponent } from './componets/sms-email-template/sms-em
 import { HeaderComponent } from './componets/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ExcelDownloadService } from './services/excel-download.service';
 
 @NgModule({
   declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
@@ -27,9 +28,12 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatTabsModule
   ],
+  providers: [
+    ExcelDownloadService
+  ],
   exports: [
     TrimPipe,
-    CommonDateComponent
+    CommonDateComponent,
   ]
 })
 export class SharedModule { }
