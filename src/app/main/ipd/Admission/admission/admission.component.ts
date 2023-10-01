@@ -1246,12 +1246,13 @@ export class AdmissionComponent implements OnInit {
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
       
          this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
-        console.log(response);
+        // console.log(response);
         if (response) {
+          debugger
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              let m = response;
-              this.getPrint(m);
+              // let m = response;
+              this.getAddmissionPrint(response);
               this._matDialog.closeAll();
 
             }
@@ -1318,12 +1319,12 @@ export class AdmissionComponent implements OnInit {
 
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
-        console.log(submissionObj);
+        // console.log(submissionObj);
         if (response) {
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-
+              this.getAddmissionPrint(response);
             }
           });
         } else {
@@ -1676,10 +1677,27 @@ export class AdmissionComponent implements OnInit {
   }
 
   getPrint(el) {
-    console.log(el);
-    debugger;
+   
     var D_data = {
       "AdmissionId": el.AdmissionID
+    }
+    
+    let printContents; 
+    this.subscriptionArr.push(
+      this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
+        this.reportPrintObj = res[0] as Admission;
+        this.getTemplate();
+        console.log(this.reportPrintObj);
+
+      })
+    );
+  }
+
+
+  getAddmissionPrint(el) {
+   
+    var D_data = {
+      "AdmissionId": el
     }
     
     let printContents; 
@@ -1709,6 +1727,13 @@ export class AdmissionComponent implements OnInit {
     `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
+
+    if (this.reportPrintObj.CompanyName === null) {
+      popupWin.document.getElementById('idcomapny').style.display = 'none';
+    }
+    if (this.reportPrintObj.RefDoctorName === null) {
+      popupWin.document.getElementById('idrefdr').style.display = 'none';
+    }
     popupWin.document.close();
   }
 
@@ -1729,6 +1754,7 @@ export class Admission {
   EmailId: any;
   DocNameID: number;
   RefDocNameID: number;
+  RefDoctorName:any;
   RoomId: number;
   BedId: number;
   DischargeDate: Date;
@@ -1821,7 +1847,7 @@ export class Admission {
       this.AdmittedDoctor2 = Admission.AdmittedDoctor2 || '';
       this.SubTPAComp = Admission.SubTPAComp || '';
       this.IsReimbursement = Admission.IsReimbursement || '';
-
+      this.RefDoctorName=Admission.RefDoctorName || '';
       this.PrefixID = Admission.PrefixID || 0;
       this.PrefixName = Admission.PrefixName || '';
       this.PatientName = Admission.PatientName || '';

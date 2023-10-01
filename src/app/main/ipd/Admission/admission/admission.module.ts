@@ -44,6 +44,8 @@ import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { IPDSearcPatienthComponent } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 const routes: Routes = [
   { 
@@ -65,9 +67,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
+      
     MatButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
@@ -85,23 +85,28 @@ const routes: Routes = [
     MatTabsModule,
     MatCardModule,
     MatDividerModule,
-    MatDialogModule,
+    MatProgressSpinnerModule,
     FuseSharedModule,
     FuseConfirmDialogModule,
     FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
+    MatDialogModule,
     MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
+    // WebcamModule,
+    ReactiveFormsModule,
+    MatSidenavModule,
+    MatExpansionModule,
+    FuseSidebarModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatSnackBarModule,
+    MatSlideToggleModule , 
+    MatListModule,
     SharedModule,
     NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
+    MatAutocompleteModule,
     MatChipsModule,
-    MatTooltipModule
-        
+    MatTooltipModule,
+          
   ],
   providers: [
     AdmissionService,

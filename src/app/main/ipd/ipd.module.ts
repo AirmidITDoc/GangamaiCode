@@ -48,7 +48,6 @@ import { BedTransferComponent } from './ip-search-list/bed-transfer/bed-transfer
 import { DischargeComponent } from './ip-search-list/discharge/discharge.component';
 import { IPAdvanceComponent } from './ip-search-list/ip-advance/ip-advance.component';
 import { IPAdvancePaymentComponent } from './ip-search-list/ip-advance-payment/ip-advance-payment.component';
-import { IPSettlementComponent } from './ip-search-list/ip-settlement/ip-settlement.component';
 import { IPRefundComponent } from './Refund/ip-refund/ip-refund.component';
 import { IPRefundofAdvanceComponent } from './Refund/ip-refund/ip-refundof-advance/ip-refundof-advance.component';
 import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.component';
@@ -57,9 +56,7 @@ import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.co
 import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
 import { StockManagementComponent } from './stock-management/stock-management.component';
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
-import { BrowseIPDPaymentReceiptComponent } from './browse-ipdpayment-receipt/browse-ipdpayment-receipt.component';
 import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
-import { AdmissionComponent } from './AdmissionAll/admission/admission.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
@@ -69,10 +66,10 @@ import { AdmissionComponent } from './AdmissionAll/admission/admission.component
   declarations: [IPBillBrowseListComponent, 
     IPSearchListComponent, IPBillBrowseListComponent, BedTransferComponent,
      DischargeComponent, IPAdvanceComponent, IPAdvancePaymentComponent, 
-     IPSettlementComponent, IPRefundComponent, IPRefundofAdvanceComponent, 
+      IPRefundComponent, IPRefundofAdvanceComponent, 
      IPBrowseRefundofAdvanceComponent, IPBrowseRefundofBillComponent,
       BrowseIPAdvanceComponent, IPDSearcPatienthComponent, StockManagementComponent, IPSettlementViewComponent, 
-     BrowseIPDPaymentReceiptComponent, ViewBrowseIPDPaymentComponent, AdmissionComponent],
+      ViewBrowseIPDPaymentComponent],
   imports: [
     CommonModule,
     MatButtonModule,

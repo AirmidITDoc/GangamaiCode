@@ -17,6 +17,9 @@ import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse
 import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { IPSettlementService } from './ip-settlement.service';
+import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment-withadvance.component';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-ip-settlement',
@@ -43,6 +46,15 @@ export class IPSettlementComponent implements OnInit {
   reportPrintbillObj: ReportPrintObj;
   reportPrintbillObjList: ReportPrintObj[] = [];
 
+  searchFormGroup: FormGroup;
+  registerObj = new AdmissionPersonlModel({});
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  isRegSearchDisabled: boolean = true;
+  Regdisplay: boolean = false;
+  PatientName:any;
+  RegId:any;
+  isRegIdSelected: boolean = false;
 
   dataSource = new MatTableDataSource<PaidBilldetail>();
   displayedColumns: string[] = [
@@ -73,30 +85,36 @@ export class IPSettlementComponent implements OnInit {
   ];
 
   hasSelectedContacts: boolean;
-  constructor(public _IpSearchListService: IPSearchListService,
+  constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public datePipe: DatePipe,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
-    
-debugger;
-    if (this.data) {
-     console.log(this.data)
+    this.searchFormGroup = this.createSearchForm();
+    this.Regdisplay = true;
 
-      this.selectedAdvanceObj = this.data.advanceObj;
-      this.regId =  this.data.advanceObj.OPD_IPD_Id;
-     
-    }
+    this.searchFormGroup.get('RegId').enable();
+    this.isRegSearchDisabled = false;
+
     this.getPaidBillDetails();
     this.getCreditBillDetails();
 
   }
+
+  createSearchForm() {
+    return this.formBuilder.group({
+      regRadio: ['registration'],
+      RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
+     
+    });
+  }
+
 
   createForm() {
     this.paymentFormGroup = this.formBuilder.group({
@@ -107,19 +125,74 @@ debugger;
     }
 
 
+    
+  getSearchList() {
+    // this.searchFormGroup.get('RegId').value + '%' //
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+      this._IpSearchListService.getRegistrationList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+
+  }
+
+  getSelectedObj(obj) {
+    
+    this.registerObj = new AdmissionPersonlModel({});
+    this.registerObj = obj;
+    this.PatientName=obj.FirstName + ' ' + obj.LastName
+    this.RegId=obj.RegNo;
+  
+    // Swal.fire(this.PatientName,this.RegId)
+  }
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+   
+  }
+
+
+  onChangeReg(event) {
+    if (event.value == 'registration') {
+    //   this.personalFormGroup.get('RegId').reset();
+    //   this.personalFormGroup.get('RegId').disable();
+      this.isRegSearchDisabled = true;
+      this.registerObj = new AdmissionPersonlModel({});
+  
+
+    } else {
+      this.Regdisplay = true;
+
+      this.searchFormGroup.get('RegId').enable();
+      this.isRegSearchDisabled = false;
+
+   
+    }
+
+   
+  }
   getPaidBillDetails() {
-debugger
+
     this.sIsLoading = 'loading-data';
 
-    // this.regId=199;
+    this.regId=199;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
-   console.log(query);
+  //  console.log(query);
     this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
      this.dataSource.data = Visit as PaidBilldetail[];
      this.dataSource.sort =this.sort;
     this.dataSource.paginator=this.paginator;
-    console.log(this.dataSource.data);
+    // console.log(this.dataSource.data);
    this.sIsLoading = '';
       
   },
@@ -133,9 +206,8 @@ debugger
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    // this.regId=382
+    this.regId=70845
     
-  
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 40 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
@@ -174,20 +246,20 @@ debugger
   
   addpayment(contact) {
     debugger;
-   console.log(contact);
+  //  console.log(contact);
     this.FinalAmt = contact.NetPayableAmt;
    
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
-        maxWidth: "85vw",
-        height: '540px',
+        maxWidth: "95vw",
+        height: '640px',
         width: '100%',
         data: {
           advanceObj: PatientHeaderObj,
@@ -208,8 +280,7 @@ debugger
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
         debugger
-        // new
-      
+            
 
         let UpdateAdvanceDetailarr = [];
         if (result.submitDataAdvancePay > 0) {

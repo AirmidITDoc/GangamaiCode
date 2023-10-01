@@ -10,7 +10,6 @@ import { AdvanceDataStored } from '../advance';
 import { IPSearchListService } from './ip-search-list.service';
 import { Router } from '@angular/router';
 import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
-import { IPSettlementComponent } from './ip-settlement/ip-settlement.component';
 import Swal from 'sweetalert2';
 import { DischargeComponent } from './discharge/discharge.component';
 import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
@@ -21,6 +20,7 @@ import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-ad
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { Admission } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
+import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 
 
 
@@ -348,7 +348,7 @@ export class IPSearchListComponent implements OnInit {
 
           maxWidth: "95vw",
        
-          height: '94vh',
+          height: '110vh',
           width: '100%',
 
 
