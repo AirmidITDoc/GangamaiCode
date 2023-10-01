@@ -49,6 +49,10 @@ export class InterimBillComponent implements OnInit {
   printTemplate: any;
   currentDate = new Date();
 
+  vTotalBillAmt:any = 0;
+  vDiscountAmt: any = 0;
+  vNetAmount:any = 0 ;
+
   displayedColumns = [
   
     'ChargesDate',
@@ -145,29 +149,27 @@ export class InterimBillComponent implements OnInit {
   getNetAmtSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, {NetAmount}) => sum += +(NetAmount || 0), 0);
-    this.totalAmtOfNetAmt = netAmt;
-    this.netbillamt=netAmt;
+    this.vTotalBillAmt = netAmt;
+    this.vNetAmount=netAmt;
     return netAmt;
   }
 
+  getNetAmount(){
+    this.vNetAmount=this.vTotalBillAmt - this.vDiscountAmt
+    this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
+    
+  }
 
   onSave() {
-    debugger;
-
     this.isLoading = 'submit';
-    
     let interimBillChargesobj ={};
-
     interimBillChargesobj['chargesID']= 0// this.ChargesId;
-
     let insertBillUpdateBillNo1obj = {};
-
-    
     insertBillUpdateBillNo1obj['billNo'] =0;
     insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID; 
-    insertBillUpdateBillNo1obj['totalAmt'] = this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = 0,//this.advanceAmount;
-    insertBillUpdateBillNo1obj['netPayableAmt'] = this.netAmount;
+    insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
+    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value,
+    insertBillUpdateBillNo1obj['netPayableAmt'] =  this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
     insertBillUpdateBillNo1obj['paidAmt'] = 0,//this.advanceAmount;
     insertBillUpdateBillNo1obj['balanceAmt'] = 0;
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
@@ -188,7 +190,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
     insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
     insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-    insertBillUpdateBillNo1obj['CashCounterId'] = 1//this.InterimFormGroup.get('CashCounterId').value || 0,
+    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value || 0
    // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
     let billDetailsInsert = [];
     

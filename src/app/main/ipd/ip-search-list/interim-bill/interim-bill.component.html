@@ -193,9 +193,7 @@
                                     style="padding: 0 9px; height: fit-content;height:300px !important;">
                                     <div class="bill-amts" fxFlexFill fxLayout="column">
                                         <form [formGroup]="InterimFormGroup" style="width:100%;">
-                                            <br>
-
-                                            <div style="margin-bottom: 7px;">
+                                            <!-- <div style="margin-bottom: 7px;">
                                                 <div fxLayoutAlign=" start  end"
                                                     style="margin-right:0px;float: left;font-size: 12px bolder; color: black;">
                                                     Total Amount:
@@ -203,16 +201,29 @@
 
                                                 &nbsp;<span class="net-amt-value">{{getNetAmtSum(dataSource.data)|
                                                     currency:'INR'}}</span>
+                                            </div> -->
+                                            <div>
+                                                <mat-form-field appearance="outline" style="margin-left: 5px;" fxFlex>
+                                                    <mat-label>Total Amount</mat-label>
+                                                    <input matInput [(ngModel)]="vTotalBillAmt" name="vTotalBillAmt"
+                                                        formControlName="TotalAmt" readonly
+                                                        style="font-weight:bold;font-size: 15px;text-align: right;" readonly>
+                                                </mat-form-field>&nbsp;
+                                            </div>
+                                            <div>
+                                                <mat-form-field appearance="outline" style="margin-right: 7px;" fxFlex>
+                                                    <mat-label>Concession Amount</mat-label>
+                                                    <input matInput [(ngModel)]="vDiscountAmt" name="vDiscountAmt"
+                                                        formControlName="concessionAmt" (keyup)="getNetAmount()"
+                                                        style="font-weight:bold;font-size: 15px;text-align: right;">
+                                                </mat-form-field>
                                             </div>
                                             <div>
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Net Paid Amount</mat-label>
-                                                    <input matInput [(ngModel)]="netbillamt"
+                                                    <input matInput [(ngModel)]="vNetAmount"
                                                         formControlName="NetpayAmount" name="NetpayAmount"
-                                                        type="number" readonly>
-                                                    <!-- <mat-error class="error"
-                                                    *ngIf="InterimFormGroup.get('NetpayAmount').invalid &&  .get('NetpayAmount').touched">
-                                                    Net Bill Amount is required</mat-error> -->
+                                                        type="number"  style="font-weight:bold;font-size: 15px;text-align: right;" readonly>
                                                 </mat-form-field>
                                             </div>
 
