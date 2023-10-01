@@ -1,131 +1,10 @@
 @import "src/@fuse/scss/fuse";
-app-appointment{
-:host {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-    height: 100%;
-    width: 100%;
-    
-    .mat-form-field {
-        margin-right: 12px;
-      } 
 
-    .sidebar-content {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        background-color: white;    
-            
-        @include media-breakpoint(gt-sm) {
-            //prasad
-            // padding: 24px 4px 24px 24px;
-            padding: 12px 0 12px 12px;
-        }
-
-        .card {
-            display: flex;
-            width: 100%;
-            flex-direction: column;
-            flex: 0 1 auto;
-            padding: 0;
-            border-radius: 8px;
-
-            @include media-breakpoint(gt-sm) {
-                @include mat-elevation(1);
-            }
-
-            > .header {
-                flex: 0 1 auto;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            }
-
-            > .content {
-                flex: 0 1 auto;
-            }
-
-            .example-chip-list {
-                width: 100%;
-                font-size: small;
-                display:inline
-               }
-
-            // .mat-form-field-wrapper {
-            //     padding-bottom: 0.34375em;
-            // }
-        }
-    }
-
-}
-
-
-.mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
-}
-
-:host {
-    display: flex;
-    flex: 1 1 auto;
-    width: 100%;
-    
-    .mat-table {
-      
-        width: 100%;
-        background: transparent;
-        box-shadow: none;
-
-        .mat-column-checkbox {
-            flex: 0 1 64px;
-            padding-left: 18px;
-        }
-
-        .mat-column-avatar {
-            flex: 0 1 64px;
-        }
-
-        .mat-column-buttons {
-            flex: 0 1 80px;
-        }
-
-        .mat-row {
-            position: relative;
-            cursor: pointer;
-           
-            .mat-cell {
-                
-
-               min-width:0px;
-                white-space: nowrap; 
-                overflow: hidden;
-                text-overflow: ellipsis; 
-                overflow: hidden !important;
-                display: inline-block;
-               
-                
-                &.mat-column-detail-button {
-                    flex: 0 1 auto;
-
-                    @include media-breakpoint('gt-md') {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-}
-.active-icon {
-    border-radius: 50%;
-}
-
-}
 
 app-appointment{
-// .table1{
-//         height:600px !important;
-// }
+
 .mat-header-row {
     width: 100%;
-    //max-width: 1600px;
     min-width: 1500px;  
     min-height: 30px; 
       
@@ -133,7 +12,6 @@ app-appointment{
 
 .mat-row {
     width: 100%;
-    //max-width: 1600px;
     min-width: 1500px;      
     min-height: 30px;  
    
@@ -152,6 +30,18 @@ app-appointment{
     min-width: 50px;
     text-align: center;
 }
+.mat-column-Edit {
+  width:50px;
+  max-width: 50px;
+  min-width:50px;
+  text-align: center;
+}
+.mat-column-Bill {
+    width:50px;
+    max-width: 50px;
+    min-width:50px;
+    text-align: center;
+}
 
 .mat-column-RegNoWithPrefix {
     width:100px;
@@ -160,12 +50,6 @@ app-appointment{
     text-align: center;
 }
 
-.mat-column-Bill {
-    width:50px;
-    max-width: 50px;
-    min-width:50px;
-    text-align: center;
-}
 
 .mat-column-PatientName {
    
@@ -211,9 +95,7 @@ app-appointment{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    // display: inline-block;
-    // margin-top: 7px;
-    
+      
     justify-content:left; 
 }
 
@@ -226,9 +108,7 @@ app-appointment{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    // display: inline-block;
-    // margin-top: 7px;
-    
+   
     justify-content:left; 
 }
 
@@ -241,63 +121,63 @@ app-appointment{
 }
 
 
-.mat-icon-button {
-    padding: 2px 2px 2px 2px;
-    min-width: 0;
-    width: 30px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    align-items: left;
-}
+// .mat-icon-button {
+//     padding: 2px 2px 2px 2px;
+//     min-width: 0;
+//     width: 30px;
+//     height: 20px;
+//     flex-shrink: 0;
+//     line-height: 20px;
+//     align-items: left;
+// }
 
-.clearbutton{
-    padding-right: 5px;
-    padding-left: 5px;
-    float:right;
-    color: blue;
-    width: 27%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin: 5px;  
-    font-size:17px;  
-    border:1px solid #808080; 
-    height: 40px;
+// .clearbutton{
+//     padding-right: 5px;
+//     padding-left: 5px;
+//     float:right;
+//     color: blue;
+//     width: 27%;
+//     margin-top: 20px;
+//     margin-bottom: 20px;
+//     margin: 5px;  
+//     font-size:17px;  
+//     border:1px solid #808080; 
+//     height: 40px;
 
-}
+// }
 
 
-.cleariconbutton{
-    font-size: 40px; 
-    text-align: center;
-    margin-bottom: 35px;
-    margin-right: 13px;
+// .cleariconbutton{
+//     font-size: 40px; 
+//     text-align: center;
+//     margin-bottom: 35px;
+//     margin-right: 13px;
    
-    color:blue;
-}
+//     color:blue;
+// }
 
-.searchButton{
-    padding-right: 5px;
-    padding-left: 5px; 
-    float:right; 
-     color: blue;
-    width: 27%; 
-    margin-top: 20px; 
-    margin-bottom: 20px;
-     margin: 5px;   
-     font-size:17px;  
-      border:1px solid #808080;  
-       height: 40px; 
-}
+// .searchButton{
+//     padding-right: 5px;
+//     padding-left: 5px; 
+//     float:right; 
+//      color: blue;
+//     width: 27%; 
+//     margin-top: 20px; 
+//     margin-bottom: 20px;
+//      margin: 5px;   
+//      font-size:17px;  
+//       border:1px solid #808080;  
+//        height: 40px; 
+// }
 
-.searchiconbutton{
-    font-size: 40px; 
-    text-align: center;
-    margin-bottom: 35px;
-    margin-right: 10px;
-    color:blue;
+// .searchiconbutton{
+//     font-size: 40px; 
+//     text-align: center;
+//     margin-bottom: 35px;
+//     margin-right: 10px;
+//     color:blue;
    
-}
+// }
 .red-color {
     color:red;
 }
@@ -323,16 +203,14 @@ app-appointment{
     min-width: 100px;
     text-align: left;
     justify-content:left; 
-    // background:#039be5 !important; 
+    
 }
 
 .mat-header-cell{
-  // background-color:#039be5 !important ;
+  
     width: 100%;
     height: 100%;
-   
- 
-} 
+   } 
 
 
 
@@ -355,35 +233,35 @@ app-appointment{
     padding-bottom: 0.34375em;
 }
 
-.logo {
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
+// .logo {
+//     width: 100%;
+//     justify-content: space-between;
+//     align-items: center;
+// }
 
 
-.navbar{
-    justify-content: space-between;
-}
-.icon{
-    padding-right: 1rem;
-}
+// .navbar{
+//     justify-content: space-between;
+// }
+// .icon{
+//     padding-right: 1rem;
+// }
 
-.left-icon{
-    color:white;
-}
+// .left-icon{
+//     color:white;
+// }
 
-.heading{
-   font-family: Roboto, "Helvetica Neue", sans-serif !important;;
-    font-weight: normal;
-    font-size: 14px;
-}
+// .heading{
+//    font-family: Roboto, "Helvetica Neue", sans-serif !important;;
+//     font-weight: normal;
+//     font-size: 14px;
+// }
 
-h1, .h1 {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
+// h1, .h1 {
+//     font-size: 20px;
+//     font-weight: bold;
+//     color: white;
+// }
 
 
 
@@ -409,9 +287,7 @@ h1, .h1 {
 .img-container {
     display: flex;
     flex-direction: row;
-    // width: 100px;
-    // height: 100px;
-    // align-items: center;
+
 }
 
 .inputfile {
@@ -532,22 +408,17 @@ h1, .h1 {
     .gallery {
       max-width: 100%;
       padding: 20px 20px 0 0;
-      /* Agora sem padding-left */
+      
     }
   
     .gallery__item {
       width: calc((100% / 3) - 20px);
-      /* Agora que o container .gallery não possui
-      mais padding-left, e os item ímpares serão os
-      que ficaram na lateral esquerda, retiro 20px
-      de cada item, e adiciono como margin-left
-      nos ímpares abaixo */
+    
     }
   
     .gallery__item:nth-child(odd) {
       margin-left: 20px;
-      /* Cada item ímpar, terá uma
-      margem esquerda de 20px */
+      
     }
   }
   
@@ -560,17 +431,12 @@ h1, .h1 {
   
     .gallery__item {
       width: calc((100% / 3) - 20px);
-      /* Agora que o container .gallery não possui
-      mais padding-left, e os item ímpares serão os
-      que ficaram na lateral esquerda, retiro 20px
-      de cada item, e adiciono como margin-left
-      nos ímpares abaixo */
+    
     }
   
     .gallery__item:nth-child(odd) {
       margin-left: 20px;
-      /* Cada item ímpar, terá uma
-      margem esquerda de 20px */
+      
     }
   }
   

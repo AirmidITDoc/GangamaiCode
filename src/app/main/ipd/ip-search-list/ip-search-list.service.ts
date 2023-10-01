@@ -41,32 +41,18 @@ constructor(public _httpClient:HttpClient,
     return this._formBuilder.group({
       RegNo: '',
       IPDNo: '',
-      FirstName:['', [
-               Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      MiddleName:['', [
-        
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      LastName:['', [
-        
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      MobileNo: ['', [
-        // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]],   
+      FirstName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MiddleName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      LastName:['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MobileNo: ['', [Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10),]],   
       DoctorId: '0',
       DoctorName: '',
-      IsDischarge:['false'],
+      IsDischarge:[0],
       WardId: '0',
       RoomName: '',
       start: [],
       end: [],
       DischargeId:[''],
-      
     });
   }
 

@@ -34,9 +34,8 @@ export class AppointmentSreviceService {
       DoctorId:'',
       DoctorName:'',
       IsMark: 2,
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
     });
   }
 
@@ -293,6 +292,11 @@ public documentuploadInsert(employee){
   }
   //registration list 
   public getRegistrationList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+  }
+
+  //registration list 
+  public getPhoneAppointmentList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
   }
 

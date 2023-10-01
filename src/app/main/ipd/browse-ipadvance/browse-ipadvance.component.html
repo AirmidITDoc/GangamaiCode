@@ -104,33 +104,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                              
                                 <mat-table #table matSort table="table1" [dataSource]="dataArray"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
-                                    <!-- Checkbox Column -->
-                                    <!-- <ng-container matColumnDef="checkbox">
-                                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <mat-checkbox [(ngModel)]="checkboxes[contact.id]" (ngModelChange)="onSelectedChange(contact.id)"
-                                                (click)="$event.stopPropagation()">
-                                            </mat-checkbox>
-                                        </mat-cell>
-                                    </ng-container> -->
-
-                                    <!-- Avatar Column -->
-                                    <!-- <ng-container matColumnDef="avatar">
-                                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <img class="avatar" *ngIf="contact.avatar" [alt]="contact.name"
-                                                 [src]="contact.avatar"/>
-                                        </mat-cell>
-                                    </ng-container> -->
-
+                                   
                                     <ng-container matColumnDef="RegNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
                                         </mat-header-cell>
@@ -260,9 +238,5 @@
         </div>
         <!-- CENTER -->
     </div>
-    <!-- / USER -->
-    <!-- / CENTER -->
-    <!-- / CONTENT-->
+   
 </div>
-
-TempDesign

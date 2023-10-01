@@ -75,20 +75,6 @@
                                         required Enter only Alphabets</span>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Doctor Name</mat-label>
-                                    <mat-select formControlName="DoctorId" #singleSelect>
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                                [placeholderLabel]="'Search'"></ngx-mat-select-search>
-                                        </mat-option>
-                                        <mat-option *ngFor="let element of filtereddoctor | async" [value]="element">
-                                            {{element.DoctorName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
-
-
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
@@ -145,14 +131,7 @@
                                 <!-- sppinner -->
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
-                                    <!-- <ng-container matColumnDef="PhoneAppId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            PhoneAppId
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PhoneAppId}}
-                                        </mat-cell>
-                                    </ng-container> -->
+                                  
 
                                     <ng-container matColumnDef="AppDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate

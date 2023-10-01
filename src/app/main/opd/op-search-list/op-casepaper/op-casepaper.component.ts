@@ -20,15 +20,11 @@ import { fuseAnimations } from '@fuse/animations';
 
 export interface PrescriptionTable {
   drugName: ILookup;
-  // ItemID:
-  
+    
   doseName: any;
   days1: string;
   instruction: string;
-  // doseNameOptional: any;
-  // days2: string;
-  // doseNameOptional3: any;
-  // days3: string;
+  
   isLocallyAdded: boolean;
 }
 
@@ -88,12 +84,11 @@ export class OPCasepaperComponent implements OnInit {
   drugList1: any = [];
   filteredDrugs$: Observable<ILookup[]>;
   filteredDrugs1$: Observable<ILookup[]>;
-  // public filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any>(1);
+  
 
   public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
   public filteredDrug: ReplaySubject<any> = new ReplaySubject<any>(1);
-  // public filteredHistory: ReplaySubject<any> = new ReplaySubject<any>(1);
-  // public filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any>(1);
+  
   public filteredComplaint: ReplaySubject<any> = new ReplaySubject<any>(1);
   public filteredExamination: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -125,9 +120,7 @@ Dignosflist:any=[];
 
   filteredHistory: Observable<HistoryClass[]>;
   filteredDiagnosis: Observable<DiagnosisClass[]>;
-  // filteredComplaint : Observable<ComplaintClass[]>;
-  // filteredExamination : Observable<ExaminationClass[]>;
-
+  
   historySelected: any[] = [];
   diagnosisSelected: any[] = [];
   allHistory: HistoryClass[] = [];
@@ -139,10 +132,6 @@ Dignosflist:any=[];
   @ViewChild('historyInput') historyInput: ElementRef<HTMLInputElement>;
   @ViewChild('diagnosisInput') diagnosisInput: ElementRef<HTMLInputElement>;
 
-  
-  // @ViewChild('historyInput') historyInput: ElementRef<HTMLInputElement>;
-  // @ViewChild('diagnosisInput') diagnosisInput: ElementRef<HTMLInputElement>;
-  
   isLoading = true;
 
   casePaperObj = new CasepaperVisitDetails({});
@@ -153,8 +142,6 @@ Dignosflist:any=[];
   response: any = [];
   sIsLoading: string = '';
 
-//   @ViewChild(MatSort) sort: MatSort;
-//   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
   dataSource = new MatTableDataSource<any>();
   displayedPrescriptionColumns: string[] = [
@@ -206,7 +193,6 @@ Dignosflist:any=[];
     private _matDialog: MatDialog,
     private _opSearchListService : OPSearhlistService,
     private accountService: AuthenticationService,
-    // public _opSearchListService: AdmissionService,
     private _snackBar: MatSnackBar,
     private advanceDataStored: AdvanceDataStored,
     private cdr: ChangeDetectorRef,
@@ -233,16 +219,12 @@ Dignosflist:any=[];
     this.getregisterList();
 
     this.getHistoryList();
-   
-    // this.getHistoryList1();
     this.getDiagnosisList();
-
     this.getExaminationList();
     this.getComplaintList();
 
     this.getDrugList();
     this.getDoseList();
-    // this.dataSource.data = this.prescriptionData;
     this.addEmptyRow();
 
     this.filteredHistory = this.caseFormGroup.get('historyContoller').valueChanges.pipe(
@@ -252,17 +234,6 @@ Dignosflist:any=[];
     this.filteredDiagnosis = this.caseFormGroup.get('diagnosisContoller').valueChanges.pipe(
       startWith(''),
       map((ele: any | null) => ele ? this._filterDiagnosis(ele) : this.allDiagnosis.slice()));
-
-
-    //   this.filteredComplaint = this.caseFormGroup.get('ComplaintName').valueChanges.pipe(
-    //     startWith(''),
-    //     map((ele: any | null) => ele ? this._filterComplaint(ele) : this.allComplaint.slice()));
-  
-    //   this.filteredExamination = this.caseFormGroup.get('Examination').valueChanges.pipe(
-    //     startWith(''),
-    //     map((ele: any | null) => ele ? this._filterExamination(ele) : this.allExamination.slice()));
-  
-
 
 
     this.doseFilterCtrl.valueChanges
@@ -277,18 +248,6 @@ Dignosflist:any=[];
         this.filterDrug();
       });
 
-      
-    //   this.historyFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterHistory();
-    //   });
-
-    // this.dignosFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterDiagnosis();
-    //   });
 
       this.complaintFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -307,12 +266,7 @@ Dignosflist:any=[];
   }
 
   drugChange(event, index) {
-    console.log(event, index);
-    // this.dataSource.data.forEach((element, index1) => {
-    //   if(element.drugName && index == index1) {
-    //     element.drugName = event ? event : {};
-    //   }
-    // });
+    
     const filter$ = this.caseFormGroup.get(`drugController${index}`).valueChanges.pipe(
       startWith(''),
       debounceTime(200),
@@ -320,7 +274,7 @@ Dignosflist:any=[];
 
     this.filteredDrugs$ = filter$.pipe(
       switchMap(filter => {
-        //Note: Reset the page with every new seach text
+        
         let currentPage = 1;
         return this.nextPage$.pipe(
           startWith(currentPage),
@@ -367,13 +321,7 @@ Dignosflist:any=[];
         }
       });
     }
-    // if (inputItem == 'historyInput') {
-    //   this.historyInput.nativeElement.value = '';
-    // }
-    //  else if (inputItem == 'diagnosisInput') {
-    //   this.diagnosisInput.nativeElement.value = '';
-    // }
-    // inputItem.nativeElement.value = '';
+   
     this.caseFormGroup.get(controller).setValue(null);
   }
 
@@ -393,10 +341,7 @@ Dignosflist:any=[];
     if (inputItem == 'diagnosisInput') {
       this.diagnosisInput.nativeElement.value = '';
     }
-    //  else if (inputItem == 'diagnosisInput') {
-    //   this.diagnosisInput.nativeElement.value = '';
-    // }
-    // inputItem.nativeElement.value = '';
+  
     this.caseFormGroup.get(controller).setValue(null);
   }
 

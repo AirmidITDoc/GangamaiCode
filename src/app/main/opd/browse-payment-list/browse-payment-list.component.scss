@@ -1,71 +1,7 @@
 @import "src/@fuse/scss/fuse";
-.mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
-}
-
-.active-icon {
-    border-radius: 50%;
-}
-
-
-app-browse-payment-list {
-
-  
-    // .table1{
-    //     height: 700px !important;
-    // }
-    display: flex;
-    flex: 1 1 auto;
-    width: 100%;
-    
-    .mat-table {
-        // height: 400px !important;
-        width: 100%;
-        background: transparent;
-        box-shadow: none;
-
-        .mat-column-checkbox {
-            flex: 0 1 64px;
-            padding-left: 18px;
-        }
-
-        .mat-column-avatar {
-            flex: 0 1 64px;
-        }
-
-        .mat-column-buttons {
-            flex: 0 1 80px;
-        }
-
-        .mat-row {
-            position: relative;
-            cursor: pointer;
-           
-            .mat-cell {
-                min-width: 0;
-                white-space: nowrap; 
-                overflow: hidden !important;
-                text-overflow: ellipsis; 
-                
-                &.mat-column-detail-button {
-                    flex: 0 1 auto;
-
-                    @include media-breakpoint('gt-md') {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-}
-.active-icon {
-    border-radius: 50%;
-}
 
 app-browse-payment-list{
-.active-icon {
-    border-radius: 50%;
-}
+
 .mat-header-row {
     width: 1950px;
     max-width: 1950px;
@@ -101,14 +37,14 @@ app-browse-payment-list{
     max-width: 120px;
     min-width: 120px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-BalanceAmt {
     width: 100px;
     max-width: 100px;
     min-width: 100px;
     text-align: center;
-    //  justify-content:flex-end;
+    
 }
 
 .mat-column-Remark {
@@ -116,7 +52,7 @@ app-browse-payment-list{
     max-width: 100px;
     min-width: 100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 
 .mat-column-PaymentDate{
@@ -130,28 +66,28 @@ app-browse-payment-list{
     max-width:100px;
     min-width:100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-ChequePayAmount{
     width: 100px;
     max-width:100px;
     min-width:100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-CardPayAmount{
     width: 100px;
     max-width:100px;
     min-width:100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-AdvanceUsedAmount{
     width: 110px;
     max-width:110px;
     min-width:110px;
     text-align: center;
-    // justify-content:center;
+    
 }
 
 .mat-column-UserName {
@@ -184,54 +120,22 @@ app-browse-payment-list{
     max-width:100px;
     min-width:100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-NEFTPayAmount{
     width: 100px;
     max-width:100px;
     min-width:100px;
     text-align: center;
-    // justify-content:center;
+    
 }
 .mat-column-PayTMAmount{
     width: 110px;
     max-width:110px;
     min-width:110px;
     text-align: center;
-    // justify-content:center;
+    
 }
 
 
-.mat-column-buttons {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
-    text-align: center;
-    justify-content:center;
-}
-
-.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
-}
-.mat-menu-item {
-    line-height: 25px;
-    height: 25px;
-    padding: 0px 5px;
-    text-align: left;
-    justify-content:center;
-}
-
-.p0{
-    display: none;
-  }
-  body.theme-default .accent{
-    background-color: #0479b4 !important;
-    // color: black !important;
-}
 }

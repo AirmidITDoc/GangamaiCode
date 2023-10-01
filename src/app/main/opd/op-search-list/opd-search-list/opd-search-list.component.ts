@@ -15,9 +15,8 @@ import { FormControl } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
-// import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
 import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
-// import { OutstandingPaymentComponent } from '../outstanding-payment/outstanding-payment.component';
+
 
 
 @Component({
@@ -65,11 +64,6 @@ export class OpdSearchListComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<VisitMaster>();
   menuActions: Array<string> = [];
-
-  // public doctorFilterCtrl: FormControl = new FormControl();
-  // public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-  // private _onDestroy = new Subject<void>();
 
   constructor(public _opSearchListService: OPSearhlistService,
     private _ActRoute: Router,
@@ -157,7 +151,7 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       "To_Dt": this.datePipe.transform(this._opSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || '01/01/1900',
       "IsMark": this._opSearchListService.myFilterform.get("IsMark").value.selected || 0,
     }
-     console.log(D_data);
+     
      this.isLoadingStr = 'loading';
     this._opSearchListService.getAppointmentList(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as VisitMaster[];
@@ -168,26 +162,23 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       error => {
         this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       });
-    // console.log( this.dataArray);
+    
   }
 
 
 
   ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
-    // this.isLoading = true;
+   
     this.dataSource.data = changes.dataArray.currentValue as VisitMaster[];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    // this.isLoading = false;
+    
   }
 
   getRecord(contact, m): void {
     if (m == "Bill") {
       let xx = {
         RegNo: contact.RegId,
-        // RegId: contact.RegId,
         AdmissionID: contact.VisitId,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
@@ -202,80 +193,21 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
         const dialogRef = this._matDialog.open(OPBillingComponent, 
          {  maxWidth: "90%",
-        //  height: '495px !important',
+        
 
         height: '695px !important',
-        // width: '100%',
+        
        });
        dialogRef.afterClosed().subscribe(result => {
          console.log('The dialog was closed - Insert Action', result);
-        //  this.getRadiologytemplateMasterList();
+        
       });
     }
     
     else if(m == "Payment") {
-        
-        // let data = {
-        //   RegNo: contact.RegId,
-        //   AdmissionID: contact.VisitId,
-        //   PatientName: contact.PatientName,
-        //   Doctorname: contact.Doctorname,
-        //   AdmDateTime: contact.AdmDateTime,
-        //   AgeYear: contact.AgeYear,
-        //   ClassName: contact.ClassName,
-        //   WardName:contact.RoomName,
-        //   BedName:contact.BedName,
-        //   IPDNo:contact.IPDNo,
-        //   TariffName: contact.TariffName,
-        //   TariffId: contact.TariffId,
-        //   PatientType:contact.PatientType,
-        //   VisitId:contact.VisitId,
-        //   opD_IPD_Type :contact.opD_IPD_Type,
-        // };
-        // this.advanceDataStored.storage = new SearchInforObj(data);
-        // console.log( this.advanceDataStored.storage);
-        // console.log(data);
-        // const dialogRef = this._matDialog.open(OutstandingPaymentComponent,
-        //   {
-        //     maxWidth: "95%",
-        //     height: '65%',
-        //     width: '100%',
-        //     data : {
-        //       registerObj : data,
-        //     }
-        //   });
-        // dialogRef.afterClosed().subscribe(result => {
-        //   console.log('The dialog was closed - Insert Action', result);
-        //   //  this.getRadiologytemplateMasterList();
-        // });
+    
       }
-    
-    
-    // if (m == "Advance") {
-    //   var m_data = {
-    //     RegNo: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId
-    //   }
-    //   this._opSearchListService.populateForm(m_data);
-    //   this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-    //   const dialogRef = this._matDialog.open(OpAdvanceComponent,
-    //     {
-    //       maxWidth: "85vw",
-    //       height: '560px',
-    //       width: '100%',
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-
-    //   });
-    // }
+  
     if (m == "Case Paper") {
       var m_data = {
         RegNo: contact.RegId,
@@ -303,7 +235,7 @@ get f() { return this._opSearchListService.myFilterform.controls; }
     }
 
     if (m == "Refund Of Bill") {
-      // console.log(" This is for Refund of Bill pop : " + m);
+      
       let xx = {
         RegNo: contact.RegNo,
         RegId: contact.RegId,
@@ -329,42 +261,9 @@ get f() { return this._opSearchListService.myFilterform.controls; }
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
-        //  this.getRadiologytemplateMasterList();
+        
       });
     }
-
-   
-    // if (m == " OP_REPORTS") {
-
-    //   console.log(" This is for  OP_REPORTS pop : " + m);
-    //   let xx = {
-    //     RegNo: contact.RegNo,
-    //     RegId: contact.RegId,
-    //     AdmissionID: contact.VisitId,
-    //     PatientName: contact.PatientName,
-    //     Doctorname: contact.Doctorname,
-    //     AdmDateTime: contact.AdmDateTime,
-    //     AgeYear: contact.AgeYear,
-    //     ClassId: contact.ClassId,
-    //     TariffName: contact.TariffName,
-    //     TariffId: contact.TariffId,
-    //     DoctorId: contact.DoctorId,
-
-    //   };
-    //   // this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //   // this._ActRoute.navigate(['opd/new-OpdBilling']);
-    //   // const dialogRef = this._matDialog.open(OpReprtsComponent,
-    //   //   {
-    //   //     maxWidth: "85%",
-    //   //     height: '650px',
-    //   //     width: '100%',
-    //   //   });
-    //   // dialogRef.afterClosed().subscribe(result => {
-    //   //   console.log('The dialog was closed - Insert Action', result);
-    //   //   //  this.getRadiologytemplateMasterList();
-    //   // });
-    // }
 
   
   }

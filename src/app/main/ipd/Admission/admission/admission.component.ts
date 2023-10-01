@@ -59,13 +59,14 @@ export class AdmissionComponent implements OnInit {
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
   isCompanySelected: boolean = false;
+  isCompanyselected: boolean = false;
   isSubCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
 
   isAdmittedDoctor1Selected: boolean = false;
   isAdmittedDoctor2Selected: boolean = false;
   isRefDoctorSelected: boolean = false;
-  // isRefDoctor2Selected: boolean = false;
+  
   isDoctorSelected: boolean = false;
 
   isAreaSelected: boolean = false;
@@ -184,6 +185,7 @@ export class AdmissionComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   displayedColumns = [
+    'IsMLC',
     'RegNo',
     'PatientName',
     'DOA',
@@ -197,7 +199,6 @@ export class AdmissionComponent implements OnInit {
     'ClassName',
     'CompanyName',
     'RelativeName',
-    'IsMLC',
     'buttons'
   ];
 
@@ -243,8 +244,7 @@ export class AdmissionComponent implements OnInit {
 
       this.registerObj = this.data.registerObj;
       this.DoctorId = this.data.registerObj.DoctorId;
-      // console.log(this.registerObj);
-
+   
     }
 
     this.isAlive = true;
@@ -288,6 +288,9 @@ export class AdmissionComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getWardList();
+    this.getCompanyList();
+    this.getSubTPACompList();
+
 
     if (this._ActRoute.url == '/ipd/admission') {
 
@@ -297,8 +300,8 @@ export class AdmissionComponent implements OnInit {
       this.menuActions.push('Update TPA Company Information');
       this.menuActions.push('Print Patient Card');
       this.menuActions.push('Print Patient Sticker');
-      this.menuActions.push('Prefix Demo');
-      this.menuActions.push('Emergency');
+      // this.menuActions.push('Prefix Demo');
+      // this.menuActions.push('Emergency');
     }
   }
 
@@ -357,8 +360,6 @@ export class AdmissionComponent implements OnInit {
       DoctorId: '',
       DoctorID:'',
       Departmentid: '',
-      // DoctorIdOne: '',
-      // DoctorIdTwo: '',
       CompanyId:0,
       SubCompanyId:0,
       admittedDoctor1:0,
@@ -538,21 +539,61 @@ export class AdmissionComponent implements OnInit {
 
   }
 
+
+  private _filterSubCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
+  
+  
+  getCompanyList() {
+    this._AdmissionService.getCompanyCombo().subscribe(data => {
+      this.CompanyList = data;
+      this.optionsCompany = this.CompanyList.slice();
+      this.filteredOptionsCompany = this.hospitalFormGroup.get('CompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+      );
+      
+    });
+  }
+
+  
+  
+  getSubTPACompList() {
+    this._AdmissionService.getSubTPACompCombo().subscribe(data => {
+      this.SubTPACompList = data;
+      this.optionsSubCompany = this.SubTPACompList.slice();
+      this.filteredOptionsSubCompany = this.hospitalFormGroup.get('SubCompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSubCompany(value) : this.SubTPACompList.slice()),
+      );
+      
+    });
+  }
+  
+
+
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
   }
 
   getSelectedObj(obj) {
-    // console.log('obj==', obj);
+    
     this.registerObj = new AdmissionPersonlModel({});
-    // let a, b, c;
-
-    // a = obj.AgeDay.trim();
-    // b = obj.AgeMonth.trim();
-    // c = obj.AgeYear.trim();
-    // console.log(a, b, c);
-    obj.AgeDay = obj.AgeDay.trim();
+       obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeMonth.trim();
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
@@ -625,10 +666,7 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  getOptionTextSubCompany(option) {
-    return option && option.CompanyName ? option.CompanyName : '';
-  }
-
+ 
   getOptionTextBed(option) {
     return option && option.BedName ? option.BedName : '';
   }
@@ -637,50 +675,56 @@ export class AdmissionComponent implements OnInit {
     return option && option.RelationshipName ? option.RelationshipName : '';
   }
 
-
-  getOPIPPatientList() {
-    let data;
-    if ((this._AdmissionService.myFilterform.get('RegNo').value != "") || (this._AdmissionService.myFilterform.get('FirstName').value !== "") || (this._AdmissionService.myFilterform.get('LastName').value != "")) {
-      this.sIsLoading = 'loading-data';
-      var m_data = {
-        "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
-        "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || '%',
-        "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-        "From_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        "To_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-        "MobileNo": '%'
-      }
-      data = m_data;
-    }
-    else {
-      var m_data1 = {
-        "F_Name": '1',//this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
-        "L_Name": '2',//this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
-        "Reg_No": 0, //this._opappointmentService.myFilterform.get("RegNo").value || 0,
-        "From_Dt": '01/01/1900',
-        "To_Dt": '01/01/1900',
-        "MobileNo": '%'
-      }
-      data = m_data1;
-    }
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._AdmissionService.getOPPatient(data).subscribe(Visit => {
-        this.dataSource1.data = Visit as OPIPPatientModel[];
-        console.log(this.dataSource.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = ' ';
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 50);
-
+  getOptionTextCompany(option) {
+    return option && option.CompanyName ? option.CompanyName : '';
   }
 
+  getOptionTextSubCompany(option) {
+    
+    return option && option.CompanyName ? option.CompanyName : '';
+  }
+
+  // getOPIPPatientList() {
+  //   let data;
+  //   if ((this._AdmissionService.myFilterform.get('RegNo').value != "") || (this._AdmissionService.myFilterform.get('FirstName').value !== "") || (this._AdmissionService.myFilterform.get('LastName').value != "")) {
+  //     this.sIsLoading = 'loading-data';
+  //     var m_data = {
+  //       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
+  //       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || '%',
+  //       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+  //       "From_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //       "To_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+  //       "MobileNo": '%'
+  //     }
+  //     data = m_data;
+  //   }
+  //   else {
+  //     var m_data1 = {
+  //       "F_Name": '1',//this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
+  //       "L_Name": '2',//this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
+  //       "Reg_No": 0, //this._opappointmentService.myFilterform.get("RegNo").value || 0,
+  //       "From_Dt": '01/01/1900',
+  //       "To_Dt": '01/01/1900',
+  //       "MobileNo": '%'
+  //     }
+  //     data = m_data1;
+  //   }
+  //   setTimeout(() => {
+  //     this.sIsLoading = 'loading-data';
+  //     this._AdmissionService.getOPPatient(data).subscribe(Visit => {
+  //     this.dataSource1.data = Visit as OPIPPatientModel[];
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.paginator = this.paginator;
+  //      this.sIsLoading = ' ';
+  //     },
+  //       error => {
+  //         this.sIsLoading = '';
+  //       });
+  //   }, 50);
+
+  // }
+
   onChangeReg(event) {
-    debugger;
     if (event.value == 'registration') {
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
@@ -782,7 +826,7 @@ export class AdmissionComponent implements OnInit {
         map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
 
       );
-      // this.filteredDepartment.next(this.DepartmentList.slice());
+      
       if (this.data) {
         const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
         this.personalFormGroup.get('PrefixID').setValue(toSelect);
@@ -849,7 +893,7 @@ export class AdmissionComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
-      // this.filteredDepartment.next(this.DepartmentList.slice());
+      
     });
   }
 
@@ -918,16 +962,6 @@ export class AdmissionComponent implements OnInit {
 
     });
   }
-
-  // getRegistrationList() {
-  //   var m_data = {
-  //     "F_Name": 'p%',
-  //     "L_Name": '%',
-  //     "Reg_No": '0',
-  //   }
-  //   this._AdmissionService.getRegistrationList(m_data).subscribe(Visit => {
-  //   });
-  // }
 
   getPatientTypeList() {
     this._AdmissionService.getPatientTypeCombo().subscribe(data => {
@@ -1049,7 +1083,7 @@ export class AdmissionComponent implements OnInit {
 
 
   onChangePatient(value) {
-    if (value.PatientTypeId == 2) {
+    if (value.PatientTypeId !== 1) {
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
       this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
@@ -1057,18 +1091,54 @@ export class AdmissionComponent implements OnInit {
       this.isCompanySelected = true;
     } else {
       this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
-      // this.VisitFormGroup.get('SubCompanyId').setValidators([Validators.required]);
-      this.isCompanySelected = false;
+       this.isCompanySelected = false;
     }
   }
 
-  onClose() {
-    this._AdmissionService.mySaveForm.reset();
-    this.dialogRef.close();
+  onReset() {
+    // this._AdmissionService.mySaveForm.reset();
+    this.personalFormGroup.get('RegId').reset();
+    this.personalFormGroup.get('RegId').disable();
+    this.isRegSearchDisabled = true;
+    this.registerObj = new AdmissionPersonlModel({});
+    this.personalFormGroup.reset();
+
+    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAllAsTouched();
+
+    this.hospitalFormGroup = this.createHospitalForm();
+    this.hospitalFormGroup.markAllAsTouched();
+
+    this.wardFormGroup = this.wardForm();
+    this.wardFormGroup.markAllAsTouched();
+
+    this.otherFormGroup = this.otherForm();
+    this.otherFormGroup.markAllAsTouched()
+
+    this.getHospitalList();
+    this.getPrefixList();
+    this.getPatientTypeList();
+    this.getTariffList();
+
+    this.getcityList1();
+    
+    // this.isCompanySelected = true;
+    // this.hospitalFormGroup.get('CompanyId').clearValidators();
+    // this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+    // this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+    // this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+
+    this.isCompanySelected = false;
+    this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+    this.hospitalFormGroup.get('CompanyId').clearValidators();
+    this.hospitalFormGroup.get('SubCompanyId').clearValidators();
+    this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
+    this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+  
   }
 
   nextClicked(formGroupName) {
-    // debugger;
+    
     if (formGroupName.invalid) {
       const controls = formGroupName.controls;
       Object.keys(controls).forEach(controlsName => {
@@ -1080,15 +1150,15 @@ export class AdmissionComponent implements OnInit {
       return;
     }
     if (formGroupName == this.otherFormGroup) {
-      this.submitAdmissionForm();
+      this.OnSaveAdmission();
       return;
     }
     this.admissionFormStepper.next();
   }
 
 
-  submitAdmissionForm() {
-    // debugger;
+ OnSaveAdmission() {
+    
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1174,21 +1244,14 @@ export class AdmissionComponent implements OnInit {
 
 
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
-      console.log(submissionObj);
-
-      // this._AdmissionService.deactivateTheStatus(Query).subscribe(data => this.msg =data);
-
-
-      // submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
-      // console.log(submissionObj);
-      this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
+      
+         this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
         console.log(response);
         if (response) {
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               let m = response;
               this.getPrint(m);
-              // console.log( this.getPrint(m));
               this._matDialog.closeAll();
 
             }
@@ -1207,8 +1270,6 @@ export class AdmissionComponent implements OnInit {
       let submissionObj = {};
       let admissionInsert = {};
 
-      //      submissionObj['regUpdate'] = RegistraionUpdate;
-      // debugger;
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
       admissionInsert['admissionDate'] = this.dateTimeObj.date;
@@ -1246,22 +1307,20 @@ export class AdmissionComponent implements OnInit {
 
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;
-      admissionInsert['SubTpaComId'] = 0;
+      admissionInsert['SubTpaComId'] = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
       admissionInsert['PolicyNo'] = 0; //this.hospitalFormGroup.get('PolicyNo').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
       admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
 
       admissionInsert['CompDOD'] = this.dateTimeObj.date;
       admissionInsert['IsPackagePatient'] = 0;
-
-
       submissionObj['admissionInsert'] = admissionInsert;
       submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
         console.log(submissionObj);
         if (response) {
-          // this.toastr.success('Congratulations !', 'Admission save Successfully !');
-          Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
 
@@ -1302,93 +1361,6 @@ export class AdmissionComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  onExport(exprtType) {
-    // debugger;
-    // let columnList=[];
-    // if(this.dataSource.data.length == 0){
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else{
-    //   var excelData = [];
-    //   var a=1;
-    //   for(var i=0;i<this.dataSource.data.length;i++){
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-    //       "Reg No" :this.dataSource.data[i]["RegNo"],
-    //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"]:"N/A",
-    //       "Date" :this.dataSource.data[i]["DOA"] ? this.dataSource.data[i]["DOA"] :"N/A",
-    //       "Time" :this.dataSource.data[i]["DOT"] ? this.dataSource.data[i]["DOT"] : "N/A",
-    //       "Doctor Name" :this.dataSource.data[i]["Doctorname"] ? this.dataSource.data[i]["Doctorname"]:"N/A",
-    //       "Ref Doctor Name" :this.dataSource.data[i]["RefDocName"] ? this.dataSource.data[i]["RefDocName"]:"N/A",
-    //       "IPD No" :this.dataSource.data[i]["IPDNo"] ? this.dataSource.data[i]["IPDNo"]:"N/A",
-    //       "Patient Type" :this.dataSource.data[i]["PatientType"] ? this.dataSource.data[i]["PatientType"]:"N/A",
-    //       "Ward Name" :this.dataSource.data[i]["RoomName"]+" - "+this.dataSource.data[i]["BedName"],
-    //       "Tariff Name" :this.dataSource.data[i]["TariffName"]? this.dataSource.data[i]["TariffName"]:"N/A",
-    //       // "Class Name" :this.dataSource.data[i]["ClassName"],
-    //       "Company Name" :this.dataSource.data[i]["CompanyName"] ? this.dataSource.data[i]["CompanyName"]:"N/A",
-    //       // "Relative Name" :this.dataSource.data[i]["RelativeName"],
-    //       "Hospital Name" :this.dataSource.data[i]["HospitalName"]?this.dataSource.data[i]["HospitalName"]:"N/A"
-    //     };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "Indoor-Patient-List " + new Date() +".xlsx";
-    //   if(exprtType =="Excel"){
-    //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if(excelData.length > 0){ 
-    //       var columnsIn = excelData[0]; 
-    //       for(var key in columnsIn){
-    //         let headerLength = {wch:(key.length+1)};
-    //         let columnLength = headerLength;
-    //         try{
-    //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //         }
-    //         catch{
-    //           columnLength = headerLength;
-    //         }
-    //         if(headerLength["wch"] <= columnLength["wch"]){
-    //           wscols.push(columnLength)
-    //         }
-    //         else{
-    //           wscols.push(headerLength)
-    //         }
-    //       } 
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }else{
-    //     let doc = new jsPDF('p','pt', 'a4');
-    //     doc.page = 0;
-    //     var col=[];
-    //     for (var k in excelData[0]) col.push(k);
-    //       console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
-    //     });
-
-    //     doc.autoTable(col, rows,{
-    //       margin:{left:5,right:5,top:5},
-    //       theme:"grid",
-    //       styles: {
-    //         fontSize: 3
-    //       }});
-    //     doc.setFontSize(3);
-    //     // doc.save("Indoor-Patient-List.pdf");
-    //     window.open(URL.createObjectURL(doc.output("blob")))
-    //   }
-    // }
-  }
-
-
   onDoctorOneChange(value) {
     console.log(this.hospitalFormGroup.get('DoctorIdOne').value);
   }
@@ -1409,10 +1381,8 @@ export class AdmissionComponent implements OnInit {
   }
 
   getAdmittedPatientList() {
-debugger
     this.sIsLoading = 'loading-data';
     var D_data = {
-
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
@@ -1423,25 +1393,16 @@ debugger
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
       "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value + '%' || "%",
     }
-    // console.log(D_data);
-
+  
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {
         this.dataSource.data = data as Admission[];
-
-        console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        let x = {};
-        // x['TodaysAdmCount'] = data[0].TodaysAdmCount;
-        // x['TodaysDischargeCount'] = data[0].TodaysDischargeCount;
-        // x['TotalAdmCount'] = data[0].TotalAdmCount;
-        // x['TotalCompanyPatCount'] = data[0].TotalCompanyPatCount;
-
-        this.sentCountsToParent.emit(x);
+        // let x = {};
+        // this.sentCountsToParent.emit(x);
         this.sIsLoading = '';
-
       },
         error => {
           this.sIsLoading = '';
@@ -1460,7 +1421,7 @@ debugger
 
       });
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
+      
       this.getAdmittedPatientList();
     });
   }
@@ -1622,25 +1583,7 @@ debugger
         console.log('The dialog was closed - Insert Action', result);
       });
     }
-    // else if (m == "Prefix Demo") {
-
-    //   const dialogRef = this._matDialog.open(PrifxComponent,
-    //     {
-    //       maxWidth: "120vw",
-    //       maxHeight: "120vh", width: '100%', height: "100%"
-    //     });
-
-    // }
-    // else if (m == "Emergency") {
-
-    //   const dialogRef = this._matDialog.open(EmergencyComponent,
-    //     {
-    //       maxWidth: '95vw',
-
-    //       height: '550px',width: '100%', 
-    //     });
-
-    // }
+   
   }
 
   getViewbAdmission(contact) {
@@ -1738,8 +1681,8 @@ debugger
     var D_data = {
       "AdmissionId": el.AdmissionID
     }
-    // console.log(D_data);
-    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+    
+    let printContents; 
     this.subscriptionArr.push(
       this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
         this.reportPrintObj = res[0] as Admission;
@@ -1752,12 +1695,11 @@ debugger
 
   // PRINT 
   print() {
-    // HospitalName, HospitalAddress, AdvanceNo, PatientName
+   
     let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+  
     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
+    
     popupWin.document.write(` <html>
     <head><style type="text/css">`);
     popupWin.document.write(`
@@ -1826,9 +1768,7 @@ export class Admission {
   RegNoWithPrefix: number;
   CompanyName: string;
   AdmittedDoctor1ID: number;
-  // AdmittedDoctor1: string;
-  // TariffId: number;
-  TariffName: string;
+ TariffName: string;
   RelationshipName: string;
   RoomName: string;
   DepartmentName: any;

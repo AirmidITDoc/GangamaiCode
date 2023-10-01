@@ -176,9 +176,9 @@
                             <mat-card>
                                 <div class="dialog-content-wrapper">
                                     <!-- ================================ LABEL HEADER  -->
-                                    <!-- <mat-card > -->
+                                    
                                     <form [formGroup]="RefundOfAdvanceFormGroup">
-                                        <!-- <h3>{{_IpSearchListService.myRefundAdvanceForm.controls.AdvanceDetailID.value?"Modify Refund Amount":"New Refund Master"}}</h3> -->
+                                       
 
                                         <input type="hidden" name="AdvanceDetailID" formControlName="AdvanceDetailID">
 
@@ -227,9 +227,7 @@
 
                                                     <input matInput [(ngModel)]="BalanceAdvance"
                                                         formControlName="BalanceAdvance" name="BalanceAdvance" readonly>
-                                                    <!-- <mat-error class="error"
-                                                            *ngIf="RefundOfAdvanceFormGroup.get('BalanceAdvance').invalid && RefundOfAdvanceFormGroup.get('BalanceAdvance').touched">
-                                                            Refund Bal Amount is required</mat-error> -->
+                                                   
                                                 </mat-form-field>
 
                                             </div>
@@ -238,9 +236,7 @@
                                                     <mat-label>Remark</mat-label>
                                                     <input matInput display="block" [(ngModel)]="Remark"
                                                         formControlName="Remark" name="Remark">
-                                                    <!-- <mat-error class="error"
-                                                        *ngIf="RefundOfBillFormGroup.get('Remark').invalid && RefundOfBillFormGroup.get('Remark').touched">
-                                                        Remark is required</mat-error> -->
+                                                   
                                                 </mat-form-field>
 
                                             </div>

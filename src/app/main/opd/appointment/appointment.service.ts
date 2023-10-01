@@ -19,8 +19,7 @@ export class AppointmentService {
     private _formBuilder: FormBuilder
   ) {
     this.myFilterform = this.filterForm();
-    // this.mySaveForm = this.saveForm();
-  }
+      }
 
   filterForm(): FormGroup {
     return this._formBuilder.group({
@@ -43,7 +42,7 @@ export class AppointmentService {
 
 
   initializeFormGroup() {
-    // this.saveForm();
+    
   }
 
   // Add new registration

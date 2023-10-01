@@ -252,30 +252,30 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName2">
                                     <mat-error *ngIf="patientDetailsFormGrp.get('bankName2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <!-- <mat-form-field appearance="outline"  fxFlex="16%">
+                                <mat-form-field appearance="outline"  fxFlex="16%">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
-                                      formControlName="bankName2" [matAutocomplete]="bankName2" required>
+                                      formControlName="bankName2" [matAutocomplete]="autoBank2" required>
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
-                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank1elected = false;">close</mat-icon>
+                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">close</mat-icon>
                                       <mat-icon class="mat-icon-close"
-                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank1elected = false;">search</mat-icon>
+                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoBank2="matAutocomplete" [displayWith]="getOptionTextBank1">
-                                      <mat-option *ngFor="let option of filteredOptionsBank1 | async" [value]="option">
+                                    <mat-autocomplete #autoBank2="matAutocomplete" [displayWith]="getOptionTextBank2">
+                                      <mat-option *ngFor="let option of filteredOptionsBank2 | async" [value]="option">
                                         {{option.BankName}}
                                       </mat-option>
                                     </mat-autocomplete>
-                                  </mat-form-field> -->
+                                  </mat-form-field>
 
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
@@ -327,13 +327,31 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName3">
                                     <mat-error *ngIf="patientDetailsFormGrp.get('bankName3').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+
+                                <mat-form-field appearance="outline"  fxFlex="16%">
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                      formControlName="bankName3" [matAutocomplete]="autoBank3" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoBank3="matAutocomplete" [displayWith]="getOptionTextBank3">
+                                      <mat-option *ngFor="let option of filteredOptionsBank3 | async" [value]="option">
+                                        {{option.BankName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
@@ -382,13 +400,30 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName4">
                                     <mat-error *ngIf="patientDetailsFormGrp.get('bankName4').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline"  fxFlex="16%">
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                      formControlName="bankName4" [matAutocomplete]="autoBank4" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoBank4="matAutocomplete" [displayWith]="getOptionTextBank4">
+                                      <mat-option *ngFor="let option of filteredOptionsBank4 | async" [value]="option">
+                                        {{option.BankName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>

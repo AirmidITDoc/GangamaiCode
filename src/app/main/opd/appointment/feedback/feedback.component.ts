@@ -134,11 +134,8 @@ export class FeedbackComponent implements OnInit {
 
 
 DocSelectdelete(){
-  debugger;
-  // this.VisitFormGroup.get('RefDocId').setValue(this.Doctor1List[-1]);
-  // this.VisitFormGroup.get('RefDocId').clearValidators();
-  // this.VisitFormGroup.get('RefDocId').updateValueAndValidity();
-     
+  
+ 
   this.VisitFormGroup.get('RefDocId').setValue(null);
 
 this.getDoctor2List();

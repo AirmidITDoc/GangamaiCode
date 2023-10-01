@@ -29,10 +29,8 @@ export class OPSearhlistService {
     this.myFilterform = this.filterForm();
     this.myShowAdvanceForm = this.showAdvanceForm();
     this.paymentForm =this.showPaymentForm();
-        
-    // this.mySaveForm=this.saveForm();
-     this.casepaperform=this.createCasepaperForm();
-    //this.prescrtionform=this.createPrescriptionForm();
+    this.casepaperform=this.createCasepaperForm();
+    
   }
 
   filterForm(): FormGroup {

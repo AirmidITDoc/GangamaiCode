@@ -57,19 +57,18 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
                                     <input name="FirstName" formControlName="FirstName" matInput>
-                                    <!-- <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is required Enter only Alphabets</span> -->
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Middle Name</mat-label>
                                     <input name="MiddleName" formControlName="MiddleName" matInput (keyup)="getVisitList()">
-                                    <!-- <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span> -->
+                                  
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input name="LastName" formControlName="LastName" matInput (keyup)="getVisitList()">
-                                    <!-- <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched"> LastName is required Enter only Alphabets</span> -->
+                                  
                                 </mat-form-field>
 
                            
@@ -90,13 +89,6 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field>
-
-
-                                <!-- <mat-chip-list multiple id="chipList" [selectable]="true" >
-                                    <mat-chip *ngFor="let chip of selectedChips" [selected]="chip.state" (click)="chip.state=!chip.state;changesSelected('s', chip.viewValue)" >
-                                      {{chip.viewValue}}
-                                  </mat-chip>
-                                  </mat-chip-list> -->
 
                                 <mat-chip-list formControlName="IsMark" [selectable]="true">
                                     <mat-label>IsMark:</mat-label>
@@ -136,11 +128,7 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                              
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                      class="table1" style="overflow: auto;width: 100%;">
 
@@ -289,6 +277,7 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"[ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>

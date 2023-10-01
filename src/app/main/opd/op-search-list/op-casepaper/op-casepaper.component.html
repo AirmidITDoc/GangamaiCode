@@ -5,8 +5,6 @@
 
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
 
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                     style="font-size: 20px;width: 83%; font-weight: 400;">
@@ -49,7 +47,8 @@
                                     <span class="data_input">{{selectedAdvanceObj.AgeYear}}
                                     </span>
                                     <span class="label">Room Name /Bed : </span>
-                                    <span class="data_input">{{selectedAdvanceObj.WardName}}/{{selectedAdvanceObj.BedName}}
+                                    <span
+                                        class="data_input">{{selectedAdvanceObj.WardName}}/{{selectedAdvanceObj.BedName}}
 
                                     </span>
 
@@ -80,7 +79,7 @@
                             <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="20px">
 
                                 <div fxlayout="row">
-                                    <!-- first row start-->
+
 
                                     <div fxFlex.gt-sm="45%" fxFlex fxLayoutGap="20px"
                                         style="background-color: white; width: 100%; ">
@@ -157,36 +156,6 @@
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
-
-
-
-
-                                                        <!-- <div fxlayout="row" fxFlex fxLayoutGap="10px">
-                                                <div class="clinical-info-1" style="margin-right: 10px;">
-                                                    <mat-form-field class="example-chip-list" appearance="outline"
-                                                        style="display:initial;width:100%;">
-                                                        <mat-label>Diagnosis</mat-label>
-                                                        <mat-chip-list #diagnosisChipList>
-                                                            <mat-chip *ngFor="let ele of diagnosisSelected" [selectable]="selectable"
-                                                                [removable]="removable" (removed)="remove(ele, diagnosisSelected)">
-                                                                {{ele}}
-                                                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                                                            </mat-chip>
-                                                            <input #diagnosisInput formControlName="diagnosisContoller"
-                                                                [matAutocomplete]="auto2" [matChipInputFor]="diagnosisChipList"
-                                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                (matChipInputTokenEnd)="addChips($event, diagnosisSelected, 'diagnosisContoller')">
-                                                        </mat-chip-list>
-                                                        <mat-autocomplete #auto2="matAutocomplete"
-                                                            (optionSelected)="selectedD($event, diagnosisSelected, 'diagnosisContoller', 'diagnosisInput')">
-                                                            <mat-option *ngFor="let element of filteredDiagnosis | async"
-                                                                [value]="element.DiagnosisDescr">
-                                                                {{element.DiagnosisDescr}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
-                                                </div>-->
 
                                                     </div>
 
@@ -288,11 +257,7 @@
                                             </mat-card>
                                         </form>
                                     </div>
-                                    <!-- 
-                                <span class="material-icons" (click)="drawer1.toggle()"
-                                style="cursor: pointer;color: #6b6565;">
-                                notifications_none 
-                                </span> -->
+
                                     <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px"
                                         style="background-color: white;padding-left: 10px; height:150px !important;">
                                         <mat-card>
@@ -333,17 +298,6 @@
                                                         {{element.DocName }} </mat-cell>
                                                 </ng-container>
 
-                                                <!-- 
-                                            <ng-container matColumnDef="action" stickyEnd>
-                                                <mat-header-cell *matHeaderCellDef style="color: white;"> Action
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let row">
-                                                    <button mat-icon-button (click)="onEditVisitTable(row)">
-                                                        <mat-icon title="Edit Menu">launch</mat-icon>
-                                                    </button>
-
-                                                </mat-cell>
-                                            </ng-container> -->
                                                 <ng-container matColumnDef="loading">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                                         loading data...
@@ -375,14 +329,6 @@
                                             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="4"
                                                 showFirstLastButtons></mat-paginator>
 
-                                            <!-- <div class="net-amt">
-                                            <span class="net-amt-label" style="font-weight:bold;">Already Refund Amount
-                                                :</span>&nbsp;
-                                           
-                                            <span class="net-amt-value"
-                                                style="font-weight:bold;">{{getRefundtotSum(dataSource1.data) |
-                                                currency:'INR' }}</span>
-                                        </div> -->
                                         </mat-card>
                                     </div>
 
@@ -450,14 +396,7 @@
                                                                                 </span>
                                                                             </button>
 
-                                                                            <!--<mat-form-field appearance="outline"
-                                                                                style="width:300px;margin-left:50px;">
-                                                                                <mat-label>Bill Date</mat-label>
-                                                                                <input matInput display="block"
-                                                                                    [(ngModel)]="BillDate"
-                                                                                    formControlName="BillDate"
-                                                                                    name="BillDate">
-                                                                            </mat-form-field>&nbsp; -->
+
                                                                         </div>
                                                                         <div fxLayout="row" style="width:100%">
                                                                             <mat-table #table matSort
@@ -505,34 +444,7 @@
                                                                                             </mat-autocomplete>
                                                                                         </mat-form-field>
 
-                                                                                        <!-- <mat-form-field appearance="outline" class="dose-field"
-                                                                                        style="width: 200px; margin-right: 5px;">
-                                                                                        <mat-select #singleSelect [(ngModel)]="element.drugName"
-                                                                                            [ngModelOptions]="{standalone: true}" (optionsScroll)="onScroll()">
-                                                                                            <mat-option>
-                                                                                                <ngx-mat-select-search [formControl]="drugFilterCtrl"
-                                                                                                    [placeholderLabel]="'Search'"
-                                                                                                    [noEntriesFoundLabel]="'No matching found'">
-                                                                                                </ngx-mat-select-search>
-                                                                                            </mat-option>
-                                                                                            <mat-option *ngFor="let element of filteredDrug | async" [value]="element">
-                                                                                                {{element.ItemName}}
-                                                                                            </mat-option>
-                                                                                        </mat-select>
-                                                                                    </mat-form-field> -->
 
-                                                                                        <!-- <mat-form-field appearance="outline" class="drug-field"
-                                                                                    style="width: 90%; margin-right: 5px;" *ngIf="element.isLocallyAdded">
-                                                                                        <input type="text" #text matInput
-                                                                                            formControlName="drugController2" [matAutocomplete]="auto">
-                                                                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith" showPanel="true"
-                                                                                            (optionsScroll)="onScroll()" (optionSelected)='getSelectedDrug($event.option.value)'
-                                                                                            panelWidth="250px">
-                                                                                            <mat-option *ngFor="let option of filteredDrugs1$ | async" [value]="option">
-                                                                                                {{option.ItemName}}
-                                                                                            </mat-option>
-                                                                                        </mat-autocomplete>
-                                                                                    </mat-form-field> -->
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
@@ -621,7 +533,7 @@
                                                                                             delete
                                                                                         </span>
 
-                                                                                        <!-- <button mat-icon-button (click)="getPrint(element)" matTooltip="print" ><mat-icon>print</mat-icon></button> -->
+                                                                                       
                                                                                         <button mat-stroked-button
                                                                                             *ngIf="!element.isLocallyAdded"
                                                                                             (click)="addEmptyRow(element)"
@@ -633,11 +545,6 @@
                                                                                         </button>
 
 
-
-                                                                                        <!-- <span *ngIf="!element.isLocallyAdded" class="material-icons" style="cursor: pointer;"
-                                                                                        (click)="addEmptyRow(element)">
-                                                                                        add
-                                                                                    </span> -->
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
@@ -651,7 +558,7 @@
                                                                                 <ng-container matColumnDef="noData">
                                                                                     <mat-footer-cell *matFooterCellDef
                                                                                         colspan="6">
-                                                                                        <!-- <mat-spinner *ngIf="isLoading=='no-data'" [diameter]='30'></mat-spinner> -->
+                                                                                     
                                                                                         No Data found
                                                                                     </mat-footer-cell>
                                                                                 </ng-container>
@@ -675,46 +582,6 @@
                                                                             </mat-table>
                                                                         </div>
 
-
-                                                                        <!-- <mat-form-field appearance="outline"
-                                                                            style="width:300px;">
-                                                                            <mat-label>Net Bill Amount</mat-label>
-                                                                            <input matInput [(ngModel)]="NetBillAmount"
-                                                                                formControlName="NetBillAmount"
-                                                                                name="NetBillAmount" readonly>
-                                                                            <mat-error class="error"
-                                                                                *ngIf="RefundOfBillFormGroup.get('NetBillAmount').invalid && RefundOfBillFormGroup.get('NetBillAmount').touched">
-                                                                                Net Bill BillAmount is required</mat-error>
-                                                                        </mat-form-field>&nbsp; -->
-
-                                                                        <!--***********  to add a row sample  start ******************-->
-                                                                        <!-- <div fxLayout="row">
-                                                                            <mat-form-field appearance="outline"
-                                                                                style="width:300px;">
-                                                                                <mat-label>Net Refund Amount</mat-label>
-                                                                                <input matInput [(ngModel)]="RefundAmount"
-                                                                                    (clisk)="calculateTotalRefund()"
-                                                                                    formControlName="RefundAmount"
-                                                                                    name="RefundAmount">
-                                                                                <mat-error class="error"
-                                                                                    *ngIf="RefundOfBillFormGroup.get('RefundAmount').invalid && RefundOfBillFormGroup.get('RefundAmount').touched">
-                                                                                    Net Bill RefundAmount is required
-                                                                                </mat-error>
-                                                                            </mat-form-field>&nbsp;
-
-                                                                            <mat-form-field appearance="outline"
-                                                                                style="width:300px;margin-left:50px;">
-                                                                                <mat-label>Balance Refund Amount</mat-label>
-                                                                                <input matInput
-                                                                                    [(ngModel)]="RefundBalAmount"
-                                                                                    formControlName="RefundBalAmount"
-                                                                                    name="RefundBalAmount" readonly>
-                                                                                <mat-error class="error"
-                                                                                    *ngIf="RefundOfBillFormGroup.get('RefundBalAmount').invalid && RefundOfBillFormGroup.get('RefundBalAmount').touched">
-                                                                                    Net Bill RefundAmount is required
-                                                                                </mat-error>
-                                                                            </mat-form-field>&nbsp;
-                                                                        </div> -->
 
                                                                         <!--******************* to add a row sample end ****************-->
 
@@ -761,46 +628,6 @@
                                     </div>
 
 
-                                    <!-- <div fxFlex.gt-sm="25%" fxFlex fxLayoutGap="20px"
-                                    style="background-color: white; width: 100%; height: 500px !important;">
-                                    <form [formGroup]="caseFormGroup" style="font-weight: bold;">
-
-                                        <div fxLayout="row" fxLayoutGap="2px">
-
-                                            <mat-form-field appearance="outline" style="width:30%;"
-                                                class="select-field">
-                                                <mat-label>Refer Doctor Name</mat-label>
-                                                <mat-select panelClass="selectPanelClass">
-                                                    <mat-option *ngFor="let element of historyOptions"
-                                                        [value]="element.value">
-                                                        {{element.viewValue}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>&nbsp;
-
-                                      
-                                        </div>
-
-
-                                        <div fxLayout="row" fxLayoutGap="2px">
-
-                                          
-
-                                          
-                                            <mat-form-field
-                                            style="background-color: white; margin-left:10px;display:inline-flexbox; width:50%;"
-                                            class="example-full-width" appearance="outline">
-                                            <mat-label>Investigation Advice</mat-label>
-                                            <textArea matInput></textArea>
-                                        </mat-form-field>
-
-                                        </div>
-                                    </form>
-                                </div> -->
-
-
-
-
                                     <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="20px"
                                         style="background-color: white; width: 100%; height: 300px !important;">
 
@@ -827,8 +654,8 @@
                                             style="border-radius: 16px;margin-left: 10px;width: fit-content;"
                                             (click)="getView()">View
                                             Report</button>
-                                        <button class="footer-btn"
-                                            style="border-radius: 16px;margin-left: 10px;" (click)="getPrint()">RePrint</button>
+                                        <button class="footer-btn" style="border-radius: 16px;margin-left: 10px;"
+                                            (click)="getPrint()">RePrint</button>
                                     </div>
                                 </div>
 
@@ -906,9 +733,7 @@
                 </mat-row>
                 <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource3!=null}">
                 </mat-footer-row>
-                <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
-            </mat-footer-row> -->
+              
             </mat-table>
         </div>
     </mat-card>

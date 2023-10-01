@@ -139,9 +139,6 @@ export class OPRefundofBillComponent implements OnInit {
    
 
   ngOnInit(): void {
-
-   
-
     this.RefundOfBillFormGroup = this.refundForm();
 
     if (this.advanceDataStored.storage) {
@@ -149,14 +146,11 @@ export class OPRefundofBillComponent implements OnInit {
 
     }
 
-    console.log(this.selectedAdvanceObj);
-   
+       
     this.refundBillForm();
     this.getRefundofBillIPDList();
-    // this.getAdmittedDoctorCombo();
     this.getServiceListCombobox();
-    // this.getBilldetailList();
- 
+     
   }
 
 
@@ -219,7 +213,7 @@ export class OPRefundofBillComponent implements OnInit {
     var m_data = {
       "BillNo": this.BillNo
     }
-    console.log(this.BillNo);
+    
     this.isLoadingStr = 'loading';
     this._OpSearchListService.getRefundofBillServiceList(m_data).subscribe(Visit => {
       this.dataSource2.data = Visit as InsertRefundDetail[];
@@ -288,8 +282,7 @@ export class OPRefundofBillComponent implements OnInit {
     this.totalAmtOfNetAmt1 = netAmt1;
     this.netPaybleAmt1 = netAmt1;
     return netAmt1;
-    Swal.fire(netAmt1);
-    console.log(this.netPaybleAmt);
+       
   }
 
   getRefundtotSum(element){
@@ -316,7 +309,7 @@ export class OPRefundofBillComponent implements OnInit {
     this.totalAmtOfNetAmt = netAmt;
     this.netPaybleAmt = netAmt;
     return netAmt;
-    console.log(this.netPaybleAmt);
+    
   }
 
   tableElementChecked(event, element) {
@@ -356,7 +349,7 @@ export class OPRefundofBillComponent implements OnInit {
 
     let RefundDetailarr = [];
     let InsertRefundDetailObj = {};
-    console.log(this.dataSource.data);
+    
     debugger;
     // this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
@@ -369,12 +362,10 @@ export class OPRefundofBillComponent implements OnInit {
       InsertRefundDetailObj['ChargesId'] = this.ChargeId;
 
       RefundDetailarr.push(InsertRefundDetailObj);
-      console.log(RefundDetailarr);
-    // });
-
+   
     let AddchargesRefundAmountarr = [];
     let AddchargesRefundAmountObj = {};
-    console.log(this.dataSource.data);
+    
     this.dataSource.data.forEach((element) => {
       AddchargesRefundAmountObj['ChargesId'] = 1;
       AddchargesRefundAmountObj['RefundAmount'] =  parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
@@ -411,7 +402,7 @@ export class OPRefundofBillComponent implements OnInit {
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
-      console.log(submitData);
+      
       this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
@@ -420,7 +411,6 @@ export class OPRefundofBillComponent implements OnInit {
             let m=response
             this.getPrint(m);
 
-              // this.getBilldetailList();
               this._matDialog.closeAll();
             }
           });
@@ -429,7 +419,7 @@ export class OPRefundofBillComponent implements OnInit {
         }
         this.isLoading = '';
       });
-      // console.log('final obj', submitData);
+      
     });
     }
     else{
@@ -438,7 +428,7 @@ Swal.fire("Refund Amount is More than RefundBalance")
   }
 
 onClose() {
-  // this._OpSearchListService.myRefundBillForm.reset();
+  
   this._matDialog.closeAll();
 }
 getBillingClassCombo(){
@@ -487,7 +477,6 @@ console.log(row);
 this.RefAmt=this.RefundBalAmount;
 
 this.TotalRefundAmount=0;
-// this.RefundBalAmount=0;
 this.Remark='';
 this.serviceId=row.ServiceId;
 this.ServiceAmount=row.NetAmount;
@@ -548,14 +537,12 @@ calculateTotalRefund() {
     debugger
   this.RefundBalAmount = this.RefundAmount - this.TotalRefundAmount;
  
-  // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
-  // console.log( this.RefundBalAmount);
 
 }
 
 //for printing
 convertToWord(e){
-  // this.numberInWords= converter.toWords(this.mynumber);
+  
    return converter.toWords(e);
      }
  
@@ -570,12 +557,7 @@ convertToWord(e){
             this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
           }
           this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-          // this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform1(this.reportPrintObj.PaymentDate));
-          // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
-          // this.printTemplate = this.printTemplate.replace('StrBillAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-          // this.printTemplate = this.printTemplate.replace('StrRefundAmount','₹' + (this.reportPrintObj.RefundAmount.toFixed(2)));
-          // this.printTemplate = this.printTemplate.replace('StrPaymentDates', this.transformBilld(this.reportPrintObj.PaymentDate));
-  
+        
           this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
           this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
           setTimeout(() => {
@@ -590,7 +572,7 @@ convertToWord(e){
         "RefundId": el,
       }
       
-      let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+      let printContents; 
       this.subscriptionArr.push(
         this._OpSearchListService.getRefundBrowsePrint(D_data).subscribe(res => {
           if(res){
@@ -598,10 +580,8 @@ convertToWord(e){
           console.log(this.reportPrintObj);
          }
         
-         
           this.getTemplate();
-          // console.log(res);
-          
+                    
         })
       );
     }
@@ -630,10 +610,9 @@ return value;
 }
 
 print() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
+  
   let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+  
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
   // popupWin.document.open();
   popupWin.document.write(` <html>
@@ -692,11 +671,6 @@ export class InsertRefund {
       this.IsCancelledDate = InsertRefundObj.IsCancelledDate || '';
       this.RefundNo = InsertRefundObj.RefundNo || '';
 
-      // this.BillNo = InsertRefundObj.BillNo || 0;
-      // this.BillDate = InsertRefundObj.BillDate || '';
-      // this.PatientName = InsertRefundObj.PatientName || '';
-      
-      // this.IsRefundFlag  = InsertRefundObj.IsRefundFlag  || 0;
 
     }
   }
@@ -832,15 +806,13 @@ export class BillRefundMaster {
  
   RefundDate: Date;
   RefundAmount: number;
-  // ConcessionAmt: number;
-  // NetPayableAmt: number;
+ 
 
 constructor(BillRefundMaster) {
   {
     this.RefundDate = BillRefundMaster.RefundDate || '';
     this.RefundAmount = BillRefundMaster.RefundAmount || 0;
-    // this.ConcessionAmt = BillRefundMaster.ConcessionAmt || 0;
-    // this.NetPayableAmt = BillRefundMaster.NetPayableAmt || 0;
+   
   }
 }
 }

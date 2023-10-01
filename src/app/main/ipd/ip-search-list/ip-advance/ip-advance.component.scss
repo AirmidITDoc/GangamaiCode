@@ -98,52 +98,11 @@ app-ip-advance{
         text-align: right;
     }    
     
-    // .mat-column-action {
-    //     // color: white !important;
-    //     width:70px;
-    //     max-width: 70px;
-    //     min-width: 70px;
-    //     text-align: right;
-    //     justify-content:right;
-    // }
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
-    }
-
-  
-    .close-button {
-        width: 100px;
-        font-size: 14px;
-        padding: 10px;
-        border-radius:16px;
-        background-color: #f3f2eb;
-        color: white;
-        border: 1px solid #7c7b71;
-        cursor: pointer;
-    }
-    .close-button:hover{
-        background-color: rgb(247, 97, 97);
-    }
+   
     .bill-amts {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    // button.save-button:disabled {
-    //     color: #FFFFFF !important;
-    //     background-color: #CCCCCC !important;
-    //     border-radius: 2px;
-    //     border: 1px solid #CCCCCC;
-    //     cursor: auto;
-    // }
-
-    
-     
 }

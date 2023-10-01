@@ -96,17 +96,14 @@ export class IPSearchListComponent implements OnInit {
     this.getAdmittedPatientList();
 
     if (this._ActRoute.url == '/ipd/ipadvance') {
-      // this.menuActions.push('Medical CasePaper');
       this.menuActions.push('Advance');
       this.menuActions.push('Bed Transfer');
     }
     else if (this._ActRoute.url == '/ipd/discharge') {
-      // this.menuActions.push('Medical CasePaper');
       this.menuActions.push('Discharge');
       this.menuActions.push('Discharge Summary');
     }
     else if (this._ActRoute.url == '/ipd/dischargesummary') {
-      // this.menuActions.push('Medical CasePaper');
       this.menuActions.push('Discharge');
       this.menuActions.push('Discharge Summary');
     }
@@ -129,10 +126,7 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (this._ActRoute.url == '/ipd/ip-casepaper') {
       this.menuActions.push('Medical CasePaper');
-      // this.menuActions.push('OT Ressrvation');
-      // this.menuActions.push('Cath LabBooking');
-      // this.menuActions.push('OT Ressrvation');
-      // this.menuActions.push('Refund of Bill');
+    
     }
     else if (this._ActRoute.url == '/nursingstation/bedtransfer') {
       this.menuActions.push('Bed Transfer');
@@ -140,14 +134,12 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Nursing Note');
 
     }
-    // this.getAdvanceId();
-
+   
   }
   get f() { return this._IpSearchListService.myFilterform.controls; }
+  
   ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
-
+ 
     this.click = !this.click;
     setTimeout(() => {
       {
@@ -158,127 +150,29 @@ export class IPSearchListComponent implements OnInit {
       }
     }, 500);
     this.MouseEvent = true;
-
-
   }
 
-  // getDischargeSummary()
-  // {
-  //   debugger;
-  //   var m_data2={
-  //     "AdmissionId": "19"//this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionID").value || "0",
-  //   }
-  //   console.log(m_data2);
-  //       this._IpSearchListService.getDischargeSummary(m_data2).subscribe(data => {
-  //         this.msg = data;
-  //       });
-  // }
-
-
-  onExport(exprtType) {
-    // let columnList=[];
-    // if(this.dataSource.data.length == 0){
-    //   // this.toastr.error("No Data Found");
-    //   Swal.fire('Error !', 'No Data Found', 'error');
-    // }
-    // else{
-    //   var excelData = [];
-    //   var a=1;
-    //   for(var i=0;i<this.dataSource.data.length;i++){
-    //     let singleEntry = {
-    //       // "Sr No":a+i,
-
-    //       "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"]:"N/A",
-    //       "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"] : "N/A",
-    //       "DOA" :this.dataSource.data[i]["DOA"] ? this.dataSource.data[i]["DOA"]:"N/A",
-    //       "DOT" :this.dataSource.data[i]["DOT"] ? this.dataSource.data[i]["DOT"]:"N/A",
-    //       "IPDNo" :this.dataSource.data[i]["IPDNo"] ? this.dataSource.data[i]["IPDNo"]:"N/A",
-    //       "Doctorname" :this.dataSource.data[i]["Doctorname"]+" - "+this.dataSource.data[i]["Doctorname"],
-    //       "RefDocName" :this.dataSource.data[i]["RefDocName"]? this.dataSource.data[i]["RefDocName"]:"N/A",
-    //        "PatientType" :this.dataSource.data[i]["PatientType"] ? this.dataSource.data[i]["PatientType"]:"N/A",
-    //        "HospitalName" :this.dataSource.data[i]["HospitalName"] ? this.dataSource.data[i]["HospitalName"]:"N/A",
-    //       };
-    //     excelData.push(singleEntry);
-    //   }
-    //   var fileName = "Indoor-Patient-List " + new Date() +".xlsx";
-    //   if(exprtType =="Excel"){
-    //     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //     var wscols = [];
-    //     if(excelData.length > 0){ 
-    //       var columnsIn = excelData[0]; 
-    //       console.log(columnsIn);
-    //       for(var key in columnsIn){
-    //         let headerLength = {wch:(key.length+1)};
-    //         let columnLength = headerLength;
-    //         try{
-    //           columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //         }
-    //         catch{
-    //           columnLength = headerLength;
-    //         }
-    //         if(headerLength["wch"] <= columnLength["wch"]){
-    //           wscols.push(columnLength)
-    //         }
-    //         else{
-    //           wscols.push(headerLength)
-    //         }
-    //       } 
-    //     }
-    //     ws['!cols'] = wscols;
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }else{
-    //     let doc = new jsPDF('p','pt', 'a4');
-    //     doc.page = 0;
-    //     var col=[];
-    //     for (var k in excelData[0]) col.push(k);
-    //       console.log(col.length)
-    //     var rows = [];
-    //     excelData.forEach(obj => {
-    //       console.log(obj)
-    //       let arr = [];
-    //       col.forEach(col => {
-    //         arr.push(obj[col]);
-    //       });
-    //       rows.push(arr);
-    //     });
-
-    //     doc.autoTable(col, rows,{
-    //       margin:{left:5,right:5,top:5},
-    //       theme:"grid",
-    //       styles: {
-    //         fontSize: 3
-    //       }});
-    //     doc.setFontSize(3);
-    //     // doc.save("Indoor-Patient-List.pdf");
-    //     window.open(URL.createObjectURL(doc.output("blob")))
-    //   }
-    // }
-  }
-
+ 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
 
   getAdmittedPatientList() {
-    debugger;
-   
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "false") {
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
-        "From_Dt":this.datePipe.transform((new Date()).toISOString() , "MM-dd-yyyy") || "01/01/1900",
-        "To_Dt": this.datePipe.transform((new Date()).toISOString(), "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": 0, //this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
+        "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+        "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
       }
-      console.log(D_data)
+      console.log(D_data);
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
@@ -299,13 +193,13 @@ export class IPSearchListComponent implements OnInit {
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
+        "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
+        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": 1, // this._IpSearchListService.myFilterform.get('IsDischarge').value,
-        "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || "%",
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
       }
       setTimeout(() => {
         this.isLoadingStr = 'loading';
@@ -328,38 +222,6 @@ export class IPSearchListComponent implements OnInit {
 
   dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
 
-  //   getAdvanceList()
-  //   {
-  //    debugger;
-  //    var m_data={
-  //      "AdmissionID": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || "0",
-  //      }
-  //      console.log("Displaying AdmissionID from getAdvanceList() 1:"+m_data);
-  //      this._IpSearchListService.getAdvanceList(m_data).subscribe(Visit=> {
-  //          console.log(this.dataSource1.data);
-  //          this.dataSource1.data = Visit as AdvanceDetail[];
-  //          this.dataSource1.sort =this.sort;
-  //          this.dataSource1.paginator=this.paginator;
-  //        });
-
-  // }
-
-  // getAdvanceId() {
-  //   // var m_data = {
-  //   //t"AdmissionID": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || "0",
-  //   // }
-  //   debugger;
-  //   this.dataSource.data = [];
-  //   this.isLoading = 'list-loading';
-  //    let Query = "Select AdvanceId from T_AdvanceHeader where  OPD_IPD_Id="+this.AdmissionId +" ";
-
-  //   this._IpSearchListService.getAdvanceId(Query).subscribe(data => {
-  //     this.AdvanceId = data;
-  //     // this.dataSource.data = this.chargeslist;
-
-  //     console.log(this.AdvanceId);
-  //   });
-  // } 
   SubMenu(contact) {
     let xx = {
       RegNo: contact.RegNo,
@@ -478,15 +340,14 @@ export class IPSearchListComponent implements OnInit {
         opD_IPD_Typec: contact.opD_IPD_Type
 
       }
-      // console.log(m_data1);
+      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm1(m_data);
       const dialogRef = this._matDialog.open(IPSettlementComponent,
         {
 
           maxWidth: "95vw",
-          //maxWidth: "115vw", 
-          // height: '600px !important',
+       
           height: '94vh',
           width: '100%',
 
@@ -553,8 +414,7 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
       }
-      // console.log(m_data);
-      debugger
+     
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
@@ -563,8 +423,7 @@ export class IPSearchListComponent implements OnInit {
           maxHeight: "90%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        //this.getAdmittedPatientList();
+        
       });
     }
     else if (m == "Bill") {
@@ -588,14 +447,14 @@ export class IPSearchListComponent implements OnInit {
         UnitId: contact.HospitalID
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      // console.log(this.advanceDataStored.storage);
+      
       if (!contact.IsBillGenerated) {
-        // console.log(this.advanceDataStored.storage);
+        
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
-            maxWidth: "100vw",
-            height: '890px',    //maxHeight: "170vh",
-            // width: '100%',
+            maxWidth: "90%",
+            width:'90%',
+            height: '90%',   
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -685,9 +544,7 @@ export class IPSearchListComponent implements OnInit {
         "AdmissionID": contact.AdmissionID,
         "AdmDateTime": contact.AdmDateTime,
         "DOA": contact.DOA,
-        //"Dot":contact.DOT,
-        //"AdmittedDoctor1":contact.AdmittedDoctor1,
-        "DocNameID": contact.DocNameID,
+         "DocNameID": contact.DocNameID,
         "RoomId": contact.WardId,
         "WardId": contact.WardId,
         "RoomName": contact.RoomName,
@@ -711,212 +568,8 @@ export class IPSearchListComponent implements OnInit {
         this.getAdmittedPatientList();
       });
     }
-    //     else if (m == "Prescription") {
-    //       console.log(" This is for Prescription pop : " + m);
-    //       let m_data = {
-    //         "RegNo": contact.RegNo,
-    //         "PatientName": contact.PatientName,
-    //         "AdmissionID": contact.AdmissionID,
-    //         "AdmDateTime": contact.AdmDateTime,
-    //         "DOA": contact.DOA,
-    //         //"Dot":contact.DOT,
-    //         //"AdmittedDoctor1":contact.AdmittedDoctor1,
-    //         "DocNameID": contact.DocNameID,
-    //         "RoomId": contact.WardId,
-    //         "WardId": contact.WardId,
-    //         "RoomName": contact.RoomName,
-    //         "BedId": contact.BedId,
-    //         "BedName": contact.BedName,
-    //         "TariffId": contact.TariffId,
-    //         "TariffName": contact.TariffName,
-    //         "ClassId": contact.ClassId,
-
-
-    //       }
-    //       // console.log(m_data);
-    //       this._IpSearchListService.populateForm(m_data);
-    //       //      this.getAdvanceList();
-    //       const dialogRef = this._matDialog.open(PrescriptionComponent,
-    //         {
-    //           maxWidth: "95vw",
-    //           maxHeight: "90vh", width: '100%', height: "100%"
-    //         });
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-
-    //       });
-    //     }
-
-    //     else if (m == "Medical CasePaper") {
-    // debugger;
-    //       console.log(" This is for Medical CasePaper pop : " + m);
-    //       let xx = {
-    //         RegNo: contact.RegID,        
-    //         AdmissionID: contact.AdmissionID,
-    //         OPD_IPD_ID:contact.OPD_IPD_ID,
-    //         OPD_IPD_Type:contact.opD_IPD_Type,
-    //         PatientName: contact.PatientName,
-    //         Doctorname: contact.Doctorname,
-    //         AdmDateTime: contact.AdmDateTime,
-    //         AgeYear: contact.AgeYear,
-    //         ClassId: contact.ClassId,
-    //         TariffName: contact.TariffName,
-    //         TariffId: contact.TariffId,
-    //         DoctorId: contact.DoctorId,
-    //         DOA: contact.DOA,
-    //         DOT: contact.DOT,
-    //         DoctorName: contact.DoctorName,
-    //         WardName: contact.RoomName,
-    //         BedName: contact.BedName,
-    //         IPDNo: contact.IPDNo,
-    //         DocNameID: contact.DocNameID,
-    //       };
-    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //       const dialogRef = this._matDialog.open(CasePaperComponent,
-    //         {
-    //           maxWidth: "115vw",
-    //           height: '860px',
-    //           width: '100%',
-    //         });
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-
-    //       });
-    //     }
-    //     else if (m == "Bed Transfer") {
-
-    //       console.log(" This is for Bed Transfer pop : " + m);
-    //       let xx = {
-    //         RegNo: contact.RegId,
-    //         AdmissionID: contact.AdmissionID,
-    //         OPD_IPD_ID:contact.OPD_IPD_ID,
-    //         OPD_IPD_Type:contact.opD_IPD_Type,
-    //         PatientName: contact.PatientName,
-    //         Doctorname: contact.Doctorname,
-    //         AdmDateTime: contact.AdmDateTime,
-    //         AgeYear: contact.AgeYear,
-    //         ClassId: contact.ClassId,
-    //         TariffName: contact.TariffName,
-    //         TariffId: contact.TariffId,
-    //         DoctorId: contact.DoctorId,
-    //         DOA: contact.DOA,
-    //         DOT: contact.DOT,
-    //         DoctorName: contact.DoctorName,
-    //         RoomName: contact.RoomName,
-    //         BedNo: contact.BedName,
-    //         IPDNo: contact.IPDNo,
-    //         DocNameID: contact.DocNameID,
-    //       };
-    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //       const dialogRef = this._matDialog.open(BedTransferComponent,
-    //         {
-    //           maxWidth: "115vw",
-    //           height: '860px',
-    //           width: '100%',
-    //         });
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed - Insert Action', result);
-
-    //       });  
-    //     }
-    //     else if (m == "Doctor Note") {
-
-    //       console.log(" This is for Doctor Note pop : " + m);
-    //       let xx = {
-    //         RegNo: contact.RegId,
-    //         AdmissionID: contact.AdmissionID,
-    //         OPD_IPD_ID:contact.OPD_IPD_ID,
-    //         OPD_IPD_Type:contact.opD_IPD_Type,
-    //         PatientName: contact.PatientName,
-    //         Doctorname: contact.Doctorname,
-    //         AdmDateTime: contact.AdmDateTime,
-    //         AgeYear: contact.AgeYear,
-    //         ClassId: contact.ClassId,
-    //         TariffName: contact.TariffName,
-    //         TariffId: contact.TariffId,
-    //         DoctorId: contact.DoctorId,
-    //         DOA: contact.DOA,
-    //         DOT: contact.DOT,
-    //         DoctorName: contact.DoctorName,
-    //         RoomName: contact.RoomName,
-    //         BedNo: contact.BedName,
-    //         IPDNo: contact.IPDNo,
-    //         DocNameID: contact.DocNameID,
-    //       };
-    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //       // const dialogRef = this._matDialog.open(DoctorNoteComponent,
-    //       //   {
-    //       //     maxWidth: "115vw",
-    //       //     height: '760px',
-    //       //     width: '90%',
-    //       //   });
-    //       // dialogRef.afterClosed().subscribe(result => {
-    //       //   console.log('The dialog was closed - Insert Action', result);
-
-    //       // });
-    //     }
-    //     else if (m == "Nursing Note") {
-
-    //       console.log(" This is for Nursing Note pop : " + m);
-    //       let xx = {
-    //         RegNo: contact.RegId,
-    //         AdmissionID: contact.AdmissionID,
-    //         OPD_IPD_ID:contact.OPD_IPD_ID,
-    //         OPD_IPD_Type:contact.opD_IPD_Type,
-    //         PatientName: contact.PatientName,
-    //         Doctorname: contact.Doctorname,
-    //         AdmDateTime: contact.AdmDateTime,
-    //         AgeYear: contact.AgeYear,
-    //         ClassId: contact.ClassId,
-    //         TariffName: contact.TariffName,
-    //         TariffId: contact.TariffId,
-    //         DoctorId: contact.DoctorId,
-    //         DOA: contact.DOA,
-    //         DOT: contact.DOT,
-    //         DoctorName: contact.DoctorName,
-    //         RoomName: contact.RoomName,
-    //         BedNo: contact.BedName,
-    //         IPDNo: contact.IPDNo,
-    //         DocNameID: contact.DocNameID,
-    //       };
-    //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-
-    //       // const dialogRef = this._matDialog.open(NursingNoteComponent,
-    //       //   {
-    //       //     maxWidth: "115vw",
-    //       //     height: '760px',
-    //       //     width: '90%',
-    //       //   });
-    //       // dialogRef.afterClosed().subscribe(result => {
-    //       //   console.log('The dialog was closed - Insert Action', result);
-
-    //       // });
-    //     }
-
-    //
+ 
   }
-
-
-
-  // onShow(event: MouseEvent) {
-  //   debugger;
-  //   //  console.log(this.IsDischarge);
-
-  //   this.click = !this.click;
-  //   setTimeout(() => {
-  //     {
-  //       this.sIsLoading = 'loading-data';
-  //       console.log(this._IpSearchListService.myFilterform);
-  //       this.showClicked.emit(this._IpSearchListService.myFilterform);
-  //       this.click = false;
-  //     }
-  //   }, 1000);
-  //   this.MouseEvent = true;
-
-  // }
 
 
   onClear() {
@@ -930,7 +583,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   private filterDoctor() {
-    // debugger;
+   
     if (!this.doctorNameCmbList) {
       return;
     }
@@ -943,7 +596,7 @@ export class IPSearchListComponent implements OnInit {
     else {
       search = search.toLowerCase();
     }
-    // filter
+   
     this.filtereddoctor.next(
       this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
     );
@@ -951,7 +604,7 @@ export class IPSearchListComponent implements OnInit {
 
 
   private filterWard() {
-    // debugger;
+   
     if (!this.wardNameCmbList) {
       return;
     }
@@ -985,26 +638,9 @@ export class IPSearchListComponent implements OnInit {
     });
   }
 
-
-  // Listdisplay() {
-  //   this.click = !this.click;
-  //   setTimeout(() => {
-  //     {
-  //       this.sIsLoading = 'loading-data';
-  //       console.log(this._IpSearchListService.myFilterform);
-  //       this.showClicked.emit(this._IpSearchListService.myFilterform);
-  //       this.click = false;
-  //     }
-  //   }, 1000);
-  //   this.MouseEvent = true;
-  // }
-
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
-  debugger
     this.IsDischarge = SiderOption.checked;
-    // console.log(this.IsDischarge);
-
     if (SiderOption.checked == true) {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
       this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());

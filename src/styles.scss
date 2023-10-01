@@ -16,7 +16,7 @@
 }
 
 .mat-table {
-    height: 480px !important;
+    height: 520px !important;
     .mat-row {
         &:hover {
             background: #e1f5fe;
@@ -106,6 +106,12 @@ snack-bar-container success {
 .mat-focused .mat-icon {
     color: red;
 }
+
+// Highlight company ro self patient color code
+.self-row {
+    background-color: lightgreen !important;
+}
+
 
 // .example-action-buttons {
 //     padding-bottom: 20px;

@@ -5,8 +5,7 @@
 
         <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="space-between center">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
+              
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="width:350px ;font-size: 20px; font-weight: 400;">
                     Advance
                 </span>
@@ -22,7 +21,7 @@
     
     <div class="content-card">
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-            <!-- <form [formGroup]="_opappointmentService.myShowDischargeSummaryForm" style="width: 100%;"> -->
+            
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                         <!-- ================================ LABEL HEADER  -->
@@ -164,17 +163,6 @@
                                     </ng-container>
 
 
-                                    <!-- <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Select
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)">
-                                                <mat-icon title="Edit Menu">launch</mat-icon>
-                                            </button>
-                                            <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>      
-                                        </mat-cell>
-                                    </ng-container> -->
-
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             loading data...
@@ -205,10 +193,10 @@
                             </div>
                         </div>
                         <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px;">
-                            <!-- <form [formGroup]="_opappointmentService.myShowAdvanceForm"> -->
+                            
                                 <div class="dialog-content-wrapper">
                                     <!-- ================================ LABEL HEADER  -->
-                                    <!-- <mat-card > -->
+                                    
                                         <form [formGroup]="AdvFormGroup">
                                             <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
@@ -240,10 +228,10 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    <!-- </mat-card> -->
+                                    
                                      <!-- ================================ LABEL HEADER  -->
                                 </div>
-                            <!-- </form> -->
+                            
                     </div>
                     </div>
                 </div>

@@ -94,7 +94,7 @@ export class IPAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
        this.PatientHeaderObj = this.advanceDataStored.storage;
-      // console.log(this.selectedAdvanceObj);
+      
     }
 
     let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
@@ -282,11 +282,7 @@ export class IPAdvanceComponent implements OnInit {
           maxWidth: "100vw",
           height: '600px',
           width: '100%',
-          // data: {
-          //   patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
-          //   advanceObj: PatientHeaderObj,
-          //   FromName: "Advance"
-          // }
+         
            data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "Advance"
@@ -294,8 +290,7 @@ export class IPAdvanceComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========');
-        // result.submitDataPay.ipPaymentInsert['AdvanceId'] = this.vAdvanceId;
-
+        
         let submitData = {
           "advanceHeaderUpdate": advanceHeaderUpdate,
           "advanceDetailInsert1": advanceDetailInsert,
@@ -327,7 +322,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
 convertToWord(e){
-  // this.numberInWords= converter.toWords(this.mynumber);
+  
   return converter.toWords(e);
 }
 
@@ -345,7 +340,6 @@ getTemplate() {
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
 
-      // var objPrintWordInfo = this.reportPrintObj[0];
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
 
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(new Date().toString()));
@@ -391,9 +385,9 @@ getPrint(el) {
 }
 
 print() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
+  
   let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
+  
 
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
   // popupWin.document.open();

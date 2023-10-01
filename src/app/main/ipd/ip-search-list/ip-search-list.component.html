@@ -38,7 +38,6 @@
                         <form [formGroup]="_IpSearchListService.myFilterform" style="padding: 6px 6px 5px 5px;"
                             fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
@@ -67,6 +66,14 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Middle Name</mat-label>
+                                    <input name="MiddleName" formControlName="MiddleName" matInput
+                                        (keyup)="getAdmittedPatientList()">
+                                    <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">
+                                        MiddleName is required Enter only Alphabets</span>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input name="LastName" formControlName="LastName" matInput
                                         (keyup)="getAdmittedPatientList()">
@@ -82,11 +89,19 @@
                                         required Enter only Digits</span>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>IPDNo</mat-label>
+                                    <input name="IPDNo" formControlName="IPDNo" matInput type="number"
+                                        (keyup)="getAdmittedPatientList()">
+                                    <span class="error" *ngIf="f.IPDNo.invalid && f.IPDNo.touched">IPDNo is
+                                        required Enter only Digits</span>
+                                </mat-form-field>
+
                                 <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
                                     formControlName="IsDischarge" [(ngModel)]="isChecked">
                                     IsDischarge</mat-slide-toggle>
 
-                                <div style="margin-top: 10px;">
+                                <div style="float: right;">
                                     <button mat-raised-button (click)="onClear()" class="clearbutton"
                                         matTooltip="close">
                                         <mat-icon class="cleariconbutton">close</mat-icon>
@@ -117,25 +132,18 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                             
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
                                     <ng-container matColumnDef="IsBillGenerated">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
-                                            IsBillGenerated</mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <!-- {{contact.IsBillGenerated}}  -->
                                             <mat-icon
                                                 style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.IsBillGenerated=='1'" matTooltip="Bill Generated"
                                                 class=" red-600 s-16">circle</mat-icon>
-                                            <!-- <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.IsBillGenerated=='0' "  matTooltip="Bill Not Generated" class=" orange-600 s-16">circle</mat-icon>   -->
-
                                         </mat-cell>
                                     </ng-container>
 
@@ -155,21 +163,6 @@
                                             {{contact.PatientName}}
                                         </mat-cell>
                                     </ng-container>
-
-
-                                    <!-- <ng-container matColumnDef="PatientOldNew">
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">PatientOldNew</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" >
-                                  {{contact.PatientOldNew}}  -->
-                                    <!-- <mat-icon style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"  *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='2'" matTooltip="PatientNew" class=" green-600 s-16">circle</mat-icon>
-                                    <mat-icon  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;" *ngIf="contact.PatientOldNew=='0' "  matTooltip="PatientOld" class=" orange-600 s-16">circle</mat-icon>  
-                                        
-                                </mat-cell>
-                            </ng-container>  -->
-
-
-
-
 
                                     <ng-container matColumnDef="DOA">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -202,11 +195,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md> {{contact.Doctorname}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- <ng-container matColumnDef="DoctorName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact"  fxShow.gt-md> {{contact.DoctorName}} </mat-cell>
-                            </ng-container> -->
+                                 
 
                                     <ng-container matColumnDef="RefDocName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Ref Doc
@@ -236,25 +225,15 @@
                                         </mat-cell>
                                     </ng-container>
 
-
-                                    <!-- <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <button mat-icon-button [routerLink]="['/auth/menu-main/menu-master',row.menu_master_id]">
-                                        <mat-icon title="Add SubMenu">add_circle_outline</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container> -->
-
                                     <ng-container matColumnDef="buttons" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef
                                             class="table-actions">Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <div fxFlex="row" fxLayoutAlign="center center">
-                                                <button mat-icon-button (click)="SubMenu(contact)">
+                                                <!-- <button mat-icon-button (click)="SubMenu(contact)">
                                                     <mat-icon title="Add SubMenu"
                                                         style="color: blue;">add_circle_outline</mat-icon>
-                                                </button>
+                                                </button> -->
                                                 <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
                                                     aria-label="More" (click)="$event.stopPropagation();">
                                                     <mat-icon class="secondary-text">more_vert</mat-icon>

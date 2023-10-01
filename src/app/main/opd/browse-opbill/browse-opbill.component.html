@@ -106,11 +106,7 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                </div> -->
-                                <!-- sppinner -->
+                             
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -120,26 +116,13 @@
 
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <!-- <mat-icon
-                                            style="font-size:30px;width:45px !important; height:25px !important;border-radius:100% ;"
-                                            *ngIf="contact.BalanceAmt != 0" matTooltip=" Bill Clear">shopping_cart
-                                        </mat-icon> -->
+                                          
                                             <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip=" Settlement "
                                                 (click)="NewBillpayment(contact)">payment
                                             </mat-icon>
                                         </mat-cell>
                                     </ng-container>
-<!-- Billpayment -->
-
-                                    <!-- <ng-container matColumnDef="Bill">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Payment
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-icon (click)="NewBillpayment(contact)">credit</mat-icon>
-                                        </mat-cell>
-                                    </ng-container> -->
-
-
+                                    
                                     <ng-container matColumnDef="BillDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Bill Date
                                         </mat-header-cell>
@@ -292,6 +275,3 @@
     }
 </style> -->
 
-//
-
-TempDesign

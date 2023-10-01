@@ -138,17 +138,17 @@ export class SalesComponent implements OnInit {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
       "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.StoreId
     }
-    console.log(m_data);
-    this._salesService.getItemList(m_data).subscribe(data => {
-      this.filteredOptions = data;
-      console.log(data);
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-
-    });
+    if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 2) {
+      this._salesService.getItemList(m_data).subscribe(data => {
+        this.filteredOptions = data;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  
   }
 
   getOptionText(option) {
@@ -182,6 +182,10 @@ export class SalesComponent implements OnInit {
 
   }
 
+  OnAdd(){
+
+  }
+
   getBatch() {
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
@@ -196,9 +200,10 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.saleSelectedDatasource.data = [];
-      this.saleSelectedDatasource.data = [result];// as IndentList[];
-      console.log(this.saleSelectedDatasource.data);
+      console.log(result);
+      // this.saleSelectedDatasource.data = [];
+      // this.saleSelectedDatasource.data = [result];// as IndentList[];
+      // console.log(this.saleSelectedDatasource.data);
 
     });
   }

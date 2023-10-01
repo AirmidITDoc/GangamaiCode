@@ -102,7 +102,7 @@ export class OPAdvanceComponent implements OnInit {
   }
 
   onSave() {
-    // debugger;
+    
     this.isLoading = 'submit';
     let advanceHeaderObj = {};
     advanceHeaderObj['AdvanceId'] = 0;
@@ -179,7 +179,7 @@ export class OPAdvanceComponent implements OnInit {
             }
             this.isLoading = '';
           });
-          // console.log('final obj', submitData);
+          
     });
 
     this.AdvFormGroup.get('advanceAmt').reset(0);
@@ -268,87 +268,7 @@ export class AdvanceDetails {
   }
 
 }
-// export class AdvanceDetail
-// {
-//     AdvanceDetailID : Number;
-//     Date : Date;
-//     Time : Time;
-//     AdvanceId : number;
-//     RefId : number;
-//     TransactionID : number;
-//     OPD_IPD_Id : number;
-//     OPD_IPD_Type :number;
-//     AdvanceAmount : number;
-//     UsedAmount : number;
-//     BalanceAmount : number;
-//     RefundAmount : number;
-//     ReasonOfAdvanceId : number;
-//     AddedBy : number;
-//     IsCancelled : boolean;
-//     IsCancelledBy : number;
-//     IsCancelledDate : Date;
-//     Reason : string;
 
-//      /**
-//      * Constructor
-//      *
-//      * @param AdvanceDetail
-//      */
-//       constructor(AdvanceDetail) {
-//         {
-//            this.AdvanceDetailID = AdvanceDetail.AdvanceDetailID || '';
-//            this.Date = AdvanceDetail.Date || '';
-//            this.Time = AdvanceDetail.Time || '';
-//            this.AdvanceId = AdvanceDetail.AdvanceId || '';
-//            this.RefId = AdvanceDetail.RefId || '';
-//            this.TransactionID = AdvanceDetail.TransactionID || '';
-//            this.OPD_IPD_Id = AdvanceDetail.OPD_IPD_Id || '';
-//            this.OPD_IPD_Type = AdvanceDetail.OPD_IPD_Type || '';
-//            this.AdvanceAmount = AdvanceDetail.AdvanceAmount || '';
-//            this.UsedAmount = AdvanceDetail.UsedAmount || '';
-//            this.BalanceAmount = AdvanceDetail.BalanceAmount || '';
-//            this.RefundAmount= AdvanceDetail.RefundAmount || '';
-//            this.ReasonOfAdvanceId= AdvanceDetail.ReasonOfAdvanceId || '';
-//            this.AddedBy= AdvanceDetail.AddedBy || '';
-//            this.IsCancelled= AdvanceDetail.IsCancelled || '';
-//            this.IsCancelledBy = AdvanceDetail.IsCancelledBy || '';
-//            this.IsCancelledDate = AdvanceDetail.IsCancelledDate || '';
-//            this.Reason = AdvanceDetail.Reason || '';
-//         }
-//     }
-// }
-
-// export class AdvanceDetailObj
-// {
-//     RegNo : Number;
-//     AdmissionID: Number;
-//     PatientName: string;
-//     Doctorname: string;
-//     AdmDateTime: string;
-//     AgeYear: number;
-//     ClassId: number;
-//     TariffName: String;
-//     TariffId : number;
-
-//      /**
-//      * Constructor
-//      *
-//      * @param AdvanceDetailObj
-//      */
-//       constructor(AdvanceDetailObj) {
-//         {
-//            this.RegNo = AdvanceDetailObj.RegNo || '';
-//            this.AdmissionID = AdvanceDetailObj.AdmissionID || '';
-//            this.PatientName = AdvanceDetailObj.PatientName || '';
-//            this.Doctorname = AdvanceDetailObj.Doctorname || '';
-//            this.AdmDateTime = AdvanceDetailObj.AdmDateTime || '';
-//            this.AgeYear = AdvanceDetailObj.AgeYear || '';
-//            this.ClassId = AdvanceDetailObj.ClassId || '';
-//            this.TariffName = AdvanceDetailObj.TariffName || '';
-//            this.TariffId = AdvanceDetailObj.TariffId || '';
-//         }
-//     }
-// }
 
 
 export class ChargesList{
