@@ -160,12 +160,12 @@
                 &nbsp; &nbsp;
                 <div>
 
-                    <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
+                    <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
                         style=" height: 35px;background-color: #33b5e5">
                         <span style="font-size:18px; font-weight: 500; color:white;padding:5px;">Bill Summary </span>
 
-                    </div>
-                    <div style="padding: 5px;">
+                    </div> -->
+                    <!-- <div style="padding: 5px;">
 
                         <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
                             <mat-label style="font-weight: bold;font-size:20px;">Bill Amount</mat-label>
@@ -191,7 +191,7 @@
                                 readonly style="font-weight:500;font-size: 15px;text-align: right;">
 
                         </mat-form-field>
-                    </div>
+                    </div> -->
                 </div>
             </form>
         </mat-drawer>
@@ -468,13 +468,14 @@
 
                             <div fxLayout="row" style="width: 100%;margin-top: 3px;">
 
-                                <div style="float: right;">
+                                <div style="float:right;">
                                     <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                         Generate Bill
                                     </mat-checkbox>
 
                                     <button class="next-btn" (click)="getInterimData()" >Interim</button>
-                                    <button class="next-btn" (click)="onSave()" [disabled]="Ipbillform.invalid">Save </button>
+
+                                    <button class="next-btn" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
 
                                     <button class="footer-btn" (click)="onClose()" [routerLink]="'/ipd/add-billing'" style="border-radius: 16px;width: 80px;">Cancel</button>
                                 </div>

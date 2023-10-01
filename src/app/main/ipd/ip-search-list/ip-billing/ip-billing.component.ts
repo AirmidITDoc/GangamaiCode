@@ -544,8 +544,7 @@ export class IPBillingComponent implements OnInit {
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
-     this.netPaybleAmt = this.totalAmtOfNetAmt;
-
+    this.netPaybleAmt = this.totalAmtOfNetAmt;
     return netAmt;
   }
 
@@ -662,7 +661,7 @@ debugger
          {
            maxWidth: "85vw",
            //maxHeight: "65vh",
-           width: '100%', height: "400px",
+           width: '100%', height: "450px",
            data: this.interimArray
          });
     }

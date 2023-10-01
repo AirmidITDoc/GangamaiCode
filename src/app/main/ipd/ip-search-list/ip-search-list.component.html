@@ -38,7 +38,6 @@
                         <form [formGroup]="_IpSearchListService.myFilterform" style="padding: 6px 6px 5px 5px;"
                             fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
@@ -67,6 +66,14 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Middle Name</mat-label>
+                                    <input name="MiddleName" formControlName="MiddleName" matInput
+                                        (keyup)="getAdmittedPatientList()">
+                                    <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">
+                                        MiddleName is required Enter only Alphabets</span>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input name="LastName" formControlName="LastName" matInput
                                         (keyup)="getAdmittedPatientList()">
@@ -82,11 +89,19 @@
                                         required Enter only Digits</span>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>IPDNo</mat-label>
+                                    <input name="IPDNo" formControlName="IPDNo" matInput type="number"
+                                        (keyup)="getAdmittedPatientList()">
+                                    <span class="error" *ngIf="f.IPDNo.invalid && f.IPDNo.touched">IPDNo is
+                                        required Enter only Digits</span>
+                                </mat-form-field>
+
                                 <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
                                     formControlName="IsDischarge" [(ngModel)]="isChecked">
                                     IsDischarge</mat-slide-toggle>
 
-                                <div style="margin-top: 10px;">
+                                <div style="float: right;">
                                     <button mat-raised-button (click)="onClear()" class="clearbutton"
                                         matTooltip="close">
                                         <mat-icon class="cleariconbutton">close</mat-icon>

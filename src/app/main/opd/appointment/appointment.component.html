@@ -127,7 +127,15 @@
 
                   <div fxlayout="row">
                     <div style="width: 100%;">
+<<<<<<< HEAD
 
+=======
+                      <div>
+                        <button mat-raised-button (click)="exportReport()"
+                          style="background-color: aliceblue;color: brown;">Export Table
+                        </button>
+                      </div>
+>>>>>>> d0a5e9eb62f719f247b86fc28868eedc4e46505c
                       <mat-table #table matSort table="table1" [dataSource]="dataSource"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
@@ -145,6 +153,8 @@
                               class=" orange-600 s-16">circle</mat-icon>
                           </mat-cell>
                         </ng-container>
+
+                        
                         <ng-container matColumnDef="MPbillNo">
                           <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                           </mat-header-cell>
@@ -160,17 +170,19 @@
                               circle</mat-icon>
                           </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="RegNoWithPrefix">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg
-                            No</mat-header-cell>
+
+                        <ng-container matColumnDef="Edit">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                          </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.RegNoWithPrefix}}
+                            <button mat-icon-button matTooltip="Edit" (click)="Billpayment(contact)">
+                              <mat-icon>edit</mat-icon>
+                            </button>
                           </mat-cell>
                         </ng-container>
-
-
+                        
                         <ng-container matColumnDef="Bill">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bill
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <button mat-icon-button matTooltip="Bill" (click)="Billpayment(contact)">
@@ -179,6 +191,13 @@
                           </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="RegNoWithPrefix">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg
+                            No</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            {{contact.RegNoWithPrefix}}
+                          </mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="PatientName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
@@ -318,11 +337,34 @@
                       <mat-radio-button value="registrered">Registered</mat-radio-button>
                     </mat-radio-group>
 
-                    <mat-form-field appearance="outline" style="width:60%;margin-left:15px;"
+                    <mat-form-field appearance="outline" style="width:30%;margin-left:15px;"
                       disabled="isRegSearchDisabled">
                       <input type="text" name="RegId" formControlName="RegId"
                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
                         (input)="getSearchList()">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                      </span>
+                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                        (optionSelected)='getSelectedObj($event.option.value)'>
+                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                          {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                          {{option.MobileNo}}
+                        </mat-option>
+                      </mat-autocomplete>
+                      <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
+                        Required field cannot be left blank
+                      </mat-error>
+                    </mat-form-field>
+
+                      <mat-form-field appearance="outline" style="width:25%;margin-left:15px;float:right"
+                      disabled="isRegSearchDisabled">
+                      <input type="text" name="RegId" formControlName="RegId"
+                        placeholder="Phone Appointment : First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
+                        (input)="getPhoneAppointmentList()">
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                           (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>

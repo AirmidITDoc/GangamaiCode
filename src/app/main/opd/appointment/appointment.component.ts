@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
+import { Component, ElementRef, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -30,7 +30,11 @@ import { AdvanceDataStored } from "app/main/ipd/advance";
 import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
 import { MatStepper } from "@angular/material/stepper";
 import { AuthenticationService } from "app/core/services/authentication.service";
+<<<<<<< HEAD
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
+=======
+import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
+>>>>>>> d0a5e9eb62f719f247b86fc28868eedc4e46505c
 
 
 export class DocData {
@@ -211,6 +215,7 @@ export class AppointmentComponent implements OnInit {
     displayedColumns = [
         "PatientOldNew",
         "MPbillNo",
+        "Edit",
         "Bill",
         "RegNoWithPrefix",
         "PatientName",
@@ -259,6 +264,7 @@ export class AppointmentComponent implements OnInit {
         public matDialog: MatDialog,
 
         private advanceDataStored: AdvanceDataStored,
+        private reportDownloadService: ExcelDownloadService
 
     ){ 
       this.getVisitList();
@@ -975,11 +981,27 @@ export class AppointmentComponent implements OnInit {
       }
   
     }
-    // Name:any;
-    // addData(Rachana){
-    // this.Name=Rachana
-    // }
- 
+
+    
+    getPhoneAppointmentList() {
+      var m_data = {
+        "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      }
+      if (this.searchFormGroup.get('RegId').value.length >= 1) {
+        this._opappointmentService.getPhoneAppointmentList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptions=resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+  
+        });
+      }
+  
+    }
+
     getOptionText(option) {
         if (!option) return '';
         return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
@@ -987,8 +1009,6 @@ export class AppointmentComponent implements OnInit {
     
 
     getSelectedObj(obj) {
-      ;
-     
       obj.AgeDay = obj.AgeDay.trim();
       obj.AgeMonth = obj.AgeDay.trim();
       obj.AgeYear =obj.AgeYear.trim();
@@ -1859,6 +1879,10 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
        });
   
+}
+exportReport() {
+  let exportHeaders = ['RegNoWithPrefix', 'PatientName', 'DVisitDate', 'VisitTime', 'OPDNo', 'Doctorname', 'RefDocName', 'PatientType'];
+  this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'appointment');
 }
 
 }

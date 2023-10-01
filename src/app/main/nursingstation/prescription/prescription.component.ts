@@ -84,8 +84,6 @@ export class PrescriptionComponent implements OnInit {
   }
 
   getLabRequestNursingList() {
-
-  debugger
    this.sIsLoading = 'loading-data';
    var m_data = {
          "IPMedID":1 // (this.searchFormGroup.get("Reg_No").value) || 0

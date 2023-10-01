@@ -159,19 +159,20 @@ export class IPSearchListComponent implements OnInit {
 
 
   getAdmittedPatientList() {
-    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0") {
+    if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
+        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
       }
+      console.log(D_data);
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
@@ -192,12 +193,12 @@ export class IPSearchListComponent implements OnInit {
       var D_data = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
+        "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "Reg_No": this._IpSearchListService.myFilterform.get("RegNo").value || 0,
-        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || "0",
+        "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
-        "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
       }
       setTimeout(() => {
@@ -639,9 +640,8 @@ export class IPSearchListComponent implements OnInit {
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
-  
     this.IsDischarge = SiderOption.checked;
-        if (SiderOption.checked == true) {
+    if (SiderOption.checked == true) {
       this._IpSearchListService.myFilterform.get('IsDischarge').setValue(1);
       this._IpSearchListService.myFilterform.get('start').setValue((new Date()).toISOString());
       this._IpSearchListService.myFilterform.get('end').setValue((new Date()).toISOString());
