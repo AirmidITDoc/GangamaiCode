@@ -185,7 +185,7 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
 
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
         maxWidth: "95vw",
         height: '740px',

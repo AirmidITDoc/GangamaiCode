@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +8,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @Input('screenFrom') screenFromString = '';
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
 
-  constructor() { }
+  dateForm: FormGroup;
+  HospitalName:any;
+  HospitalAddress:any;
+  Phone:any;
+  EmailId:any;
+  
+  constructor() {}
 
   ngOnInit(): void {
+  
+    this.HospitalName='GANGAMI HOSPITAL'
+    this.HospitalAddress='Plot No 1 CS No 279/2, Solapur City, Near Railway Under Park Modi Khana, Solapur-413007';
+    this.Phone='9765999855';
+    this.EmailId='GangamaiHospitalsolapur@gmail.com';
+
+  
   }
 
+// addData(){
+  
+//   this.HospitalName='GANGAMI HOSPITAL'
+//     this.HospitalAddress='Plot No 1 CS No 279/2, Solapur City, Near Railway Under Park Modi Khana, Solapur-413007';
+//     this.Phone='9765999855';
+//     this.EmailId='GangamaiHospitalsolapur@gmail.com';
+
+// }
+  
 }

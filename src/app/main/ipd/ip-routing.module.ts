@@ -72,13 +72,11 @@ const appRoutes: Routes = [
         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
             // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
     },
-    
-       
-    {
-         path: "companysettlement", 
+     {
+         path: "ip-addCharges", 
          loadChildren: () =>
-         import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
-    },
+         import("./ip-settlement/ip-settlement.module").then((m) => m.IPSettlementModule),
+        }
 
 //     {
 //         path: "viewpathologyreport", 

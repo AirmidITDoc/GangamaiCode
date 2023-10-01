@@ -26,6 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     MatCardModule,
     MatTabsModule
+    
   ],
   exports: [
     TrimPipe,

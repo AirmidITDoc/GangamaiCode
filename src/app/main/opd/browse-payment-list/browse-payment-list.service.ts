@@ -48,5 +48,9 @@ export class BrowsePaymentListService {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint", PaymentId)
   }    
 
+  
 
+  public getHospital() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Hospital", {})
+  }  
 }

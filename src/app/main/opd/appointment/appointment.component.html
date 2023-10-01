@@ -1,8 +1,3 @@
-
-<!-- <div appInfohead></div> -->
-
-<!-- <span><app-header (dateTimeEventEmitter)="addData($event)"></app-header></span> -->
-
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
   <mat-toolbar class="accent"
@@ -132,7 +127,7 @@
 
                   <div fxlayout="row">
                     <div style="width: 100%;">
-                    
+
                       <mat-table #table matSort table="table1" [dataSource]="dataSource"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
@@ -347,8 +342,8 @@
                     </mat-form-field>
 
                     <span style="color: black;font-weight: bold;color: black;">
-                        <app-common-date [screenFrom]="screenFromString" style="float:right"
-                          (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                      <app-common-date [screenFrom]="screenFromString" style="float:right"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </span>
                   </div>
 
@@ -485,7 +480,8 @@
                         <mat-label>Age (Y)</mat-label>
                         <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
                           [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" required
-                          type="number" maxlength="4"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                          type="number" maxlength="4"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                           enter Age Year </mat-error>
@@ -496,7 +492,8 @@
                         <mat-label>Age (M)</mat-label>
                         <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
                           [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
-                          maxlength="2"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                          maxlength="2"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
                           Please enter Age Month </mat-error>
@@ -506,7 +503,8 @@
                         <mat-label>Age (D)</mat-label>
                         <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput
                           [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event" type="number"
-                          maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);" >
+                          maxlength="2"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                         <mat-error
                           *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
                           Please enter Age Day </mat-error>
@@ -532,7 +530,8 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile Number</mat-label>
                         <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
+                          [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
                           type="number" value="MobileNo.length">
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
@@ -689,7 +688,7 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" *ngIf="isCompanySelected"
                       style="padding-bottom: 10px;">
 
-                   
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Company Name </mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
@@ -707,7 +706,7 @@
                         </mat-autocomplete>
                       </mat-form-field>
 
-                       
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Sub Company Name </mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select SubCompany" matInput
@@ -725,7 +724,7 @@
                         </mat-autocomplete>
                       </mat-form-field>
 
-                    
+
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-bottom: 10px;">
@@ -906,7 +905,7 @@
                         </ng-container>
                       </div>
                     </div>
-                   
+
 
                   </div>
 
@@ -962,7 +961,7 @@
                             Action
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact">
-                          
+
                             <button mat-icon-button (click)="deleteTableRow(contact)" color="warn">
                               <mat-icon>delete_outline</mat-icon>
                             </button>
@@ -1008,4 +1007,11 @@
       <!-- </div> -->
     </mat-tab>
   </mat-tab-group>
+</div>
+
+TempDesign
+<div>
+  Strheader
+  <div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span
+      style="font-weight:700">OPD PAYMENT RECEIPT</span></div>
 </div>

@@ -41,6 +41,8 @@ import { PatientAppointmentComponent } from './patient-appointment/patient-appoi
 import { ImageViewComponent } from './image-view/image-view.component';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
+import { HeaderComponent } from "app/main/shared/componets/header/header.component";
+import { InfoheadDirective } from './infohead.directive';
 
 const routes: Routes = [
     {
@@ -58,6 +60,7 @@ const routes: Routes = [
         PatientAppointmentComponent,
         ImageViewComponent,
         CameraComponent,
+        InfoheadDirective,
         
     ],
     imports: [
