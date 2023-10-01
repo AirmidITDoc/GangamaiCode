@@ -30,11 +30,8 @@ import { AdvanceDataStored } from "app/main/ipd/advance";
 import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
 import { MatStepper } from "@angular/material/stepper";
 import { AuthenticationService } from "app/core/services/authentication.service";
-<<<<<<< HEAD
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
-=======
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
->>>>>>> d0a5e9eb62f719f247b86fc28868eedc4e46505c
 
 
 export class DocData {
@@ -231,10 +228,8 @@ export class AppointmentComponent implements OnInit {
     
     dataSource = new MatTableDataSource<VisitMaster>();
     menuActions: Array<string> = [];
-    //datePipe: any;
-    
-    displayedColumns1 = [
 
+    displayedColumns1 = [
         'DocumentName',
         'DocumentPath',
         'buttons'

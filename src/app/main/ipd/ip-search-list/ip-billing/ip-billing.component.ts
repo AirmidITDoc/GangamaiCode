@@ -629,7 +629,7 @@ export class IPBillingComponent implements OnInit {
   onOk() {
     // this.dialogRef.close({ result: "ok" });
   }
-  onCancel() {
+  onClose() {
     // this.dialogRef.close({ result: "cancel" });
   }
 
