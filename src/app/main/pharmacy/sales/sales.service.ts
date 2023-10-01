@@ -55,8 +55,8 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
 
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
   public getItemList(Param){
