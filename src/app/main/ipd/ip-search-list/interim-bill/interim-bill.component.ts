@@ -13,6 +13,7 @@ import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-paym
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -43,6 +44,7 @@ export class InterimBillComponent implements OnInit {
   ConcessionId :any;
   BalanceAmt:any;
   selectedAdvanceObj: Bill;
+  vPatientHeaderObj:Bill;
   reportPrintObj: ReportPrintObj;
   reportPrintObjList: ReportPrintObj[] = [];
   subscriptionArr: Subscription[] = [];
@@ -52,6 +54,8 @@ export class InterimBillComponent implements OnInit {
   vTotalBillAmt:any = 0;
   vDiscountAmt: any = 0;
   vNetAmount:any = 0 ;
+
+  CashCounterList: any = [];
 
   displayedColumns = [
   
@@ -74,6 +78,7 @@ export class InterimBillComponent implements OnInit {
 
   constructor(
     public _IpSearchListService:IPSearchListService,
+    public _printpreview:PrintPreviewService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe, 
     private advanceDataStored: AdvanceDataStored,
@@ -96,53 +101,49 @@ export class InterimBillComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.data = [];
     this.dataSource.data = this.interimArray;
-    console.log( this.dataSource.data);
+    // console.log( this.dataSource.data);
 
     if(this.advanceDataStored.storage) {
-      debugger;
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
       console.log(this.selectedAdvanceObj);
     } 
+
+    this.getCashCounterComboList();
   }
 
   InterimForm(): FormGroup {
     return this.formBuilder.group({
-     
       NetpayAmount: [Validators.pattern("^[0-9]*$")],
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
       ConcessionId :[''],
       Remark: [''],
-     
-
-      price: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        qty: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        TotalAmount: [Validators.pattern("^[0-9]*$")],
-        doctorId: [''],
-        DoctorID: [''],
-        discPer: [Validators.pattern("^[0-9]*$")],
-        paidAmt: [''],
-        discAmt: [Validators.pattern("^[0-9]*$")],
-        balanceAmt: [''],
-        netAmount: [''],
-        totalAmount: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        discAmount: [''],
-        // BillingClassId:[''],
-        BillDate: [''],
-        BillRemark: [''],
-        SrvcName: [''],
-        TotalAmt: [0],
-        concessionAmt: [0],
-        FinalAmount: [0],
-        ClassId: [],
-        Percentage:[Validators.pattern("^[0-9]*$")],
-        AdminCharges:[0],
-        Amount:[Validators.pattern("^[0-9]*$")],
-        ConcessionAmt: [''],
-        GenerateBill: ['0'],
+      price: [Validators.required,Validators.pattern("^[0-9]*$")],
+      qty: [Validators.required,Validators.pattern("^[0-9]*$")],
+      TotalAmount: [Validators.pattern("^[0-9]*$")],
+      doctorId: [''],
+      DoctorID: [''],
+      discPer: [Validators.pattern("^[0-9]*$")],
+      paidAmt: [''],
+      discAmt: [Validators.pattern("^[0-9]*$")],
+      balanceAmt: [''],
+      netAmount: [''],
+      totalAmount: [Validators.required,Validators.pattern("^[0-9]*$")],
+      discAmount: [''],
+      BillDate: [''],
+      BillRemark: [''],
+      SrvcName: [''],
+      TotalAmt: [0],
+      concessionAmt: [0],
+      FinalAmount: [0],
+      ClassId: [],
+      Percentage:[Validators.pattern("^[0-9]*$")],
+      AdminCharges:[0],
+      Amount:[Validators.pattern("^[0-9]*$")],
+      ConcessionAmt: [''],
+      GenerateBill: ['0'],
+      CashCounterId:0
     });
   }
 
@@ -154,10 +155,15 @@ export class InterimBillComponent implements OnInit {
     return netAmt;
   }
 
+  getCashCounterComboList() {
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+    });
+  }
+
   getNetAmount(){
     this.vNetAmount=this.vTotalBillAmt - this.vDiscountAmt
     this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
-    
   }
 
   onSave() {
@@ -190,7 +196,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
     insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
     insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value || 0
+    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value.CashCounterId || 0
    // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
     let billDetailsInsert = [];
     
@@ -203,13 +209,7 @@ export class InterimBillComponent implements OnInit {
     billDetailsInsert.push(billDetailsInsert1Obj);
     });  
 
-    
-    // let billIPInterimBillingUpdate = {};
-
-    // billIPInterimBillingUpdate['billNo'] =0;
-
     let PatientHeaderObj = {};
-
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] = this.netAmount;
@@ -217,8 +217,6 @@ export class InterimBillComponent implements OnInit {
      const interimBillCharge = new interimBill(interimBillChargesobj);
      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
     //  const billDetailsInsert1 = new billDetails(billDetailsInsert1Obj);
-    
-    
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
@@ -241,12 +239,10 @@ export class InterimBillComponent implements OnInit {
           };
         console.log(submitData);
           this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
-            
             if (response) {
               Swal.fire('Congratulations !', 'Interim data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                //   let m=response;
-                debugger;
                   this.getIPIntreimBillPrint(response);
                   this._matDialog.closeAll();
                 }
@@ -335,22 +331,18 @@ var strabc = `
         this.printTemplate = this.printTemplate.replace('StrNetPayableAmt','₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrConcessionAmount','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-        debugger;
         this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (this.BalanceAmt.toFixed(2)));
-      
         this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-    
-
         this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
-          this.print();
+          // this.print();
+          this._printpreview.PrintPreview(this.printTemplate);
         }, 1000);
     });
   }
 
-  transform(value: string) {
+transform(value: string) {
     var datePipe = new DatePipe("en-US");
      value = datePipe.transform(value, 'dd/MM/yyyy ');
      return value;
@@ -377,7 +369,6 @@ convertToWord(e){
 
 // GET DATA FROM DATABASE 
 getIPIntreimBillPrint(el) {
-   debugger;
   var D_data = {
     "BillNo":el,
   }
@@ -389,12 +380,8 @@ getIPIntreimBillPrint(el) {
       console.log(res);
       this.reportPrintObjList = res as ReportPrintObj[];
       this.reportPrintObj = res[0] as ReportPrintObj;
-    
-    
-    console.log(this.reportPrintObj);
+      // console.log(this.reportPrintObj);
       this.getTemplate();
-      // console.log(res);
-      
     })
   );
 }
