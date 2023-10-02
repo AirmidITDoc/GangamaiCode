@@ -136,6 +136,21 @@
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
+                                    <ng-container matColumnDef="IsMLC" sticky>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">IsMLC
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                          <mat-icon
+                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                            *ngIf="contact.IsMLC=='0' " matTooltip="IsMLC" class=" orange-600 s-16 ">circle
+                                          </mat-icon>
+                                          <mat-icon
+                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                            *ngIf="contact.IsMLC=='1' " matTooltip="IsNotMLC" class="green-600 s-16 ">circle
+                                          </mat-icon>
+                                        </mat-cell>
+                                      </ng-container>
+
                                     <ng-container matColumnDef="IsBillGenerated">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
