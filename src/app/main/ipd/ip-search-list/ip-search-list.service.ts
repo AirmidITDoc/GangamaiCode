@@ -482,44 +482,42 @@ constructor(public _httpClient:HttpClient,
     return this._httpClient.post("Generic/GetByProc?procName=rptOP_DepartmentChart_Range", params)
   }
 
-  public getCollectionSummaryChart(params)
-  {
+ public getCollectionSummaryChart(params){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CollectionSummary_Range", params)
-  }
+}
 
-  public getInventoryDashboard()
-  {
+public getInventoryDashboard(){
     return this._httpClient.post("Generic/GetByProc?procName=rptInventoryDashboard",{})
-  }
+}
 
-  public getInvPurchaseOrderDashChart(params)
-  {
+public getInvPurchaseOrderDashChart(params){
     return this._httpClient.post("Generic/GetByProc?procName=rptInv_StoreWPurchase_Range", params)
-  }
-  // 
-  public getAdmittedPatientList(employee) {
+}
+
+public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
-  }  
+}  
 
-  public getDischargedPatientList(employee) {
+public getDischargedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
-  }  
-  public getDischargePatientList() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_dischargesimple",{})
-  }  
-  
-  public getBankMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
-  }
+}  
 
-  public getPaymentPrint (paymentid){
+public getDischargePatientList() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_dischargesimple",{})
+}  
+  
+public getBankMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+}
+
+public getPaymentPrint (paymentid){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", paymentid)
-  }
+}
 
   //Doctor 1 Combobox List
-  public getDischaregDoctor1Combo() {
+public getDischaregDoctor1Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
-  }
+}
 //Doctor 1 Combobox List
 public getDischaregDoctor2Combo() {
   return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
