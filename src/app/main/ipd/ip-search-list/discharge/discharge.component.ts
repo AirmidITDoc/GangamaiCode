@@ -325,14 +325,13 @@ debugger;
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
+    
     this.dateTimeObj = dateTimeObj;
   }
 
   DischargedateTimeObj: any;
   getDischargeDateTime(DischargedateTimeObj) {
-    // console.log('dateTimeObj==',DischargedateTimeObj);
-    this.DischargedateTimeObj = DischargedateTimeObj;
+        this.DischargedateTimeObj = DischargedateTimeObj;
   }
 
 

@@ -539,7 +539,8 @@
                     <mat-label>Age (Y)</mat-label>
                     <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput min="0"
                       [ngModel]="registerObj.AgeYear" (ngModelChange)="registerObj.AgeYear = $event" type="number"
-                      minlength="1" maxlength="4"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                      minlength="1" maxlength="4"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                     <mat-error
                       *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                       enter Age Year </mat-error>
@@ -549,7 +550,8 @@
                     <mat-label>Age (M)</mat-label>
                     <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput min="0"
                       [ngModel]="registerObj.AgeMonth" (ngModelChange)="registerObj.AgeMonth = $event" type="number"
-                      minlength="1" maxlength="2"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                      minlength="1" maxlength="2"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                     <mat-error
                       *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
                       Please enter Age Month </mat-error>
@@ -559,7 +561,8 @@
                     <mat-label>Age (D)</mat-label>
                     <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0" minlength="1"
                       maxlength="2" [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event"
-                      type="number"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                      type="number"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                     <mat-error
                       *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
                       Please enter Age Day </mat-error>
@@ -586,7 +589,8 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Mobile Number</mat-label>
                     <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                      [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
+                      [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
                       required="required" type="number" value="9876658688">
                     <mat-error class="error"
                       *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
