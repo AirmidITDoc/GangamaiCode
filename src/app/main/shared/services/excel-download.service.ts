@@ -13,9 +13,10 @@ export class ExcelDownloadService {
   constructor() { }
 
   getExportJsonData(dataSource: any, requiredHeaders: any, fileName: string) {
-    let newOb = {};
+    
     const exportData = [];
     dataSource.forEach(element => {
+      let newOb = {};
       requiredHeaders.forEach(headerElement => {
         newOb[headerElement] = element[headerElement];
       });
