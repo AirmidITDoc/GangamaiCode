@@ -1,5 +1,5 @@
 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"
-    style="background-color: #F5F5F5;height:auto;">
+    style="background-color: #F5F5F5;">
 
 
     <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -10,7 +10,7 @@
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px; font-weight: 500;width:90%;">
-                Payment : &nbsp;
+                Payment Settlement
                 <!-- <span> RegNo - {{selectedAdvanceObj.OPD_IPD_Id}} - {{selectedAdvanceObj.PatientName}}</span> -->
             </span>
 
@@ -27,9 +27,60 @@
     </div>
 
     <div>
+        <div style="padding: 3px;">
+            <div fxFlex fxFlex.gt-sm fxLayout="row" fxLayout.gt-xs="column"
+                style="width:100%; ;margin-left: 1px; margin-right: 5px; margin-top: 7px;margin-left: 7px;overflow: auto ;background-color:white !important; "
+                fusePerfectScrollbar>
 
+                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
-        <div style="height:600px;width:100%;">
+                        <div class="redio-container">
+                         
+                            <mat-form-field appearance="outline" style="width:50%;margin-left:15px;"
+                                disabled="isRegSearchDisabled">
+                                <input type="text" name="RegId" formControlName="RegId"
+                                    placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                    [matAutocomplete]="auto" (input)="getSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                    (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
+                                    Required field cannot be left blank
+                                </mat-error>
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Hospital Name</mat-label>
+                                <mat-select name="HospitalId" formControlName="HospitalId" required>
+                                    <mat-option></mat-option>
+                                    <mat-option *ngFor="let m of HospitalList" [value]="m">
+                                        {{m.HospitalName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                         
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div style="width:100%;">
 
             <div style="border-radius:4px;">
                 <!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
@@ -55,7 +106,7 @@
                                         </div>
 
                                         <mat-table class="table1" #table matSort [dataSource]="dataSource"
-                                            [@animateStagger]="{value:'50'}">
+                                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
                                             <ng-container matColumnDef="BillNo">
@@ -125,7 +176,8 @@
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                                     Action</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact">
-                                                    <button mat-icon-button  (click)="getViewbill1(contact)"><mat-icon>how_to_reg</mat-icon></button>
+                                                    <button mat-icon-button
+                                                        (click)="getViewbill1(contact)"><mat-icon>how_to_reg</mat-icon></button>
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print" matTooltip="Bill Print">
                                                         <mat-icon>print</mat-icon>
@@ -199,7 +251,7 @@
                                                 <!-- (change)='Adminchargeselect($event)' -->
                                             </div>
                                             <mat-table class="table2" #table matSort [dataSource]="dataSource1"
-                                                [@animateStagger]="{value:'50'}">
+                                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
                                                 <ng-container matColumnDef="BillNo">

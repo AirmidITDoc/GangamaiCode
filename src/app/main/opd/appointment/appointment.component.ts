@@ -30,6 +30,7 @@ import { AdvanceDataStored } from "app/main/ipd/advance";
 import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
 import { MatStepper } from "@angular/material/stepper";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { HeaderComponent } from "app/main/shared/componets/header/header.component";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 
 
@@ -227,10 +228,8 @@ export class AppointmentComponent implements OnInit {
     
     dataSource = new MatTableDataSource<VisitMaster>();
     menuActions: Array<string> = [];
-    //datePipe: any;
-    
-    displayedColumns1 = [
 
+    displayedColumns1 = [
         'DocumentName',
         'DocumentPath',
         'buttons'
@@ -341,7 +340,8 @@ export class AppointmentComponent implements OnInit {
         
       });
     }
-  
+
+      
     DocSelectdelete() {
     
       this.VisitFormGroup.get('RefDocId').setValue(null);
@@ -1115,16 +1115,18 @@ export class AppointmentComponent implements OnInit {
           //  visitSave['IsMark'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
     
           submissionObj['visitSave'] = visitSave;
-    
+   
           tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
           submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
           this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
             if (response) {
+              debugger
               Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  this._matDialog.closeAll();
-                  this.getVisitList();
-                }
+                // if (result.isConfirmed) {
+                  // this._matDialog.closeAll();
+                  this.getPrint(result);
+                  // this.getVisitList();
+                // }
               });
             } else {
               Swal.fire('Error !', 'Appoinment not saved', 'error');
@@ -1202,6 +1204,7 @@ export class AppointmentComponent implements OnInit {
                         if (response) {
               Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
                 if (result.isConfirmed) {
+                  this.getPrint(response);
                   this._matDialog.closeAll();
                 }
                 this.getVisitList();
@@ -1354,7 +1357,7 @@ export class AppointmentComponent implements OnInit {
     }
 
     newappointment() {
-        const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+        const dialogRef = this._matDialog.open(HeaderComponent, {
             maxWidth: "110vw",
             height: "850px",
             width: "100%",
@@ -1441,10 +1444,12 @@ export class AppointmentComponent implements OnInit {
                         this.reportPrintObj[keysArray[i]]
                     );
                 }
+                let strabc ='<div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/Hospital_logo.jpg" width="110" height="110"> <div> <div  style="font-weight:700;font-size:30px;text-align:left;width:1100px;margin-left:290px;font-family:serif;font-size:x-large;padding-top:10px">  {{HospitalName}}</div> <div   style="color:#464343;text-align:left;font-size:18px;width:1100px;margin-left:90px;font-family:serif;font-weight:700">   {{HospitalAddress}}</div> <div style="color:#464343;text-align:left;font-size:18px;width:900px;margin-left:180px;font-family:serif;font-weight:700"> Call:- {{Phone}}, EmailId : {{EmailId}}</div> </div> </div>'
 
                 this.printTemplate = this.printTemplate.replace("StrPrintDate",this.transform2(this.currentDate.toString()));
                 this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
                 this.printTemplate = this.printTemplate.replace('StrPreviousVisitDate', this.transform2(this.reportPrintObj.PreviousVisitDate));
+                this.printTemplate = this.printTemplate.replace('Strheader', strabc);
                 this.printTemplate = this.printTemplate.replace(/{{.*}}/g, "");
                 setTimeout(() => {
                     this.print();
@@ -1500,6 +1505,7 @@ export class AppointmentComponent implements OnInit {
           <title></title>
       </head>
     `);
+    
         popupWin.document
             .write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
@@ -1639,6 +1645,7 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
   backClicked() {
     this.appointmentFormStepper.previous();
   }
+
 
   onClose() {
 

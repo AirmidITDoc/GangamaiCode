@@ -41,10 +41,7 @@ export class IPBillBrowseListComponent implements OnInit {
   companyList: any = [];
 
   isCompanySelected: boolean = false;
-
-
   optionsCompany: any[] = [];
-
   filteredOptionsCompany: Observable<string[]>;
 
 
@@ -185,7 +182,7 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
 
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
         maxWidth: "95vw",
         height: '740px',
@@ -281,7 +278,7 @@ export class IPBillBrowseListComponent implements OnInit {
           Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
             if (result) {
               // let m = response;
-              // this.getPrint(m);
+              this.getPrint(response);
               this._matDialog.closeAll();
             }
           });

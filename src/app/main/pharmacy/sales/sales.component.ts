@@ -74,7 +74,7 @@ export class SalesComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService,
 
   ) { }
 
@@ -94,44 +94,6 @@ export class SalesComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-
-
-  // getIndentID() {
-  //   // this.sIsLoading = 'loading-data';
-  //   var Param = {
-
-  //     "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-  //     "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-  //   }
-  //   this._IndentID.getIndentID(Param).subscribe(data => {
-  //     this.dsIndentID.data = data as IndentID[];
-  //     console.log(this.dsIndentID.data)
-  //     this.dsIndentID.sort = this.sort;
-  //     this.dsIndentID.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-
-  // getIndentList(Params) {
-  //   // this.sIsLoading = 'loading-data';
-  //   var Param = {
-  //     "IndentId": Params.IndentId
-  //   }
-  //   this._IndentID.getIndentList(Param).subscribe(data => {
-  //     this.dsIndentList.data = data as IndentList[];
-  //     this.dsIndentList.sort = this.sort;
-  //     this.dsIndentList.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
 
   getPharItemList() {
     var m_data = {
@@ -172,9 +134,12 @@ export class SalesComponent implements OnInit {
   // }
 
   gePharStoreList() {
-    this._salesService.getStoreFromList().subscribe(data => {
+    var vdata={
+      Id : this._loggedService.currentUserValue.user.storeId
+    }
+    this._salesService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
-      this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[20]);
+      this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
     });
   }
 

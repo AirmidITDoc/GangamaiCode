@@ -601,7 +601,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    debugger;
+    
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
@@ -917,8 +917,7 @@ export class AdmissionComponent implements OnInit {
   getDoctorList() {
     this._AdmissionService.getDoctorMaster().subscribe(data => {
       this.searchDoctorList = data;
-      console.log(data)
-      this.optionsSearchDoc = this.searchDoctorList.slice();
+       this.optionsSearchDoc = this.searchDoctorList.slice();
       this.filteredOptionssearchDoctor = this._AdmissionService.myFilterform.get('searchDoctorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
@@ -1058,8 +1057,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   OnChangeBedList(wardObj) {
-    debugger
-    this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
+        this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
       this.optionsBed = this.BedList.slice();
       this.filteredOptionsBed = this.wardFormGroup.get('BedId').valueChanges.pipe(
@@ -1246,12 +1244,13 @@ export class AdmissionComponent implements OnInit {
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
       
          this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
-        console.log(response);
+      
         if (response) {
+          
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              let m = response;
-              this.getPrint(m);
+              
+              this.getAddmissionPrint(response);
               this._matDialog.closeAll();
 
             }
@@ -1318,12 +1317,12 @@ export class AdmissionComponent implements OnInit {
 
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
-        console.log(submissionObj);
+        
         if (response) {
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-
+              this.getAddmissionPrint(response);
             }
           });
         } else {
@@ -1338,17 +1337,16 @@ export class AdmissionComponent implements OnInit {
 
 
   onEdit(row) {
-    console.log(row);
+    
     this.registerObj = row;
     this.getSelectedObj(row);
   }
 
   getAdmittedDoctorCombo() {
-    debugger;
+    
     this._AdmissionService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
-      console.log(data);
-      this.filtereddoctor.next(this.doctorNameCmbList.slice());
+         this.filtereddoctor.next(this.doctorNameCmbList.slice());
     });
   }
 
@@ -1356,13 +1354,12 @@ export class AdmissionComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
 
     this.dataSource.data = changes.dataArray.currentValue as Admission[];
-    // this.isLoading = false;
-    this.dataSource.sort = this.sort;
+     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
   onDoctorOneChange(value) {
-    console.log(this.hospitalFormGroup.get('DoctorIdOne').value);
+    
   }
 
   backClicked() {
@@ -1371,7 +1368,6 @@ export class AdmissionComponent implements OnInit {
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -1391,7 +1387,7 @@ export class AdmissionComponent implements OnInit {
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": "0",
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value + '%' || "%",
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
     }
   
     setTimeout(() => {
@@ -1444,15 +1440,12 @@ export class AdmissionComponent implements OnInit {
   get f() { return this._AdmissionService.myFilterform.controls; }
 
   getRecord(contact, m): void {
-    console.log(contact);
-
-    debugger
+   
     if (m == "Edit Admission") {
       let Regdata;
       this._AdmissionService.getRegdata(contact.RegID).subscribe(data => {
         Regdata = data as RegInsert[];
-        console.log(Regdata);
-
+        
       },
         error => {
           this.sIsLoading = '';
@@ -1513,8 +1506,7 @@ export class AdmissionComponent implements OnInit {
         IsMLC: contact.IsMLC
 
       };
-      console.log(xx);
-
+      
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       this._AdmissionService.populateForm(xx);
       const dialogRef = this._matDialog.open(MLCInformationComponent,
@@ -1568,14 +1560,12 @@ export class AdmissionComponent implements OnInit {
         SubCompanyId: contact.SubTpaComId
 
       };
-      console.log(xx);
-
+    
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       this._AdmissionService.populateForm(xx);
       const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
         {
           maxWidth: '85vw',
-
           height: '600px', width: '100%',
         });
 
@@ -1587,7 +1577,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getViewbAdmission(contact) {
-    console.log(contact);
+    
     let xx = {
 
       RegNo: contact.RegId,
@@ -1622,8 +1612,6 @@ export class AdmissionComponent implements OnInit {
       ServiceName: contact.ServiceName,
       Price: contact.Price,
       Qty: contact.Qty,
-
-
 
     };
     this.advanceDataStored.storage = new AdmissionPersonlModel(xx);
@@ -1676,8 +1664,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getPrint(el) {
-    console.log(el);
-    debugger;
+   debugger
     var D_data = {
       "AdmissionId": el.AdmissionID
     }
@@ -1687,8 +1674,25 @@ export class AdmissionComponent implements OnInit {
       this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
         this.reportPrintObj = res[0] as Admission;
         this.getTemplate();
-        console.log(this.reportPrintObj);
+        
+      })
+    );
+  }
 
+
+  getAddmissionPrint(el) {
+   
+    var D_data = {
+      "AdmissionId": el
+    }
+    
+    let printContents; 
+    this.subscriptionArr.push(
+      this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
+        this.reportPrintObj = res[0] as Admission;
+        console.log(this.reportPrintObj )
+        this.getTemplate();
+        
       })
     );
   }
@@ -1709,6 +1713,13 @@ export class AdmissionComponent implements OnInit {
     `);
     popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
+
+    if (this.reportPrintObj.CompanyName === null) {
+      popupWin.document.getElementById('idcomapny').style.display = 'none';
+    }
+    if (this.reportPrintObj.RefDoctorName === null) {
+      popupWin.document.getElementById('idrefdr').style.display = 'none';
+    }
     popupWin.document.close();
   }
 
@@ -1729,6 +1740,7 @@ export class Admission {
   EmailId: any;
   DocNameID: number;
   RefDocNameID: number;
+  RefDoctorName:any;
   RoomId: number;
   BedId: number;
   DischargeDate: Date;
@@ -1821,7 +1833,7 @@ export class Admission {
       this.AdmittedDoctor2 = Admission.AdmittedDoctor2 || '';
       this.SubTPAComp = Admission.SubTPAComp || '';
       this.IsReimbursement = Admission.IsReimbursement || '';
-
+      this.RefDoctorName=Admission.RefDoctorName || '';
       this.PrefixID = Admission.PrefixID || 0;
       this.PrefixName = Admission.PrefixName || '';
       this.PatientName = Admission.PatientName || '';

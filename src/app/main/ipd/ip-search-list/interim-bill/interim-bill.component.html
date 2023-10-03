@@ -5,9 +5,7 @@
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-        </mat-icon> -->
-
+           
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 82%; font-weight: 400;">
                 Interim Of BILL
@@ -61,19 +59,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-
-                                        <!-- <ng-container matColumnDef="Price">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                               
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.Price"
-                                                        (keyup)="getTotalAmount(contact)">
-                                                    <span matPrefix>₹</span>
-                                                                                                    </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                         <ng-container matColumnDef="Price">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
@@ -190,38 +175,45 @@
                             <div fxFlex.gt-sm="25%" fxFlex fxLayoutGap="5px"
                                 style="background-color: white; padding: 3px 3px 3px 3px;border: rgb(247, 218, 218) 1px solid; padding:5px;">
                                 <mat-card fxFlex.gt-sm="100%" fxFlex
-                                    style="padding: 0 9px; height: fit-content;height:300px !important;">
+                                    style="padding: 0 9px; height: fit-content;height:500px !important;">
                                     <div class="bill-amts" fxFlexFill fxLayout="column">
                                         <form [formGroup]="InterimFormGroup" style="width:100%;">
-                                            <br>
-
-                                            <div style="margin-bottom: 7px;">
-                                                <div fxLayoutAlign=" start  end"
-                                                    style="margin-right:0px;float: left;font-size: 12px bolder; color: black;">
-                                                    Total Amount:
-                                                </div>
-
-                                                &nbsp;<span class="net-amt-value">{{getNetAmtSum(dataSource.data)|
-                                                    currency:'INR'}}</span>
+                                            <div>
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Total Amount</mat-label>
+                                                    <input matInput [(ngModel)]="vTotalBillAmt" name="vTotalBillAmt" formControlName="TotalAmt" 
+                                                      style="font-weight:bold;font-size: 15px;text-align: right;" readonly>
+                                                </mat-form-field>&nbsp;
+                                            </div>
+                                            <div>
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Concession Amount</mat-label>
+                                                    <input matInput [(ngModel)]="vDiscountAmt" name="vDiscountAmt"formControlName="concessionAmt"
+                                                         (keyup)="getNetAmount()" style="font-weight:bold;font-size: 15px;text-align: right;">
+                                                </mat-form-field>
                                             </div>
                                             <div>
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Net Paid Amount</mat-label>
-                                                    <input matInput [(ngModel)]="netbillamt"
-                                                        formControlName="NetpayAmount" name="NetpayAmount"
-                                                        type="number" readonly>
-                                                    <!-- <mat-error class="error"
-                                                    *ngIf="InterimFormGroup.get('NetpayAmount').invalid &&  .get('NetpayAmount').touched">
-                                                    Net Bill Amount is required</mat-error> -->
+                                                    <input matInput [(ngModel)]="vNetAmount"formControlName="NetpayAmount" name="NetpayAmount"
+                                                        type="number"  style="font-weight:bold;font-size: 15px;text-align: right;" readonly>
                                                 </mat-form-field>
                                             </div>
 
                                             <div fxLayout="row" fxLayoutGap="4px">
-
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Remark</mat-label>
-                                                    <input matInput [(ngModel)]="Remark" formControlName="Remark"
-                                                        name="Remark">
+                                                    <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark">
+                                                </mat-form-field>
+                                            </div>
+                                            <div>
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Cash Counter</mat-label>
+                                                    <mat-select formControlName="CashCounterId" required>
+                                                        <mat-option *ngFor="let m of CashCounterList" [value]="m">
+                                                            {{m.CashCounterName}}
+                                                        </mat-option>
+                                                    </mat-select>
                                                 </mat-form-field>
                                             </div>
 

@@ -1,3 +1,8 @@
+
+<!-- <span><app-header>Hi</app-header></span> -->
+
+
+
 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; ">
   <!-- <div class="col-md-12" style="padding:10px;" *ngIf="selectedView == 'Dropdown'"> -->
   <div class="container" style="width: 100%;">
@@ -206,7 +211,7 @@
                       <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
                         style="padding-bottom: 10px;">
 
-                      
+
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Prefix</mat-label>
                           <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
@@ -230,7 +235,7 @@
                           <mat-label>First Name</mat-label>
                           <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required
                             [(ngModel)]="registerObj.FirstName">
-                             <!-- onkeypress=" (event.charCode > 64 && 
+                          <!-- onkeypress=" (event.charCode > 64 && 
                             event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
                           <mat-error
                             *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
@@ -242,8 +247,8 @@
                           <mat-label>Middle Name</mat-label>
                           <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
                             [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('MiddleName').errors }"
-                            matInput [(ngModel)]="registerObj.MiddleName"  type="text">
-                             <!-- onkeypress=" (event.charCode > 64 && 
+                            matInput [(ngModel)]="registerObj.MiddleName" type="text">
+                          <!-- onkeypress=" (event.charCode > 64 && 
                             event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
                           <mat-error class="error"
                             *ngIf="personalFormGroup.get('MiddleName').invalid && personalFormGroup.get('MiddleName').touched">
@@ -256,8 +261,8 @@
                           <mat-label>Last Name</mat-label>
                           <input name="LastName" formControlName="LastName" placeholder="Last Name"
                             [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('LastName').errors }" matInput
-                            required [(ngModel)]="registerObj.LastName"  type="text">
-                             <!-- onkeypress=" (event.charCode > 64 && 
+                            required [(ngModel)]="registerObj.LastName" type="text">
+                          <!-- onkeypress=" (event.charCode > 64 && 
                             event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"> -->
                           <mat-error class="error"
                             *ngIf="personalFormGroup.get('LastName').invalid && personalFormGroup.get('LastName').touched">Last
@@ -588,7 +593,7 @@
                           </mat-autocomplete>
                         </mat-form-field>
 
-                        
+
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Ref Doctor Name</mat-label>
                           <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor " matInput
@@ -599,7 +604,7 @@
                             <mat-icon class="mat-icon-close"
                               (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
                           </span>
-                            <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                          <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                             <mat-option *ngFor="let option of filteredOptionsRefDoc | async" [value]="option">
                               {{option.DoctorName}}
                             </mat-option>
@@ -620,7 +625,7 @@
                         </mat-form-field> -->
 
 
-                        
+
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Purpose</mat-label>
                           <input matAutocompletePosition="below" type="text" placeholder="Select Purpose" matInput
@@ -632,7 +637,7 @@
                               (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">search</mat-icon>
                           </span>
                           <mat-autocomplete #autoPurpose="matAutocomplete" [displayWith]="getOptionTextPurpose">
-                            <mat-option *ngFor="let option of filteredOptionsPurpose | async" [value]="option">                              
+                            <mat-option *ngFor="let option of filteredOptionsPurpose | async" [value]="option">
                               {{option.PurposeName}}
                             </mat-option>
                           </mat-autocomplete>
@@ -666,3 +671,4 @@
 </div>
 
 //
+TempDesign

@@ -104,11 +104,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                              
+
                                 <mat-table #table matSort table="table1" [dataSource]="dataArray"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
-                                   
+
                                     <ng-container matColumnDef="RegNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
                                         </mat-header-cell>
@@ -187,7 +187,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="buttons" sticky>
+                                    <ng-container matColumnDef="buttons" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions"
                                             style="color: white;">Action
                                         </mat-header-cell>
@@ -238,5 +238,6 @@
         </div>
         <!-- CENTER -->
     </div>
-   
+
 </div>
+TempDesign

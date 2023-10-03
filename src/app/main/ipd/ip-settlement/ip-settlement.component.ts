@@ -17,6 +17,11 @@ import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse
 import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { IPSettlementService } from './ip-settlement.service';
+import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment-withadvance.component';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import * as converter from 'number-to-words';
+
 
 @Component({
   selector: 'app-ip-settlement',
@@ -43,6 +48,15 @@ export class IPSettlementComponent implements OnInit {
   reportPrintbillObj: ReportPrintObj;
   reportPrintbillObjList: ReportPrintObj[] = [];
 
+  searchFormGroup: FormGroup;
+  registerObj = new AdmissionPersonlModel({});
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  isRegSearchDisabled: boolean = true;
+  Regdisplay: boolean = false;
+  PatientName:any;
+  RegId:any;
+  isRegIdSelected: boolean = false;
 
   dataSource = new MatTableDataSource<PaidBilldetail>();
   displayedColumns: string[] = [
@@ -73,30 +87,36 @@ export class IPSettlementComponent implements OnInit {
   ];
 
   hasSelectedContacts: boolean;
-  constructor(public _IpSearchListService: IPSearchListService,
+  constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public datePipe: DatePipe,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
-    
-debugger;
-    if (this.data) {
-     console.log(this.data)
+    this.searchFormGroup = this.createSearchForm();
+    this.Regdisplay = true;
 
-      this.selectedAdvanceObj = this.data.advanceObj;
-      this.regId =  this.data.advanceObj.OPD_IPD_Id;
-     
-    }
+    this.searchFormGroup.get('RegId').enable();
+    this.isRegSearchDisabled = false;
+
     this.getPaidBillDetails();
     this.getCreditBillDetails();
 
   }
+
+  createSearchForm() {
+    return this.formBuilder.group({
+      regRadio: ['registration'],
+      RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
+     
+    });
+  }
+
 
   createForm() {
     this.paymentFormGroup = this.formBuilder.group({
@@ -107,19 +127,74 @@ debugger;
     }
 
 
+    
+  getSearchList() {
+    // this.searchFormGroup.get('RegId').value + '%' //
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+      this._IpSearchListService.getRegistrationList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+
+  }
+
+  getSelectedObj(obj) {
+    
+    this.registerObj = new AdmissionPersonlModel({});
+    this.registerObj = obj;
+    this.PatientName=obj.FirstName + ' ' + obj.LastName
+    this.RegId=obj.RegNo;
+  
+    // Swal.fire(this.PatientName,this.RegId)
+  }
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+   
+  }
+
+
+  onChangeReg(event) {
+    if (event.value == 'registration') {
+    //   this.personalFormGroup.get('RegId').reset();
+    //   this.personalFormGroup.get('RegId').disable();
+      this.isRegSearchDisabled = true;
+      this.registerObj = new AdmissionPersonlModel({});
+  
+
+    } else {
+      this.Regdisplay = true;
+
+      this.searchFormGroup.get('RegId').enable();
+      this.isRegSearchDisabled = false;
+
+   
+    }
+
+   
+  }
   getPaidBillDetails() {
-debugger
+
     this.sIsLoading = 'loading-data';
 
-    // this.regId=199;
+    this.regId=199;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
-   console.log(query);
+  
     this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
      this.dataSource.data = Visit as PaidBilldetail[];
      this.dataSource.sort =this.sort;
     this.dataSource.paginator=this.paginator;
-    console.log(this.dataSource.data);
+    
    this.sIsLoading = '';
       
   },
@@ -133,16 +208,15 @@ debugger
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    // this.regId=382
+    this.regId=70845
     
-  
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 40 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
      this.dataSource1.data = Visit as CreditBilldetail[];
      this.dataSource1.sort =this.sort;
     this.dataSource1.paginator=this.paginator;
-   //  console.log(this.dataSource.data);
+   
    this.sIsLoading = '';
       
   },
@@ -174,20 +248,20 @@ debugger
   
   addpayment(contact) {
     debugger;
-   console.log(contact);
+  //  console.log(contact);
     this.FinalAmt = contact.NetPayableAmt;
    
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] = this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
-        maxWidth: "85vw",
-        height: '540px',
+        maxWidth: "95vw",
+        height: '640px',
         width: '100%',
         data: {
           advanceObj: PatientHeaderObj,
@@ -208,8 +282,7 @@ debugger
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
         debugger
-        // new
-      
+            
 
         let UpdateAdvanceDetailarr = [];
         if (result.submitDataAdvancePay > 0) {
@@ -255,7 +328,7 @@ debugger
             Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 let m = response;
-                // this.getPrint(m);
+                this.getPrint(m);
                 this._matDialog.closeAll();
               }
             });
@@ -367,8 +440,8 @@ debugger
     return value;
   }
   convertToWord(e) {
-    // this.numberInWords= converter.toWords(this.mynumber);
-    // return converter.toWords(e);
+    
+    return converter.toWords(e);
   }
   
   getPrint(el) {
@@ -377,18 +450,13 @@ debugger
       var D_data = {
         "BillNo":  el.BillNo,
       }
-      el.bgColor = 'red';
-
-      let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+   
+      let printContents; 
       this.subscriptionArr.push(
         this._IpSearchListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
           console.log(res);
           this.reportPrintbillObjList = res as ReportPrintObj[];
           this.reportPrintbillObj = res[0] as ReportPrintObj;
-
-          console.log(this.reportPrintbillObj);
-          // this.getTemplate();
-          // console.log(res);
 
         })
       );

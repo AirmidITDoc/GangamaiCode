@@ -5,9 +5,7 @@
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
-
+          
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="width:80% ;font-size: 20px; font-weight: 400;">
                 Discharge
@@ -175,26 +173,7 @@
                                     </div>
 
                                     <div>
-                                        <!-- // <app-common-date [screenFrom]="screenFromString"-->
-
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex style="margin-left:40px;">
-                                            <mat-label> Doctor Name</mat-label>
-                                            <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'">
-                                                    </ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredDoctorone | async"
-                                                    [value]="element">
-                                                    {{element.DoctorName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field> -->
-
-
+                                  
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
@@ -214,27 +193,6 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex
-                                            style="margin-left: 30px;width:45%;">
-                                            <mat-label>DischargeType Name</mat-label>
-                                            <mat-select formControlName="DischargeTypeId" placeholder="Bank"
-                                                #singleSelect>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="dischargetypeFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'">
-                                                    </ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredDischargetype | async"
-                                                    [value]="element">
-                                                    {{element.DischargeTypeName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field> -->
-
-
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Discharge Type Name</mat-label>

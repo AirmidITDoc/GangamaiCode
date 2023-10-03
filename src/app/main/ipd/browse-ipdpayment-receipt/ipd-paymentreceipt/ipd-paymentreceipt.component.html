@@ -106,16 +106,16 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                              
+
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                    <ng-container matColumnDef="RegId">
+                                    <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
                                             fxShow.gt-sm>RegNo</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.RegId}}
+                                            {{contact.RegNo}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PatientName">
@@ -229,14 +229,14 @@
                                                 (click)="getViewbill(contact)"><mat-icon>how_to_reg</mat-icon></button>
                                             <button mat-icon-button (click)="getPrint(contact)"
                                                 matTooltip="Print"><mat-icon>print</mat-icon></button>
-                                            <button mat-icon-button class="material-icons"
+                                            <!-- <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')"
                                                 matTooltip="Email"><mat-icon>email</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button ><mat-icon> assignment_returned </mat-icon></button>     -->
+                                           
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'SMS')" matTooltip="Message"><mat-icon>
-                                                    message </mat-icon></button>
+                                                    message </mat-icon></button> -->
 
                                         </mat-cell>
                                     </ng-container>
@@ -274,5 +274,5 @@
         </div>
         <!-- CENTER -->
     </div>
- 
+
 </div>

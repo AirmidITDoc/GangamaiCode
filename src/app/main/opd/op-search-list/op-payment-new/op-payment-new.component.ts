@@ -910,12 +910,7 @@ IsCreditflag : boolean=false
     }
     console.log(IsSubmit);
     this.dialogRef.close(IsSubmit);
-    // console.log('======================= Payment ======');
-    // console.log(IsSubmit);
-    // }
-    // else {
-    //   Swal.fire('Error !', 'Balance Amount Have to Zero', 'error')
-    // }
+  
   }
 
   onClose1() {

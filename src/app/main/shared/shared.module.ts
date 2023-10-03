@@ -27,6 +27,7 @@ import { ExcelDownloadService } from './services/excel-download.service';
     MatButtonModule,
     MatCardModule,
     MatTabsModule
+    
   ],
   providers: [
     ExcelDownloadService

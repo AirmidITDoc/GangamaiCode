@@ -1,59 +1,4 @@
 @import "src/@fuse/scss/fuse";
-.mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
-}
-app-ip-browse-refundof-advance {
-    display: flex;
-    flex: 1 1 auto;
-    width: 100%;
-    
-    .mat-table {
-        // height: 700px !important;
-        width: 100%;
-        background: transparent;
-        box-shadow: none;
-
-        .mat-column-checkbox {
-            flex: 0 1 64px;
-            padding-left: 18px;
-        }
-
-        .mat-column-avatar {
-            flex: 0 1 64px;
-        }
-
-        .mat-column-buttons {
-            flex: 0 1 80px;
-        }
-
-        .mat-row {
-            position: relative;
-            cursor: pointer;
-           
-            .mat-cell {
-                min-width: 0;
-                white-space: nowrap; 
-                overflow: hidden;
-                text-overflow: ellipsis; 
-                overflow: hidden !important;
-                display: inline-block;
-                
-                &.mat-column-detail-button {
-                    flex: 0 1 auto;
-
-                    @include media-breakpoint('gt-md') {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-}
-.active-icon {
-    border-radius: 50%;
-}
-
-
 
 app-ip-browse-refundof-advance {
     
@@ -176,15 +121,5 @@ app-ip-browse-refundof-advance {
     line-height: 20px;
     border-radius: 50%;
 }
-.mat-menu-item {
-    line-height: 25px;
-    height: 25px;
-    padding: 0px 5px;
-    text-align: left;
-    justify-content:center;
-}
-body.theme-default .accent{
-    background-color: #0479b4 !important;
-    // color: black !important;
-}
+
 }

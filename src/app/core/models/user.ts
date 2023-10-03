@@ -11,4 +11,31 @@ export class LoginUser {
     firstName: string;
     lastName: string;
     role: string;
+
+    UserId : number;
+    FirstName: string; 
+    LastName: string;
+    UserName: string;
+    IsActive :boolean;
+    RoleId : number;
+    storeId : number;
+    IsDoctorType :boolean;
+    DoctorID : number;
+    IsPOVerify :boolean;
+    IsGRNVerify :boolean;
+    IsCollection :boolean;
+    IsBedStatus :boolean;
+    IsCurrentStk :boolean;
+    IsPatientInfo :boolean;
+    IsDateInterval :boolean;
+    IsDateIntervalDays :number;
+    MailId :string; 
+    MailDomain :string;
+    LoginStatus :boolean; 
+    AddChargeIsDelete :boolean;
+    IsIndentVerify :boolean;
+    IsPOInchargeVerify :boolean;
+    IsRefDocEditOpt :boolean;
+    IsInchIndVfy :boolean;
+    IsPharBalClearnace :boolean;
 }

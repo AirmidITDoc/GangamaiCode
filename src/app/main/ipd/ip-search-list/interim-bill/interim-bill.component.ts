@@ -13,6 +13,7 @@ import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-paym
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -43,11 +44,18 @@ export class InterimBillComponent implements OnInit {
   ConcessionId :any;
   BalanceAmt:any;
   selectedAdvanceObj: Bill;
+  vPatientHeaderObj:Bill;
   reportPrintObj: ReportPrintObj;
   reportPrintObjList: ReportPrintObj[] = [];
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   currentDate = new Date();
+
+  vTotalBillAmt:any = 0;
+  vDiscountAmt: any = 0;
+  vNetAmount:any = 0 ;
+
+  CashCounterList: any = [];
 
   displayedColumns = [
   
@@ -70,6 +78,7 @@ export class InterimBillComponent implements OnInit {
 
   constructor(
     public _IpSearchListService:IPSearchListService,
+    public _printpreview:PrintPreviewService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe, 
     private advanceDataStored: AdvanceDataStored,
@@ -92,82 +101,81 @@ export class InterimBillComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.data = [];
     this.dataSource.data = this.interimArray;
-    console.log( this.dataSource.data);
+    // console.log( this.dataSource.data);
 
     if(this.advanceDataStored.storage) {
-      debugger;
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
       console.log(this.selectedAdvanceObj);
     } 
+
+    this.getCashCounterComboList();
   }
 
   InterimForm(): FormGroup {
     return this.formBuilder.group({
-     
       NetpayAmount: [Validators.pattern("^[0-9]*$")],
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
       ConcessionId :[''],
       Remark: [''],
-     
-
-      price: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        qty: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        TotalAmount: [Validators.pattern("^[0-9]*$")],
-        doctorId: [''],
-        DoctorID: [''],
-        discPer: [Validators.pattern("^[0-9]*$")],
-        paidAmt: [''],
-        discAmt: [Validators.pattern("^[0-9]*$")],
-        balanceAmt: [''],
-        netAmount: [''],
-        totalAmount: [Validators.required,
-        Validators.pattern("^[0-9]*$")],
-        discAmount: [''],
-        // BillingClassId:[''],
-        BillDate: [''],
-        BillRemark: [''],
-        SrvcName: [''],
-        TotalAmt: [0],
-        concessionAmt: [0],
-        FinalAmount: [0],
-        ClassId: [],
-        Percentage:[Validators.pattern("^[0-9]*$")],
-        AdminCharges:[0],
-        Amount:[Validators.pattern("^[0-9]*$")],
-        ConcessionAmt: [''],
-        GenerateBill: ['0'],
+      price: [Validators.required,Validators.pattern("^[0-9]*$")],
+      qty: [Validators.required,Validators.pattern("^[0-9]*$")],
+      TotalAmount: [Validators.pattern("^[0-9]*$")],
+      doctorId: [''],
+      DoctorID: [''],
+      discPer: [Validators.pattern("^[0-9]*$")],
+      paidAmt: [''],
+      discAmt: [Validators.pattern("^[0-9]*$")],
+      balanceAmt: [''],
+      netAmount: [''],
+      totalAmount: [Validators.required,Validators.pattern("^[0-9]*$")],
+      discAmount: [''],
+      BillDate: [''],
+      BillRemark: [''],
+      SrvcName: [''],
+      TotalAmt: [0],
+      concessionAmt: [0],
+      FinalAmount: [0],
+      ClassId: [],
+      Percentage:[Validators.pattern("^[0-9]*$")],
+      AdminCharges:[0],
+      Amount:[Validators.pattern("^[0-9]*$")],
+      ConcessionAmt: [''],
+      GenerateBill: ['0'],
+      CashCounterId:0
     });
   }
 
   getNetAmtSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, {NetAmount}) => sum += +(NetAmount || 0), 0);
-    this.totalAmtOfNetAmt = netAmt;
-    this.netbillamt=netAmt;
+    this.vTotalBillAmt = netAmt;
+    this.vNetAmount=netAmt;
     return netAmt;
   }
 
+  getCashCounterComboList() {
+    this._IpSearchListService.getCashcounterList().subscribe(data => {
+      this.CashCounterList = data
+    });
+  }
+
+  getNetAmount(){
+    this.vNetAmount=this.vTotalBillAmt - this.vDiscountAmt
+    this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
+  }
 
   onSave() {
-    debugger;
-
     this.isLoading = 'submit';
-    
     let interimBillChargesobj ={};
-
     interimBillChargesobj['chargesID']= 0// this.ChargesId;
-
     let insertBillUpdateBillNo1obj = {};
-
-    
     insertBillUpdateBillNo1obj['billNo'] =0;
     insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID; 
-    insertBillUpdateBillNo1obj['totalAmt'] = this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = 0,//this.advanceAmount;
-    insertBillUpdateBillNo1obj['netPayableAmt'] = this.netAmount;
+    insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
+    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value,
+    insertBillUpdateBillNo1obj['netPayableAmt'] =  this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
     insertBillUpdateBillNo1obj['paidAmt'] = 0,//this.advanceAmount;
     insertBillUpdateBillNo1obj['balanceAmt'] = 0;
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
@@ -188,7 +196,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
     insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
     insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-    insertBillUpdateBillNo1obj['CashCounterId'] = 1//this.InterimFormGroup.get('CashCounterId').value || 0,
+    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value.CashCounterId || 0
    // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
     let billDetailsInsert = [];
     
@@ -201,13 +209,7 @@ export class InterimBillComponent implements OnInit {
     billDetailsInsert.push(billDetailsInsert1Obj);
     });  
 
-    
-    // let billIPInterimBillingUpdate = {};
-
-    // billIPInterimBillingUpdate['billNo'] =0;
-
     let PatientHeaderObj = {};
-
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] = this.netAmount;
@@ -215,8 +217,6 @@ export class InterimBillComponent implements OnInit {
      const interimBillCharge = new interimBill(interimBillChargesobj);
      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
     //  const billDetailsInsert1 = new billDetails(billDetailsInsert1Obj);
-    
-    
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
@@ -239,12 +239,10 @@ export class InterimBillComponent implements OnInit {
           };
         console.log(submitData);
           this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
-            
             if (response) {
               Swal.fire('Congratulations !', 'Interim data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                //   let m=response;
-                debugger;
                   this.getIPIntreimBillPrint(response);
                   this._matDialog.closeAll();
                 }
@@ -273,7 +271,7 @@ export class InterimBillComponent implements OnInit {
     this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
      
         this.printTemplate = resData[0].TempDesign;
-      // let keysArray = ['GroupName',"HospitalName","HospitalAddress","Phone","Pin",'BillNo','IPDNo','BillDate','PatientName','Age','GenderName','AdmissionDate','AdmissionTime','DischargeDate','DischargeTime','RefDocName','RoomName','BedName','PatientType','TotalAmt','NetPayableAmt','PaidAmount','PBillNo','UserName','AdvanceUsedAmount'];
+     
       let keysArray = ['GroupName','RegNo','','IPDNo',  'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName','ChargesDoctorName', 'RoomName', 'BedName',
       'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'TotalAdvanceAmount', 'AdvanceBalAmount','UserName']; // resData[0].TempKeys;
 
@@ -333,22 +331,18 @@ var strabc = `
         this.printTemplate = this.printTemplate.replace('StrNetPayableAmt','₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrConcessionAmount','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
         this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-        debugger;
         this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (this.BalanceAmt.toFixed(2)));
-      
         this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-    
-
         this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
         setTimeout(() => {
-          this.print();
+          // this.print();
+          this._printpreview.PrintPreview(this.printTemplate);
         }, 1000);
     });
   }
 
-  transform(value: string) {
+transform(value: string) {
     var datePipe = new DatePipe("en-US");
      value = datePipe.transform(value, 'dd/MM/yyyy ');
      return value;
@@ -369,43 +363,35 @@ transform2(value: string) {
 
 
 convertToWord(e){
-  // this.numberInWords= converter.toWords(this.mynumber);
+  
    return converter.toWords(e);
      }
 
 // GET DATA FROM DATABASE 
 getIPIntreimBillPrint(el) {
-   debugger;
   var D_data = {
     "BillNo":el,
   }
-  // el.bgColor = 'red';
-  //console.log(el);
-  let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
+ 
+  let printContents;
   this.subscriptionArr.push(
     this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
       console.log(res);
       this.reportPrintObjList = res as ReportPrintObj[];
       this.reportPrintObj = res[0] as ReportPrintObj;
-    
-    
-    console.log(this.reportPrintObj);
-      this.getTemplate();
-      // console.log(res);
       
+      this.getTemplate();
     })
   );
 }
 
 // PRINT 
 print() {
-  // HospitalName, HospitalAddress, AdvanceNo, PatientName
+  
   let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+  
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  // popupWin.document.open();
-  popupWin.document.write(` <html>
+    popupWin.document.write(` <html>
   <head><style type="text/css">`);
   popupWin.document.write(`
     </style>

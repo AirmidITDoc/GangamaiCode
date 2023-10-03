@@ -15,6 +15,7 @@ import { IpPaymentInsert, OPAdvancePaymentComponent, UpdateBill } from '../op-se
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OpPaymentNewComponent } from '../op-search-list/op-payment-new/op-payment-new.component';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 @Component({
   selector: 'app-browse-opbill',
   templateUrl: './browse-opbill.component.html',
@@ -72,6 +73,7 @@ export class BrowseOPBillComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _BrowseOPDBillsService: BrowseOPBillService,
+    public _PrintPreview:PrintPreviewService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
@@ -276,14 +278,11 @@ Billpayment(contact){
 }
 onShow(event: MouseEvent) {
   this.click = !this.click;
-
   setTimeout(() => {
     {
       this.isLoadingStr = 'loading-data';
-
       this.getBrowseOPDBillsList();
     }
-
   }, 1000);
   this.MouseEvent = true;
   this.click = true;
@@ -291,9 +290,7 @@ onShow(event: MouseEvent) {
 }
 
 
-
 onClear() {
-
   this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
   this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
   this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
@@ -397,7 +394,7 @@ getTemplate() {
 
     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
     setTimeout(() => {
-      this.print();
+      this._PrintPreview.PrintPreview(this.printTemplate);
     }, 1000);
   });
 }
@@ -413,82 +410,40 @@ transformBilld(value: string) {
   return value;
 }
 convertToWord(e) {
-
   return converter.toWords(e);
 }
 // GET DATA FROM DATABASE 
 
 
 getPrint(el) {
-  ;
   var D_data = {
     "BillNo": el.BillNo,
-
   }
-
   let printContents; 
   this.subscriptionArr.push(
     this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
-
       this.reportPrintObjList = res as BrowseOPDBill[];
       this.reportPrintObj = res[0] as BrowseOPDBill;
-
       this.getTemplate();
-
-
     })
   );
 }
 getpaymentPrint(el){
-  ;
   var D_data = {
     "BillNo": el.BillNo,
   }
-
   let printContents;
   this.subscriptionArr.push(
     this._BrowseOPDBillsService.getBillPrint(D_data).subscribe(res => {
-
       this.reportPrintObjList = res as BrowseOPDBill[];
       this.reportPrintObj = res[0] as BrowseOPDBill;
-
       this.getTemplate();
-
-
     })
   );
 }
-// PRINT 
-print() {
-
-  let popupWin, printContents;
-
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-  popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-  if (this.reportPrintObjList.length > 0) {
-    if (this.reportPrintObjList[0].BalanceAmt === 0) {
-      popupWin.document.getElementById('idBalAmt').style.display = 'none';
-    }
-  }
-  popupWin.document.close();
-}
-
-
-
-
 
 getViewbill(contact) {
-  
   let xx = {
-
     RegNo: contact.RegId,
     AdmissionID: contact.VisitId,
     PatientName: contact.PatientName,

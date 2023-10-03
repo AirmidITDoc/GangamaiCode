@@ -21,7 +21,12 @@ app-ip-search-list{
     max-width: 60px;
     min-width: 60px;
 }
-
+.mat-column-IsMLC {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align:center;
+}
 .mat-column-IsBillGenerated {
     width: 60px;
     max-width: 60px;
@@ -45,8 +50,7 @@ app-ip-search-list{
     text-overflow: ellipsis; 
     overflow: hidden !important;
     display: inline-block;
-    margin-top: 7px;
-    margin-right: 20px;   
+    
     justify-content:left; 
 }
 .mat-column-PatientType{
