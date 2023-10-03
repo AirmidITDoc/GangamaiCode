@@ -553,27 +553,27 @@
                                                         <mat-form-field appearance="outline" fxFlex="5%">
                                                             <mat-label>Dis %</mat-label>
                                                             <input matInput [(ngModel)]="Dis" name="Dis"
-                                                                (keyup)="calculateDiscAmount()" formControlName="Dis"
+                                                                (keyup)="calculateDiscperAmount()" formControlName="Dis"
                                                                 id="Dis">
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>Disc Amount</mat-label>
-                                                            <input matInput [(ngModel)]="DiscAmount" name="DiscAmount"
-                                                                readonly formControlName="DiscAmount">
+                                                            <input matInput [(ngModel)]="DiscAmount" name="DiscAmount" (keyup)="calculateDiscAmount()"
+                                                                 formControlName="DiscAmount">
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="5%">
                                                             <mat-label>GST %</mat-label>
                                                             <input matInput [(ngModel)]="GST" name="GST"
-                                                                (keyup)="calculateGSTAmount()" formControlName="GST"
+                                                                (keyup)="calculateGSTperAmount()" formControlName="GST"
                                                                 id="GST">
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>GST Amount</mat-label>
-                                                            <input matInput [(ngModel)]="GSTAmount" name="GSTAmount"
-                                                                readonly formControlName="GSTAmount">
+                                                            <input matInput [(ngModel)]="GSTAmount" name="GSTAmount" (keyup)="calculateGSTAmount()"
+                                                                 formControlName="GSTAmount">
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="6%">
