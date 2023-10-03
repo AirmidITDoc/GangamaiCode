@@ -420,11 +420,11 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
-          // <div style="display:flex;width:280px;margin-left:20px;">
-    //     <div>`+ objreportPrint.GroupName + `</div>
-    // </div>
-        var strabc = `  
         
+        var strabc = `  
+        <div style="display:flex;width:280px;margin-left:20px;">
+        <div>`+ objreportPrint.GroupName + `</div>
+    </div>
    <div style="display:flex;margin:8px 0">
     <div style="display:flex;width:80px;margin-left:20px;">
         <div>`+ i + `</div>
