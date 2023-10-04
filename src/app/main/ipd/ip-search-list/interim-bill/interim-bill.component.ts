@@ -90,7 +90,7 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup=this.InterimForm();
       if(data) {
       this.interimArray =data;
-      console.log(this.interimArray);
+      // console.log(this.interimArray);
       this.totalCount = data.length;
       data.filter(element => {
         this.netAmount = this.netAmount + parseInt(element.NetAmount);
@@ -107,7 +107,7 @@ export class InterimBillComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
-      console.log(this.selectedAdvanceObj);
+      // console.log(this.selectedAdvanceObj);
     } 
 
     this.getCashCounterComboList();
