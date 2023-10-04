@@ -74,26 +74,49 @@
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex>
+                                                        
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>To Store</mat-label>
-                                                            <mat-select formControlName="ToStoreId" name="ToStoreId">
-                                                                <mat-option></mat-option>
-                                                                <mat-option *ngFor="let m of ToStoreList" [value]="m">
-                                                                    {{m.StoreName}}
+                                                            <input matAutocompletePosition="below" type="text"
+                                                                placeholder="Select Payment" matInput
+                                                                formControlName="ToStoreId"
+                                                                [matAutocomplete]="autoTostore">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoTostore="matAutocomplete"
+                                                                [displayWith]="getOptionTextPayment">
+                                                                <mat-option
+                                                                    *ngFor="let option of filteredoptionsToStore | async"
+                                                                    [value]="option">
+                                                                    {{option.StoreName}}
                                                                 </mat-option>
-                                                            </mat-select>
+                                                            </mat-autocomplete>
                                                         </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex>
-                                                            <mat-label>Supplier Id</mat-label>
-                                                            <mat-select formControlName="SupplierId"
-                                                                name="SupplierId">
-                                                                <mat-option></mat-option>
-                                                                <mat-option *ngFor="let m of SupplierList" [value]="m">
-                                                                    {{m.SupplierName}}
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                                            <mat-label>Supplier Name</mat-label>
+                                                            <input matAutocompletePosition="below" type="text"
+                                                                placeholder="Select Supplier" matInput
+                                                                formControlName="Supplier_Id"
+                                                                [matAutocomplete]="autoSupllier">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('Supplier_Id').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_PurchaseOrder.PurchaseSearchGroup.get('Supplier_Id').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoSupllier="matAutocomplete"
+                                                                [displayWith]="getOptionTextSupplier">
+                                                                <mat-option
+                                                                    *ngFor="let option of filteredoptionsSupplier | async"
+                                                                    [value]="option">
+                                                                    {{option.SupplierName}}
                                                                 </mat-option>
-                                                            </mat-select>
+                                                            </mat-autocomplete>
                                                         </mat-form-field>
 
                                                         <div style="margin-top: 10px;">
@@ -490,9 +513,7 @@
                                                 </form>
                                             </div>
 
-
-                                      <div fxLayout="column" fxLayoutAlign="start none">
-
+                                            <div fxLayout="column" fxLayoutAlign="start none">
                                                 <form [formGroup]="_PurchaseOrder.userFormGroup"
                                                     style="padding: 6px 6px 5px 5px;">
 
@@ -572,7 +593,7 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>GST Amount</mat-label>
-                                                            <input matInput [(ngModel)]="GSTAmount" name="GSTAmount" (keyup)="calculateGSTAmount()"
+                                                            <input matInput [(ngModel)]="GSTAmount" name="GSTAmount" 
                                                                  formControlName="GSTAmount">
                                                         </mat-form-field>&nbsp;
 
@@ -780,12 +801,20 @@
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-radio-group name="Status" formControlName="Status" fxFlex="10%"
+                                            value="false">
+                                            <mat-radio-button value="true" class="mr-sm-12">Before Disc &
+                                                Tax</mat-radio-button>
+                                            <mat-radio-button value="false" class="mr-sm-12">After Disc &
+                                                Tax</mat-radio-button>
+                                            </mat-radio-group>
+
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Guarantee/ Warranty</mat-label>
                                                 <input matInput placeholder="Guarantee/ Warranty">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Schedule </mat-label>
                                                 <mat-select formControlName="ToStoreId" name="ToStoreId">
                                                     <mat-option value="for">For Next 3 Months As Per Tel.
@@ -794,45 +823,44 @@
                                                 </mat-select>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Other Tax</mat-label>
                                                 <input matInput placeholder="Other Tax">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Remark</mat-label>
                                                 <input matInput placeholder="Remark">
-                                            </mat-form-field>
+                                            </mat-form-field>&nbsp;&nbsp;
+                                               
+                                                    <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;padding-bottom: 15px;">Total Amount: </span>&nbsp;
+                                                    <span class="net-amt-value"     
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvancetotal(getItemNameList)
+                                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+                                               
+                                                    <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Disc Amt: </span>&nbsp;
+                                                    <span class="net-amt-value" 
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceDisc(getItemNameList)
+                                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+                                               
+                                                    <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total GST Amt: </span>&nbsp;
+                                                    <span class="net-amt-value" 
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceGST(getItemNameList) |
+                                                        currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+
+                                                    <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
+                                                    <span class="net-amt-value" 
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
+                                                        currency:'INR' }}</span>
+                                               
 
                                         </div><br>
 
                                         <div class="table-footer">
                                              <div class="net-amt">
 
-                                                <mat-radio-group name="Status" formControlName="Status" fxFlex="25%"
-                                                value="false">
-                                                <mat-radio-button value="true" class="mr-sm-12">Before Disc &
-                                                    Tax</mat-radio-button>
-                                                <mat-radio-button value="false" class="mr-sm-12">After Disc &
-                                                    Tax</mat-radio-button>
-                                                </mat-radio-group>
 
-                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Disc Amt: </span>&nbsp;
-                                                <span class="net-amt-value" 
-                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceDisc(getItemNameList)
-                                                    | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
-                 
-                                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total GST Amt: </span>&nbsp;
-                                                <span class="net-amt-value"
-                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceGST(getItemNameList) |
-                                                    currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
-
-                                                <span class="net-amt-mat-label"  style="font-weight:bold;margin-left:20px;">Total Net Amt: </span>&nbsp;
-                                                <span class="net-amt-value"
-                                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getAdvanceNet(getItemNameList) |
-                                                    currency:'INR' }}</span>
-
-                                                        <button class="next-btn" style="border-radius: 16px;margin-left: 400px;" 
+                                                        <button class="next-btn" style="border-radius: 16px;margin-left: 1300px;" 
                                                             [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
                                                         <button class="footer-btn" style="border-radius: 16px;"
                                                             (click)="OnReset()">Reset</button>&nbsp;&nbsp;
@@ -844,7 +872,8 @@
 
                                     
                                     
-                                  </form> 
+                                  </form>
+                                   
 
                                     </div>
                                 </div>

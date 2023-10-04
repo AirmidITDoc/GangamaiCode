@@ -243,13 +243,12 @@ calculateTotalAmount() {
 
 getAdvanceNet(element) {
   let NetAmount;
-  this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
-  // this.TotalAmount = this.NetAmount;
+  NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.NetAmount)).toString();
+  this.NetAmount;
   return NetAmount;
 }
 
 getAdvanceGST(element) {
-
   let GSTAmount;
   GSTAmount =  Math.round((this.NetAmount * parseInt(this.GST)) / 100);
   this.GSTAmount;
@@ -257,11 +256,18 @@ getAdvanceGST(element) {
 }
 
 getAdvanceDisc(element) {
-
   let Dis;
   Dis = parseInt(this.Dis).toString();
   this.Dis;
   return Dis;
+}
+
+getAdvancetotal(element)
+{
+  let TotalAmount;
+  TotalAmount = parseInt(this.TotalAmount).toString();
+  this.TotalAmount;
+  return TotalAmount;
 }
 
 calculateDiscperAmount(){
@@ -287,8 +293,8 @@ calculateGSTperAmount() {
 
   if (this.GST) {
   
-    this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
+    this.GSTAmount = Math.round((this.TotalAmount * parseInt(this.GST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.GSTAmount));
 
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
  
