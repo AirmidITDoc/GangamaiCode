@@ -36,6 +36,7 @@ export class PurchaseOrderComponent implements OnInit {
   labelPosition: 'before' | 'after' = 'after';
   isSupplierSelected: boolean = false;
   isPaymentSelected : boolean = false;
+  isItemNameSelected : boolean = false;
   filteredOptions: any;
   ItemnameList = [];
   showAutocomplete = false;
@@ -128,6 +129,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.getPurchaseOrder(); 
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
+    this.getItemNameSearchCombo();
+    this.getItemNameList();
   }
   
   getOptionText(option) {
@@ -237,52 +240,74 @@ calculateTotalAmount() {
   if (this.Rate && this.Qty) {
     this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
     this.NetAmount = this.TotalAmount;
-    this.calculatePersc();
+    // this.calculatePersc();
   }
 }
 
-getAdvanceNet(element) {
-  let NetAmount;
-  NetAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
-  this.TotalAmount = this.NetAmount;
-  return NetAmount;
+getTotalNet(element) {
+  let NetAmt;
+  NetAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0) , 0);
+  return NetAmt;
 }
 
-getAdvanceGST(element) {
-
-  let GSTAmount;
-  GSTAmount =  Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-  this.GSTAmount;
-  return GSTAmount;
+getTotalGST(element) {
+  let GSTAmt;
+  GSTAmt = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
+  return GSTAmt;
 }
 
-getAdvanceDisc(element) {
-
+getTotalDisc(element) {
   let Dis;
-  Dis = parseInt(this.Dis).toString();
-  this.Dis;
+  Dis = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
   return Dis;
+}
+
+getTotalAmt(element)
+{
+  let TotalAmt;
+  TotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+  return TotalAmt;
+}
+
+calculateDiscperAmount(){
+  if (this.Dis) {
+    let disc=this._PurchaseOrder.userFormGroup.get('Dis').value
+    this.DiscAmount = Math.round(disc * parseInt(this.NetAmount) /100 );
+    // this.DiscAmount =  DiscAmt
+    this.NetAmount = this.NetAmount - this.DiscAmount;
+
+  }
+    
 }
 
 calculateDiscAmount() {
   if (this.Dis) {
-    this.DiscAmount = parseInt(this.Dis).toString();
-    this.DiscAmount;
-    this.calculatePersc();
+    this.NetAmount = this.NetAmount - this.DiscAmount;
+    // this.DiscAmount;
+    // this.calculatePersc();
   }
 }
 
-calculateGSTAmount() {
+calculateGSTperAmount() {
 
-  debugger
   if (this.GST) {
-    this.GSTAmount = parseInt(this.GST);
-    this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = this.NetAmount + this.GSTAmount;
+  
+    this.GSTAmount = Math.round((this.TotalAmount * parseInt(this.GST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.GSTAmount));
 
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
-    console.log(this.NetAmount)
-    this.calculatePersc();
+ 
+  }
+}
+
+calculateGSTAmount(){
+  if (this.GSTAmount) {
+  
+    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
+
+    this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+ 
   }
 }
 
@@ -343,6 +368,11 @@ getOptionTextPayment(option) {
 
 }
 
+getOptionTextItemName(option) {
+  return option && option.ItemName ? option.ItemName : '';
+
+}
+
 getSupplierSearchCombo() {
 debugger
   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
@@ -371,6 +401,25 @@ getPaymentSearchCombo() {
     });
   }
 
+  getItemNameSearchCombo() {
+    var Param = {
+
+      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
+      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
+    }
+    console.log(Param);
+    this._PurchaseOrder.getItemNameList(Param).subscribe(data =>{
+        this.ItemName = data;
+        console.log(data);
+        this.optionsItemName = this.ItemName.slice();
+        this.filteredoptionsItemName = this._PurchaseOrder.userFormGroup.get('ItemName').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterItemName(value) : this.ItemName.slice()),
+        );
+    
+      });
+    }
+
 private _filterSupplier(value: any): string[] {
   if (value) {
     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
@@ -385,6 +434,13 @@ private _filterPayment(value: any): string[] {
   }
 }
 
+private _filterItemName(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
+    return this.optionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
+  }
+}
+
 getFromStoreSearchList() {
   var data = {
     "Id": 1
@@ -394,25 +450,23 @@ getFromStoreSearchList() {
     this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
   });
 }
+  getItemNameList(){
+    var Param = {
 
-
-getItemNameList(){
-  var Param = {
-
-    "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-    "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
-  }
-  console.log(Param);
-  this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
-    this.filteredOptions = data;
-    console.log( this.filteredOptions )
-          if (this.filteredOptions.length == 0) {
-      this.noOptionFound = true;
-    } else {
-      this.noOptionFound = false;
+      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
+      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
     }
-  });
-}
+    console.log(Param);
+    this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
+      this.filteredOptions = data;
+      console.log( this.filteredOptions )
+            if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
 
 getSelectedObj(obj) {
   this.ItemID=obj.ItemID;
@@ -431,12 +485,13 @@ getSelectedObj(obj) {
 }
 
 onAdd(){
+  debugger
   this.dsItemNameList.data = [];
   // this.chargeslist=this.chargeslist;
   this.chargeslist.push(
     {
       ItemID:this.ItemID,
-      ItemName:this.ItemName,
+      ItemName:this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
       Qty:this.Qty,
       UOM:this.UOM,
       Rate:this.Rate ,

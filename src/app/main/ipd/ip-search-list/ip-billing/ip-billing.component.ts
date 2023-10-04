@@ -584,7 +584,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   getInterimData() {
-    if (this.interimArray.length > 0 && this.netPaybleAmt > 0) {
+    if (this.interimArray.length > 0 ) {
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
         BillNo: 0,
@@ -700,7 +700,7 @@ export class IPBillingComponent implements OnInit {
         InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
         InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
         InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-        InsertBillUpdateBillNoObj['InterimOrFinal'] = 1;
+        InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
         InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
         InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
         InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
@@ -830,7 +830,7 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
           InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
           InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-          InsertBillUpdateBillNoObj['InterimOrFinal'] = 1;
+          InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
           InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
           InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
           InsertBillUpdateBillNoObj['TaxPer'] = 0;

@@ -27,6 +27,7 @@ export class PurchaseOrderService {
       SupplierId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      ItemName:'',
     });
   }
   
