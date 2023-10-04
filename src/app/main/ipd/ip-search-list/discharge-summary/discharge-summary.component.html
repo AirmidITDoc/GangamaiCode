@@ -135,7 +135,7 @@
                                 (click)="DischargesumForm.get('DischargeDoctor1').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #autoDoctor1="matAutocomplete"
-                              [displayWith]="getOptionTextDoctor1">
+                              [displayWith]="getOptionTextsDoctor1">
                               <mat-option *ngFor="let option of filteredOptionDoctor1 | async" [value]="option">
                                 {{option.DoctorName}}
                               </mat-option>
@@ -162,7 +162,7 @@
                                 (click)="DischargesumForm.get('DischargeDoctor2').setValue(''); isdoctor1Selected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #autoDoctor2="matAutocomplete"
-                              [displayWith]="getOptionTextDoctor2">
+                              [displayWith]="getOptionTextsDoctor2">
                               <mat-option *ngFor="let option of filteredOptionDoctor2 | async" [value]="option">
                                 {{option.DoctorName}}
                               </mat-option>
@@ -189,7 +189,7 @@
                                 (click)="DischargesumForm.get('DischargeDoctor3').setValue(''); isdoctor1Selected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #autoDoctor3="matAutocomplete"
-                              [displayWith]="getOptionTextDoctor2">
+                              [displayWith]="getOptionTextsDoctor3">
                               <mat-option *ngFor="let option of filteredOptionDoctor3 | async" [value]="option">
                                 {{option.DoctorName}}
                               </mat-option>
