@@ -1,72 +1,6 @@
 @import "src/@fuse/scss/fuse";
-.mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
-}
-app-admission {
-    display: flex;
-    flex: 1 1 auto;
-    width: 100%;
-
-    .right
-    {
-      float: right;
-      margin-left: 100px;
-      padding: 20px;
-    } 
-
-
-    .mat-table {
-    //    height: 520px !important;
-        width: 100%;
-        background: transparent;
-        box-shadow: none;
-
-        .mat-column-checkbox {
-            flex: 0 1 64px;
-            padding-left: 18px;
-        }
-
-        .mat-column-avatar {
-            flex: 0 1 64px;
-        }
-
-        .mat-column-buttons {
-            flex: 0 1 80px;
-        }
-
-        .mat-row {
-            position: relative;
-            cursor: pointer;
-           
-            .mat-cell {
-                min-width: 0;
-                white-space: nowrap; 
-                overflow: hidden;
-                text-overflow: ellipsis; 
-                overflow: hidden !important;
-              //  display: inline-block;
-                
-                &.mat-column-detail-button {
-                    flex: 0 1 auto;
-
-                    @include media-breakpoint('gt-md') {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-}
-.active-icon {
-    border-radius: 50%;
-}
 
 app-admission{
-
-//     .table1{
-// height:650px !important;
-//     }
-
 .mat-header-row {
     //width: 2530px;
     width: 100%;
@@ -262,21 +196,6 @@ app-admission{
     min-width: 200px;
     text-align: center;
     justify-content:center;
-}
-
-.mat-dialog-container {
-    border-radius: 15px !important;
-}
-
-.backgroundBlur{
-    text-align: center;
-    background-color: #818181;
-    position: absolute;
-    z-index: 1000;
-    height: 500px;
-    opacity: 0.5;
-     width: 100%;  
-    
 }
 
 

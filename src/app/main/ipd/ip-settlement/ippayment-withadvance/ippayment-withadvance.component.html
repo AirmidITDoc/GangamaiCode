@@ -6,8 +6,6 @@
 
     <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;"> 
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
             
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 70%; font-weight: 400;">
                 Payment Transaction
@@ -68,7 +66,7 @@
         <!-- //end first part -->
 
     </div>
-    <div class="table-container" style="height: 150px; padding: 0 20px;overflow: auto;">
+    <div class="table-container" style="height: 250px !important; padding: 0 20px;overflow: auto;">
         <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
             <ng-container matColumnDef="Date">

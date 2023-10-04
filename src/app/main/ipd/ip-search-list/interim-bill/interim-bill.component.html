@@ -5,9 +5,7 @@
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-        </mat-icon> -->
-
+           
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 82%; font-weight: 400;">
                 Interim Of BILL
@@ -61,19 +59,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-
-                                        <!-- <ng-container matColumnDef="Price">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                               
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.Price"
-                                                        (keyup)="getTotalAmount(contact)">
-                                                    <span matPrefix>₹</span>
-                                                                                                    </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                         <ng-container matColumnDef="Price">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price

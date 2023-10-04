@@ -39,7 +39,7 @@ subscriptionArr: Subscription[] = [];
 printTemplate: any;
 displayedColumns = [
   // 'checkbox',
-  'RegId',
+  'RegNo',
   'PatientName',
   // 'PBillNo',
   // 'ReceiptNo',
@@ -126,8 +126,8 @@ getBrowseIPDPaymentReceiptList() {
     "From_Dt": this.datePipe.transform(this._BrowseIPDPaymentReceiptService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
     "To_Dt": this.datePipe.transform(this._BrowseIPDPaymentReceiptService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
     "Reg_No": this._BrowseIPDPaymentReceiptService.myFilterform.get("RegNo").value || "0",
-    "PBillNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("PBillNo").value || "0",
-    "ReceiptNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("ReceiptNo").value || "0",
+    "PBillNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("PBillNo").value || '%',
+    "ReceiptNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("ReceiptNo").value || '%',
 
   }
   console.log(D_data);
@@ -293,7 +293,7 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
     }
     this.printTemplate = this.printTemplate.replace('StrTotalTotalAmtInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
-   
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillTime));
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
     
     setTimeout(() => {
@@ -315,7 +315,7 @@ this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any)
       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
     }
     this.printTemplate = this.printTemplate.replace('StrTotalTotalAmtInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
-   
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillTime));
     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(new Date().toString()));
     setTimeout(() => {
       this.printpayment();
@@ -344,8 +344,6 @@ return value;
 
 // 4457
 getPrint(el) {
-debugger
-
 var D_data = {
 "PaymentId":el.PaymentId,//206
 }
@@ -415,7 +413,7 @@ export class BrowseIpdPaymentReceipt
   ConsultantDocName:any;
   ReferDr:any;
   NetPayableAmt:any;
-  
+  BillTime:any;
       /**
    * Constructor
    *
@@ -460,6 +458,7 @@ export class BrowseIpdPaymentReceipt
           this.ConsultantDocName=BrowseIpdPaymentReceipt.ConsultantDocName || '';
           this.ReferDr =BrowseIpdPaymentReceipt.ReferDr|| '';
           this.NetPayableAmt =BrowseIpdPaymentReceipt.NetPayableAmt|| '';
+          this.BillTime =BrowseIpdPaymentReceipt.BillTime|| '';
       }
 
   }

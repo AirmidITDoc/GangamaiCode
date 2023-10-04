@@ -237,14 +237,14 @@ calculateTotalAmount() {
   if (this.Rate && this.Qty) {
     this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
     this.NetAmount = this.TotalAmount;
-    this.calculatePersc();
+    // this.calculatePersc();
   }
 }
 
 getAdvanceNet(element) {
   let NetAmount;
-  NetAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
-  this.TotalAmount = this.NetAmount;
+  this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+  // this.TotalAmount = this.NetAmount;
   return NetAmount;
 }
 
@@ -264,25 +264,45 @@ getAdvanceDisc(element) {
   return Dis;
 }
 
+calculateDiscperAmount(){
+  if (this.Dis) {
+    let disc=this._PurchaseOrder.userFormGroup.get('Dis').value
+    this.DiscAmount = Math.round(disc * parseInt(this.NetAmount) /100 );
+    // this.DiscAmount =  DiscAmt
+    this.NetAmount = this.NetAmount - this.DiscAmount;
+
+  }
+    
+}
+
 calculateDiscAmount() {
   if (this.Dis) {
-    this.DiscAmount = parseInt(this.Dis).toString();
-    this.DiscAmount;
-    this.calculatePersc();
+    this.NetAmount = this.NetAmount - this.DiscAmount;
+    // this.DiscAmount;
+    // this.calculatePersc();
   }
 }
 
-calculateGSTAmount() {
+calculateGSTperAmount() {
 
-  debugger
   if (this.GST) {
-    this.GSTAmount = parseInt(this.GST);
+  
     this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = this.NetAmount + this.GSTAmount;
+    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
 
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
-    console.log(this.NetAmount)
-    this.calculatePersc();
+ 
+  }
+}
+
+calculateGSTAmount(){
+  if (this.GSTAmount) {
+  
+    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
+
+    this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+ 
   }
 }
 

@@ -45,7 +45,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
 
-  reportPrintObj: ReportPrintObj;
+  reportPrintObj: IpdAdvanceBrowseModel;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
  
@@ -68,8 +68,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
   getTemplate() {
     let query = 'select tempId,TempDesign,JSON_QUERY(TempKeys) as TempKeys from Tg_Htl_Tmp where TempId=1';
     this._advanceService.getTemplate(query).subscribe((resData: any) => {
-      console.log(resData);
-      this.printTemplate = resData[0].TempDesign;
+          this.printTemplate = resData[0].TempDesign;
      
        let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby','Remark',
        'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','NEFTPayAmount','PayTMAmount','TariffName'];// resData[0].TempKeys;
@@ -96,7 +95,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   onShow_IpdAdvance(){
-    debugger
+    
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
@@ -106,10 +105,10 @@ export class BrowseIPAdvanceComponent implements OnInit {
       "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
     }
    
-    console.log(D_data);
+    // (D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
         this.dataArray = Visit;
-        console.log(this.dataArray)
+    
       });
   }
 
@@ -139,7 +138,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   getPrint(el) {
-    debugger;
+  
     var D_data = {
       "AdvanceDetailID":el.AdvanceDetailID,
     }
@@ -147,12 +146,9 @@ export class BrowseIPAdvanceComponent implements OnInit {
     let printContents;
     this.subscriptionArr.push(
       this._advanceService.getAdvanceBrowsePrint(D_data).subscribe(res => {
-        this.reportPrintObj = res[0] as ReportPrintObj;
-        console.log(this.reportPrintObj);
+        this.reportPrintObj = res[0] as IpdAdvanceBrowseModel;
         this.getTemplate();
-     
-        
-      })
+     })
     );
   }
 
@@ -161,7 +157,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     let popupWin, printContents;
    
     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
+    
     popupWin.document.write(` <html>
     <head><style type="text/css">`);
     popupWin.document.write(`
@@ -196,7 +192,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   getViewAdvance(contact)
 {
-  console.log(contact);
     let xx = {
       PaymentId:contact.PaymentId,
       HospitalName:contact.HospitalName,
@@ -250,37 +245,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 }
 
-export class ReportPrintObj {
-  AdvanceNo: any;
-  Address: any;
-  HospitalName: any;
-  RegNo: any;
-  PatientName: any;
-  IPDNo: any;
-  Date: any;
-  PatientType: any;
-  AdvanceAmount: any;
-  TariffName:any;
-  AdmissionDate:any;
-  TransactionType:number;
-  PayDate:Date;
-  PaidAmount: number;
-  NEFTPayAmount:number;
-  PayTMAmount: number;
-  CardNo: any;
-  CardBankName:any;
-  ChequeNo:any;
-  PaymentDate: any;
-    CashPayAmount : number;
-    ChequePayAmount : number;
-    CardPayAmount : number;
-    AdvanceUsedAmount: number;
-    Remark:any;
-    reason:any;
-}
-
-
-
 export class IpdAdvanceBrowseModel {
   RegNo: Number;
   PatientName: string;
@@ -306,6 +270,22 @@ export class IpdAdvanceBrowseModel {
   Phone:any;
   EmailId:any;
   reason:any;
+
+  Address: any;
+  PatientType: any;
+  TariffName:any;
+  AdmissionDate:any;
+  PayDate:Date;
+  PaidAmount: number;
+  NEFTPayAmount:number;
+  PayTMAmount: number;
+  CardNo: any;
+  CardBankName:any;
+  ChequeNo:any;
+  PaymentDate: any;
+  AdvanceUsedAmount: number;
+    Remark:any;
+    
   /**
 * Constructor
 *
@@ -336,6 +316,23 @@ export class IpdAdvanceBrowseModel {
           this.Phone = IpdAdvanceBrowseModel.Phone || 0;
           this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
           this.reason = IpdAdvanceBrowseModel.reason || 0;
+
+          this.Address=IpdAdvanceBrowseModel.Address || '';
+          this.PatientType = IpdAdvanceBrowseModel.PatientType || '';
+          this.TariffName = IpdAdvanceBrowseModel.TariffName || 0;
+          this.PayDate = IpdAdvanceBrowseModel.PayDate || 0;
+          this.PaidAmount = IpdAdvanceBrowseModel.PaidAmount || 0;
+          
+          this.NEFTPayAmount=IpdAdvanceBrowseModel.NEFTPayAmount || '';
+          this.PayTMAmount = IpdAdvanceBrowseModel.PayTMAmount || '';
+          this.CardNo = IpdAdvanceBrowseModel.CardNo || 0;
+          this.CardBankName = IpdAdvanceBrowseModel.CardBankName || 0;
+          this.ChequeNo = IpdAdvanceBrowseModel.ChequeNo || 0;
+          this.PaymentDate = IpdAdvanceBrowseModel.PaymentDate || '';
+          this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
+          this.AdvanceUsedAmount = IpdAdvanceBrowseModel.AdvanceUsedAmount || 0;
+          this.Remark = IpdAdvanceBrowseModel.Remark || 0;
       }
   }
+
 }
