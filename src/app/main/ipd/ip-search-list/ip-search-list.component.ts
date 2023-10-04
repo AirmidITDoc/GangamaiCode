@@ -21,6 +21,7 @@ import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.com
 import { Admission } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
+import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 
 
 
@@ -284,38 +285,37 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
       });
     }
-    // else if (m == "Discharge Summary") {
-    //   // debugger;
-    //   var m_data1 = {
-    //     "RegNo": contact.RegNo,
-    //     "PatientName": contact.PatientName,
-    //     "AdmissionId": contact.AdmissionID,
-    //     "DOA": contact.DOA,
-    //     "DOT": contact.DOT,
-    //     "DoctorName": contact.DoctorName,
-    //     "RoomName": contact.RoomName,
-    //     "BedNo": contact.BedName,
-    //     "IPDNo": contact.IPDNo
-    //   }
-    //   // console.log(m_data1);
-    //   this._IpSearchListService.populateForm1(m_data1);
-    //   const dialogRef = this._matDialog.open(DischargesummaryComponent,
-    //     {
+    else if (m == "Discharge Summary") {
+      // debugger;
+      var m_data1 = {
+        "RegNo": contact.RegNo,
+        "PatientName": contact.PatientName,
+        "AdmissionID": contact.AdmissionID,
+        "DOA": contact.DOA,
+        "DOT": contact.DOT,
+        "DoctorName": contact.DoctorName,
+        "RoomName": contact.RoomName,
+        "BedNo": contact.BedName,
+        "IPDNo": contact.IPDNo,
+        "DocNameID": contact.DocNameID,
+        "IsDischarged": contact.IsDischarged
+      }
+      // console.log(m_data1);
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
+      this._IpSearchListService.populateForm1(m_data1);
+      const dialogRef = this._matDialog.open(DischargeSummaryComponent,
+        {
 
-    //       maxWidth: "85vw",
-    //       //maxWidth: "115vw", 
-    //       // height: '600px !important',
-    //       height: '94vh',
-    //       width: '100%',
+          maxWidth: "105vw",
+          height: '110vh',
+          width: '100%',
 
+        });
 
-
-    //     });
-
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log('The dialog was closed - Insert Action', result);
-    //   });
-    // } 
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+      });
+    } 
     else if (m == "Payment") {
       // debugger;
       var m_data = {

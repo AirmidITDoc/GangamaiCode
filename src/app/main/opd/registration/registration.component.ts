@@ -99,7 +99,7 @@ export class RegistrationComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this._registrationService.getRegistrationList(D_data).subscribe(data => {
         this.dataSource.data = data as RegInsert[];
-        console.log( this.dataSource.data )
+        // console.log( this.dataSource.data )
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.sIsLoading = '';

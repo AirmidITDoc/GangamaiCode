@@ -52,6 +52,7 @@ import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-ad
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { InterimBillComponent } from './interim-bill/interim-bill.component';
+import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 
 
 const routes: Routes = [
@@ -74,7 +75,8 @@ const routes: Routes = [
       IPRefundofAdvanceComponent,
       IPRefundofBillComponent,
       IPBillingComponent,
-      InterimBillComponent
+      InterimBillComponent,
+      DischargeSummaryComponent
     ],
     imports: [
         RouterModule.forChild(routes),
