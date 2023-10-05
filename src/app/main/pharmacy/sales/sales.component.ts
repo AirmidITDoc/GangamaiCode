@@ -166,12 +166,10 @@ export class SalesComponent implements OnInit {
 
 
   getPharItemList() {
-    debugger
     var m_data = {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
       "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid || 0
     }
-    console.log(m_data)
     if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 2) {
       this._salesService.getItemList(m_data).subscribe(data => {
         this.filteredOptions = data;
@@ -206,11 +204,9 @@ export class SalesComponent implements OnInit {
   // }
 
   gePharStoreList() {
-    debugger
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    console.log(vdata)
     this._salesService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
       this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
@@ -222,7 +218,6 @@ export class SalesComponent implements OnInit {
   }
 
   OnAdd() {
-  
     this.sIsLoading = 'save';
     if (this.ItemName && (parseInt(this.Qty) != 0) && this.MRP > 0) {
       this.saleSelectedDatasource.data = [];
@@ -261,21 +256,16 @@ export class SalesComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-
-
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
-      this.Qty = result.BalanceQty;
+      this.Qty = 0;
       this.Bal = result.BalanceAmt;
       this.StoreName = result.StoreName;
-      this.GSTPer = result.GSTPer;
+      this.GSTPer = result.VatPercentage;
       this.TotalMRP = Math.round(this.Qty * this.MRP);
       this.NetAmt = this.TotalMRP;
-
       this.ItemObj = result;
-
-
     });
 
   
@@ -297,7 +287,6 @@ export class SalesComponent implements OnInit {
 
 
   getNetAmtSum(element) {
-    debugger
     let netAmt;
     netAmt = element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0);
     this.FinalTotalAmt = netAmt;
@@ -311,12 +300,29 @@ export class SalesComponent implements OnInit {
     if (this.Qty && this.MRP) {
       this.TotalMRP = Math.round(parseInt(this._salesService.IndentSearchGroup.get('Qty').value) * parseInt(this._salesService.IndentSearchGroup.get('MRP').value)).toString();
       this.NetAmt = this.TotalMRP;
-
     }
+    
+    // txtMRPTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtTotMRPAftDisAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtLandedTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtUnitLandedRate.Text), "0.00")
+    // txtPurTotAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPurUnitRateWF.Text), "0.00")
+    // Call CalculateVatAmount()
+
+    // Dim lngVatAmount, lngCGSTAmt, lngSGSTAmt, lngIGSTAmt As Double
+    // lngVatAmount = (Val(txtPerMRP.Text) * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngCGSTAmt = (Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngSGSTAmt = (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngIGSTAmt = (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+
+    // txtPerItemVatAmt.Text = Format(lngVatAmount, "0.00")
+    // txtCGSTAmt.Text = Format(lngCGSTAmt, "0.00")
+    // txtSGSTAmt.Text = Format(lngSGSTAmt, "0.00")
+    // txtIGSTAmt.Text = Format(lngIGSTAmt, "0.00")
+
+
   }
 
   calculateGSTAmt() {
-    debugger
     let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
     if (GST > 0) {
       let discAmt = Math.round((this.NetAmt * parseInt(GST)) / 100);
@@ -328,18 +334,14 @@ export class SalesComponent implements OnInit {
   getDiscAmount() {
     if (this.FinalDiscPer > 0) {
       let discAmt = Math.round((this.FinalTotalAmt * parseInt(this.FinalDiscPer)) / 100);
-
       this.FinalTotalAmt = this.FinalTotalAmt - discAmt;
-
     }
-
   }
 
   getFinalDiscperAmt(){
     let Disc = this.ItemSubform.get('FinalDiscPer').value
     // this.FinalDiscAmt=0
     if (Disc > 0) {
-      
       this.FinalDiscAmt =  Math.round((this.FinalTotalAmt * parseInt(Disc)) / 100);
       this.FinalNetAmount = parseInt(this.FinalTotalAmt) - (this.FinalDiscAmt);
       this.ConShow = true
