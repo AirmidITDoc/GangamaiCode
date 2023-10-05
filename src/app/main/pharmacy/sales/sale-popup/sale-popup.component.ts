@@ -24,6 +24,8 @@ export class SalePopupComponent implements OnInit {
   isLoadingStr: string = '';
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
+  screenFromString = 'admission-form';
+  
   constructor(
     private dialogRef: MatDialogRef<SalePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -84,6 +86,12 @@ export class SalePopupComponent implements OnInit {
       selectedData = ele;
     }
     this.dialogRef.close(selectedData);
+  }
+
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    // console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
   }
 
 }

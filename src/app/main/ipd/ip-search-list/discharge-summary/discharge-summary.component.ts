@@ -85,60 +85,102 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
 
+  // showDischargeSummaryForm(): FormGroup {
+  //   return this._formBuilder.group({
+  //     AdmissionId:'',
+  //     RegNo: '',
+  //     IPDNo: '',
+  //     FirstName: '',
+  //     PatientName: '',
+  //     MobileNo: '', 
+  //     DOA:'',
+  //     DOT:'',
+  //     BedNo:'',
+  //     DoctorId: '0',
+  //     DoctorID:'',
+  //     DoctorName: '',
+  //     WardId: '0',
+  //     RoomName: '',
+  //     // DischargesummaryId :'',
+  //     DischargeSummaryId:'', 
+  //     DischargeId :'',
+	//     History :'',
+  //     Diagnosis :'',
+  //     Investigation :'',
+  //     ClinicalFinding:'',
+  //     OpertiveNotes:'',
+  //     TreatmentGiven:'',
+  //     TreatmentAdvisedAfterDischarge:'',
+	//     Followupdate:[{ value:new Date() }],
+	//     Remark:'',
+	//     DischargeSummaryDate:'',
+	//     OPDate :'',
+	//     OPTime :'',
+	//     DischargeDoctor1 :'',
+	//     DischargeDoctor2 :'',
+	//     DischargeDoctor3 :'',
+	//     DischargeSummaryTime :'',
+	//     DoctorAssistantName :'',
+	//     ClaimNumber :'',
+	//     PreOthNumber:'',
+  //     AddedBy :'',
+	//     AddedByDate :'',
+	//     SurgeryProcDone :'',
+	//     ICD10CODE :'',
+	//     ClinicalConditionOnAdmisssion:'',
+	//     OtherConDrOpinions:'',
+	//     ConditionAtTheTimeOfDischarge :'',
+	//     PainManagementTechnique	:'',
+	//     LifeStyle :'',
+	//     WarningSymptoms	:'',
+	//     Radiology :'',
+	//     IsNormalOrDeath :'',
+  //     DoctorName1: '',
+
+  //     DoctorIdOne: '',
+  //     DoctorIdTwo: ''
+  //   });
+  // }
+
   showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
-      AdmissionId:'',
-      RegNo: '',
-      IPDNo: '',
-      FirstName: '',
-      PatientName: '',
-      MobileNo: '', 
-      DOA:'',
-      DOT:'',
-      BedNo:'',
-      DoctorId: '0',
-      DoctorID:'',
-      DoctorName: '',
-      WardId: '0',
-      RoomName: '',
-      // DischargesummaryId :'',
-      DischargeSummaryId:'', 
-      DischargeId :'',
-	    History :'',
-      Diagnosis :'',
-      Investigation :'',
-      ClinicalFinding:'',
-      OpertiveNotes:'',
-      TreatmentGiven:'',
-      TreatmentAdvisedAfterDischarge:'',
-	    Followupdate:[{ value:new Date() }],
-	    Remark:'',
-	    DischargeSummaryDate:'',
-	    OPDate :'',
-	    OPTime :'',
-	    DischargeDoctor1 :'',
-	    DischargeDoctor2 :'',
-	    DischargeDoctor3 :'',
-	    DischargeSummaryTime :'',
-	    DoctorAssistantName :'',
-	    ClaimNumber :'',
-	    PreOthNumber:'',
-      AddedBy :'',
-	    AddedByDate :'',
-	    SurgeryProcDone :'',
-	    ICD10CODE :'',
-	    ClinicalConditionOnAdmisssion:'',
-	    OtherConDrOpinions:'',
-	    ConditionAtTheTimeOfDischarge :'',
-	    PainManagementTechnique	:'',
-	    LifeStyle :'',
-	    WarningSymptoms	:'',
-	    Radiology :'',
-	    IsNormalOrDeath :'',
-      DoctorName1: '',
-
-      DoctorIdOne: '',
-      DoctorIdTwo: ''
+    
+ AdmissionId:'',             
+ DischargeId:'',
+ History:'',            
+ Diagnosis:'',
+ Investigation:'',
+ ClinicalFinding:'',
+ OpertiveNotes:'',
+ TreatmentGiven:'',
+ TreatmentAdvisedAfterDischarge:'',
+ Followupdate:'',      
+ Remark:'',
+ DischargeSummaryDate:'',
+ OPDate:'',        
+ OPTime:'',
+ DischargeDoctor1:'',
+ DischargeDoctor2:'',
+ DischargeDoctor3:'',
+ DischargeSummaryTime:'',
+ DoctorAssistantName:'',
+ ClaimNumber:'',  
+ PreOthNumber:'',
+ AddedBy:'',  
+ AddedByDate:'',
+ UpdatedBy:'',  
+ UpdatedByDate:'',
+ SurgeryProcDone:'',
+ ICD10CODE:'',
+ ClinicalConditionOnAdmisssion:'',
+ OtherConDrOpinions:'',
+ ConditionAtTheTimeOfDischarge:'',
+ PainManagementTechnique:'',
+ LifeStyle:'',
+ WarningSymptoms:'',
+ Radiology:'',
+ IsNormalOrDeath:'',  
+ DischargesummaryId:'',  
     });
   }
 
@@ -333,6 +375,24 @@ export class DischargeSummaryComponent implements OnInit {
           "DischargeSummaryTime":  this.dateTimeObj.time,
           "DoctorAssistantName": this._IpSearchListService.myShowDischargeSummaryForm.get("DoctorAssistantName").value || "",
         
+
+          "ClaimNumber": this._IpSearchListService.myShowDischargeSummaryForm.get("ClaimNumber").value || "",
+          "PreOthNumber": this._IpSearchListService.myShowDischargeSummaryForm.get("PreOthNumber").value || "",
+          "AddedBy": this._IpSearchListService.myShowDischargeSummaryForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
+          "AddedByDate":  this.dateTimeObj.time,//this._IpSearchListService.myShowDischargeSummaryForm.get("Remark").value || "",
+          "UpdatedBy": 10,
+          "UpdatedByDate": this.dateTimeObj.time,// this._IpSearchListService.myShowDischargeSummaryForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+          "ICD10COD": this._IpSearchListService.myShowDischargeSummaryForm.get("ICD10COD").value || "2021-05-24T06:18:37.533Z",
+          "SurgeryProcDone": this._IpSearchListService.myShowDischargeSummaryForm.get("SurgeryProcDone").value || "0",
+          "ClinicalConditionOnAdmisssion": this._IpSearchListService.myShowDischargeSummaryForm.get("ClinicalConditionOnAdmisssion").value || "0",
+          "OtherConDrOpinions": this._IpSearchListService.myShowDischargeSummaryForm.get("OtherConDrOpinions").value || "0",
+          "ConditionAtTheTimeOfDischarge":  this._IpSearchListService.myShowDischargeSummaryForm.get("ConditionAtTheTimeOfDischarge").value || "0",
+          "PainManagementTechnique": this._IpSearchListService.myShowDischargeSummaryForm.get("PainManagementTechnique").value || "",
+          "LifeStyle": this._IpSearchListService.myShowDischargeSummaryForm.get("LifeStyle").value || "",
+          "WarningSymptoms": this._IpSearchListService.myShowDischargeSummaryForm.get("WarningSymptoms").value || "",
+          "Radiology": this._IpSearchListService.myShowDischargeSummaryForm.get("Radiology").value || "",
+          "IsNormalOrDeath": this._IpSearchListService.myShowDischargeSummaryForm.get("IsNormalOrDeath").value || "",
+          // "Radiology": this._IpSearchListService.myShowDischargeSummaryForm.get("Radiology").value || "",
         }
       }
       setTimeout(() => {
@@ -369,27 +429,42 @@ export class DischargeSummaryComponent implements OnInit {
 
 
 export class DischargeSummary{
-  DischargesummaryId:any;
-  AdmissionId:any;
+  AdmissionId:any;            
   DischargeId:any;
-  History:any;
+  History:any;       
   Diagnosis:any;
   Investigation:any;
   ClinicalFinding:any;
   OpertiveNotes:any;
   TreatmentGiven:any;
   TreatmentAdvisedAfterDischarge:any;
-  Followupdate:any;
+  Followupdate:any;      
   Remark:any;
   DischargeSummaryDate:any;
-  OPDate:any;
+  OPDate:any;        
   OPTime:any;
   DischargeDoctor1:any;
   DischargeDoctor2:any;
   DischargeDoctor3:any;
   DischargeSummaryTime:any;
   DoctorAssistantName:any;
-
+  ClaimNumber:any;  
+  PreOthNumber:any;
+  AddedBy:any;  
+  AddedByDate:any;
+  UpdatedBy:any; 
+  UpdatedByDate:any;
+  SurgeryProcDone:any;
+  ICD10CODE:any;
+  ClinicalConditionOnAdmisssion:any;
+  OtherConDrOpinions:any;
+  ConditionAtTheTimeOfDischarge:any;
+  PainManagementTechnique:any;
+  LifeStyle:any;
+  WarningSymptoms:any;
+  Radiology:any;
+  IsNormalOrDeath:any;  
+  DischargesummaryId:any;  
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
     this.AdmissionId=DischargeSummary.AdmissionId || 0,
