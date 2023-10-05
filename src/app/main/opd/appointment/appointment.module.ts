@@ -43,6 +43,7 @@ import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
 import { InfoheadDirective } from './infohead.directive';
+import { ScrollingModule } from "@angular/cdk/scrolling";
 
 const routes: Routes = [
     {
@@ -99,7 +100,8 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        WebcamModule 
+        WebcamModule,
+        ScrollingModule
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],

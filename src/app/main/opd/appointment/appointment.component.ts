@@ -32,6 +32,7 @@ import { MatStepper } from "@angular/material/stepper";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 
 
 export class DocData {
@@ -243,6 +244,7 @@ export class AppointmentComponent implements OnInit {
       filterCompany: any;
       filterHospital: any;
       
+  public height: string;
 
     constructor(
         public _AppointmentSreviceService: AppointmentSreviceService,
@@ -327,7 +329,29 @@ export class AppointmentComponent implements OnInit {
   
       this.FirstName.markAsTouched();
       this.AreaId.markAsTouched();
+
+      this.searchFormGroup.get('RegId').valueChanges
+      .pipe(
+        startWith(""),
+        map((value: any) => {
+          // Filter the options
+          if (value.length >= 2) {
+            this.getSearchList(value);
+          } else {
+            let valueString = value && value.FirstName ? value.FirstName : value
+            this.filterRegList(valueString);
+          }
+        })
+      )
+      .subscribe();
   
+    }
+
+    public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
+      if (event.source.isOpen) {
+        ((event.option as any)
+          ._element as ElementRef).nativeElement.scrollIntoView();
+      }
     }
     getDoctor1List() {
       this._opappointmentService.getDoctorMaster1Combo().subscribe(data => {
@@ -957,7 +981,7 @@ export class AppointmentComponent implements OnInit {
     return option && option.AreaName ? option.AreaName : '';
   }
 
-    getSearchList() {
+    /** getSearchList() {
       debugger
       var m_data = {
         "Keyword": `${this.searchFormGroup.get('RegId').value}%`
@@ -975,6 +999,30 @@ export class AppointmentComponent implements OnInit {
         });
       }
   
+    } */
+
+    getSearchList(value?: string) {
+      var m_data = {
+        "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      }
+      // if (this.searchFormGroup.get('RegId').value.length >= 1) {
+        this._opappointmentService.getRegistrationList(m_data).subscribe((resData: any) => {
+          this.options = resData;
+          this.filterRegList(value);
+        });
+      // }
+  
+    }
+
+    filterRegList(value: string) {
+      this.PatientListfilteredOptions = this.options.filter(option =>
+        option.FirstName.toLowerCase().startsWith(value.toLowerCase())
+      );
+      if (this.PatientListfilteredOptions.length < 4) {
+        this.height = this.PatientListfilteredOptions.length * 50 + "px";
+      } else {
+        this.height = "200px";
+      }
     }
 
     
