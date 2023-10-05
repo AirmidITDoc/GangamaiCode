@@ -9,7 +9,11 @@
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="width:80% ;font-size: 20px; font-weight: 400;">
                 Discharge
+                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
+                    No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
+                    Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
             </span>
+            <!-- </span> -->
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
                 </app-common-date>

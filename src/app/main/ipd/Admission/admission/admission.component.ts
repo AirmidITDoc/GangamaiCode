@@ -149,6 +149,8 @@ export class AdmissionComponent implements OnInit {
   bedObj = new Bed({});
   selectedPrefixId: any;
 
+  V_SearchRegList: any = [];
+
   filteredOptionsPrefix: Observable<string[]>;
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsCity: Observable<string[]>;
@@ -292,6 +294,9 @@ export class AdmissionComponent implements OnInit {
     this.getSubTPACompList();
 
 
+    this.getSearchList();
+
+
     if (this._ActRoute.url == '/ipd/admission') {
 
       this.menuActions.push('Edit Admission');
@@ -395,11 +400,13 @@ export class AdmissionComponent implements OnInit {
 
   getSearchList() {
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
+        this.V_SearchRegList=this.filteredOptions;
+        console.log(this.V_SearchRegList)
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {

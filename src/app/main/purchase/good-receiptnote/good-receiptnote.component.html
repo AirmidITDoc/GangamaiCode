@@ -540,15 +540,28 @@
                                                 <form>
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         fxLayoutGap="4px">
-                                                        <mat-form-field appearance="outline" fxFlex="45%">
+                                                  
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Store Name</mat-label>
-                                                            <mat-select formControlName="Freight" name="Freight">
-                                                                <mat-option value="CENTRAL">CENTRAL STORE</mat-option>
-                                                                <mat-option value="240">RS 240</mat-option>
-                                                                <mat-option value="2500">RS 2500</mat-option>
-                                                                <mat-option value="360">RS 360</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input matAutocompletePosition="below" type="text"
+                                                                placeholder="Select Payment" matInput
+                                                                formControlName="ToStoreId"
+                                                                [matAutocomplete]="autoTostore">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoTostore="matAutocomplete"
+                                                                [displayWith]="getOptionTextPayment">
+                                                                <mat-option
+                                                                    *ngFor="let option of filteredoptionsToStore | async"
+                                                                    [value]="option">
+                                                                    {{option.StoreName}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
 
                                                         <mat-radio-group name="Status" formControlName="Status"
                                                             fxFlex="50%" value="false">
@@ -567,15 +580,29 @@
 
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         fxLayoutGap="4px">
-                                                        <mat-form-field appearance="outline" fxFlex="41%">
-                                                            <mat-label>Supplier</mat-label>
-                                                            <mat-select formControlName="Freight" name="Freight">
-                                                                <mat-option value="CENTRAL">CENTRAL STORE</mat-option>
-                                                                <mat-option value="240">RS 240</mat-option>
-                                                                <mat-option value="2500">RS 2500</mat-option>
-                                                                <mat-option value="360">RS 360</mat-option>
-                                                            </mat-select>
+
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                                            <mat-label>Supplier Name</mat-label>
+                                                            <input matAutocompletePosition="below" type="text"
+                                                                placeholder="Select Supplier" matInput
+                                                                formControlName="Supplier_Id"
+                                                                [matAutocomplete]="autoSupllier">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('Supplier_Id').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('Supplier_Id').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoSupllier="matAutocomplete"
+                                                                [displayWith]="getOptionTextSupplier">
+                                                                <mat-option
+                                                                    *ngFor="let option of filteredoptionsSupplier | async"
+                                                                    [value]="option">
+                                                                    {{option.SupplierName}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
                                                         </mat-form-field>
+
 
                                                         <mat-form-field appearance="outline" fxFlex="35%">
                                                             <mat-label>Invoice No</mat-label>
@@ -616,34 +643,32 @@
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="4px">
 
-                                                            <mat-form-field appearance="outline" style="width: 25%;">
-                                                                <input type="text" name="ItemName"
-                                                                    formControlName="ItemName" placeholder="Item Name"
-                                                                    matInput [matAutocomplete]="auto"
-                                                                    (input)="getItemNameList()" required id="myInput">
-
-                                                                <mat-autocomplete #auto="matAutocomplete"
-                                                                    [displayWith]="getOptionText" showPanel="true"
-                                                                    (optionsScroll)="onScroll()"
-                                                                    (optionSelected)='getSelectedObj($event.option.value)'
-                                                                    fxFlex="5%">
-                                                                    <mat-option *ngFor="let option of filteredOptions"
-                                                                        [value]="option" style="width: 500px;">
+                                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                                                <mat-label>Item Name</mat-label>
+                                                                <input matAutocompletePosition="below" type="text"
+                                                                    placeholder="Select Item Name" matInput
+                                                                    formControlName="ItemName"
+                                                                    [matAutocomplete]="autoItemName">
+                                                                <span matSuffix style="display: flex;">
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="_GRNList.userFormGroup.get('ItemName').setValue(''); isItemNameSelected = false;">close</mat-icon>
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="_GRNList.userFormGroup.get('ItemName').setValue(''); isItemNameSelected = false;">search</mat-icon>
+                                                                </span>
+                                                                <mat-autocomplete #autoItemName="matAutocomplete"
+                                                                    [displayWith]="getOptionTextItemName">
+                                                                    <mat-option
+                                                                        *ngFor="let option of filteredoptionsItemName | async"
+                                                                        [value]="option">
                                                                         {{option.ItemName}} | BalQty {{option.Qty}}
                                                                     </mat-option>
                                                                 </mat-autocomplete>
-                                                                <mat-hint>
-                                                                    <span *ngIf="noOptionFound"
-                                                                        style="color: #f44336;">No
-                                                                        data
-                                                                        Found</span>
-                                                                </mat-hint>
-                                                            </mat-form-field>&nbsp;
+                                                            </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>UOM</mat-label>
                                                                 <input matInput [(ngModel)]="UOM" name="UOM"
-                                                                    formControlName="UOM" id="UOM">
+                                                                    formControlName="UOM" id="UOM" readonly>
                                                             </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
@@ -667,7 +692,7 @@
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Qty</mat-label>
                                                                 <input matInput [(ngModel)]="Qty" name="Qty"
-                                                                    formControlName="Qty" id="Qty">
+                                                                (keyup)="calculateTotalAmount()" formControlName="Qty" id="Qty">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
@@ -679,13 +704,13 @@
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>MRP</mat-label>
                                                                 <input matInput [(ngModel)]="MRP" name="MRP"
-                                                                    formControlName="MRP" id="MRP">
+                                                                    (keyup)="calculateTotalAmount()" formControlName="MRP" id="MRP">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>Rate </mat-label>
                                                                 <input matInput [(ngModel)]="Rate" name="Rate"
-                                                                    formControlName="Rate" id="Rate">
+                                                                (keyup)="calculateTotalAmount()" formControlName="Rate" id="Rate">
                                                             </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="10%">
@@ -702,7 +727,7 @@
                                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>Disc %</mat-label>
                                                                 <input matInput [(ngModel)]="Disc" name="Disc"
-                                                                    formControlName="Disc" id="Disc">
+                                                                 formControlName="Disc" id="Disc">
                                                             </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="8%">
@@ -719,7 +744,7 @@
                                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>CGST </mat-label>
                                                                 <input matInput [(ngModel)]="CGST" name="CGST"
-                                                                    formControlName="CGST" id="CGST">
+                                                                (keyup)="calculateCGSTperAmount()"   formControlName="CGST" id="CGST">
                                                             </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="8%">
