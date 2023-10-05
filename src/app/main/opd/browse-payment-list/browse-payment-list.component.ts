@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Pipe, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, Injector, Input, OnInit, Pipe, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -13,6 +13,8 @@ import { ViewOPBrowsePaymentListComponent } from './view-opbrowse-payment-list/v
 import { PrintPaymentComponent } from './print-payment/print-payment.component';
 import * as converter from 'number-to-words';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
+import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
 
 
 @Component({
@@ -67,7 +69,10 @@ export class BrowsePaymentListComponent implements OnInit {
     public datePipe: DatePipe,
     private sanitizer:DomSanitizer,
     private advanceDataStored: AdvanceDataStored,
-    public _matDialog: MatDialog) { }
+    public _matDialog: MatDialog,
+    private injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private applicationRef: ApplicationRef) { }
 
   ngOnInit(): void {
     this.getBrowseOpdPaymentReceiptList();
@@ -263,7 +268,7 @@ print() {
         <title></title>
     </head>
   `);
-  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+  popupWin.document.write(`<body onload="window.print();window.close()"></body>
   </html>`);
 
   // if(this.reportPrintObj.CashPayAmount === 0) {
@@ -287,10 +292,33 @@ print() {
   // if(this.reportPrintObj.Remark === '') {
   //   popupWin.document.getElementById('idremark').style.display = 'none';
   // }
-  
+  this.createCDKPortal({}, popupWin);
   popupWin.document.close();
 }
 
+  createCDKPortal(data, windowInstance) {
+    if (windowInstance) {
+      const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
+      const injector = this.createInjector(data);
+      let componentInstance;
+      componentInstance = this.attachHeaderContainer(outlet, injector);
+      // console.log(windowInstance.document)
+      let template = windowInstance.document.createElement('div'); // is a node
+      template.innerHTML = this.printTemplate;
+      windowInstance.document.body.appendChild(template);
+    }
+  }
+  createInjector(data): any {
+    const injectionTokens = new WeakMap();
+    injectionTokens.set({}, data);
+    return new PortalInjector(this.injector, injectionTokens);
+  }
+
+  attachHeaderContainer(outlet, injector) {
+    const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
+    const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
+    return containerRef.instance;
+  }
 
 
 getViewbill(contact)

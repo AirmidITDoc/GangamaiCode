@@ -33,6 +33,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   screenFromString = 'admission-form';
   isPaymentSelected : boolean = false;
   isSupplierSelected: boolean = false;
+  isItemNameSelected : boolean = false;
   registerObj = new RegInsert({});
   chargeslist: any = [];
 
@@ -111,6 +112,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   ItemName: any;
   UOM: any=0;
   HSNCode: any=0;
+  Dis:any=0;
   BatchNo: any=0;
   Qty: any=0;
   ExpDate: any=0;
@@ -129,10 +131,12 @@ export class GoodReceiptnoteComponent implements OnInit {
   NetAmount: any=0;
   filteredoptionsToStore: Observable<string[]>;
   filteredoptionsSupplier: Observable<string[]>;
+  filteredoptionsItemName: Observable<string[]>;
   optionsToStore: any;
   optionsFrom: any;
   optionsMarital: any;
   optionsSupplier: any;
+  optionsItemName: any;
 
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -151,6 +155,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.getFromStoreSearchList();
     this.getToStoreSearchCombo();
     this.getSupplierSearchCombo();
+    this.getItemNameSearchCombo();
     this.getGRNList() 
   }
   
@@ -190,7 +195,7 @@ onAdd(){
   this.chargeslist.push(
     {
       
-      ItemName: this.ItemName,
+      ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
       UOM: this.UOM,
       HSNCode:this.HSNCode ,
       BatchNo:this.BatchNo ,
@@ -260,6 +265,65 @@ getOptionTextSupplier(option) {
       });
   }
 
+  getOptionTextItemName(option) {
+    return option && option.ItemName ? option.ItemName : '';
+  
+  }
+  
+calculateTotalAmount() {
+  if (this.Rate && this.Qty) {
+    this.TotalAmount = Math.round(parseInt(this.Rate) + parseInt(this.Qty)).toString();
+    this.NetAmount = this.TotalAmount;
+    // this.calculatePersc();
+  }
+}
+
+calculateDisAmount(){
+  if (this.Disc) {
+    let disc =this._GRNList.userFormGroup.get('Disc').value
+    this.DisAmount = Math.round(disc * parseInt(this.NetAmount) /100 );
+    // this.DiscAmount =  DiscAmt
+    this.NetAmount = this.NetAmount - this.DisAmount;
+  }
+}
+
+calculateDiscAmount() {
+  if (this.Disc) {
+    this.NetAmount = this.NetAmount - this.DisAmount;
+    // this.DiscAmount;
+    // this.calculatePersc();
+  }
+}
+
+calculatePersc(){
+  if (this.Disc)
+  {
+    this.Disc =Math.round(this.TotalAmount * parseInt(this.DisAmount)) / 100;
+    this.NetAmount= this.TotalAmount - this.Disc;
+    this._GRNList.userFormGroup.get('calculateDisAmount').disable();    
+  }
+
+}
+
+calculateCGSTperAmount() {
+
+  if (this.CGST) {
+  
+    this.CGSTAmount = Math.round((this.TotalAmount * parseInt(this.CGST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.CGSTAmount));
+    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+ 
+  }
+}
+
+calculateGSTAmount(){
+  if (this.CGSTAmount) {
+  
+    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.CGSTAmount));
+    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+  }
+}
 
   getToStoreSearchCombo() {
       this._GRNList.getToStoreSearchList().subscribe(data => {
@@ -288,17 +352,43 @@ getOptionTextSupplier(option) {
         });
       }
 
-    private _filterStore(value: any): string[] {
+      getItemNameSearchCombo() {
+        var Param = {
+    
+          "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
+          "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
+        }
+        console.log(Param);
+        this._GRNList.getItemNameList(Param).subscribe(data =>{
+            this.ItemName = data;
+            console.log(data);
+            this.optionsItemName = this.ItemName.slice();
+            this.filteredoptionsItemName = this._GRNList.userFormGroup.get('ItemName').valueChanges.pipe(
+              startWith(''),
+              map(value => value ? this._filterItemName(value) : this.ItemName.slice()),
+            );
+        
+          });
+        }
+
+ private _filterStore(value: any): string[] {
       if (value) {
         const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
         return this.optionsToStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
       }
-    }
+}
 
     private _filterSupplier(value: any): string[] {
      if (value) {
     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
     return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+  }
+}
+
+private _filterItemName(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
+    return this.optionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
   }
 }
     
@@ -319,7 +409,6 @@ getOptionTextSupplier(option) {
       });
   }
 
-  
 onclickrow(contact){
 Swal.fire("Row selected :" + contact)
 }
@@ -346,7 +435,6 @@ getFromStoreSearchList() {
     this._GRNList.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
   });
 }
-
 
 getItemNameList(){
   var Param = {

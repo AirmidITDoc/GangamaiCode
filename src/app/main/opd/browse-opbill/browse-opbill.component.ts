@@ -342,7 +342,10 @@ getTemplate() {
   this._BrowseOPDBillsService.getTemplate(query).subscribe((resData: any) => {
 
     this.printTemplate = resData[0].TempDesign;
-    let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName', 'Address', 'MobileNo']; // resData[0].TempKeys;
+    let keyStringArr = resData[0].TempKeys.replaceAll('"', '').replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '').split(',');
+    let filterKeyArr = keyStringArr.filter((ele, index) => keyStringArr.indexOf(ele) === index);
+    let keysArray = filterKeyArr;
+    // let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName', 'Address', 'MobileNo']; // resData[0].TempKeys;
 
     for (let i = 0; i < keysArray.length; i++) {
       let reString = "{{" + keysArray[i] + "}}";

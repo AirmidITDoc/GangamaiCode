@@ -35,6 +35,8 @@ import { ExcelDownloadService } from './services/excel-download.service';
   exports: [
     TrimPipe,
     CommonDateComponent,
-  ]
+    HeaderComponent
+  ],
+  entryComponents: [HeaderComponent]
 })
 export class SharedModule { }
