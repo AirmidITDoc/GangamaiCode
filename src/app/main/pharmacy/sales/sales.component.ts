@@ -57,7 +57,7 @@ export class SalesComponent implements OnInit {
   NetAmt: any = 0;
   TotalMRP: any = 0;
   FinalTotalAmt: any;
-  FinalNetAmount: any =0;
+  FinalNetAmount: any = 0;
   FinalGSTAmt: any;
 
   ConShow: Boolean = false;
@@ -114,6 +114,7 @@ export class SalesComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
+
     private _loggedService: AuthenticationService,
 
   ) { }
@@ -140,13 +141,13 @@ export class SalesComponent implements OnInit {
       Remark: [''],
       FinalAmount: '',
       BalAmount: '',
-      FinalDiscPer:'',
-      FinalDiscAmt:'',
-      FinalTotalAmt:'',
-      FinalNetAmount:'',
-      FinalGSTAmt:'',
-      BalanceAmt:'',
-      CashPay:['1']
+      FinalDiscPer: '',
+      FinalDiscAmt: '',
+      FinalTotalAmt: '',
+      FinalNetAmount: '',
+      FinalGSTAmt: '',
+      BalanceAmt: '',
+      CashPay: ['1']
     });
   }
 
@@ -184,6 +185,7 @@ export class SalesComponent implements OnInit {
   }
 
   getOptionText(option) {
+    this.ItemId=option.ItemId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
@@ -193,7 +195,7 @@ export class SalesComponent implements OnInit {
     this.ItemName = obj.ItemName;
     this.ItemId = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
-    
+
     this.getBatch();
   }
 
@@ -223,6 +225,7 @@ export class SalesComponent implements OnInit {
       this.saleSelectedDatasource.data = [];
       this.Itemchargeslist.push(
         {
+          ItemId:this.ItemId,
           ItemName: this.ItemName,
           BatchNo: this.BatchNo,
           BatchExpDate: this.BatchExpDate || '01/01/1900',
@@ -230,9 +233,8 @@ export class SalesComponent implements OnInit {
           UnitMRP: this.MRP,
           GSTPer: this._salesService.IndentSearchGroup.get('GSTPer').value || 0,
           TotalMRP: this.TotalMRP,
-          DiscAmt: this.DiscAmt || 0,
+          DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
-
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -264,24 +266,25 @@ export class SalesComponent implements OnInit {
       this.StoreName = result.StoreName;
       this.GSTPer = result.VatPercentage;
       this.TotalMRP = Math.round(this.Qty * this.MRP);
+      this.DiscAmt=result.DiscAmt;
       this.NetAmt = this.TotalMRP;
       this.ItemObj = result;
     });
 
-  
+
   }
 
 
-  ItemFormreset(){
+  ItemFormreset() {
 
-      this.BatchNo = "";
-      this.BatchExpDate = "01/01/1900"
-      this.MRP = 0;
-      this.Qty = 0;
-      this.Bal = 0;
-      this.GSTPer = 0;
-      this.TotalMRP = 0;
-      this.NetAmt = 0;
+    this.BatchNo = "";
+    this.BatchExpDate = "01/01/1900"
+    this.MRP = 0;
+    this.Qty = 0;
+    this.Bal = 0;
+    this.GSTPer = 0;
+    this.TotalMRP = 0;
+    this.NetAmt = 0;
 
   }
 
@@ -322,6 +325,12 @@ export class SalesComponent implements OnInit {
 
   }
 
+  calculateDiscAmt(){
+    debugger
+    this.NetAmt =this.NetAmt - parseInt(this._salesService.IndentSearchGroup.get('DiscAmt').value);
+
+  }
+
   calculateGSTAmt() {
     let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
     if (GST > 0) {
@@ -338,7 +347,7 @@ export class SalesComponent implements OnInit {
     }
   }
 
-  getFinalDiscperAmt(){
+  getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value
     // this.FinalDiscAmt=0
     if (Disc > 0) {
@@ -350,11 +359,11 @@ export class SalesComponent implements OnInit {
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
   }
 
-  getFinalDiscAmount(){
+  getFinalDiscAmount() {
     // this.FinalDiscPer=0;
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
 
-    if(Discamt > 0 && Discamt  < this.FinalNetAmount){
+    if (Discamt > 0 && Discamt < this.FinalNetAmount) {
       this.FinalNetAmount = parseInt(this.FinalNetAmount) - (Discamt);
       this.ConShow = true
     }
@@ -365,11 +374,11 @@ export class SalesComponent implements OnInit {
 
 
 
-  CalfinalGST(){
+  CalfinalGST() {
     let GST = this.ItemSubform.get('FinalGSTAmt').value
     if (GST > 0 && GST < this.FinalNetAmount) {
-    this.FinalNetAmount = parseInt(this.FinalNetAmount) - parseInt(GST);
-    this.ConShow = true
+      this.FinalNetAmount = parseInt(this.FinalNetAmount) - parseInt(GST);
+      this.ConShow = true
     }
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
   }
@@ -388,63 +397,7 @@ export class SalesComponent implements OnInit {
 
   onSave() {
 
-    let PatientHeaderObj = {};
-
-    PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['PatientName'] ="AirMid" ;//this.selectedAdvanceObj.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = '007';
-    PatientHeaderObj['NetPayAmount'] = '9877777';
-
-
-    if (!this.ItemSubform.get('cashpay').value) {
-      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-        {
-          maxWidth: "100vw",
-          height: '600px',
-          width: '100%',
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "OP-Bill"
-          }
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-
-        this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-        this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-        this.flagSubmit = result.IsSubmitFlag
-
-   
-        if (this.flagSubmit == true) {
-          console.log("Procced with Payment Option");
-          const insertBillUpdateBillNo = new IndentList(IndentList);
-          let submitData = {
-            // "chargesDetailInsert": InsertAdddetArr,
-            // "insertBillupdatewithbillno": insertBillUpdateBillNo,
-            // "opBillDetailsInsert": Billdetsarr,
-            // "opCalDiscAmountBill": opCalDiscAmountBill,
-            // "opInsertPayment": result.submitDataPay.ipPaymentInsert
-          };
-          console.log(submitData);
-          this._salesService.InsertSales(submitData).subscribe(response => {
-            if (response) {
-              Swal.fire('Sale!', 'Data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  let m = response;
-                  // this.getPrint(m);
-                  this._matDialog.closeAll();
-                }
-              });
-            } else {
-              Swal.fire('Error !', 'Sale data not saved', 'error');
-            }
-            this.sIsLoading = '';
-          });
-        }
-      
-      });
-    }
-   }
+  }
   onClose() {
     // this.dialogRef.close({ result: "cancel" });
   }

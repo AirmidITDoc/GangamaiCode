@@ -11,6 +11,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../../advance';
 import { AdvanceDetailObj } from '../ip-search-list.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -58,6 +59,7 @@ export class DischargeSummaryComponent implements OnInit {
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _ActRoute: Router,
+    private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe) {
@@ -178,6 +180,7 @@ export class DischargeSummaryComponent implements OnInit {
  PainManagementTechnique:'',
  LifeStyle:'',
  WarningSymptoms:'',
+ Pathology:'',
  Radiology:'',
  IsNormalOrDeath:'',  
  DischargesummaryId:'',  
@@ -331,7 +334,9 @@ export class DischargeSummaryComponent implements OnInit {
           "DischargeDoctor3": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor3").value || "0",
           "DischargeSummaryTime":  this.dateTimeObj.time,
           "DoctorAssistantName": this._IpSearchListService.myShowDischargeSummaryForm.get("DoctorAssistantName").value || "",
-        
+
+          
+       
         }
       }
       console.log(m_data);
@@ -375,24 +380,6 @@ export class DischargeSummaryComponent implements OnInit {
           "DischargeSummaryTime":  this.dateTimeObj.time,
           "DoctorAssistantName": this._IpSearchListService.myShowDischargeSummaryForm.get("DoctorAssistantName").value || "",
         
-
-          "ClaimNumber": this._IpSearchListService.myShowDischargeSummaryForm.get("ClaimNumber").value || "",
-          "PreOthNumber": this._IpSearchListService.myShowDischargeSummaryForm.get("PreOthNumber").value || "",
-          "AddedBy": this._IpSearchListService.myShowDischargeSummaryForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-          "AddedByDate":  this.dateTimeObj.time,//this._IpSearchListService.myShowDischargeSummaryForm.get("Remark").value || "",
-          "UpdatedBy": 10,
-          "UpdatedByDate": this.dateTimeObj.time,// this._IpSearchListService.myShowDischargeSummaryForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
-          "ICD10COD": this._IpSearchListService.myShowDischargeSummaryForm.get("ICD10COD").value || "2021-05-24T06:18:37.533Z",
-          "SurgeryProcDone": this._IpSearchListService.myShowDischargeSummaryForm.get("SurgeryProcDone").value || "0",
-          "ClinicalConditionOnAdmisssion": this._IpSearchListService.myShowDischargeSummaryForm.get("ClinicalConditionOnAdmisssion").value || "0",
-          "OtherConDrOpinions": this._IpSearchListService.myShowDischargeSummaryForm.get("OtherConDrOpinions").value || "0",
-          "ConditionAtTheTimeOfDischarge":  this._IpSearchListService.myShowDischargeSummaryForm.get("ConditionAtTheTimeOfDischarge").value || "0",
-          "PainManagementTechnique": this._IpSearchListService.myShowDischargeSummaryForm.get("PainManagementTechnique").value || "",
-          "LifeStyle": this._IpSearchListService.myShowDischargeSummaryForm.get("LifeStyle").value || "",
-          "WarningSymptoms": this._IpSearchListService.myShowDischargeSummaryForm.get("WarningSymptoms").value || "",
-          "Radiology": this._IpSearchListService.myShowDischargeSummaryForm.get("Radiology").value || "",
-          "IsNormalOrDeath": this._IpSearchListService.myShowDischargeSummaryForm.get("IsNormalOrDeath").value || "",
-          // "Radiology": this._IpSearchListService.myShowDischargeSummaryForm.get("Radiology").value || "",
         }
       }
       setTimeout(() => {
