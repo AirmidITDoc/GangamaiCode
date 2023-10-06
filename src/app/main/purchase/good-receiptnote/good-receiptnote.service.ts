@@ -45,7 +45,7 @@ export class GoodReceiptnoteService {
       Disc:[''],
       DisAmount:[''],
       CGST:[''],
-      CGSTAmoun:[''],
+      CGSTAmount:[''],
       SGST:[''],
       SGSTAmount:[''],
       IGST:[''],

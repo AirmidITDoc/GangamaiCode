@@ -359,7 +359,13 @@
                     <mat-form-field appearance="outline" style="width:30%;margin-left:15px;" disabled="isRegSearchDisabled">
                       <input type="text" name="RegId" formControlName="RegId"
                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
-                        [matAutocomplete]="autoReg">
+                        [matAutocomplete]="autoReg" >
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                        </span>
                       <mat-autocomplete #autoReg="matAutocomplete" (optionActivated)="handleKeyboardEvent($event)" [displayWith]="getOptionText">
                         <cdk-virtual-scroll-viewport class="autocomplete-test-viewport" [ngStyle]="{'height': height}" itemSize="25">
                           <mat-option *cdkVirtualFor="let option of PatientListfilteredOptions" [value]="option" class="autocomplete-item">
