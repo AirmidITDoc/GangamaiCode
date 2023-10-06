@@ -23,6 +23,24 @@ export class SalesService {
     return this._formBuilder.group({
       StoreId: '',
       ItemId:'',
+
+      ItemName:'',
+      BatchNo:'',
+      BatchExpDate:'',
+      BalanceQty:'',
+      UnitMRP:'',
+      Qty:'',
+      IssQty:'',
+      Bal:'',
+      StoreName:'',
+      GSTPer:'',
+      GSTAmt:'',
+      MRP:'',
+      TotalMrp:'',
+      DiscAmt:'',
+      NetAmt:'',
+      DiscPer:'',
+    
       // ItemName:'',
       // start: [(new Date()).toISOString()],
       // end: [(new Date()).toISOString()],
@@ -65,5 +83,12 @@ export class SalesService {
 
   public getBatchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",Param);
+  }
+  public getConcessionCombo()
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
+  }
+  public InsertSales(employee){
+    return this._httpClient.post("Pharmacy/SalesSave", employee)
   }
 }

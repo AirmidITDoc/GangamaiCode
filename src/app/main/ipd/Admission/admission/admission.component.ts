@@ -140,6 +140,7 @@ export class AdmissionComponent implements OnInit {
   optionsCompany: any[] = [];
   optionsSubCompany: any[] = [];
   optionsSearchDoc: any[] = [];
+  optionRegSearch: any[] = [];
 
   filteredOptions: any;
   showtable: boolean = false;
@@ -167,7 +168,7 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsCompany: Observable<string[]>;
   filteredOptionsSubCompany: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
-
+  filteredOptionsRegSearch: Observable<string[]>;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -237,6 +238,8 @@ export class AdmissionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored) {
     this.getAdmittedPatientList();
+
+    this.getRegSearchList();
   }
 
   ngOnInit(): void {
@@ -294,7 +297,7 @@ export class AdmissionComponent implements OnInit {
     this.getSubTPACompList();
 
 
-    this.getSearchList();
+   
 
 
     if (this._ActRoute.url == '/ipd/admission') {
@@ -416,6 +419,54 @@ export class AdmissionComponent implements OnInit {
     }
 
   }
+
+    
+  getRegSearchList() {
+    var m_data = {
+      "Keyword":'z%'// `${this.searchFormGroup.get('RegId').value}%` || '%'
+    }
+    this._AdmissionService.getRegistrationList(m_data).subscribe(data => {
+      this.V_SearchRegList = data;
+      this.optionRegSearch = this.V_SearchRegList.slice();
+      this.filteredOptionsRegSearch = this.searchFormGroup.get('RegId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterRegsearch(value) : this.V_SearchRegList.slice()),
+      );
+      
+    });
+  }
+
+  private _filterRegsearch(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.FirstName ? value.FirstName.toLowerCase() : value.toLowerCase();
+      return this.optionRegSearch.filter(option => option.FirstName.toLowerCase().includes(filterValue));
+    }
+  
+  }
+
+  Regsearchtext($event){
+    
+  }
+
+  // getSearchList1() {
+
+  //   var m_data = {
+  //     "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
+  //   }
+  //   // if (this.searchFormGroup.get('RegId').value.length >= 1) {
+  //     this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+
+  //       this.optionsSearch = this.filteredOptions.slice();
+  //       this.filteredOptionsRegSearch = this.searchFormGroup.get('RegId').valueChanges.pipe(
+  //         startWith(''),
+  //         map(value => value ? this._filterRegsearch(value) : this.filteredOptions.slice()),
+  //       );
+
+           
+  //   });
+  //   // }
+  // }
 
 
   private filterDoctor() {

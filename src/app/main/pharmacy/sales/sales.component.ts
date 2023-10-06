@@ -11,6 +11,8 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
 @Component({
   selector: 'app-sales',
@@ -22,6 +24,7 @@ import { SalePopupComponent } from './sale-popup/sale-popup.component';
 })
 export class SalesComponent implements OnInit {
 
+  ItemSubform: FormGroup;
   sIsLoading: string = '';
   isLoading = true;
   Store1List: any = [];
@@ -35,6 +38,37 @@ export class SalesComponent implements OnInit {
   ItemName: any;
   ItemId: any;
   BalanceQty: any;
+  Itemchargeslist: any = [];
+  ConcessionReasonList: any = [];
+
+  BatchNo: any;
+  BatchExpDate: any;
+  UnitMRP: any;
+  Qty: any;
+  IssQty: any;
+  Bal: any;
+  StoreName: any;
+  GSTPer: any;
+  MRP: any;
+  DiscPer: any = 0;
+  DiscAmt: any = 0;
+  FinalDiscPer: any = 0;
+  FinalDiscAmt: any = 0;
+  NetAmt: any = 0;
+  TotalMRP: any = 0;
+  FinalTotalAmt: any;
+  FinalNetAmount: any = 0;
+  FinalGSTAmt: any;
+
+  ConShow: Boolean = false;
+  ItemObj: IndentList;
+
+  paidamt: number;
+  flagSubmit: boolean;
+  balanceamt: number;
+  disamt: any;
+  msg: any;
+
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
@@ -62,8 +96,13 @@ export class SalesComponent implements OnInit {
     'ItemName',
     'BatchNo',
     'BatchExpDate',
-    'BalanceQty',
-    'MRP',
+    'Qty',
+    'UnitMRP',
+    'GSTPer',
+    'TotalMRP',
+    'DiscAmt',
+    'NetAmt',
+    'buttons'
   ];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -74,19 +113,51 @@ export class SalesComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+
     private _loggedService: AuthenticationService,
 
   ) { }
 
   ngOnInit(): void {
     this.gePharStoreList();
-
+    this.getItemSubform();
+    this.getConcessionReasonList();
+    // this.ItemObj=
   }
 
   // toggleSidebar(name): void {
   //   this._fuseSidebarService.getSidebar(name).toggleOpen();
   // }
 
+
+  getItemSubform() {
+    this.ItemSubform = this.formBuilder.group({
+      TotalAmt: '',
+      GSTPer: '',
+      DiscAmt: '',
+      concessionAmt: [0],
+      ConcessionId: 0,
+      Remark: [''],
+      FinalAmount: '',
+      BalAmount: '',
+      FinalDiscPer: '',
+      FinalDiscAmt: '',
+      FinalTotalAmt: '',
+      FinalNetAmount: '',
+      FinalGSTAmt: '',
+      BalanceAmt: '',
+      CashPay: ['1']
+    });
+  }
+
+
+  getConcessionReasonList() {
+    this._salesService.getConcessionCombo().subscribe(data => {
+      this.ConcessionReasonList = data;
+      // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+    })
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -98,7 +169,7 @@ export class SalesComponent implements OnInit {
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
-      "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.StoreId
+      "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid || 0
     }
     if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 2) {
       this._salesService.getItemList(m_data).subscribe(data => {
@@ -110,10 +181,11 @@ export class SalesComponent implements OnInit {
         }
       });
     }
-  
+
   }
 
   getOptionText(option) {
+    this.ItemId=option.ItemId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
@@ -123,7 +195,7 @@ export class SalesComponent implements OnInit {
     this.ItemName = obj.ItemName;
     this.ItemId = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
-    // Swal.fire("Selected", this.ItemId + '/' + this.ItemName + '/' + this.BalanceQty);
+
     this.getBatch();
   }
 
@@ -134,8 +206,8 @@ export class SalesComponent implements OnInit {
   // }
 
   gePharStoreList() {
-    var vdata={
-      Id : this._loggedService.currentUserValue.user.storeId
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
     }
     this._salesService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
@@ -147,8 +219,28 @@ export class SalesComponent implements OnInit {
 
   }
 
-  OnAdd(){
+  OnAdd() {
+    this.sIsLoading = 'save';
+    if (this.ItemName && (parseInt(this.Qty) != 0) && this.MRP > 0) {
+      this.saleSelectedDatasource.data = [];
+      this.Itemchargeslist.push(
+        {
+          ItemId:this.ItemId,
+          ItemName: this.ItemName,
+          BatchNo: this.BatchNo,
+          BatchExpDate: this.BatchExpDate || '01/01/1900',
+          Qty: this.Qty,
+          UnitMRP: this.MRP,
+          GSTPer: this._salesService.IndentSearchGroup.get('GSTPer').value || 0,
+          TotalMRP: this.TotalMRP,
+          DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+          NetAmt: this.NetAmt,
+        });
+      this.sIsLoading = '';
+      this.saleSelectedDatasource.data = this.Itemchargeslist;
 
+    }
+    this.ItemFormreset();
   }
 
   getBatch() {
@@ -161,16 +253,153 @@ export class SalesComponent implements OnInit {
         disableClose: true,
         data: {
           "ItemId": this._salesService.IndentSearchGroup.get('ItemId').value.ItemId,
-          "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.StoreId
+          "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      // this.saleSelectedDatasource.data = [];
-      // this.saleSelectedDatasource.data = [result];// as IndentList[];
-      // console.log(this.saleSelectedDatasource.data);
-
+      this.BatchNo = result.BatchNo;
+      this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
+      this.MRP = result.UnitMRP;
+      this.Qty = 0;
+      this.Bal = result.BalanceAmt;
+      this.StoreName = result.StoreName;
+      this.GSTPer = result.VatPercentage;
+      this.TotalMRP = Math.round(this.Qty * this.MRP);
+      this.DiscAmt=result.DiscAmt;
+      this.NetAmt = this.TotalMRP;
+      this.ItemObj = result;
     });
+
+
+  }
+
+
+  ItemFormreset() {
+
+    this.BatchNo = "";
+    this.BatchExpDate = "01/01/1900"
+    this.MRP = 0;
+    this.Qty = 0;
+    this.Bal = 0;
+    this.GSTPer = 0;
+    this.TotalMRP = 0;
+    this.NetAmt = 0;
+
+  }
+
+
+  getNetAmtSum(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0);
+    this.FinalTotalAmt = netAmt;
+    this.FinalNetAmount = this.FinalTotalAmt;
+
+    // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
+    return netAmt;
+  }
+
+  calculateTotalAmt() {
+    if (this.Qty && this.MRP) {
+      this.TotalMRP = Math.round(parseInt(this._salesService.IndentSearchGroup.get('Qty').value) * parseInt(this._salesService.IndentSearchGroup.get('MRP').value)).toString();
+      this.NetAmt = this.TotalMRP;
+    }
+    
+    // txtMRPTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtTotMRPAftDisAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtLandedTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtUnitLandedRate.Text), "0.00")
+    // txtPurTotAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPurUnitRateWF.Text), "0.00")
+    // Call CalculateVatAmount()
+
+    // Dim lngVatAmount, lngCGSTAmt, lngSGSTAmt, lngIGSTAmt As Double
+    // lngVatAmount = (Val(txtPerMRP.Text) * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngCGSTAmt = (Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngSGSTAmt = (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngIGSTAmt = (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+
+    // txtPerItemVatAmt.Text = Format(lngVatAmount, "0.00")
+    // txtCGSTAmt.Text = Format(lngCGSTAmt, "0.00")
+    // txtSGSTAmt.Text = Format(lngSGSTAmt, "0.00")
+    // txtIGSTAmt.Text = Format(lngIGSTAmt, "0.00")
+
+
+  }
+
+  calculateDiscAmt(){
+    debugger
+    this.NetAmt =this.NetAmt - parseInt(this._salesService.IndentSearchGroup.get('DiscAmt').value);
+
+  }
+
+  calculateGSTAmt() {
+    let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
+    if (GST > 0) {
+      let discAmt = Math.round((this.NetAmt * parseInt(GST)) / 100);
+      this.DiscAmt = discAmt;
+      this.NetAmt = parseInt(this.NetAmt) - (discAmt);
+    }
+  }
+
+  getDiscAmount() {
+    if (this.FinalDiscPer > 0) {
+      let discAmt = Math.round((this.FinalTotalAmt * parseInt(this.FinalDiscPer)) / 100);
+      this.FinalTotalAmt = this.FinalTotalAmt - discAmt;
+    }
+  }
+
+  getFinalDiscperAmt() {
+    let Disc = this.ItemSubform.get('FinalDiscPer').value
+    // this.FinalDiscAmt=0
+    if (Disc > 0) {
+      this.FinalDiscAmt =  Math.round((this.FinalTotalAmt * parseInt(Disc)) / 100);
+      this.FinalNetAmount = parseInt(this.FinalTotalAmt) - (this.FinalDiscAmt);
+      this.ConShow = true
+    }
+
+    this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
+  }
+
+  getFinalDiscAmount() {
+    // this.FinalDiscPer=0;
+    let Discamt = this.ItemSubform.get('FinalDiscAmt').value
+
+    if (Discamt > 0 && Discamt < this.FinalNetAmount) {
+      this.FinalNetAmount = parseInt(this.FinalNetAmount) - (Discamt);
+      this.ConShow = true
+    }
+
+    this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
+  }
+
+
+
+
+  CalfinalGST() {
+    let GST = this.ItemSubform.get('FinalGSTAmt').value
+    if (GST > 0 && GST < this.FinalNetAmount) {
+      this.FinalNetAmount = parseInt(this.FinalNetAmount) - parseInt(GST);
+      this.ConShow = true
+    }
+    this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
+  }
+
+  deleteTableRow(element) {
+
+    // Delete row in datatable level
+    let index = this.Itemchargeslist.indexOf(element);
+    if (index >= 0) {
+      this.Itemchargeslist.splice(index, 1);
+      this.saleSelectedDatasource.data = [];
+      this.saleSelectedDatasource.data = this.Itemchargeslist;
+    }
+    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+  }
+
+  onSave() {
+
+  }
+  onClose() {
+    // this.dialogRef.close({ result: "cancel" });
   }
 }
 
@@ -186,6 +415,10 @@ export class IndentList {
   Bal: number;
   StoreId: any;
   StoreName: any;
+  GSTPer: any;
+  TotalMRP: any;
+  DiscAmt: any;
+  NetAmt: any;
   /**
    * Constructor
    *
@@ -204,6 +437,12 @@ export class IndentList {
       this.Bal = IndentList.Bal || 0;
       this.StoreId = IndentList.StoreId || 0;
       this.StoreName = IndentList.StoreName || '';
+
+      this.GSTPer = IndentList.GSTPer || "";
+      this.TotalMRP = IndentList.TotalMRP || 0;
+      this.DiscAmt = IndentList.IssQty || 0;
+      this.NetAmt = IndentList.NetAmt || 0;
+
     }
   }
 }

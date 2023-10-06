@@ -1,7 +1,30 @@
-<p>sale-popup works!</p>
+<div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
+
+<!-- APP TITLE -->
+<div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+    
+    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+        style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
+      Sale Pop Up : 
+        <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
+            No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
+            Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span> -->
+    </span>
+    <!-- <span style="float: right;background: white;color: black;">
+        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
+        </app-common-date>
+    </span> -->
+
+    <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+</div>
 
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
-    style="overflow:auto;">
+    style="overflow:auto;margin-top: 10px;">
     <ng-container matColumnDef="BatchNo">
         <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>

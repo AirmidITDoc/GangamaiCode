@@ -2,7 +2,7 @@ app-sales {
       .mat-header-row {
       width:200;
       min-width: 1000px;
-      min-height: 30px;
+      height: 10px; 
       background-color: blue;
     }
   
@@ -10,7 +10,7 @@ app-sales {
       width: 100%;
       //max-width: 1600px;
       min-width: 1000px;
-      min-height: 30px;
+      min-height: 20px;
      
     }
     .mat-column-ItemId {
@@ -21,26 +21,83 @@ app-sales {
     }
 
     .mat-column-ItemName {
-      width: 400px;
-      max-width: 400px;
-      min-width: 400px;
+      width: 500px;
+      max-width: 500px;
+      min-width: 500px;
       text-align: left;
     }
     
-    .mat-column-BalanceQty {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-  
- 
-    .mat-column-action {
+    .mat-column-BatchNo {
       width: 100px;
       max-width: 100px;
       min-width: 100px;
+      text-align: left;
+    }
+   
+    .mat-column-BatchExpDate {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }
+
+    .mat-column-Qty {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+    }
+
+    .mat-column-UnitMRP {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-GSTPer {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-TotalMRP {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-DiscAmt {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-NetAmt {
+      width: 160px;
+      max-width: 160px;
+      min-width: 160px;
+      text-align: center;
+    }
+
+  
+    .mat-column-action {
+      width: 70px;
+      max-width: 70px;
+      min-width: 70px;
       text-align: center;
       justify-content: center;
+  
+    }
+    
+    .mat-column-buttons {
+      width: 70px;
+      max-width: 70px;
+      min-width: 70px;
+      text-align: left;
+      justify-content: left;
   
     }
     // .mat-tab-group {
