@@ -452,6 +452,7 @@ export class DischargeSummary{
   Radiology:any;
   IsNormalOrDeath:any;  
   DischargesummaryId:any;  
+  Pathology:any;
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
     this.AdmissionId=DischargeSummary.AdmissionId || 0,
@@ -473,5 +474,6 @@ export class DischargeSummary{
     this.DischargeDoctor3=DischargeSummary.DischargeDoctor3 || 0,
     this.DischargeSummaryTime=DischargeSummary.DischargeSummaryTime || 0,
     this.DoctorAssistantName=DischargeSummary.DoctorAssistantName || 0
+    this.Pathology=DischargeSummary.Pathology || '';
   }
 }

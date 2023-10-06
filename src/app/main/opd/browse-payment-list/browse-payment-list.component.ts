@@ -268,7 +268,7 @@ print() {
         <title></title>
     </head>
   `);
-  popupWin.document.write(`<body onload="window.print();window.close()"></body>
+  popupWin.document.write(`<body onload="window.print();window.close()"></body> 
   </html>`);
 
   // if(this.reportPrintObj.CashPayAmount === 0) {
