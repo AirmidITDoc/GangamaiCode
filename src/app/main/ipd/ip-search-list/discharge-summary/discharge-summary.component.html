@@ -47,20 +47,75 @@
                 </mat-card>
             </mat-tab>
             <mat-tab label="SURGERY /PROCEDURE DONE">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">SURGERY /PROCEDURE DONE</span>
+                    <div style="overflow: auto;">
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 5px 5px 5px 5px;">
+                            <mat-label>SURGERY /PROCEDURE DONE</mat-label>
+                            <textarea matInput name="SurgeryProcDone" formControlName="SurgeryProcDone"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.SurgeryProcDone" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
             <mat-tab label="CLINICAL CONDITION ON ADMISSION">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">CLINICAL CONDITION ON ADMISSION</span>
+                    <div style="overflow: auto;">
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 5px 5px 5px 5px;">
+                            <mat-label>Clinical Condition OnAdmisssion</mat-label>
+                            <textarea matInput name="ClinicalConditionOnAdmisssion" formControlName="ClinicalConditionOnAdmisssion"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.ClinicalConditionOnAdmisssion" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
             <mat-tab label="PATHOLOGY">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">PATHOLOGY</span>
+                    <div style="overflow: auto;">
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 5px 5px 5px 5px;">
+                            <mat-label>PATHOLOGY</mat-label>
+                            <textarea matInput name="Pathology" formControlName="Pathology"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.Pathology" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
             <mat-tab label="RADIOLOGY">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">Radiology</span>
+                    <div style="overflow: auto;">
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 5px 5px 5px 5px;">
+                            <mat-label>Radiology</mat-label>
+                            <textarea matInput name="Radiology" formControlName="Radiology"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.Diagnosis" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
 
             <mat-tab label="SURGICAL FINDINGS">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">SURGICAL FINDINGS</span>
+                    <div style="overflow: auto;">
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 5px 5px 5px 5px;">
+                            <mat-label>SURGICAL FINDINGS</mat-label>
+                            <textarea matInput name="WarningSymptoms" formControlName="WarningSymptoms"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.WarningSymptoms" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
             <mat-tab label="COURSES IN THE HOSPITAL">
                 <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
@@ -103,11 +158,33 @@
                 </mat-card>
             </mat-tab>
             <mat-tab label="CONDITION AT THE TIME OF DISCHARGE">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">CONDITION AT THE TIME OF DISCHARGE</span>
+                    <div>
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 0px 5px 0px 0px;">
+                            <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
+                            <textarea matInput name="ConditionAtTheTimeOfDischarge" formControlName="ConditionAtTheTimeOfDischarge"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.ConditionAtTheTimeOfDischarge" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
 
             <mat-tab label="PAIN MANAGMENT TECHNIQUE">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
+                    <span style="font-weight: bold;margin-left: 10px;font-size: large;font-family: sans-serif;">PAIN MANAGMENT TECHNIQUE</span>
+                    <div>
 
+                        <mat-form-field appearance="outline" fxFlex style="padding: 0px 5px 0px 0px;">
+                            <mat-label>OTHER CON DR.OPINION</mat-label>
+                            <textarea matInput name="PainManagementTechnique" formControlName="PainManagementTechnique"
+                                style="border-style: groove;" [(ngModel)]="DischargeSList.PainManagementTechnique" cols="300"
+                                rows="30"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-card>
             </mat-tab>
             <mat-tab label="LIFE STYLE / FOLLOW UP">
                 <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 5px;">
