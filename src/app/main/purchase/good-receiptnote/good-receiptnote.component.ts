@@ -84,6 +84,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   ];
 
   displayedColumns2 = [
+    'Action',
     'ItemName',
     'UOM',
     'HSNCode',
@@ -272,26 +273,25 @@ getOptionTextSupplier(option) {
   
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
-    this.TotalAmount = Math.round(parseInt(this.Rate) + parseInt(this.Qty)).toString();
+    this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
     this.NetAmount = this.TotalAmount;
     // this.calculatePersc();
   }
 }
 
-calculateDisAmount(){
+calculateDiscAmount() {
   if (this.Disc) {
-    let disc =this._GRNList.userFormGroup.get('Disc').value
-    this.DisAmount = Math.round(disc * parseInt(this.NetAmount) /100 );
-    // this.DiscAmount =  DiscAmt
-    this.NetAmount = this.NetAmount - this.DisAmount;
+    this.NetAmount =  this.NetAmount - this.DisAmount;
   }
 }
 
-calculateDiscAmount() {
+calculateDiscperAmount(){
   if (this.Disc) {
+    let dis=this._GRNList.userFormGroup.get('Disc').value
+    this.DisAmount = Math.round(dis * parseInt(this.NetAmount) /100 );
+    // this.DiscAmount =  DiscAmt
     this.NetAmount = this.NetAmount - this.DisAmount;
-    // this.DiscAmount;
-    // this.calculatePersc();
+
   }
 }
 
@@ -300,29 +300,66 @@ calculatePersc(){
   {
     this.Disc =Math.round(this.TotalAmount * parseInt(this.DisAmount)) / 100;
     this.NetAmount= this.TotalAmount - this.Disc;
-    this._GRNList.userFormGroup.get('calculateDisAmount').disable();    
+    this._GRNList.userFormGroup.get('calculateDiscAmount').disable();    
   }
 
 }
 
-calculateCGSTperAmount() {
-
+calculateCGSTAmount() {
   if (this.CGST) {
-  
-    this.CGSTAmount = Math.round((this.TotalAmount * parseInt(this.CGST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.CGSTAmount));
-    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
- 
+    this.CGSTAmount = Math.round(parseInt(this.CGST)).toString();
+    this.CGSTAmount;
+    // this.calculatePersc();
   }
 }
 
-calculateGSTAmount(){
-  if (this.CGSTAmount) {
-  
-    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.CGSTAmount));
-    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+calculateSGSTAmount() {
+  if (this.SGST) {
+    this.SGSTAmount = Math.round(parseInt(this.SGST)).toString();
+    this.SGSTAmount;
+    // this.calculatePersc();
   }
+}
+
+
+calculateIGSTAmount() {
+  if (this.IGST) {
+    this.IGSTAmount = Math.round(parseInt(this.IGST)).toString();
+    this.IGSTAmount;
+    // this.calculatePersc();
+  }
+}
+
+// getGSTAmt(element) {
+//   let GSTAmt;
+//   GSTAmt = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0) , 0);
+//   return GSTAmt;
+// }
+
+getCGSTAmt(element) {
+  let CGSTAmt;
+  CGSTAmt = element.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
+  return CGSTAmt;
+}
+
+getSGSTAmt(element) {
+  let SGSTAmt;
+  SGSTAmt = element.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
+  return SGSTAmt;
+}
+
+getIGSTAmt(element)
+{
+  let IGSTAmt;
+  IGSTAmt = element.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
+  return IGSTAmt;
+}
+
+getTotalAmt(element)
+{
+  let TotalAmt;
+  TotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+  return TotalAmt;
 }
 
   getToStoreSearchCombo() {
@@ -456,6 +493,18 @@ getItemNameList(){
   onClear(){
   }
 
+  OnReset() {
+    this._GRNList.GRNSearchGroup.reset();
+    this._GRNList.userFormGroup.reset();
+    this.dsItemNameList.data=[];
+  }
+
+  delete(elm) {
+    this.dsItemNameList.data = this.dsItemNameList.data
+      .filter(i => i !== elm)
+      .map((i, idx) => (i.position = (idx + 1), i));
+  }
+
   onScroll() {
   }
 }
@@ -549,7 +598,7 @@ export class GRNList {
     }
 
  export class ItemNameList {
- 
+  Action:string;
   ItemName: string;
   UOM: number;
   HSNCode: number;
@@ -569,6 +618,7 @@ export class GRNList {
   IGST: number;
   IGSTAmount: number;
   NetAmount: number;
+  position: number;
  
   /**
    * Constructor
@@ -577,6 +627,7 @@ export class GRNList {
    */
   constructor(ItemNameList) {
     {
+      this.Action = ItemNameList.Action || "";
       this.ItemName = ItemNameList.ItemName || "";
       this.UOM = ItemNameList.UOM || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;
@@ -596,7 +647,7 @@ export class GRNList {
       this.IGST = ItemNameList.IGST || 0;
       this.IGSTAmount = ItemNameList.IGSTAmount || 0;
       this.NetAmount = ItemNameList.NetAmount || 0;
-    
+     
     }
   }
 }

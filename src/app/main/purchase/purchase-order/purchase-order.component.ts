@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewEncapsulation, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { PurchaseOrderService } from './purchase-order.service';
@@ -196,46 +196,6 @@ export class PurchaseOrderComponent implements OnInit {
 
 disableSelect = new FormControl(true);
 
-focusNextQty() {
-  this.renderer.selectRootElement('#Qty').focus();
-}
-
-focusNextRate() {
-  this.renderer.selectRootElement('#Rate').focus();
-}
-
-focusNextDis() {
-  this.renderer.selectRootElement('#Dis').focus();
-}
-
-focusNextDiscAmount() {
-  this.renderer.selectRootElement('#DiscAmount').focus();
-}
-
-focusNextGST() {
-  this.renderer.selectRootElement('#GST').focus();
-}
-
-focusNextMRP() {
-  this.renderer.selectRootElement('#MRP').focus();
-}
-
-focusNextSpecification() {
-  this.renderer.selectRootElement('#Specification').focus();
-}
-
-focusNextbtnAdd() {
-  this.renderer.selectRootElement('#Add').focus();
-}
-
-
-onKeydown(event) {
-  if (event.key === "Enter") {
-    // console.log(event);
-
-  }
-}
-
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
     this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
@@ -294,7 +254,6 @@ calculateGSTperAmount() {
   
     this.GSTAmount = Math.round((this.TotalAmount * parseInt(this.GST)) / 100);
     this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.GSTAmount));
-
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
  
   }
@@ -467,7 +426,57 @@ getFromStoreSearchList() {
       }
     });
   }
+  @ViewChild('itemname') itemname: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('rate') rate: ElementRef;
+  @ViewChild('dis') dis: ElementRef;
+  @ViewChild('gst') gst: ElementRef;
+  @ViewChild('mrp') mrp: ElementRef;
+  @ViewChild('specification') specification: ElementRef;
+ 
+  
+  public onEnterItemName(event): void {
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+    }
+  }
 
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.rate.nativeElement.focus();
+    }
+  }
+  
+  public onEnterRate(event): void {
+    if (event.which === 13) {
+      this.dis.nativeElement.focus();
+    }
+  }
+
+  public onEnterDis(event): void {
+    if (event.which === 13) {
+      this.gst.nativeElement.focus();
+    }
+  }
+
+  public onEnterGST(event): void {
+    if (event.which === 13) {
+      this.mrp.nativeElement.focus();
+    }
+  }
+
+  public onEnterMRP(event): void {
+    if (event.which === 13) {
+      this.specification.nativeElement.focus();
+    }
+  }
+
+  public onEnterSpecification(event): void {
+    if (event.which === 13) {
+      this.itemname.nativeElement.focus();
+    }
+  }
+  
 getSelectedObj(obj) {
   this.ItemID=obj.ItemID;
   this.ItemName = obj.ItemName;
@@ -506,7 +515,7 @@ onAdd(){
 
     });
 
-    this.dsItemNameList.data=this.chargeslist
+    this.dsItemNameList.data=this.chargeslist;
 }
 
   onClose(){ } 
