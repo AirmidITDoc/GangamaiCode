@@ -201,9 +201,6 @@ export class PurchaseOrderComponent implements OnInit {
       });
   }
 
-// onclickrow(contact){
-// Swal.fire("Row selected :" + contact)
-// }
 
 disableSelect = new FormControl(true);
 
