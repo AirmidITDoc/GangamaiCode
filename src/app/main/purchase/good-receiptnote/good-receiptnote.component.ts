@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { GoodReceiptnoteService } from './good-receiptnote.service';
@@ -114,22 +114,22 @@ export class GoodReceiptnoteComponent implements OnInit {
   UOM: any=0;
   HSNCode: any=0;
   Dis:any=0;
-  BatchNo: any=0;
-  Qty: any=0;
-  ExpDate: any=0;
-  MRP: any=0;
+  BatchNo: any;
+  Qty: any;
+  ExpDate: any;
+  MRP: any;
   FreeQty: any=0;
-  Rate: any=0;
-  TotalAmount: any=0;
+  Rate: any;
+  TotalAmount: any;
   Disc: any=0;
   DisAmount: any=0;
-  CGST: any=0;
-  CGSTAmount: any=0;
-  SGST: any=0;
-  SGSTAmount: any=0;
+  CGST: any;
+  CGSTAmount: any;
+  SGST: any;
+  SGSTAmount: any;
   IGST: any=0;
   IGSTAmount: any=0;
-  NetAmount: any=0;
+  NetAmount: any;
   filteredoptionsToStore: Observable<string[]>;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsItemName: Observable<string[]>;
@@ -138,6 +138,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   optionsMarital: any;
   optionsSupplier: any;
   optionsItemName: any;
+  renderer: any;
 
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -235,6 +236,17 @@ onAdd(){
 getOptionTextSupplier(option) {
   return option && option.SupplierName ? option.SupplierName : '';
 
+}
+
+
+deleteTableRow(element) {
+  let index = this.chargeslist.indexOf(element);
+  if (index >= 0) {
+    this.chargeslist.splice(index, 1);
+    this.dsItemNameList.data = [];
+    this.dsItemNameList.data = this.chargeslist;
+  }
+  Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
 }
 
   getOptionText(option) {
@@ -492,7 +504,9 @@ getItemNameList(){
 }
   onClear(){
   }
-
+  focusNextService() {
+    this.renderer.selectRootElement('#myInput').focus();
+  }
   OnReset() {
     this._GRNList.GRNSearchGroup.reset();
     this._GRNList.userFormGroup.reset();
@@ -503,6 +517,88 @@ getItemNameList(){
     this.dsItemNameList.data = this.dsItemNameList.data
       .filter(i => i !== elm)
       .map((i, idx) => (i.position = (idx + 1), i));
+  }
+
+  @ViewChild('itemname') itemname: ElementRef;
+  @ViewChild('hsncode') hsncode: ElementRef;
+  @ViewChild('batchno') batchno: ElementRef;
+  @ViewChild('expdate') expdate: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('freeqty') freeqty: ElementRef;
+  @ViewChild('mrp') mrp: ElementRef;
+  @ViewChild('rate') rate: ElementRef;
+  @ViewChild('disc') disc: ElementRef;
+  @ViewChild('cgst') cgst: ElementRef;
+  @ViewChild('sgst') sgst: ElementRef;
+  @ViewChild('igst') igst: ElementRef;
+  
+  public onEnterItemName(event): void {
+    if (event.which === 13) {
+      this.hsncode.nativeElement.focus();
+    }
+  }
+
+  public onEnterHSNCode(event): void {
+    if (event.which === 13) {
+      this.batchno.nativeElement.focus();
+    }
+  }
+  
+  public onEnterBatchNo(event): void {
+    if (event.which === 13) {
+      this.expdate.nativeElement.focus();
+    }
+  }
+
+  public onEnterExpDate(event): void {
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+    }
+  }
+
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.freeqty.nativeElement.focus();
+    }
+  }
+
+  public onEnterFreeQty(event): void {
+    if (event.which === 13) {
+      this.mrp.nativeElement.focus();
+    }
+  }
+
+  public onEnterMRP(event): void {
+    if (event.which === 13) {
+      this.rate.nativeElement.focus();
+    }
+  }
+  
+  public onEnterRate(event): void {
+    if (event.which === 13) {
+      this.disc.nativeElement.focus();
+    }
+  }
+  public onEnterDisc(event): void {
+    if (event.which === 13) {
+      this.cgst.nativeElement.focus();
+    }
+  }
+  public onEnterCGST(event): void {
+    if (event.which === 13) {
+      this.sgst.nativeElement.focus();
+    }
+  }
+  public onEnterSGST(event): void {
+    if (event.which === 13) {
+      this.igst.nativeElement.focus();
+    }
+  }
+
+  public onEnterIGST(event): void {
+    if (event.which === 13) {
+      this.itemname.nativeElement.focus();
+    }
   }
 
   onScroll() {

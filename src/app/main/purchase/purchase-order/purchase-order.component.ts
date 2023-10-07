@@ -15,6 +15,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
+
 @Component({
   selector: 'app-purchase-order',
   templateUrl: './purchase-order.component.html',
@@ -97,18 +98,18 @@ export class PurchaseOrderComponent implements OnInit {
   private _formBuilder: any;
   ItemName: any;
   UOM:any;
-  Qty:any=0;
-  Rate:any=0;
-  TotalAmount:any=0;
+  Qty:any;
+  Rate:any;
+  TotalAmount:any;
   Dis:any=0;
   GST:any=0;
-  NetAmount:any=0;
+  NetAmount:any;
   Specification:string;
   renderer: any;
   disableTextbox: boolean;
   DiscAmount: any=0;
   GSTAmount: any =0;
-  MRP: any=0;
+  MRP: any;
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
@@ -119,6 +120,7 @@ export class PurchaseOrderComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+   
     
   ) { }
 
@@ -141,6 +143,15 @@ export class PurchaseOrderComponent implements OnInit {
 
   }
 
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsItemNameList.data = [];
+      this.dsItemNameList.data = this.chargeslist;
+    }
+    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+  }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -516,6 +527,7 @@ onAdd(){
     });
 
     this.dsItemNameList.data=this.chargeslist;
+    
 }
 
   onClose(){ } 

@@ -571,9 +571,9 @@
                                                                 placeholder="UOM" id="UOM" readonly>
                                                         </mat-form-field>&nbsp;
 
-                                                        <mat-form-field appearance="outline" fxFlex="5%">
+                                                        <mat-form-field appearance="outline" fxFlex="5%" >
                                                             <mat-label>Rate</mat-label>
-                                                            <input matInput [(ngModel)]="Rate" name="Rate"
+                                                            <input matInput [(ngModel)]="Rate" name="Rate" 
                                                                 (keydown)="onEnterRate($event)" (keydown.enter)="focusNextService()" #rate type="number"
                                                                 (keyup)="calculateTotalAmount()" formControlName="Rate"
                                                                 required id="Rate">
@@ -582,7 +582,7 @@
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>Total Amount</mat-label>
                                                             <input matInput [(ngModel)]="TotalAmount" (keydown.enter)="focusNextService()" name="TotalAmount"
-                                                                readonly formControlName="TotalAmount">
+                                                                readonly formControlName="TotalAmount" required>
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -617,7 +617,7 @@
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>Net Amount</mat-label>
                                                             <input name="NetAmount" formControlName="NetAmount" matInput
-                                                                [(ngModel)]="NetAmount" readonly >
+                                                                [(ngModel)]="NetAmount" readonly required >
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -645,7 +645,6 @@
                                                     </div>
                                                 </form>
                                             </div>
-
                                         </div>
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
@@ -663,14 +662,18 @@
                                                             [dataSource]="dsItemNameList"
                                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                                            <ng-container matColumnDef="Action">
-                                                                <mat-header-cell *matHeaderCellDef class="table-actions"
-                                                                    style="color: white;" fxShow.gt-sm>
-                                                                    Action
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <mat-icon style="color: blue;"
-                                                                        (click)="delete(contact)">delete</mat-icon>
+                                                                <mat-cell *matCellDef="let row">
+                                                                    <!-- <button mat-icon-button (click)="onEdit(row)">
+                                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                    </button> -->
+                                                                    <button mat-icon-button (click)="deleteTableRow(row)"
+                                                                        color="warn">
+                                                                        <mat-icon>delete_outline</mat-icon>
+                                                                    </button>
+                                                                    <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
                                                                 </mat-cell>
                                                             </ng-container>
 
