@@ -285,8 +285,11 @@ deleteTableRow(element) {
   
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
-    this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+    // this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+
+    this.TotalAmount = (this.Rate) * parseInt(this.Qty);
     this.NetAmount = this.TotalAmount;
+    // Swal.fire(this.NetAmount)
     // this.calculatePersc();
   }
 }
@@ -319,9 +322,14 @@ calculatePersc(){
 
 calculateCGSTAmount() {
   if (this.CGST) {
-    this.CGSTAmount = Math.round(parseInt(this.CGST)).toString();
-    this.CGSTAmount;
+    // this.CGSTAmount = Math.round(parseInt(this.CGST)).toString();
+    // this.CGSTAmount;
     // this.calculatePersc();
+
+    
+    this.CGSTAmount = Math.round((this.TotalAmount * parseInt(this.CGST)) / 100);
+    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.CGSTAmount));
+    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
   }
 }
 
