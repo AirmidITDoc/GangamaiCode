@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,8 @@ export class SalesService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
+      PatientName:'',
+      MobileNo:'',
       StoreId: '',
       ItemId:'',
 
@@ -29,7 +31,7 @@ export class SalesService {
       BatchExpDate:'',
       BalanceQty:'',
       UnitMRP:'',
-      Qty:'',
+      Qty: [' ', [Validators.pattern("^^[1-9]+[0-9]*$")] ],
       IssQty:'',
       Bal:'',
       StoreName:'',

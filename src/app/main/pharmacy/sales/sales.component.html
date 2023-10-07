@@ -11,6 +11,29 @@
                         <div fxLayout="column" fxLayoutAlign="start none">
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                                        
+                                 <mat-form-field appearance="outline" style="width: 20%;">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                                      [(ngModel)]="MobileNo" max="9999999999" min="1000000000" maxlength="10"
+                                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                      required="required" type="number" value="9876658688" (keydown)="onEntermobileno($event)" >
+                                    <mat-error class="error"
+                                      *ngIf="_salesService.IndentSearchGroup.get('MobileNo').invalid && _salesService.IndentSearchGroup.get('MobileNo').touched">10
+                                      digits Mobile number is
+                                      required</mat-error>
+                                  </mat-form-field>
+                
+
+                                <mat-form-field appearance="outline" style="margin-right: 200px !important;width: 20%;">
+                                    <mat-label>Patient Name</mat-label>
+                                    <input matInput placeholder="PatientName" formControlName="PatientName" [(ngModel)]="PatientName" 
+                                     required (keydown)="onEnterpatientname($event)" #patientname> 
+                                </mat-form-field>
+
+
+                                <span style="font-weight: 400;font-size: large;margin-right: 10px !important;">From Store : {{StoreName}}</span>
+<!--        
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>From Store</mat-label>
                                     <mat-select formControlName="StoreId" name="StoreId">
@@ -19,7 +42,7 @@
                                             {{m.StoreName}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <app-common-date [screenFrom]="screenFromString"
                                     (dateTimeEventEmitter)="getDateTime($event)">
@@ -31,7 +54,7 @@
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
 
                                 <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
-                                    <input type="text" name="ItemId" formControlName="ItemId"
+                                    <input type="text" name="ItemId" formControlName="ItemId" #itemid
                                         placeholder="ItemId / Item Name / Balance Qty " matInput
                                         [matAutocomplete]="auto" (input)="getPharItemList()">
                                     <span matSuffix style="display: flex;">
@@ -55,33 +78,27 @@
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
                                     <mat-label>Batch No</mat-label>
-                                    <input matInput placeholder="Placeholder" [ngModel]="BatchNo" required
+                                    <input matInput placeholder="Placeholder" [(ngModel)]="BatchNo" required
                                         formControlName="BatchNo" readonly>
                                 </mat-form-field>
-
+<!-- 
                                 <mat-form-field appearance="outline" fxFlex="7%">
                                     <mat-label>Exp. Date</mat-label>
                                     <input matInput placeholder="Placeholder" formControlName="BatchExpDate" required
                                         [ngModel]="BatchExpDate" readonly>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
                                     <mat-label>Qty</mat-label>
-                                    <input matInput placeholder="1" #Quantity formControlName="Qty" required
-                                        [ngModel]="Qty" (keyup)="calculateTotalAmt()">
+                                    <input matInput  #Quantity formControlName="Qty" required #qty minlength="1" type="number"
+                                    [(ngModel)]="Qty" (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
                                     <mat-label>MRP </mat-label>
-                                    <input matInput placeholder="Placeholder" formControlName="MRP" [ngModel]="MRP" required
+                                    <input matInput placeholder="Placeholder" formControlName="MRP" [(ngModel)]="MRP" required
                                         readonly>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="7%">
-                                    <mat-label>GST %</mat-label>
-                                    <input matInput placeholder="Placeholder" formControlName="GSTPer"
-                                        [ngModel]="GSTPer" (keyup)="calculateGSTAmt()" readonly>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
@@ -91,38 +108,35 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
-                                    <mat-label>Disc Amt</mat-label>
-                                    <input matInput placeholder="Placeholder" formControlName="DiscAmt" #DiscAmount
-                                        [ngModel]="DiscAmt" (keyup)="calculateDiscAmt()">
+                                    <mat-label>GST %</mat-label>
+                                    <input matInput placeholder="Placeholder" formControlName="GSTPer"
+                                    [(ngModel)]="GSTPer" (keyup)="calculateGSTAmt()" readonly>
                                 </mat-form-field>
+
+                             
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
-                                    <mat-label>Net Amount</mat-label>
-                                    <input matInput placeholder="NetAmt" formControlName="NetAmt" [ngModel]="NetAmt" required>
+                                    <mat-label>Disc Amt</mat-label>
+                                    <input matInput placeholder="Placeholder" formControlName="DiscAmt" #discAmount 
+                                    [(ngModel)]="DiscAmt" (keyup)="calculateDiscAmt()" (keydown)="onEnterdiscAmount($event)">
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" style="width:100px;" #qty>
-                                    <mat-label>Qty</mat-label>
-                                    <input matInput [(ngModel)]="b_qty" name="bQty"
-                                        (keyup)="calculateTotalAmt()" formControlName="qty" required
-                                        (keydown.enter)="focusNextDiscperc()" id="qty">
-                                    <mat-error
-                                        *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
-                                        Qty is required</mat-error>
-                                </mat-form-field> -->
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>Net Amount</mat-label>
+                                    <input matInput placeholder="NetAmt" formControlName="NetAmt" [(ngModel)]="NetAmt" required>
+                                </mat-form-field>
 
-
-
+                             
                                 <div matTooltip="Select doctor name to enable this button!!"
                                 [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                 [matTooltipPosition]="'above'">
-                                <button mat-raised-button fxLayoutAlign="center center"
-                                    (click)="OnAdd()" [disabled]="_salesService.IndentSearchGroup.invalid"
+                                <button mat-raised-button fxLayoutAlign="center center" #addbutton [disabled] = "!add"
+                                    (click)="OnAdd($event)" 
                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; "
-                                    (keydown.enter)="focusNextService()">
+                                   >
                                     <mat-icon> add </mat-icon> &nbsp;Add
                                 </button>
-
+                                <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                             </div>
                             </div>
 
@@ -136,8 +150,8 @@
                     <mat-card>
 
                         <mat-table #table matSort [dataSource]="saleSelectedDatasource" [@animateStagger]="{value:'50'}"
-                            style="overflow:auto;height:300px !important;border-style: groove;" class="mat-data-table"
-                            class="table1">
+                            style="overflow:auto;border-style: groove; height: 300px !important;"
+                            class="mat-saletable">
 
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>ItemName</mat-header-cell>
@@ -258,7 +272,10 @@
                             <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
                                 [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
                                 [@animate]="{value:'*',params:{y:'100%'}}"
-                                (click)="deleteTableRow($event,contact)"></mat-row>
+                               (click)="show($event,contact)"></mat-row>
+                               <!-- (click)="deleteTableRow($event,contact)"  -->
+                                <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
+                                 (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide':saleSelectedDatasource!=null}">
                             </mat-footer-row>
@@ -335,14 +352,14 @@
 
                                         <mat-form-field appearance="outline" fxFlex="10%" style="margin-right: 10px;">
                                             <mat-label>Balance Amount</mat-label>
-                                            <input matInput name="BalanceAmt" formControlName="BalanceAmt"
+                                            <input matInput name="BalanceAmt" formControlName="BalanceAmt" [(ngModel)]="BalAmount"
                                                 placeholder="0" type="number">
                                         </mat-form-field>&nbsp;
 
 
                                         <mat-form-field appearance="outline" fxFlex="10%" style="margin-right: 10px;">
                                             <mat-label>GST Amount</mat-label>
-                                            <input matInput name="FinalGSTAmt" formControlName="FinalGSTAmt"
+                                            <input matInput name="FinalGSTAmt" formControlName="FinalGSTAmt" [(ngModel)]="FinalGSTAmt"
                                                 placeholder="0" (keyup)='CalfinalGST()' type="number">
                                         </mat-form-field>&nbsp;
 

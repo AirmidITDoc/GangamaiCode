@@ -1,4 +1,6 @@
 app-sales {
+ 
+     
       .mat-header-row {
       width:200;
       min-width: 1000px;
@@ -25,6 +27,13 @@ app-sales {
       max-width: 500px;
       min-width: 500px;
       text-align: left;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      justify-content:left; 
     }
     
     .mat-column-BatchNo {
@@ -100,10 +109,7 @@ app-sales {
       justify-content: left;
   
     }
-    // .mat-tab-group {
-    //   margin-bottom: 48px;
-        
-    // }
+  }
 
     .mat-header-cell {
       color: white !important;
@@ -124,5 +130,5 @@ button:disabled {
  border: 1px solid  #b7e6fd ;
 }
 
-}
+
 

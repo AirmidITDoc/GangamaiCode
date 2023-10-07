@@ -1166,6 +1166,8 @@ export class AppointmentComponent implements OnInit {
    
           tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
           submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
+
+          console.log(submissionObj)
           this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
             if (response) {
               debugger

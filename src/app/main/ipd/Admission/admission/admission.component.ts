@@ -1781,6 +1781,25 @@ export class AdmissionComponent implements OnInit {
     popupWin.document.close();
   }
 
+
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('Lname') Lname: ElementRef;
+  @ViewChild('rate') rate: ElementRef;
+  @ViewChild('dis') dis: ElementRef;
+   
+  public onEnterFname(event): void {
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+    }
+  }
+  public onEnterMname(event): void {
+    if (event.which === 13) {
+      this.Lname.nativeElement.focus();
+    }
+  }
+
+
+
 }
 
 export class Admission {

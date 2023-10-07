@@ -284,9 +284,11 @@ deleteTableRow(element) {
   }
   
 calculateTotalAmount() {
+  debugger
   if (this.Rate && this.Qty) {
-    this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+    this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty));
     this.NetAmount = this.TotalAmount;
+    Swal.fire(this.NetAmount )
     // this.calculatePersc();
   }
 }

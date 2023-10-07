@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { SalesService } from './sales.service';
@@ -26,8 +26,8 @@ import { ConditionalExpr } from '@angular/compiler';
 export class SalesComponent implements OnInit {
 
   @ViewChild('Quantity') Quantity: ElementRef;
-  @ViewChild('DiscAmount') DiscAmount: ElementRef;
-    @ViewChild('ConseId') ConseId: ElementRef;
+  @ViewChild('discAmount') discAmount: ElementRef;
+  @ViewChild('ConseId') ConseId: ElementRef;
 
   ItemSubform: FormGroup;
   sIsLoading: string = '';
@@ -49,7 +49,7 @@ export class SalesComponent implements OnInit {
   BatchNo: any;
   BatchExpDate: any;
   UnitMRP: any;
-  Qty: any;
+  Qty: any = 1;
   IssQty: any;
   Bal: any;
   StoreName: any;
@@ -63,7 +63,7 @@ export class SalesComponent implements OnInit {
   TotalMRP: any = 0;
   FinalTotalAmt: any;
   FinalNetAmount: any = 0;
-  FinalGSTAmt: any;
+  FinalGSTAmt: any=0;
 
   ConShow: Boolean = false;
   ItemObj: IndentList;
@@ -91,6 +91,11 @@ export class SalesComponent implements OnInit {
   LandedRateandedTotal: any = 0;
   PurTotAmt: any = 0;
   TotDiscAmt: any = 0;
+  PatientName:any;
+
+  BalAmount:any=0;
+  MobileNo:any;
+  gstAmt:any;
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
@@ -234,6 +239,7 @@ export class SalesComponent implements OnInit {
     this._salesService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
       this._salesService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+      this.StoreName=this._salesService.IndentSearchGroup.get('StoreId').value.StoreName;
     });
   }
 
@@ -241,8 +247,10 @@ export class SalesComponent implements OnInit {
 
   }
 
-  OnAdd() {
+  OnAdd(event) {
+    // || event.key != 'Enter'
     debugger
+    // if(event.which !=1){
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0) {
@@ -263,8 +271,12 @@ export class SalesComponent implements OnInit {
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
 
-    }
+    // }
     this.ItemFormreset();
+  }
+  this.itemid.nativeElement.focus();
+  this.add=false;
+ 
   }
 
   getBatch() {
@@ -286,7 +298,7 @@ export class SalesComponent implements OnInit {
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
-      this.Qty = 0;
+      this.Qty = 1;
       this.Bal = result.BalanceAmt;
       this.StoreName = result.StoreName;
       this.GSTPer = result.VatPercentage;
@@ -330,7 +342,10 @@ export class SalesComponent implements OnInit {
     this.GSTPer = 0;
     this.TotalMRP = 0;
     this.NetAmt = 0;
+      // this._salesService.IndentSearchGroup.get('ItemId').reset();
 
+      // this.add=false;
+      this.getPharItemList();
   }
 
 
@@ -341,13 +356,13 @@ export class SalesComponent implements OnInit {
     this.FinalNetAmount = this.FinalTotalAmt;
 
 
-    this.TotDiscAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
+    this.TotDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).to;
     // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
     return netAmt;
   }
 
   calculateTotalAmt() {
-debugger
+
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if(Qty > this.BalanceQty){
       Swal.fire("Enter Qty less than Balance");
@@ -355,21 +370,28 @@ debugger
     }
 
     if (Qty && this.MRP) {
-      this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toString();
+      this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
 
-      this.NetAmt = this.TotalMRP;
+      let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
+      if (GST > 0) {
+        this.gstAmt =  ((this.TotalMRP * (GST)) / 100).toFixed(2);
+        this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.gstAmt)).toFixed(2);
 
+        // let NetAmt =(this.TotalMRP + this.gstAmt);
+        // this.NetAmt = netAmount;
+      }
 
-      this.VatAmount = (this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)
+      debugger
+      this.VatAmount = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
       console.log("Vat", this.VatAmount);
-      this.CGSTAmt = ((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)
+      this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("CGST", this.CGSTAmt);
-      this.SGSTAmt = ((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)
+      this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("SGST", this.SGSTAmt);
-      this.IGSTAmt = ((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)
+      this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("IGST", this.IGSTAmt);
       debugger
-      this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2)
+      this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
       console.log("TotMRP", this.TotalMRP);
 
       //  disc need to chk
@@ -378,9 +400,9 @@ debugger
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
       console.log("TotLandedRate", this.LandedRateandedTotal);
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
-      console.log("TotPureRate", this.LandedRateandedTotal);
+      console.log("TotPureRate", this.PurTotAmt);
 
-      this.DiscAmount.nativeElement.focus();
+     
     }
 
 
@@ -408,23 +430,26 @@ debugger
 
   calculateDiscAmt() {
     debugger
-    this.NetAmt = this.NetAmt - (this._salesService.IndentSearchGroup.get('DiscAmt').value);
-
+    if(this.DiscAmt > 0 && this.DiscAmt<this.NetAmt){
+    this.NetAmt = (this.NetAmt - (this._salesService.IndentSearchGroup.get('DiscAmt').value) ).toFixed(2);
+    this.add=true;
+    }
+    this.addbutton.focus();
   }
 
   calculateGSTAmt() {
     let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
     if (GST > 0) {
       let discAmt = ((this.NetAmt * (GST)) / 100);
-      this.DiscAmt = discAmt;
-      this.NetAmt = (this.NetAmt) - (discAmt);
+      this.DiscAmt = discAmt.toFixed(2);
+      this.NetAmt = ((this.NetAmt) - (discAmt)).toFixed(2);
     }
   }
 
   getDiscAmount() {
     if (this.FinalDiscPer > 0) {
       let discAmt = (this.FinalTotalAmt * (this.FinalDiscPer)) / 100;
-      this.FinalTotalAmt = this.FinalTotalAmt - discAmt;
+      this.FinalTotalAmt = (this.FinalTotalAmt - discAmt).toFixed(2);
     }
   }
 
@@ -432,8 +457,8 @@ debugger
     let Disc = this.ItemSubform.get('FinalDiscPer').value
     // this.FinalDiscAmt=0
     if (Disc > 0) {
-      this.FinalDiscAmt = Math.round((this.FinalTotalAmt * (Disc)) / 100);
-      this.FinalNetAmount = (this.FinalTotalAmt) - (this.FinalDiscAmt);
+      this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
+      this.FinalNetAmount = ((this.FinalTotalAmt) - (this.FinalDiscAmt)).toFixed(2);
       this.ConShow = true
     }
 
@@ -466,12 +491,29 @@ debugger
     }
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
   }
+  key:any;
+  @HostListener('document:keyup', ['$event'])
+  handleDeleteKeyboardEvent(event: KeyboardEvent,s) {
+    if(event.key === 'Delete')
+    {
+           this.key='Delete';
+      
+    }
+  }
+  @HostListener('document:keydown.delete', ['$event'])
+
+  show(eve,contact){
+    debugger
+// Swal.fire(contact);
+    if(this.key == "Delete"){
+      this.deleteTableRow(eve,contact);
+    }
+  }
+
 
   deleteTableRow(event,element) {
 debugger
-    // Delete row in datatable level
-    console.log(event.key)
-    if(event.key == "Delete"){
+if(this.key == "Delete"){
     let index = this.Itemchargeslist.indexOf(element);
     if (index >= 0) {
       this.Itemchargeslist.splice(index, 1);
@@ -479,8 +521,8 @@ debugger
       this.saleSelectedDatasource.data = this.Itemchargeslist;
     }
     Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-  }
-  }
+  
+  }}
 
   onSave() {
     debugger
@@ -505,7 +547,7 @@ debugger
         });
 
       dialogRef.afterClosed().subscribe(result => {
-
+debugger
         this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
         this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
         this.flagSubmit = result.IsSubmitFlag
@@ -515,8 +557,10 @@ debugger
     else if(this.ItemSubform.get('Credit').value){
       this.paidamt =0;
       this.balanceamt = this.FinalNetAmount;
+      this.flagSubmit=true;
     }
 
+    // if( this.flagSubmit){
         console.log("Procced with Payment Option");
 
         let SalesInsert = {};
@@ -526,8 +570,8 @@ debugger
         SalesInsert['oP_IP_Type'] = 1;
         SalesInsert['totalAmount'] = this.FinalTotalAmt
         SalesInsert['vatAmount'] = this.VatAmount;
-        SalesInsert['discAmount'] = this.DiscAmt;
-        SalesInsert['netAmount'] = this.NetAmt;
+        SalesInsert['discAmount'] = this.FinalDiscAmt;
+        SalesInsert['netAmount'] = this.ItemSubform.get('FinalNetAmount').value;
         SalesInsert['paidAmount'] = this.paidamt
         SalesInsert['balanceAmount'] = this.balanceamt;
         SalesInsert['concessionReasonID'] = this.ItemSubform.get('ConcessionId').value.ConcessionId;
@@ -543,8 +587,8 @@ debugger
         SalesInsert['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
         SalesInsert['creditReason'] = '';
         SalesInsert['creditReasonID'] = 1;
-        SalesInsert['wardId'] = 'a';
-        SalesInsert['bedID'] = 2;//this.selectedAdvanceObj.PatientName;
+        SalesInsert['wardId'] = 0;
+        SalesInsert['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
         SalesInsert['discper_H'] = '007';
         SalesInsert['isPurBill'] = 0;
         SalesInsert['isBillCheck'] = 0;
@@ -555,7 +599,7 @@ debugger
         let salesDetailInsertarr = [];
         this.saleSelectedDatasource.data.forEach((element) => {
           let salesDetailInsert = {};
-          salesDetailInsert['salesID'] = this.dateTimeObj.date;
+          salesDetailInsert['salesID'] = 0;
           salesDetailInsert['itemId'] = element.ItemId;
           salesDetailInsert['batchNo'] = element.BatchNo;
           salesDetailInsert['batchExpDate'] = element.BatchExpDate;
@@ -565,15 +609,16 @@ debugger
           salesDetailInsert['vatPer'] = this.VatPer;
           salesDetailInsert['vatAmount'] = this.VatAmount;
           salesDetailInsert['discPer'] = this.DiscPer;
-          salesDetailInsert['discAmount'] = this.DiscAmt;
-          salesDetailInsert['grossAmount'] = this.FinalTotalAmt;
+          salesDetailInsert['discAmount'] = element.DiscAmt;
+          salesDetailInsert['grossAmount'] = element.NetAmt;
           salesDetailInsert['landedPrice'] = this.LandedRate;
-          salesDetailInsert['totalLandedAmount'] = this.LandedRateandedTotal
+          salesDetailInsert['totalLandedAmount'] = this.LandedRateandedTotal;
           salesDetailInsert['purRateWf'] = this.PurchaseRate;
           salesDetailInsert['purTotAmt'] = this.PurTotAmt;
           salesDetailInsert['cgstPer'] = this.CgstPer;
           salesDetailInsert['cgstAmt'] = this.CGSTAmt;
-          salesDetailInsert['sgstAmt'] = this.GSTPer;
+          salesDetailInsert['sgstPer'] = this.SgstPer;
+          salesDetailInsert['sgstAmt'] = this.SGSTAmt;
           salesDetailInsert['igstPer'] = this.IgstPer
           salesDetailInsert['igstAmt'] = this.IGSTAmt
           salesDetailInsert['isPurRate'] = 0;
@@ -622,7 +667,7 @@ debugger
           }
           this.sIsLoading = '';
         });
-
+      // }
 
      
     // }
@@ -735,6 +780,46 @@ debugger
 
     // }
   }
+
+  @ViewChild('discamt') discamt: ElementRef;
+  // @ViewChild('Lname') Lname: ElementRef;
+  @ViewChild('mobileno') mobileno: ElementRef;
+  @ViewChild('dis') dis: ElementRef;
+  @ViewChild('patientname') patientname: ElementRef;
+  @ViewChild('itemid') itemid: ElementRef;
+  add: boolean = false;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+   
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      this.discAmount.nativeElement.focus();
+    }
+  }
+  public onEnterpatientname(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
+  public onEntermobileno(event): void {
+    if (event.which === 13) {
+    this.patientname.nativeElement.focus();
+    }
+  }
+  public onEnterdiscAmount(event): void {
+    if (event.which === 13) {
+   
+      this.addbutton.focus();
+    }
+  }
+  // public onEnterdiscAmount(event): void {
+  //   if (event.which === 13) {
+  //     this.add=true;
+  //     this.addbutton.focus();
+  //   }
+  // }
+
+
+
 
   onClose() {
     // this.dialogRef.close({ result: "cancel" });

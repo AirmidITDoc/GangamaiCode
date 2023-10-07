@@ -25,6 +25,7 @@
         //     background:#e1f5fe;
         // }
     }
+   
 
     .mat-header-row {
         min-height: 30px;
@@ -43,6 +44,14 @@
         }
     }
 }
+
+.mat-saletable{
+        height: 50% !important;   
+        .mat-row {
+            &:hover {
+                background: #e1f5fe;
+            }
+}}
 
 .mat-header-cell {
     color: white;
