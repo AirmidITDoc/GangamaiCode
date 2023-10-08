@@ -25,6 +25,7 @@ import { OPIPPatientModel } from '../../ipdsearc-patienth/ipdsearc-patienth.comp
 import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RFC_2822 } from 'moment';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-admission',
@@ -1782,21 +1783,243 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('Lname') Lname: ElementRef;
-  @ViewChild('rate') rate: ElementRef;
-  @ViewChild('dis') dis: ElementRef;
-   
-  public onEnterFname(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-    }
+  
+
+
+@ViewChild('fname') fname: ElementRef;
+@ViewChild('mname') mname: ElementRef;
+@ViewChild('lname') lname: ElementRef;
+@ViewChild('agey') agey: ElementRef;
+@ViewChild('aged') aged: ElementRef;
+@ViewChild('agem') agem: ElementRef;
+@ViewChild('phone') phone: ElementRef;
+@ViewChild('mobile') mobile: ElementRef;
+@ViewChild('address') address: ElementRef;
+@ViewChild('pan') pan: ElementRef;
+@ViewChild('area') area: ElementRef;
+
+@ViewChild('bday') bday: ElementRef;
+@ViewChild('gender') gender: MatSelect;
+@ViewChild('mstatus') mstatus: ElementRef;
+@ViewChild('religion') religion: ElementRef;
+@ViewChild('city') city: ElementRef;
+@ViewChild('admitdoc1') admitdoc1: ElementRef;
+
+@ViewChild('ptype') ptype: MatSelect;
+@ViewChild('tariff') tariff: MatSelect;
+@ViewChild('dept') dept: ElementRef;
+@ViewChild('deptdoc') deptdoc: ElementRef;
+@ViewChild('refdoc') refdoc: ElementRef;
+@ViewChild('admitdoc2') admitdoc2: ElementRef;
+@ViewChild('admitdoc3') admitdoc3: MatSelect;
+
+
+@ViewChild('ward') ward: ElementRef;
+@ViewChild('bed') bed: ElementRef;
+@ViewChild('class') class: MatSelect;
+@ViewChild('relativename') relativename: ElementRef;
+@ViewChild('relativeadd') relativeadd: ElementRef;
+@ViewChild('relativemobile') relativemobile: ElementRef;
+@ViewChild('relation') relation: ElementRef;
+
+
+
+add: boolean = false;
+@ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+ 
+
+
+public onEnterprefix(event): void {
+  if (event.which === 13) {
+    this.fname.nativeElement.focus();
   }
-  public onEnterMname(event): void {
-    if (event.which === 13) {
-      this.Lname.nativeElement.focus();
-    }
+}
+public onEnterfname(event): void {
+  if (event.which === 13) {
+    this.mname.nativeElement.focus();
   }
+}
+public onEntermname(event): void {
+  if (event.which === 13) {
+    this.lname.nativeElement.focus();
+  }
+}
+public onEnterlname(event): void {
+  if (event.which === 13) {
+  this.mstatus.nativeElement.focus();
+  // if(this.mstatus) this.mstatus.focus();
+  }
+}
+
+// public onEntergendere(event): void {
+//   if (event.which === 13) {
+//   // this.gender.nativeElement.focus();
+//   if(this.mstatus) this.mstatus.focus();
+//   }
+// }
+
+
+public onEntermstatus(event): void {
+  if (event.which === 13) {
+  this.religion.nativeElement.focus();
+  // if(this.religion) this.religion.focus();
+  }
+}
+
+public onEnterreligion(event): void {
+  if (event.which === 13) {
+  this.bday.nativeElement.focus();
+  // if(this.religion) this.religion.focus();
+  }
+}
+public onEnterbday(event): void {
+  if (event.which === 13) {
+  this.agey.nativeElement.focus();
+
+  }
+}
+
+
+public onEnteragey(event): void {
+  if (event.which === 13) {
+    this.agem.nativeElement.focus();
+    // this.addbutton.focus();
+  }
+}
+public onEnteragem(event): void {
+  if (event.which === 13) {
+    this.aged.nativeElement.focus();
+  }
+}
+public onEnteraged(event): void {
+  if (event.which === 13) {
+    this.pan.nativeElement.focus();
+  }
+}
+public onEnterpan(event): void {
+  if (event.which === 13) {
+    this.phone.nativeElement.focus();
+  }
+}
+
+public onEnterphone(event): void {
+  if (event.which === 13) {
+    this.mobile.nativeElement.focus();
+  }
+}
+public onEntermobile(event): void {
+  if (event.which === 13) {
+  this.address.nativeElement.focus();
+  }
+}
+
+public onEnteraddress(event): void {
+  if (event.which === 13) {
+  this.area.nativeElement.focus();
+  }
+}
+
+public onEnterarea(event): void {
+  if (event.which === 13) {
+    this.city.nativeElement.focus();
+  }
+}
+
+public onEntercity(event): void {
+  if (event.which === 13) {
+    if(this.ptype) this.ptype.focus();
+    
+  }
+}
+
+
+public onEnterptype(event): void {
+  if (event.which === 13) {
+    if(this.tariff) this.tariff.focus();
+    
+  }
+}
+
+public onEnterptariff(event): void {
+  if (event.which === 13) {
+    // if(this.dept) this.dept.focus();
+    this.dept.nativeElement.focus();
+    
+  }
+}
+
+public onEnterdept(event): void {
+  if (event.which === 13) {
+    // if(this.deptdoc) this.deptdoc.focus();
+    this.deptdoc.nativeElement.focus();
+  }
+}
+public onEnterdeptdoc(event): void {
+  if (event.which === 13) {
+    // if(this.refdoc) this.refdoc.focus();
+    this.admitdoc1.nativeElement.focus();
+  }
+}
+
+
+public onEnteradmitdoc1(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.admitdoc2.nativeElement.focus();
+  }
+}
+public onEnteradmitdoc2(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.refdoc.nativeElement.focus();
+  }
+}
+public onEnterrefdoc(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.ward.nativeElement.focus();
+  }
+}
+
+public onEnterward(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.bed.nativeElement.focus();
+  }
+}
+
+public onEnterbed(event): void {
+  if (event.which === 13) {
+    if(this.class) this.class.focus();
+    // this.class.nativeElement.focus();
+  }
+}
+public onEnterclass(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.relativename.nativeElement.focus();
+  }
+}
+public onEnterrelativename(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.relativeadd.nativeElement.focus();
+  }
+}
+
+public onEnterrelativeadd(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.relativemobile.nativeElement.focus();
+  }
+}
+
+public onEnterrelativemobile(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.registration.nativeElement.focus();
+  }
+}
 
 
 

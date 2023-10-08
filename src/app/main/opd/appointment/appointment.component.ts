@@ -33,6 +33,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatSelect } from "@angular/material/select";
 
 
 export class DocData {
@@ -183,8 +184,13 @@ export class AppointmentComponent implements OnInit {
 
     optionsDoctor: any[] = [];
     optionsArea: any[] = [];
+    optionsMstatus: any[] = [];
+    optionsReligion: any[] = [];
+    
 
     filteredOptionsDoctor: Observable<string[]>;
+    filteredOptionsReligion: Observable<string[]>;
+    filteredOptionsMstatus: Observable<string[]>;
     isDoctorSelected:boolean = false;
     isCompanySelected:boolean = false;
     filteredOptionsCompany: Observable<string[]>;
@@ -192,7 +198,8 @@ export class AppointmentComponent implements OnInit {
     filteredOptionsArea: Observable<string[]>;
     isSubCompanySelected:boolean = false;
     isAreaSelected:boolean = false;
-
+    isMstatusSelected:boolean = false;
+    isreligionSelected:boolean = false;
 
   @ViewChild('attachments') attachment: any;
 
@@ -308,19 +315,7 @@ export class AppointmentComponent implements OnInit {
         this.getDoctor2List();
         this.getPurposeList();
         
-        this.religionFilterCtrl.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterReligion();
-        });
-  
-      this.maritalstatusFilterCtrl.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterMaritalstatus();
-        });
-  
-           
+                 
       this.hospitalFilterCtrl.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
@@ -496,6 +491,24 @@ export class AppointmentComponent implements OnInit {
       const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase();
       
       return this.optionsArea.filter(option => option.AreaName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  
+  private _filterReligion(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase();
+      
+      return this.optionsReligion.filter(option => option.ReligionName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterMstatus(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.MaritalStatusName ? value.MaritalStatusName.toLowerCase() : value.toLowerCase();
+      
+      return this.optionsMstatus.filter(option => option.MaritalStatusName.toLowerCase().includes(filterValue));
     }
   }
 
@@ -727,28 +740,29 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
+
   getMaritalStatusList() {
     this._opappointmentService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      if (this.registerObj) {
-        const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-        this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-      }
+      this.optionsMstatus = this.MaritalStatusList.slice();
+      this.filteredOptionsMstatus = this.personalFormGroup.get('MaritalStatusId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterMstatus(value) : this.MaritalStatusList.slice()),
+      );
+      
     });
   }
+
 
   getReligionList() {
     this._opappointmentService.getReligionCombo().subscribe(data => {
       this.ReligionList = data;
-      this.filteredReligion.next(this.ReligionList.slice());
-      if (this.registerObj) {
-
-        const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-        this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-      }
+      this.optionsReligion = this.ReligionList.slice();
+      this.filteredOptionsReligion = this.personalFormGroup.get('ReligionId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterReligion(value) : this.ReligionList.slice()),
+      );
+      
     });
   }
 
@@ -980,6 +994,17 @@ export class AppointmentComponent implements OnInit {
     
     return option && option.AreaName ? option.AreaName : '';
   }
+
+  getOptionTextReligion(option) {
+    
+    return option && option.ReligionName ? option.ReligionName : '';
+  }
+  
+  getOptionTextMstatus(option) {
+    
+    return option && option.MaritalStatusName ? option.MaritalStatusName : '';
+  }
+
 
     /** getSearchList() {
       debugger
@@ -1957,7 +1982,190 @@ exportReport() {
   this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'appointment');
 }
 
+
+
+
+@ViewChild('fname') fname: ElementRef;
+@ViewChild('mname') mname: ElementRef;
+@ViewChild('lname') lname: ElementRef;
+@ViewChild('agey') agey: ElementRef;
+@ViewChild('aged') aged: ElementRef;
+@ViewChild('agem') agem: ElementRef;
+@ViewChild('phone') phone: ElementRef;
+@ViewChild('mobile') mobile: ElementRef;
+@ViewChild('address') address: ElementRef;
+@ViewChild('pan') pan: ElementRef;
+@ViewChild('area') area: ElementRef;
+
+@ViewChild('bday') bday: ElementRef;
+@ViewChild('gender') gender: MatSelect;
+@ViewChild('mstatus') mstatus: ElementRef;
+@ViewChild('religion') religion: ElementRef;
+@ViewChild('city') city: ElementRef;
+@ViewChild('hname') hname: MatSelect;
+@ViewChild('ptype') ptype: MatSelect;
+@ViewChild('tariff') tariff: MatSelect;
+@ViewChild('dept') dept: ElementRef;
+@ViewChild('deptdoc') deptdoc: ElementRef;
+@ViewChild('refdoc') refdoc: ElementRef;
+@ViewChild('purpose') purpose: ElementRef;
+// @ViewChild('dept') dept: MatSelect;
+
+add: boolean = false;
+@ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+ 
+
+
+public onEnterprefix(event): void {
+  if (event.which === 13) {
+    this.fname.nativeElement.focus();
+  }
 }
+public onEnterfname(event): void {
+  if (event.which === 13) {
+    this.mname.nativeElement.focus();
+  }
+}
+public onEntermname(event): void {
+  if (event.which === 13) {
+    this.lname.nativeElement.focus();
+  }
+}
+public onEnterlname(event): void {
+  if (event.which === 13) {
+  this.mstatus.nativeElement.focus();
+  // if(this.mstatus) this.mstatus.focus();
+  }
+}
+
+// public onEntergendere(event): void {
+//   if (event.which === 13) {
+//   // this.gender.nativeElement.focus();
+//   if(this.mstatus) this.mstatus.focus();
+//   }
+// }
+
+
+public onEntermstatus(event): void {
+  if (event.which === 13) {
+  this.religion.nativeElement.focus();
+  // if(this.religion) this.religion.focus();
+  }
+}
+
+public onEnterreligion(event): void {
+  if (event.which === 13) {
+  this.bday.nativeElement.focus();
+  // if(this.religion) this.religion.focus();
+  }
+}
+public onEnterbday(event): void {
+  if (event.which === 13) {
+  this.agey.nativeElement.focus();
+
+  }
+}
+
+
+public onEnteragey(event): void {
+  if (event.which === 13) {
+    this.agem.nativeElement.focus();
+    // this.addbutton.focus();
+  }
+}
+public onEnteragem(event): void {
+  if (event.which === 13) {
+    this.aged.nativeElement.focus();
+  }
+}
+public onEnteraged(event): void {
+  if (event.which === 13) {
+    this.pan.nativeElement.focus();
+  }
+}
+public onEnterpan(event): void {
+  if (event.which === 13) {
+    this.phone.nativeElement.focus();
+  }
+}
+
+public onEnterphone(event): void {
+  if (event.which === 13) {
+    this.mobile.nativeElement.focus();
+  }
+}
+public onEntermobile(event): void {
+  if (event.which === 13) {
+  this.address.nativeElement.focus();
+  }
+}
+
+public onEnteraddress(event): void {
+  if (event.which === 13) {
+  this.area.nativeElement.focus();
+  }
+}
+
+public onEnterarea(event): void {
+  if (event.which === 13) {
+    this.city.nativeElement.focus();
+  }
+}
+
+public onEntercity(event): void {
+  if (event.which === 13) {
+    if(this.hname) this.hname.focus();
+    
+  }
+}
+
+public onEnterhname(event): void {
+  if (event.which === 13) {
+    if(this.ptype) this.ptype.focus();
+    
+  }
+}
+
+
+public onEnterptype(event): void {
+  if (event.which === 13) {
+    if(this.tariff) this.tariff.focus();
+    
+  }
+}
+
+public onEnterptariff(event): void {
+  if (event.which === 13) {
+    // if(this.dept) this.dept.focus();
+    this.dept.nativeElement.focus();
+    
+  }
+}
+
+public onEnterdept(event): void {
+  if (event.which === 13) {
+    // if(this.deptdoc) this.deptdoc.focus();
+    this.deptdoc.nativeElement.focus();
+  }
+}
+public onEnterdeptdoc(event): void {
+  if (event.which === 13) {
+    // if(this.refdoc) this.refdoc.focus();
+    this.refdoc.nativeElement.focus();
+  }
+}
+
+public onEnterrefdoc(event): void {
+  if (event.which === 13) {
+    // if(this.purpose) this.purpose.focus();
+    this.purpose.nativeElement.focus();
+  }
+}
+
+
+
+}
+
 
 export class DocumentUpload {
   DocumentName: any;
