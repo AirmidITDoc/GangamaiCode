@@ -21,8 +21,7 @@ export class SalesService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-      PatientName:'',
-      MobileNo:'',
+   
       StoreId: '',
       ItemId:'',
 
@@ -42,7 +41,7 @@ export class SalesService {
       DiscAmt:'',
       NetAmt:'',
       DiscPer:'',
-    
+ 
       // ItemName:'',
       // start: [(new Date()).toISOString()],
       // end: [(new Date()).toISOString()],
@@ -90,7 +89,18 @@ export class SalesService {
   {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
   }
-  public InsertSales(employee){
-    return this._httpClient.post("Pharmacy/SalesSave", employee)
+  public InsertCashSales(employee){
+    return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
+  }
+
+  public InsertCreditSales(employee){
+    return this._httpClient.post("Pharmacy/SalesSaveWithCredit", employee)
+  }
+
+  public getTemplate(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  } 
+  public getSalesPrint(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo",emp);
   }
 }
