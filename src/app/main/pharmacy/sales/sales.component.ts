@@ -111,6 +111,8 @@ export class SalesComponent implements OnInit {
   datasource = new MatTableDataSource<IndentList>();
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
 
+  vSalesDetails: any = [];
+
   displayedColumns = [
     'FromStoreId',
     'IndentNo',
@@ -161,7 +163,7 @@ export class SalesComponent implements OnInit {
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
-    // this.ItemObj=
+    this.getTopSalesDetailsList();
   }
 
   getItemSubform() {
@@ -247,6 +249,14 @@ export class SalesComponent implements OnInit {
     });
   }
 
+  getTopSalesDetailsList() {
+    var vdata = {
+      ExtMobileNo: this.ItemSubform.get('MobileNo').value 
+    }
+    this._salesService.getTopSalesDetails(vdata).subscribe(data => {
+      this.vSalesDetails = data;
+    });
+  }
   onClear() {
 
   }
@@ -948,7 +958,7 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-      salesInsertCredit['externalPatientName'] = this.PatientName;
+    salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
     salesInsertCredit['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     salesInsertCredit['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
