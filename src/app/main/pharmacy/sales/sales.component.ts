@@ -82,11 +82,7 @@ export class SalesComponent implements OnInit {
   balanceamt: number;
   disamt: any;
   msg: any;
-<<<<<<< HEAD
-  currentDate = new Date();
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
-
+  currentDate=new Date();
   VatPer: any;
   CgstPer: any;
   SgstPer: any;
@@ -268,6 +264,7 @@ export class SalesComponent implements OnInit {
     }
     this._salesService.getTopSalesDetails(vdata).subscribe(data => {
       this.vSalesDetails = data;
+      console.log(data)
     });
   }
   onClear() {
@@ -275,11 +272,6 @@ export class SalesComponent implements OnInit {
   }
 
   OnAdd(event) {
-<<<<<<< HEAD
-
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
 
@@ -302,12 +294,6 @@ export class SalesComponent implements OnInit {
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
-<<<<<<< HEAD
-
-      // }
-
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
       this.ItemFormreset();
     }
     this.itemid.nativeElement.focus();
@@ -368,10 +354,6 @@ export class SalesComponent implements OnInit {
   }
 
   ItemFormreset() {
-<<<<<<< HEAD
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
@@ -541,10 +523,6 @@ export class SalesComponent implements OnInit {
   }
 
   getFinalDiscAmount() {
-<<<<<<< HEAD
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
 
     if (Discamt > 0 && Discamt < this.FinalNetAmount) {
@@ -637,6 +615,12 @@ export class SalesComponent implements OnInit {
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+    return value;
+  }
+
+  transform1(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform((new Date), 'dd/MM/yyyy');
     return value;
   }
 
@@ -838,8 +822,8 @@ export class SalesComponent implements OnInit {
       if (response) {
         Swal.fire('Sale CashPay!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            let m = response;
-            // this.getPrint(m);
+            // let m = response;
+            this.getPrint(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -965,7 +949,7 @@ export class SalesComponent implements OnInit {
         Swal.fire('Sale Credit!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             let m = response;
-            // this.getPrint(m);
+            this.getPrint(m);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -1018,10 +1002,10 @@ export class SalesComponent implements OnInit {
 
 
 
-  getPrint() {
+  getPrint(el) {
 
     var D_data = {
-      "SalesID": 428263,// el,
+      "SalesID":el,// 428263,// 
       "OP_IP_Type": 2
     }
 
@@ -1055,41 +1039,42 @@ export class SalesComponent implements OnInit {
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
         var objreportPrint = this.reportPrintObjList[i - 1];
-        let UnitValue
+        let UnitValue ='Com'
+         // <div style="display:flex;width:60px;margin-left:20px;">
+        //     <div>`+ i + `</div> 
+        // </div>
 
         var strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
-        <div style="display:flex;width:60px;margin-left:20px;">
-            <div>`+ i + `</div> 
-        </div>
-        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+       
+        <div style="display:flex;width:50px;text-align:center;">
             <div>`+ UnitValue + `</div> 
         </div>
-        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:80px;text-align:center;">
         <div>`+ objreportPrint.HSNcode + `</div> 
         </div>
-        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
-            <div>`+ '₹' + objreportPrint.ItemName + `</div> 
+        <div style="display:flex;width:220px;text-align:left;margin-right:10px">
+            <div>`+  objreportPrint.ItemName + `</div> 
         </div>
-        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:70px;text-align:left;margin-left:20px;">
             <div>`+ objreportPrint.Qty + `</div> 
         </div>
-        <div style="display:flex;width:90px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:90px;text-align:center;">
         <div>`+ objreportPrint.BatchNo + `</div> 
          </div>
-        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
-        <div>`+ objreportPrint.BatchExpDate + `</div> 
+        <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+        <div>`+  this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
         </div>
-        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:120px;text-align:center;margin-left:20px;">
         <div>`+ objreportPrint.CGSTPer + objreportPrint.CGSTAmt + `</div> 
         </div>  
-        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
-        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt `</div> 
+        <div style="display:flex;width:120px;text-align:center;margin-left:10px;">
+        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt +`</div> 
         </div>
-        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+        <div style="display:flex;width:90px;text-align:center;margin-left:10px;">
         <div>`+ objreportPrint.UnitMRP + `</div> 
         </div>
-        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
+        <div style="display:flex;width:110px;margin-left:10px;text-align:center;">
             <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
         </div>
         </div>`;
@@ -1099,7 +1084,7 @@ export class SalesComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -1201,11 +1186,7 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
-<<<<<<< HEAD
-  StockId: any;
-=======
   StockId:any;
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
 
   /**
    * Constructor
@@ -1229,12 +1210,7 @@ export class IndentList {
       this.TotalMRP = IndentList.TotalMRP || 0;
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
-<<<<<<< HEAD
-      this.StockId = IndentList.StockId || 0;
-
-=======
       this.StockId=IndentList.StockId || 0;
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     }
   }
 }
