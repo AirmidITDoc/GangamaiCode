@@ -406,8 +406,8 @@ export class SalesComponent implements OnInit {
         // this.NetAmt = netAmount;
       }
 
-      this.VatAmount = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
-      console.log("Vat", this.VatAmount);
+      this.FinalGSTAmt = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
+      console.log("Vat", this.FinalGSTAmt);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("CGST", this.CGSTAmt);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
@@ -419,7 +419,7 @@ export class SalesComponent implements OnInit {
 
       //  disc need to chk
       //  this.TotDiscAmt = (parseInt(Qty) * parseInt(this.MRP)).toFixed(2)
-      console.log("Tot DiscAmt", this.TotDiscAmt);
+      console.log("TotDiscAmt", this.TotDiscAmt);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
       console.log("TotLandedRate", this.LandedRateandedTotal);
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
@@ -1015,7 +1015,7 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
-      updateCurStkSalesCredit['storeID'] = element.StoreId;
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
       updateCurStkSalesCredit['stkID'] = element.StockId;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
