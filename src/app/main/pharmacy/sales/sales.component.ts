@@ -82,7 +82,10 @@ export class SalesComponent implements OnInit {
   balanceamt: number;
   disamt: any;
   msg: any;
+<<<<<<< HEAD
   currentDate = new Date();
+=======
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
 
   VatPer: any;
   CgstPer: any;
@@ -116,6 +119,8 @@ export class SalesComponent implements OnInit {
   datasource = new MatTableDataSource<IndentList>();
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
 
+  vSalesDetails: any = [];
+
   displayedColumns = [
     'FromStoreId',
     'IndentNo',
@@ -144,6 +149,7 @@ export class SalesComponent implements OnInit {
     'TotalMRP',
     'DiscAmt',
     'NetAmt',
+    'StkId',
     'buttons'
   ];
 
@@ -168,13 +174,8 @@ export class SalesComponent implements OnInit {
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
-    // this.ItemObj=
+    this.getTopSalesDetailsList();
   }
-
-  // toggleSidebar(name): void {
-  //   this._fuseSidebarService.getSidebar(name).toggleOpen();
-  // }
-
 
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
@@ -231,7 +232,6 @@ export class SalesComponent implements OnInit {
         }
       });
     }
-
   }
 
   getOptionText(option) {
@@ -251,12 +251,6 @@ export class SalesComponent implements OnInit {
     }
   }
 
-
-  // onclickrow(Param) {
-  //   Swal.fire("Row selected :" + Param)
-  //   console.log(Param);
-  // }
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -268,13 +262,24 @@ export class SalesComponent implements OnInit {
     });
   }
 
+  getTopSalesDetailsList() {
+    var vdata = {
+      ExtMobileNo: this.ItemSubform.get('MobileNo').value 
+    }
+    this._salesService.getTopSalesDetails(vdata).subscribe(data => {
+      this.vSalesDetails = data;
+    });
+  }
   onClear() {
 
   }
 
   OnAdd(event) {
+<<<<<<< HEAD
 
     debugger
+=======
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
 
@@ -293,23 +298,25 @@ export class SalesComponent implements OnInit {
           TotalMRP: this.TotalMRP,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
+          StockId: this.StockId,
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
+<<<<<<< HEAD
 
       // }
 
+=======
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
       this.ItemFormreset();
     }
-
-
     this.itemid.nativeElement.focus();
     this.add = false;
 
   }
 
   getBatch() {
-    this.Quantity.nativeElement.focus();
+    // this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
         maxWidth: "700px",
@@ -351,7 +358,6 @@ export class SalesComponent implements OnInit {
       this.LandedRate = result.LandedRate;
       this.PurchaseRate = result.PurchaseRate;
       this.UnitMRP = result.UnitMRP;
-
     });
 
     this.Quantity.nativeElement.focus();
@@ -362,7 +368,10 @@ export class SalesComponent implements OnInit {
   }
 
   ItemFormreset() {
+<<<<<<< HEAD
     debugger
+=======
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
@@ -424,22 +433,20 @@ export class SalesComponent implements OnInit {
         // this.NetAmt = netAmount;
       }
 
-      debugger
-      this.VatAmount = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
-      console.log("Vat", this.VatAmount);
+      this.FinalGSTAmt = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
+      console.log("Vat", this.FinalGSTAmt);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("CGST", this.CGSTAmt);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("SGST", this.SGSTAmt);
       this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
       console.log("IGST", this.IGSTAmt);
-      debugger
       this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
       console.log("TotMRP", this.TotalMRP);
 
       //  disc need to chk
       //  this.TotDiscAmt = (parseInt(Qty) * parseInt(this.MRP)).toFixed(2)
-      console.log("Tot DiscAmt", this.TotDiscAmt);
+      console.log("TotDiscAmt", this.TotDiscAmt);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
       console.log("TotLandedRate", this.LandedRateandedTotal);
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
@@ -472,7 +479,6 @@ export class SalesComponent implements OnInit {
   }
 
   calculateDiscAmt() {
-    debugger
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.NetAmt)) {
       this.NetAmt = (this.NetAmt - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
@@ -504,7 +510,6 @@ export class SalesComponent implements OnInit {
   }
 
   getFinalDiscperAmt() {
-    debugger
     let Disc = this.ItemSubform.get('FinalDiscPer').value;
     // this.FinalDiscAmt=0
     // if (Disc > 0) {
@@ -536,7 +541,10 @@ export class SalesComponent implements OnInit {
   }
 
   getFinalDiscAmount() {
+<<<<<<< HEAD
     debugger
+=======
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
 
     if (Discamt > 0 && Discamt < this.FinalNetAmount) {
@@ -579,7 +587,6 @@ export class SalesComponent implements OnInit {
   @HostListener('document:keydown.delete', ['$event'])
 
   show(eve, contact) {
-    debugger
     // Swal.fire(contact);
     if (this.key == "Delete") {
       this.deleteTableRow(eve, contact);
@@ -664,7 +671,6 @@ export class SalesComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    debugger
     if (this.key == "Delete") {
       let index = this.Itemchargeslist.indexOf(element);
       if (index >= 0) {
@@ -679,7 +685,6 @@ export class SalesComponent implements OnInit {
 
 
   onSave() {
-    debugger
     if (this.ItemSubform.get('CashPay').value == 'CashPay') {
       this.onCashpaySave()
     }
@@ -857,8 +862,6 @@ export class SalesComponent implements OnInit {
 
 
   onCreditpaySave() {
-    debugger
-
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
 
@@ -883,15 +886,15 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-      salesInsertCredit['externalPatientName'] = this.PatientName;
-    salesInsertCredit['doctorName'] = 'xya';
+    salesInsertCredit['externalPatientName'] = this.PatientName;
+    salesInsertCredit['doctorName'] = "";
     salesInsertCredit['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     salesInsertCredit['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
     salesInsertCredit['creditReason'] = '';
-    salesInsertCredit['creditReasonID'] = 1;
+    salesInsertCredit['creditReasonID'] = 0;
     salesInsertCredit['wardId'] = 0;
     salesInsertCredit['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
-    salesInsertCredit['discper_H'] = '007';
+    salesInsertCredit['discper_H'] = 0;
     salesInsertCredit['isPurBill'] = 0;
     salesInsertCredit['isBillCheck'] = 0;
     salesInsertCredit['salesHeadName'] = ""
@@ -925,7 +928,7 @@ export class SalesComponent implements OnInit {
       salesDetailInsertCredit['igstPer'] = this.IgstPer
       salesDetailInsertCredit['igstAmt'] = this.IGSTAmt
       salesDetailInsertCredit['isPurRate'] = 0;
-      salesDetailInsertCredit['stkID'] = this.StockId;
+      salesDetailInsertCredit['stkID'] = element.StockId;
       salesDetailInsertCreditarr.push(salesDetailInsertCredit);
     });
     let updateCurStkSalesCreditarray = [];
@@ -933,8 +936,8 @@ export class SalesComponent implements OnInit {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
-      updateCurStkSalesCredit['storeID'] = element.StoreId;
-      updateCurStkSalesCredit['stkID'] = this.StockId;
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['stkID'] = element.StockId;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
@@ -1198,7 +1201,11 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
+<<<<<<< HEAD
   StockId: any;
+=======
+  StockId:any;
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
 
   /**
    * Constructor
@@ -1218,13 +1225,16 @@ export class IndentList {
       this.Bal = IndentList.Bal || 0;
       this.StoreId = IndentList.StoreId || 0;
       this.StoreName = IndentList.StoreName || '';
-
       this.GSTPer = IndentList.GSTPer || "";
       this.TotalMRP = IndentList.TotalMRP || 0;
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
+<<<<<<< HEAD
       this.StockId = IndentList.StockId || 0;
 
+=======
+      this.StockId=IndentList.StockId || 0;
+>>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     }
   }
 }

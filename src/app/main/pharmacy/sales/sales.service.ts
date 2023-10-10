@@ -70,6 +70,10 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
   }
 
+  public getTopSalesDetails(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Top3SalesDetails",Param);
+  }
+
   public getStoreFromList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
