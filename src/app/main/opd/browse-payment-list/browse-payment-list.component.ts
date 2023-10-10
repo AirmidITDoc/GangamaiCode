@@ -176,11 +176,6 @@ getTemplate() {
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-
-      this.printTemplate = this.printTemplate.replace('strheaderName',this.reportPrintObj1.HospitalName);
-      this.printTemplate = this.printTemplate.replace('strheaderAdd',this.reportPrintObj1.HospitalAddress);
-      this.printTemplate = this.printTemplate.replace('strheaderPhone',this.reportPrintObj1.Phone);
-      this.printTemplate = this.printTemplate.replace('strheaderEmail',this.reportPrintObj1.EmailId);
       this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillDate));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
@@ -212,46 +207,45 @@ getPrint(el) {
      this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
        if(res){
        this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-       this.getPrint1();
-      this.getTemplate();
+         this.getTemplate();
       }
               
      })
    );
  }
 
- getTemplateheader(){
-  let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=21';
-  this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
+//  getTemplateheader(){
+//   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=21';
+//   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
+//       this.printTemplate = resData[0].TempDesign;
    
-    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId']; // resData[0].TempKeys;
+//     let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId']; // resData[0].TempKeys;
    
-   for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj1[keysArray[i]]);
-      }
+//    for (let i = 0; i < keysArray.length; i++) {
+//         let reString = "{{" + keysArray[i] + "}}";
+//         let re = new RegExp(reString, "g");
+//         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj1[keysArray[i]]);
+//       }
    
-      setTimeout(() => {
-        }, 50);
-  });
- }
+//       setTimeout(() => {
+//         }, 50);
+//   });
+//  }
 
- getPrint1() {
+//  getPrint1() {
   
-  let printContents;
-  this.subscriptionArr.push(
-    this._BrowseOpdPaymentReceiptService.getHospital().subscribe(res => {
-      if(res){
-      this.reportPrintObj1 = res[0] as HospitalMaster;
+//   let printContents;
+//   this.subscriptionArr.push(
+//     this._BrowseOpdPaymentReceiptService.getHospital().subscribe(res => {
+//       if(res){
+//       this.reportPrintObj1 = res[0] as HospitalMaster;
       
-     this.getTemplateheader();
-     }
+//      this.getTemplateheader();
+//      }
              
-    })
-  );
-}
+//     })
+//   );
+// }
 
 
 print() {
