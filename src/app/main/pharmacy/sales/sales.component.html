@@ -253,9 +253,9 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container class="actions">
-                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;">
+                                        <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;">
                                             edit
-                                        </span>
+                                        </span> -->
                                         <span class="material-icons" style="cursor: pointer;color: #5b5858;"
                                             (click)="deleteTableRow($event ,contact)">
                                             delete
@@ -361,17 +361,11 @@
                                             </mat-form-field>
                                         </div>
 
-                                        <mat-form-field appearance="outline" fxFlex="10%" style="margin-right: 10px;">
-                                            <mat-label>Balance Amount</mat-label>
-                                            <input matInput name="BalanceAmt" formControlName="BalanceAmt"  type="number"
-                                                [(ngModel)]="BalAmount" placeholder="0" type="number">
-                                        </mat-form-field>&nbsp;
-
 
                                         <mat-form-field appearance="outline" fxFlex="10%" style="margin-right: 10px;">
                                             <mat-label>GST Amount</mat-label>
                                             <input matInput name="FinalGSTAmt" formControlName="FinalGSTAmt" 
-                                                [(ngModel)]="FinalGSTAmt" placeholder="0" (keyup)='CalfinalGST()'
+                                                [(ngModel)]="FinalGSTAmt" placeholder="0" (keyup)='CalfinalGST()' readonly
                                                 type="number">
                                         </mat-form-field>&nbsp;
 
@@ -382,6 +376,13 @@
                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                         </mat-form-field>&nbsp;
 
+
+                                        
+                                        <mat-form-field appearance="outline" fxFlex="10%" style="margin-right: 10px;">
+                                            <mat-label>Balance Amount</mat-label>
+                                            <input matInput name="BalanceAmt" formControlName="BalanceAmt"  type="number"
+                                                [(ngModel)]="BalAmount" placeholder="0" type="number">
+                                        </mat-form-field>&nbsp;
 
 
                                     </div>

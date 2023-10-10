@@ -16,6 +16,7 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { ConditionalExpr } from '@angular/compiler';
 import { Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
+import { ItemNameList } from 'app/main/inventory/issue-to-department/issue-to-department.component';
 
 
 @Component({
@@ -101,10 +102,10 @@ export class SalesComponent implements OnInit {
   gstAmt: any;
 
   isPatienttypeDisabled: boolean = true;
-  reportPrintObj: IndentList;
+  reportPrintObj: Printsal;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
-  reportPrintObjList: IndentList[] = [];
+  reportPrintObjList: Printsal[] = [];
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
@@ -288,6 +289,8 @@ export class SalesComponent implements OnInit {
       // }
       this.ItemFormreset();
     }
+
+
     this.itemid.nativeElement.focus();
     this.add = false;
 
@@ -317,7 +320,7 @@ export class SalesComponent implements OnInit {
       this.StoreName = result.StoreName;
       this.GSTPer = result.VatPercentage;
       this.TotalMRP = this.Qty * this.MRP;
-      this.DiscAmt = result.DiscAmt;
+      this.DiscAmt = 0;
       this.NetAmt = this.TotalMRP;
       this.BalanceQty = this.BalanceQty;
       this.ItemObj = result;
@@ -347,7 +350,7 @@ export class SalesComponent implements OnInit {
   }
 
   ItemFormreset() {
-
+debugger
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
@@ -356,7 +359,7 @@ export class SalesComponent implements OnInit {
     this.GSTPer = 0;
     this.TotalMRP = 0;
     this.NetAmt = 0;
-    this._salesService.IndentSearchGroup.get('ItemId').reset();
+    this._salesService.IndentSearchGroup.get('ItemId').reset('');
 
     // this.add=false;
     this.getPharItemList();
@@ -460,6 +463,10 @@ export class SalesComponent implements OnInit {
     }
     else if(parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
    Swal.fire('Check Discount Amount !')
+    }
+    if(parseFloat(this.DiscAmt) ==0){
+      this.add = true;
+      this.addbutton.focus();
     }
   }
 
@@ -601,16 +608,17 @@ export class SalesComponent implements OnInit {
   getPrint(el) {
     ;
     var D_data = {
-      "BillNo": el,
+      "SalesID": el,
+      "OP_IP_Type":1
     }
 
     let printContents;
     this.subscriptionArr.push(
       this._salesService.getSalesPrint(D_data).subscribe(res => {
 
-        this.reportPrintObjList = res as IndentList[];
+        this.reportPrintObjList = res as Printsal[];
         console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as IndentList;
+        this.reportPrintObj = res[0] as Printsal;
 
         this.getTemplate();
 
@@ -1091,6 +1099,8 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
+
+  
   /**
    * Constructor
    *
@@ -1112,7 +1122,7 @@ export class IndentList {
 
       this.GSTPer = IndentList.GSTPer || "";
       this.TotalMRP = IndentList.TotalMRP || 0;
-      this.DiscAmt = IndentList.IssQty || 0;
+      this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
 
     }
@@ -1147,3 +1157,104 @@ export class IndentID {
   }
 }
 
+export class Printsal {
+PatientName:any;
+RegNo:any;
+IP_OP_Number:any;
+DoctorName:any;
+SalesNo:any;
+Date:Date;
+Time :Date;
+ItemName:any;
+OP_IP_Type:any;
+GenderName:any;
+AgeYear:any;
+BatchNo:any;
+BatchExpDate:any;
+UnitMRP:any;
+Qty:any;
+TotalAmount:any;
+GrossAmount:any;
+NetAmount:any;
+VatPer:any;
+VatAmount:any;
+DiscAmount:any;
+ConcessionReason:any;
+PaidAmount:any;
+BalanceAmount:any;
+UserName:any;
+HSNCode:any;
+CashPayAmount:any;
+CardPayAMount:any;
+ChequePayAmount:any;
+PayTMAmount:any;
+NEFTPayAmount:any;
+GSTPer:any;
+GSTAmount:any;
+CGSTAmount:any;
+CGSTPer:any;
+SGSTPer:any;
+SGSTAmount:any;
+IGSTPer:any;
+IGSTAmount:any;
+ManufShortName:any;
+StoreNo:any;
+DL_NO:any;
+GSTIN:any;
+CreditReason:any;
+CompanyName:any;
+
+Consructur(Printsal){
+  this.PatientName = Printsal.PatientName || '';
+  this.RegNo = Printsal.RegNo || 0;
+  this.IP_OP_Number = Printsal.OP_IP_Number || "";
+  this.DoctorName = Printsal.ToStoreName || "";
+  this.Date = Printsal.Addedby || 0;
+  this.Time = Printsal.IsInchargeVerify || "";
+  this.OP_IP_Type = Printsal.IndentId || "";
+  this.GenderName = Printsal.FromStoreId || "";
+
+  this.AgeYear = Printsal.PatientName || '';
+  this.BatchNo = Printsal.IndentDate || 0;
+  this.BatchExpDate = Printsal.FromStoreName || "";
+  this.UnitMRP = Printsal.ToStoreName || "";
+  this.Qty = Printsal.Addedby || 0;
+  this.TotalAmount = Printsal.IsInchargeVerify || "";
+  this.GrossAmount = Printsal.IndentId || "";
+  this.NetAmount = Printsal.FromStoreId || "";
+
+  this.VatPer = Printsal.PatientName || '';
+  this.VatAmount = Printsal.IndentDate || 0;
+  this.DiscAmount = Printsal.FromStoreName || "";
+  this.ConcessionReason = Printsal.ToStoreName || "";
+  this.PaidAmount = Printsal.Addedby || 0;
+  this.BalanceAmount = Printsal.IsInchargeVerify || "";
+  this.UserName = Printsal.IndentId || "";
+  this.HSNCode = Printsal.FromStoreId || "";
+
+  this.CashPayAmount = Printsal.PatientName || '';
+  this.CardPayAMount = Printsal.IndentDate || 0;
+  this.NEFTPayAmount = Printsal.FromStoreName || "";
+  this.PayTMAmount = Printsal.ToStoreName || "";
+  this.ChequePayAmount = Printsal.Addedby || 0;
+  this.GSTPer = Printsal.IsInchargeVerify || "";
+  this.GSTAmount = Printsal.IndentId || "";
+  this.SGSTPer = Printsal.FromStoreId || "";
+  this.SGSTAmount = Printsal.Addedby || 0;
+  this.CGSTPer = Printsal.IsInchargeVerify || "";
+  this.CGSTAmount = Printsal.FromStoreId || "";
+  this.IGSTPer = Printsal.IndentId || "";
+  this.IGSTAmount = Printsal.FromStoreId || "";
+ 
+  this.StoreNo = Printsal.StoreNo || "";
+  this.DL_NO = Printsal.DL_NO || "";
+  this.GSTIN = Printsal.GSTIN || "";
+  this.CreditReason = Printsal.CreditReason || "";
+  this.CompanyName = Printsal.CompanyName || "";
+  
+}
+}
+
+function Consructur() {
+  throw new Error('Function not implemented.');
+}
