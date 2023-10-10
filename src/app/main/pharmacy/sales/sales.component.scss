@@ -2,7 +2,7 @@ app-sales {
  
      
       .mat-header-row {
-      width:200;
+      // width:200;
       min-width: 1000px;
       height: 10px; 
       background-color: blue;
@@ -23,9 +23,9 @@ app-sales {
     }
 
     .mat-column-ItemName {
-      width: 500px;
-      max-width: 500px;
-      min-width: 500px;
+      width: 400px;
+      max-width: 400px;
+      min-width: 400px;
       text-align: left;
       text-align: left;
       white-space: nowrap; 
@@ -37,37 +37,37 @@ app-sales {
     }
     
     .mat-column-BatchNo {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
       text-align: left;
     }
    
     .mat-column-BatchExpDate {
-      width: 120px;
-      max-width: 120px;
-      min-width: 120px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: left;
     }
 
     .mat-column-Qty {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
+      width: 50px;
+      max-width:50px;
+      min-width: 50px;
       text-align: left;
     }
 
     .mat-column-UnitMRP {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 80px;
+      max-width: 80px;
+      min-width:  80px;
       text-align: left;
     }
 
     .mat-column-GSTPer {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 70px;
+      max-width: 70px;
+      min-width:  70px;
       text-align: left;
     }
 
@@ -78,24 +78,24 @@ app-sales {
       text-align: left;
     }
     .mat-column-DiscAmt {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 80px;
+      max-width:  80px;
+      min-width: 80px;
       text-align: left;
     }
 
     .mat-column-NetAmt {
-      width: 160px;
-      max-width: 160px;
-      min-width: 160px;
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
       text-align: center;
     }
 
   
     .mat-column-action {
-      width: 70px;
-      max-width: 70px;
-      min-width: 70px;
+      width: 60px;
+      max-width: 60px;
+      min-width: 60px;
       text-align: center;
       justify-content: center;
   

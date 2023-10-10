@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   
-    this.HospitalName='cccccGANGAMI HOSPITAL'
+    this.HospitalName='GANGAMI HOSPITAL'
     this.HospitalAddress='Plot No 1 CS No 279/2, Solapur City, Near Railway Under Park Modi Khana, Solapur-413007';
     this.Phone='9765999855';
     this.EmailId='GangamaiHospitalsolapur@gmail.com';

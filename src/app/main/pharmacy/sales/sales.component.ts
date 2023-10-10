@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, Injector, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { SalesService } from './sales.service';
@@ -18,6 +18,10 @@ import { Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
 import { ItemNameList } from 'app/main/inventory/issue-to-department/issue-to-department.component';
 import { IpPaymentInsert } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
+import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
+
 
 
 @Component({
@@ -78,7 +82,7 @@ export class SalesComponent implements OnInit {
   balanceamt: number;
   disamt: any;
   msg: any;
-
+  currentDate = new Date();
 
   VatPer: any;
   CgstPer: any;
@@ -154,6 +158,9 @@ export class SalesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private renderer: Renderer2,
     private _loggedService: AuthenticationService,
+    private injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private applicationRef: ApplicationRef
 
   ) { }
 
@@ -239,8 +246,8 @@ export class SalesComponent implements OnInit {
     this.ItemId = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
 
-    if( this.BalanceQty > 0){
-    this.getBatch();
+    if (this.BalanceQty > 0) {
+      this.getBatch();
     }
   }
 
@@ -266,7 +273,7 @@ export class SalesComponent implements OnInit {
   }
 
   OnAdd(event) {
-  
+
     debugger
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
@@ -282,7 +289,7 @@ export class SalesComponent implements OnInit {
           Qty: this.Qty,
           UnitMRP: this.MRP,
           GSTPer: this.GSTPer || 0,
-          GSTAmount:this.gstAmt,
+          GSTAmount: this.gstAmt,
           TotalMRP: this.TotalMRP,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
@@ -291,7 +298,7 @@ export class SalesComponent implements OnInit {
       this.saleSelectedDatasource.data = this.Itemchargeslist;
 
       // }
-      
+
       this.ItemFormreset();
     }
 
@@ -323,7 +330,7 @@ export class SalesComponent implements OnInit {
       this.Qty = 1;
       this.Bal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
-   
+
       this.TotalMRP = this.Qty * this.MRP;
       this.DiscAmt = 0;
       this.NetAmt = this.TotalMRP;
@@ -355,7 +362,7 @@ export class SalesComponent implements OnInit {
   }
 
   ItemFormreset() {
-debugger
+    debugger
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
@@ -370,13 +377,13 @@ debugger
     this.getPharItemList();
   }
 
-  Formreset(){
-    this.FinalTotalAmt=0;
-    this.FinalDiscPer=0;
-    this.FinalDiscAmt=0;
-    this.BalAmount=0;
-    this.FinalGSTAmt=0;
-    this.FinalNetAmount=0;
+  Formreset() {
+    this.FinalTotalAmt = 0;
+    this.FinalDiscPer = 0;
+    this.FinalDiscAmt = 0;
+    this.BalAmount = 0;
+    this.FinalGSTAmt = 0;
+    this.FinalNetAmount = 0;
   }
 
 
@@ -391,10 +398,10 @@ debugger
     // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
     return netAmt;
   }
-  getGSTSum(element){
+  getGSTSum(element) {
     let TotGST;
-      TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-      return TotGST;
+    TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+    return TotGST;
   }
 
   calculateTotalAmt() {
@@ -471,10 +478,10 @@ debugger
       this.add = true;
       this.addbutton.focus();
     }
-    else if(parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
-   Swal.fire('Check Discount Amount !')
+    else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
+      Swal.fire('Check Discount Amount !')
     }
-    if(parseFloat(this.DiscAmt) ==0){
+    if (parseFloat(this.DiscAmt) == 0) {
       this.add = true;
       this.addbutton.focus();
     }
@@ -506,7 +513,7 @@ debugger
     //   this.ConShow = true
     // }
 
-    if (Disc > 0 ) {
+    if (Disc > 0) {
       this.ConShow = true
       this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
       this.FinalNetAmount = ((this.FinalTotalAmt) - (this.FinalDiscAmt)).toFixed(2);
@@ -529,7 +536,7 @@ debugger
   }
 
   getFinalDiscAmount() {
-  debugger
+    debugger
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
 
     if (Discamt > 0 && Discamt < this.FinalNetAmount) {
@@ -613,92 +620,11 @@ debugger
   }
 
 
-  getPrint() {
-    
-    var D_data = {
-      "SalesID":428263,// el,
-      "OP_IP_Type":2
-    }
-
-    let printContents;
-    this.subscriptionArr.push(
-      this._salesService.getSalesPrint(D_data).subscribe(res => {
-
-        this.reportPrintObjList = res as Printsal[];
-        console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as Printsal;
-
-        this.getTemplate();
-
-      })
-    );
-  }
-  getTemplate() {
-    debugger
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
-    this._salesService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName','RegNo','IP_OP_Number','DoctorName','SalesNo','Date','Time','ItemName','OP_IP_Type','GenderName','AgeYear','BatchNo','BatchExpDate','UnitMRP','Qty','TotalAmount','GrossAmount','NetAmount','VatPer','VatAmount','DiscAmount','ConcessionReason','PaidAmount','BalanceAmount','UserName','HSNCode','CashPayAmount','CardPayAMount','ChequePayAmount','PayTMAmount','NEFTPayAmount','GSTPer','GSTAmount','CGSTAmount','CGSTPer','SGSTPer','SGSTAmount','IGSTPer','IGSTAmount','ManufShortName','StoreNo','DL_NO','GSTIN','CreditReason','CompanyName'];
-      // ;
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-
-
-        // var strabc = `<hr style="border-color:white" >
-        // <div style="display:flex;margin:8px 0">
-        // <div style="display:flex;width:60px;margin-left:20px;">
-        //     <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-        // </div>
-        // <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
-        //     <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-        // </div>
-        // <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
-        // <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-        // </div>
-        // <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
-        //     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-        // </div>
-        // <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
-        //     <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-        // </div>
-        // <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
-        //     <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-        // </div>
-        // </div>`;
-        // strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      let concessinamt;
-
-      // this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      // this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      console.log(this.printTemplate);
-
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-
-    
-  }
 
   convertToWord(e) {
 
     return converter.toWords(e);
   }
-
 
 
   transform2(value: string) {
@@ -707,13 +633,8 @@ debugger
     return value;
   }
 
-  transformBilld(value: string) {
-    // var datePipe = new DatePipe("en-US");
-    // value = datePipe.transform(this.reportPrintObj.BillDate, 'dd/MM/yyyy');
-    // return value;
-  }
   // PRINT 
-  print() {
+  print1() {
 
     let popupWin, printContents;
 
@@ -762,7 +683,7 @@ debugger
     if (this.ItemSubform.get('CashPay').value == 'CashPay') {
       this.onCashpaySave()
     }
-    else if(this.ItemSubform.get('CashPay').value == 'Credit') {
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
       this.onCreditpaySave()
     }
   }
@@ -771,188 +692,167 @@ debugger
 
 
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
-    let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
-    // let PatientHeaderObj = {};
-
-    // PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    // PatientHeaderObj['PatientName'] = "AirMid";//this.selectedAdvanceObj.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] = 0;
-    // PatientHeaderObj['NetPayAmount'] = NetAmt;
+    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
 
 
-    // const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-    //   {
-    //     maxWidth: "100vw",
-    //     height: '600px',
-    //     width: '100%',
-    //     data: {
-    //       vPatientHeaderObj: PatientHeaderObj,
-    //       FromName: "OP-Bill"
-    //     }
-    //   });
+    let Paymentobj = {};
 
-    // dialogRef.afterClosed().subscribe(result => {
-      // this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-      // this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-      // this.flagSubmit = result.IsSubmitFlag
+    Paymentobj['BillNo'] = 0,// this.billNo;
+      Paymentobj['ReceiptNo'] = '',//'RE';
+      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+    Paymentobj['CashPayAmount'] = NetAmt;
+    Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
+      Paymentobj['ChequeNo'] = 0,//this.chequeNo;
+      Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
+      Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
+      Paymentobj['CardNo'] = '',//this.cardNo;
+      Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
+      Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['AdvanceUsedAmount'] = 0;
+    Paymentobj['AdvanceId'] = 0;
+    Paymentobj['RefundId'] = 0;
+    Paymentobj['TransactionType'] = 2;
+    Paymentobj['Remark'] = '',//'REMArk';
+      Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
+    Paymentobj['IsCancelledBy'] = 0;
+    Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['CashCounterId'] = 0;
+    Paymentobj['IsSelfORCompany'] = 0;
+    Paymentobj['CompanyId'] = 0;
+    Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
+      Paymentobj['NEFTNo'] = '',// this.neftNo;
+      Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
+      Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
+      Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
+      Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
+      Paymentobj['PaidAmt'] = NetAmt;
+    Paymentobj['BalanceAmt'] = 0;
 
-      let Paymentobj = {};
-    
-      Paymentobj['BillNo'] = 0,// this.billNo;
-        Paymentobj['ReceiptNo'] = '',//'RE';
-        Paymentobj['PaymentDate'] =this.dateTimeObj.date;
-        Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-        Paymentobj['CashPayAmount'] =NetAmt;
-        Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-        Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-        Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-        Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-        Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-        Paymentobj['CardNo'] = '',//this.cardNo;
-        Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-        Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-        Paymentobj['AdvanceUsedAmount'] = 0;
-        Paymentobj['AdvanceId'] = 0;
-        Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 2;
-        Paymentobj['Remark'] = '',//'REMArk';
-        Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        Paymentobj['IsCancelled'] = 0;
-        Paymentobj['IsCancelledBy'] = 0;
-        Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-        Paymentobj['CashCounterId'] = 0;
-        Paymentobj['IsSelfORCompany'] = 0;
-        Paymentobj['CompanyId'] = 0;
-        Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-        Paymentobj['NEFTNo'] = '',// this.neftNo;
-        Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-        Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-        Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-        Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-        Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-        Paymentobj['PaidAmt'] = NetAmt;
-        Paymentobj['BalanceAmt'] = 0;
-  
-      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
 
-      // if (this.flagSubmit) {
-        console.log("Procced with Payment Option");
+    // if (this.flagSubmit) {
+    console.log("Procced with Payment Option");
 
-        let SalesInsert = {};
-        SalesInsert['Date'] = this.dateTimeObj.date;
-        SalesInsert['time'] = this.dateTimeObj.date;
-        SalesInsert['oP_IP_ID'] = 0;
-        SalesInsert['oP_IP_Type'] = 2;
-        SalesInsert['totalAmount'] = this.FinalTotalAmt
-        SalesInsert['vatAmount'] = this.VatAmount;
-        SalesInsert['discAmount'] = this.FinalDiscAmt;
-        SalesInsert['netAmount'] = NetAmt;
-        SalesInsert['paidAmount'] = NetAmt;
-        SalesInsert['balanceAmount'] = 0;
-        SalesInsert['concessionReasonID'] = this.ItemSubform.get('ConcessionId').value.ConcessionId || 0;
-        SalesInsert['concessionAuthorizationId'] = 0;
-        SalesInsert['isSellted'] = 0;
-        SalesInsert['isPrint'] = 0;//this.selectedAdvanceObj.PatientName;
-        SalesInsert['isFree'] = 0;
-        SalesInsert['unitID'] = 1;
-        SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-          SalesInsert['externalPatientName'] = this.PatientName;
-        SalesInsert['doctorName'] = 'xya';
-        SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-        SalesInsert['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
-        SalesInsert['creditReason'] = '';
-        SalesInsert['creditReasonID'] = 1;
-        SalesInsert['wardId'] = 0;
-        SalesInsert['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
-        SalesInsert['discper_H'] = '007';
-        SalesInsert['isPurBill'] = 0;
-        SalesInsert['isBillCheck'] = 0;
-        SalesInsert['salesHeadName'] = ""
-        SalesInsert['salesTypeId'] = 0;
-        SalesInsert['salesId'] = 0;
+    let SalesInsert = {};
+    SalesInsert['Date'] = this.dateTimeObj.date;
+    SalesInsert['time'] = this.dateTimeObj.date;
+    SalesInsert['oP_IP_ID'] = 0;
+    SalesInsert['oP_IP_Type'] = 2;
+    SalesInsert['totalAmount'] = this.FinalTotalAmt
+    SalesInsert['vatAmount'] = this.VatAmount;
+    SalesInsert['discAmount'] = this.FinalDiscAmt;
+    SalesInsert['netAmount'] = NetAmt;
+    SalesInsert['paidAmount'] = NetAmt;
+    SalesInsert['balanceAmount'] = 0;
+    SalesInsert['concessionReasonID'] = this.ItemSubform.get('ConcessionId').value.ConcessionId || 0;
+    SalesInsert['concessionAuthorizationId'] = 0;
+    SalesInsert['isSellted'] = 0;
+    SalesInsert['isPrint'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['isFree'] = 0;
+    SalesInsert['unitID'] = 1;
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+      SalesInsert['externalPatientName'] = this.PatientName;
+    SalesInsert['doctorName'] = 'xya';
+    SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
+    SalesInsert['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['creditReason'] = '';
+    SalesInsert['creditReasonID'] = 1;
+    SalesInsert['wardId'] = 0;
+    SalesInsert['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['discper_H'] = '007';
+    SalesInsert['isPurBill'] = 0;
+    SalesInsert['isBillCheck'] = 0;
+    SalesInsert['salesHeadName'] = ""
+    SalesInsert['salesTypeId'] = 0;
+    SalesInsert['salesId'] = 0;
+    SalesInsert['extMobileNo'] = '';
 
-        let salesDetailInsertarr = [];
-        this.saleSelectedDatasource.data.forEach((element) => {
-          let salesDetailInsert = {};
-          salesDetailInsert['salesID'] = 0;
-          salesDetailInsert['itemId'] = element.ItemId;
-          salesDetailInsert['batchNo'] = element.BatchNo;
-          salesDetailInsert['batchExpDate'] = element.BatchExpDate;
-          salesDetailInsert['unitMRP'] = element.UnitMRP;
-          salesDetailInsert['qty'] = element.Qty;
-          salesDetailInsert['totalAmount'] = element.TotalMRP;
-          salesDetailInsert['vatPer'] = this.VatPer;
-          salesDetailInsert['vatAmount'] = this.VatAmount;
-          salesDetailInsert['discPer'] = this.DiscPer;
-          salesDetailInsert['discAmount'] = element.DiscAmt;
-          salesDetailInsert['grossAmount'] = element.NetAmt;
-          salesDetailInsert['landedPrice'] = this.LandedRate;
-          salesDetailInsert['totalLandedAmount'] = this.LandedRateandedTotal;
-          salesDetailInsert['purRateWf'] = this.PurchaseRate;
-          salesDetailInsert['purTotAmt'] = this.PurTotAmt;
-          salesDetailInsert['cgstPer'] = this.CgstPer;
-          salesDetailInsert['cgstAmt'] = this.CGSTAmt;
-          salesDetailInsert['sgstPer'] = this.SgstPer;
-          salesDetailInsert['sgstAmt'] = this.SGSTAmt;
-          salesDetailInsert['igstPer'] = this.IgstPer
-          salesDetailInsert['igstAmt'] = this.IGSTAmt
-          salesDetailInsert['isPurRate'] = 0;
-          salesDetailInsert['stkID'] = element.StockId;
-          salesDetailInsertarr.push(salesDetailInsert);
-        });
-        let updateCurStkSalestarr = [];
-        this.saleSelectedDatasource.data.forEach((element) => {
-          let updateCurStkSales = {};
-          updateCurStkSales['itemId'] = element.ItemId;
-          updateCurStkSales['issueQty'] = element.Qty;
-          updateCurStkSales['storeID'] = element.StoreId;
-          updateCurStkSales['stkID'] = this.StockId;
+    let salesDetailInsertarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let salesDetailInsert = {};
+      salesDetailInsert['salesID'] = 0;
+      salesDetailInsert['itemId'] = element.ItemId;
+      salesDetailInsert['batchNo'] = element.BatchNo;
+      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsert['unitMRP'] = element.UnitMRP;
+      salesDetailInsert['qty'] = element.Qty;
+      salesDetailInsert['totalAmount'] = element.TotalMRP;
+      salesDetailInsert['vatPer'] = this.VatPer;
+      salesDetailInsert['vatAmount'] = this.VatAmount;
+      salesDetailInsert['discPer'] = this.DiscPer;
+      salesDetailInsert['discAmount'] = element.DiscAmt;
+      salesDetailInsert['grossAmount'] = element.NetAmt;
+      salesDetailInsert['landedPrice'] = this.LandedRate;
+      salesDetailInsert['totalLandedAmount'] = this.LandedRateandedTotal;
+      salesDetailInsert['purRateWf'] = this.PurchaseRate;
+      salesDetailInsert['purTotAmt'] = this.PurTotAmt;
+      salesDetailInsert['cgstPer'] = this.CgstPer;
+      salesDetailInsert['cgstAmt'] = this.CGSTAmt;
+      salesDetailInsert['sgstPer'] = this.SgstPer;
+      salesDetailInsert['sgstAmt'] = this.SGSTAmt;
+      salesDetailInsert['igstPer'] = this.IgstPer
+      salesDetailInsert['igstAmt'] = this.IGSTAmt
+      salesDetailInsert['isPurRate'] = 0;
+      salesDetailInsert['stkID'] = element.StockId;
+      salesDetailInsertarr.push(salesDetailInsert);
+    });
+    let updateCurStkSalestarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let updateCurStkSales = {};
+      updateCurStkSales['itemId'] = element.ItemId;
+      updateCurStkSales['issueQty'] = element.Qty;
+      updateCurStkSales['storeID'] = element.StoreId;
+      updateCurStkSales['stkID'] = this.StockId;
 
-          updateCurStkSalestarr.push(updateCurStkSales);
-        });
+      updateCurStkSalestarr.push(updateCurStkSales);
+    });
 
-        let cal_DiscAmount_Sales = {};
-        cal_DiscAmount_Sales['salesID'] = 0;
+    let cal_DiscAmount_Sales = {};
+    cal_DiscAmount_Sales['salesID'] = 0;
 
-        let cal_GSTAmount_Sales = {};
-        cal_GSTAmount_Sales['salesID'] = 0;
+    let cal_GSTAmount_Sales = {};
+    cal_GSTAmount_Sales['salesID'] = 0;
 
 
-        console.log("Procced with Payment Option");
+    console.log("Procced with Payment Option");
 
-        let submitData = {
-          "salesInsert": SalesInsert,
-          "salesDetailInsert": salesDetailInsertarr,
-          "updateCurStkSales": updateCurStkSalestarr,
-          "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
-          "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
-          "salesPayment": ipPaymentInsert
-        };
-        console.log(submitData);
-        this._salesService.InsertCashSales(submitData).subscribe(response => {
-          if (response) {
-            Swal.fire('Sale CashPay!', 'Data saved Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                let m = response;
-                // this.getPrint(m);
-                this.Itemchargeslist=[];
-                this._matDialog.closeAll();
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Sale data not saved', 'error');
+    let submitData = {
+      "salesInsert": SalesInsert,
+      "salesDetailInsert": salesDetailInsertarr,
+      "updateCurStkSales": updateCurStkSalestarr,
+      "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
+      "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
+      "salesPayment": ipPaymentInsert
+    };
+    console.log(submitData);
+    this._salesService.InsertCashSales(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire('Sale CashPay!', 'Data saved Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            let m = response;
+            // this.getPrint(m);
+            this.Itemchargeslist = [];
+            this._matDialog.closeAll();
           }
-          this.sIsLoading = '';
         });
-      // }
+      } else {
+        Swal.fire('Error !', 'Sale data not saved', 'error');
+      }
+      this.sIsLoading = '';
+    });
+    // }
     // });
 
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
-    this.PatientName='';
-    this.MobileNo='';
-    this.saleSelectedDatasource.data=[];
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
   }
 
 
@@ -960,16 +860,8 @@ debugger
     debugger
 
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
-let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
-    // let PatientHeaderObj = {};
+    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
 
-    // PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    // PatientHeaderObj['PatientName'] = "AirMid";//this.selectedAdvanceObj.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] = 0;
-    // PatientHeaderObj['NetPayAmount'] = NetAmt;
-
-    // this.paidamt = 0;
-    // this.balanceamt =NetAmt;
 
     console.log("Procced with Credit Option");
 
@@ -1005,6 +897,7 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
+    salesInsertCredit['extMobileNo'] = '';
 
     let salesDetailInsertCreditarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -1070,7 +963,7 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
           if (result.isConfirmed) {
             let m = response;
             // this.getPrint(m);
-            this.Itemchargeslist=[];
+            this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
         });
@@ -1082,10 +975,10 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
-    this.PatientName='';
-    this.MobileNo='';
-    this.saleSelectedDatasource.data=[];
-    this.saleSelectedDatasource.data=[];
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
+    this.saleSelectedDatasource.data = [];
 
   }
 
@@ -1119,14 +1012,169 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
       this.addbutton.focus();
     }
   }
-  // public onEnterdiscAmount(event): void {
-  //   if (event.which === 13) {
-  //     this.add=true;
-  //     this.addbutton.focus();
-  //   }
-  // }
 
 
+
+  getPrint() {
+
+    var D_data = {
+      "SalesID": 428263,// el,
+      "OP_IP_Type": 2
+    }
+
+    let printContents;
+    this.subscriptionArr.push(
+      this._salesService.getSalesPrint(D_data).subscribe(res => {
+
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as Printsal;
+
+        this.getTemplate();
+
+      })
+    );
+  }
+  getTemplate() {
+    debugger
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
+    this._salesService.getTemplate(query).subscribe((resData: any) => {
+
+      this.printTemplate = resData[0].TempDesign;
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+      // ;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
+      var strrowslist = "";
+      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+        console.log(this.reportPrintObjList);
+        var objreportPrint = this.reportPrintObjList[i - 1];
+        let UnitValue
+
+        var strabc = `<hr style="border-color:white" >
+        <div style="display:flex;margin:8px 0">
+        <div style="display:flex;width:60px;margin-left:20px;">
+            <div>`+ i + `</div> 
+        </div>
+        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+            <div>`+ UnitValue + `</div> 
+        </div>
+        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.HSNcode + `</div> 
+        </div>
+        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
+            <div>`+ '₹' + objreportPrint.ItemName + `</div> 
+        </div>
+        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+            <div>`+ objreportPrint.Qty + `</div> 
+        </div>
+        <div style="display:flex;width:90px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.BatchNo + `</div> 
+         </div>
+        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.BatchExpDate + `</div> 
+        </div>
+        <div style="display:flex;width:70px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.CGSTPer + objreportPrint.CGSTAmt + `</div> 
+        </div>  
+        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt `</div> 
+        </div>
+        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+        <div>`+ objreportPrint.UnitMRP + `</div> 
+        </div>
+        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
+            <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+        </div>
+        </div>`;
+        strrowslist += strabc;
+      }
+      var objPrintWordInfo = this.reportPrintObjList[0];
+
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      console.log(this.printTemplate);
+
+      setTimeout(() => {
+        this.print();
+      }, 1000);
+    });
+
+
+  }
+
+  print() {
+
+    let popupWin, printContents;
+    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    // popupWin.document.open();
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()"></body> 
+    </html>`);
+
+    // if(this.reportPrintObj.CashPayAmount === 0) {
+    //   popupWin.document.getElementById('idCashpay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.CardPayAmount === 0) {
+    //   popupWin.document.getElementById('idCardpay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.ChequePayAmount === 0) {
+    //   popupWin.document.getElementById('idChequepay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.NEFTPayAmount === 0) {
+    //   popupWin.document.getElementById('idNeftpay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.PayTMAmount === 0) {
+    //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.PayTMAmount === 0) {
+    //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
+    // }
+    // if(this.reportPrintObj.Remark === '') {
+    //   popupWin.document.getElementById('idremark').style.display = 'none';
+    // }
+    this.createCDKPortal({}, popupWin);
+    popupWin.document.close();
+  }
+
+  createCDKPortal(data, windowInstance) {
+    if (windowInstance) {
+      const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
+      const injector = this.createInjector(data);
+      let componentInstance;
+      componentInstance = this.attachHeaderContainer(outlet, injector);
+      // console.log(windowInstance.document)
+      let template = windowInstance.document.createElement('div'); // is a node
+      template.innerHTML = this.printTemplate;
+      windowInstance.document.body.appendChild(template);
+    }
+  }
+  createInjector(data): any {
+    const injectionTokens = new WeakMap();
+    injectionTokens.set({}, data);
+    return new PortalInjector(this.injector, injectionTokens);
+  }
+
+  attachHeaderContainer(outlet, injector) {
+    const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
+    const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
+    return containerRef.instance;
+  }
 
 
   onClose() {
@@ -1150,8 +1198,8 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
-StockId:any;
-  
+  StockId: any;
+
   /**
    * Constructor
    *
@@ -1210,101 +1258,101 @@ export class IndentID {
 }
 
 export class Printsal {
-PatientName:any;
-RegNo:any;
-IP_OP_Number:any;
-DoctorName:any;
-SalesNo:any;
-Date:Date;
-Time :Date;
-ItemName:any;
-OP_IP_Type:any;
-GenderName:any;
-AgeYear:any;
-BatchNo:any;
-BatchExpDate:any;
-UnitMRP:any;
-Qty:any;
-TotalAmount:any;
-GrossAmount:any;
-NetAmount:any;
-VatPer:any;
-VatAmount:any;
-DiscAmount:any;
-ConcessionReason:any;
-PaidAmount:any;
-BalanceAmount:any;
-UserName:any;
-HSNCode:any;
-CashPayAmount:any;
-CardPayAMount:any;
-ChequePayAmount:any;
-PayTMAmount:any;
-NEFTPayAmount:any;
-GSTPer:any;
-GSTAmount:any;
-CGSTAmount:any;
-CGSTPer:any;
-SGSTPer:any;
-SGSTAmount:any;
-IGSTPer:any;
-IGSTAmount:any;
-ManufShortName:any;
-StoreNo:any;
-DL_NO:any;
-GSTIN:any;
-CreditReason:any;
-CompanyName:any;
+  PatientName: any;
+  RegNo: any;
+  IP_OP_Number: any;
+  DoctorName: any;
+  SalesNo: any;
+  Date: Date;
+  Time: any;
+  ItemName: any;
+  OP_IP_Type: any;
+  GenderName: any;
+  AgeYear: any;
+  BatchNo: any;
+  BatchExpDate: any;
+  UnitMRP: any;
+  Qty: any;
+  TotalAmount: any;
+  GrossAmount: any;
+  NetAmount: any;
+  VatPer: any;
+  VatAmount: any;
+  DiscAmount: any;
+  ConcessionReason: any;
+  PaidAmount: any;
+  BalanceAmount: any;
+  UserName: any;
+  HSNcode: any;
+  CashPayAmount: any;
+  CardPayAMount: any;
+  ChequePayAmount: any;
+  PayTMAmount: any;
+  NEFTPayAmount: any;
+  GSTPer: any;
+  GSTAmount: any;
+  CGSTAmt: any;
+  CGSTPer: any;
+  SGSTPer: any;
+  SGSTAmt: any;
+  IGSTPer: any;
+  IGSTAmt: any;
+  ManufShortName: any;
+  StoreNo: any;
+  DL_NO: any;
+  GSTIN: any;
+  CreditReason: any;
+  CompanyName: any;
 
-Consructur(Printsal){
-  this.PatientName = Printsal.PatientName || '';
-  this.RegNo = Printsal.RegNo || 0;
-  this.IP_OP_Number = Printsal.OP_IP_Number || "";
-  this.DoctorName = Printsal.ToStoreName || "";
-  this.Date = Printsal.Addedby || 0;
-  this.Time = Printsal.IsInchargeVerify || "";
-  this.OP_IP_Type = Printsal.IndentId || "";
-  this.GenderName = Printsal.FromStoreId || "";
+  Consructur(Printsal) {
+    this.PatientName = Printsal.PatientName || '';
+    this.RegNo = Printsal.RegNo || 0;
+    this.IP_OP_Number = Printsal.OP_IP_Number || "";
+    this.DoctorName = Printsal.DoctorName || "";
+    this.Date = Printsal.Date || 0;
+    this.Time = Printsal.Time || "";
+    this.OP_IP_Type = Printsal.OP_IP_Type || "";
+    this.GenderName = Printsal.GenderName || "";
 
-  this.AgeYear = Printsal.PatientName || '';
-  this.BatchNo = Printsal.IndentDate || 0;
-  this.BatchExpDate = Printsal.FromStoreName || "";
-  this.UnitMRP = Printsal.ToStoreName || "";
-  this.Qty = Printsal.Addedby || 0;
-  this.TotalAmount = Printsal.IsInchargeVerify || "";
-  this.GrossAmount = Printsal.IndentId || "";
-  this.NetAmount = Printsal.FromStoreId || "";
+    this.AgeYear = Printsal.AgeYear || '';
+    this.BatchNo = Printsal.BatchNo || 0;
+    this.BatchExpDate = Printsal.BatchExpDate || "";
+    this.UnitMRP = Printsal.UnitMRP || "";
+    this.Qty = Printsal.Qty || 0;
+    this.TotalAmount = Printsal.TotalAmount || "";
+    this.GrossAmount = Printsal.GrossAmount || "";
+    this.NetAmount = Printsal.NetAmount || "";
 
-  this.VatPer = Printsal.PatientName || '';
-  this.VatAmount = Printsal.IndentDate || 0;
-  this.DiscAmount = Printsal.FromStoreName || "";
-  this.ConcessionReason = Printsal.ToStoreName || "";
-  this.PaidAmount = Printsal.Addedby || 0;
-  this.BalanceAmount = Printsal.IsInchargeVerify || "";
-  this.UserName = Printsal.IndentId || "";
-  this.HSNCode = Printsal.FromStoreId || "";
+    this.VatPer = Printsal.VatPer || '';
+    this.VatAmount = Printsal.VatAmount || 0;
+    this.DiscAmount = Printsal.DiscAmount || "";
+    this.ConcessionReason = Printsal.ConcessionReason || "";
+    this.PaidAmount = Printsal.PaidAmount || 0;
+    this.BalanceAmount = Printsal.BalanceAmount || "";
+    this.UserName = Printsal.UserName || "";
+    this.HSNcode = Printsal.HSNcode || "";
 
-  this.CashPayAmount = Printsal.PatientName || '';
-  this.CardPayAMount = Printsal.IndentDate || 0;
-  this.NEFTPayAmount = Printsal.FromStoreName || "";
-  this.PayTMAmount = Printsal.PayTMAmount || "";
-  this.ChequePayAmount = Printsal.Addedby || 0;
-  this.GSTPer = Printsal.IsInchargeVerify || "";
-  this.GSTAmount = Printsal.IndentId || "";
-  this.SGSTPer = Printsal.FromStoreId || "";
-  this.SGSTAmount = Printsal.Addedby || 0;
-  this.CGSTPer = Printsal.IsInchargeVerify || "";
-  this.CGSTAmount = Printsal.FromStoreId || "";
-  this.IGSTPer = Printsal.IndentId || "";
-  this.IGSTAmount = Printsal.FromStoreId || "";
- 
-  this.StoreNo = Printsal.StoreNo || "";
-  this.DL_NO = Printsal.DL_NO || "";
-  this.GSTIN = Printsal.GSTIN || "";
-  this.CreditReason = Printsal.CreditReason || "";
-  this.CompanyName = Printsal.CompanyName || "";
-  
-}
+    this.CashPayAmount = Printsal.CashPayAmount || '';
+    this.CardPayAMount = Printsal.CardPayAMount || 0;
+    this.NEFTPayAmount = Printsal.NEFTPayAmount || "";
+    this.PayTMAmount = Printsal.PayTMAmount || "";
+    this.ChequePayAmount = Printsal.ChequePayAmount || 0;
+    this.GSTPer = Printsal.GSTPer || "";
+    this.GSTAmount = Printsal.GSTAmount || "";
+    this.SGSTPer = Printsal.SGSTPer || "";
+    this.SGSTAmt = Printsal.SGSTAmt || 0;
+    this.CGSTPer = Printsal.CGSTPer || "";
+    this.CGSTAmt = Printsal.CGSTAmt || "";
+    this.IGSTPer = Printsal.IGSTPer || "";
+    this.IGSTAmt = Printsal.IGSTAmt || "";
+
+    this.StoreNo = Printsal.StoreNo || "";
+    this.DL_NO = Printsal.DL_NO || "";
+    this.GSTIN = Printsal.GSTIN || "";
+    this.CreditReason = Printsal.CreditReason || "";
+    this.CompanyName = Printsal.CompanyName || "";
+
+  }
 }
 
 function Consructur() {
