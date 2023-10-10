@@ -101,6 +101,6 @@ export class SalesService {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   } 
   public getSalesPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo",emp);
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);
   }
 }
