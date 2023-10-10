@@ -172,7 +172,9 @@ export class SalesComponent implements OnInit {
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
-      MobileNo: '',
+      MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+      Validators.minLength(10),
+      Validators.maxLength(10),]],
       PatientType: ['External'],
       TotalAmt: '',
       GSTPer: '',
@@ -279,7 +281,8 @@ export class SalesComponent implements OnInit {
           BatchExpDate: this.BatchExpDate || '01/01/1900',
           Qty: this.Qty,
           UnitMRP: this.MRP,
-          GSTPer: this._salesService.IndentSearchGroup.get('GSTPer').value || 0,
+          GSTPer: this.GSTPer || 0,
+          GSTAmount:this.gstAmt,
           TotalMRP: this.TotalMRP,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
@@ -288,6 +291,7 @@ export class SalesComponent implements OnInit {
       this.saleSelectedDatasource.data = this.Itemchargeslist;
 
       // }
+      
       this.ItemFormreset();
     }
 
@@ -319,6 +323,7 @@ export class SalesComponent implements OnInit {
       this.Qty = 1;
       this.Bal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
+   
       this.TotalMRP = this.Qty * this.MRP;
       this.DiscAmt = 0;
       this.NetAmt = this.TotalMRP;
@@ -386,6 +391,11 @@ debugger
     // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
     return netAmt;
   }
+  getGSTSum(element){
+    let TotGST;
+      TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+      return TotGST;
+  }
 
   calculateTotalAmt() {
 
@@ -398,7 +408,7 @@ debugger
     if (Qty && this.MRP) {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
 
-      let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
+      let GST = this.GSTPer;
       if (GST > 0) {
         this.gstAmt = ((this.TotalMRP * (GST)) / 100).toFixed(2);
         this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.gstAmt)).toFixed(2);
@@ -603,11 +613,11 @@ debugger
   }
 
 
-  getPrint(el) {
-    ;
+  getPrint() {
+    
     var D_data = {
-      "SalesID": el,
-      "OP_IP_Type":1
+      "SalesID":428263,// el,
+      "OP_IP_Type":2
     }
 
     let printContents;
@@ -624,6 +634,7 @@ debugger
     );
   }
   getTemplate() {
+    debugger
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._salesService.getTemplate(query).subscribe((resData: any) => {
 
@@ -679,6 +690,8 @@ debugger
         this.print();
       }, 1000);
     });
+
+    
   }
 
   convertToWord(e) {
@@ -884,7 +897,7 @@ debugger
           salesDetailInsert['igstPer'] = this.IgstPer
           salesDetailInsert['igstAmt'] = this.IGSTAmt
           salesDetailInsert['isPurRate'] = 0;
-          salesDetailInsert['stkID'] = this.StockId;
+          salesDetailInsert['stkID'] = element.StockId;
           salesDetailInsertarr.push(salesDetailInsert);
         });
         let updateCurStkSalestarr = [];
@@ -922,6 +935,7 @@ debugger
               if (result.isConfirmed) {
                 let m = response;
                 // this.getPrint(m);
+                this.Itemchargeslist=[];
                 this._matDialog.closeAll();
               }
             });
@@ -1056,6 +1070,7 @@ let NetAmt=(this.ItemSubform.get('FinalNetAmount').value);
           if (result.isConfirmed) {
             let m = response;
             // this.getPrint(m);
+            this.Itemchargeslist=[];
             this._matDialog.closeAll();
           }
         });
@@ -1135,7 +1150,7 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
-
+StockId:any;
   
   /**
    * Constructor
@@ -1160,6 +1175,7 @@ export class IndentList {
       this.TotalMRP = IndentList.TotalMRP || 0;
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
+      this.StockId = IndentList.StockId || 0;
 
     }
   }
