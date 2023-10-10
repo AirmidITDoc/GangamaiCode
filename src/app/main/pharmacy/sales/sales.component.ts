@@ -79,7 +79,6 @@ export class SalesComponent implements OnInit {
   disamt: any;
   msg: any;
 
-
   VatPer: any;
   CgstPer: any;
   SgstPer: any;
@@ -165,11 +164,6 @@ export class SalesComponent implements OnInit {
     // this.ItemObj=
   }
 
-  // toggleSidebar(name): void {
-  //   this._fuseSidebarService.getSidebar(name).toggleOpen();
-  // }
-
-
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
@@ -223,7 +217,6 @@ export class SalesComponent implements OnInit {
         }
       });
     }
-
   }
 
   getOptionText(option) {
@@ -242,12 +235,6 @@ export class SalesComponent implements OnInit {
     this.getBatch();
     }
   }
-
-
-  // onclickrow(Param) {
-  //   Swal.fire("Row selected :" + Param)
-  //   console.log(Param);
-  // }
 
   gePharStoreList() {
     var vdata = {
@@ -286,19 +273,15 @@ export class SalesComponent implements OnInit {
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
-
-      // }
       this.ItemFormreset();
     }
-
-
     this.itemid.nativeElement.focus();
     this.add = false;
 
   }
 
   getBatch() {
-    this.Quantity.nativeElement.focus();
+    // this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
         maxWidth: "700px",
@@ -339,7 +322,6 @@ export class SalesComponent implements OnInit {
       this.LandedRate = result.LandedRate;
       this.PurchaseRate = result.PurchaseRate;
       this.UnitMRP = result.UnitMRP;
-
     });
 
     this.Quantity.nativeElement.focus();
