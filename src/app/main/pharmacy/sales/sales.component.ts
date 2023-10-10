@@ -82,10 +82,7 @@ export class SalesComponent implements OnInit {
   balanceamt: number;
   disamt: any;
   msg: any;
-<<<<<<< HEAD
   currentDate = new Date();
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
 
   VatPer: any;
   CgstPer: any;
@@ -264,10 +261,11 @@ export class SalesComponent implements OnInit {
 
   getTopSalesDetailsList() {
     var vdata = {
-      ExtMobileNo: this.ItemSubform.get('MobileNo').value 
+      ExtMobileNo: "8805601600" //this.ItemSubform.get('MobileNo').value 
     }
     this._salesService.getTopSalesDetails(vdata).subscribe(data => {
       this.vSalesDetails = data;
+      console.log(this.vSalesDetails);
     });
   }
   onClear() {
@@ -275,14 +273,8 @@ export class SalesComponent implements OnInit {
   }
 
   OnAdd(event) {
-<<<<<<< HEAD
-
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-
     if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
       this.saleSelectedDatasource.data = [];
       this.Itemchargeslist.push(
@@ -302,12 +294,6 @@ export class SalesComponent implements OnInit {
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
-<<<<<<< HEAD
-
-      // }
-
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
       this.ItemFormreset();
     }
     this.itemid.nativeElement.focus();
@@ -316,13 +302,13 @@ export class SalesComponent implements OnInit {
   }
 
   getBatch() {
-    // this.Quantity.nativeElement.focus();
+    this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
-        maxWidth: "700px",
-        minWidth: '700px',
-        width: '700px',
-        height: '500px',
+        maxWidth: "800px",
+        minWidth: '800px',
+        width: '800px',
+        height: '380px',
         disableClose: true,
         data: {
           "ItemId": this._salesService.IndentSearchGroup.get('ItemId').value.ItemId,
@@ -368,10 +354,6 @@ export class SalesComponent implements OnInit {
   }
 
   ItemFormreset() {
-<<<<<<< HEAD
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
@@ -541,10 +523,6 @@ export class SalesComponent implements OnInit {
   }
 
   getFinalDiscAmount() {
-<<<<<<< HEAD
-    debugger
-=======
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
 
     if (Discamt > 0 && Discamt < this.FinalNetAmount) {
@@ -760,21 +738,21 @@ export class SalesComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName;
-    SalesInsert['doctorName'] = 'xya';
+    SalesInsert['externalPatientName'] = this.PatientName;
+    SalesInsert['doctorName'] = "";
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
     SalesInsert['creditReason'] = '';
     SalesInsert['creditReasonID'] = 1;
     SalesInsert['wardId'] = 0;
     SalesInsert['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
-    SalesInsert['discper_H'] = '007';
+    SalesInsert['discper_H'] = 0;
     SalesInsert['isPurBill'] = 0;
     SalesInsert['isBillCheck'] = 0;
     SalesInsert['salesHeadName'] = ""
     SalesInsert['salesTypeId'] = 0;
     SalesInsert['salesId'] = 0;
-    SalesInsert['extMobileNo'] = '';
+    SalesInsert['extMobileNo'] = this.MobileNo;
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -900,7 +878,7 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
-    salesInsertCredit['extMobileNo'] = '';
+    salesInsertCredit['extMobileNo'] = this.MobileNo;
 
     let salesDetailInsertCreditarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -1201,11 +1179,7 @@ export class IndentList {
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
-<<<<<<< HEAD
-  StockId: any;
-=======
   StockId:any;
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
 
   /**
    * Constructor
@@ -1229,12 +1203,7 @@ export class IndentList {
       this.TotalMRP = IndentList.TotalMRP || 0;
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
-<<<<<<< HEAD
-      this.StockId = IndentList.StockId || 0;
-
-=======
       this.StockId=IndentList.StockId || 0;
->>>>>>> f16b83d4b8b688445509f950231ff0a6743f8088
     }
   }
 }
