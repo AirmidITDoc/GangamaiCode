@@ -21,6 +21,7 @@ import { IpPaymentInsert } from 'app/main/opd/op-search-list/op-advance-payment/
 import { DomSanitizer } from '@angular/platform-browser';
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
+import { element } from 'protractor';
 
 
 
@@ -108,17 +109,20 @@ export class SalesComponent implements OnInit {
   DoctorName: any;
   isPatienttypeDisabled: boolean = true;
   chkdiscper: boolean = true;
+  stockidflag: boolean = true;
+  deleteflag: boolean = true;
   reportPrintObj: Printsal;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
-  GSTAmount:any;
+  GSTAmount: any;
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
 
   vSalesDetails: any = [];
+  vSalesIdList: any = [];
 
   displayedColumns = [
     'FromStoreId',
@@ -171,6 +175,7 @@ export class SalesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.Itemchargeslist = [];
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
@@ -273,6 +278,12 @@ export class SalesComponent implements OnInit {
       this.PatientName = data[0].ExternalPatientName;
       this.DoctorName = data[0].DoctorName;
     });
+
+    this.vSalesDetails.forEach((element) => {
+    this.vSalesIdList.push(element.SalesID)
+    console.log('SalesID :', this.vSalesIdList)
+  });
+  
   }
   onClear() {
 
@@ -315,27 +326,77 @@ export class SalesComponent implements OnInit {
       this.Itemchargeslist.forEach((element) => {
         if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
           debugger
+          this.stockidflag = false;
+          // Swal.fire('Item from Present StockID');
+          console.log(element);
+          debugger
+          this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
+          this.TotalMRP = this.Qty * this.UnitMRP,
+           
+          this.GSTAmount = this.GSTAmount + parseFloat(element.GSTAmount);
+          this.NetAmt = parseFloat(this.NetAmt) + (parseFloat(element.NetAmt));
+          this.DiscAmt = parseFloat(element.DiscAmt) + this.DiscAmt;
+          this.ItemId =element.ItemId;
+          this.ItemName=element.ItemName;
+          this.BatchNo=element.BatchNo;
+          this.StockId=element.StockId; 
+          this.BatchExpDate=element.BatchExpDate  || '01/01/1900';
+          this.deleteflag=false;
+          this.deleteTableRow(event, element);
+          
+          // this.Itemchargeslist.push(
+          //   {
 
-          Swal.fire('Item from Present StockID');
-            console.log(element);
-            this.Itemchargeslist.push(
-              {
-                
-            Qty: this.Qty + element.Qty,
-            UnitMRP: this.MRP + element.UnitMRP,
-            // GSTPer: this.GSTPer || 0,
-            GSTAmount: this.GSTAmount || 0,
-            TotalMRP: this.TotalMRP,
-            DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
-            NetAmt: this.NetAmt
-          });
+          //     ItemId: this.ItemId,
+          //     ItemName: this.ItemName,
+          //     BatchNo: this.BatchNo,
+          //     BatchExpDate: this.BatchExpDate || '01/01/1900',
+          //     Qty: this.Qty + element.Qty,
+          //     UnitMRP: this.MRP,
+          //     GSTPer: this.GSTPer || 0,
+          //     GSTAmount: this.GSTAmount || 0,
+          //     TotalMRP: this.TotalMRP,
+          //     DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+          //     NetAmt: this.NetAmt,
+          //     StockId: this.StockId,
 
-        }
+          //   });
+          // this.saleSelectedDatasource.data = this.Itemchargeslist;
+          // this.ItemFormreset();
+
+        } 
+        // else {
+        //   this.stockidflag = true;
+        // }
 
       });
+
     }
-    else {
-      this.onAdd()
+    
+    if (this.stockidflag == true) {
+      this.onAdd();
+    }else{
+       
+          this.Itemchargeslist.push(
+            {
+
+              ItemId: this.ItemId,
+              ItemName: this.ItemName,
+              BatchNo: this.BatchNo,
+              BatchExpDate: this.BatchExpDate || '01/01/1900',
+              Qty: this.Qty,
+              UnitMRP: this.MRP,
+              GSTPer: this.GSTPer || 0,
+              GSTAmount: this.GSTAmount || 0,
+              TotalMRP: this.TotalMRP,
+              DiscAmt: this.DiscAmt| 0,
+              NetAmt: this.NetAmt,
+              StockId: this.StockId,
+
+            });
+          this.saleSelectedDatasource.data = this.Itemchargeslist;
+          this.ItemFormreset();
+
     }
 
     this.itemid.nativeElement.focus();
@@ -601,22 +662,22 @@ export class SalesComponent implements OnInit {
     }
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
   }
-  key: any;
-  @HostListener('document:keyup', ['$event'])
-  handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
-    if (event.key === 'Delete') {
-      this.key = 'Delete';
+  // key: any;
+  // @HostListener('document:keyup', ['$event'])
+  // handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
+  //   if (event.key === 'Delete') {
+  //     this.key = 'Delete';
 
-    }
-  }
-  @HostListener('document:keydown.delete', ['$event'])
+  //   }
+  // }
+  // @HostListener('document:keydown.delete', ['$event'])
 
-  show(eve, contact) {
-    // Swal.fire(contact);
-    if (this.key == "Delete") {
-      this.deleteTableRow(eve, contact);
-    }
-  }
+  // show(eve, contact) {
+  //   // Swal.fire(contact);
+  //   if (this.key == "Delete") {
+  //     this.deleteTableRow(eve, contact);
+  //   }
+  // }
 
 
   onChangePatientType(event) {
@@ -702,16 +763,17 @@ export class SalesComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    if (this.key == "Delete") {
-      let index = this.Itemchargeslist.indexOf(element);
-      if (index >= 0) {
-        this.Itemchargeslist.splice(index, 1);
-        this.saleSelectedDatasource.data = [];
-        this.saleSelectedDatasource.data = this.Itemchargeslist;
-      }
-      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-
+    // if (this.key == "Delete") {
+    let index = this.Itemchargeslist.indexOf(element);
+    if (index >= 0) {
+      this.Itemchargeslist.splice(index, 1);
+      this.saleSelectedDatasource.data = [];
+      this.saleSelectedDatasource.data = this.Itemchargeslist;
     }
+    if(this.deleteflag==true){
+    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+    }
+    // }
   }
 
 
@@ -1042,13 +1104,15 @@ export class SalesComponent implements OnInit {
     debugger
 
     if (event.which === 13) {
-      if (this.DiscPer == 0) {
-        this.discamount.nativeElement.focus();
-      }
-      else {
+      // if (this.DiscPer == 0) {
+      //   this.discamount.nativeElement.focus();
+      // }
+      // else {
 
-        this.addbutton.focus();
-      }
+      //   this.addbutton.focus();
+      // }
+      this.discamount.nativeElement.focus();
+
     }
   }
 
@@ -1065,7 +1129,6 @@ export class SalesComponent implements OnInit {
   }
   public onEnterdiscAmount(event): void {
     if (event.which === 13) {
-      
       this.addbutton.focus();
     }
   }
@@ -1075,7 +1138,7 @@ export class SalesComponent implements OnInit {
   getPrint(el) {
 
     var D_data = {
-      "SalesID": el,// 428263,// 
+      "SalesID": 428263,// 
       "OP_IP_Type": 2
     }
 
@@ -1237,6 +1300,7 @@ export class SalesComponent implements OnInit {
 
   onClose() {
     // this.dialogRef.close({ result: "cancel" });
+    this.Itemchargeslist = [];
   }
 }
 
@@ -1253,7 +1317,7 @@ export class IndentList {
   StoreId: any;
   StoreName: any;
   GSTPer: any;
-  
+
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;

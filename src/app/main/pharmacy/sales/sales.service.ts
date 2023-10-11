@@ -38,7 +38,7 @@ export class SalesService {
       GSTAmt:'',
       MRP:'',
       TotalMrp:'',
-      DiscAmt:'',
+      DiscAmt: [' ', [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$")] ],
       NetAmt:'',
       DiscPer:'',
  

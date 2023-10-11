@@ -55,7 +55,7 @@ export class SalePopupComponent implements OnInit {
   ngOnInit(): void {
     this.getSalesData();
     setTimeout(() => {
-      document.getElementById('ele-1').focus();
+      // document.getElementById('ele-1').focus();
     }, 1000);
   }
 
