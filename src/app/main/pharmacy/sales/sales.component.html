@@ -181,8 +181,7 @@
                                                     [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                                     [matTooltipPosition]="'above'">
                                                     <button mat-raised-button fxLayoutAlign="center center" #addbutton [disabled]="!add"
-                                                        (click)="OnAdd($event)"
-                                                        style="background-color: blue; color: white; width: 70px;margin-left:10px; ">
+                                                        (click)="OnAdd($event)">
                                                         <mat-icon> add </mat-icon> &nbsp;Add
                                                     </button>
                                                     <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
@@ -447,7 +446,7 @@
                                                         </mat-radio-group>
                                                         <button class="next-btn" (click)="onSave()" [disabled]="ItemSubform.invalid"
                                                             >Save</button>
-                                                        <button class="footer-btn" (click)="onClose()">Cancel</button>
+                                                        <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
                 
                 
