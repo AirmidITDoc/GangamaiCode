@@ -681,48 +681,11 @@ export class SalesComponent implements OnInit {
 
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('ConcessionId').value)
+    ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-
-    let Paymentobj = {};
-
-    Paymentobj['BillNo'] = 0,// this.billNo;
-      Paymentobj['ReceiptNo'] = '',//'RE';
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-    Paymentobj['CashPayAmount'] = NetAmt;
-    Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-      Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = '',//this.cardNo;
-      Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-    Paymentobj['AdvanceId'] = 0;
-    Paymentobj['RefundId'] = 0;
-    Paymentobj['TransactionType'] = 2;
-    Paymentobj['Remark'] = '',//'REMArk';
-      Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-    Paymentobj['IsCancelledBy'] = 0;
-    Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-    Paymentobj['IsSelfORCompany'] = 0;
-    Paymentobj['CompanyId'] = 0;
-    Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = '',// this.neftNo;
-      Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-      Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = NetAmt;
-    Paymentobj['BalanceAmt'] = 0;
-
-    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-
-    // if (this.flagSubmit) {
+      // if (this.flagSubmit) {
     console.log("Procced with Payment Option");
 
     let SalesInsert = {};
@@ -736,21 +699,21 @@ export class SalesComponent implements OnInit {
     SalesInsert['netAmount'] = NetAmt;
     SalesInsert['paidAmount'] = NetAmt;
     SalesInsert['balanceAmount'] = 0;
-    SalesInsert['concessionReasonID'] = this.ItemSubform.get('ConcessionId').value.ConcessionId || 0;
+    SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
     SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['isPrint'] = 0;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
     SalesInsert['externalPatientName'] = this.PatientName;
     SalesInsert['doctorName'] = "";
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-    SalesInsert['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['isPrescription'] = 0;
     SalesInsert['creditReason'] = '';
-    SalesInsert['creditReasonID'] = 1;
+    SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
-    SalesInsert['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
+    SalesInsert['bedID'] = 0;
     SalesInsert['discper_H'] = 0;
     SalesInsert['isPurBill'] = 0;
     SalesInsert['isBillCheck'] = 0;
@@ -805,6 +768,44 @@ export class SalesComponent implements OnInit {
     let cal_GSTAmount_Sales = {};
     cal_GSTAmount_Sales['salesID'] = 0;
 
+    let Paymentobj = {};
+
+    Paymentobj['BillNo'] = 0,// this.billNo;
+    Paymentobj['ReceiptNo'] = '',//'RE';
+    Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+    Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+    Paymentobj['CashPayAmount'] = NetAmt;
+    Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
+    Paymentobj['ChequeNo'] = 0,//this.chequeNo;
+    Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
+    Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
+    Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
+    Paymentobj['CardNo'] = '',//this.cardNo;
+    Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
+    Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
+    Paymentobj['AdvanceUsedAmount'] = 0;
+    Paymentobj['AdvanceId'] = 0;
+    Paymentobj['RefundId'] = 0;
+    Paymentobj['TransactionType'] = 2;
+    Paymentobj['Remark'] = '',//'REMArk';
+    Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    Paymentobj['IsCancelled'] = 0;
+    Paymentobj['IsCancelledBy'] = 0;
+    Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
+    Paymentobj['CashCounterId'] = 0;
+    Paymentobj['IsSelfORCompany'] = 0;
+    Paymentobj['CompanyId'] = 0;
+    Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
+    Paymentobj['NEFTNo'] = '',// this.neftNo;
+    Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
+    Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
+    Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
+    Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
+    Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
+    Paymentobj['PaidAmt'] = NetAmt;
+    Paymentobj['BalanceAmt'] = 0;
+
+    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
 
     console.log("Procced with Payment Option");
 
@@ -848,6 +849,9 @@ export class SalesComponent implements OnInit {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
 
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('ConcessionId').value)
+    ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
     console.log("Procced with Credit Option");
 
@@ -862,21 +866,21 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['netAmount'] = NetAmt;
     salesInsertCredit['paidAmount'] = 0;
     salesInsertCredit['balanceAmount'] = NetAmt;
-    salesInsertCredit['concessionReasonID'] = this.ItemSubform.get('ConcessionId').value.ConcessionId || 0;
+    salesInsertCredit['concessionReasonID'] = ConcessionId || 0;
     salesInsertCredit['concessionAuthorizationId'] = 0;
     salesInsertCredit['isSellted'] = 0;
-    salesInsertCredit['isPrint'] = 0;//this.selectedAdvanceObj.PatientName;
+    salesInsertCredit['isPrint'] = 0;
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
     salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
-    salesInsertCredit['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-    salesInsertCredit['isPrescription'] = 0;//this.selectedAdvanceObj.PatientName;
+    salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
+    salesInsertCredit['isPrescription'] = 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
     salesInsertCredit['wardId'] = 0;
-    salesInsertCredit['bedID'] = 0;//this.selectedAdvanceObj.PatientName;
+    salesInsertCredit['bedID'] = 0;
     salesInsertCredit['discper_H'] = 0;
     salesInsertCredit['isPurBill'] = 0;
     salesInsertCredit['isBillCheck'] = 0;
@@ -914,6 +918,7 @@ export class SalesComponent implements OnInit {
       salesDetailInsertCredit['stkID'] = element.StockId;
       salesDetailInsertCreditarr.push(salesDetailInsertCredit);
     });
+
     let updateCurStkSalesCreditarray = [];
     this.saleSelectedDatasource.data.forEach((element) => {
       let updateCurStkSalesCredit = {};
@@ -961,6 +966,7 @@ export class SalesComponent implements OnInit {
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
+    this.getConcessionReasonList();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
