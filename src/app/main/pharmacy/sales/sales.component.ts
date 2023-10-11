@@ -105,12 +105,14 @@ export class SalesComponent implements OnInit {
   BalAmount: any = 0;
   MobileNo: any;
   gstAmt: any;
-
+  DoctorName: any;
   isPatienttypeDisabled: boolean = true;
+  chkdiscper: boolean = true;
   reportPrintObj: Printsal;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
+  GSTAmount:any;
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
@@ -143,10 +145,11 @@ export class SalesComponent implements OnInit {
     'Qty',
     'UnitMRP',
     'GSTPer',
+    'GSTAmount',
     'TotalMRP',
     'DiscAmt',
     'NetAmt',
-    'StkId',
+    // 'StkId',
     'buttons'
   ];
 
@@ -171,12 +174,13 @@ export class SalesComponent implements OnInit {
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
-    this.getTopSalesDetailsList();
+    // this.getTopSalesDetailsList();
   }
 
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
+      DoctorName: '',
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
@@ -259,19 +263,22 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  getTopSalesDetailsList() {
+  getTopSalesDetailsList(MobileNo) {
     var vdata = {
-      ExtMobileNo: "8805601600" //this.ItemSubform.get('MobileNo').value 
+      ExtMobileNo: MobileNo //this.ItemSubform.get('MobileNo').value 
     }
     this._salesService.getTopSalesDetails(vdata).subscribe(data => {
       this.vSalesDetails = data;
+      console.log(data)
+      this.PatientName = data[0].ExternalPatientName;
+      this.DoctorName = data[0].DoctorName;
     });
   }
   onClear() {
 
   }
 
-  OnAdd(event) {
+  onAdd() {
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
@@ -285,7 +292,7 @@ export class SalesComponent implements OnInit {
           Qty: this.Qty,
           UnitMRP: this.MRP,
           GSTPer: this.GSTPer || 0,
-          GSTAmount: this.gstAmt,
+          GSTAmount: this.GSTAmount || 0,
           TotalMRP: this.TotalMRP,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
@@ -297,6 +304,34 @@ export class SalesComponent implements OnInit {
     }
     this.itemid.nativeElement.focus();
     this.add = false;
+  }
+
+  OnAddUpdate(event) {
+
+    this.sIsLoading = 'save';
+    // let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+    debugger
+
+    if (this.Itemchargeslist.length > 0) {
+      this.Itemchargeslist.forEach((element) => {
+        if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
+          // tempArr.push(element);
+          Swal.fire('Item from Present StockID');
+        }
+
+        // else {
+
+        //   this.onAdd();
+        // }
+      });
+    }
+    // else {
+      this.onAdd()
+    // }
+
+    this.itemid.nativeElement.focus();
+    this.add = false;
+
 
   }
 
@@ -404,11 +439,11 @@ export class SalesComponent implements OnInit {
 
     if (Qty && this.MRP) {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
-
-      let GST = this.GSTPer;
-      if (GST > 0) {
-        this.gstAmt = ((this.TotalMRP * (GST)) / 100).toFixed(2);
-        this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.gstAmt)).toFixed(2);
+      debugger
+      // let GST = this.GSTPer;
+      if (this.GSTPer > 0) {
+        this.GSTAmount = ((this.TotalMRP * (this.GSTPer)) / 100).toFixed(2);
+        this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
 
         // let NetAmt =(this.TotalMRP + this.gstAmt);
         // this.NetAmt = netAmount;
@@ -474,19 +509,23 @@ export class SalesComponent implements OnInit {
     }
   }
 
-  calculateGSTAmt() {
-    let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
-    if (GST > 0) {
-      let discAmt = ((this.NetAmt * (GST)) / 100);
-      this.DiscAmt = discAmt.toFixed(2);
-      this.NetAmt = ((this.NetAmt) - (discAmt)).toFixed(2);
-    }
-  }
+  // calculateGSTAmt() {
+  //   let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
+  //   if (GST > 0) {
+  //     this.GSTAmount = ((this.NetAmt * (GST)) / 100);
+  //     // this.DiscAmt = this.GSTAmount.toFixed(2);
+  //     this.NetAmt = ((this.NetAmt) - (discAmt)).toFixed(2);
+  //   }
+  // }
 
-  getDiscAmount() {
-    if (this.FinalDiscPer > 0) {
-      let discAmt = (this.FinalTotalAmt * (this.FinalDiscPer)) / 100;
-      this.FinalTotalAmt = (this.FinalTotalAmt - discAmt).toFixed(2);
+  getDiscPer() {
+    debugger
+    let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
+    if (this.DiscPer > 0) {
+      this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
+      this.NetAmt = (this.NetAmt - this.DiscAmt).toFixed(2);
+    } else {
+      this.chkdiscper = true;
     }
   }
 
@@ -683,14 +722,14 @@ export class SalesComponent implements OnInit {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
-    ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-      // if (this.flagSubmit) {
+    // if (this.flagSubmit) {
     console.log("Procced with Payment Option");
 
     let SalesInsert = {};
     SalesInsert['Date'] = this.dateTimeObj.date;
-    SalesInsert['time'] = this.dateTimeObj.date;
+    SalesInsert['time'] = this.dateTimeObj.time;
     SalesInsert['oP_IP_ID'] = 0;
     SalesInsert['oP_IP_Type'] = 2;
     SalesInsert['totalAmount'] = this.FinalTotalAmt
@@ -706,7 +745,7 @@ export class SalesComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName;
+      SalesInsert['externalPatientName'] = this.PatientName;
     SalesInsert['doctorName'] = "";
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -771,38 +810,38 @@ export class SalesComponent implements OnInit {
     let Paymentobj = {};
 
     Paymentobj['BillNo'] = 0,// this.billNo;
-    Paymentobj['ReceiptNo'] = '',//'RE';
-    Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+      Paymentobj['ReceiptNo'] = '',//'RE';
+      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
     Paymentobj['PaymentTime'] = this.dateTimeObj.time;
     Paymentobj['CashPayAmount'] = NetAmt;
     Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-    Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-    Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-    Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-    Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-    Paymentobj['CardNo'] = '',//this.cardNo;
-    Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-    Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-    Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['ChequeNo'] = 0,//this.chequeNo;
+      Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
+      Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
+      Paymentobj['CardNo'] = '',//this.cardNo;
+      Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
+      Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['AdvanceUsedAmount'] = 0;
     Paymentobj['AdvanceId'] = 0;
     Paymentobj['RefundId'] = 0;
     Paymentobj['TransactionType'] = 2;
     Paymentobj['Remark'] = '',//'REMArk';
-    Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    Paymentobj['IsCancelled'] = 0;
+      Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
     Paymentobj['IsCancelledBy'] = 0;
     Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-    Paymentobj['CashCounterId'] = 0;
+      Paymentobj['CashCounterId'] = 0;
     Paymentobj['IsSelfORCompany'] = 0;
     Paymentobj['CompanyId'] = 0;
     Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-    Paymentobj['NEFTNo'] = '',// this.neftNo;
-    Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-    Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-    Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-    Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-    Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-    Paymentobj['PaidAmt'] = NetAmt;
+      Paymentobj['NEFTNo'] = '',// this.neftNo;
+      Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
+      Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
+      Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
+      Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
+      Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
+      Paymentobj['PaidAmt'] = NetAmt;
     Paymentobj['BalanceAmt'] = 0;
 
     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
@@ -851,13 +890,13 @@ export class SalesComponent implements OnInit {
 
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
-    ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
     console.log("Procced with Credit Option");
 
     let salesInsertCredit = {};
     salesInsertCredit['Date'] = this.dateTimeObj.date;
-    salesInsertCredit['time'] = this.dateTimeObj.date;
+    salesInsertCredit['time'] = this.dateTimeObj.time;
     salesInsertCredit['oP_IP_ID'] = 0;
     salesInsertCredit['oP_IP_Type'] = 2;
     salesInsertCredit['totalAmount'] = this.FinalTotalAmt
@@ -873,10 +912,10 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesInsertCredit['externalPatientName'] = this.PatientName;
+      salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
     salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
-    salesInsertCredit['isPrescription'] = 0;
+      salesInsertCredit['isPrescription'] = 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
     salesInsertCredit['wardId'] = 0;
@@ -925,7 +964,7 @@ export class SalesComponent implements OnInit {
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
       updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
-      updateCurStkSalesCredit['stkID'] = element.StockId;
+        updateCurStkSalesCredit['stkID'] = element.StockId;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
@@ -977,7 +1016,8 @@ export class SalesComponent implements OnInit {
   @ViewChild('discamt') discamt: ElementRef;
   // @ViewChild('Lname') Lname: ElementRef;
   @ViewChild('mobileno') mobileno: ElementRef;
-  @ViewChild('dis') dis: ElementRef;
+  @ViewChild('disper') disper: ElementRef;
+  @ViewChild('discamount') discamount: ElementRef;
   @ViewChild('patientname') patientname: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   add: boolean = false;
@@ -985,9 +1025,24 @@ export class SalesComponent implements OnInit {
 
   public onEnterqty(event): void {
     if (event.which === 13) {
-      this.discAmount.nativeElement.focus();
+      this.disper.nativeElement.focus();
     }
   }
+
+  public onEnterdiscper(event): void {
+    debugger
+
+    if (event.which === 13) {
+      if (this.DiscPer == 0) {
+        this.discamount.nativeElement.focus();
+      }
+      else {
+
+        this.addbutton.focus();
+      }
+    }
+  }
+
   public onEnterpatientname(event): void {
     if (event.which === 13) {
       this.itemid.nativeElement.focus();
@@ -996,11 +1051,12 @@ export class SalesComponent implements OnInit {
   public onEntermobileno(event): void {
     if (event.which === 13) {
       this.patientname.nativeElement.focus();
+      this.getTopSalesDetailsList(this.MobileNo);
     }
   }
   public onEnterdiscAmount(event): void {
     if (event.which === 13) {
-
+      
       this.addbutton.focus();
     }
   }
@@ -1010,7 +1066,7 @@ export class SalesComponent implements OnInit {
   getPrint(el) {
 
     var D_data = {
-      "SalesID":el,// 428263,// 
+      "SalesID": el,// 428263,// 
       "OP_IP_Type": 2
     }
 
@@ -1044,8 +1100,8 @@ export class SalesComponent implements OnInit {
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
         var objreportPrint = this.reportPrintObjList[i - 1];
-        let UnitValue ='Com'
-         // <div style="display:flex;width:60px;margin-left:20px;">
+        let UnitValue = 'Com'
+        // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
@@ -1059,7 +1115,7 @@ export class SalesComponent implements OnInit {
         <div>`+ objreportPrint.HSNcode + `</div> 
         </div>
         <div style="display:flex;width:220px;text-align:left;margin-right:10px">
-            <div>`+  objreportPrint.ItemName + `</div> 
+            <div>`+ objreportPrint.ItemName + `</div> 
         </div>
         <div style="display:flex;width:70px;text-align:left;margin-left:20px;">
             <div>`+ objreportPrint.Qty + `</div> 
@@ -1068,13 +1124,13 @@ export class SalesComponent implements OnInit {
         <div>`+ objreportPrint.BatchNo + `</div> 
          </div>
         <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
-        <div>`+  this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+        <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
         </div>
         <div style="display:flex;width:120px;text-align:center;margin-left:20px;">
         <div>`+ objreportPrint.CGSTPer + objreportPrint.CGSTAmt + `</div> 
         </div>  
         <div style="display:flex;width:120px;text-align:center;margin-left:10px;">
-        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt +`</div> 
+        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt + `</div> 
         </div>
         <div style="display:flex;width:90px;text-align:center;margin-left:10px;">
         <div>`+ objreportPrint.UnitMRP + `</div> 
@@ -1089,7 +1145,7 @@ export class SalesComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform1(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -1188,10 +1244,11 @@ export class IndentList {
   StoreId: any;
   StoreName: any;
   GSTPer: any;
+  
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
-  StockId:any;
+  StockId: any;
 
   /**
    * Constructor
@@ -1215,7 +1272,7 @@ export class IndentList {
       this.TotalMRP = IndentList.TotalMRP || 0;
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
-      this.StockId=IndentList.StockId || 0;
+      this.StockId = IndentList.StockId || 0;
     }
   }
 }
