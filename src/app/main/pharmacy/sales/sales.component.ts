@@ -310,24 +310,33 @@ export class SalesComponent implements OnInit {
 
     this.sIsLoading = 'save';
     // let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    debugger
 
     if (this.Itemchargeslist.length > 0) {
       this.Itemchargeslist.forEach((element) => {
         if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
-          // tempArr.push(element);
+          debugger
+
           Swal.fire('Item from Present StockID');
+            console.log(element);
+            this.Itemchargeslist.push(
+              {
+                
+            Qty: this.Qty + element.Qty,
+            UnitMRP: this.MRP + element.UnitMRP,
+            // GSTPer: this.GSTPer || 0,
+            GSTAmount: this.GSTAmount || 0,
+            TotalMRP: this.TotalMRP,
+            DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+            NetAmt: this.NetAmt
+          });
+
         }
 
-        // else {
-
-        //   this.onAdd();
-        // }
       });
     }
-    // else {
+    else {
       this.onAdd()
-    // }
+    }
 
     this.itemid.nativeElement.focus();
     this.add = false;

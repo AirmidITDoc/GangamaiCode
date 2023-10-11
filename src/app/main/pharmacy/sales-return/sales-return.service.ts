@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class SalesReturnService {
 
   userFormGroup: FormGroup;
   IndentSearchGroup :FormGroup;
-
+  IndentlistSearchGroup :FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -17,9 +17,10 @@ export class SalesReturnService {
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();
+    this.IndentlistSearchGroup= this.IndentSearchFrom1();
   }
 
-  IndentSearchFrom() {
+  IndentSearchFrom1() {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
@@ -38,6 +39,36 @@ export class SalesReturnService {
       PreNo:'',
       IsActive: '',
       
+    });
+  }
+
+
+  IndentSearchFrom() {
+    return this._formBuilder.group({
+   
+      StoreId: '',
+      ItemId:'',
+
+      ItemName:'',
+      BatchNo:'',
+      BatchExpDate:'',
+      BalanceQty:'',
+      UnitMRP:'',
+      Qty: [' ', [Validators.pattern("^^[1-9]+[0-9]*$")] ],
+      IssQty:'',
+      Bal:'',
+      StoreName:'',
+      GSTPer:'',
+      GSTAmt:'',
+      MRP:'',
+      TotalMrp:'',
+      DiscAmt:'',
+      NetAmt:'',
+      DiscPer:'',
+ 
+      // ItemName:'',
+      // start: [(new Date()).toISOString()],
+      // end: [(new Date()).toISOString()],
     });
   }
  
