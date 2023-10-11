@@ -464,6 +464,8 @@ export class SalesComponent implements OnInit {
     this.Qty = 1;
     this.Bal = 0;
     this.GSTPer = 0;
+    this.DiscPer=0;
+    this.DiscAmt=0;
     this.TotalMRP = 0;
     this.NetAmt = 0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
@@ -565,8 +567,8 @@ export class SalesComponent implements OnInit {
   }
 
   calculateDiscAmt() {
-    if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.NetAmt)) {
-      this.NetAmt = (this.NetAmt - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+    if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
+      this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
       this.addbutton.focus();
     }
@@ -593,9 +595,13 @@ export class SalesComponent implements OnInit {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
-      this.NetAmt = (this.NetAmt - this.DiscAmt).toFixed(2);
+      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+      this.ItemSubform.get('DiscAmt').disable();
     } else {
       this.chkdiscper = true;
+      this.DiscAmt=0;
+      this.ItemSubform.get('DiscAmt').enable();
+      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
     }
   }
 
@@ -764,6 +770,7 @@ export class SalesComponent implements OnInit {
 
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
+<<<<<<< HEAD
     let index = this.Itemchargeslist.indexOf(element);
     if (index >= 0) {
       this.Itemchargeslist.splice(index, 1);
@@ -773,6 +780,16 @@ export class SalesComponent implements OnInit {
     if(this.deleteflag==true){
     Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
     }
+=======
+      let index = this.Itemchargeslist.indexOf(element);
+      if (index >= 0) {
+        this.Itemchargeslist.splice(index, 1);
+        this.saleSelectedDatasource.data = [];
+        this.saleSelectedDatasource.data = this.Itemchargeslist;
+      }
+      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+
+>>>>>>> 61f5350457ab161841811b00c513dfac129defe4
     // }
   }
 

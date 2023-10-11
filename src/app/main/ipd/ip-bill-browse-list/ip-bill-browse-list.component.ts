@@ -391,7 +391,8 @@ export class IPBillBrowseListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-
+  dummyGrpNameArr = [];
+  groupWiseObj: any = {};
   ///// REPORT  TEMPOATE
   getFinalBillTemplate() {
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=3';
@@ -407,11 +408,21 @@ export class IPBillBrowseListComponent implements OnInit {
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
       var strrowslist = "";
-      let grpName = [];
-      // for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-      //   var objreportPrint = this.reportPrintObjList[i - 1];
-      //   grpName.push(objreportPrint.GroupName);
-      // }
+      let onlyGrpName = [];
+      this.reportPrintObjList.forEach(ele => onlyGrpName.push(ele.GroupName));
+      
+      let grpNamesArr = [...new Set(onlyGrpName)];
+      grpNamesArr.forEach(ele => this.dummyGrpNameArr.push({groupName: ele, isHidden: false}));
+
+      this.groupWiseObj = this.reportPrintObjList.reduce((acc, item: any) => {
+        if (!acc[item.GroupName]) {
+          acc[item.GroupName] = [];
+        }
+        acc[item.GroupName].push(item);
+        return acc;
+      }, {})
+      console.log(this.groupWiseObj);
+
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         var objreportPrint = this.reportPrintObjList[i - 1];
 
@@ -420,9 +431,7 @@ export class IPBillBrowseListComponent implements OnInit {
           docname = objreportPrint.ChargesDoctorName;
         else
           docname = '';
-        
-        var strabc = `  
-   
+        var strabc = this.getGroupName(objreportPrint.GroupName) + `
    <div style="display:flex;margin:8px 0">
     <div style="display:flex;width:80px;margin-left:20px;">
         <div>`+ i + `</div>
@@ -465,6 +474,35 @@ export class IPBillBrowseListComponent implements OnInit {
         this.printfinalbill();
       }, 1000);
     });
+  }
+
+  getGroupName(groupName: String) {
+    let groupDiv;
+    for(let i = 0; i < this.dummyGrpNameArr.length; i++) {
+      if(this.dummyGrpNameArr[i].groupName == groupName && !this.dummyGrpNameArr[i].isHidden) {
+        let groupHeader = `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
+          <div> <h3>`+ groupName + `</h3></div>
+          <div> <h3>`+ this.getGroupTotalAmount(groupName) + `</h3></div>
+        </div>`;
+        this.dummyGrpNameArr[i].isHidden = true;
+        groupDiv = groupHeader;
+        break;
+      } else {
+        groupDiv = ``;
+      }
+    }
+    return groupDiv;
+  }
+
+  getGroupTotalAmount(groupName: any) {
+    let totalGrpAmt = 0;
+    if(this.groupWiseObj[groupName]) {
+      let groupArr = this.groupWiseObj[groupName];
+      groupArr.forEach(element => {
+        totalGrpAmt = totalGrpAmt + element.ChargesTotalAmt;
+      });
+    }
+    return '₹ ' + totalGrpAmt.toFixed(2);
   }
 
 
