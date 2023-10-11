@@ -334,9 +334,9 @@ export class SalesComponent implements OnInit {
 
       });
     }
-    else {
+    // else {
       this.onAdd()
-    }
+    // }
 
     this.itemid.nativeElement.focus();
     this.add = false;
@@ -403,6 +403,8 @@ export class SalesComponent implements OnInit {
     this.Qty = 1;
     this.Bal = 0;
     this.GSTPer = 0;
+    this.DiscPer=0;
+    this.DiscAmt=0;
     this.TotalMRP = 0;
     this.NetAmt = 0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
@@ -504,8 +506,8 @@ export class SalesComponent implements OnInit {
   }
 
   calculateDiscAmt() {
-    if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.NetAmt)) {
-      this.NetAmt = (this.NetAmt - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+    if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
+      this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
       this.addbutton.focus();
     }
@@ -532,9 +534,13 @@ export class SalesComponent implements OnInit {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
-      this.NetAmt = (this.NetAmt - this.DiscAmt).toFixed(2);
+      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+      this.ItemSubform.get('DiscAmt').disable();
     } else {
       this.chkdiscper = true;
+      this.DiscAmt=0;
+      this.ItemSubform.get('DiscAmt').enable();
+      this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
     }
   }
 
@@ -601,22 +607,22 @@ export class SalesComponent implements OnInit {
     }
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
   }
-  key: any;
-  @HostListener('document:keyup', ['$event'])
-  handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
-    if (event.key === 'Delete') {
-      this.key = 'Delete';
+  // key: any;
+  // @HostListener('document:keyup', ['$event'])
+  // handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
+  //   if (event.key === 'Delete') {
+  //     this.key = 'Delete';
 
-    }
-  }
-  @HostListener('document:keydown.delete', ['$event'])
+  //   }
+  // }
+  // @HostListener('document:keydown.delete', ['$event'])
 
-  show(eve, contact) {
-    // Swal.fire(contact);
-    if (this.key == "Delete") {
-      this.deleteTableRow(eve, contact);
-    }
-  }
+  // show(eve, contact) {
+  //   // Swal.fire(contact);
+  //   if (this.key == "Delete") {
+  //     this.deleteTableRow(eve, contact);
+  //   }
+  // }
 
 
   onChangePatientType(event) {
@@ -702,7 +708,7 @@ export class SalesComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    if (this.key == "Delete") {
+    // if (this.key == "Delete") {
       let index = this.Itemchargeslist.indexOf(element);
       if (index >= 0) {
         this.Itemchargeslist.splice(index, 1);
@@ -711,7 +717,7 @@ export class SalesComponent implements OnInit {
       }
       Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
-    }
+    // }
   }
 
 
