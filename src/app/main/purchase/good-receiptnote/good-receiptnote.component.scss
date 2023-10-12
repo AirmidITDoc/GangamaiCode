@@ -16,7 +16,7 @@ app-good-receiptnote {
     }
   
     .mat-header-row {
-      width:130%;
+      width:140%;
       //max-width: 1600px;
       min-width: 100%;
       min-height: 30px;
@@ -338,7 +338,19 @@ app-good-receiptnote {
     min-width: 80px;
     text-align: left;
   }
-
+  
+  .mat-column-GST {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+  .mat-column-GSTAmount {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
   .mat-column-CGST {
     width: 100px;
     max-width: 100px;

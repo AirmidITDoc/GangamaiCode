@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class PurchaseOrderService {
-
+ 
   userFormGroup: FormGroup;
   PurchaseSearchGroup :FormGroup;
   PurchaseOrderForm:FormGroup;
@@ -77,6 +77,10 @@ export class PurchaseOrderService {
 
   public getItemNameList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
+  }
+  
+  public InsertPurchaseSave(Param){
+    return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
   }
   
 }

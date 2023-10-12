@@ -770,17 +770,6 @@ export class SalesComponent implements OnInit {
 
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
-<<<<<<< HEAD
-    let index = this.Itemchargeslist.indexOf(element);
-    if (index >= 0) {
-      this.Itemchargeslist.splice(index, 1);
-      this.saleSelectedDatasource.data = [];
-      this.saleSelectedDatasource.data = this.Itemchargeslist;
-    }
-    if(this.deleteflag==true){
-    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-    }
-=======
       let index = this.Itemchargeslist.indexOf(element);
       if (index >= 0) {
         this.Itemchargeslist.splice(index, 1);
@@ -789,7 +778,6 @@ export class SalesComponent implements OnInit {
       }
       Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
->>>>>>> 61f5350457ab161841811b00c513dfac129defe4
     // }
   }
 
