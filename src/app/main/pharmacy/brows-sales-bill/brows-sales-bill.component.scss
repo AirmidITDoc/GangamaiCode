@@ -6,9 +6,9 @@
     min-width: 100px;
   }
   .mat-column-Date{
-    width: 220px;
-    max-width: 220px;
-    min-width: 220px;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
   }
   .mat-column-SalesNo{
     width: 120px;
@@ -24,6 +24,12 @@
     width: 290px;
     max-width: 290px;
     min-width: 290px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
   }
   .mat-column-NetAmt{
     width: 100px;
@@ -63,6 +69,12 @@
     width: 250px;
     max-width: 250px;
     min-width: 250px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left;
   }
   .mat-column-BatchNo{
     width: 150px;
@@ -74,4 +86,12 @@
   max-height: 300px;
   min-height: 300px;
 }
- 
+.mat-icon-buttons {
+  padding: 0;
+  min-width: 0;
+  width: 40px;
+  height: 20px;
+  flex-shrink: 0;
+  line-height: 20px;
+  border-radius: 50%;
+}

@@ -71,6 +71,11 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesReturnDetails", Param);
   }
 
+  public getSalesPrint(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);
+  }
   
-  
+  public getTemplate(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  } 
 }
