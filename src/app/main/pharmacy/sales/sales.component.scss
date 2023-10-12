@@ -26,16 +26,16 @@ app-sales {
     }
 
     .mat-column-ItemName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
       text-align: left;
       white-space: nowrap; 
       overflow: hidden;
       text-overflow: ellipsis; 
       overflow: hidden !important;
-      display: inline-block;
+      // display: inline-block;
       justify-content:left; 
     }
     
@@ -71,6 +71,14 @@ app-sales {
       width: 70px;
       max-width: 70px;
       min-width:  70px;
+      text-align: left;
+    }
+    
+
+    .mat-column-GSTAmount {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: left;
     }
 

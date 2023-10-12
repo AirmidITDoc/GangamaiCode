@@ -116,6 +116,7 @@ export class SalesComponent implements OnInit {
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
   GSTAmount: any;
+ 
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
@@ -268,6 +269,8 @@ export class SalesComponent implements OnInit {
     });
   }
 
+  dummySalesIdNameArr = [];
+  SalesIdWiseObj: any = {};
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
       ExtMobileNo: MobileNo //this.ItemSubform.get('MobileNo').value 
@@ -279,12 +282,29 @@ export class SalesComponent implements OnInit {
       this.DoctorName = data[0].DoctorName;
     });
 
-    this.vSalesDetails.forEach((element) => {
-    this.vSalesIdList.push(element.SalesID)
-    console.log('SalesID :', this.vSalesIdList)
-  });
+  //   this.vSalesDetails.forEach((element) => {
+  //   this.vSalesIdList.push(element.SalesID)
+  //   console.log('SalesID :', this.vSalesIdList)
+  // });
+
+  var strrowslist = "";
+  let onlySalesId = [];
+  this.vSalesDetails.forEach(ele => onlySalesId.push(ele.SalesID));
   
+  let SalesidNamesArr = [...new Set(onlySalesId)];
+  SalesidNamesArr.forEach(ele => this.dummySalesIdNameArr.push({SalesID: ele, isHidden: false}));
+
+  this.SalesIdWiseObj = this.reportPrintObjList.reduce((acc, item: any) => {
+    if (!acc[item.SalesID]) {
+      acc[item.SalesID] = [];
+    }
+    acc[item.SalesID].push(item);
+    return acc;
+  }, {})
+  console.log(this.SalesIdWiseObj);
   }
+
+  
   onClear() {
 
   }
@@ -316,6 +336,94 @@ export class SalesComponent implements OnInit {
     this.itemid.nativeElement.focus();
     this.add = false;
   }
+
+  // OnAddUpdate(event) {
+
+  //   this.sIsLoading = 'save';
+  //   // let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+
+  //   if (this.Itemchargeslist.length > 0) {
+  //     this.Itemchargeslist.forEach((element) => {
+  //       if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
+  //         debugger
+  //         this.stockidflag = false;
+  //         // Swal.fire('Item from Present StockID');
+  //         console.log(element);
+  //         debugger
+  //         this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
+  //         this.TotalMRP = this.Qty * this.UnitMRP,
+           
+  //         this.GSTAmount = this.GSTAmount + parseFloat(element.GSTAmount);
+  //         this.NetAmt = parseFloat(this.NetAmt) + (parseFloat(element.NetAmt));
+  //         this.DiscAmt = parseFloat(element.DiscAmt) + this.DiscAmt;
+  //         this.ItemId =element.ItemId;
+  //         this.ItemName=element.ItemName;
+  //         this.BatchNo=element.BatchNo;
+  //         this.StockId=element.StockId; 
+  //         this.BatchExpDate=element.BatchExpDate  || '01/01/1900';
+  //         this.deleteflag=false;
+  //         this.deleteTableRow(event, element);
+          
+  //         // this.Itemchargeslist.push(
+  //         //   {
+
+  //         //     ItemId: this.ItemId,
+  //         //     ItemName: this.ItemName,
+  //         //     BatchNo: this.BatchNo,
+  //         //     BatchExpDate: this.BatchExpDate || '01/01/1900',
+  //         //     Qty: this.Qty + element.Qty,
+  //         //     UnitMRP: this.MRP,
+  //         //     GSTPer: this.GSTPer || 0,
+  //         //     GSTAmount: this.GSTAmount || 0,
+  //         //     TotalMRP: this.TotalMRP,
+  //         //     DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+  //         //     NetAmt: this.NetAmt,
+  //         //     StockId: this.StockId,
+
+  //         //   });
+  //         // this.saleSelectedDatasource.data = this.Itemchargeslist;
+  //         // this.ItemFormreset();
+
+  //       } 
+  //       // else {
+  //       //   this.stockidflag = true;
+  //       // }
+
+  //     });
+
+  //   }
+    
+  //   if (this.stockidflag == true) {
+  //     this.onAdd();
+  //   }else{
+       
+  //         this.Itemchargeslist.push(
+  //           {
+
+  //             ItemId: this.ItemId,
+  //             ItemName: this.ItemName,
+  //             BatchNo: this.BatchNo,
+  //             BatchExpDate: this.BatchExpDate || '01/01/1900',
+  //             Qty: this.Qty,
+  //             UnitMRP: this.MRP,
+  //             GSTPer: this.GSTPer || 0,
+  //             GSTAmount: this.GSTAmount || 0,
+  //             TotalMRP: this.TotalMRP,
+  //             DiscAmt: this.DiscAmt| 0,
+  //             NetAmt: this.NetAmt,
+  //             StockId: this.StockId,
+
+  //           });
+  //         this.saleSelectedDatasource.data = this.Itemchargeslist;
+  //         this.ItemFormreset();
+
+  //   }
+
+  //   this.itemid.nativeElement.focus();
+  //   this.add = false;
+
+
+  // }
 
   OnAddUpdate(event) {
 
@@ -484,22 +592,41 @@ export class SalesComponent implements OnInit {
   }
 
 
+  // getTotalAmtSum(element) {
+  //   let TotAmt;
+  //   TotAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
+  //   this.FinalNetAmount = TotAmt;
+  //   return TotAmt;
+  // }
+  
+  // getDiscAmtSum(element) {
+  //   let discAmt;
+  //   discAmt = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
+  //    this.FinalDiscAmt =discAmt;
+  //   return discAmt;
+  // }
+
+
   getNetAmtSum(element) {
-    let netAmt;
-    netAmt = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
-    this.FinalTotalAmt = netAmt;
-    this.FinalNetAmount = this.FinalTotalAmt;
+   
+    this.FinalNetAmount =(element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
+
+    this.FinalTotalAmt =  (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
+
+    this.FinalDiscAmt =(element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
+   
+     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+
+    // return this.GSTTotal;
+    return this.FinalNetAmount;
+  }
 
 
-    this.TotDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
-    // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
-    return netAmt;
-  }
-  getGSTSum(element) {
-    let TotGST;
-    TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-    return TotGST;
-  }
+  // getGSTSum(element) {
+  //   let TotGST;
+  //   TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+  //   return TotGST;
+  // }
 
   calculateTotalAmt() {
 
@@ -512,35 +639,20 @@ export class SalesComponent implements OnInit {
     if (Qty && this.MRP) {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
       debugger
-      // let GST = this.GSTPer;
+      
       if (this.GSTPer > 0) {
         this.GSTAmount = ((this.TotalMRP * (this.GSTPer)) / 100).toFixed(2);
-        this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
-
-        // let NetAmt =(this.TotalMRP + this.gstAmt);
-        // this.NetAmt = netAmount;
+        this.NetAmt=this.TotalMRP;
       }
 
       this.FinalGSTAmt = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
-      console.log("Vat", this.FinalGSTAmt);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      console.log("CGST", this.CGSTAmt);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      console.log("SGST", this.SGSTAmt);
       this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      console.log("IGST", this.IGSTAmt);
       this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
-      console.log("TotMRP", this.TotalMRP);
-
-      //  disc need to chk
-      //  this.TotDiscAmt = (parseInt(Qty) * parseInt(this.MRP)).toFixed(2)
-      console.log("TotDiscAmt", this.TotDiscAmt);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
-      console.log("TotLandedRate", this.LandedRateandedTotal);
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
-      console.log("TotPureRate", this.PurTotAmt);
-
-
+  
     }
 
 
@@ -597,8 +709,9 @@ export class SalesComponent implements OnInit {
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
       this.ItemSubform.get('DiscAmt').disable();
+      this.chkdiscper=true;
     } else {
-      this.chkdiscper = true;
+      this.chkdiscper = false;
       this.DiscAmt=0;
       this.ItemSubform.get('DiscAmt').enable();
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -770,7 +883,6 @@ export class SalesComponent implements OnInit {
 
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
-<<<<<<< HEAD
     let index = this.Itemchargeslist.indexOf(element);
     if (index >= 0) {
       this.Itemchargeslist.splice(index, 1);
@@ -780,16 +892,6 @@ export class SalesComponent implements OnInit {
     if(this.deleteflag==true){
     Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
     }
-=======
-      let index = this.Itemchargeslist.indexOf(element);
-      if (index >= 0) {
-        this.Itemchargeslist.splice(index, 1);
-        this.saleSelectedDatasource.data = [];
-        this.saleSelectedDatasource.data = this.Itemchargeslist;
-      }
-      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-
->>>>>>> 61f5350457ab161841811b00c513dfac129defe4
     // }
   }
 

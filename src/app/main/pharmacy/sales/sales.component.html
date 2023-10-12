@@ -9,7 +9,7 @@
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Sales   :  
+                    Sales :
                 </span>
                 <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span>
             </div>
@@ -41,7 +41,7 @@
 
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
-                                        <form [formGroup]="ItemSubform" style="padding: 6px 6px 5px 5px;" >
+                                        <form [formGroup]="ItemSubform" style="padding: 6px 6px 5px 5px;">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                                 <!-- (change)="onChangeReg($event)" -->
                                                 <mat-radio-group aria-label="Select an option"
@@ -57,7 +57,7 @@
                                                     <mat-label>Mobile Number</mat-label>
                                                     <input name="MobileNo" formControlName="MobileNo"
                                                         placeholder="Mobile Number" matInput required
-                                                        [(ngModel)]="MobileNo" max="9999999999" min="1000000000"
+                                                        [(ngModel)]="MobileNo" max="9999999999" min="1000000000"  autocomplete="off" 
                                                         maxlength="10"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                         required="required" type="number" value="9876658688"
@@ -149,8 +149,8 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Qty</mat-label>
-                                                    <input matInput #Quantity formControlName="Qty" required #qty autocomplete="off"
-                                                        minlength="1"  [(ngModel)]="Qty"
+                                                    <input matInput #Quantity formControlName="Qty" required #qty
+                                                        autocomplete="off" minlength="1" [(ngModel)]="Qty"
                                                         (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)">
                                                 </mat-form-field>
 
@@ -175,16 +175,16 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Disc %</mat-label>
-                                                    <input matInput placeholder="Placeholder" formControlName="DiscPer" autocomplete="off"
-                                                        #disper [(ngModel)]="DiscPer" (keyup)="getDiscPer()"
-                                                      (keydown)="onEnterdiscper($event)">
+                                                    <input matInput placeholder="Placeholder" formControlName="DiscPer"
+                                                        autocomplete="off" #disper [(ngModel)]="DiscPer"
+                                                        (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Disc Amt</mat-label>
-                                                    <input matInput placeholder="Placeholder" formControlName="DiscAmt" autocomplete="off"
-                                                        [disabled]="chkdiscper" #discamount [(ngModel)]="DiscAmt"
-                                                        (keyup)="calculateDiscAmt()" 
+                                                    <input matInput placeholder="Placeholder" formControlName="DiscAmt"
+                                                        autocomplete="off" [disabled]="chkdiscper" #discamount
+                                                        [(ngModel)]="DiscAmt" (keyup)="calculateDiscAmt()"
                                                         (keydown)="onEnterdiscAmount($event)">
                                                 </mat-form-field>
 
@@ -199,7 +199,7 @@
                                                     [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                                     [matTooltipPosition]="'above'">
                                                     <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                        [disabled]="!add" (click)="onAdd()"
+                                                        [disabled]="!add" (click)="OnAddUpdate()"
                                                         style="background-color: blue; color: white; width: 70px;margin-left:10px; ">
                                                         <mat-icon> add </mat-icon> &nbsp;Add
                                                     </button>
@@ -387,14 +387,22 @@
                                                 style="width: 200px;font-weight: bold;margin-left: 20px;">No of
                                                 Items:</span>&nbsp;<span class="net-amt-value"
                                                 style="margin-right: 200px;">{{saleSelectedDatasource.data.length}}</span>
-                                            <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left: 20px;">
+                                            <!-- <span class="net-amt-label"
+                                                style="width: 200px;font-weight: bold;margin-left: 600px;">
                                                 GSTAmount</span>&nbsp;<span class="net-amt-value"
                                                 style="margin-right: 250px;">{{getGSTSum(saleSelectedDatasource.data)
                                                 | currency:'INR' }}
-                                            </span>
+                                            </span> -->
+                                            <!-- <span class="net-amt-value"
+                                            style="margin-right: 250px;">{{getTotalAmtSum(saleSelectedDatasource.data)
+                                            | currency:'INR' }}
+                                              </span>
+                                             <span class="net-amt-value"
+                                              style="margin-right: 250px;">{{getDiscAmtSum(saleSelectedDatasource.data)
+                                              | currency:'INR' }}
+                                               </span> -->
                                             <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left: 20px;">
+                                                style="width: 200px;font-weight: bold;margin-left:800px;">
                                                 NetAmount::</span>&nbsp;<span class="net-amt-value"
                                                 style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
                                                 | currency:'INR' }}</span>
@@ -451,12 +459,12 @@
                                                         </div>
 
 
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>GST Amount</mat-label>
                                                             <input matInput name="FinalGSTAmt" formControlName="FinalGSTAmt"
                                                                 [(ngModel)]="FinalGSTAmt" placeholder="0" (keyup)='CalfinalGST()'
                                                                 readonly type="number">
-                                                        </mat-form-field>&nbsp; -->
+                                                        </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Net Amount</mat-label>
@@ -491,11 +499,8 @@
                                                         </mat-radio-group>
                                                         <button class="next-btn" (click)="onSave()"
                                                             [disabled]="ItemSubform.invalid">Save</button>
-<<<<<<< HEAD
+                                                        <!-- <button class="footer-btn" (click)="getPrint()">Print</button> -->
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
-=======
-                                                        <button class="footer-btn" (click)="onClose()">Cancel</button>
->>>>>>> 61f5350457ab161841811b00c513dfac129defe4
                                                     </div>
                                                 </div>
 
@@ -536,17 +541,30 @@
 
                         <tr *ngFor="let item of vSalesDetails">
                             <td><span style="font-weight: bold;"> Sales ID:</span>{{item.SalesId}}
-                                <span style="font-weight: bold;"> Item Deatil :</span> 
-                                <tr *ngFor="let item of vSalesDetails">
-                                    <!-- <td>{{item.SalesId}}</td> -->
-                                    <td> {{item.ItemShortName}} ( QTy : {{item.Qty}} - MRP : {{item.UnitMRP}})</td>
-                                   
-                                </tr>
-                                <hr>
-                            </td>
-                        
+                                <span style="font-weight: bold;"> Item Deatil :</span>
+                        <tr *ngFor="let item of vSalesDetails">
+
+                            <td> {{item.ItemShortName}} ( QTy : {{item.Qty}} - MRP : {{item.UnitMRP}})</td>
+
                         </tr>
-<!-- 
+                        <hr>
+                        </td>
+
+                        </tr>
+
+
+                        <!-- 
+                        <div *ngFor="let i of service$">
+
+                            <div class="row">
+                                <div class="col-lg-4" *ngFor="let j of i">
+                                    {{j.title}}
+
+                                </div>
+                            </div>
+
+                        </div> -->
+                        <!-- 
                         <tr *ngFor="let item of vSalesDetails">
                             
                             <td>{{item.ItemShortName}} ( QTy : {{item.Qty}} - MRP : {{item.UnitMRP}})</td>
@@ -575,3 +593,4 @@
     <!-- / CONTENT-->
 </div>
 
+TempDesign
