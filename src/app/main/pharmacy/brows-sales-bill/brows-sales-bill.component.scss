@@ -1,127 +1,77 @@
-app-brows-sales-bill {
-    .table1 {
-      height: 600px !important;
-      width: 1700px;
-    }
+.Table1 {
 
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-    }
-  
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
-  
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
-    }
-  
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
-  
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
-      text-align: left;
-    }
+  .mat-column-action{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+  .mat-column-Date{
+    width: 220px;
+    max-width: 220px;
+    min-width: 220px;
+  }
+  .mat-column-SalesNo{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+  }
+  .mat-column-RegNo{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+  .mat-column-PatientName{
+    width: 290px;
+    max-width: 290px;
+    min-width: 290px;
+  }
+  .mat-column-NetAmt{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+  .mat-column-BalAmt{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+  .mat-column-PaidAmt{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
+  .mat-column-PaidType{
     
-    .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+  }
+  .mat-column-IPNo{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+  }
   
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: center;
-      justify-content: center;
-  
-    }
-    .mat-tab-group {
-  margin-bottom: 48px;
-    
+  height: 300px;
+  max-height: 300px;
+  min-height: 300px;
 }
 
-// .table-row:selected {
+.Table2 {
 
-//   background-color: rebeccapurple;
-// }
+  .mat-column-ItemName{
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+  }
+  .mat-column-BatchNo{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+  }
 
+  height: 300px;
+  max-height: 300px;
+  min-height: 300px;
 }
-
-
-  
+ 
