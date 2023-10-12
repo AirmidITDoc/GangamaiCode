@@ -41,6 +41,33 @@ export class SalesReturnComponent implements OnInit {
   dsIndentList = new MatTableDataSource<IndentList>();
 
   displayedColumns = [
+    'ItemName',
+    'BatchNo',
+    'BatchExpDate',
+    'Qty',
+    'UnitMRP',
+    'GSTPer',
+    'GSTAmount',
+    'TotalMRP',
+    'DiscAmt',
+    'NetAmt',
+    'action',
+  ];
+
+  displayedColumns1 = [
+    'ItemName',
+    'BatchNo',
+    'BatchExpDate',
+    'Qty',
+    'UnitMRP',
+    'GSTPer',
+    'GSTAmount',
+    'TotalMRP',
+    'DiscAmt',
+    'NetAmt',
+  ];
+
+  displayedColumns2 = [
     'FromStoreId',
     'IndentNo',
     'IndentDate',
@@ -51,18 +78,11 @@ export class SalesReturnComponent implements OnInit {
     'action',
   ];
 
-  displayedColumns1 = [
-   'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
-  ];
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _IndentID: SalesReturnService,
+    public _SalesReturnService: SalesReturnService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
@@ -219,12 +239,12 @@ export class SalesReturnComponent implements OnInit {
     // this.sIsLoading = 'loading-data';
     var Param = {
       
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+      "ToStoreId": this._SalesReturnService.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
+       "From_Dt": this.datePipe.transform(this._SalesReturnService.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "To_Dt": this.datePipe.transform(this._SalesReturnService.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "Status": 1//this._SalesReturnService.IndentSearchGroup.get("Status").value || 1,
     }
-      this._IndentID.getIndentID(Param).subscribe(data => {
+      this._SalesReturnService.getIndentID(Param).subscribe(data => {
       this.dsIndentID.data = data as IndentID[];
       console.log(this.dsIndentID.data)
       this.dsIndentID.sort = this.sort;
@@ -241,7 +261,7 @@ export class SalesReturnComponent implements OnInit {
     var Param = {
       "IndentId": Params.IndentId
     }
-      this._IndentID.getIndentList(Param).subscribe(data => {
+      this._SalesReturnService.getIndentList(Param).subscribe(data => {
       this.dsIndentList.data = data as IndentList[];
       this.dsIndentList.sort = this.sort;
       this.dsIndentList.paginator = this.paginator;
@@ -290,9 +310,9 @@ Swal.fire("Row selected :" + contact)
   getIndentStoreList(){
     debugger
    
-        this._IndentID.getStoreFromList().subscribe(data => {
+        this._SalesReturnService.getStoreFromList().subscribe(data => {
           this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+          // this._SalesReturnService.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
         });
 
        }
