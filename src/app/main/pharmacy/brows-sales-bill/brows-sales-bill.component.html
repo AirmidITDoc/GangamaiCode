@@ -132,15 +132,14 @@
                                             <mat-table class="Table1" matSort [dataSource]="dssaleList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                                <ng-container matColumnDef="buttons">
-                                                    <mat-header-cell *matHeaderCellDef class="table-actions"
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Action
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact">
-
-                                                        <button mat-icon-button (click)="getPrint(contact)"
-                                                            matTooltip="Print"><mat-icon>print</mat-icon></button>
-
+                                                    <mat-cell *matCellDef="let row">
+                                                        <button mat-icon-button matTooltip="delete">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -148,7 +147,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Date | date:'shortDate'}}
+                                                        {{contact.Date}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -187,7 +186,7 @@
                                                         Net Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.NetAmount}}
+                                                        {{contact.NetAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -197,7 +196,7 @@
                                                         Bal Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.BalanceAmount}}
+                                                        {{contact.BalanceAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -206,7 +205,7 @@
                                                         Paid Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.PaidAmount}}
+                                                        {{contact.PaidAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -232,9 +231,9 @@
                                                 <mat-header-row class="accent"
                                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}">
+                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    (click)="onSelect(contact)">
                                                 </mat-row>
-                                                <!-- (click)="onSelect(contact)" -->
                                                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                              </mat-footer-row>
                                              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
@@ -293,7 +292,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         MRP </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.UnitMRP}}
+                                                        {{contact.UnitMRP | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -302,15 +301,15 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Total MRP </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.TotalAmount}}
+                                                        {{contact.TotalAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="GST" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        GST% </mat-header-cell>
+                                                        GST </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.GrossAmount}}
+                                                        {{contact.GrossAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -439,7 +438,7 @@
 
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                                <mat-radio-group formControlName="OP_IP_Types" name="OP_IP_Types">
                                                     <mat-radio-button value="3"> All</mat-radio-button>
                                                     <mat-radio-button value="0">OP</mat-radio-button>
                                                     <mat-radio-button value="1">IP</mat-radio-button>
@@ -482,11 +481,11 @@
                                         <div style="width: 100%;">
 
 
-                                            <mat-table class="Table1" matSort [dataSource]="dssalesReturnList"
+                                            <mat-table class="Table3" matSort [dataSource]="dssalesReturnList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
 
-                                                <ng-container matColumnDef="action">
+                                                <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Action
                                                     </mat-header-cell>
@@ -541,7 +540,7 @@
                                                         Net Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.NetAmount}}
+                                                        {{contact.NetAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -551,7 +550,7 @@
                                                         Bal Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.BalanceAmount}}
+                                                        {{contact.BalanceAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -560,7 +559,7 @@
                                                         Paid Amt
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.PaidAmount}}
+                                                        {{contact.PaidAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -570,16 +569,6 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.PatientType}}
-                                                    </mat-cell>
-                                                </ng-container>
-
-                                                
-                                                <ng-container matColumnDef="IPNo" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        IPNo
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.IPNo}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -601,7 +590,7 @@
 
 
 
-                                            <mat-table class="Table2" matSort [dataSource]="dssalesReturnList1"
+                                            <mat-table class="Table4" matSort [dataSource]="dssalesReturnList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                                 <ng-container matColumnDef="ItemName" sticky>
@@ -655,15 +644,15 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         TotalAmount </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.TotalAmount}}
+                                                        {{contact.TotalAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="GSTAmount" sticky>
+                                                <ng-container matColumnDef="GST" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        GrossAmount </mat-header-cell>
+                                                        GST </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.GrossAmount }}
+                                                        {{contact.GrossAmount | currency:"INR":"symbol" }}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -725,5 +714,3 @@
 
 
 </div>
-
-
