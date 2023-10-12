@@ -428,8 +428,7 @@ export class SalesComponent implements OnInit {
   OnAddUpdate(event) {
 
     this.sIsLoading = 'save';
-    // let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-
+    
     if (this.Itemchargeslist.length > 0) {
       this.Itemchargeslist.forEach((element) => {
         if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
