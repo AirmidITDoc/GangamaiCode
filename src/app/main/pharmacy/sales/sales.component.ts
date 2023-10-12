@@ -115,6 +115,7 @@ export class SalesComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
+  SalesIDObjList: Printsal[] = [];
   GSTAmount: any;
  
 
@@ -124,6 +125,9 @@ export class SalesComponent implements OnInit {
 
   vSalesDetails: any = [];
   vSalesIdList: any = [];
+
+
+    
 
   displayedColumns = [
     'FromStoreId',
@@ -269,42 +273,67 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  dummySalesIdNameArr = [];
-  SalesIdWiseObj: any = {};
+
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
       ExtMobileNo: MobileNo //this.ItemSubform.get('MobileNo').value 
     }
     this._salesService.getTopSalesDetails(vdata).subscribe(data => {
       this.vSalesDetails = data;
-      console.log(data)
+      console.log(this.vSalesDetails)
       this.PatientName = data[0].ExternalPatientName;
       this.DoctorName = data[0].DoctorName;
     });
-
+    this.getTopSalesDetailsprint();
   //   this.vSalesDetails.forEach((element) => {
   //   this.vSalesIdList.push(element.SalesID)
   //   console.log('SalesID :', this.vSalesIdList)
   // });
+  }
 
+  dummySalesIdNameArr = [];
+  SalesIdWiseObj: any = {};
+
+  getTopSalesDetailsprint(){ 
+debugger
   var strrowslist = "";
   let onlySalesId = [];
-  this.vSalesDetails.forEach(ele => onlySalesId.push(ele.SalesID));
+  this.vSalesDetails.forEach(ele => onlySalesId.push(ele.SalesId));
   
   let SalesidNamesArr = [...new Set(onlySalesId)];
-  SalesidNamesArr.forEach(ele => this.dummySalesIdNameArr.push({SalesID: ele, isHidden: false}));
+  SalesidNamesArr.forEach(ele => this.dummySalesIdNameArr.push({SalesId: ele, isHidden: false}));
 
-  this.SalesIdWiseObj = this.reportPrintObjList.reduce((acc, item: any) => {
-    if (!acc[item.SalesID]) {
-      acc[item.SalesID] = [];
+  this.SalesIdWiseObj = this.SalesIDObjList.reduce((acc, item: any) => {
+    if (!acc[item.SalesId]) {
+      acc[item.SalesId] = [];
     }
-    acc[item.SalesID].push(item);
+    acc[item.SalesId].push(item);
     return acc;
   }, {})
   console.log(this.SalesIdWiseObj);
+  var strabc = this.getSalesIdName(this.vSalesDetails.SalesId);
+  console.log(strabc)
   }
 
   
+  getSalesIdName(SalesId: String) {
+    let groupDiv;
+    for(let i = 0; i < this.dummySalesIdNameArr.length; i++) {
+      if(this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
+        let groupHeader = `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
+          <div> <h3>`+ SalesId + `</h3></div>
+           </div>`;
+        this.dummySalesIdNameArr[i].isHidden = true;
+        groupDiv = groupHeader;
+        break;
+      } else {
+        groupDiv = ``;
+      }
+    }
+    return groupDiv;
+  }
+
+
   onClear() {
 
   }
@@ -1297,12 +1326,15 @@ export class SalesComponent implements OnInit {
 
         var strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
-       
-        <div style="display:flex;width:50px;text-align:center;">
-            <div>`+ UnitValue + `</div> 
+        <div style="display:flex;width:60px;margin-left:20px;">
+            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
-        <div style="display:flex;width:80px;text-align:center;">
+      
+        <div style="display:flex;width:70px;text-align:center;">
         <div>`+ objreportPrint.HSNcode + `</div> 
+        </div>
+        <div style="display:flex;width:50px;text-align:center;">
+        <div>`+ UnitValue + `</div> 
         </div>
         <div style="display:flex;width:220px;text-align:left;margin-right:10px">
             <div>`+ objreportPrint.ItemName + `</div> 
@@ -1316,12 +1348,6 @@ export class SalesComponent implements OnInit {
         <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
         <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
         </div>
-        <div style="display:flex;width:120px;text-align:center;margin-left:20px;">
-        <div>`+ objreportPrint.CGSTPer + objreportPrint.CGSTAmt + `</div> 
-        </div>  
-        <div style="display:flex;width:120px;text-align:center;margin-left:10px;">
-        <div>`+ objreportPrint.SGSTPer + objreportPrint.SGSTAmt + `</div> 
-        </div>
         <div style="display:flex;width:90px;text-align:center;margin-left:10px;">
         <div>`+ objreportPrint.UnitMRP + `</div> 
         </div>
@@ -1333,7 +1359,7 @@ export class SalesComponent implements OnInit {
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
 
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
