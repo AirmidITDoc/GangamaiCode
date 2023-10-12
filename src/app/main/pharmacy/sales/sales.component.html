@@ -57,8 +57,8 @@
                                                     <mat-label>Mobile Number</mat-label>
                                                     <input name="MobileNo" formControlName="MobileNo"
                                                         placeholder="Mobile Number" matInput required
-                                                        [(ngModel)]="MobileNo" max="9999999999" min="1000000000"  autocomplete="off" 
-                                                        maxlength="10"
+                                                        [(ngModel)]="MobileNo" max="9999999999" min="1000000000"
+                                                        autocomplete="off" maxlength="10"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                         required="required" value="9876658688"
                                                         (keydown)="onEntermobileno($event)">
@@ -461,9 +461,10 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>GST Amount</mat-label>
-                                                            <input matInput name="FinalGSTAmt" formControlName="FinalGSTAmt"
-                                                                [(ngModel)]="FinalGSTAmt" placeholder="0" (keyup)='CalfinalGST()'
-                                                                readonly type="number">
+                                                            <input matInput name="FinalGSTAmt"
+                                                                formControlName="FinalGSTAmt" [(ngModel)]="FinalGSTAmt"
+                                                                placeholder="0" (keyup)='CalfinalGST()' readonly
+                                                                type="number">
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
@@ -499,6 +500,8 @@
                                                         </mat-radio-group>
                                                         <button class="next-btn" (click)="onSave()"
                                                             [disabled]="ItemSubform.invalid">Save</button>
+                                                        <button class="footer-btn"
+                                                            (click)="getPrint($event)">Reset</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
                                                 </div>
@@ -507,20 +510,6 @@
 
                                         </div>
 
-                                        <!-- <div fxLayout="row" style="width: 100%;margin-top: 3px;">
-                                            <div style="float:right;">
-                
-                                                <mat-radio-group aria-label="Select an option" formControlName="CashPay"
-                                                    style="margin-top: 12px;">
-                                                    <mat-radio-button value="CashPay">Cash Pay</mat-radio-button>
-                                                    <mat-radio-button value="Credit">Credit Pay</mat-radio-button>
-                                                </mat-radio-group>
-                                                <button class="next-btn" (click)="onSave()" [disabled]="ItemSubform.invalid"
-                                                    style="margin-left:1100px;border-radius: 16px;">Save</button>
-                                                <button class="footer-btn" (click)="onClose()">Cancel</button>
-                                            </div>
-                
-                                        </div> -->
                                     </mat-card>
 
                                 </form>
@@ -537,7 +526,7 @@
                             <span *ngFor="let item of vSalesDetails[SalesId]">{{SalesId.SalesId}} </span>
                           </div> -->
 
-
+                        <!-- 
                         <tr *ngFor="let item of vSalesDetails">
                             <td><span style="font-weight: bold;"> Sales ID:</span>{{item.SalesId}}
                                 <span style="font-weight: bold;"> Item Deatil :</span>
@@ -549,7 +538,9 @@
                         <hr>
                         </td>
 
-                        </tr>
+                        </tr> -->
+
+
 
 
                         <!-- 

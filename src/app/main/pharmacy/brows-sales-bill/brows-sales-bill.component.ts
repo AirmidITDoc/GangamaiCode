@@ -263,7 +263,7 @@ getTemplate() {
   this._BrowsSalesBillService.getTemplate(query).subscribe((resData: any) => {
 
     this.printTemplate = resData[0].TempDesign;
-    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo','StoreName' ,'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
     // ;
     for (let i = 0; i < keysArray.length; i++) {
       let reString = "{{" + keysArray[i] + "}}";
@@ -359,7 +359,7 @@ print() {
         <title></title>
     </head>
   `);
-  popupWin.document.write(`<body onload="window.print();window.close()"></body> 
+  popupWin.document.write(`<body onload="window.print();window.close()"></body>${this.printTemplate}</body> 
   </html>`);
 
   // if(this.reportPrintObj.CashPayAmount === 0) {
@@ -383,33 +383,10 @@ print() {
   // if(this.reportPrintObj.Remark === '') {
   //   popupWin.document.getElementById('idremark').style.display = 'none';
   // }
-  this.createCDKPortal({}, popupWin);
+  
   popupWin.document.close();
 }
 
-createCDKPortal(data, windowInstance) {
-  if (windowInstance) {
-    const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
-    const injector = this.createInjector(data);
-    let componentInstance;
-    componentInstance = this.attachHeaderContainer(outlet, injector);
-    // console.log(windowInstance.document)
-    let template = windowInstance.document.createElement('div'); // is a node
-    template.innerHTML = this.printTemplate;
-    windowInstance.document.body.appendChild(template);
-  }
-}
-createInjector(data): any {
-  const injectionTokens = new WeakMap();
-  injectionTokens.set({}, data);
-  return new PortalInjector(this.injector, injectionTokens);
-}
-
-attachHeaderContainer(outlet, injector) {
-  const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
-  const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
-  return containerRef.instance;
-}
 
 }
 

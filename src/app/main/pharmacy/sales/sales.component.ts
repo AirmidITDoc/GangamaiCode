@@ -116,6 +116,10 @@ export class SalesComponent implements OnInit {
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
   SalesIDObjList: Printsal[] = [];
+
+  reportItemPrintObj: Printsal;
+  reportPrintObjItemList: Printsal[] = [];
+
   GSTAmount: any;
  
 
@@ -123,7 +127,8 @@ export class SalesComponent implements OnInit {
   datasource = new MatTableDataSource<IndentList>();
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
 
-  vSalesDetails: any = [];
+  // vSalesDetails: any = [];
+  vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
 
 
@@ -276,19 +281,17 @@ export class SalesComponent implements OnInit {
 
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
-      ExtMobileNo: MobileNo //this.ItemSubform.get('MobileNo').value 
+      ExtMobileNo: MobileNo
     }
     this._salesService.getTopSalesDetails(vdata).subscribe(data => {
-      this.vSalesDetails = data;
-      console.log(this.vSalesDetails)
+      this.reportPrintObjItemList = data as Printsal[];
+      this.reportItemPrintObj = data[0] as Printsal;
+
       this.PatientName = data[0].ExternalPatientName;
       this.DoctorName = data[0].DoctorName;
     });
     this.getTopSalesDetailsprint();
-  //   this.vSalesDetails.forEach((element) => {
-  //   this.vSalesIdList.push(element.SalesID)
-  //   console.log('SalesID :', this.vSalesIdList)
-  // });
+ 
   }
 
   dummySalesIdNameArr = [];
@@ -298,12 +301,12 @@ export class SalesComponent implements OnInit {
 debugger
   var strrowslist = "";
   let onlySalesId = [];
-  this.vSalesDetails.forEach(ele => onlySalesId.push(ele.SalesId));
+  this.reportPrintObjItemList.forEach(ele => onlySalesId.push(ele.SalesId));
   
   let SalesidNamesArr = [...new Set(onlySalesId)];
   SalesidNamesArr.forEach(ele => this.dummySalesIdNameArr.push({SalesId: ele, isHidden: false}));
 
-  this.SalesIdWiseObj = this.SalesIDObjList.reduce((acc, item: any) => {
+  this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
     if (!acc[item.SalesId]) {
       acc[item.SalesId] = [];
     }
@@ -311,8 +314,20 @@ debugger
     return acc;
   }, {})
   console.log(this.SalesIdWiseObj);
-  var strabc = this.getSalesIdName(this.vSalesDetails.SalesId);
+
+  for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
+    var objreportPrint = this.reportPrintObjItemList[i - 1];
+
+  var strabc = this.getSalesIdName(objreportPrint.SalesId) + `
+  <div style="display:flex;margin:8px 0">
+  <div style="display:flex;width:80px;margin-left:20px;">
+      <div>`+ objreportPrint.ItemShortName + `</div>
+  </div>
+  </div>`;
+  strrowslist += strabc;
+  }
   console.log(strabc)
+  console.log(strrowslist)
   }
 
   
@@ -1308,7 +1323,7 @@ debugger
     this._salesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -1378,10 +1393,9 @@ debugger
   print() {
 
     let popupWin, printContents;
-    // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
+   
     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
+    
     popupWin.document.write(` <html>
     <head><style type="text/css">`);
     popupWin.document.write(`
@@ -1389,56 +1403,10 @@ debugger
           <title></title>
       </head>
     `);
-    popupWin.document.write(`<body onload="window.print();window.close()"></body> 
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
     </html>`);
-
-    // if(this.reportPrintObj.CashPayAmount === 0) {
-    //   popupWin.document.getElementById('idCashpay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.CardPayAmount === 0) {
-    //   popupWin.document.getElementById('idCardpay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.ChequePayAmount === 0) {
-    //   popupWin.document.getElementById('idChequepay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.NEFTPayAmount === 0) {
-    //   popupWin.document.getElementById('idNeftpay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.PayTMAmount === 0) {
-    //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.PayTMAmount === 0) {
-    //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
-    // }
-    // if(this.reportPrintObj.Remark === '') {
-    //   popupWin.document.getElementById('idremark').style.display = 'none';
-    // }
-    this.createCDKPortal({}, popupWin);
+    
     popupWin.document.close();
-  }
-
-  createCDKPortal(data, windowInstance) {
-    if (windowInstance) {
-      const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
-      const injector = this.createInjector(data);
-      let componentInstance;
-      componentInstance = this.attachHeaderContainer(outlet, injector);
-      // console.log(windowInstance.document)
-      let template = windowInstance.document.createElement('div'); // is a node
-      template.innerHTML = this.printTemplate;
-      windowInstance.document.body.appendChild(template);
-    }
-  }
-  createInjector(data): any {
-    const injectionTokens = new WeakMap();
-    injectionTokens.set({}, data);
-    return new PortalInjector(this.injector, injectionTokens);
-  }
-
-  attachHeaderContainer(outlet, injector) {
-    const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
-    const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
-    return containerRef.instance;
   }
 
 
@@ -1525,6 +1493,9 @@ export class IndentID {
 export class Printsal {
   PatientName: any;
   RegNo: any;
+  ItemShortName:any;
+  SalesId:any;
+  StoreName:any;
   IP_OP_Number: any;
   DoctorName: any;
   SalesNo: any;
@@ -1610,13 +1581,13 @@ export class Printsal {
     this.CGSTAmt = Printsal.CGSTAmt || "";
     this.IGSTPer = Printsal.IGSTPer || "";
     this.IGSTAmt = Printsal.IGSTAmt || "";
-
+    this.StoreName= Printsal.StoreName|| '';
     this.StoreNo = Printsal.StoreNo || "";
     this.DL_NO = Printsal.DL_NO || "";
     this.GSTIN = Printsal.GSTIN || "";
     this.CreditReason = Printsal.CreditReason || "";
     this.CompanyName = Printsal.CompanyName || "";
-
+    this.ItemShortName=Printsal.ItemShortName || ';'
   }
 }
 
