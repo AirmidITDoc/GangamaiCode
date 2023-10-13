@@ -1060,15 +1060,20 @@ debugger
       Paymentobj['ReceiptNo'] = '',//'RE';
       Paymentobj['PaymentDate'] = this.dateTimeObj.date;
     Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+    
     Paymentobj['CashPayAmount'] = NetAmt;
+    
     Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
       Paymentobj['ChequeNo'] = 0,//this.chequeNo;
       Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
       Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
+
+  
       Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
       Paymentobj['CardNo'] = '',//this.cardNo;
       Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
       Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
+
       Paymentobj['AdvanceUsedAmount'] = 0;
     Paymentobj['AdvanceId'] = 0;
     Paymentobj['RefundId'] = 0;
@@ -1335,9 +1340,9 @@ debugger
     debugger
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._salesService.getTemplate(query).subscribe((resData: any) => {
-
+  
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmount', 'CGSTAmount', 'CGSTPer', 'SGSTPer', 'SGSTAmount', 'IGSTPer', 'IGSTAmount', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
@@ -1348,27 +1353,30 @@ debugger
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
         var objreportPrint = this.reportPrintObjList[i - 1];
-        let UnitValue = 'Com'
+        let PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
-
+  
         var strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
-        <div style="display:flex;width:60px;margin-left:20px;">
+        <div style="display:flex;width:40px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
       
-        <div style="display:flex;width:70px;text-align:center;">
+        <div style="display:flex;width:90px;text-align:center;">
         <div>`+ objreportPrint.HSNcode + `</div> 
         </div>
-        <div style="display:flex;width:50px;text-align:center;">
-        <div>`+ UnitValue + `</div> 
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+objreportPrint.ManufShortName + `</div> 
         </div>
-        <div style="display:flex;width:220px;text-align:left;margin-right:10px">
+        <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
             <div>`+ objreportPrint.ItemName + `</div> 
         </div>
-        <div style="display:flex;width:70px;text-align:left;margin-left:20px;">
+        <div style="display:flex;width:70px;text-align:left;margin-left:30px;">
+        <div>`+ PackValue + `</div> 
+        </div>
+        <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
             <div>`+ objreportPrint.Qty + `</div> 
         </div>
         <div style="display:flex;width:90px;text-align:center;">
@@ -1377,31 +1385,31 @@ debugger
         <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
         <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
         </div>
-        <div style="display:flex;width:90px;text-align:center;margin-left:10px;">
+        <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
         <div>`+ objreportPrint.UnitMRP + `</div> 
         </div>
-        <div style="display:flex;width:110px;margin-left:10px;text-align:center;">
+        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
             <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
         </div>
         </div>`;
         strrowslist += strabc;
       }
       var objPrintWordInfo = this.reportPrintObjList[0];
-
+  
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
+  
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
       console.log(this.printTemplate);
-
+  
       setTimeout(() => {
         this.print();
       }, 1000);
     });
-
-
+  
+  
   }
 
   print() {
