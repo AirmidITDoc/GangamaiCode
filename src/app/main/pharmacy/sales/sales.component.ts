@@ -278,17 +278,31 @@ export class SalesComponent implements OnInit {
     });
   }
 
-
+  salesIdWiseObj: any;
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
       ExtMobileNo: MobileNo
     }
-    this._salesService.getTopSalesDetails(vdata).subscribe(data => {
-      this.reportPrintObjItemList = data as Printsal[];
-      this.reportItemPrintObj = data[0] as Printsal;
-
-      this.PatientName = data[0].ExternalPatientName;
-      this.DoctorName = data[0].DoctorName;
+    this.sIsLoading = 'get-sales-data'
+    this._salesService.getTopSalesDetails(vdata).subscribe((data: any) => {
+      if(data && data.length > 0) {
+        this.reportPrintObjItemList = data as Printsal[];
+        this.reportItemPrintObj = data[0] as Printsal;
+  
+        this.PatientName = data[0].ExternalPatientName;
+        this.DoctorName = data[0].DoctorName;
+        this.salesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
+          if (!acc[item.SalesId]) {
+            acc[item.SalesId] = [];
+          }
+          acc[item.SalesId].push(item);
+          return acc;
+        }, {})
+        this.sIsLoading = '';
+        // console.log(this.salesIdWiseObj);
+      } else {
+        this.sIsLoading = '';
+      }
     });
     this.getTopSalesDetailsprint();
  
