@@ -356,28 +356,28 @@
                       </mat-error>
                     </mat-form-field> -->
 
-                    <mat-form-field appearance="outline" style="width:30%;margin-left:15px;" disabled="isRegSearchDisabled">
-                      <input type="text" name="RegId" formControlName="RegId"
-                        placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
-                        [matAutocomplete]="autoReg" >
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                        </span>
-                      <mat-autocomplete #autoReg="matAutocomplete" (optionActivated)="handleKeyboardEvent($event)" [displayWith]="getOptionText">
-                        <cdk-virtual-scroll-viewport class="autocomplete-test-viewport" [ngStyle]="{'height': height}" itemSize="25">
-                          <mat-option *cdkVirtualFor="let option of PatientListfilteredOptions" [value]="option" class="autocomplete-item">
-                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                            {{option.MobileNo}}
-                          </mat-option>
-                        </cdk-virtual-scroll-viewport>
-                      </mat-autocomplete>
-                      <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
-                        Required field cannot be left blank
-                      </mat-error>
-                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width:60%;margin-left:15px;"
+                    disabled="isRegSearchDisabled">
+                    <input type="text" name="RegId" formControlName="RegId"
+                      placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
+                      (input)="getSearchList()">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                      (optionSelected)='getSelectedObj($event.option.value)'>
+                      <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                        {{option.MobileNo}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
+                      Required field cannot be left blank
+                    </mat-error>
+                  </mat-form-field>
 
                       <mat-form-field appearance="outline" style="width:25%;margin-left:15px;float:right"
                       disabled="isRegSearchDisabled">
