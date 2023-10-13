@@ -527,7 +527,7 @@
                           </div> -->
 
                         
-                        <tr *ngFor="let item of vSalesDetails">
+                        <!-- <tr *ngFor="let item of vSalesDetails">
                             <td><span style="font-weight: bold;"> Sales ID:</span>{{item.SalesId}}
                                 <span style="font-weight: bold;"> Item Deatil :</span>
                         <tr *ngFor="let item of vSalesDetails">
@@ -538,7 +538,20 @@
                         <hr>
                         </td>
 
-                        </tr>
+                        </tr> -->
+                        <div *ngIf="sIsLoading == 'get-sales-data'">
+                            <mat-spinner [diameter]='30' style="margin: auto;"></mat-spinner>
+                        </div>
+                        <div *ngFor="let item of salesIdWiseObj | keyvalue">
+                            <div>
+                                <h2>Sales ID: {{item.key}}</h2>
+                            </div>
+                            <div *ngFor="let ele of item.value">
+                                {{ele.ItemShortName}}
+                            </div>
+
+                            <hr>
+                        </div>
 
 
 
