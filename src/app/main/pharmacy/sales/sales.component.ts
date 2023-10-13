@@ -340,8 +340,7 @@ debugger
   </div>`;
   strrowslist += strabc;
   }
-  console.log(strabc)
-  console.log(strrowslist)
+  
   
   }
 

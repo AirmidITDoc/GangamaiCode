@@ -544,10 +544,11 @@
                         </div>
                         <div *ngFor="let item of salesIdWiseObj | keyvalue">
                             <div>
-                                <h2>Sales ID: {{item.key}}</h2>
+                                <h2>Sales NO: {{item.key}}  <button class="next-btn" style="margin-left: 10px;">Repete</button> </h2>
+                               
                             </div>
                             <div *ngFor="let ele of item.value">
-                                {{ele.ItemShortName}}
+                                {{ele.ItemShortName}}  | {{ele.Qty}} | {{ele.UnitMRP}}
                             </div>
 
                             <hr>

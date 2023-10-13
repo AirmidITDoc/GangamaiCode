@@ -136,8 +136,8 @@
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Action
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row">
-                                                        <button mat-icon-button matTooltip="delete">
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <button mat-icon-button matTooltip="Print" (click)="getPrint(contact)">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>
