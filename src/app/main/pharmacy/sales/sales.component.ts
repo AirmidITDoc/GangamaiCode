@@ -1301,7 +1301,7 @@ debugger
   getPrint(el) {
 
     var D_data = {
-      "SalesID": 428263,// 
+      "SalesID":el,// 
       "OP_IP_Type": 2
     }
 
