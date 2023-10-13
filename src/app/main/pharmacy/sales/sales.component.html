@@ -218,8 +218,7 @@
 
                                         <mat-table #table matSort [dataSource]="saleSelectedDatasource"
                                             [@animateStagger]="{value:'50'}"
-                                            style="overflow:auto;border-style: groove; height: 300px !important;"
-                                            class="mat-saletable">
+                                            style="overflow:auto; height: 300px !important;"class="mat-saletable">
 
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef
@@ -402,7 +401,7 @@
                                               | currency:'INR' }}
                                                </span> -->
                                             <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left:800px;">
+                                                style="width: 200px;font-weight: bold;margin-left:500px;">
                                                 NetAmount::</span>&nbsp;<span class="net-amt-value"
                                                 style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
                                                 | currency:'INR' }}</span>
@@ -413,7 +412,7 @@
                                 </div>
 
                                 <form class="example-form" [formGroup]="ItemSubform" style="font-size:20px;">
-                                    <mat-card style="width: 100%;font-size: large;border-style: groove;">
+                                    <mat-card style="width: 100%;font-size: large;">
                                         <div class="footer-container" fxLayoutAlign="start center"
                                             style="padding:5x 5px 5px 5px;">
 
@@ -481,16 +480,6 @@
                                                                 formControlName="BalanceAmt" type="number"
                                                                 [(ngModel)]="BalAmount" placeholder="0" type="number">
                                                         </mat-form-field>&nbsp;
-
-
-                                                        <!-- <div style="float:right;">
-                                                            <mat-radio-group aria-label="Select an option" formControlName="CashPay"
-                                                                style="margin-top: 12px;">
-                                                                <mat-radio-button value="CashPay">Cash Pay</mat-radio-button>
-                                                                <mat-radio-button value="Credit">Credit Pay</mat-radio-button>
-                                                            </mat-radio-group>
-                
-                                                        </div> -->
                                                     </div>
                                                     <div style="float:right;">
                                                         <mat-radio-group aria-label="Select an option"
@@ -500,8 +489,6 @@
                                                         </mat-radio-group>
                                                         <button class="next-btn" (click)="onSave()"
                                                             [disabled]="ItemSubform.invalid">Save</button>
-                                                        <button class="footer-btn"
-                                                            (click)="getPrint($event)">Reset</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
                                                 </div>
@@ -520,32 +507,12 @@
                     </div>
 
                     <div fxFlex.gt-sm="20%" fxFlex style="background-color: white; padding: 3px 3px 3px 3px;">
-                        <!-- 
-                        <div *ngFor="let SalesId of vSalesDetails|keys">
-                            <span>{{SalesId}}</span>
-                            <span *ngFor="let item of vSalesDetails[SalesId]">{{SalesId.SalesId}} </span>
-                          </div> -->
-
-                        
-                        <!-- <tr *ngFor="let item of vSalesDetails">
-                            <td><span style="font-weight: bold;"> Sales ID:</span>{{item.SalesId}}
-                                <span style="font-weight: bold;"> Item Deatil :</span>
-                        <tr *ngFor="let item of vSalesDetails">
-
-                            <td> {{item.ItemShortName}} ( QTy : {{item.Qty}} - MRP : {{item.UnitMRP}})</td>
-
-                        </tr>
-                        <hr>
-                        </td>
-
-                        </tr> -->
                         <div *ngIf="sIsLoading == 'get-sales-data'">
                             <mat-spinner [diameter]='30' style="margin: auto;"></mat-spinner>
                         </div>
                         <div *ngFor="let item of salesIdWiseObj | keyvalue">
                             <div>
-                                <h2>Sales NO: {{item.key}}  <button class="next-btn" style="margin-left: 10px;">Repete</button> </h2>
-                               
+                                <h2>Sales No: {{item.key}}  <button class="next-btn" style="margin-left: 10px;">Repeat</button> </h2>
                             </div>
                             <div *ngFor="let ele of item.value">
                                 {{ele.ItemShortName}}  | {{ele.Qty}} | {{ele.UnitMRP}}
@@ -553,39 +520,6 @@
 
                             <hr>
                         </div>
-
-
-
-
-                        <!-- 
-                        <div *ngFor="let i of service$">
-
-                            <div class="row">
-                                <div class="col-lg-4" *ngFor="let j of i">
-                                    {{j.title}}
-
-                                </div>
-                            </div>
-
-                        </div> -->
-                        <!-- 
-                        <tr *ngFor="let item of vSalesDetails">
-                            
-                            <td>{{item.ItemShortName}} ( QTy : {{item.Qty}} - MRP : {{item.UnitMRP}})</td>
-                           
-                        </tr> -->
-
-                        <!-- <tr>
-                            <td>{{items[0].ItemShortName}}</td>
-                            <td>{{items[0].Qty}}</td>
-                            <td>{{items[0].UnitMRP}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{items[1].ItemShortName}}</td>
-                            <td>{{items[1].Qty}}</td>
-                            <td>{{items[1].UnitMRP}}</td>
-                        </tr> -->
-
                     </div>
 
                 </div>
