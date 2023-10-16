@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
 
 @Component({
   selector: 'app-sales-return',
@@ -36,19 +37,49 @@ DoctorName:any;
   BalanceQty: any;
   Itemchargeslist: any = [];
   
-  dsIndentID = new MatTableDataSource<IndentID>();
+  MainSalesList = new MatTableDataSource<IndentList>();
+  SelectionSelect = new MatTableDataSource<IndentList>();
+  SelectedList = new MatTableDataSource<IndentList>();
+  dssalesReturnList = new MatTableDataSource<SalesReturnList>();
+  dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
 
-  dsIndentList = new MatTableDataSource<IndentList>();
-
-  displayedColumns = [
+  
+  displayedColumns: string[] = [
+    'action',
+    'Date',
+    'SalesNo',
+    'RegNo',
+    'PatientName',
+    'NetAmt',
+    'BalAmt',
+    'PaidAmt',
+    'PaidType',
+    'IPNo'
+  ]
+  displayedColumns2: string[] = [
+    'ItemName',
+    'BatchNo',
+    'Expdate',
+    'Qty',
+    'MRP',
+    'TotalMRP',
+    'GST',
+    'CGST',
+    'SGST',
+    'IGST'
+  ]
+  displayedColumns7 = [
+    'SalesNo',
     'ItemName',
     'BatchNo',
     'BatchExpDate',
-    'Qty',
     'UnitMRP',
+    'Qty',
+    'TotalAmount',
+    'ReturnQty',
+    'TotalMRP',
     'GSTPer',
     'GSTAmount',
-    'TotalMRP',
     'DiscAmt',
     'NetAmt',
     'action',
@@ -57,26 +88,51 @@ DoctorName:any;
   displayedColumns1 = [
     'ItemName',
     'BatchNo',
-    'BatchExpDate',
-    'Qty',
     'UnitMRP',
+    'Qty',
+    'TotalAmount',
     'GSTPer',
     'GSTAmount',
-    'TotalMRP',
+    'DiscPer',
     'DiscAmt',
     'NetAmt',
   ];
 
-  displayedColumns2 = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
+  displayedColumns4: string[] = [
+    'ItemName',
+    'BatchNo',
+    'Expdate',
+    'Qty',
+    'MRP',
+    'TotalMRP',
+    'GST',
+    'CGST',
+    'SGST',
+    'IGST'
+  ]
+  displayedColumns5 = [
+    'Date',
+    'RegNo',
+    'PatientName'
+    // 'FromStoreName',
+    // 'ToStoreName',
+    // 'Addedby',
+    // 'IsInchargeVerify',
+    // 'action',
   ];
+
+
+  displayedColumns3: string[] = [
+    'action',
+    'SalesDate',
+    'SalesNo',
+    'RegNo',
+    'PatientName',
+    'NetAmt',
+    'BalAmt',
+    'PaidAmt',
+    'Type'
+  ]
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -245,10 +301,10 @@ DoctorName:any;
        "Status": 1//this._SalesReturnService.IndentSearchGroup.get("Status").value || 1,
     }
       this._SalesReturnService.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
+      // this.dsIndentID.data = data as IndentID[];
+      // console.log(this.dsIndentID.data)
+      // this.dsIndentID.sort = this.sort;
+      // this.dsIndentID.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {
@@ -262,9 +318,9 @@ DoctorName:any;
       "IndentId": Params.IndentId
     }
       this._SalesReturnService.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
+      // this.dsIndentList.data = data as IndentList[];
+      // this.dsIndentList.sort = this.sort;
+      // this.dsIndentList.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {

@@ -1699,7 +1699,7 @@ debugger
   }
 
   onCashpaySave() {
-debugger
+
 
    
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -1707,8 +1707,9 @@ debugger
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-
-    // if (this.flagSubmit) {
+      debugger
+      
+    if (this.patientDetailsFormGrp.get('balanceAmountController').value==0) {
     console.log("Procced with Payment Option");
 
     let SalesInsert = {};
@@ -1890,14 +1891,14 @@ debugger
     // });
 
     this.ItemFormreset();
+    this.patientDetailsFormGrp.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
   }
-
-
+}
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2028,7 +2029,7 @@ debugger
   }
 
   @ViewChild('discamt') discamt: ElementRef;
-  // @ViewChild('Lname') Lname: ElementRef;
+  @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('mobileno') mobileno: ElementRef;
   @ViewChild('disper') disper: ElementRef;
   @ViewChild('discamount') discamount: ElementRef;
@@ -2061,7 +2062,8 @@ debugger
 
   public onEnterpatientname(event): void {
     if (event.which === 13) {
-      this.itemid.nativeElement.focus();
+      // this.itemid.nativeElement.focus();
+      this.doctorname.nativeElement.focus();
     }
   }
   public onEntermobileno(event): void {
@@ -2076,6 +2078,12 @@ debugger
     }
   }
 
+  public onEnterDoctorname(event): void {
+    if (event.which === 13) {
+     
+      this.itemid.nativeElement.focus();
+    }
+  }
 
 
   getPrint(el) {
@@ -2200,7 +2208,9 @@ debugger
   }
 }
 
+
 export class IndentList {
+  SalesNo:any
   ItemId: any;
   ItemName: string;
   BatchNo: string;
@@ -2208,17 +2218,19 @@ export class IndentList {
   BalanceQty: any;
   UnitMRP: any;
   Qty: number;
-  IssQty: number;
+  IssueQty: number;
   Bal: number;
   StoreId: any;
   StoreName: any;
   GSTPer: any;
-
+  GSTAmount:any;
   TotalMRP: any;
   DiscAmt: any;
   NetAmt: any;
   StockId: any;
-
+  ReturnQty:any;
+  TotalAmount:any;
+  Total:any;
   /**
    * Constructor
    *
@@ -2226,6 +2238,7 @@ export class IndentList {
    */
   constructor(IndentList) {
     {
+      this.SalesNo=IndentList.SalesNo ||0;
       this.ItemId = IndentList.ItemId || 0;
       this.ItemName = IndentList.ItemName || "";
       this.BatchNo = IndentList.BatchNo || "";
@@ -2233,7 +2246,7 @@ export class IndentList {
       this.UnitMRP = IndentList.UnitMRP || "";
       this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
+      this.IssueQty = IndentList.IssueQty || 0;
       this.Bal = IndentList.Bal || 0;
       this.StoreId = IndentList.StoreId || 0;
       this.StoreName = IndentList.StoreName || '';
@@ -2242,6 +2255,10 @@ export class IndentList {
       this.DiscAmt = IndentList.DiscAmt || 0;
       this.NetAmt = IndentList.NetAmt || 0;
       this.StockId = IndentList.StockId || 0;
+      this.NetAmt = IndentList.NetAmt || 0;
+      this.ReturnQty = IndentList.ReturnQty || 0;
+      this.TotalAmount=IndentList.TotalAmount || 0;    
+      this.Total=IndentList.Total || '';
     }
   }
 }

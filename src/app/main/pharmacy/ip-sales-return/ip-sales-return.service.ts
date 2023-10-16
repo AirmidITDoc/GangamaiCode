@@ -23,6 +23,10 @@ export class IpSalesReturnService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
+      PatientName:'',
+      RegNoSearch:'',
+      CashPay:'',
+      ItemName:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -37,7 +41,8 @@ export class IpSalesReturnService {
       StoreName:'',
       PreNo:'',
       IsActive: '',
-      
+      NetAmt:'',
+      ReturnAmt:''
     });
   }
  
@@ -50,12 +55,25 @@ export class IpSalesReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
   }
 
+  // Retrieve_BrowseSalesBill
+
   public getStoreFromList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
 
   public getToList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  }
+
+  public getSelectionList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseSalesBill",{});
+  }
+  public getSalesReturncash(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Cash",{});
+  }
+  
+  public getSalesReturnCredit(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",{});
   }
   
 }

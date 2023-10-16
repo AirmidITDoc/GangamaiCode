@@ -79,7 +79,7 @@
 
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Doctor Name</mat-label>
-                                                    <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
+                                                    <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName" (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
                                                 </mat-form-field>
 

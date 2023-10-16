@@ -5,8 +5,16 @@ app-ip-sales-return {
     }
 
     .table2 {
-      height: 600px !important;
+      // height: 600px !important;
       width: 2000px;
+
+      .mat-column-ItemName {
+        width: 490px;
+        max-width: 490px;
+        min-width: 490px;
+        text-align: left;
+      }
+      
     }
   
     .mat-header-row {
@@ -24,7 +32,7 @@ app-ip-sales-return {
       min-height: 30px;
      
     }
-  
+   
     .mat-column-FromStoreId {
       width: 110px;
       max-width: 110px;
@@ -78,29 +86,46 @@ app-ip-sales-return {
     }
 
     .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
+      width: 490px;
+      max-width: 490px;
       min-width: 290px;
       text-align: left;
     }
     
     .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .mat-column-UnitMRP {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
       text-align: left;
     }
   
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
+  
+    .mat-column-IssueQty {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
       text-align: left;
     }
     .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
+      width: 70px;
+      max-width: 70px;
+      min-width: 70px;
+      text-align: left;
+    }
+
+    
+
+    .mat-column-TotalAmount {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: left;
     }
     .mat-column-action {
@@ -116,10 +141,76 @@ app-ip-sales-return {
     
 }
 
-// .table-row:selected {
+.table4{
 
-//   background-color: rebeccapurple;
-// }
+  
+  .mat-header-row {
+    width:1000;
+    //max-width: 1600px;
+    min-width: 1000px;
+    min-height: 20px;
+    background-color: blue;
+  }
+
+  .mat-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 700px;
+    min-height: 20px;
+   
+  }
+
+  .mat-column-ItemName {
+    width: 400px;
+    max-width: 400px;
+    min-width: 400px;
+    text-align: left;
+  }
+  
+  .mat-column-Qty {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: left;
+  }
+
+  
+  .mat-column-IssueQty {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+
+  .mat-column-UnitMRP {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  
+  .mat-column-ReturnQty {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+
+  .mat-column-Bal {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align: left;
+  }
+
+  .mat-column-TotalAmount {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+}
+
 
 }
 
