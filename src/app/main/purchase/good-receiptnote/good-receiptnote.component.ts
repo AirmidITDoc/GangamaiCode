@@ -97,6 +97,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     'TotalAmount',
     'Disc',
     'DisAmount',
+    'GST',
+    'GSTAmount',
     'CGST',
     'CGSTAmount',
     'SGST',
@@ -139,6 +141,8 @@ export class GoodReceiptnoteComponent implements OnInit {
   optionsSupplier: any;
   optionsItemName: any;
   renderer: any;
+  GST: any=0;
+  GSTAmount: any=0;
 
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -180,6 +184,8 @@ getSelectedObj(obj) {
   this.TotalAmount = obj.TotalAmount;
   this.Disc = obj.Disc;
   this.DisAmount = obj.DisAmount;
+  this.GST = obj.GST;
+  this.GSTAmount = obj.GSTAmount;
   this.CGST = obj.CGST;
   this.CGSTAmount = obj.CGSTAmount;
   this.SGST = obj.SGST;
@@ -209,6 +215,8 @@ onAdd(){
       TotalAmount:this.TotalAmount ,
       Disc: this.Disc ,
       DisAmount : this.DisAmount ,
+      GST:this.GST ,
+      GSTAmount : this.GSTAmount ,
       CGST:this.CGST ,
       CGSTAmount : this.CGSTAmount ,
       SGST: this.SGST ,
@@ -297,14 +305,14 @@ calculateTotalAmount() {
 
 calculateDiscAmount() {
   if (this.Disc) {
-    this.NetAmount =  this.NetAmount - this.DisAmount;
+    this.NetAmount =  parseFloat(this.NetAmount) - parseFloat(this.DisAmount);
   }
 }
 
 calculateDiscperAmount(){
   if (this.Disc) {
     let dis=this._GRNList.userFormGroup.get('Disc').value
-    this.DisAmount = Math.round(dis * parseInt(this.NetAmount) /100 );
+    this.DisAmount = (parseFloat(dis) * parseFloat(this.NetAmount) /100).toFixed(2);
     // this.DiscAmount =  DiscAmt
     this.NetAmount = this.NetAmount - this.DisAmount;
 
@@ -318,19 +326,39 @@ calculatePersc(){
     this.NetAmount= this.TotalAmount - this.Disc;
     this._GRNList.userFormGroup.get('calculateDiscAmount').disable();    
   }
+}
 
+calculateGSTperAmount() {
+
+  if (this.GST) {
+  
+    this.GSTAmount =(this.TotalAmount * parseInt(this.GST)) / 100;
+    this.NetAmount = (this.TotalAmount) + parseFloat(this.GSTAmount);
+    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+ 
+  }
+}
+
+calculateGSTAmount() 
+{
+  debugger
+  if (this.GSTAmount > 0) {
+  
+    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+   this.NetAmount= (parseFloat(this.NetAmount) + parseFloat(this.GSTAmount)).toFixed(2);
+
+    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+ 
+  }else if(this.GST==0){
+    this.GSTAmount=0;
+  }
 }
 
 calculateCGSTAmount() {
   if (this.CGST) {
-    // this.CGSTAmount = Math.round(parseInt(this.CGST)).toString();
-    // this.CGSTAmount;
+    this.CGSTAmount = Math.round(parseInt(this.CGST)).toString();
+    this.CGSTAmount;
     // this.calculatePersc();
-
-    
-    this.CGSTAmount = Math.round((this.TotalAmount * parseInt(this.CGST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.CGSTAmount));
-    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
   }
 }
 
@@ -341,7 +369,6 @@ calculateSGSTAmount() {
     // this.calculatePersc();
   }
 }
-
 
 calculateIGSTAmount() {
   if (this.IGST) {
@@ -436,7 +463,7 @@ getTotalAmt(element)
       }
 }
 
-    private _filterSupplier(value: any): string[] {
+private _filterSupplier(value: any): string[] {
      if (value) {
     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
     return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
@@ -537,6 +564,7 @@ getItemNameList(){
   @ViewChild('mrp') mrp: ElementRef;
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('disc') disc: ElementRef;
+  @ViewChild('gst') gst: ElementRef;
   @ViewChild('cgst') cgst: ElementRef;
   @ViewChild('sgst') sgst: ElementRef;
   @ViewChild('igst') igst: ElementRef;
@@ -589,6 +617,11 @@ getItemNameList(){
     }
   }
   public onEnterDisc(event): void {
+    if (event.which === 13) {
+      this.gst.nativeElement.focus();
+    }
+  }
+  public onEnterGST(event): void {
     if (event.which === 13) {
       this.cgst.nativeElement.focus();
     }
@@ -716,6 +749,8 @@ export class GRNList {
   TotalAmount: number;
   Disc: number;
   DisAmount: number;
+  GST: number;
+  GSTAmount: number;
   CGST: number;
   CGSTAmount: number;
   SGST: number;
@@ -745,6 +780,8 @@ export class GRNList {
       this.TotalAmount = ItemNameList.TotalAmount || 0;
       this.Disc = ItemNameList.Disc || 0;
       this.DisAmount = ItemNameList.DisAmount || 0;
+      this.GST = ItemNameList.GST || 0;
+      this.GSTAmount = ItemNameList.GSTAmount || 0;
       this.CGST = ItemNameList.CGST || 0;
       this.CGSTAmount = ItemNameList.CGSTAmount || 0;
       this.SGST = ItemNameList.SGST || 0;

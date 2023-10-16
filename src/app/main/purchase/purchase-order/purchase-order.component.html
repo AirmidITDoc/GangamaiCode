@@ -460,6 +460,9 @@
                                                                 <mat-option value="IMMIDATE">IMMIDATE</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
+
+                                                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
+                                                        </app-common-date>
                                                     </div>
 
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
@@ -907,17 +910,13 @@
                                                 <div class="net-amt">
                                                     <button class="next-btn"
                                                         style="border-radius: 16px;margin-left: 400px;"
-                                                        [disabled]="_PurchaseOrder.PurchaseSearchGroup.invalid">Save</button>
+                                                       
+                                                        (click)="OnSave()">Save</button>
                                                     <button class="footer-btn" style="border-radius: 16px;"
                                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                                 </div>
 
-
-
-
                                             </div>
-
-
                                         </form>
 
 

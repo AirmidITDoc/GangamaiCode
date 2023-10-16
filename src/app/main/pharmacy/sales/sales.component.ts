@@ -1676,15 +1676,14 @@ debugger
 
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
-    let index = this.Itemchargeslist.indexOf(element);
-    if (index >= 0) {
-      this.Itemchargeslist.splice(index, 1);
-      this.saleSelectedDatasource.data = [];
-      this.saleSelectedDatasource.data = this.Itemchargeslist;
-    }
-    if(this.deleteflag==true){
-    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-    }
+      let index = this.Itemchargeslist.indexOf(element);
+      if (index >= 0) {
+        this.Itemchargeslist.splice(index, 1);
+        this.saleSelectedDatasource.data = [];
+        this.saleSelectedDatasource.data = this.Itemchargeslist;
+      }
+      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+
     // }
   }
 

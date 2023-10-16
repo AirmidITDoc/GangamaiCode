@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -95,7 +95,7 @@ export class PurchaseOrderComponent implements OnInit {
    
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private _formBuilder: any;
+
   ItemName: any;
   UOM:any;
   Qty:any;
@@ -117,10 +117,11 @@ export class PurchaseOrderComponent implements OnInit {
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-   
+    
     
   ) { }
 
@@ -204,6 +205,84 @@ export class PurchaseOrderComponent implements OnInit {
 
 disableSelect = new FormControl(true);
 
+
+OnSave() {
+
+  let purchaseHeaderInsertObj = {};
+  purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+  purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
+  purchaseHeaderInsertObj['storeId'] = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0;
+  purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0;
+  purchaseHeaderInsertObj['totalAmount'] = 0;
+  purchaseHeaderInsertObj['discAmount'] = 0;
+  purchaseHeaderInsertObj['taxAmount'] = 0;
+  purchaseHeaderInsertObj['freightAmount'] = 0;
+  purchaseHeaderInsertObj['octriAmount'] = 0;
+  purchaseHeaderInsertObj['grandTotal'] = 0;
+  purchaseHeaderInsertObj['isclosed'] = 0;
+  purchaseHeaderInsertObj['isVerified'] = 0;
+  purchaseHeaderInsertObj['remarks'] = "";
+  purchaseHeaderInsertObj['taxID'] = 0;
+  purchaseHeaderInsertObj['addedby'] = 0;
+  purchaseHeaderInsertObj['updatedBy'] = 0;
+  purchaseHeaderInsertObj['paymentTermId'] =0;
+  purchaseHeaderInsertObj['modeofPayment'] = 0;
+  purchaseHeaderInsertObj['worrenty'] = "";
+  purchaseHeaderInsertObj['roundVal'] =0;
+  purchaseHeaderInsertObj['totCGSTAmt'] = 0;
+  purchaseHeaderInsertObj['totSGSTAmt'] = 0;
+  purchaseHeaderInsertObj['totIGSTAmt'] =0;
+  purchaseHeaderInsertObj['transportChanges'] = 0;
+  purchaseHeaderInsertObj['handlingCharges'] = 0;
+  purchaseHeaderInsertObj['freightCharges'] = 0;
+  purchaseHeaderInsertObj['purchaseId'] = 0;
+ 
+  let InsertpurchaseDetailObj = [];
+  this.dsItemNameList.data.forEach((element) => {
+    let purchaseDetailInsertObj = {};
+    purchaseDetailInsertObj['purchaseId'] = 0;
+    purchaseDetailInsertObj['itemId'] =  element.Specification;
+    purchaseDetailInsertObj['uomId'] =  element.Specification;
+    purchaseDetailInsertObj['qty'] =  element.Qty;
+    purchaseDetailInsertObj['rate'] = element.Rate;
+    purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
+    purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+    purchaseDetailInsertObj['discPer'] = element.DiscPer;
+    purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+    purchaseDetailInsertObj['vatPer'] = element.vatPer;
+    purchaseDetailInsertObj['grandTotalAmount'] = this.grandTotalAmount;
+    purchaseDetailInsertObj['mrp'] = element.MRP;
+    purchaseDetailInsertObj['specification'] = element.Specification;
+    purchaseDetailInsertObj['cgstPer'] =  this.CgstPer;
+    purchaseDetailInsertObj['cgstAmt'] = this.CgstAmt;
+    purchaseDetailInsertObj['sgstPer'] = this.SgstPer;
+    purchaseDetailInsertObj['sgstAmt'] = this.SgstAmt;
+    purchaseDetailInsertObj['igstPer'] = this.IgstPer;
+    purchaseDetailInsertObj['igstAmt'] = this.IgstAmt;
+    InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
+
+  });
+
+  let submitData = {
+    "insertPurchaseOrder": purchaseHeaderInsertObj,
+    "insertPurchaseDetail": InsertpurchaseDetailObj,
+  };
+
+    this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
+    if (response) {
+      Swal.fire('Save Purchase!', 'Record Generated Successfully !', 'success').then((result) => {
+        if (result.isConfirmed) {
+          let m = response;
+          this._matDialog.closeAll();
+        }
+      });
+    } else {
+      Swal.fire('Error !', 'Purchase not saved', 'error');
+    }
+    // this.isLoading = '';
+  });
+
+}
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
     this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
@@ -524,9 +603,10 @@ onAdd(){
     });
 
     this.dsItemNameList.data=this.chargeslist;
-    
-}
+  }
 
+
+  
   onClose(){ } 
   onClear(){ }
 }
@@ -547,6 +627,9 @@ export class ItemNameList {
     MRP:number;
     Specification:string;
     position: number;
+  DiscPer: any;
+  vatAmount: any;
+  vatPer: any;
   /**
    * Constructor
    *

@@ -753,6 +753,21 @@
                                                                 <input matInput [(ngModel)]="DisAmount" name="DisAmount"
                                                                 (keyup)="calculateDiscAmount()"   formControlName="DisAmount" id="DisAmount" readonly>
                                                             </mat-form-field>&nbsp;
+
+                                                            <mat-form-field appearance="outline" fxFlex="8%">
+                                                                <mat-label>GST </mat-label>
+                                                                <input matInput [(ngModel)]="GST" name="GST" type="number"
+                                                                (keyup)="calculateGSTperAmount()" formControlName="GST" id="GST"
+                                                                (keydown)="onEnterGST($event)" #gst required
+                                                                (keydown.enter)="focusNextService()">
+                                                            </mat-form-field>&nbsp;
+
+                                                            <mat-form-field appearance="outline" fxFlex="8%">
+                                                                <mat-label>GST Amount</mat-label>
+                                                                <input matInput [(ngModel)]="GSTAmount" required
+                                                                name="GSTAmount" formControlName="GSTAmount"
+                                                                    id="GSTAmount" readonly>
+                                                            </mat-form-field>&nbsp;
                                                         
                                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>CGST </mat-label>
@@ -958,6 +973,24 @@
                                                                     DisAmount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.DisAmount}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="GST">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    GST</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.CGST}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="GSTAmount">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    GSTAmount</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.CGSTAmount}}
                                                                 </mat-cell>
                                                             </ng-container>
 

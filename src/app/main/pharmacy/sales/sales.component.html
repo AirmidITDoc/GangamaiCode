@@ -482,16 +482,25 @@
                                                                 [(ngModel)]="BalAmount" placeholder="0" type="number">
                                                         </mat-form-field>&nbsp;
 
-                                                        <div style="float:right;margin-left: 50px;">
-                                                            <mat-radio-group aria-label="Select an option"
-                                                                formControlName="CashPay" style="margin-top: 12px;">
-                                                                <mat-radio-button value="CashPay">Cash</mat-radio-button>
-                                                                <mat-radio-button value="Credit">Credit</mat-radio-button>
-                                                                <mat-radio-button value="Other"
-                                                                    (click)="OtherPayment()">Other</mat-radio-button>
+
+                                                        <!-- <div style="float:right;">
+                                                            <mat-radio-group aria-label="Select an option" formControlName="CashPay"
+                                                                style="margin-top: 12px;">
+                                                                <mat-radio-button value="CashPay">Cash Pay</mat-radio-button>
+                                                                <mat-radio-button value="Credit">Credit Pay</mat-radio-button>
                                                             </mat-radio-group>
-                                                           
-                                                        </div>
+                
+                                                        </div> -->
+                                                    </div>
+                                                    <div style="float:right;">
+                                                        <mat-radio-group aria-label="Select an option"
+                                                            formControlName="CashPay" style="margin-top: 12px;">
+                                                            <mat-radio-button value="CashPay">Cash</mat-radio-button>
+                                                            <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                                        </mat-radio-group>
+                                                        <button class="next-btn" (click)="onSave()"
+                                                            [disabled]="ItemSubform.invalid">Save</button>
+                                                        <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
                                                    
                                                 </div>
