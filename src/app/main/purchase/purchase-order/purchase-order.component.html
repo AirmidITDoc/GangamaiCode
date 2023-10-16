@@ -460,6 +460,9 @@
                                                                 <mat-option value="IMMIDATE">IMMIDATE</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
+
+                                                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
+                                                        </app-common-date>
                                                     </div>
 
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"

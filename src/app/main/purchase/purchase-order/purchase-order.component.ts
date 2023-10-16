@@ -209,25 +209,25 @@ disableSelect = new FormControl(true);
 OnSave() {
 
   let purchaseHeaderInsertObj = {};
-  purchaseHeaderInsertObj['purchaseDate'] = "2023-10-12T11:41:10.120Z";
-  purchaseHeaderInsertObj['purchaseTime'] = "2023-10-12T11:41:10.120Z";
-  purchaseHeaderInsertObj['storeId'] = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-  purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
-  purchaseHeaderInsertObj['totalAmount'] =0;
+  purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+  purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
+  purchaseHeaderInsertObj['storeId'] = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0;
+  purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0;
+  purchaseHeaderInsertObj['totalAmount'] = 0;
   purchaseHeaderInsertObj['discAmount'] = 0;
   purchaseHeaderInsertObj['taxAmount'] = 0;
   purchaseHeaderInsertObj['freightAmount'] = 0;
   purchaseHeaderInsertObj['octriAmount'] = 0;
-  purchaseHeaderInsertObj['grandTotal'] =0;
-  purchaseHeaderInsertObj['isclosed'] = true;
-  purchaseHeaderInsertObj['isVerified'] = true;
-  purchaseHeaderInsertObj['remarks'] = "string";
+  purchaseHeaderInsertObj['grandTotal'] = 0;
+  purchaseHeaderInsertObj['isclosed'] = 0;
+  purchaseHeaderInsertObj['isVerified'] = 0;
+  purchaseHeaderInsertObj['remarks'] = "";
   purchaseHeaderInsertObj['taxID'] = 0;
   purchaseHeaderInsertObj['addedby'] = 0;
   purchaseHeaderInsertObj['updatedBy'] = 0;
   purchaseHeaderInsertObj['paymentTermId'] =0;
   purchaseHeaderInsertObj['modeofPayment'] = 0;
-  purchaseHeaderInsertObj['worrenty'] = "string";
+  purchaseHeaderInsertObj['worrenty'] = "";
   purchaseHeaderInsertObj['roundVal'] =0;
   purchaseHeaderInsertObj['totCGSTAmt'] = 0;
   purchaseHeaderInsertObj['totSGSTAmt'] = 0;
@@ -241,30 +241,30 @@ OnSave() {
   this.dsItemNameList.data.forEach((element) => {
     let purchaseDetailInsertObj = {};
     purchaseDetailInsertObj['purchaseId'] = 0;
-    purchaseDetailInsertObj['itemId'] = 0;
-    purchaseDetailInsertObj['uomId'] = 0;
-    purchaseDetailInsertObj['qty'] = 0;
-    purchaseDetailInsertObj['rate'] = 0;
-    purchaseDetailInsertObj['totalAmount'] = 0;
-    purchaseDetailInsertObj['discAmount'] = 0;
-    purchaseDetailInsertObj['discPer'] = 0;
-    purchaseDetailInsertObj['vatAmount'] = 0;
-    purchaseDetailInsertObj['vatPer'] = 0 ;
-    purchaseDetailInsertObj['grandTotalAmount'] = 0;
-    purchaseDetailInsertObj['mrp'] = 0;
+    purchaseDetailInsertObj['itemId'] =  element.Specification;
+    purchaseDetailInsertObj['uomId'] =  element.Specification;
+    purchaseDetailInsertObj['qty'] =  element.Qty;
+    purchaseDetailInsertObj['rate'] = element.Rate;
+    purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
+    purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+    purchaseDetailInsertObj['discPer'] = element.DiscPer;
+    purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+    purchaseDetailInsertObj['vatPer'] = element.vatPer;
+    purchaseDetailInsertObj['grandTotalAmount'] = this.grandTotalAmount;
+    purchaseDetailInsertObj['mrp'] = element.MRP;
     purchaseDetailInsertObj['specification'] = element.Specification;
-    purchaseDetailInsertObj['cgstPer'] =  0;
-    purchaseDetailInsertObj['cgstAmt'] =  0;
-    purchaseDetailInsertObj['sgstPer'] =  0;
-    purchaseDetailInsertObj['sgstAmt'] = 0;
-    purchaseDetailInsertObj['igstPer'] = 0;
-    purchaseDetailInsertObj['igstAmt'] = 0;
+    purchaseDetailInsertObj['cgstPer'] =  this.CgstPer;
+    purchaseDetailInsertObj['cgstAmt'] = this.CgstAmt;
+    purchaseDetailInsertObj['sgstPer'] = this.SgstPer;
+    purchaseDetailInsertObj['sgstAmt'] = this.SgstAmt;
+    purchaseDetailInsertObj['igstPer'] = this.IgstPer;
+    purchaseDetailInsertObj['igstAmt'] = this.IgstAmt;
     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
 
   });
 
   let submitData = {
-    "insertPurchase": purchaseHeaderInsertObj,
+    "insertPurchaseOrder": purchaseHeaderInsertObj,
     "insertPurchaseDetail": InsertpurchaseDetailObj,
   };
 
@@ -627,6 +627,9 @@ export class ItemNameList {
     MRP:number;
     Specification:string;
     position: number;
+  DiscPer: any;
+  vatAmount: any;
+  vatPer: any;
   /**
    * Constructor
    *
