@@ -39,8 +39,8 @@ export class BrowsSalesBillService {
       F_Name:'',                                           
       L_Name: '',                                                      
       SalesNo : '',
-      OP_IP_Type:'',
-      StoreId :'',
+      OP_IP_Types:['2'],
+      StoreId :''
 
     })
   }

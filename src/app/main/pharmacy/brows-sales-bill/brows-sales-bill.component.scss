@@ -4,52 +4,76 @@
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-Date{
     width: 220px;
     max-width: 220px;
     min-width: 220px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-SalesNo{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-RegNo{
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-PatientName{
-    width: 290px;
-    max-width: 290px;
-    min-width: 290px;
+    width: 300px;
+    max-width: 300px;
+    min-width: 300px;
+    align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
   }
   .mat-column-NetAmt{
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-BalAmt{
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-PaidAmt{
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-PaidType{
     
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-  }
-  .mat-column-IPNo{
     width: 100px;
     max-width: 100px;
     min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-IPNo{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
   }
   
   height: 300px;
@@ -63,13 +87,224 @@
     width: 250px;
     max-width: 250px;
     min-width: 250px;
+    align-items: left;
+    justify-content:left; 
   }
   .mat-column-BatchNo{
     width: 150px;
     max-width: 150px;
     min-width: 150px;
+    align-items: left;
+    justify-content:left; 
   }
+  .mat-column-Expdate{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-Qty{
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-MRP{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-TotalMRP{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-GST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-CGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-SGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-IGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  height: 300px;
+  max-height: 300px;
+  min-height: 300px;
+}
 
+.Table3 {
+
+  .mat-column-action{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-SalesDate{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-SalesNo{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-RegNo{
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-PatientName{
+    width: 300px;
+    max-width: 300px;
+    min-width: 300px;
+    align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    justify-content:left; 
+  }
+  .mat-column-NetAmt{
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    align-items: left;
+    margin-left: 10px;
+    justify-content:left; 
+  }
+  .mat-column-BalAmt{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-PaidAmt{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-Type{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    align-items: left;
+    justify-content:left; 
+  }
+  height: 300px;
+  max-height: 300px;
+  min-height: 300px;
+}
+
+.Table4{
+
+  .mat-column-ItemName{
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-BatchNo{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-Expdate{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-Qty{
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-MRP{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-TotalMRP{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-GST{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-CGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-SGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-IGST{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
   height: 300px;
   max-height: 300px;
   min-height: 300px;

@@ -8,9 +8,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
- 
+import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Printsal } from '../sales/sales.component';
+import { SalesService } from '../sales/sales.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -20,9 +23,15 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
   animations: fuseAnimations,
   
 })
-export class BrowsSalesBillComponent implements OnInit {
-  selectedValue:string;
-   
+export class BrowsSalesBillComponent implements OnInit { 
+
+  
+  reportPrintObjList: Printsal[] = [];
+  printTemplate: any;
+  reportPrintObj: Printsal;
+  subscriptionArr: Subscription[] = [];
+  currentDate =new Date();
+
   displayedColumns: string[] = [
     'action',
     'Date',
@@ -65,7 +74,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'Qty',
     'MRP',
     'TotalMRP',
-    'GSTAmount',
+    'GST',
     'CGST',
     'SGST',
     'IGST'
@@ -91,6 +100,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   constructor(
     public _BrowsSalesBillService:BrowsSalesBillService,
+    public _BrowsSalesService :SalesService,
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -188,7 +198,7 @@ export class BrowsSalesBillComponent implements OnInit {
       To_Dt :  this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                 
       Reg_No :this._BrowsSalesBillService.formReturn.get('RegNo').value || 0  ,                                                                           
       SalesNo :  this._BrowsSalesBillService.formReturn.get('SalesNo').value || 0  ,
-      OP_IP_Type : this._BrowsSalesBillService.formReturn.get('OP_IP_Type').value || 0  ,
+      OP_IP_Type : this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0  ,
       StoreId   :this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,
     }
     
@@ -217,6 +227,135 @@ export class BrowsSalesBillComponent implements OnInit {
     console.log(Parama);
    this.getSalesReturnDetList(Parama)
  }
+
+
+ 
+
+ getPrint(el) {
+debugger
+  var D_data = {
+    "SalesID":el.SalesId,// 
+    "OP_IP_Type": el.OP_IP_Type
+  }
+
+  let printContents;
+  this.subscriptionArr.push(
+    this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+
+      this.reportPrintObjList = res as Printsal[];
+      console.log(this.reportPrintObjList);
+      this.reportPrintObj = res[0] as Printsal;
+
+      this.getTemplate();
+
+    })
+  );
+}
+getTemplate() {
+  debugger
+  let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
+  this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
+
+    this.printTemplate = resData[0].TempDesign;
+    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+    // ;
+    for (let i = 0; i < keysArray.length; i++) {
+      let reString = "{{" + keysArray[i] + "}}";
+      let re = new RegExp(reString, "g");
+      this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+    }
+    var strrowslist = "";
+    for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      console.log(this.reportPrintObjList);
+      var objreportPrint = this.reportPrintObjList[i - 1];
+      let PackValue = '1200'
+      // <div style="display:flex;width:60px;margin-left:20px;">
+      //     <div>`+ i + `</div> 
+      // </div>
+
+      var strabc = `<hr style="border-color:white" >
+      <div style="display:flex;margin:8px 0">
+      <div style="display:flex;width:40px;margin-left:20px;">
+          <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+      </div>
+    
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.HSNcode + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+objreportPrint.ManufShortName + `</div> 
+      </div>
+      <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
+          <div>`+ objreportPrint.ItemName + `</div> 
+      </div>
+      <div style="display:flex;width:70px;text-align:left;margin-left:30px;">
+      <div>`+ PackValue + `</div> 
+      </div>
+      <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
+          <div>`+ objreportPrint.Qty + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.BatchNo + `</div> 
+       </div>
+      <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+      <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+      </div>
+      <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
+      <div>`+ objreportPrint.UnitMRP + `</div> 
+      </div>
+      <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+          <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+      </div>
+      </div>`;
+      strrowslist += strabc;
+    }
+    var objPrintWordInfo = this.reportPrintObjList[0];
+
+    this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+    this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+    this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+    this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+    console.log(this.printTemplate);
+
+    setTimeout(() => {
+      this.print();
+    }, 1000);
+  });
+
+
+}
+
+convertToWord(e) {
+
+  return converter.toWords(e);
+}
+
+transform2(value: string) {
+  var datePipe = new DatePipe("en-US");
+  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+  return value;
+}
+
+print() {
+
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+  </html>`);
+  
+  popupWin.document.close();
+}
 }
 
 export class SaleList {

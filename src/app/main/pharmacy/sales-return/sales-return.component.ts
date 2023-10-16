@@ -29,7 +29,7 @@ export class SalesReturnComponent implements OnInit {
   ItemSubform: FormGroup;
   labelPosition: 'before' | 'after' = 'after';
   isPatienttypeDisabled: boolean = true;
-
+DoctorName:any;
   
   ItemName: any;
   ItemId: any;
