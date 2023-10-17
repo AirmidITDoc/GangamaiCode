@@ -128,11 +128,14 @@
                   <div fxlayout="row">
                     <div style="width: 100%;">
                       <div>
-                        <button mat-raised-button (click)="exportReport()"
-                          style="background-color: aliceblue;color: brown;">Export Table
+                        <button mat-raised-button (click)="exportReportExcel()"
+                          style="background-color: aliceblue;color: brown; margin-right: 15px;">Export Table(Excel)
+                        </button>
+                        <button mat-raised-button (click)="exportReportPdf()"
+                          style="background-color: aliceblue;color: brown;">Export Table(PDF)
                         </button>
                       </div>
-                      <mat-table #table matSort table="table1" [dataSource]="dataSource"
+                      <mat-table #table matSort table="table1" [dataSource]="dataSource" id="app-table"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
                         <ng-container matColumnDef="PatientOldNew">

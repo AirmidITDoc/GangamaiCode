@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
@@ -37,5 +39,14 @@ export class ExcelDownloadService {
       type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_exported' + EXCEL_EXTENSION);
+  }
+
+  exportPdfDownload(header: any, data: any, name: string) {
+    const doc = new jsPDF()
+    autoTable(doc, {
+      head: header,
+      body: data,
+    });
+    doc.save(name + '.pdf');
   }
 }

@@ -1977,10 +1977,28 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
        });
   
 }
-exportReport() {
+exportReportExcel() {
   let exportHeaders = ['RegNoWithPrefix', 'PatientName', 'DVisitDate', 'VisitTime', 'OPDNo', 'Doctorname', 'RefDocName', 'PatientType'];
   this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'appointment');
 }
+
+  exportReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.RegNoWithPrefix);
+      tempObj.push(e.PatientName);
+      // tempObj.push(e.DVisitDate);
+      tempObj.push(e.VisitTime);
+      tempObj.push(e.OPDNo);
+      tempObj.push(e.Doctorname);
+      tempObj.push(e.RefDocName);
+      tempObj.push(e.PatientType);
+      actualData.push(tempObj);
+    });
+    let headers = [['Reg No', 'Patient Name', 'Visit Time', 'OPD No', 'Doctor Name', 'Ref Doc Name', 'Patient Type']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'appointment');
+  }
 
 
 
