@@ -1618,10 +1618,7 @@ debugger
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
-
     }
-
-
   }
 
 
@@ -1698,9 +1695,6 @@ debugger
   }
 
   onCashpaySave() {
-
-
-   
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
    
     let ConcessionId = 0;
@@ -1708,8 +1702,8 @@ debugger
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
       debugger
       
-    if (this.patientDetailsFormGrp.get('balanceAmountController').value==0) {
-    console.log("Procced with Payment Option");
+    // if (this.patientDetailsFormGrp.get('balanceAmountController').value==0) {
+    // console.log("Procced with Payment Option");
 
     let SalesInsert = {};
     SalesInsert['Date'] = this.dateTimeObj.date;
@@ -1729,7 +1723,7 @@ debugger
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName;
+    SalesInsert['externalPatientName'] = this.PatientName;
     SalesInsert['doctorName'] = "";
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -1779,8 +1773,8 @@ debugger
       let updateCurStkSales = {};
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
-      updateCurStkSales['storeID'] = element.StoreId;
-      updateCurStkSales['stkID'] = this.StockId;
+      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSales['stkID'] = element.StockId;
 
       updateCurStkSalestarr.push(updateCurStkSales);
     });
@@ -1896,7 +1890,7 @@ debugger
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
-  }
+  // }
 }
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
@@ -1926,10 +1920,10 @@ debugger
     salesInsertCredit['isFree'] = 0;
     salesInsertCredit['unitID'] = 1;
     salesInsertCredit['addedBy'] = this._loggedService.currentUserValue.user.id,
-      salesInsertCredit['externalPatientName'] = this.PatientName;
+    salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
     salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
-      salesInsertCredit['isPrescription'] = 0;
+    salesInsertCredit['isPrescription'] = 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
     salesInsertCredit['wardId'] = 0;
@@ -2044,8 +2038,6 @@ debugger
   }
 
   public onEnterdiscper(event): void {
-    debugger
-
     if (event.which === 13) {
       // if (this.DiscPer == 0) {
       //   this.discamount.nativeElement.focus();
