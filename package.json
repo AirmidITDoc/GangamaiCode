@@ -52,6 +52,7 @@
     "file-saver": "2.0.5",
     "font-awesome": "4.7.0",
     "idlejs": "3.0.0",
+    "jspdf-autotable": "3.7.0",
     "lodash": "4.17.15",
     "mat-timepicker": "5.1.4",
     "moment": "2.24.0",
