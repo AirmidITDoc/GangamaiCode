@@ -81,4 +81,8 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
   
+  public GRNSave(Param){
+    return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
+  }
+  
 }

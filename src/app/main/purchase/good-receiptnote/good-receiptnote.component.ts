@@ -555,6 +555,103 @@ getItemNameList(){
       .map((i, idx) => (i.position = (idx + 1), i));
   }
 
+
+  OnSave() {
+
+    let grnSaveObj = {};
+    grnSaveObj['grnDate'] = this.dateTimeObj.date;
+    grnSaveObj['grnTime'] = this.dateTimeObj.time;
+    grnSaveObj['storeId'] = this._GRNList.GRNSearchGroup.get('ToStoreId').value.ToStoreId || 0;
+    grnSaveObj['supplierID'] =this._GRNList.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0;
+    grnSaveObj['invoiceNo'] = "";
+    grnSaveObj['deliveryNo'] = "";
+    grnSaveObj['gateEntryNo'] = "";
+    grnSaveObj['cash_CreditType'] = true,
+    grnSaveObj['grnType'] = 0;
+    grnSaveObj['totalAmount'] = 0;
+    grnSaveObj['totalDiscAmount'] = 0;
+    grnSaveObj['totalVATAmount'] = 0;
+    grnSaveObj['netAmount'] = 0;
+    grnSaveObj['remark'] = "";
+    grnSaveObj['receivedBy'] = "";
+    grnSaveObj['isVerified'] = false;
+    grnSaveObj['isClosed'] =false;
+    grnSaveObj['addedBy'] = 0;
+    grnSaveObj['invDate'] = this.dateTimeObj.date;
+    grnSaveObj['debitNote'] =0;
+    grnSaveObj['creditNote'] = 0;
+    grnSaveObj['otherCharge'] = 0;
+    grnSaveObj['roundingAmt'] =0;
+    grnSaveObj['totCGSTAmt'] = 0;
+    grnSaveObj['totSGSTAmt'] = 0;
+    grnSaveObj['totIGSTAmt'] = 0;
+    grnSaveObj['tranProcessId'] = 0;
+    grnSaveObj['tranProcessMode'] = "";
+    grnSaveObj['grnid'] = 0;
+   
+    let SavegrnDetailObj = [];
+    this.dsItemNameList.data.forEach((element) => {
+  
+      console.log(element);
+  
+      let grnDetailSaveObj = {};
+      grnDetailSaveObj['grnId'] = 0;
+      grnDetailSaveObj['itemId'] = 0;// element.ItemID;
+      grnDetailSaveObj['uomId'] = 0; //element.UOMID;
+      grnDetailSaveObj['receiveQty'] = 0;// element.Qty;
+      grnDetailSaveObj['freeQty'] = 0;//element.Rate;
+      grnDetailSaveObj['mrp'] = 0;// element.TotalAmount;
+      grnDetailSaveObj['rate'] = 0; //element.DiscAmount;
+      grnDetailSaveObj['totalAmount'] = 0 ; //element.DiscPer;
+      grnDetailSaveObj['conversionFactor'] = 0 ;//element.vatAmount;
+      grnDetailSaveObj['vatPercentage'] = 0; //element.vatPer;;
+      grnDetailSaveObj['vatAmount'] = 0 ;//this.grandTotalAmount;
+      grnDetailSaveObj['discPercentage'] = 0; //element.MRP;
+      grnDetailSaveObj['discAmount'] = 0; // element.Specification;
+      grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
+      grnDetailSaveObj['landedRate'] = 0 ;//this.CgstAmt;
+      grnDetailSaveObj['netAmount'] = 0; //this.SgstPer;
+      grnDetailSaveObj['grossAmount'] = 0 ;//this.SgstAmt;
+      grnDetailSaveObj['totalQty'] = 0; //this.IgstPer;
+      grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
+      grnDetailSaveObj['batchNo'] = ""; // this.CgstPer;
+      grnDetailSaveObj['batchExpDate'] = this.dateTimeObj.date;
+      grnDetailSaveObj['purUnitRate'] = 0; //this.SgstPer;
+      grnDetailSaveObj['purUnitRateWF'] = 0; //this.SgstPer;
+      grnDetailSaveObj['cgstPer'] = 0 ;//this.SgstAmt;
+      grnDetailSaveObj['cgstAmt'] = 0; //this.IgstPer;
+      grnDetailSaveObj['sgstPer'] = 0; //this.IgstAmt;
+      grnDetailSaveObj['sgstAmt'] = 0 ;//this.SgstAmt;
+      grnDetailSaveObj['igstPer'] = 0; //this.IgstPer;
+      grnDetailSaveObj['igstAmt'] = 0; //this.IgstAmt;
+      grnDetailSaveObj['mrP_Strip'] = 0 ;//this.SgstAmt;
+
+      SavegrnDetailObj.push(grnDetailSaveObj);
+  
+    });
+  
+    let submitData = {
+      "grnSave": grnSaveObj,
+      "grnDetailSave": SavegrnDetailObj,
+    };
+  
+    console.log(submitData);
+  
+      this._GRNList.GRNSave(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire('Save GRN !', 'Record Generated Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            let m = response;
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'GRN not saved', 'error');
+      }
+      // this.isLoading = '';
+    });
+  
+  }
   @ViewChild('itemname') itemname: ElementRef;
   @ViewChild('hsncode') hsncode: ElementRef;
   @ViewChild('batchno') batchno: ElementRef;
@@ -759,6 +856,7 @@ export class GRNList {
   IGSTAmount: number;
   NetAmount: number;
   position: number;
+   ItemID: any;
  
   /**
    * Constructor
