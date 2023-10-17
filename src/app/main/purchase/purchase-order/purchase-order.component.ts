@@ -171,12 +171,12 @@ export class PurchaseOrderComponent implements OnInit {
       "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
        "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "IsVerify": 0 ,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+       "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
        "SupplierId": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
       this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      console.log(this.dsPurchaseOrder.data)
+      // console.log(this.dsPurchaseOrder.data)
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -187,7 +187,6 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   getPurchaseItemList(Params){
-   debugger
     var Param = {
       "PurchaseId":10357
     }
@@ -202,9 +201,7 @@ export class PurchaseOrderComponent implements OnInit {
       });
   }
 
-
 disableSelect = new FormControl(true);
-
 
 OnSave() {
 
@@ -219,8 +216,8 @@ OnSave() {
   purchaseHeaderInsertObj['freightAmount'] = 0;
   purchaseHeaderInsertObj['octriAmount'] = 0;
   purchaseHeaderInsertObj['grandTotal'] = 0;
-  purchaseHeaderInsertObj['isclosed'] = 0;
-  purchaseHeaderInsertObj['isVerified'] = 0;
+  purchaseHeaderInsertObj['isclosed'] = false;
+  purchaseHeaderInsertObj['isVerified'] = false;
   purchaseHeaderInsertObj['remarks'] = "";
   purchaseHeaderInsertObj['taxID'] = 0;
   purchaseHeaderInsertObj['addedby'] = 0;
@@ -239,38 +236,43 @@ OnSave() {
  
   let InsertpurchaseDetailObj = [];
   this.dsItemNameList.data.forEach((element) => {
+
+    console.log(element);
+
     let purchaseDetailInsertObj = {};
     purchaseDetailInsertObj['purchaseId'] = 0;
-    purchaseDetailInsertObj['itemId'] =  element.Specification;
-    purchaseDetailInsertObj['uomId'] =  element.Specification;
+    purchaseDetailInsertObj['itemId'] =  element.ItemID;
+    purchaseDetailInsertObj['uomId'] = element.UOMID;
     purchaseDetailInsertObj['qty'] =  element.Qty;
     purchaseDetailInsertObj['rate'] = element.Rate;
     purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
     purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-    purchaseDetailInsertObj['discPer'] = element.DiscPer;
-    purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-    purchaseDetailInsertObj['vatPer'] = element.vatPer;
-    purchaseDetailInsertObj['grandTotalAmount'] = this.grandTotalAmount;
+    purchaseDetailInsertObj['discPer'] = 0 ; //element.DiscPer;
+    purchaseDetailInsertObj['vatAmount'] = 0 ;//element.vatAmount;
+    purchaseDetailInsertObj['vatPer'] = 0; //element.vatPer;;
+    purchaseDetailInsertObj['grandTotalAmount'] = 0 ;//this.grandTotalAmount;
     purchaseDetailInsertObj['mrp'] = element.MRP;
-    purchaseDetailInsertObj['specification'] = element.Specification;
-    purchaseDetailInsertObj['cgstPer'] =  this.CgstPer;
-    purchaseDetailInsertObj['cgstAmt'] = this.CgstAmt;
-    purchaseDetailInsertObj['sgstPer'] = this.SgstPer;
-    purchaseDetailInsertObj['sgstAmt'] = this.SgstAmt;
-    purchaseDetailInsertObj['igstPer'] = this.IgstPer;
-    purchaseDetailInsertObj['igstAmt'] = this.IgstAmt;
+    purchaseDetailInsertObj['specification'] = 0; // element.Specification;
+    purchaseDetailInsertObj['cgstPer'] = 0; // this.CgstPer;
+    purchaseDetailInsertObj['cgstAmt'] = 0 ;//this.CgstAmt;
+    purchaseDetailInsertObj['sgstPer'] = 0; //this.SgstPer;
+    purchaseDetailInsertObj['sgstAmt'] = 0 ;//this.SgstAmt;
+    purchaseDetailInsertObj['igstPer'] = 0; //this.IgstPer;
+    purchaseDetailInsertObj['igstAmt'] = 0; //this.IgstAmt;
     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
 
   });
 
   let submitData = {
-    "insertPurchaseOrder": purchaseHeaderInsertObj,
-    "insertPurchaseDetail": InsertpurchaseDetailObj,
+    "purchaseHeaderInsert": purchaseHeaderInsertObj,
+    "purchaseDetailInsert": InsertpurchaseDetailObj,
   };
+
+  console.log(submitData);
 
     this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
     if (response) {
-      Swal.fire('Save Purchase!', 'Record Generated Successfully !', 'success').then((result) => {
+      Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
         if (result.isConfirmed) {
           let m = response;
           this._matDialog.closeAll();
@@ -283,6 +285,7 @@ OnSave() {
   });
 
 }
+
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
     this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
@@ -351,7 +354,6 @@ calculateGSTAmount(){
   
     // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
     this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
-
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
  
   }
@@ -393,8 +395,15 @@ onScroll() {
 }
 
 getToStoreSearchList() {
-  this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+  debugger;
+  var vdata = {
+    Id: this._loggedService.currentUserValue.user.storeId
+  }
+  console.log(vdata);
+  this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
     this.ToStoreList = data;
+    console.log(this.ToStoreList);
+    this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').setValue(this.Store1List[0]);
   });
 }
 
@@ -420,10 +429,9 @@ getOptionTextItemName(option) {
 }
 
 getSupplierSearchCombo() {
-debugger
   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
     this.SupplierList = data;
-    console.log(data);
+    // console.log(data);
     this.optionsMarital = this.SupplierList.slice();
     this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').valueChanges.pipe(
       startWith(''),
@@ -434,7 +442,6 @@ debugger
 }
 
 getPaymentSearchCombo() {
-  debugger
     this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
       console.log(data);
@@ -453,10 +460,10 @@ getPaymentSearchCombo() {
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
       "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
     }
-    console.log(Param);
+    // console.log(Param);
     this._PurchaseOrder.getItemNameList(Param).subscribe(data =>{
         this.ItemName = data;
-        console.log(data);
+        // console.log(data);
         this.optionsItemName = this.ItemName.slice();
         this.filteredoptionsItemName = this._PurchaseOrder.userFormGroup.get('ItemName').valueChanges.pipe(
           startWith(''),
@@ -502,11 +509,11 @@ getFromStoreSearchList() {
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
       "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
     }
-    console.log(Param);
+    // console.log(Param);
     this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
       this.filteredOptions = data;
-      console.log( this.filteredOptions )
-            if (this.filteredOptions.length == 0) {
+      // console.log( this.filteredOptions )
+      if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
         this.noOptionFound = false;
@@ -581,7 +588,6 @@ getSelectedObj(obj) {
 }
 
 onAdd(){
-  debugger
   this.dsItemNameList.data = [];
   // this.chargeslist=this.chargeslist;
   this.chargeslist.push(
@@ -627,9 +633,10 @@ export class ItemNameList {
     MRP:number;
     Specification:string;
     position: number;
-  DiscPer: any;
-  vatAmount: any;
-  vatPer: any;
+    DiscPer: any;
+    vatAmount: any;
+    vatPer: any;
+    UOMID: any;
   /**
    * Constructor
    *

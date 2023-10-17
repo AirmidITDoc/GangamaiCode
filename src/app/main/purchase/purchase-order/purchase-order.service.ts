@@ -67,6 +67,10 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
 
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  }
+  
   public getFromStoreSearchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
@@ -83,4 +87,12 @@ export class PurchaseOrderService {
     return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
   }
   
+  // public PurchaseUpdate(Param){
+  //   return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
+  // }
+  
+  // public PurchaseVerify(Param){
+  //   return this._httpClient.post("Pharmacy/VerifyPurchaseOrder", Param)
+  // }
+
 }
