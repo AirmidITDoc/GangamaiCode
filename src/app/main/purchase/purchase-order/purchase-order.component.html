@@ -76,7 +76,6 @@
                                                         </mat-form-field>
 
 
-
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>To Store</mat-label>
                                                             <input matAutocompletePosition="below" type="text"
@@ -406,7 +405,7 @@
                                                         fxLayoutGap="4px">
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
-                                                            <mat-label>MEDICAL RECORD</mat-label>
+                                                            <!-- <mat-label>MEDICAL RECORD</mat-label> -->
                                                             <mat-select formControlName="ToStoreId" name="ToStoreId"
                                                                 [disabled]="disableSelect.value">
                                                                 <mat-option></mat-option>
@@ -910,7 +909,7 @@
                                                 <div class="net-amt">
                                                     <button class="next-btn"
                                                         style="border-radius: 16px;margin-left: 400px;"
-                                                       
+                                                        [disabled]="_PurchaseOrder.userFormGroup.invalid"
                                                         (click)="OnSave()">Save</button>
                                                     <button class="footer-btn" style="border-radius: 16px;"
                                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
