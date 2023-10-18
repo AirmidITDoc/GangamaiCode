@@ -1,0 +1,87 @@
+.Tab1 {
+    .mat-column-RegNo {
+        width: 150px;
+        max-width: 150px;
+        min-width: 100px;
+        align-items: left;
+    }
+
+    .mat-column-PatientName {
+        width: 300px;
+        max-width: 400px;
+        min-width: 300px;
+        align-items: left;
+    }
+
+    .mat-column-WardName {
+        width: 300px;
+        max-width: 400px;
+        min-width: 300px;
+        align-items: left;
+    }
+
+    .mat-column-Vst_Adm_Date {
+        width: 150px;
+        max-width: 200px;
+        min-width: 150px;
+        align-items: left;
+    }
+
+    height: 320px;
+    max-height: 320px;
+    min-height: 320px;
+
+}
+
+.Tab2 {
+    .mat-column-ServiceName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        align-items: left;
+    }
+
+    .mat-column-ReqDate {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        align-items: left;
+    }
+
+    .mat-column-ReqTime {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        align-items: left;
+    }
+    .mat-column-AddedByName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 200px;
+        align-items: left;
+    }
+    .mat-column-AddBilingUser {
+        width: 150px;
+        max-width: 200px;
+        min-width: 150px;
+        align-items: left;
+    }
+    .mat-column-BillDateTime {
+        width: 150px;
+        max-width: 150px;
+        min-width: 100px;
+        align-items: left;
+    }
+    .mat-column-IsStatus {
+        width: 150px;
+        max-width: 200px;
+        min-width: 150px;
+        align-items: left;
+    }
+    
+    height: 320px;
+    max-height: 320px;
+    min-height: 320px;
+
+
+}

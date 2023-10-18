@@ -1,0 +1,256 @@
+<div class="dialog-content-wrapper">
+    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center " style="height: 40px;">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="font-size: 20px;width: 83%; font-weight: 400;">
+                Request New Test
+            </span>
+
+            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+    </div>
+    <form [formGroup]="searchFormGroup" style="width: 100%;height: auto;">
+        <div class="content-card" style="margin-bottom: 10px;">
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="background-color: white;
+                         padding: 5px 10px 5px 5px;" fxLayoutGap="4px">
+
+                    <mat-radio-group formControlName="radioIp" style="padding: 10px 0px 0px 30px;" fxFlex="5%">
+                        <mat-radio-button value="1">IP</mat-radio-button>
+                    </mat-radio-group>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="redio-container">
+                        <mat-form-field appearance="outline" style="width:300%;margin-left:15px;"
+                            disabled="isRegSearchDisabled">
+                            <input type="text" name="RegID" formControlName="RegID"
+                                placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                [matAutocomplete]="auto1"  (input)="getSearchList()">
+                            <span matSuffix style="display: flex;" >
+                                <mat-icon class="mat-icon-close"
+                                    (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                (optionSelected)='getSelectedObj($event.option.value)'>
+                                <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                    {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                    {{option.MobileNo}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error *ngIf="searchFormGroup.get('RegID').hasError('required')">
+                                Required field cannot be left blank
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content-card" style="margin-bottom: 10px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                        <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
+                        </h3>
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="flex-item" style="width: 150px;">
+                                <h3 class="labels-h3">RegNo</h3>
+                            </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">{{RegId}}</h6>
+                            </div>
+                        </div>
+
+
+                        <div class="patient-sub">
+                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="flex-item" style="width: 50px;">
+                                    <h3 class="labels-h3">Patient Name</h3>
+                                </div>
+                                <div class="flex-item-middle">
+                                    <h6 class="labels-h6">:</h6>
+                                </div>
+                                <div class="flex-item">
+                                    <h6 class="labels-h6">{{PatientName}}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="patient-sub">
+                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="flex-item" style="width:40px;">
+                                    <h3 class="labels-h3">Doctor Name</h3>
+                                </div>
+                                <div class="flex-item-middle">
+                                    <h6 class="labels-h6">:</h6>
+                                </div>
+                                <div class="flex-item">
+                                    <h6 class="labels-h6">{{DoctorName}}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="20%">
+                            <mat-label>Date</mat-label>
+                            <input name="Date" matInput [matDatepicker]="picker">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field> -->
+                        <app-common-date  style="right: 100px;"
+                        (dateTimeEventEmitter)="getDateTime($event)">
+                    </app-common-date>
+
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="myFormGroup">
+        <div class="content-card" style="margin-bottom: 10px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-top: 10px;">
+
+                <mat-radio-group  formControlName="IsPathRad" name="IsPathRad" style="padding: 10px 0px 30px 30px;"
+                         (change)="getServiceList()">
+                    <mat-radio-button style="margin-right: 25px;" value="1">Pathology</mat-radio-button> 
+                    <mat-radio-button style="margin-right: 25px;" value="2">Radiology</mat-radio-button> 
+                    <mat-radio-button style="margin-right: 200px;" value="3">Other Services</mat-radio-button>
+                </mat-radio-group>
+                
+
+                <!-- Table 1 -->
+                <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px" style=" height:10px">
+
+                    <mat-card style=" width:560px;">
+                        <mat-table class="table1" matSort [dataSource]="dstable1" [@animateStagger]="{value:'50'}">
+
+                            <ng-container matColumnDef="ServiceName" formControlName="ServiceName1">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Service Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.ServiceName}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Price" formControlName="Price1">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Price</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.Price}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15"
+                            showFirstLastButtons>
+                          </mat-paginator>
+
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+            <form [formGroup]="myFormGroup">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="background-color: white;
+                         padding: 0px 5px 5px 5px;" fxLayoutGap="4px">
+                    <div class="redio-container">
+                        <mat-form-field appearance="outline" style="width:210%;margin-left:15px;"
+                            disabled="isServiceSearchDisabled">
+                            <input type="text" name="ServiceName2" formControlName="ServiceName2"
+                                placeholder="Service Name"  (keyup)="getServiceList()" matInput>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                            </span>
+                            
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+       
+
+
+
+        <!-- Table 2 -->
+
+
+        <div class="content-card" style="padding-left: 20px;">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                <mat-card style="width:47%; ">
+                    <mat-table class="table2" matSort [dataSource]="dsLabRequest2" [@animateStagger]="{value:'50'}">
+                        
+
+                        <ng-container matColumnDef="ServiceName2" formControlName="ServiceName2">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                ServiceName</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                 {{element.ServiceName}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Price2" formControlName="Price2">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Price</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.Price}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-icon-button matTooltip="delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns2; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedVisitColumns2;" class="element"
+                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSaveEntry(row)"></mat-row>
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15"
+                         showFirstLastButtons>
+                     </mat-paginator>
+
+                </mat-card>
+            </div>
+        </div>
+
+    </form>
+
+    <div style=" margin-top: 10px;">
+        <button mat-raised-button class="clearbutton" style="width: 100px;margin-right: 15px;">Close</button>
+        <button mat-raised-button class="clearbutton" style=" width:100px; margin-right: 15px;"
+        (click)="OnSaveLabRequest()">Save</button>
+    </div>
+</div>
