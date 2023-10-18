@@ -23,6 +23,7 @@ import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component'
 import { Advheaderdetail, UpdateBill } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { Router } from '@angular/router';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -98,7 +99,8 @@ export class IPBillBrowseListComponent implements OnInit {
     private _ActRoute: Router,
     private santitized: DomSanitizer,
     private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,) {
+    private advanceDataStored: AdvanceDataStored,
+    private reportDownloadService: ExcelDownloadService) {
 
   }
 
@@ -1041,6 +1043,25 @@ export class IPBillBrowseListComponent implements OnInit {
         this.print();
       }, 1000);
     });
+  }
+
+  exportReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.BillDate);
+      tempObj.push(e.RegNo);
+      // tempObj.push(e.DVisitDate);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.TotalAmt);
+      tempObj.push(e.ConcessionAmt);
+      tempObj.push(e.NetPayableAmt);
+      tempObj.push(e.NEFTPay);
+      actualData.push(tempObj);
+    });
+    let headers = [['Bill Date', 'Reg ID', 'PBill No', 'Patient Name', 'Total Amt', 'Concession Amt', 'Net Payable Amt', 'NEFT Pay']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Bill');
   }
 }
 
