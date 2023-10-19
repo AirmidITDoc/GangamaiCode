@@ -951,6 +951,7 @@ IsCreditflag : boolean=false
       FinalGSTAmt: '',
       BalanceAmt: '',
       CashPay: ['CashPay'],
+      referanceNo: '',
       // Credit: [0]
     });
   }
@@ -1035,6 +1036,7 @@ IsCreditflag : boolean=false
           return acc;
         }, {})
         this.sIsLoading = '';
+        this.patientname.nativeElement.focus();
         // console.log(this.salesIdWiseObj);
       } else {
         this.sIsLoading = '';
@@ -2075,8 +2077,7 @@ IsCreditflag : boolean=false
     }
   }
   public onEntermobileno(event): void {
-    if (event.which === 13) {
-      this.patientname.nativeElement.focus();
+    if ((this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('MobileNo').value.length == 10)) {
       this.getTopSalesDetailsList(this.MobileNo);
     }
   }
@@ -2213,6 +2214,10 @@ IsCreditflag : boolean=false
   onClose() {
     // this.dialogRef.close({ result: "cancel" });
     this.Itemchargeslist = [];
+  }
+
+  onChangePayment(event: any) {
+    console.log(event.value);
   }
 }
 
