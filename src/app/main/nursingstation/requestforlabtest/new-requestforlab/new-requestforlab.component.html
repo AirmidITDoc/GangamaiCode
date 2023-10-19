@@ -32,8 +32,8 @@
                             disabled="isRegSearchDisabled">
                             <input type="text" name="RegID" formControlName="RegID"
                                 placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                [matAutocomplete]="auto1"  (input)="getSearchList()">
-                            <span matSuffix style="display: flex;" >
+                                [matAutocomplete]="auto1" (input)="getSearchList()">
+                            <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
@@ -46,7 +46,7 @@
                                     {{option.MobileNo}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="searchFormGroup.get('RegID').hasError('required')">
+                            <mat-error *ngIf="searchFormGroup.get('RegID').hasError('required')  && searchFormGroup.get('RegID').touched">
                                 Required field cannot be left blank
                             </mat-error>
                         </mat-form-field>
@@ -54,7 +54,9 @@
                 </div>
             </div>
         </div>
+    </form>
 
+    <form [formGroup]="myFormGroup">
 
         <div class="content-card" style="margin-bottom: 10px;">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
@@ -67,8 +69,9 @@
                     </div>
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                            <div class="flex-item" style="width: 150px;">
+                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                        formControlName="RegId" required>
+                            <div class="flex-item" style="width: 200px;">
                                 <h3 class="labels-h3">RegNo</h3>
                             </div>
                             <div class="flex-item-middle">
@@ -77,24 +80,49 @@
                             <div class="flex-item">
                                 <h6 class="labels-h6">{{RegId}}</h6>
                             </div>
+                            <!-- <mat-error class="error"
+                                *ngIf="myFormGroup.get('RegId').touched">
+                                RegId is required
+                            </mat-error> -->
                         </div>
 
-
-                        <div class="patient-sub">
-                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                <div class="flex-item" style="width: 50px;">
-                                    <h3 class="labels-h3">Patient Name</h3>
-                                </div>
-                                <div class="flex-item-middle">
-                                    <h6 class="labels-h6">:</h6>
-                                </div>
-                                <div class="flex-item">
-                                    <h6 class="labels-h6">{{PatientName}}</h6>
-                                </div>
+                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                            formControlName="AdmissionID" required>
+                            <div class="flex-item" style="width: 200px;">
+                                <h3 class="labels-h3">AdmissionID
+                                </h3>
                             </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">{{vAdmissionID}}</h6>
+                            </div>
+                            <!-- <mat-error class="error"
+                                *ngIf="myFormGroup.get('AdmissionID').invalid && myFormGroup.get('AdmissionID').touched">
+                                AdmissionID is required
+                            </mat-error> -->
                         </div>
 
-                        <div class="patient-sub">
+                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                            formControlName="PatientName" required>
+                            <div class="flex-item" style="width: 300px;">
+                                <h3 class="labels-h3">Patient Name
+                                </h3>
+                            </div>
+                            <div class="flex-item-middle">
+                                <h6 class="labels-h6">:</h6>
+                            </div>
+                            <div class="flex-item">
+                                <h6 class="labels-h6">{{PatientName}}</h6>
+                            </div>
+                            <!-- <mat-error class="error"
+                                *ngIf="myFormGroup.get('PatientName').invalid && myFormGroup.get('PatientName').touched">
+                                PatientName is required
+                            </mat-error> -->
+                        </div>
+
+                        <!-- <div class="patient-sub">
                             <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                 <div class="flex-item" style="width:40px;">
                                     <h3 class="labels-h3">Doctor Name</h3>
@@ -106,7 +134,7 @@
                                     <h6 class="labels-h6">{{DoctorName}}</h6>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- <mat-form-field appearance="outline" fxFlex="20%">
                             <mat-label>Date</mat-label>
@@ -114,27 +142,29 @@
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field> -->
-                        <app-common-date  style="right: 100px;"
-                        (dateTimeEventEmitter)="getDateTime($event)">
-                    </app-common-date>
+                         
+                        <app-common-date  style="float: right;" (dateTimeEventEmitter)="getDateTime($event)">
+                        </app-common-date>
+                        
 
                     </div>
+                    
                 </mat-card>
             </div>
         </div>
-    </form>
 
-    <form [formGroup]="myFormGroup">
+
+
         <div class="content-card" style="margin-bottom: 10px;">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-top: 10px;">
 
-                <mat-radio-group  formControlName="IsPathRad" name="IsPathRad" style="padding: 10px 0px 30px 30px;"
-                         (change)="getServiceList()">
-                    <mat-radio-button style="margin-right: 25px;" value="1">Pathology</mat-radio-button> 
-                    <mat-radio-button style="margin-right: 25px;" value="2">Radiology</mat-radio-button> 
+                <mat-radio-group formControlName="IsPathRad" name="IsPathRad" style="padding: 10px 0px 30px 30px;"
+                    (change)="getServiceList()">
+                    <mat-radio-button style="margin-right: 25px;" value="1">Pathology</mat-radio-button>
+                    <mat-radio-button style="margin-right: 25px;" value="2">Radiology</mat-radio-button>
                     <mat-radio-button style="margin-right: 200px;" value="3">Other Services</mat-radio-button>
                 </mat-radio-group>
-                
+
 
                 <!-- Table 1 -->
                 <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px" style=" height:10px">
@@ -156,16 +186,46 @@
                                     {{element.Price}} </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="buttons" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <ng-container class="actions">
+
+                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                            (click)="deleteTableRow($event ,contact)">
+                                            delete
+                                        </span>
+                                    </ng-container>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
                             <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                [@animate]="{value:'*',params:{y:'100%'}}">
+                            </mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dstable1!=null && dstable1.data.length==0)}">
+                            </mat-footer-row>
+
                         </mat-table>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15"
-                            showFirstLastButtons>
-                          </mat-paginator>
-
-
+                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15" showFirstLastButtons>
+                        </mat-paginator>
                     </mat-card>
                 </div>
             </div>
@@ -181,25 +241,24 @@
                     <div class="redio-container">
                         <mat-form-field appearance="outline" style="width:210%;margin-left:15px;"
                             disabled="isServiceSearchDisabled">
-                            <input type="text" name="ServiceName2" formControlName="ServiceName2"
-                                placeholder="Service Name"  (keyup)="getServiceList()" matInput>
+                            <input type="text" name="ServiceName2" formControlName="ServiceId"
+                                placeholder="Service Name" (keyup)="getServiceList()" matInput>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
                             </span>
-                            
+                            <mat-error class="error"
+                             *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
+                                ServiceName is required
+                             </mat-error>
+
                         </mat-form-field>
                     </div>
                 </div>
             </form>
         </div>
-
-
-       
-
-
 
         <!-- Table 2 -->
 
@@ -208,13 +267,13 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                 <mat-card style="width:47%; ">
                     <mat-table class="table2" matSort [dataSource]="dsLabRequest2" [@animateStagger]="{value:'50'}">
-                        
+
 
                         <ng-container matColumnDef="ServiceName2" formControlName="ServiceName2">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                 ServiceName</mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                 {{element.ServiceName}} </mat-cell>
+                                {{element.ServiceName}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Price2" formControlName="Price2">
@@ -224,33 +283,36 @@
                                 {{element.Price}} </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="action" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                <button mat-icon-button matTooltip="delete">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
+                        
                         <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns2; sticky: true">
                         </mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedVisitColumns2;" class="element"
                             [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSaveEntry(row)"></mat-row>
                     </mat-table>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15"
-                         showFirstLastButtons>
-                     </mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15" showFirstLastButtons>
+                    </mat-paginator>
 
                 </mat-card>
+            </div>
+        </div>
+    
+    
+
+        <div class="footer-navigation-container" fxLayout.gt-xs="row">
+
+            <div style="margin-top: 20px; margin-right: 10px; ">
+                <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
+                    (click)="OnSaveLabRequest()">Save</button>
+                <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
             </div>
         </div>
 
     </form>
 
-    <div style=" margin-top: 10px;">
-        <button mat-raised-button class="clearbutton" style="width: 100px;margin-right: 15px;">Close</button>
+    <!-- <div style=" margin-top: 10px;" class="clearbutton">
+        <button mat-raised-button class="footer-btn" style="width: 100px;margin-right: 5px;" (click)="onClose()">Close</button>
         <button mat-raised-button class="clearbutton" style=" width:100px; margin-right: 15px;"
         (click)="OnSaveLabRequest()">Save</button>
-    </div>
+    </div> -->
+
 </div>

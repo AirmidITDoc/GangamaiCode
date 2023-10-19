@@ -87,12 +87,13 @@ export class PrescriptionComponent implements OnInit {
   getPrescriptiondetList(Param){
     var vdata={
       IPMedID: Param
+
     }
     this._PrescriptionService.getPrecriptiondetlist(vdata).subscribe(data =>{
       this.dsprescriptiondetList.data = data as PrescriptiondetList[];
       this.dsprescriptiondetList.sort = this.sort;
       this.dsprescriptiondetList.paginator = this.paginator;
-      // console.log(this.dsprescriptiondetList.data);
+       console.log(this.dsprescriptiondetList.data);
     })
   }
 

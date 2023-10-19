@@ -24,7 +24,8 @@ export class RequestforlabtestComponent implements OnInit {
     'RegNo',
     'PatientName',
     'Vst_Adm_Date',
-    'WardName'
+    'WardName',
+    'action'
   ]
 
   displayColumns: string[] =[
@@ -79,7 +80,7 @@ export class RequestforlabtestComponent implements OnInit {
       this.dsrequestList.data = data as RequestList[];
       this.dsrequestList.sort = this.sort;
       this.dsrequestList.paginator = this.paginator;
-       // console.log(this.dsrequestList.data);
+       //console.log(this.dsrequestList.data);
     })
   }
 
