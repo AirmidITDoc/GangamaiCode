@@ -127,12 +127,12 @@
 
                   <div fxlayout="row">
                     <div style="width: 100%;">
-                      <div>
+                      <div style="margin-bottom: 10px;">
                         <button mat-raised-button (click)="exportReportExcel()"
-                          style="background-color: aliceblue;color: brown; margin-right: 15px;">Export Table(Excel)
+                          style="background-color: #8e67e0;color: white; margin-right: 15px;">Export Table(Excel)
                         </button>
                         <button mat-raised-button (click)="exportReportPdf()"
-                          style="background-color: aliceblue;color: brown;">Export Table(PDF)
+                          style="background-color: #8e67e0;color: white;">Export Table(PDF)
                         </button>
                       </div>
                       <mat-table #table matSort table="table1" [dataSource]="dataSource" id="app-table"

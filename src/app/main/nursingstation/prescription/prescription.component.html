@@ -1,229 +1,216 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
-
-    <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll right-sidebar" style="height: 100%;"></div> -->
-
-    <!-- HEADER -->
-
-    <!-- Start Sider  -->
-
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent"
+        style="height:50px; justify-content: space-between;width: 100%;background-color: #0479b4 !important;">
+        <div fxLayout="row">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
+                style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               IP Prescription
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                 IP Prescription
             </span>
+            <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 400%; width:100%; height: 40px;">
+                Add Prescription</button>
         </div>
-        <button mat-raised-button (click)="NewTestRequest()"  style="margin-left: 1500px;">
-               
-            <mat-icon color="primary" title=" Request New Test">how_to_reg</mat-icon>
-        </button>
-        <!-- SEARCH -->
-        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-
-
-
-        </div>
-        <!-- / SEARCH -->
-
 
     </mat-toolbar>
 
     <!-- / HEADER -->
-
     <!-- SELECTED BAR -->
-    <!-- <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> -->
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
     <!-- / SELECTED BAR -->
-
     <!-- CONTENT -->
-
     <div class="content">
-
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top: 5px; background-color: white;height:100%;">
-            <div class="content">
-                <div class="sidebar-content">
-
-                    <div class="card">
-
-                        <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-                            <!-- USER -->
-                            <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                            <span class="h5" style="font-size: 17px;">Patient Information</span>
-                            <!-- / USER -->
-                        </div>
-                        <!-- / SIDEBAR HEADER -->
-
-                        <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
-                            <div class="nav material2">
-                                <form [formGroup]="searchFormGroup">
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-                                        <mat-form-field appearance="outline" style="margin-top: 5px;">
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Search IPMedID</mat-label>
-                                            <input name="IPMedID" formControlName="IPMedID" matInput keyup="onShow($event)"> 
-                                        </mat-form-field>
-
-
-                                        <div style="margin-top: 20px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton">
-                                                <mat-icon class="cleariconbutton" matTooltip="close">close
-                                                </mat-icon>
-                                            </button>
-                                            <!-- [disabled]="click" -->
-                                            <button mat-raised-button class="searchButton" (click)="onShow($event)"
-                                                >
-                                                <mat-icon class="searchiconbutton" matTooltip="search">search
-                                                </mat-icon>
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+        margin-left:12px; background-color: white;height:99%;">
+            <div>
+                <!-- SIDEBAR HEADER -->
+                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                    <span class="h5" style="font-size: 17px;">Search Facility</span>
+                    <!-- / USER -->
                 </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div>
+                    <div class="nav material2">
+                        <form [formGroup]="_PrescriptionService.mysearchform" style="padding: 6px 6px 5px 5px;"
+                            fusePerfectScrollbar>
+                            <div fxLayout="column" fxLayoutAlign="start none">
+                                <br />
+                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="startdate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
 
-            </div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Search RegNo</mat-label>
+                                    <input name="RegNo" formControlName="RegNo" matInput >
+                                </mat-form-field>
 
+                                <div style="margin-top: 10px;">
+                                    <button mat-raised-button  class="clearbutton" matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
+                                    <button mat-raised-button class="searchButton" (click)="getPrescriptionList()" matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
 
-
-        </fuse-sidebar>
-
-
-        <div class="center p-12 pb-56" style="height: fit-content;">
-
-            <div class="content-card" style="border-radius:4px;">
-                <!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
-
-                <div fxlayout="row">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                        <div fxFlex.gt-sm="100%" fxFlex>
-
-                            <div fxlayout="row">
-                                <div style="width: 100%;background-color: white;">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                        style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
-                                        sticky>
-                                        <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Request List
-                                        </h3>
-                                    </div>
-                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur">
-                                        <div class="spinner-border text-danger"></div>
-
-                                    </div>
-                                    <mat-table class="table1" #table matSort [dataSource]="dataSource"
-                                        [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
-                                        <ng-container matColumnDef="IPMedID" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IPMedID
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.IPMedID}}
-                                            </mat-cell>
-                                        </ng-container>
-
-
-                                        <ng-container matColumnDef="OP_IP_ID" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                OP_IP_ID
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.OP_IP_ID}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="MedicalRecoredId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                MedicalRecoredId
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.MedicalRecoredId}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="ItemName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                ItemName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.ItemName}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="Qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                Qty
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.Qty}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                     
-
-                                        <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions"
-                                                style="color: white;" fxShow.gt-md> Action </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                </button>
-
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit($event,contact)">
-                                        </mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                        showFirstLastButtons>
-                                    </mat-paginator> -->
                                 </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
+        <!-- CENTER -->
+        <!-- CENTER -->
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
 
 
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <mat-table class="Tab1" matSort [dataSource]="dsprescritionList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Date}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RegNo" fxLayoutAlign="start center">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style=" margin-top: 8px; ">
+                                            RegNo</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.RegNo}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
+                                            style=" margin-top: 8px; ">PatientName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.PatientName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Vst_Adm_Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Vst_Adm_Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.Vst_Adm_Date}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container> -->
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
+                                    <!-- <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
+                                    </mat-footer-row> -->
+                                </mat-table>
+
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                            <div>
+                                <mat-table class="Tab1" matSort [dataSource]="dsprescriptiondetList"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                <ng-container matColumnDef="ItemName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.ItemName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Qty" fxLayoutAlign="start center">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        style=" margin-top: 8px; ">
+                                        Qty</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        {{contact.Qty}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <!-- <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container> -->
+
+                                <mat-header-row class="accent" *matHeaderRowDef="dscPrescriptionDetList; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: dscPrescriptionDetList;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <!-- <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
+                                </mat-footer-row> -->
+                            </mat-table>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                showFirstLastButtons>
+                            </mat-paginator>
                             </div>
                         </div>
                     </div>
-
-            
                 </div>
-
-
             </div>
         </div>
         <!-- CENTER -->
@@ -232,6 +219,3 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
-
-<!--  -->
-
