@@ -2151,9 +2151,7 @@ IsCreditflag : boolean=false
         <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
             <div>`+ objreportPrint.ItemName + `</div> 
         </div>
-        <div style="display:flex;width:70px;text-align:left;margin-left:30px;">
-        <div>`+ PackValue + `</div> 
-        </div>
+
         <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
             <div>`+ objreportPrint.Qty + `</div> 
         </div>
@@ -2370,6 +2368,7 @@ export class Printsal {
   GSTIN: any;
   CreditReason: any;
   CompanyName: any;
+  HTotalAmount:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2418,7 +2417,8 @@ export class Printsal {
     this.GSTIN = Printsal.GSTIN || "";
     this.CreditReason = Printsal.CreditReason || "";
     this.CompanyName = Printsal.CompanyName || "";
-    this.ItemShortName=Printsal.ItemShortName || ';'
+    this.ItemShortName=Printsal.ItemShortName || ''
+    this.HTotalAmount=Printsal.HTotalAmount || '';
   }
 }
 

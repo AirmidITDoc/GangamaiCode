@@ -79,7 +79,8 @@
 
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Doctor Name</mat-label>
-                                                    <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName" (keydown)="onEnterDoctorname($event)" #doctorname
+                                                    <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
+                                                        (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
                                                 </mat-form-field>
 
@@ -425,7 +426,8 @@
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Total Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalTotalAmt"
-                                                                name="FinalTotalAmt" formControlName="FinalTotalAmt" readonly
+                                                                name="FinalTotalAmt" formControlName="FinalTotalAmt"
+                                                                readonly
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
@@ -503,7 +505,7 @@
                                                             [disabled]="ItemSubform.invalid">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
-                                                   
+
                                                 </div>
 
                                             </div>
@@ -514,106 +516,111 @@
 
                                 </form>
 
-                           
+
 
                                 <form [formGroup]="patientDetailsFormGrp">
                                     <div *ngIf="isPaymentSelected" style="height:200px;overflow: auto;">
-                                    <div style="overflow: auto;">
-                                        <fieldset>
-                                            <legend>Payment Details of  Payment Amount:{{FinalNetAmount}}</legend>
-                                            <!-- First Row 1 -->
-                                            <!-- <div fxFlex="100px">
+                                        <div style="overflow: auto;">
+                                            <fieldset>
+                                                <legend>Payment Details of Payment Amount:{{FinalNetAmount}}</legend>
+                                                <!-- First Row 1 -->
+                                                <!-- <div fxFlex="100px">
                                                 <span style="font-family: sans-serif;font-weight: bold;"> Payment:{{FinalNetAmount}}</span>
                                            </div> -->
-                                            <div fxLayout="column" class="patient-details" fxLayoutGap="15px">
+                                                <div fxLayout="column" class="patient-details" fxLayoutGap="15px">
 
-                                                <div fxLayout="row wrap" fxLayoutGap="20px grid"
-                                                    class="field-row payment-container" *ngIf="paymentRowObj.cash">
-                                                    <mat-form-field appearance="outline" fxFlex="36%">
-                                                        <mat-label class="form-field-labels">Payment Type</mat-label>
-                                                        <mat-select formControlName="paymentType1"
-                                                            [(ngModel)]="selectedPaymnet1"
-                                                            (selectionChange)="onPaymentChange(1, $event.value)"
-                                                            required>
-                                                            <mat-option *ngFor="let ele of paymentArr1"
-                                                                [value]="ele.value">
-                                                                {{ele.viewValue}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="36%">
-                                                        <mat-label class="form-field-labels">Amount</mat-label>
-                                                        <input matInput formControlName="amount1"
-                                                            (keyup)="getBalanceAmt()" [(ngModel)]="amount1" required>
-                                                    </mat-form-field>
-                                                    <ng-container *ngIf="selectedPaymnet1 != 'cash'">
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Reference
-                                                                Number</mat-label>
-                                                            <input matInput formControlName="referenceNumber1">
+                                                    <div fxLayout="row wrap" fxLayoutGap="20px grid"
+                                                        class="field-row payment-container" *ngIf="paymentRowObj.cash">
+                                                        <mat-form-field appearance="outline" fxFlex="36%">
+                                                            <mat-label class="form-field-labels">Payment
+                                                                Type</mat-label>
+                                                            <mat-select formControlName="paymentType1"
+                                                                [(ngModel)]="selectedPaymnet1"
+                                                                (selectionChange)="onPaymentChange(1, $event.value)"
+                                                                required>
+                                                                <mat-option *ngFor="let ele of paymentArr1"
+                                                                    [value]="ele.value">
+                                                                    {{ele.viewValue}}
+                                                                </mat-option>
+                                                            </mat-select>
                                                         </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Bank Name</mat-label>
-                                                            <input matInput formControlName="bankName1">
+                                                        <mat-form-field appearance="outline" fxFlex="36%">
+                                                            <mat-label class="form-field-labels">Amount</mat-label>
+                                                            <input matInput formControlName="amount1"
+                                                                (keyup)="getBalanceAmt()" [(ngModel)]="amount1"
+                                                                required>
                                                         </mat-form-field>
+                                                        <ng-container *ngIf="selectedPaymnet1 != 'cash'">
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Reference
+                                                                    Number</mat-label>
+                                                                <input matInput formControlName="referenceNumber1">
+                                                            </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Registration
-                                                                Date</mat-label>
-                                                            <input matInput [matDatepicker]="datepickerReg"
-                                                                formControlName="regDate1"
-                                                                (click)="datepickerReg.open()" [max]="nowDate">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="datepickerReg"></mat-datepicker-toggle>
-                                                            <mat-datepicker #datepickerReg>
-                                                            </mat-datepicker>
-                                                        </mat-form-field>
-                                                    </ng-container>
-                                                    <div fxFlex="16%">
-                                                        <div
-                                                            [ngClass]="amount1 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'">
-                                                            <mat-icon (click)="onAddClick('upi')"> add </mat-icon>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Bank
+                                                                    Name</mat-label>
+                                                                <input matInput formControlName="bankName1">
+                                                            </mat-form-field>
+
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Registration
+                                                                    Date</mat-label>
+                                                                <input matInput [matDatepicker]="datepickerReg"
+                                                                    formControlName="regDate1"
+                                                                    (click)="datepickerReg.open()" [max]="nowDate">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="datepickerReg"></mat-datepicker-toggle>
+                                                                <mat-datepicker #datepickerReg>
+                                                                </mat-datepicker>
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                        <div fxFlex="16%">
+                                                            <div
+                                                                [ngClass]="amount1 < netPayAmt ? 'add-icon enable-1-add' : 'add-icon disable-1-add'">
+                                                                <mat-icon (click)="onAddClick('upi')"> add </mat-icon>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- Second Row 2 -->
-                                                <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                                                    *ngIf="paymentRowObj.upi">
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Payment Type</mat-label>
-                                                        <mat-select formControlName="paymentType2"
-                                                            [(ngModel)]="selectedPaymnet2"
-                                                            (selectionChange)="onPaymentChange(2, $event.value)">
-                                                            <mat-option *ngFor="let ele of paymentArr2"
-                                                                [value]="ele.value">
-                                                                {{ele.viewValue}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Amount</mat-label>
-                                                        <input matInput formControlName="amount2"
-                                                            (keyup)="getBalanceAmt()" [(ngModel)]="amount2" required>
-                                                        <mat-error
-                                                            *ngIf="patientDetailsFormGrp.get('amount2').hasError('required')">
-                                                            Required field cannot be left blank
-                                                        </mat-error>
-                                                    </mat-form-field>
-                                                    <ng-container *ngIf="selectedPaymnet2 != 'cash'">
+                                                    <!-- Second Row 2 -->
+                                                    <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
+                                                        *ngIf="paymentRowObj.upi">
                                                         <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Reference
-                                                                Number</mat-label>
-                                                            <input matInput formControlName="referenceNo2">
+                                                            <mat-label class="form-field-labels">Payment
+                                                                Type</mat-label>
+                                                            <mat-select formControlName="paymentType2"
+                                                                [(ngModel)]="selectedPaymnet2"
+                                                                (selectionChange)="onPaymentChange(2, $event.value)">
+                                                                <mat-option *ngFor="let ele of paymentArr2"
+                                                                    [value]="ele.value">
+                                                                    {{ele.viewValue}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="16%">
+                                                            <mat-label class="form-field-labels">Amount</mat-label>
+                                                            <input matInput formControlName="amount2"
+                                                                (keyup)="getBalanceAmt()" [(ngModel)]="amount2"
+                                                                required>
                                                             <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
+                                                                *ngIf="patientDetailsFormGrp.get('amount2').hasError('required')">
                                                                 Required field cannot be left blank
                                                             </mat-error>
                                                         </mat-form-field>
+                                                        <ng-container *ngIf="selectedPaymnet2 != 'cash'">
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Reference
+                                                                    Number</mat-label>
+                                                                <input matInput formControlName="referenceNo2">
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
 
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="16%">
+                                                            <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                                             <mat-label class="form-field-labels">Bank Name</mat-label>
                                                             <input matInput formControlName="bankName2">
                                                             <mat-error *ngIf="patientDetailsFormGrp.get('bankName2').hasError('required')">
@@ -621,91 +628,92 @@
                                                             </mat-error>
                                                         </mat-form-field> -->
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label>Bank Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text"
-                                                                placeholder="Select BankName" matInput
-                                                                formControlName="bankName2"
-                                                                [matAutocomplete]="autoBank2" required>
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autoBank2="matAutocomplete"
-                                                                [displayWith]="getOptionTextBank2">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredOptionsBank2 | async"
-                                                                    [value]="option">
-                                                                    {{option.BankName}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                        </mat-form-field>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label>Bank Name</mat-label>
+                                                                <input matAutocompletePosition="below" type="text"
+                                                                    placeholder="Select BankName" matInput
+                                                                    formControlName="bankName2"
+                                                                    [matAutocomplete]="autoBank2" required>
+                                                                <span matSuffix style="display: flex;">
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">close</mat-icon>
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName2').setValue(''); isBank2elected = false;">search</mat-icon>
+                                                                </span>
+                                                                <mat-autocomplete #autoBank2="matAutocomplete"
+                                                                    [displayWith]="getOptionTextBank2">
+                                                                    <mat-option
+                                                                        *ngFor="let option of filteredOptionsBank2 | async"
+                                                                        [value]="option">
+                                                                        {{option.BankName}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
 
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Registration
-                                                                Date</mat-label>
-                                                            <input matInput [matDatepicker]="datepickerReg"
-                                                                formControlName="regDate2"
-                                                                (click)="datepickerReg.open()" [max]="nowDate">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="datepickerReg"></mat-datepicker-toggle>
-                                                            <mat-datepicker #datepickerReg>
-                                                            </mat-datepicker>
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('regDate2').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>
-                                                    </ng-container>
-                                                    <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                                        <div class="remove-icon" (click)="onRemoveClick('upi')">
-                                                            <span>-</span>
-                                                        </div>
-                                                        <div [ngClass]="secondAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
-                                                            (click)="onAddClick('cheque')">
-                                                            <mat-icon> add </mat-icon>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Registration
+                                                                    Date</mat-label>
+                                                                <input matInput [matDatepicker]="datepickerReg"
+                                                                    formControlName="regDate2"
+                                                                    (click)="datepickerReg.open()" [max]="nowDate">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="datepickerReg"></mat-datepicker-toggle>
+                                                                <mat-datepicker #datepickerReg>
+                                                                </mat-datepicker>
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('regDate2').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                        <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
+                                                            <div class="remove-icon" (click)="onRemoveClick('upi')">
+                                                                <span>-</span>
+                                                            </div>
+                                                            <div [ngClass]="secondAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
+                                                                (click)="onAddClick('cheque')">
+                                                                <mat-icon> add </mat-icon>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- Third Row 3 -->
-                                                <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                                                    *ngIf="paymentRowObj.cheque">
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Payment Type</mat-label>
-                                                        <mat-select formControlName="paymentType3"
-                                                            [(ngModel)]="selectedPaymnet3"
-                                                            (selectionChange)="onPaymentChange(3, $event.value)">
-                                                            <mat-option *ngFor="let ele of paymentArr3"
-                                                                [value]="ele.value">
-                                                                {{ele.viewValue}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Amount</mat-label>
-                                                        <input matInput formControlName="amount3"
-                                                            (keyup)="getBalanceAmt()" [(ngModel)]="amount3">
-                                                        <mat-error
-                                                            *ngIf="patientDetailsFormGrp.get('amount3').hasError('required')">
-                                                            Required field cannot be left blank
-                                                        </mat-error>
-                                                    </mat-form-field>
-                                                    <ng-container *ngIf="selectedPaymnet3 != 'cash'">
+                                                    <!-- Third Row 3 -->
+                                                    <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
+                                                        *ngIf="paymentRowObj.cheque">
                                                         <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Reference
-                                                                Number</mat-label>
-                                                            <input matInput formControlName="referenceNo3">
+                                                            <mat-label class="form-field-labels">Payment
+                                                                Type</mat-label>
+                                                            <mat-select formControlName="paymentType3"
+                                                                [(ngModel)]="selectedPaymnet3"
+                                                                (selectionChange)="onPaymentChange(3, $event.value)">
+                                                                <mat-option *ngFor="let ele of paymentArr3"
+                                                                    [value]="ele.value">
+                                                                    {{ele.viewValue}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="16%">
+                                                            <mat-label class="form-field-labels">Amount</mat-label>
+                                                            <input matInput formControlName="amount3"
+                                                                (keyup)="getBalanceAmt()" [(ngModel)]="amount3">
                                                             <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
+                                                                *ngIf="patientDetailsFormGrp.get('amount3').hasError('required')">
                                                                 Required field cannot be left blank
                                                             </mat-error>
                                                         </mat-form-field>
+                                                        <ng-container *ngIf="selectedPaymnet3 != 'cash'">
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Reference
+                                                                    Number</mat-label>
+                                                                <input matInput formControlName="referenceNo3">
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('referenceNo3').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
 
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="16%">
+                                                            <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                                             <mat-label class="form-field-labels">Bank Name</mat-label>
                                                             <input matInput formControlName="bankName3">
                                                             <mat-error *ngIf="patientDetailsFormGrp.get('bankName3').hasError('required')">
@@ -714,87 +722,88 @@
                                                         </mat-form-field> -->
 
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label>Bank Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text"
-                                                                placeholder="Select BankName" matInput
-                                                                formControlName="bankName3"
-                                                                [matAutocomplete]="autoBank3" required>
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autoBank3="matAutocomplete"
-                                                                [displayWith]="getOptionTextBank3">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredOptionsBank3 | async"
-                                                                    [value]="option">
-                                                                    {{option.BankName}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                        </mat-form-field>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label>Bank Name</mat-label>
+                                                                <input matAutocompletePosition="below" type="text"
+                                                                    placeholder="Select BankName" matInput
+                                                                    formControlName="bankName3"
+                                                                    [matAutocomplete]="autoBank3" required>
+                                                                <span matSuffix style="display: flex;">
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">close</mat-icon>
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName3').setValue(''); isBank3elected = false;">search</mat-icon>
+                                                                </span>
+                                                                <mat-autocomplete #autoBank3="matAutocomplete"
+                                                                    [displayWith]="getOptionTextBank3">
+                                                                    <mat-option
+                                                                        *ngFor="let option of filteredOptionsBank3 | async"
+                                                                        [value]="option">
+                                                                        {{option.BankName}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Registration
-                                                                Date</mat-label>
-                                                            <input matInput [matDatepicker]="datepickerRegs"
-                                                                formControlName="regDate3"
-                                                                (click)="datepickerRegs.open()" [max]="nowDate">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="datepickerRegs"></mat-datepicker-toggle>
-                                                            <mat-datepicker #datepickerRegs>
-                                                            </mat-datepicker>
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('regDate3').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>
-                                                    </ng-container>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Registration
+                                                                    Date</mat-label>
+                                                                <input matInput [matDatepicker]="datepickerRegs"
+                                                                    formControlName="regDate3"
+                                                                    (click)="datepickerRegs.open()" [max]="nowDate">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="datepickerRegs"></mat-datepicker-toggle>
+                                                                <mat-datepicker #datepickerRegs>
+                                                                </mat-datepicker>
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('regDate3').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
+                                                        </ng-container>
 
-                                                    <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                                        <div class="remove-icon" (click)="onRemoveClick('cheque')">
-                                                            <span>-</span>
-                                                        </div>
-                                                        <div [ngClass]="thirdAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
-                                                            (click)="onAddClick('card')">
-                                                            <mat-icon> add </mat-icon>
+                                                        <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
+                                                            <div class="remove-icon" (click)="onRemoveClick('cheque')">
+                                                                <span>-</span>
+                                                            </div>
+                                                            <div [ngClass]="thirdAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
+                                                                (click)="onAddClick('card')">
+                                                                <mat-icon> add </mat-icon>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- Fourth Row 4 -->
-                                                <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                                                    *ngIf="paymentRowObj.card">
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Payment Type</mat-label>
-                                                        <mat-select formControlName="paymentType4"
-                                                            [(ngModel)]="selectedPaymnet4"
-                                                            (selectionChange)="onPaymentChange(4, $event.value)">
-                                                            <mat-option *ngFor="let food of paymentArr4"
-                                                                [value]="food.value">
-                                                                {{food.viewValue}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Amount</mat-label>
-                                                        <input matInput formControlName="amount4"
-                                                            (keyup)="getBalanceAmt()" [(ngModel)]="amount4">
-                                                    </mat-form-field>
-                                                    <ng-container *ngIf="selectedPaymnet4 != 'cash'">
+                                                    <!-- Fourth Row 4 -->
+                                                    <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
+                                                        *ngIf="paymentRowObj.card">
                                                         <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Reference
-                                                                Number</mat-label>
-                                                            <input matInput formControlName="referenceNo4">
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
+                                                            <mat-label class="form-field-labels">Payment
+                                                                Type</mat-label>
+                                                            <mat-select formControlName="paymentType4"
+                                                                [(ngModel)]="selectedPaymnet4"
+                                                                (selectionChange)="onPaymentChange(4, $event.value)">
+                                                                <mat-option *ngFor="let food of paymentArr4"
+                                                                    [value]="food.value">
+                                                                    {{food.viewValue}}
+                                                                </mat-option>
+                                                            </mat-select>
                                                         </mat-form-field>
 
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-form-field appearance="outline" fxFlex="16%">
+                                                            <mat-label class="form-field-labels">Amount</mat-label>
+                                                            <input matInput formControlName="amount4"
+                                                                (keyup)="getBalanceAmt()" [(ngModel)]="amount4">
+                                                        </mat-form-field>
+                                                        <ng-container *ngIf="selectedPaymnet4 != 'cash'">
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Reference
+                                                                    Number</mat-label>
+                                                                <input matInput formControlName="referenceNo4">
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
+
+                                                            <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                                             <mat-label class="form-field-labels">Bank Name</mat-label>
                                                             <input matInput formControlName="bankName4">
                                                             <mat-error *ngIf="patientDetailsFormGrp.get('bankName4').hasError('required')">
@@ -802,139 +811,142 @@
                                                             </mat-error>
                                                         </mat-form-field> -->
 
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label>Bank Name</mat-label>
+                                                                <input matAutocompletePosition="below" type="text"
+                                                                    placeholder="Select BankName" matInput
+                                                                    formControlName="bankName4"
+                                                                    [matAutocomplete]="autoBank4" required>
+                                                                <span matSuffix style="display: flex;">
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">close</mat-icon>
+                                                                    <mat-icon class="mat-icon-close"
+                                                                        (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">search</mat-icon>
+                                                                </span>
+                                                                <mat-autocomplete #autoBank4="matAutocomplete"
+                                                                    [displayWith]="getOptionTextBank4">
+                                                                    <mat-option
+                                                                        *ngFor="let option of filteredOptionsBank4 | async"
+                                                                        [value]="option">
+                                                                        {{option.BankName}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Registration
+                                                                    Date</mat-label>
+                                                                <input matInput [matDatepicker]="datepickerRegs"
+                                                                    formControlName="regDate4"
+                                                                    (click)="datepickerRegs.open()" [max]="nowDate">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="datepickerRegs"></mat-datepicker-toggle>
+                                                                <mat-datepicker #datepickerRegs>
+                                                                </mat-datepicker>
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('regDate4').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                        <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
+                                                            <div class="remove-icon" (click)="onRemoveClick('card')">
+                                                                <span>-</span>
+                                                            </div>
+                                                            <div [ngClass]="fourthAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
+                                                                (click)="onAddClick('neft')">
+                                                                <mat-icon> add </mat-icon>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Fifth Row  5 -->
+                                                    <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
+                                                        *ngIf="paymentRowObj.neft">
                                                         <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label>Bank Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text"
-                                                                placeholder="Select BankName" matInput
-                                                                formControlName="bankName4"
-                                                                [matAutocomplete]="autoBank4" required>
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="patientDetailsFormGrp.get('bankName4').setValue(''); isBank4elected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autoBank4="matAutocomplete"
-                                                                [displayWith]="getOptionTextBank4">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredOptionsBank4 | async"
-                                                                    [value]="option">
-                                                                    {{option.BankName}}
+                                                            <mat-label class="form-field-labels">Payment
+                                                                Type</mat-label>
+                                                            <mat-select formControlName="paymentType5"
+                                                                [(ngModel)]="selectedPaymnet5"
+                                                                (selectionChange)="onPaymentChange(5, $event.value)">
+                                                                <mat-option *ngFor="let ele of paymentArr5"
+                                                                    [value]="ele.value">
+                                                                    {{ele.viewValue}}
                                                                 </mat-option>
-                                                            </mat-autocomplete>
+                                                            </mat-select>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Registration
-                                                                Date</mat-label>
-                                                            <input matInput [matDatepicker]="datepickerRegs"
-                                                                formControlName="regDate4"
-                                                                (click)="datepickerRegs.open()" [max]="nowDate">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="datepickerRegs"></mat-datepicker-toggle>
-                                                            <mat-datepicker #datepickerRegs>
-                                                            </mat-datepicker>
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('regDate4').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
+                                                            <mat-label class="form-field-labels">Amount</mat-label>
+                                                            <input matInput formControlName="amount5"
+                                                                (keyup)="getBalanceAmt()" [(ngModel)]="amount5">
                                                         </mat-form-field>
-                                                    </ng-container>
-                                                    <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                                        <div class="remove-icon" (click)="onRemoveClick('card')">
-                                                            <span>-</span>
-                                                        </div>
-                                                        <div [ngClass]="fourthAddEnable() ? 'add-icon enable-1-add' : 'add-icon disable-1-add'"
-                                                            (click)="onAddClick('neft')">
-                                                            <mat-icon> add </mat-icon>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Fifth Row  5 -->
-                                                <div fxLayout="row wrap" fxLayoutGap="20px grid" class="field-row"
-                                                    *ngIf="paymentRowObj.neft">
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Payment Type</mat-label>
-                                                        <mat-select formControlName="paymentType5"
-                                                            [(ngModel)]="selectedPaymnet5"
-                                                            (selectionChange)="onPaymentChange(5, $event.value)">
-                                                            <mat-option *ngFor="let ele of paymentArr5"
-                                                                [value]="ele.value">
-                                                                {{ele.viewValue}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
+                                                        <ng-container *ngIf="selectedPaymnet5 != 'cash'">
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Reference
+                                                                    Number</mat-label>
+                                                                <input matInput formControlName="referenceNo5">
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="16%">
-                                                        <mat-label class="form-field-labels">Amount</mat-label>
-                                                        <input matInput formControlName="amount5"
-                                                            (keyup)="getBalanceAmt()" [(ngModel)]="amount5">
-                                                    </mat-form-field>
-                                                    <ng-container *ngIf="selectedPaymnet5 != 'cash'">
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Reference
-                                                                Number</mat-label>
-                                                            <input matInput formControlName="referenceNo5">
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Bank
+                                                                    Name</mat-label>
+                                                                <input matInput formControlName="bankName5">
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('bankName5').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Bank Name</mat-label>
-                                                            <input matInput formControlName="bankName5">
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('bankName5').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="16%">
-                                                            <mat-label class="form-field-labels">Registration
-                                                                Date</mat-label>
-                                                            <input matInput [matDatepicker]="datepickerRegistartion"
-                                                                formControlName="regDate5"
-                                                                (click)="datepickerRegistartion.open()" [max]="nowDate">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="datepickerRegistartion"></mat-datepicker-toggle>
-                                                            <mat-datepicker #datepickerRegistartion>
-                                                            </mat-datepicker>
-                                                            <mat-error
-                                                                *ngIf="patientDetailsFormGrp.get('regDate5').hasError('required')">
-                                                                Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>
-                                                    </ng-container>
-                                                    <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
-                                                        <div class="remove-icon" (click)="onRemoveClick('neft')">
-                                                            <span>-</span>
+                                                            <mat-form-field appearance="outline" fxFlex="16%">
+                                                                <mat-label class="form-field-labels">Registration
+                                                                    Date</mat-label>
+                                                                <input matInput [matDatepicker]="datepickerRegistartion"
+                                                                    formControlName="regDate5"
+                                                                    (click)="datepickerRegistartion.open()"
+                                                                    [max]="nowDate">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="datepickerRegistartion"></mat-datepicker-toggle>
+                                                                <mat-datepicker #datepickerRegistartion>
+                                                                </mat-datepicker>
+                                                                <mat-error
+                                                                    *ngIf="patientDetailsFormGrp.get('regDate5').hasError('required')">
+                                                                    Required field cannot be left blank
+                                                                </mat-error>
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                        <div fxLayout="row" fxLayoutGap="15px" fxFlex="16%">
+                                                            <div class="remove-icon" (click)="onRemoveClick('neft')">
+                                                                <span>-</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                            </div>
-                                            <!-- </form> -->
-                                        </fieldset>
-                                    </div>
-                                    <div>
-                                        <div>Paid Amount</div>
-                                        <div>
-                                            <mat-form-field appearance="outline" style="width: 180px;">
-                                                <mat-label>Paid Amount</mat-label>
-                                                <input matInput formControlName="paidAmountController"
-                                                    [(ngModel)]="paidAmt" readonly>
-                                            </mat-form-field>
-                                            &nbsp;
-                                            <mat-form-field appearance="outline" style="width: 180px;">
-                                                <mat-label>Balance Amount</mat-label>
-                                                <input matInput formControlName="balanceAmountController"
-                                                    [(ngModel)]="balanceAmt" readonly>
-                                            </mat-form-field>
+                                                </div>
+                                                <!-- </form> -->
+                                            </fieldset>
                                         </div>
+                                        <div>
+                                            <div>Paid Amount</div>
+                                            <div>
+                                                <mat-form-field appearance="outline" style="width: 180px;">
+                                                    <mat-label>Paid Amount</mat-label>
+                                                    <input matInput formControlName="paidAmountController"
+                                                        [(ngModel)]="paidAmt" readonly>
+                                                </mat-form-field>
+                                                &nbsp;
+                                                <mat-form-field appearance="outline" style="width: 180px;">
+                                                    <mat-label>Balance Amount</mat-label>
+                                                    <input matInput formControlName="balanceAmountController"
+                                                        [(ngModel)]="balanceAmt" readonly>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                   
-                                </div>
                                 </form>
                                 <!-- <div style="float:right;margin-right: 30px;">
                                 <button class="next-btn" (click)="onSave()"
@@ -972,3 +984,5 @@
     </div>
     <!-- / CONTENT-->
 </div>
+
+TempDesign
