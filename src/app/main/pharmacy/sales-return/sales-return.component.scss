@@ -1,0 +1,181 @@
+.mat-row,
+.mat-footer-row {
+    min-height: 28px;
+    height: 30px;
+}
+
+app-sales-return {
+    .SalesDet {
+        .mat-header-row {
+            min-width: 2000px;
+            height: 10px;
+            background-color: blue;
+        }
+
+        .mat-row {
+            width: 100%;
+            min-width: 2000px;
+            min-height: 20px;
+        }
+
+        // .mat-column-ItemId {
+        //     width: 50px;
+        //     max-width: 50px;
+        //     min-width: 50px;
+        //     text-align: left;
+        // }
+
+        // .mat-column-SalesDetId {
+        //     width: 50px;
+        //     max-width: 50px;
+        //     min-width: 50px;
+        //     text-align: left;
+        // }
+
+        .mat-column-SalesNo {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: left;
+        }
+
+
+        .mat-column-ItemName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            // display: inline-block;
+            justify-content: left;
+        }
+
+        .mat-column-BatchNo {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: left;
+        }
+
+        .mat-column-BatchExpDate {
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
+            text-align: left;
+        }
+
+        .mat-column-Qty {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: left;
+        }
+
+        .mat-column-ReturnQty {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: left;
+        }
+        
+        .mat-column-UnitMRP {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+
+
+        .mat-column-TotalAmount {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+        }
+
+        .mat-column-VatPer {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+
+        .mat-column-VatAmount {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+
+        .mat-column-DiscPer {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .mat-column-DiscAmount {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .mat-column-GrossAmount {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+        // .mat-column-LandedPrice {
+        //     width: 90px;
+        //     max-width: 90px;
+        //     min-width: 90px;
+        //     text-align: center;
+        // }
+
+        // .mat-column-TotalLandedAmount {
+        //     width: 90px;
+        //     max-width: 90px;
+        //     min-width: 90px;
+        //     text-align: center;
+        // }
+
+        // .mat-column-PurRateWf {
+        //     width: 90px;
+        //     max-width: 90px;
+        //     min-width: 90px;
+        //     text-align: center;
+        // }
+
+        // .mat-column-PurTotAmt {
+        //     width: 90px;
+        //     max-width: 90px;
+        //     min-width: 90px;
+        //     text-align: center;
+        // }
+
+        .mat-column-CGSTPer {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .mat-column-SGSTPer {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .mat-column-IGSTPer {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: center;
+        }
+    }
+}
