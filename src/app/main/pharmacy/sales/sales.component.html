@@ -111,7 +111,7 @@
                                                 <mat-form-field appearance="outline"
                                                     style="width:40%;margin-left:20px;">
                                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid
-                                                        placeholder="ItemId / Item Name / Balance Qty " matInput
+                                                        placeholder="Item Name (enter 2 char) " matInput
                                                         [matAutocomplete]="auto" (input)="getPharItemList()">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
@@ -426,7 +426,7 @@
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Total Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalTotalAmt"
-                                                                name="FinalTotalAmt" formControlName="FinalTotalAmt"
+                                                                name="FinalTotalAmt" formControlName="FinalTotalAmt" readonly
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 

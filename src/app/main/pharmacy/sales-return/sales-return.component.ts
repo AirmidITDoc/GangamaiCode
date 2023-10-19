@@ -23,410 +23,264 @@ import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-s
 })
 export class SalesReturnComponent implements OnInit {
 
-  sIsLoading: string = '';
-  isLoading = true;
-  Store1List:any=[];
-  screenFromString = 'admission-form';
-  ItemSubform: FormGroup;
-  labelPosition: 'before' | 'after' = 'after';
-  isPatienttypeDisabled: boolean = true;
-DoctorName:any;
-  
-  ItemName: any;
-  ItemId: any;
-  BalanceQty: any;
-  Itemchargeslist: any = [];
-  
-  MainSalesList = new MatTableDataSource<IndentList>();
-  SelectionSelect = new MatTableDataSource<IndentList>();
-  SelectedList = new MatTableDataSource<IndentList>();
-  dssalesReturnList = new MatTableDataSource<SalesReturnList>();
-  dssalesReturnList1 = new MatTableDataSource<SalesReturnDetList>();
-
-  
-  displayedColumns: string[] = [
-    'action',
+  displayedColumns = [
+    'SalesId',
     'Date',
     'SalesNo',
     'RegNo',
     'PatientName',
-    'NetAmt',
-    'BalAmt',
-    'PaidAmt',
-    'PaidType',
-    'IPNo'
-  ]
-  displayedColumns2: string[] = [
-    'ItemName',
-    'BatchNo',
-    'Expdate',
-    'Qty',
-    'MRP',
-    'TotalMRP',
-    'GST',
-    'CGST',
-    'SGST',
-    'IGST'
-  ]
-  displayedColumns7 = [
-    'SalesNo',
-    'ItemName',
-    'BatchNo',
-    'BatchExpDate',
-    'UnitMRP',
-    'Qty',
     'TotalAmount',
-    'ReturnQty',
-    'TotalMRP',
-    'GSTPer',
-    'GSTAmount',
-    'DiscAmt',
-    'NetAmt',
-    'action',
-  ];
-
-  displayedColumns1 = [
-    'ItemName',
-    'BatchNo',
-    'UnitMRP',
-    'Qty',
-    'TotalAmount',
-    'GSTPer',
-    'GSTAmount',
-    'DiscPer',
-    'DiscAmt',
-    'NetAmt',
-  ];
-
-  displayedColumns4: string[] = [
-    'ItemName',
-    'BatchNo',
-    'Expdate',
-    'Qty',
-    'MRP',
-    'TotalMRP',
-    'GST',
-    'CGST',
-    'SGST',
-    'IGST'
-  ]
-  displayedColumns5 = [
-    'Date',
-    'RegNo',
-    'PatientName'
-    // 'FromStoreName',
-    // 'ToStoreName',
-    // 'Addedby',
-    // 'IsInchargeVerify',
     // 'action',
   ];
-
-
-  displayedColumns3: string[] = [
-    'action',
-    'SalesDate',
+  
+  dspSalesDetColumns = [
+    // 'SalesId',
     'SalesNo',
-    'RegNo',
-    'PatientName',
-    'NetAmt',
-    'BalAmt',
-    'PaidAmt',
-    'Type'
+    // 'SalesDetId',
+    'OP_IP_ID',
+    // 'ItemId',
+    'ItemName',
+    'BatchNo',
+    // 'BatchExpDate',
+    'UnitMRP',
+    'Qty',
+    'ReturnQty',
+    'TotalAmount',
+    'VatPer',
+    'VatAmount',
+    'DiscPer',
+    'DiscAmount',
+    'GrossAmount',
+    // 'LandedPrice',
+    // 'TotalLandedAmount',
+    // 'IsBatchRequired',
+    // 'PurRateWf',
+    // 'PurTotAmt',
+    // 'IsPrescription',
+    'CGSTPer',
+    'SGSTPer',
+    'IGSTPer',
+    'IsPurRate',
+    'StkID'
   ]
+  SearchForm: FormGroup;
+  dssaleList = new MatTableDataSource<SaleBillList>();
+  dssaleDetailList= new MatTableDataSource<SalesDetailList>();
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  StoreList:any = [];
 
   constructor(
     public _SalesReturnService: SalesReturnService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-    private accountService: AuthenticationService,
+    private _formBuilder: FormBuilder,
+    private _loggedService: AuthenticationService,
     
-  ) { }
+  ) { 
+    this.SearchForm=this.SearchFilter();
+  }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
-    this.getItemSubform();
+   this.getSalesList();
+   this.getPharStoreList()
   }
   
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  SearchFilter():FormGroup{
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo:'',
+      F_Name:'',                                           
+      L_Name: '',                                                      
+      SalesNo : '',
+      StoreId :'',
+    })
   }
 
-  getItemSubform() {
-    this.ItemSubform = this.formBuilder.group({
-      PatientName: '',
-      MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
-      Validators.minLength(10),
-      Validators.maxLength(10),]],
-      PatientType: ['External'],
-      TotalAmt: '',
-      GSTPer: '',
-      DiscAmt: '',
-      concessionAmt: [0],
-      ConcessionId: 0,
-      Remark: [''],
-      FinalAmount: '',
-      BalAmount: '',
-      FinalDiscPer: '',
-      FinalDiscAmt: '',
-      FinalTotalAmt: '',
-      FinalNetAmount: '',
-      FinalGSTAmt: '',
-      BalanceAmt: '',
-      CashPay: ['CashPay'],
-      // Credit: [0]
+  getPharStoreList() {
+    var vdata={
+      Id : this._loggedService.currentUserValue.user.storeId
+    }
+    this._SalesReturnService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this.SearchForm.get('StoreId').setValue(this.StoreList[0]);
+      
     });
   }
 
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
-
-  getOptionText(option) {
-    this.ItemId = option.ItemId;
-    if (!option) return '';
-    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  }
-
-  getSelectedObj(obj) {
-    // this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemId;
-    this.BalanceQty = obj.BalanceQty;
-
-    if (this.BalanceQty > 0) {
-      this.getBatch();
+  getSalesList(){
+    var vdata={
+      F_Name:this.SearchForm.get('F_Name').value || '%' ,                                            
+      L_Name: this.SearchForm.get('L_Name').value || '%'  ,                                     
+      From_Dt: this.datePipe.transform(this.SearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                      
+      To_Dt :  this.datePipe.transform(this.SearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                 
+      Reg_No :this.SearchForm.get('RegNo').value || 0  ,                  
+      SalesNo :this.SearchForm.get('SalesNo').value || 0  , 
+      StoreId :this.SearchForm.get('StoreId').value.storeid || 0  ,
     }
+   console.log(vdata);
+    this._SalesReturnService.getSalesBillList(vdata).subscribe(data=>{
+      this.dssaleList.data= data as SaleBillList[];
+      // this.dssaleList.sort = this.sort;
+      // this.dssaleList.paginator = this.paginator;
+      console.log(this.dssaleList.data);
+    })
   }
 
-  getBatch() {
-    // this.Quantity.nativeElement.focus();
-    // const dialogRef = this._matDialog.open(SalePopupComponent,
-    //   {
-    //     maxWidth: "800px",
-    //     minWidth: '800px',
-    //     width: '800px',
-    //     height: '380px',
-    //     disableClose: true,
-    //     data: {
-    //       "ItemId": this._salesService.IndentSearchGroup.get('ItemId').value.ItemId,
-    //       "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
-    //     }
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result);
-    //   this.BatchNo = result.BatchNo;
-    //   this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-    //   this.MRP = result.UnitMRP;
-    //   this.Qty = 1;
-    //   this.Bal = result.BalanceAmt;
-    //   this.GSTPer = result.VatPercentage;
-
-    //   this.TotalMRP = this.Qty * this.MRP;
-    //   this.DiscAmt = 0;
-    //   this.NetAmt = this.TotalMRP;
-    //   this.BalanceQty = this.BalanceQty;
-    //   this.ItemObj = result;
-
-    //   this.VatPer = result.VatPercentage;
-    //   this.CgstPer = result.CGSTPer;
-    //   this.SgstPer = result.SGSTPer;
-    //   this.IgstPer = result.IGSTPer;
-
-    //   this.VatAmount = result.VatPercentage;
-    //   this.CGSTAmt = result.VatPercentage;
-    //   this.SGSTAmt = result.VatPercentage;
-    //   this.IGSTAmt = result.VatPercentage;
-    //   this.StockId = result.StockId
-    //   this.StoreId = result.StoreId;
-    //   this.LandedRate = result.LandedRate;
-    //   this.PurchaseRate = result.PurchaseRate;
-    //   this.UnitMRP = result.UnitMRP;
-    // });
-
-    // this.Quantity.nativeElement.focus();
-  }
-  getNetAmtSum(element) {
-    let netAmt;
-    netAmt = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
-    // this.FinalTotalAmt = netAmt;
-    // this.FinalNetAmount = this.FinalTotalAmt;
-
-
-    // this.TotDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
-    // this.ItemSubform.get('FinalNetAmount').setValue(this.FinalTotalAmt)
-    return netAmt;
-  }
-
-  deleteTableRow(event, element) {
-    // if (this.key == "Delete") {
-      let index = this.Itemchargeslist.indexOf(element);
-      if (index >= 0) {
-        this.Itemchargeslist.splice(index, 1);
-        // this.saleSelectedDatasource.data = [];
-        // this.saleSelectedDatasource.data = this.Itemchargeslist;
-      }
-      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
-
-    // }
-  }
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._SalesReturnService.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._SalesReturnService.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._SalesReturnService.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._SalesReturnService.IndentSearchGroup.get("Status").value || 1,
+  onSelect(Parama){
+  // console.log(Parama);
+    if (Parama.PaidType == "Paid"){
+      this.getSalesDetCashList(Parama)
     }
-      this._SalesReturnService.getIndentID(Param).subscribe(data => {
-      // this.dsIndentID.data = data as IndentID[];
-      // console.log(this.dsIndentID.data)
-      // this.dsIndentID.sort = this.sort;
-      // this.dsIndentID.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
+     else{
+      this.getSalesDetCreditList(Parama)
+     }
+ }
+ 
+  getSalesDetCashList(Params){
+    var vdata={
+      SalesId:Params.SalesId,                                            
+      SalesNo: Params.SalesNo  ,                                     
+      StoreId :this.SearchForm.get('StoreId').value.storeid || 0  ,
+      CashCounterId : Params.CashCounterID 
     }
-      this._SalesReturnService.getIndentList(Param).subscribe(data => {
-      // this.dsIndentList.data = data as IndentList[];
-      // this.dsIndentList.sort = this.sort;
-      // this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+  //  console.log(vdata);
+    this._SalesReturnService.getSalesDetCashList(vdata).subscribe(data=>{
+      this.dssaleDetailList.data= data as SalesDetailList[];
+      // this.dssaleList.sort = this.sort;
+      // this.dssaleList.paginator = this.paginator;
+      console.log(this.dssaleDetailList.data);
+    })
   }
 
-  onChangePatientType(event) {
-    if (event.value == 'External') {
-
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-      this.ItemSubform.get('MobileNo').enable();
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-      this.ItemSubform.get('PatientName').enable();
-
-
-    } else {
-      // this.Regdisplay = true;
-
-      this.ItemSubform.get('MobileNo').disable();
-
-      this.ItemSubform.get('PatientName').disable();
-      this.isPatienttypeDisabled = false;
-
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
-
+  getSalesDetCreditList(Params){
+    var vdata={
+      SalesId:Params.SalesId,                                            
+      SalesNo: Params.SalesNo  ,                                     
+      StoreId :this.SearchForm.get('StoreId').value.storeid || 0  ,
+      CashCounterId : Params.CashCounterID 
     }
-
-
+  //  console.log(vdata);
+    this._SalesReturnService.getSalesDetCreditList(vdata).subscribe(data=>{
+      this.dssaleDetailList.data= data as SalesDetailList[];
+      // this.dssaleList.sort = this.sort;
+      // this.dssaleList.paginator = this.paginator;
+      console.log(this.dssaleDetailList.data);
+    })
   }
-  
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-  getIndentStoreList(){
-    debugger
-   
-        this._SalesReturnService.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._SalesReturnService.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
 
-       }
-
-  onClear(){
-    
+  getCellCalculation(contact){
+    console.log(contact);
   }
-  onClose(){}
+
 }
 
-export class IndentList {
+export class SaleBillList {
+  SalesId: number;
+  Date: Date;
+  SalesNo:number;
+  RegNo:number;
+  PatientName:string;
+  TotalAmount:any;
+  VatAmount:any;
+  DiscAmount:any;
+  NetAmount:any;
+  BalanceAmount:any;
+  PaidAmount:any;
+  OP_IP_Type:any;
+  PatientType:any;
+  PaidType:any;
+  IsPrescription:boolean;
+  CashCounterID:any;
+  /**
+   * Constructor
+   *
+   * @param SaleBillList
+   */
+  constructor(SaleBillList) {
+    {
+      this.SalesId = SaleBillList.SalesId || "";
+      this.Date = SaleBillList.Date || 0;
+      this.SalesNo = SaleBillList.SalesNo || 0;
+      this.RegNo = SaleBillList.RegNo|| 0;
+      this.PatientName = SaleBillList.PatientName || 0;
+      this.TotalAmount =SaleBillList.TotalAmount || 0;
+      this.VatAmount  =SaleBillList.VatAmount || 0;
+      this.DiscAmount =SaleBillList.DiscAmount || 0;
+      this.NetAmount =SaleBillList.NetAmount || 0;
+      this.BalanceAmount =SaleBillList.BalanceAmount || 0;
+      this.PaidAmount =SaleBillList.PaidAmount || 0;
+      this.OP_IP_Type =SaleBillList.OP_IP_Type || 0;
+      this.PatientType =SaleBillList.PatientType || '';
+      this.PaidType =SaleBillList.PaidType || '';
+      this.IsPrescription =SaleBillList.IsPrescription || '';
+      this.CashCounterID =SaleBillList.CashCounterID || 0;
+    }
+  }
+}
+export class SalesDetailList {
+  SalesId: Number;
+  SalesDetId: number;
+  SalesNo:string;
+  OP_IP_ID:string;
+  ItemId:number;
   ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
+  BatchNo:any;
+  BatchExpDate:Date;
+  UnitMRP:any;
+  Qty:any;
+  TotalAmount:any;
+  VatPer
+  VatAmount:any;
+  DiscPer:any;
+  DiscAmount:any;
+  GrossAmount:any;
+  LandedPrice:any;
+  TotalLandedAmount:any;
+  IsBatchRequired:any;
+  PurRateWf:any;
+  PurTotAmt:any;
+  IsPrescription:any;
+  CGSTPer:any;
+  SGSTPer:any;
+  IGSTPer:any;
+  IsPurRate:any;
+  StkID:any;
   /**
    * Constructor
    *
-   * @param IndentList
+   * @param SalesDetailList
    */
-  constructor(IndentList) {
+  constructor(SalesDetailList) {
     {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
-    }
-  }
-}
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
-  
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
-    {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.SalesId= SalesDetailList.SalesId || 0;
+      this.SalesDetId= SalesDetailList.SalesDetId || 0;
+      this.SalesNo= SalesDetailList.SalesNo || 0;
+      this.OP_IP_ID= SalesDetailList.OP_IP_ID || 0;
+      this.ItemId= SalesDetailList.ItemId || 0;
+      this.ItemName= SalesDetailList.ItemName || 0;
+      this.BatchNo= SalesDetailList.BatchNo || 0;
+      this.BatchExpDate= SalesDetailList.BatchExpDate || 0;
+      this.UnitMRP= SalesDetailList.UnitMRP || 0;
+      this.Qty= SalesDetailList.Qty || 0;
+      this.TotalAmount= SalesDetailList.TotalAmount || 0;
+      this.VatPer= SalesDetailList.VatPer || 0;
+      this.VatAmount= SalesDetailList.VatAmount || 0;
+      this.DiscPer= SalesDetailList.DiscPer || 0;
+      this.DiscAmount= SalesDetailList.DiscAmount || 0;
+      this.GrossAmount= SalesDetailList.GrossAmount || 0;
+      this.LandedPrice= SalesDetailList.LandedPrice || 0;
+      this.TotalLandedAmount= SalesDetailList.TotalLandedAmount || 0;
+      this.IsBatchRequired= SalesDetailList.IsBatchRequired || 0;
+      this.PurRateWf= SalesDetailList.PurRateWf || 0;
+      this.PurTotAmt= SalesDetailList.PurTotAmt || 0;
+      this.IsPrescription= SalesDetailList.IsPrescription || 0;
+      this.CGSTPer= SalesDetailList.CGSTPer || 0;
+      this.SGSTPer= SalesDetailList.SGSTPer || 0;
+      this.IGSTPer= SalesDetailList.IGSTPer || 0;
+      this.IsPurRate= SalesDetailList.IsPurRate || 0;
+      this.StkID= SalesDetailList.StkID || 0;
     }
   }
 }
