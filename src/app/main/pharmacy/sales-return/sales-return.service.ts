@@ -72,21 +72,20 @@ export class SalesReturnService {
     });
   }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getSalesBillList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseSalesBill",Param);
   }
 
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+  public getSalesDetCashList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Cash",Param);
   }
 
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getSalesDetCreditList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",Param);
   }
   
 }

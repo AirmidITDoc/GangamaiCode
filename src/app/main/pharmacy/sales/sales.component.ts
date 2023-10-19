@@ -48,7 +48,7 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-  dsIndentID = new MatTableDataSource<IndentID>();
+  // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
   ItemId: any;
@@ -312,7 +312,7 @@ IsCreditflag : boolean=false
     // pament Code
     
     this.patientDetailsFormGrp = this.createForm();
-   debugger
+  //  debugger
     this.selectedPaymnet1 = this.paymentArr1[0].value;
     this.amount1 = this.FinalNetAmount// this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
     this.getBalanceAmt();
@@ -369,7 +369,7 @@ IsCreditflag : boolean=false
   }
 
   OtherPayment(){
-  debugger
+  // debugger
     this.amount1=this.FinalNetAmount;
     this.paidAmt = this.FinalNetAmount;
     this.isPaymentSelected=true;
@@ -381,7 +381,7 @@ IsCreditflag : boolean=false
   }
 
   getBalanceAmt() {
-    debugger
+    // debugger
     this.balanceAmt = parseInt(this.FinalNetAmount)- ((this.amount1 ? parseInt(this.amount1) : 0)
       + (this.amount2 ? parseInt(this.amount2) : 0)
       + (this.amount3 ? parseInt(this.amount3) : 0)
@@ -430,7 +430,7 @@ IsCreditflag : boolean=false
   }
 
   onPaymentChange(rowId: number, value: string) {
-    debugger
+    // debugger
     switch (rowId) {
       case 1:
         this.paymentArr2 = this.opService.getPaymentArr();
@@ -755,13 +755,13 @@ IsCreditflag : boolean=false
       this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
       return;
     }
-    debugger
+    // debugger
     console.log(this.Paymentobj)
     return;
   }
 
   getChequeObj(type: string) {
-    debugger
+    // debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
@@ -1048,7 +1048,7 @@ IsCreditflag : boolean=false
   SalesIdWiseObj: any = {};
 
   getTopSalesDetailsprint(){ 
-debugger
+// debugger
   var strrowslist = "";
   let onlySalesId = [];
   this.reportPrintObjItemList.forEach(ele => onlySalesId.push(ele.SalesId));
@@ -1102,7 +1102,53 @@ debugger
   onClear() {
 
   }
+  calculateTotalAmt() {
 
+    let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+    if (Qty > this.BalanceQty) {
+      Swal.fire("Enter Qty less than Balance");
+      this.ItemFormreset();
+    }
+
+    if (Qty && this.MRP) {
+      debugger;
+      this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
+      //this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
+      this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
+      this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
+
+      console.log(this.VatPer);
+      this.GSTAmount = (((this.UnitMRP) * (this.VatPer) / 100) * parseInt(Qty)).toFixed(2);
+      this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
+      this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
+      this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
+      
+      console.log(this.GSTAmount);
+      
+    }
+
+
+
+    // txtMRPTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtTotMRPAftDisAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
+    // txtLandedTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtUnitLandedRate.Text), "0.00")
+    // txtPurTotAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPurUnitRateWF.Text), "0.00")
+    // Call CalculateVatAmount()
+
+    // Dim lngVatAmount, lngCGSTAmt, lngSGSTAmt, lngIGSTAmt As Double
+    // lngVatAmount = (Val(txtPerMRP.Text) * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngCGSTAmt = (Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngSGSTAmt = (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    // lngIGSTAmt = (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+
+    // footer total
+    // txtPerItemVatAmt.Text = Format(lngVatAmount, "0.00")
+    // txtCGSTAmt.Text = Format(lngCGSTAmt, "0.00")
+    // txtSGSTAmt.Text = Format(lngSGSTAmt, "0.00")
+    // txtIGSTAmt.Text = Format(lngIGSTAmt, "0.00")
+
+
+  }
   onAdd() {
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
@@ -1119,9 +1165,23 @@ debugger
           GSTPer: this.GSTPer || 0,
           GSTAmount: this.GSTAmount || 0,
           TotalMRP: this.TotalMRP,
+          DiscPer: this._salesService.IndentSearchGroup.get('DiscPer').value || 0,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
           StockId: this.StockId,
+          VatPer:this.VatPer,
+          VatAmount:this.GSTAmount,
+          LandedRate:this.LandedRate,
+          LandedRateandedTotal:this.LandedRateandedTotal,
+          CgstPer:this.CgstPer,
+          CGSTAmt:this.CGSTAmt,
+          SgstPer:this.SgstPer,
+          SGSTAmt:this.SGSTAmt,
+          IgstPer:this.IgstPer,
+          IGSTAmt:this.IGSTAmt,
+          PurchaseRate:this.PurchaseRate,
+          PurTotAmt:this.PurTotAmt
+
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -1223,64 +1283,65 @@ debugger
 
     this.sIsLoading = 'save';
     
-    if (this.Itemchargeslist.length > 0) {
-      this.Itemchargeslist.forEach((element) => {
-        if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
-          debugger
-          this.stockidflag = false;
-          // Swal.fire('Item from Present StockID');
-          console.log(element);
-          debugger
-          this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
-          this.TotalMRP = this.Qty * this.UnitMRP,
+    // if (this.Itemchargeslist.length > 0) {
+    //   this.Itemchargeslist.forEach((element) => {
+    //     if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
+    //       // debugger
+    //       this.stockidflag = false;
+    //       // Swal.fire('Item from Present StockID');
+    //       console.log(element);
+    //       // debugger
+    //       this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
+    //       this.TotalMRP = this.Qty * this.UnitMRP,
            
-          this.GSTAmount = this.GSTAmount + parseFloat(element.GSTAmount);
-          this.NetAmt = parseFloat(this.NetAmt) + (parseFloat(element.NetAmt));
-          this.DiscAmt = parseFloat(element.DiscAmt) + this.DiscAmt;
-          this.ItemId =element.ItemId;
-          this.ItemName=element.ItemName;
-          this.BatchNo=element.BatchNo;
-          this.StockId=element.StockId; 
-          this.BatchExpDate=element.BatchExpDate  || '01/01/1900';
-          this.deleteflag=false;
-          this.deleteTableRow(event, element);
+    //       this.GSTAmount = this.GSTAmount + parseFloat(element.GSTAmount);
+    //       this.NetAmt = parseFloat(this.NetAmt) + (parseFloat(element.NetAmt));
+    //       this.DiscAmt = parseFloat(element.DiscAmt) + this.DiscAmt;
+    //       this.ItemId =element.ItemId;
+    //       this.ItemName=element.ItemName;
+    //       this.BatchNo=element.BatchNo;
+    //       this.StockId=element.StockId; 
+    //       this.BatchExpDate=element.BatchExpDate  || '01/01/1900';
           
-          // this.Itemchargeslist.push(
-          //   {
+    //       this.deleteflag=false;
+    //       this.deleteTableRow(event, element);
+          
+    //       // this.Itemchargeslist.push(
+    //       //   {
 
-          //     ItemId: this.ItemId,
-          //     ItemName: this.ItemName,
-          //     BatchNo: this.BatchNo,
-          //     BatchExpDate: this.BatchExpDate || '01/01/1900',
-          //     Qty: this.Qty + element.Qty,
-          //     UnitMRP: this.MRP,
-          //     GSTPer: this.GSTPer || 0,
-          //     GSTAmount: this.GSTAmount || 0,
-          //     TotalMRP: this.TotalMRP,
-          //     DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
-          //     NetAmt: this.NetAmt,
-          //     StockId: this.StockId,
+    //       //     ItemId: this.ItemId,
+    //       //     ItemName: this.ItemName,
+    //       //     BatchNo: this.BatchNo,
+    //       //     BatchExpDate: this.BatchExpDate || '01/01/1900',
+    //       //     Qty: this.Qty + element.Qty,
+    //       //     UnitMRP: this.MRP,
+    //       //     GSTPer: this.GSTPer || 0,
+    //       //     GSTAmount: this.GSTAmount || 0,
+    //       //     TotalMRP: this.TotalMRP,
+    //       //     DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+    //       //     NetAmt: this.NetAmt,
+    //       //     StockId: this.StockId,
 
-          //   });
-          // this.saleSelectedDatasource.data = this.Itemchargeslist;
-          // this.ItemFormreset();
+    //       //   });
+    //       // this.saleSelectedDatasource.data = this.Itemchargeslist;
+    //       // this.ItemFormreset();
 
-        } 
-        // else {
-        //   this.stockidflag = true;
-        // }
+    //     } 
+    //     // else {
+    //     //   this.stockidflag = true;
+    //     // }
 
-      });
+    //   });
 
-    }
+    // }
     
     if (this.stockidflag == true) {
       this.onAdd();
     }else{
        
+      debugger;
           this.Itemchargeslist.push(
             {
-
               ItemId: this.ItemId,
               ItemName: this.ItemName,
               BatchNo: this.BatchNo,
@@ -1293,13 +1354,25 @@ debugger
               DiscAmt: this.DiscAmt| 0,
               NetAmt: this.NetAmt,
               StockId: this.StockId,
-
+              VatPer:this.VatPer,
+              VatAmount:this.GSTAmount,
+              LandedRate:this.LandedRate,
+              LandedRateandedTotal:this.LandedRateandedTotal,
+              CgstPer:this.CgstPer,
+              CGSTAmt:this.CGSTAmt,
+              SgstPer:this.SgstPer,
+              SGSTAmt:this.SGSTAmt,
+              IgstPer:this.IgstPer,
+              IGSTAmt:this.IGSTAmt,
+              PurchaseRate:this.PurchaseRate,
+              PurTotAmt:this.PurTotAmt
             });
           this.saleSelectedDatasource.data = this.Itemchargeslist;
+          console.log(this.saleSelectedDatasource.data);
           this.ItemFormreset();
 
     }
-
+    console.log(this.saleSelectedDatasource.data);
     this.itemid.nativeElement.focus();
     this.add = false;
 
@@ -1336,14 +1409,15 @@ debugger
       this.ItemObj = result;
 
       this.VatPer = result.VatPercentage;
+      console.log(this.VatPer);
       this.CgstPer = result.CGSTPer;
       this.SgstPer = result.SGSTPer;
       this.IgstPer = result.IGSTPer;
 
       this.VatAmount = result.VatPercentage;
-      this.CGSTAmt = result.VatPercentage;
-      this.SGSTAmt = result.VatPercentage;
-      this.IGSTAmt = result.VatPercentage;
+      // this.CGSTAmt = result.VatPercentage;
+      // this.SGSTAmt = result.VatPercentage;
+      // this.IGSTAmt = result.VatPercentage;
       this.StockId = result.StockId
       this.StoreId = result.StoreId;
       this.LandedRate = result.LandedRate;
@@ -1370,7 +1444,7 @@ debugger
     this.TotalMRP = 0;
     this.NetAmt = 0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
-
+    this.filteredOptions=[];
     // this.add=false;
     this.getPharItemList();
   }
@@ -1421,56 +1495,6 @@ debugger
   //   return TotGST;
   // }
 
-  calculateTotalAmt() {
-
-    let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    if (Qty > this.BalanceQty) {
-      Swal.fire("Enter Qty less than Balance");
-      this.ItemFormreset();
-    }
-
-    if (Qty && this.MRP) {
-      this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
-      debugger
-      
-      if (this.GSTPer > 0) {
-        this.GSTAmount = ((this.TotalMRP * (this.GSTPer)) / 100).toFixed(2);
-        this.NetAmt=this.TotalMRP;
-      }
-
-      this.FinalGSTAmt = ((this.UnitMRP) * (this.VatPer) / 100 * parseInt(Qty)).toFixed(2);
-      this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
-      this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
-      this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
-      this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
-  
-    }
-
-
-
-    // txtMRPTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
-    // txtTotMRPAftDisAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPerMRP.Text), "0.00")
-    // txtLandedTotal.Text = Format(Val(txtIssueQty.Text) * Val(txtUnitLandedRate.Text), "0.00")
-    // txtPurTotAmt.Text = Format(Val(txtIssueQty.Text) * Val(txtPurUnitRateWF.Text), "0.00")
-    // Call CalculateVatAmount()
-
-    // Dim lngVatAmount, lngCGSTAmt, lngSGSTAmt, lngIGSTAmt As Double
-    // lngVatAmount = (Val(txtPerMRP.Text) * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
-    // lngCGSTAmt = (Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-    // lngSGSTAmt = (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-    // lngIGSTAmt = (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-
-    // footer total
-    // txtPerItemVatAmt.Text = Format(lngVatAmount, "0.00")
-    // txtCGSTAmt.Text = Format(lngCGSTAmt, "0.00")
-    // txtSGSTAmt.Text = Format(lngSGSTAmt, "0.00")
-    // txtIGSTAmt.Text = Format(lngIGSTAmt, "0.00")
-
-
-  }
-
   calculateDiscAmt() {
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
@@ -1496,7 +1520,7 @@ debugger
   // }
 
   getDiscPer() {
-    debugger
+    // debugger
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
@@ -1529,7 +1553,7 @@ debugger
       this.ItemSubform.get('ConcessionId').enable();
 
     } else {
-
+      this.ConShow = false
       this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
@@ -1700,7 +1724,7 @@ debugger
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-      debugger
+      // debugger
       
     // if (this.patientDetailsFormGrp.get('balanceAmountController').value==0) {
     // console.log("Procced with Payment Option");
@@ -1741,6 +1765,7 @@ debugger
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
+      console.log(element);
       let salesDetailInsert = {};
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
@@ -1749,21 +1774,21 @@ debugger
       salesDetailInsert['unitMRP'] = element.UnitMRP;
       salesDetailInsert['qty'] = element.Qty;
       salesDetailInsert['totalAmount'] = element.TotalMRP;
-      salesDetailInsert['vatPer'] = this.VatPer;
-      salesDetailInsert['vatAmount'] = this.VatAmount;
-      salesDetailInsert['discPer'] = this.DiscPer;
+      salesDetailInsert['vatPer'] = element.VatPer;
+      salesDetailInsert['vatAmount'] = element.VatAmount;
+      salesDetailInsert['discPer'] = element.DiscPer;
       salesDetailInsert['discAmount'] = element.DiscAmt;
       salesDetailInsert['grossAmount'] = element.NetAmt;
-      salesDetailInsert['landedPrice'] = this.LandedRate;
-      salesDetailInsert['totalLandedAmount'] = this.LandedRateandedTotal;
-      salesDetailInsert['purRateWf'] = this.PurchaseRate;
-      salesDetailInsert['purTotAmt'] = this.PurTotAmt;
-      salesDetailInsert['cgstPer'] = this.CgstPer;
-      salesDetailInsert['cgstAmt'] = this.CGSTAmt;
-      salesDetailInsert['sgstPer'] = this.SgstPer;
-      salesDetailInsert['sgstAmt'] = this.SGSTAmt;
-      salesDetailInsert['igstPer'] = this.IgstPer
-      salesDetailInsert['igstAmt'] = this.IGSTAmt
+      salesDetailInsert['landedPrice'] = element.LandedRate;
+      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsert['purRateWf'] = element.PurchaseRate;
+      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
+      salesDetailInsert['cgstPer'] = element.CgstPer;
+      salesDetailInsert['cgstAmt'] = element.CGSTAmt;
+      salesDetailInsert['sgstPer'] = element.SgstPer;
+      salesDetailInsert['sgstAmt'] = element.SGSTAmt;
+      salesDetailInsert['igstPer'] = element.IgstPer
+      salesDetailInsert['igstAmt'] = element.IGSTAmt
       salesDetailInsert['isPurRate'] = 0;
       salesDetailInsert['stkID'] = element.StockId;
       salesDetailInsertarr.push(salesDetailInsert);
@@ -1946,21 +1971,21 @@ debugger
       salesDetailInsertCredit['unitMRP'] = element.UnitMRP;
       salesDetailInsertCredit['qty'] = element.Qty;
       salesDetailInsertCredit['totalAmount'] = element.TotalMRP;
-      salesDetailInsertCredit['vatPer'] = this.VatPer;
-      salesDetailInsertCredit['vatAmount'] = this.VatAmount;
-      salesDetailInsertCredit['discPer'] = this.DiscPer;
+      salesDetailInsertCredit['vatPer'] = element.VatPer;
+      salesDetailInsertCredit['vatAmount'] = element.VatAmount;
+      salesDetailInsertCredit['discPer'] = element.DiscPer;
       salesDetailInsertCredit['discAmount'] = element.DiscAmt;
       salesDetailInsertCredit['grossAmount'] = element.NetAmt;
-      salesDetailInsertCredit['landedPrice'] = this.LandedRate;
-      salesDetailInsertCredit['totalLandedAmount'] = this.LandedRateandedTotal;
-      salesDetailInsertCredit['purRateWf'] = this.PurchaseRate;
-      salesDetailInsertCredit['purTotAmt'] = this.PurTotAmt;
-      salesDetailInsertCredit['cgstPer'] = this.CgstPer;
-      salesDetailInsertCredit['cgstAmt'] = this.CGSTAmt;
-      salesDetailInsertCredit['sgstPer'] = this.SgstPer;
-      salesDetailInsertCredit['sgstAmt'] = this.SGSTAmt;
-      salesDetailInsertCredit['igstPer'] = this.IgstPer
-      salesDetailInsertCredit['igstAmt'] = this.IGSTAmt
+      salesDetailInsertCredit['landedPrice'] = element.LandedRate;
+      salesDetailInsertCredit['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsertCredit['purRateWf'] = element.PurchaseRate;
+      salesDetailInsertCredit['purTotAmt'] = element.PurTotAmt;
+      salesDetailInsertCredit['cgstPer'] = element.CgstPer;
+      salesDetailInsertCredit['cgstAmt'] = element.CGSTAmt;
+      salesDetailInsertCredit['sgstPer'] = element.SgstPer;
+      salesDetailInsertCredit['sgstAmt'] = element.SGSTAmt;
+      salesDetailInsertCredit['igstPer'] = element.IgstPer
+      salesDetailInsertCredit['igstAmt'] = element.IGSTAmt
       salesDetailInsertCredit['isPurRate'] = 0;
       salesDetailInsertCredit['stkID'] = element.StockId;
       salesDetailInsertCreditarr.push(salesDetailInsertCredit);
@@ -1994,7 +2019,7 @@ debugger
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
     console.log(submitData);
-    debugger
+    // debugger
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Sale Credit!', 'Data saved Successfully !', 'success').then((result) => {
@@ -2034,20 +2059,12 @@ debugger
   public onEnterqty(event): void {
     if (event.which === 13) {
       this.disper.nativeElement.focus();
+      this.calculateTotalAmt()
     }
   }
-
   public onEnterdiscper(event): void {
     if (event.which === 13) {
-      // if (this.DiscPer == 0) {
-      //   this.discamount.nativeElement.focus();
-      // }
-      // else {
-
-      //   this.addbutton.focus();
-      // }
       this.discamount.nativeElement.focus();
-
     }
   }
 
@@ -2098,7 +2115,7 @@ debugger
     );
   }
   getTemplate() {
-    debugger
+    // debugger
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._salesService.getTemplate(query).subscribe((resData: any) => {
   
@@ -2216,12 +2233,25 @@ export class IndentList {
   GSTPer: any;
   GSTAmount:any;
   TotalMRP: any;
+  DiscPer:any;
   DiscAmt: any;
   NetAmt: any;
   StockId: any;
   ReturnQty:any;
   TotalAmount:any;
   Total:any;
+  VatPer:any;
+  VatAmount:any;
+  LandedRate:any;
+  CgstPer:any;
+  CGSTAmt:any;
+  SgstPer:any;
+  SGSTAmt:any;
+  IgstPer:any;
+  IGSTAmt:any;
+  LandedRateandedTotal:any;
+  PurchaseRate:any;
+  PurTotAmt;any;
   /**
    * Constructor
    *
@@ -2250,6 +2280,15 @@ export class IndentList {
       this.ReturnQty = IndentList.ReturnQty || 0;
       this.TotalAmount=IndentList.TotalAmount || 0;    
       this.Total=IndentList.Total || '';
+      this.VatPer=IndentList.VatPer || 0;    
+      this.VatAmount=IndentList.VatAmount || 0;    
+      this.LandedRate=IndentList.LandedRate || 0;    
+      this.CgstPer=IndentList.CgstPer || 0;    
+      this.CGSTAmt=IndentList.CGSTAmt || 0;    
+      this.SgstPer=IndentList.SgstPer || 0;    
+      this.SGSTAmt=IndentList.SGSTAmt || 0;    
+      this.IgstPer=IndentList.IgstPer || 0;    
+      this.IGSTAmt=IndentList.IGSTAmt || 0;    
     }
   }
 }
