@@ -34,8 +34,34 @@ export class SalesReturnComponent implements OnInit {
   ];
   
   dspSalesDetColumns = [
-    'SalesId',
+    // 'SalesId',
     'SalesNo',
+    // 'SalesDetId',
+    'OP_IP_ID',
+    // 'ItemId',
+    'ItemName',
+    'BatchNo',
+    // 'BatchExpDate',
+    'UnitMRP',
+    'Qty',
+    'ReturnQty',
+    'TotalAmount',
+    'VatPer',
+    'VatAmount',
+    'DiscPer',
+    'DiscAmount',
+    'GrossAmount',
+    // 'LandedPrice',
+    // 'TotalLandedAmount',
+    // 'IsBatchRequired',
+    // 'PurRateWf',
+    // 'PurTotAmt',
+    // 'IsPrescription',
+    'CGSTPer',
+    'SGSTPer',
+    'IGSTPer',
+    'IsPurRate',
+    'StkID'
   ]
   SearchForm: FormGroup;
   dssaleList = new MatTableDataSource<SaleBillList>();
@@ -142,6 +168,10 @@ export class SalesReturnComponent implements OnInit {
       // this.dssaleList.paginator = this.paginator;
       console.log(this.dssaleDetailList.data);
     })
+  }
+
+  getCellCalculation(contact){
+    console.log(contact);
   }
 
 }

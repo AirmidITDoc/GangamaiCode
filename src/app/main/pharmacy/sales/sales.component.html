@@ -61,7 +61,8 @@
                                                         autocomplete="off" maxlength="10"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                         required="required" value="9876658688"
-                                                        (keydown)="onEntermobileno($event)">
+                                                        (keydown.enter)="onEntermobileno($event)"
+                                                        (blur)="onEntermobileno($event)">
                                                     <mat-error class="error"
                                                         *ngIf="ItemSubform.get('MobileNo').invalid && ItemSubform.get('MobileNo').touched">10
                                                         digits Mobile number is
@@ -494,13 +495,20 @@
                 
                                                         </div> -->
                                                     </div>
-                                                    <div style="float:right;">
+                                                    <div style="justify-content: end;">
                                                         <mat-radio-group aria-label="Select an option"
-                                                            formControlName="CashPay" style="margin-top: 12px;">
+                                                            formControlName="CashPay" style="margin-top: 12px;"
+                                                            (change)="onChangePayment($event)">
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                                            <mat-radio-button value="Online">Online Pay</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->
                                                         </mat-radio-group>
+                                                        <mat-form-field appearance="outline" fxFlex="10%" *ngIf="ItemSubform.get('CashPay').value === 'Online'">
+                                                            <mat-label>Referance Number</mat-label>
+                                                            <input matInput name="referanceNo"
+                                                                formControlName="referanceNo">
+                                                        </mat-form-field>
                                                         <button class="next-btn" (click)="onSave()"
                                                             [disabled]="ItemSubform.invalid">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
