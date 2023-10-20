@@ -2,8 +2,8 @@ app-prescription{
     
 .Tab1{
     .mat-column-Date{
-        width:100px;
-        max-width:100px;
+        width:150px;
+        max-width:150px;
         min-width:100px;
         align-items: left;
     }
@@ -14,11 +14,24 @@ app-prescription{
         align-items: left;
     }
     .mat-column-PatientName{
-        width:400px;
-        max-width:400px;
-        min-width:400px;
+        width:300px;
+        max-width:300px;
+        min-width:300px;
         align-items: left;
     }
+    .mat-column-Vst_Adm_Date{
+        width:150px;
+        max-width:150px;
+        min-width:100px;
+        align-items: left;
+    }
+    .mat-column-action{
+        width:100px;
+        max-width:100px;
+        min-width:100px;
+        align-items: left;
+    }
+   
 
     height: 320px;
     max-height: 320px;
@@ -28,9 +41,9 @@ app-prescription{
 
 .Tab2{
     .mat-column-ItemName{
-        width:400px;
-        max-width:400px;
-        min-width:400px;
+        width:300px;
+        max-width:300px;
+        min-width:300px;
         align-items: left;
     }
     .mat-column-Qty {

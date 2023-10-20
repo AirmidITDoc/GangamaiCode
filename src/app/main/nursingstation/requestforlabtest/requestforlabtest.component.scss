@@ -1,29 +1,35 @@
 .Tab1 {
     .mat-column-RegNo {
-        width: 150px;
-        max-width: 150px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         align-items: left;
     }
 
     .mat-column-PatientName {
-        width: 300px;
-        max-width: 400px;
-        min-width: 300px;
+        width: 350px;
+        max-width: 350px;
+        min-width: 350px;
         align-items: left;
     }
 
     .mat-column-WardName {
-        width: 300px;
-        max-width: 400px;
-        min-width: 300px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
         align-items: left;
     }
 
     .mat-column-Vst_Adm_Date {
         width: 150px;
-        max-width: 200px;
+        max-width: 150px;
         min-width: 150px;
+        align-items: left;
+    }
+    .mat-column-action{
+        width:100px;
+        max-width:100px;
+        min-width:100px;
         align-items: left;
     }
 
@@ -42,21 +48,21 @@
     }
 
     .mat-column-ReqDate {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
         align-items: left;
     }
 
     .mat-column-ReqTime {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
         align-items: left;
     }
     .mat-column-AddedByName {
-        width: 250px;
-        max-width: 250px;
+        width: 200px;
+        max-width: 200px;
         min-width: 200px;
         align-items: left;
     }
@@ -67,9 +73,9 @@
         align-items: left;
     }
     .mat-column-BillDateTime {
-        width: 150px;
-        max-width: 150px;
-        min-width: 100px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
         align-items: left;
     }
     .mat-column-IsStatus {

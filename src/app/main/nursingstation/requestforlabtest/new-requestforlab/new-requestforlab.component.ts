@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthenticationService } from 'app/core/services/authentication.service';
  
  
 @Component({
@@ -35,12 +36,15 @@ export class NewRequestforlabComponent implements OnInit {
   registration: any;
   isLoading: String = '';
   sIsLoading: string = "";
+  matDialogRef: any;
+  
  
  
  
   displayedVisitColumns: string[] = [
     'ServiceName',
-    'Price'
+    'Price',
+    'buttons'
   ]
 
   displayedVisitColumns2: string[] = [
@@ -57,11 +61,14 @@ export class NewRequestforlabComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private _matDialog: any;
+  vAdmissionID: any;
   
   
  
   constructor(private _FormBuilder: FormBuilder,
-    public _RequestforlabtestService: RequestforlabtestService) { }
+    public dialogRef: MatDialogRef<NewRequestforlabComponent>,
+    public _RequestforlabtestService: RequestforlabtestService,
+    private _loggedService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
@@ -76,7 +83,11 @@ export class NewRequestforlabComponent implements OnInit {
       Price1: '',
       ServiceId: '',
       ServiceName2: '',
-      Price2: ''
+      Price2: '',
+      PatientName:'',
+      RegId:'',
+      AdmissionID:0
+
       
     })
   }
@@ -140,6 +151,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.registerObj = obj;
     this.PatientName = obj.FirstName + '' + obj.LastName;
     this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;
    // console.log( this.PatientName)
     // this.setDropdownObjs();
@@ -171,13 +183,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   onSaveEntry(row) {
-   var vdata ;
-  //  if(vdata==this.dstable1.data)
-  //   {
-  //     console.log("Record Alyready Exits");
-  //   }
-  //   else{}
-   
+    
    
     this.isLoading = 'save';
     this.dstable1.data = [];
@@ -190,19 +196,25 @@ export class NewRequestforlabComponent implements OnInit {
 
     this.isLoading = '';
     console.log(this.chargeslist);
-    vdata=this.dstable1.data = this.chargeslist;
-    // if(vdata==(this.dstable1.data = this.chargeslist))
-    // {
-    //   Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success') 
-    // }
-    // else
-    // {}
+    this.dstable1.data = this.chargeslist;
     this.dstable1.sort = this.sort;
       this.dstable1.paginator = this.paginator;
     console.log(this.dstable1.data);
-    // this.changeDetectorRefs.detectChanges();
+  }
+  deleteTableRow(event, element) {
+    // if (this.key == "Delete") {
+      let index = this.chargeslist.indexOf(element);
+      if (index >= 0) {
+        this.chargeslist.splice(index, 1);
+        this.dstable1.data = [];
+        this.dstable1.data = this.chargeslist;
+      }
+      Swal.fire('Success !', 'Service Row Deleted Successfully', 'success');
+
     // }
-    
+  }
+  onClose() {
+    this.dialogRef.close();
   }
 
   OnSaveLabRequest(){
@@ -215,9 +227,9 @@ export class NewRequestforlabComponent implements OnInit {
 
       ipPathOrRadiRequestInsertArray['reqDate']  =  this.dateTimeObj.date;
       ipPathOrRadiRequestInsertArray['reqTime']  = this.dateTimeObj.time;
-      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = 0;
-      ipPathOrRadiRequestInsertArray['oP_IP_Type']  =  0;
-      ipPathOrRadiRequestInsertArray['isAddedBy']  = 0;
+      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vAdmissionID
+      ipPathOrRadiRequestInsertArray['oP_IP_Type']  =  1;
+      ipPathOrRadiRequestInsertArray['isAddedBy']  = this._loggedService.currentUserValue.user.id;
       ipPathOrRadiRequestInsertArray['isCancelled']  = 0;
       ipPathOrRadiRequestInsertArray['isCancelledBy']  = 0;
       ipPathOrRadiRequestInsertArray['isCancelledDate']  = this.dateTimeObj.date;
@@ -229,11 +241,10 @@ export class NewRequestforlabComponent implements OnInit {
       this.dsLabRequest2.data.forEach((element) => {
         let ipPathOrRadiRequestLabRequestInsert = {};
         ipPathOrRadiRequestLabRequestInsert['requestId'] =0;
-        ipPathOrRadiRequestLabRequestInsert['serviceId'] = 0;
-        ipPathOrRadiRequestLabRequestInsert['price']=element.Price2;
-        ipPathOrRadiRequestLabRequestInsert['isStatus']= 'true';
+        ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
+        ipPathOrRadiRequestLabRequestInsert['price']=element.Price;
+        ipPathOrRadiRequestLabRequestInsert['isStatus']= false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
-
     });
     submissionObj['ipPathOrRadiRequestLabRequestInsert'] = ipPathOrRadiRequestLabRequestInsertArray;
     console.log(submissionObj);
@@ -244,7 +255,6 @@ export class NewRequestforlabComponent implements OnInit {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
           }
-          
         });
       } else {
         Swal.fire('Error !', 'Prescription Not Updated', 'error');
@@ -268,6 +278,8 @@ export class LabRequest {
 export class LabRequestList {
   ServiceName2: any;
   Price2: number;
+  ServiceId: any;
+  Price: any;
 
   constructor(LabRequestList) {
     this.ServiceName2 = LabRequestList.ServiceName2 || '';

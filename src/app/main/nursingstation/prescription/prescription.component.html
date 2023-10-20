@@ -132,7 +132,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="loading">
+                                    <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
@@ -141,26 +141,26 @@
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
-                                    </ng-container> -->
+                                    </ng-container>
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']"
+                                    <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
-                                    </mat-footer-row> -->
+                                    </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                             <div>
-                                <mat-table class="Tab1" matSort [dataSource]="dsprescriptiondetList"
+                                <mat-table class="Tab2" matSort [dataSource]="dsprescriptiondetList"
                                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                 <ng-container matColumnDef="ItemName">
@@ -171,7 +171,7 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Qty" fxLayoutAlign="start center">
+                                <ng-container matColumnDef="Qty">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                         style=" margin-top: 8px; ">
                                         Qty</mat-header-cell>
@@ -181,7 +181,7 @@
                                 </ng-container>
 
 
-                                <!-- <ng-container matColumnDef="loading">
+                                <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>
                                 </ng-container>
@@ -190,21 +190,21 @@
                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                         no data found...
                                     </mat-footer-cell>
-                                </ng-container> -->
+                                </ng-container>
 
                                 <mat-header-row class="accent" *matHeaderRowDef="dscPrescriptionDetList; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: dscPrescriptionDetList;" class="contact"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <!-- <mat-footer-row *matFooterRowDef="['loading']"
+                                <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                 </mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
-                                </mat-footer-row> -->
+                                    [ngClass]="{'hide':!(dsprescriptiondetList!=null && dsprescriptiondetList.data.length==0)}">
+                                </mat-footer-row>
                             </mat-table>
 
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                 showFirstLastButtons>
                             </mat-paginator>
                             </div>
