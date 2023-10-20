@@ -278,7 +278,7 @@ IsCreditflag : boolean=false
       this.PatientName = this.advanceData.PatientName;
       this.BillDate = this.advanceData.Date;
       this.getBalanceAmt();
-      this.Paymentobj['TransactionType'] = 0;
+      // this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag=false
     // }
     // if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
@@ -1447,6 +1447,7 @@ IsCreditflag : boolean=false
     this.NetAmt = 0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
     this.filteredOptions=[];
+    
     // this.add=false;
     this.getPharItemList();
   }
@@ -1458,6 +1459,7 @@ IsCreditflag : boolean=false
     this.BalAmount = 0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
+    this.ItemSubform.get('referanceNo').reset('');
   }
 
 
@@ -1712,7 +1714,7 @@ IsCreditflag : boolean=false
 
   Paymentobj = {};
   onSave() {
-    if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Other' ) {
+    if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashpaySave()
     }
     else if (this.ItemSubform.get('CashPay').value == 'Credit') {
@@ -1812,74 +1814,105 @@ IsCreditflag : boolean=false
     let cal_GSTAmount_Sales = {};
     cal_GSTAmount_Sales['salesID'] = 0;
 
+    let PaymentInsertobj = {};
     if (this.ItemSubform.get('CashPay').value == 'Other') {
       this.getCashObj('cash');
       this.getChequeObj('cheque');
       this.getCardObj('card');
       this.getNeftObj('neft');
       this.getUpiObj('upi');
-
       
-      this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
-      this.Paymentobj['AdvanceUsedAmount'] = 0;
-      this.Paymentobj['AdvanceId'] = 0;
-      this.Paymentobj['RefundId'] = 0;
-      this.Paymentobj['TransactionType'] = 0;
-      this.Paymentobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      this.Paymentobj['IsCancelled'] = 0;
-      this.Paymentobj['IsCancelledBy'] = 0;
-      this.Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
-      this.Paymentobj['CashCounterId'] = 0;
-      this.Paymentobj['IsSelfORCompany'] = 0;
-      this.Paymentobj['CompanyId'] = 0;
-      this. Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-      this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
-      this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+      PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.date;
+      PaymentInsertobj['AdvanceUsedAmount'] = 0;
+      PaymentInsertobj['AdvanceId'] = 0;
+      PaymentInsertobj['RefundId'] = 0;
+      PaymentInsertobj['TransactionType'] = 4;
+      PaymentInsertobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
+      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      PaymentInsertobj['IsCancelled'] = 0;
+      PaymentInsertobj['IsCancelledBy'] = 0;
+      PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
+      // this.Paymentobj['CashCounterId'] = 0;
+      // this.Paymentobj['IsSelfORCompany'] = 0;
+      // this.Paymentobj['CompanyId'] = 0;
+      PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
+      PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
+      PaymentInsertobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
       
   
     }else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
-     let Paymentobj = {};
-    this.Paymentobj['BillNo'] = 0,// this.billNo;
-    this.Paymentobj['ReceiptNo'] = '',//'RE';
-    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
-    this.Paymentobj['CashPayAmount'] = NetAmt;
-    this.Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-    this.Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-    this.Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-    this.Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-    this.Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-    this.Paymentobj['CardNo'] = '',//this.cardNo;
-    this.Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-    this.Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-    this.Paymentobj['AdvanceUsedAmount'] = 0;
-    this.Paymentobj['AdvanceId'] = 0;
-    this.Paymentobj['RefundId'] = 0;
-    this.Paymentobj['TransactionType'] = 2;
-    this.Paymentobj['Remark'] = '',//'REMArk';
-    this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    this.Paymentobj['IsCancelled'] = 0;
-    this.Paymentobj['IsCancelledBy'] = 0;
-    this.Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-    this.Paymentobj['CashCounterId'] = 0;
-    this.Paymentobj['IsSelfORCompany'] = 0;
-    this.Paymentobj['CompanyId'] = 0;
-    this.Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-    this.Paymentobj['NEFTNo'] = '',// this.neftNo;
-    this.Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-    this.Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-    this.Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-    this.Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-    this.Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-    this.Paymentobj['PaidAmt'] = NetAmt;
-    this.Paymentobj['BalanceAmt'] = 0;
-    
+   
+    PaymentInsertobj['BillNo'] = 0,
+    PaymentInsertobj['ReceiptNo'] = '',
+    PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+    PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
+    PaymentInsertobj['CashPayAmount'] = NetAmt;
+    PaymentInsertobj['ChequePayAmount'] = 0,
+    PaymentInsertobj['ChequeNo'] = 0,
+    PaymentInsertobj['BankName'] = '',
+    PaymentInsertobj['ChequeDate'] = '01/01/1900',
+    PaymentInsertobj['CardPayAmount'] = 0,
+    PaymentInsertobj['CardNo'] = '',
+    PaymentInsertobj['CardBankName'] = '',
+    PaymentInsertobj['CardDate'] = '01/01/1900',
+    PaymentInsertobj['AdvanceUsedAmount'] = 0;
+    PaymentInsertobj['AdvanceId'] = 0;
+    PaymentInsertobj['RefundId'] = 0;
+    PaymentInsertobj['TransactionType'] = 4;
+    PaymentInsertobj['Remark'] = '',
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['IsCancelled'] = 0;
+    PaymentInsertobj['IsCancelledBy'] = 0;
+    PaymentInsertobj['IsCancelledDate'] = '01/01/1900', 
+    PaymentInsertobj['OPD_IPD_Type'] = 3;
+    PaymentInsertobj['NEFTPayAmount'] = 0, 
+    PaymentInsertobj['NEFTNo'] = '',
+    PaymentInsertobj['NEFTBankMaster'] = '',
+    PaymentInsertobj['NEFTDate'] = '01/01/1900',
+    PaymentInsertobj['PayTMAmount'] = 0,
+    PaymentInsertobj['PayTMTranNo'] = '',
+    PaymentInsertobj['PayTMDate'] = '01/01/1900' 
+    // this.Paymentobj['PaidAmt'] = NetAmt;
+    // this.Paymentobj['BalanceAmt'] = 0;
+    }else if (this.ItemSubform.get('CashPay').value == 'Online') {
+      // let Paymentobj = {};
+     PaymentInsertobj['BillNo'] = 0,
+     PaymentInsertobj['ReceiptNo'] = '',
+     PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+     PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
+     PaymentInsertobj['CashPayAmount'] = 0;
+     PaymentInsertobj['ChequePayAmount'] = 0,
+     PaymentInsertobj['ChequeNo'] = 0,
+     PaymentInsertobj['BankName'] = '',
+     PaymentInsertobj['ChequeDate'] = '01/01/1900',
+     PaymentInsertobj['CardPayAmount'] = 0,
+     PaymentInsertobj['CardNo'] = '',
+     PaymentInsertobj['CardBankName'] = '',
+     PaymentInsertobj['CardDate'] = '01/01/1900',
+     PaymentInsertobj['AdvanceUsedAmount'] = 0;
+     PaymentInsertobj['AdvanceId'] = 0;
+     PaymentInsertobj['RefundId'] = 0;
+     PaymentInsertobj['TransactionType'] = 4;
+     PaymentInsertobj['Remark'] = '',
+     PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+     PaymentInsertobj['IsCancelled'] = 0;
+     PaymentInsertobj['IsCancelledBy'] = 0;
+     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
+     PaymentInsertobj['OPD_IPD_Type'] = 3;
+     PaymentInsertobj['NEFTPayAmount'] = 0; 
+     PaymentInsertobj['NEFTNo'] = '',
+     PaymentInsertobj['NEFTBankMaster'] = '',
+     PaymentInsertobj['NEFTDate'] = "01/01/1900",
+     PaymentInsertobj['PayTMAmount'] = NetAmt,
+     PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value ||0,
+     PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
+    //  this.Paymentobj['PaidAmt'] = NetAmt;
+    //  this.Paymentobj['BalanceAmt'] = 0;
     }
   
-    const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
+    // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
 
     console.log("Procced with Payment Option");
 
@@ -1889,12 +1922,12 @@ IsCreditflag : boolean=false
       "updateCurStkSales": updateCurStkSalestarr,
       "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
-      "salesPayment": ipPaymentInsert
+      "salesPayment": PaymentInsertobj
     };
     console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Sale Data!', 'Sales Data saved Successfully !', 'success').then((result) => {
+        Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             // let m = response;
             this.getPrint(response);
@@ -1922,12 +1955,9 @@ IsCreditflag : boolean=false
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
-
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-
-    console.log("Procced with Credit Option");
 
     let salesInsertCredit = {};
     salesInsertCredit['Date'] = this.dateTimeObj.date;
@@ -2010,7 +2040,6 @@ IsCreditflag : boolean=false
     let cal_GSTAmount_SalesCredit = {};
     cal_GSTAmount_SalesCredit['salesID'] = 0;
 
-
     console.log("Procced with Payment Option");
 
     let submitData = {
@@ -2020,11 +2049,11 @@ IsCreditflag : boolean=false
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
-    console.log(submitData);
+    // console.log(submitData);
     // debugger
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Sale Credit!', 'Data saved Successfully !', 'success').then((result) => {
+        Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             let m = response;
             this.getPrint(m);
@@ -2089,27 +2118,22 @@ IsCreditflag : boolean=false
 
   public onEnterDoctorname(event): void {
     if (event.which === 13) {
-     
       this.itemid.nativeElement.focus();
     }
   }
 
 
   getPrint(el) {
-
     var D_data = {
-      "SalesID":el,// 
+      "SalesID":el, 
       "OP_IP_Type": 2
     }
-
     let printContents;
     this.subscriptionArr.push(
       this._salesService.getSalesPrint(D_data).subscribe(res => {
-
         this.reportPrintObjList = res as Printsal[];
-        console.log(this.reportPrintObjList);
+        // console.log(this.reportPrintObjList);
         this.reportPrintObj = res[0] as Printsal;
-
         this.getTemplate();
 
       })
@@ -2130,7 +2154,7 @@ IsCreditflag : boolean=false
       }
       var strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        console.log(this.reportPrintObjList);
+        // console.log(this.reportPrintObjList);
         var objreportPrint = this.reportPrintObjList[i - 1];
         let PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
@@ -2181,8 +2205,7 @@ IsCreditflag : boolean=false
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
   
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      console.log(this.printTemplate);
-  
+      // console.log(this.printTemplate);
       setTimeout(() => {
         this.print();
       }, 1000);
@@ -2214,10 +2237,6 @@ IsCreditflag : boolean=false
   onClose() {
     // this.dialogRef.close({ result: "cancel" });
     this.Itemchargeslist = [];
-  }
-
-  onChangePayment(event: any) {
-    console.log(event.value);
   }
 }
 
