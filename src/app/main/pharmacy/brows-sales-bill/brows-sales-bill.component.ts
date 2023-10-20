@@ -257,7 +257,7 @@ getTemplate() {
   this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
     this.printTemplate = resData[0].TempDesign;
-    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName'];
+    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
     // ;
     for (let i = 0; i < keysArray.length; i++) {
       let reString = "{{" + keysArray[i] + "}}";
@@ -288,10 +288,7 @@ getTemplate() {
       <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
           <div>`+ objreportPrint.ItemName + `</div> 
       </div>
-      <div style="display:flex;width:70px;text-align:left;margin-left:30px;">
-      <div>`+ PackValue + `</div> 
-      </div>
-      <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
+       <div style="display:flex;width:60px;text-align:left;">
           <div>`+ objreportPrint.Qty + `</div> 
       </div>
       <div style="display:flex;width:90px;text-align:center;">

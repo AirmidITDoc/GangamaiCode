@@ -1,46 +1,82 @@
-app-prescription{
-    
-.Tab1{
-    .mat-column-Date{
-        width:100px;
-        max-width:100px;
-        min-width:100px;
-        align-items: left;
-    }
-    .mat-column-RegNo{
-        width:100px;
-        max-width:100px;
-        min-width:100px;
-        align-items: left;
-    }
-    .mat-column-PatientName{
-        width:400px;
-        max-width:400px;
-        min-width:400px;
-        align-items: left;
+app-prescription {
+
+    .Tab1 {
+        .mat-column-Date {
+            width: 150px;
+            max-width: 150px;
+            min-width: 100px;
+            align-items: left;
+        }
+
+        .mat-column-RegNo {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            align-items: left;
+        }
+
+        .mat-column-PatientName {
+            width: 300px;
+            max-width: 300px;
+            min-width: 300px;
+            align-items: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            justify-content: left;
+        }
+
+        .mat-column-Vst_Adm_Date {
+            width: 150px;
+            max-width: 150px;
+            min-width: 100px;
+            align-items: left;
+        }
+
+        .mat-column-action {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            align-items: left;
+        }
+        .mat-column-StoreName {
+            width: 150px;
+            max-width: 150px;
+            min-width: 100px;
+            align-items: left;
+        }
+        .mat-column-PreNo {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            align-items: left;
+        }
+
+
+        height: 320px;
+        max-height: 320px;
+        min-height: 320px;
+
     }
 
-    height: 320px;
-    max-height: 320px;
-    min-height: 320px;
+    .Tab2 {
+        .mat-column-ItemName {
+            width: 300px;
+            max-width: 300px;
+            min-width: 300px;
+            align-items: left;
+        }
 
-}
+        .mat-column-Qty {
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
+            text-align: center;
+        }
 
-.Tab2{
-    .mat-column-ItemName{
-        width:400px;
-        max-width:400px;
-        min-width:400px;
-        align-items: left;
+        height: 320px;
+        max-height: 320px;
+        min-height: 320px;
     }
-    .mat-column-Qty {
-        width: 60px;
-        max-width: 60px;
-        min-width: 60px;
-        text-align: center;
-    }
-    height: 320px;
-    max-height: 320px;
-    min-height: 320px;
-}
 }

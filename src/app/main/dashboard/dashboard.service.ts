@@ -32,4 +32,12 @@ export class DashboardService {
   public getWardDetails(params) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BedOccupancyList_1", params)
   }
+
+  // Pharmacy Dashboard Summary
+  public getPharDashboardSalesSummary(params) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_PharDashboardSalesSummary", params)
+  }
+
+
 }
+

@@ -21,11 +21,13 @@ export class PrescriptionComponent implements OnInit {
   hasSelectedContacts: boolean;
 
   displayedColumns: string[] = [
-    'Date',
+    'action',
     'RegNo',
     'PatientName',
     'Vst_Adm_Date',
-    'action'
+    'Date',
+    'StoreName',
+    'PreNo'
   ]
 
   dscPrescriptionDetList:string[] = [
@@ -87,12 +89,13 @@ export class PrescriptionComponent implements OnInit {
   getPrescriptiondetList(Param){
     var vdata={
       IPMedID: Param
+
     }
     this._PrescriptionService.getPrecriptiondetlist(vdata).subscribe(data =>{
       this.dsprescriptiondetList.data = data as PrescriptiondetList[];
       this.dsprescriptiondetList.sort = this.sort;
       this.dsprescriptiondetList.paginator = this.paginator;
-      // console.log(this.dsprescriptiondetList.data);
+       console.log(this.dsprescriptiondetList.data);
     })
   }
 
@@ -110,12 +113,17 @@ export class PrescriptionList{
   PatientName: string;
   Date:any;
   Vst_Adm_Date:any;
+  StoreName:any;
+  PreNo:any;
+  
 
   constructor(PrescriptionList) {
     this.RegNo=PrescriptionList.RegNo || 0;
     this.PatientName=PrescriptionList.PatientName || '';
     this.Date=PrescriptionList.Date  || '01/01/1900';
     this.Vst_Adm_Date=PrescriptionList.Vst_Adm_Date || '01/01/1900';
+    this.StoreName=PrescriptionList.StoreName || '01/01/1900';
+    this.PreNo=PrescriptionList.PreNo || '01/01/1900';
   }
 }
 

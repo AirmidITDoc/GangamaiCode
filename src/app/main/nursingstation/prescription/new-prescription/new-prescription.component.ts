@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrescriptionService } from '../prescription.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   myForm: FormGroup;
   searchFormGroup: FormGroup;
+  saveForm:FormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
 
@@ -36,13 +37,14 @@ export class NewPrescriptionComponent implements OnInit {
     'ItemName',
     'Qty',
     'Remark',
-    'action'
+    'buttons'
   ]
   WardList: any = [];
   StoreList: any = [];
   Itemlist: any = [];
   PresItemlist: any = [];
   dataArray: any = [];
+  
   noOptionFound: boolean = false;
   isRegIdSelected: boolean = false;
   isItemIdSelected: boolean = false;
@@ -50,6 +52,7 @@ export class NewPrescriptionComponent implements OnInit {
   PatientName: any;
   RegNo: any;
   DoctorName: any;
+  vAdmissionID: any;
   filteredOptions: any;
   filteredOptionsItem: any;
   PatientListfilteredOptions: any;
@@ -62,6 +65,9 @@ export class NewPrescriptionComponent implements OnInit {
 
   ItemName: any;
   BalanceQty: any;
+  matDialogRef: any;
+  
+
 
 
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
@@ -80,41 +86,51 @@ export class NewPrescriptionComponent implements OnInit {
 
   createMyForm() {
     return this._FormBuilder.group({
+      RegId:'',
+      PatientName:'',
+      WardName:'',
       ItemId: '',
       ItemName: '',
-      Qty: '',
-      Remark: '',
-      StoreId: ''
+      Qty: ['', [
+        Validators.required,
+        Validators.pattern("^[0-9]*$")]],
+      Remark: ['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      StoreId: '',
+      RegID: [''],
+      Op_ip_id: ['1'],
+      AdmissionID:0
+      
     })
   }
 
 
   ngOnInit(): void {
     this.myForm = this.createMyForm();
-    this.searchFormGroup = this.createSearchForm();
-
+    // this.searchFormGroup = this.createSearchForm();
+    
     // this.getItemList();
     this.gePharStoreList();
     this.getWardList();
     //  this.getSearchItemList();
 
   }
-  createSearchForm() {
-    return this._FormBuilder.group({
+ 
+  // createSearchForm() {
+  //   return this._FormBuilder.group({
 
-      RegId: [''],
-      WardName: '',
-      StoreId: '',
-      ItemName: '',
-      radioIp: ['1']
-    });
-  }
+  //     RegID: [''],
+  //     radioIp: ['1'],
+       
+  //   });
+  // }
   // RegId of Patient Searching 
   getSearchList() {
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.myForm.get('RegID').value}%`
     }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    if (this.myForm.get('RegID').value.length >= 1) {
       this._PrescriptionService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         //console.log(resData)
@@ -153,18 +169,21 @@ export class NewPrescriptionComponent implements OnInit {
 
   getSelectedObj(obj) {
 
+
     // debugger
     this.registerObj = obj;
     this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.RegId = obj.RegId;
+    this.RegId= obj.RegID;
+    this.vAdmissionID=obj.AdmissionID
     // console.log( this.PatientName)
     // this.setDropdownObjs();
+    console.log(obj);
   }
 
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
-      this.searchFormGroup.get('RegId').disable();
+      this.myForm.get('RegID').disable();
     }
     else {
       this.isRegSearchDisabled = false;
@@ -192,7 +211,7 @@ export class NewPrescriptionComponent implements OnInit {
     if (this.myForm.get('ItemId').value.length >= 2) {
       this._PrescriptionService.getItemlist(m_data).subscribe(data => {
         this.filteredOptionsItem = data;
-        console.log(this.data);
+       // console.log(this.data);
         this.filteredOptionsItem = data;
         if (this.filteredOptionsItem.length == 0) {
           this.noOptionFound = true;
@@ -218,15 +237,31 @@ export class NewPrescriptionComponent implements OnInit {
 
   onAdd() {
     // debugger
+
+
     this.dsPresList.data = [];
     this.PresItemlist.push(
       {
-        ItemID: this.vItemID,
+        ItemID: this.myForm.get('ItemId').value.ItemID,
         ItemName: this.myForm.get('ItemId').value.ItemName,
         Qty: this.vQty,
-        Remark: this.vRemark
+        Remark: this.vRemark || ''
       });
     this.dsPresList.data = this.PresItemlist
+    console.log(this.dsPresList.data);
+  }
+  
+  deleteTableRow(event, element) {
+    // if (this.key == "Delete") {
+      let index = this.PresItemlist.indexOf(element);
+      if (index >= 0) {
+        this.PresItemlist.splice(index, 1);
+        this.dsPresList.data = [];
+        this.dsPresList.data = this.PresItemlist;
+      }
+      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+
+    // }
   }
 
   // getItemList(){
@@ -262,6 +297,9 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.dateTimeObj = dateTimeObj;
   }
+  onClose() {
+    this.ref.close();
+  }
 
 
   //api integrate
@@ -271,47 +309,41 @@ export class NewPrescriptionComponent implements OnInit {
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {};
     let deleteIP_Prescription = {};
-    let insertIP_Prescription = [];
-     
-
-
-    deleteIP_Prescription['oP_IP_ID'] = 0;
+    
+    deleteIP_Prescription['oP_IP_ID'] = this.vAdmissionID;
 
     submissionObj['deleteIP_Prescription'] = deleteIP_Prescription;
 
-    insertIP_MedicalRecordArray['medicalRecoredId'] = this.searchFormGroup.get("RegId").value;
-    insertIP_MedicalRecordArray['admissionId'] = 0;
+    insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
+    insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;;
     insertIP_MedicalRecordArray['roundVisitDate'] = this.dateTimeObj.date;
     insertIP_MedicalRecordArray['roundVisitTime'] = this.dateTimeObj.time;
     insertIP_MedicalRecordArray['inHouseFlag'] = 0;
 
     submissionObj['insertIP_MedicalRecord'] = insertIP_MedicalRecordArray;
 
-
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] = this.RegId;
+      insertIP_Prescription['oP_IP_ID'] =  this.vAdmissionID;;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;
-      insertIP_Prescription['classID'] = 0;
+      insertIP_Prescription['classID'] = 1;
       insertIP_Prescription['genericId'] = 0;
-      insertIP_Prescription['drugId'] = 0;
+      insertIP_Prescription['drugId'] = element.ItemID;
       insertIP_Prescription['doseId'] = 0;
       insertIP_Prescription['days'] = 0;
       insertIP_Prescription['qtyPerDay'] = 0;
       insertIP_Prescription['totalQty'] = element.Qty;
-      insertIP_Prescription['remark'] = element.Remark;
-      insertIP_Prescription['isClosed'] = 0;
-      insertIP_Prescription['isAddBy'] = 0;
+      insertIP_Prescription['remark'] = element.Remark || '';
+      insertIP_Prescription['isClosed'] = false;
+      insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-      insertIP_Prescription['wardID'] = 0 //this.searchFormGroup.get('RoomName').value;
+      insertIP_Prescription['wardID'] = this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
-
     });
     submissionObj['insertIP_Prescription'] = insertIP_Prescriptionarray;
-
 
     console.log(submissionObj);
 
@@ -321,16 +353,13 @@ export class NewPrescriptionComponent implements OnInit {
           Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-            }
-           
+            }   
           });
         } else {
           Swal.fire('Error !', 'Prescription Not Updated', 'error');
         }
         this.isLoading = '';
       });
-
-
   }
 
   // OnSavePrescription() {
@@ -397,11 +426,6 @@ export class NewPrescriptionComponent implements OnInit {
 
   // }
 }
-
-
-
-
-
 export class PrecriptionItemList {
   ItemID: any;
   ItemName: string;

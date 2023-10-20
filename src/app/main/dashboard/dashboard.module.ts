@@ -1,8 +1,3 @@
-
-
-import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
-import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
-import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -27,12 +22,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
 import { MatCardModule } from '@angular/material/card';
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
+import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 
 
 @NgModule({
   declarations: [
     DailyDashboardComponent,
     BedOccupancyComponent,
+    PharmacyDashboardComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +51,7 @@ import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
     MatSelectModule,
     MatRadioModule,
     MatPaginatorModule,
-    MatCardModule
+    MatCardModule,
   ],
   providers: [
     DatePipe

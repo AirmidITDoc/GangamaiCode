@@ -21,10 +21,15 @@ export class RequestforlabtestComponent implements OnInit {
   hasSelectedContacts: boolean;
  
   displayedColumns: string[] = [
+    'action',
     'RegNo',
     'PatientName',
+    'Age',
     'Vst_Adm_Date',
-    'WardName'
+    'WardName',
+    'RequestType',
+    'TariffName',
+    'CompanyName'
   ]
 
   displayColumns: string[] =[
@@ -34,7 +39,9 @@ export class RequestforlabtestComponent implements OnInit {
     'AddedByName',
     'AddBilingUser',
     'BillDateTime',
-    'IsStatus'
+    'IsStatus',
+    'PBillNo',
+    'IsComplted'
   ]
 
   dsrequestList = new MatTableDataSource<RequestList>();
@@ -58,6 +65,7 @@ export class RequestforlabtestComponent implements OnInit {
      toggleSidebar(name): void {
       this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
+ 
 
   Openpopup(){
     this.dialog.open(NewRequestforlabComponent,{
@@ -79,7 +87,7 @@ export class RequestforlabtestComponent implements OnInit {
       this.dsrequestList.data = data as RequestList[];
       this.dsrequestList.sort = this.sort;
       this.dsrequestList.paginator = this.paginator;
-       // console.log(this.dsrequestList.data);
+      console.log(this.dsrequestList.data);
     })
   }
 
@@ -107,12 +115,20 @@ export class RequestList{
   PatientName: string;
   WardName:any;
   Vst_Adm_Date:any;
+  Age:any;
+  RequestType:any;
+  TariffName:any;
+  CompanyName:any;
 
   constructor(RequestList) {
     this.RegNo=RequestList.RegNo || 0;
     this.PatientName=RequestList.PatientName || '';
     this.WardName=RequestList.WardName  || ' ';
     this.Vst_Adm_Date=RequestList.Vst_Adm_Date || '01/01/1900';
+    this.Age=RequestList.Age || 0;
+    this.RequestType=RequestList.RequestType || '';
+    this.TariffName=RequestList.TariffName || '';
+    this.CompanyName=RequestList.CompanyName || '';
   }
 }
 
@@ -124,6 +140,9 @@ export class RequestdetList{
   AddBilingUser:any;
   BillDateTime:any;
   IsStatus:any;
+  PBillNo:any;
+  IsComplted:any;
+   
    
 
   constructor(RequestdetList){
@@ -134,6 +153,8 @@ export class RequestdetList{
     this.AddBilingUser=RequestdetList.AddBilingUser ||  '';
     this.BillDateTime=RequestdetList.BillDateTime ||  0;
     this.IsStatus=RequestdetList.IsStatus ||  0;
+    this.PBillNo=RequestdetList.PBillNo ||  0;
+    this.IsComplted=RequestdetList.IsComplted ||  0;
  
     }
 }
