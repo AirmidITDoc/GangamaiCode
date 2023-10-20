@@ -1,1 +1,84 @@
-<p>pharmacy-dashboard works!</p>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Sales Return :
+                </span>
+                <!-- <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                 
+
+                        <form [formGroup]="SearchForm" style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Store Name</mat-label>
+                                    <mat-select formControlName="StoreId" name="StoreId1" required>
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of StoreList" [value]="m">
+                                            {{m.StoreName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="startdate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                                <div>
+                                    <button mat-raised-button class="searchButton" (click)="getSalesList()"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                        <div>
+                           
+                        </div>
+
+                 
+
+
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

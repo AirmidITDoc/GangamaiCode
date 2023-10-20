@@ -288,10 +288,7 @@ getTemplate() {
       <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
           <div>`+ objreportPrint.ItemName + `</div> 
       </div>
-      <div style="display:flex;width:70px;text-align:left;margin-left:30px;">
-      <div>`+ PackValue + `</div> 
-      </div>
-      <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
+       <div style="display:flex;width:60px;text-align:left;">
           <div>`+ objreportPrint.Qty + `</div> 
       </div>
       <div style="display:flex;width:90px;text-align:center;">
