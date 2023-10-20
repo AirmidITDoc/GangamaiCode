@@ -107,12 +107,47 @@
                                                             </mat-autocomplete>
                                                         </mat-form-field>
 
-                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                            <mat-label
-                                                                class="example-margin">Status:</mat-label>&nbsp;&nbsp;
-                                                            <mat-radio-group name="Status" formControlName="Status"
-                                                                value="false">
+                                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                                            <mat-label>Item Name</mat-label>
+                                                            <input matAutocompletePosition="below" type="text"
+                                                                placeholder="Select Item Name" matInput
+                                                                formControlName="ItemName"
+                                                                (keydown)="onEnterItemName($event)"  #itemname
+                                                                (keydown.enter)="focusNextService()"
+                                                                [matAutocomplete]="autoItemName" required >
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('ItemName').setValue(''); isItemNameSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.GRNSearchGroup.get('ItemName').setValue(''); isItemNameSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #autoItemName="matAutocomplete"
+                                                                [displayWith]="getOptionTextItemName">
+                                                                <mat-option
+                                                                    *ngFor="let option of filteredoptionsItemName | async"
+                                                                    [value]="option">
+                                                                    {{option.ItemName}} | BalQty {{option.Qty}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
 
+                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                            <mat-radio-group name="Verify" formControlName="Verify" value="0">
+                                                                <mat-label class="example-margin">Verify:</mat-label>&nbsp;&nbsp;
+                                                                <mat-radio-button value="0" class="mr-sm-12"
+                                                                [checked]="isChecked"  fxFlex>All</mat-radio-button>
+                                                                <mat-radio-button value="1" class="mr-sm-12"
+                                                                    fxFlex>Pending</mat-radio-button>
+                                                                <mat-radio-button value="2" class="mr-sm-12"
+                                                                    fxFlex>Close</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div><br>
+
+                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                            <mat-radio-group name="Status1" formControlName="Status1" value="0">
+                                                                <mat-label class="example-margin">Status:</mat-label>&nbsp;
+                                                                <mat-radio-button value="0" class="mr-sm-12"
+                                                                [checked]="isChecked"  fxFlex>All</mat-radio-button>
                                                                 <mat-radio-button value="1" class="mr-sm-12"
                                                                     fxFlex>Pending</mat-radio-button>
                                                                 <mat-radio-button value="2" class="mr-sm-12"
@@ -134,7 +169,7 @@
                                                     </div>
 
                                                 </form>
-
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -566,7 +601,7 @@
                                                         <mat-radio-group name="Status" formControlName="Status"
                                                             fxFlex="70%" value="before">
                                                             <mat-radio-button value="after" style="padding-top:13px;" 
-                                                                class="mr-sm-12">Direct Purchase</mat-radio-button>
+                                                            [checked]="isChecked"  class="mr-sm-12">Direct Purchase</mat-radio-button>
                                                             <mat-radio-button value="before"
                                                                 class="mr-sm-12">Purchase Orders</mat-radio-button>
                                                         </mat-radio-group>                                           
@@ -622,10 +657,10 @@
                                                             <input matInput placeholder="Placeholder">
                                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                        <mat-radio-group name="Status" formControlName="Status"
+                                                        <mat-radio-group name="Status2" formControlName="Status2"
                                                             fxFlex="12%" value="Cash"  style="padding-top:13px;">
                                                             <mat-radio-button value="Credit" 
-                                                                class="mr-sm-12">Credit</mat-radio-button>
+                                                            [checked]="isChecked"  class="mr-sm-12">Credit</mat-radio-button>
 
                                                             <mat-radio-button value="Cash"
                                                                 class="mr-sm-12">Cash</mat-radio-button>
@@ -1099,9 +1134,9 @@
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                     fxLayoutGap="4px">
 
-                                                    <mat-radio-group name="Status1" formControlName="Status1" fxFlex="60%"
+                                                    <mat-radio-group name="Status3" formControlName="Status3" fxFlex="60%"
                                                         value="GSTBefore">
-                                                        <mat-radio-button value="GSTBefore" class="mr-sm-12" >GST Before
+                                                        <mat-radio-button value="GSTBefore" class="mr-sm-12"  [checked]="isChecked"  >GST Before
                                                             Disc</mat-radio-button>
 
                                                         <mat-radio-button value="GSTAfter" class="mr-sm-12">GST After
