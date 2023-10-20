@@ -132,6 +132,23 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="StoreName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>StoreName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.StoreName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PreNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pre.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.PreNo}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
