@@ -1,16 +1,23 @@
 .Table1 {
 
   .mat-column-action{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-payment{
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-Date{
-    width: 220px;
-    max-width: 220px;
-    min-width: 220px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     align-items: left;
     justify-content:left; 
   }
