@@ -1,35 +1,68 @@
 .Tab1 {
     .mat-column-RegNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+    }
+
+    .mat-column-PatientName {
+        width: 310px;
+        max-width: 310px;
+        min-width: 310px;
+        align-items: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+    }
+    .mat-column-Age {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+        align-items: left;
+    }
+
+    .mat-column-WardName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        align-items: left;
+    }
+    .mat-column-RequestType {
         width: 120px;
         max-width: 120px;
         min-width: 120px;
         align-items: left;
     }
 
-    .mat-column-PatientName {
-        width: 350px;
-        max-width: 350px;
-        min-width: 350px;
+    .mat-column-Vst_Adm_Date {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         align-items: left;
     }
-
-    .mat-column-WardName {
+    .mat-column-TariffName {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+    }
+    .mat-column-CompanyName {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
         align-items: left;
-    }
-
-    .mat-column-Vst_Adm_Date {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-        align-items: left;
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
     }
     .mat-column-action{
-        width:100px;
-        max-width:100px;
-        min-width:100px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         align-items: left;
     }
 
@@ -37,57 +70,86 @@
     max-height: 320px;
     min-height: 320px;
 
+
 }
 
 .Tab2 {
     .mat-column-ServiceName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
         align-items: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+        
     }
 
     .mat-column-ReqDate {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+       
+    }
+
+    .mat-column-ReqTime {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+        
+    }
+    .mat-column-AddedByName {
         width: 150px;
         max-width: 150px;
         min-width: 150px;
         align-items: left;
-    }
-
-    .mat-column-ReqTime {
-        width: 130px;
-        max-width: 130px;
-        min-width: 130px;
-        align-items: left;
-    }
-    .mat-column-AddedByName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-        align-items: left;
+        
     }
     .mat-column-AddBilingUser {
         width: 150px;
-        max-width: 200px;
+        max-width: 150px;
         min-width: 150px;
         align-items: left;
+         
     }
     .mat-column-BillDateTime {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
         align-items: left;
+       
     }
     .mat-column-IsStatus {
-        width: 150px;
-        max-width: 200px;
-        min-width: 150px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
+        
+    }
+    .mat-column-PBillNo{
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        align-items: left;
+        
+    }
+    .mat-column-IsComplted {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+        
     }
     
     height: 320px;
     max-height: 320px;
     min-height: 320px;
+    
 
 
 }
+ 

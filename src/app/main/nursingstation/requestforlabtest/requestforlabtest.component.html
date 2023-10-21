@@ -90,12 +90,22 @@
 
 
                                 <mat-table class="Tab1" matSort [dataSource]="dsrequestList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;" >
 
-                                    <ng-container matColumnDef="RegNo" sticky>
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RegNo" sticky >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm >
                                             {{contact.RegNo}}
                                         </mat-cell>
                                     </ng-container>
@@ -117,6 +127,14 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="Age" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Age
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Age}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="WardName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Ward Name
                                         </mat-header-cell>
@@ -125,15 +143,31 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                    <ng-container matColumnDef="RequestType" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> RequestType
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.RequestType}}
                                         </mat-cell>
                                     </ng-container>
+
+                                    <ng-container matColumnDef="TariffName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> TariffName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.TariffName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CompanyName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CompanyName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                   
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -162,7 +196,7 @@
                                 </mat-paginator>
 
                                 <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;" >
 
                                     <ng-container matColumnDef="ReqDate" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqDate
@@ -205,7 +239,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="BillDateTime" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedByDate
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillDateTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AddedByDate}}
@@ -217,6 +251,22 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.IsStatus}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PBillNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PBillNo}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsComplted" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsComplted
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IsTestCompted  }}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="loading">

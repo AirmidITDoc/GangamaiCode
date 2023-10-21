@@ -36,7 +36,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   isItemNameSelected : boolean = false;
   registerObj = new RegInsert({});
   chargeslist: any = [];
-
+  isChecked: boolean = true;
   labelPosition: 'before' | 'after' = 'after';
   
   dsGRNList = new MatTableDataSource<GRNList>();
@@ -64,8 +64,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     'action',
   ];
 
-  displayedColumns1 = [
-    
+  displayedColumns1 = [  
     "ItemName",
     "BatchNo",
     "BatchExpDate",
@@ -150,7 +149,6 @@ export class GoodReceiptnoteComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-   
     
   ) { }
 
@@ -196,13 +194,11 @@ getSelectedObj(obj) {
  
 }
  
-
 onAdd(){
   this.dsItemNameList.data = [];
   // this.chargeslist=this.chargeslist;
   this.chargeslist.push(
     {
-      
       ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
       UOM: this.UOM,
       HSNCode:this.HSNCode ,
@@ -346,9 +342,7 @@ calculateGSTAmount()
   
     // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
    this.NetAmount= (parseFloat(this.NetAmount) + parseFloat(this.GSTAmount)).toFixed(2);
-
-    this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
- 
+   this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
   }else if(this.GST==0){
     this.GSTAmount=0;
   }
@@ -555,7 +549,6 @@ getItemNameList(){
       .map((i, idx) => (i.position = (idx + 1), i));
   }
 
-
   OnSave() {
 
     let grnSaveObj = {};
@@ -695,13 +688,13 @@ getItemNameList(){
       this.freeqty.nativeElement.focus();
     }
   }
-
+  
   public onEnterFreeQty(event): void {
     if (event.which === 13) {
       this.mrp.nativeElement.focus();
     }
   }
-
+  
   public onEnterMRP(event): void {
     if (event.which === 13) {
       this.rate.nativeElement.focus();
@@ -713,21 +706,25 @@ getItemNameList(){
       this.disc.nativeElement.focus();
     }
   }
+
   public onEnterDisc(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
     }
   }
+
   public onEnterGST(event): void {
     if (event.which === 13) {
       this.cgst.nativeElement.focus();
     }
   }
+
   public onEnterCGST(event): void {
     if (event.which === 13) {
       this.sgst.nativeElement.focus();
     }
   }
+
   public onEnterSGST(event): void {
     if (event.which === 13) {
       this.igst.nativeElement.focus();
@@ -783,7 +780,6 @@ export class GRNList {
       this.Cash_CreditType = GRNList.Cash_CreditType || "";
       this.ReceivedBy = GRNList.ReceivedBy || 0;
       this.IsClosed = GRNList.IsClosed || 0 ;
-
     }
   }
 }
