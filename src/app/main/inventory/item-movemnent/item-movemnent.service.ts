@@ -8,54 +8,44 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ItemMovemnentService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  ItemSearchGroup :FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    // this.userFormGroup = this.createUserForm();
+    this.ItemSearchGroup= this.createSearchFrom();
   }
 
-  IndentSearchFrom() {
+  createSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      ItemID:''
     });
   }
   
-    IndentID() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      
-    });
-  }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+ 
+  public getItemMovementList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rptItemMovementReport",Param);
   }
 
 
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getItemFormList(){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{});
   }
 
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+  public getToStoreFromList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
 
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getFormStoreFormList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
   
 }

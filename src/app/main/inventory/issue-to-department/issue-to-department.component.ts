@@ -19,15 +19,53 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class IssueToDepartmentComponent implements OnInit {
+  displayedColumns:string[] = [
+    'action',
+    'IssueNo',
+    'IssueDate',
+    'FromStoreName',
+    'ToStoreName',
+    'NetAmount',
+    'Remark',
+    'Receivedby'
+    
+  ];
+  displayedColumns1:string[] = [
+    'ItemName',
+    'BatchNo',
+    'BatchExpDate',
+    'Qty',
+    'PerUnitLandedRate',
+    'LandedTotalAmount',
+    'VatPercentage'
+   ]
 
+   displayedNewIssuesList3:string[] = [
+    'ItemId',
+    'ItemName',
+    'BatchNO',
+    'ExpDate',
+    'BalanceQty',
+    'Qty',
+    'UnitRate',
+    'TotalAmount'
+   ];
+   displayedNewIssuesList1:string[] = [
+    'ItemName',
+    'Qty'
+   ]
+   displayedNewIssuesList2:string[] = [
+    'BatchNo',
+    'ExpDateNo',
+    'BalQty'
+   ]
+   hasSelectedContacts: boolean;
+   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
   ToStoreList:any=[];
   FromStoreList:any=[];
-  
   screenFromString = 'admission-form';
-
-
   filteredOptions: any;
   ItemnameList = [];
   showAutocomplete = false;
@@ -36,54 +74,25 @@ export class IssueToDepartmentComponent implements OnInit {
   ItemName:any;
   Qty:any;
   chargeslist: any = [];
+  filteredOptionsItem:any;
+  ItemId: any;
+  BalanceQty: any;
 
 
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
 
   dsIssueItemList = new MatTableDataSource<IssueItemList>();
 
-  dsItemNameList = new MatTableDataSource<ItemNameList>();
+  dsNewIssueList1 = new MatTableDataSource<NewIssueList1>();
+  dsNewIssueList2 = new MatTableDataSource<NewIssueList2>();
+  dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
 
-  displayedColumns = [
-    'IssueNo',
-    'IssueDate',
-    'FromStoreName',
-    'ToStoreName',
-    'NetAmount',
-    'Remark',
-    'Receivedby',
-    'action',
-  ];
-
-  displayedColumns1 = [
-   'ItemName',
-   'BatchNo',
-   'BatchExpDate',
-   'Qty',
-   'PerUnitLandedRate',
-   'LandedTotalAmount',
-   'VatPercentage',
-  ];
-
-  displayedColumns2 = [
-    'ItemId',
-    'ItemName',
-    'BatchNO',
-    'BalanceQty',
-    'Qty',
-    'UnitRate',
-    'TotalAmount',
-   ];
+ 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private _formBuilder: any;
-  BatchNO: any;
-  BalanceQty: any;
-  UnitRate: any;
-  TotalAmount: any;
-  IssueForm: any;
-
+  
+  
   constructor(
     public _IssueToDep: IssueToDepartmentService,
     public _matDialog: MatDialog,
@@ -91,28 +100,15 @@ export class IssueToDepartmentComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     
-  ) { 
-
-   
-  }
+  ) {  }
 
   ngOnInit(): void {
-    this.getItemNameList();
+    // this.getItemNameList();
     this.getToStoreSearchList();
     this.getFromStoreSearchList();
-    this.getIssueToDep() 
+    // this.getIssueToDepList();
   }
   
-
-  getOptionText(option) {
-    
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-
-  }
-
-
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -122,138 +118,133 @@ export class IssueToDepartmentComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  getToStoreSearchList() {
+    this._IssueToDep.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList = data;
+    });
+  }
+
+  getFromStoreSearchList() {
+    var data = {
+      "Id": 1
+    }
+    this._IssueToDep.getFromStoreSearchList(data).subscribe(data => {
+      this.FromStoreList = data;
+      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+    });
+  }
+  getSearchItemList() {
+    var m_data = {
+      "ItemName": `${this._IssueToDep.userFormGroup.get('ItemID').value}%`
+      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+    }
+    console.log(m_data);
+    if (this._IssueToDep.userFormGroup.get('ItemID').value.length >= 2) {
+      this._IssueToDep.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        console.log(this.filteredOptionsItem.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  }
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemID + ' ' + option.ItemName ;
+  }
+  getSelectedObjItem(obj) {
+    // this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId = obj.ItemID;
+ 
+
+  }
   
-  getIssueToDep() {
-    this.sIsLoading = 'loading-data';
-    var Param = {
+  getIssueToDepList() {
+    var vdata = {
       "FromStoreId": this._IssueToDep.IssueSearchGroup.get('FromStoreId').value.FromStoreId || 1,
       "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.ToStoreId || 0,
        "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "IsVerify": 0,
     }
-    console.log(Param)
-      this._IssueToDep.getIssueToDep(Param).subscribe(data => {
+    console.log(vdata)
+      this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
       this.dsIssueToDep.data = data as IssueToDep[];
       this.dsIssueToDep.sort = this.sort;
       this.dsIssueToDep.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+      console.log(this.dsIssueToDep.data);
+    } );
   }
 
-
-  getItemNameList(){
-    var Param = {
-
-      "ItemName": `${this._IssueToDep.userFormGroup.get('ItemName').value}%`,
-      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
+  getIssueItemList(Param){
+    
+    var vdata = {
+      "IssueId": Param
     }
-    console.log(Param);
-    this._IssueToDep.getItemNameList(Param).subscribe(data => {
-      this.filteredOptions = data;
-      // console.log( this.filteredOptions )
-            if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-
-  getSelectedObj(obj) {
-    this.ItemCode=obj.ItemId;
-    this.ItemName = obj.ItemName;
-    this.BatchNO = obj.BatchNO;
-    this.BalanceQty = obj.BalanceQty;
-    this.Qty = 32//obj.BalQty;
-    this.UnitRate = obj.UnitRate;
-    this.TotalAmount = obj.TotalAmount;
-   
-  }
-
-  onAdd(){
-    debugger;
-    // this.dsItemNameList.data = [];
-    if(this.dsItemNameList.data.length > 0){
-  
-    this.dsItemNameList.data.forEach((element) => {
-      console.log(element)
-      debugger;
-     if(this.ItemCode == element.ItemId)
-     {
-      Swal.fire("Item already Added")
-     }else if(this.ItemCode != element.ItemId){
-      debugger;
-      this.chargeslist.push(
-        {
-          ItemId:this.ItemCode,
-          ItemName: this.ItemName,
-          BatchNO: this.BatchNO,
-          BalanceQty: this.BalanceQty,
-          UnitRate: this.UnitRate,
-          TotalAmount: this.TotalAmount,
-        });
-     }
-    });
-  }
-
-  if(this.dsItemNameList.data.length ==0){
-    this.chargeslist.push(
-      {
-        ItemId:this.ItemCode,
-        ItemName: this.ItemName,
-        BatchNO: this.BatchNO,
-        BalanceQty: this.BalanceQty,
-        UnitRate: this.UnitRate,
-        TotalAmount: this.TotalAmount,
-      });
-    }
-
-      this.dsItemNameList.data=this.chargeslist
-  }
-
-  
-  onScroll() {
-    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    // this.nextPage$.next();
-  }
-  getIssueItemList(Params){
-    this.sIsLoading = 'loading-data';
-    var Param = {
-      "IssueId": Params.IssueId
-    }
-      this._IssueToDep.getIssueItemList(Param).subscribe(data => {
+      this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
       this.dsIssueItemList.data = data as IssueItemList[];
       this.dsIssueItemList.sort = this.sort;
       this.dsIssueItemList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+      console.log(this.dsIssueItemList.data);
+    });
   }
+  OnSelect(Param){
+    console.log(Param.IssueId);
+    this.getIssueItemList(Param.IssueId)
+  }    
+ 
+}
+export class NewIssueList3{
 
-  getToStoreSearchList() {
-        this._IssueToDep.getToStoreSearchList().subscribe(data => {
-          this.ToStoreList = data;
-        });
-      }
-    
-      getFromStoreSearchList() {
-        var data = {
-          "Id": 1
-        }
-        this._IssueToDep.getFromStoreSearchList(data).subscribe(data => {
-          this.FromStoreList = data;
-          this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-        });
-      }
-      
-  onClear(){
-    
+  ItemId:any;
+  ItemName:any;
+  BatchNO:any;
+  ExpDate:any;
+  BalanceQty:any;
+  Qty:any;
+  UnitRate:any;
+  TotalAmount:any;
+  
+  constructor(NewIssueList3){
+    this.ItemId = NewIssueList3.ItemId || 0;
+    this.ItemName = NewIssueList3.ItemName || '';
+    this.BatchNO = NewIssueList3.BatchNO || 0;
+    this.ExpDate = NewIssueList3.ExpDate ||  1/2/23;
+    this.BalanceQty = NewIssueList3.BalanceQty ||  0;
+    this.Qty = NewIssueList3.Qty || 0;
+    this.UnitRate = NewIssueList3.UnitRate || 0;
+    this.TotalAmount = NewIssueList3.TotalAmount || 0;
+  }
+}
+
+export class NewIssueList2{
+
+  BatchNo:any;
+  ExpDateNo;any;
+  BalQty:any;
+  
+  constructor(NewIssueList2){
+    this.BatchNo = NewIssueList2.BatchNo || 0;
+    this.ExpDateNo = NewIssueList2.ExpDateNo || 1/2/23;
+    this.BalQty = NewIssueList2.BalQty || 0;
+
+  }
+}
+export class NewIssueList1{
+
+  ItemName:any;
+  Qty;any;
+
+  constructor(NewIssueList1){
+    this.ItemName = NewIssueList1.ItemName || '';
+    this.Qty = NewIssueList1.Qty || 0;
+
   }
 }
 
@@ -267,19 +258,7 @@ export class IssueItemList {
   VatPercentage:number;
   StoreId:any;
   StoreName:any;
-  static ItemId: string;
-  static ItemName: number;
-  static Qty: number;
-  static BatchNO: number;
-  static BalanceQty: number;
-  static UnitRate: number;
-  static TotalAmount: number;
-  
-  /**
-   * Constructor
-   *
-   * @param IssueItemList
-   */
+
   constructor(IssueItemList) {
     {
       this.ItemName = IssueItemList.ItemName || "";
@@ -305,11 +284,6 @@ export class IssueToDep {
   Receivedby:string;
   IssueDepId:number;
 
-  /**
-   * Constructor
-   *
-   * @param IssueToDep
-   */
   constructor(IssueToDep) {
     {
       this.IssueNo = IssueToDep.IssueNo || 0;
@@ -324,30 +298,3 @@ export class IssueToDep {
     }
   }
 
-
-export class ItemNameList {
-  ItemId: string;
-  ItemName: number;
-  BatchNO:number;
-  BalanceQty:number;
-  Qty:number;
-  UnitRate:number;
-  TotalAmount:number;
-  /**
-   * Constructor
-   *
-   * @param ItemNameList
-   */
-  constructor(ItemNameList) {
-    {
-      this.ItemId = IssueItemList.ItemId || "";
-      this.ItemName = IssueItemList.ItemName || 0;
-      this.BatchNO = IssueItemList.BatchNO || 0;
-      this.BalanceQty = IssueItemList.BalanceQty || 0;
-      this.Qty = IssueItemList.Qty || 0;
-      this.UnitRate = IssueItemList.UnitRate || 0;
-      this.TotalAmount = IssueItemList.TotalAmount || 0;
-      
-    }
-  }
-}

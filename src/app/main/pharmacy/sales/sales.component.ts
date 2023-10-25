@@ -16,7 +16,7 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { ConditionalExpr } from '@angular/compiler';
 import { Observable, Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
-import { ItemNameList } from 'app/main/inventory/issue-to-department/issue-to-department.component';
+// import { ItemNameList } from 'app/main/inventory/issue-to-department/issue-to-department.component';
 import { IpPaymentInsert } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
