@@ -134,7 +134,7 @@
 
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">Action
+                                                        style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Print"
@@ -144,11 +144,22 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="payment" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <button mat-icon-button matTooltip="Payment" (click)="OnPayment(contact)">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
                                                 <ng-container matColumnDef="Date" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Date}}
+                                                        {{contact.Date | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
 

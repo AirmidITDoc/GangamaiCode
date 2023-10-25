@@ -25,6 +25,10 @@ export class GoodReceiptnoteService {
       FromStoreId:'',
       Supplier_Id:'',
       Status:0,
+      Status1:0,
+      Status2:0,
+      Status3:0,
+      Verify:0,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
