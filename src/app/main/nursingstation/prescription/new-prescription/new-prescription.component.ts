@@ -108,7 +108,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.myForm = this.createMyForm();
-    // this.searchFormGroup = this.createSearchForm();
+    
     
     // this.getItemList();
     this.gePharStoreList();
@@ -117,15 +117,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   }
  
-  // createSearchForm() {
-  //   return this._FormBuilder.group({
-
-  //     RegID: [''],
-  //     radioIp: ['1'],
-       
-  //   });
-  // }
-  // RegId of Patient Searching 
+ 
   getSearchList() {
     var m_data = {
       "Keyword": `${this.myForm.get('RegID').value}%`

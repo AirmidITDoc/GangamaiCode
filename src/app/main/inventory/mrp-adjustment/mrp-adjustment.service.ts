@@ -15,11 +15,11 @@ export class MrpAdjustmentService {
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
+    this.userFormGroup = this.createUserForm();
     this.IndentSearchGroup= this.IndentSearchFrom();
   }
 
-  IndentSearchFrom() {
+  createUserForm() {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
@@ -28,7 +28,7 @@ export class MrpAdjustmentService {
     });
   }
   
-    IndentID() {
+  IndentSearchFrom() {
     return this._formBuilder.group({
       RoleId: '',
       RoleName: '',

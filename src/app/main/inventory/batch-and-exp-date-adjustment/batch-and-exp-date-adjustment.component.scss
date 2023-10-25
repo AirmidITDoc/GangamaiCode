@@ -1,127 +1,28 @@
-app-batch-and-exp-date-adjustment {
-    .table1 {
-      height: 600px !important;
-      width: 1700px;
-    }
-
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-    }
-  
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
-  
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
-    }
-  
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
-  
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
-      text-align: left;
-    }
-    
-    .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-  
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: center;
-      justify-content: center;
-  
-    }
-    .mat-tab-group {
-  margin-bottom: 48px;
-    
+.table1{
+  width: 850px;
+  height: 540px;
+  min-height: 540px;
+  max-height: 540px;
 }
-
-// .table-row:selected {
-
-//   background-color: rebeccapurple;
-// }
-
+.footer-navigation-container {
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  float: right;
 }
-
-
-  
+.footer-btn {
+  width: 80px;
+  font-size: 16px;
+  font-weight: 700px;
+  padding: 10px;
+  color:  rgb(247, 97, 97);
+  border-radius: 16px;
+  background-color:white;
+  border: 1px solid rgb(247, 97, 97);
+  cursor: pointer;
+}
+.footer-btn:hover{
+  background-color: rgb(247, 97, 97);
+  color: white;
+ 
+}

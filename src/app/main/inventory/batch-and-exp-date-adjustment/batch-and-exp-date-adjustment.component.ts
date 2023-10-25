@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-batch-and-exp-date-adjustment',
@@ -17,185 +18,132 @@ import Swal from 'sweetalert2';
   styleUrls: ['./batch-and-exp-date-adjustment.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-  
+
 })
 export class BatchAndExpDateAdjustmentComponent implements OnInit {
-
-  sIsLoading: string = '';
-  isLoading = true;
-  Store1List:any=[];
-  screenFromString = 'admission-form';
-
-  labelPosition: 'before' | 'after' = 'after';
-  
-  dsIndentID = new MatTableDataSource<IndentID>();
-
-  dsIndentList = new MatTableDataSource<IndentList>();
-
   displayedColumns = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
+    'BatchNo',
+    'ExpDate',
+    'UnitMRP',
+    'Landedrate',
+    'PurchaseRate',
+    'BalQty',
   ];
 
-  displayedColumns1 = [
-   'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
-  ];
+  Store1List: any = [];
+  screenFromString = 'admission-form';
+  filteredOptions: any;
+  filteredOptionsItem: any;
+  noOptionFound: boolean = false;
+  isItemIdSelected: boolean = false;
+  ItemId:any;
+  ItemName:any;
+  
+
+  dsBatchAndExpDate = new MatTableDataSource<BatchAndExpList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  userFormGroup: FormGroup;
+  SearchGroup :FormGroup;
+
   constructor(
-    public _IndentID: BatchAndExpDateAdjustmentService,
+    public _BatchAndExpDateAdjustmentService: BatchAndExpDateAdjustmentService,
     public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
-    
+    private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.SearchGroup= this.createSearchFrom();
     this.getIndentStoreList();
-    this.getIndentID() 
+    this.getSearchItemList();
   }
-  
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  createSearchFrom() {
+    return this._formBuilder.group({
+      ToStoreId: '',
+      ItemID: '',
+      ItemName: '',
+      BatchNO:'',
+      MRP:'',
+      BtachExpDate:'',
+      PurchaseRate:'',
+      NewExpDate:'',
+      Landedrate:'',
+      NewBatchNo:'',
+
+      
+
+    });
   }
 
- 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
+  getIndentStoreList() {
+
+    this._BatchAndExpDateAdjustmentService.getStoreFromList().subscribe(data => {
+      this.Store1List = data;
+      // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+    });
+
   }
-
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-    }
-      this._IndentID.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
-    }
-      this._IndentID.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-
   
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-  getIndentStoreList(){
-    debugger
-   
-        this._IndentID.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
-
-       }
-
-  onClear(){
-    
-  }
-}
-
-export class IndentList {
-  ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
-    {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
+  getSearchItemList() {
+    var m_data = {
+      "ItemName": `${this.SearchGroup.get('ItemID').value}%`,
+      "ItemID": 2 // this.myForm.get('StoreId').value.storeid || 0
+    }
+    console.log(m_data);
+    if (this.SearchGroup.get('ItemID').value.length >= 2) {
+      this._BatchAndExpDateAdjustmentService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+       // console.log(this.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
     }
   }
-}
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
+
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemID + ' ' + option.ItemName ;
+  }
+  getSelectedObjItem(obj) {
+    // this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId = obj.ItemID;
   
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
+  }
+
+
+}
+
+export class BatchAndExpList {
+  BatchNo: any;
+  ExpDate: number;
+  UnitMRP: number;
+  Landedrate: number;
+  PurchaseRate: any;
+  BalQty: any;
+
+  constructor(BatchAndExpList) {
     {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.BatchNo = BatchAndExpList.BatchNo || 0;
+      this.ExpDate = BatchAndExpList.ExpDate || 0;
+      this.UnitMRP = BatchAndExpList.UnitMRP || 0;
+      this.Landedrate = BatchAndExpList.Landedrate || 0;
+      this.PurchaseRate = BatchAndExpList.PurchaseRate || 0;
+      this.BalQty = BatchAndExpList.BalQty || 0;
     }
   }
 }

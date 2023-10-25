@@ -34,25 +34,16 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       
       ItemName:  [''],
-      Qty: ['']
+      Qty: [''],
+      ItemID:''
       
     });
 
   }
 
-  IssueToDep() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '', 
-    });
-  }
  
-  public getIssueToDep(Param){
+ 
+  public getIssueToDepList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
   }
 
@@ -61,7 +52,7 @@ export class IssueToDepartmentService {
   }
   
   public getToStoreSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
 
   public getFromStoreSearchList(Param){
@@ -72,4 +63,8 @@ export class IssueToDepartmentService {
   public getItemNameList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty_Issue",Param);
   }
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+  }
+   
 }

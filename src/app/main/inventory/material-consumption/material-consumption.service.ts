@@ -15,7 +15,7 @@ export class MaterialConsumptionService {
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
+    this.userFormGroup = this.createUserForm();
     this.IndentSearchGroup= this.IndentSearchFrom();
   }
 
@@ -28,7 +28,7 @@ export class MaterialConsumptionService {
     });
   }
   
-   IndentID() {
+  createUserForm() {
     return this._formBuilder.group({
       RoleId: '',
       RoleName: '',
