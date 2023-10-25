@@ -24,7 +24,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 </div>
 
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
-    style="overflow:auto;margin-top: 10px;">
+    style="overflow:auto;margin-top: 10px;" (click)="onTableClick()">
     <ng-container matColumnDef="BatchNo">
         <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>

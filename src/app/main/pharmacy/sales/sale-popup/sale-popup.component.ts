@@ -55,7 +55,7 @@ export class SalePopupComponent implements OnInit {
   ngOnInit(): void {
     this.getSalesData();
     setTimeout(() => {
-      // document.getElementById('ele-1').focus();
+      document.getElementById('ele-1').focus();
     }, 1000);
   }
 
@@ -92,6 +92,11 @@ export class SalePopupComponent implements OnInit {
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
+  }
+
+  onTableClick() {
+    let focusId = 'ele-'+this.selectedRowIndex;
+    document.getElementById(focusId).focus();
   }
 
 }
