@@ -9,7 +9,7 @@ export class IssueToDepartmentService {
 
   userFormGroup: FormGroup;
   IssueSearchGroup :FormGroup;
-  IssueForm:FormGroup;
+  
 
   constructor(
     public _httpClient: HttpClient,
@@ -17,7 +17,7 @@ export class IssueToDepartmentService {
   ) { 
     this.userFormGroup = this.getIssueForm();
     this.IssueSearchGroup= this.IssueSearchFrom();
-    this.IssueSearchGroup= this.IssueSearchFrom();
+  
   }
 
   IssueSearchFrom() {
@@ -25,7 +25,7 @@ export class IssueToDepartmentService {
       ToStoreId: '',
       FromStoreId:'',
       start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()]
     });
   }
   
@@ -56,15 +56,13 @@ export class IssueToDepartmentService {
   }
 
   public getFromStoreSearchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
   
-  
-  public getItemNameList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty_Issue",Param);
-  }
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
+
+
    
 }

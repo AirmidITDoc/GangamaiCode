@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CurrentStockService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  SearchGroup :FormGroup;
 
 
   constructor(
@@ -16,15 +16,16 @@ export class CurrentStockService {
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.SearchGroup= this.createSearchFrom();
   }
 
-  IndentSearchFrom() {
+  createSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      StoreId:'',
+      ItemCategory:'',
+      IsDeleted:['2']
     });
   }
   
@@ -41,20 +42,10 @@ export class CurrentStockService {
     });
   }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getCurrentStockList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
   }
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
-  }
-  
 }

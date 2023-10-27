@@ -103,7 +103,7 @@ export class IssueToDepartmentComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    // this.getItemNameList();
+   
     this.getToStoreSearchList();
     this.getFromStoreSearchList();
     // this.getIssueToDepList();
@@ -130,19 +130,61 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this._IssueToDep.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
-      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
+  
+  getIssueToDepList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "FromStoreId": this._IssueToDep.IssueSearchGroup.get('FromStoreId').value.FromStoreId || 1,
+      "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.ToStoreId || 0,
+       "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "IsVerify": 0,
+    }
+    console.log(vdata)
+      this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
+      this.dsIssueToDep.data = data as IssueToDep[];
+      this.dsIssueToDep.sort = this.sort;
+      this.dsIssueToDep.paginator = this.paginator;
+      this.sIsLoading = '';
+      console.log(this.dsIssueToDep.data);
+    } ,
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+  getIssueItemList(Param){
+    
+    var vdata = {
+      "IssueId": Param
+    }
+      this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
+      this.dsIssueItemList.data = data as IssueItemList[];
+      this.dsIssueItemList.sort = this.sort;
+      this.dsIssueItemList.paginator = this.paginator;
+      console.log(this.dsIssueItemList.data);
+    });
+  }
+  OnSelect(Param){
+    console.log(Param.IssueId);
+    this.getIssueItemList(Param.IssueId)
+  } 
+  
+  
+  
   getSearchItemList() {
     var m_data = {
       "ItemName": `${this._IssueToDep.userFormGroup.get('ItemID').value}%`
       // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
     }
-    console.log(m_data);
+    // console.log(m_data);
     if (this._IssueToDep.userFormGroup.get('ItemID').value.length >= 2) {
       this._IssueToDep.getItemlist(m_data).subscribe(data => {
         this.filteredOptionsItem = data;
-        console.log(this.filteredOptionsItem.data);
+        // console.log(this.filteredOptionsItem.data);
         this.filteredOptionsItem = data;
         if (this.filteredOptionsItem.length == 0) {
           this.noOptionFound = true;
@@ -164,40 +206,6 @@ export class IssueToDepartmentComponent implements OnInit {
  
 
   }
-  
-  getIssueToDepList() {
-    var vdata = {
-      "FromStoreId": this._IssueToDep.IssueSearchGroup.get('FromStoreId').value.FromStoreId || 1,
-      "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-       "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "IsVerify": 0,
-    }
-    console.log(vdata)
-      this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
-      this.dsIssueToDep.data = data as IssueToDep[];
-      this.dsIssueToDep.sort = this.sort;
-      this.dsIssueToDep.paginator = this.paginator;
-      console.log(this.dsIssueToDep.data);
-    } );
-  }
-
-  getIssueItemList(Param){
-    
-    var vdata = {
-      "IssueId": Param
-    }
-      this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
-      this.dsIssueItemList.data = data as IssueItemList[];
-      this.dsIssueItemList.sort = this.sort;
-      this.dsIssueItemList.paginator = this.paginator;
-      console.log(this.dsIssueItemList.data);
-    });
-  }
-  OnSelect(Param){
-    console.log(Param.IssueId);
-    this.getIssueItemList(Param.IssueId)
-  }    
  
 }
 export class NewIssueList3{

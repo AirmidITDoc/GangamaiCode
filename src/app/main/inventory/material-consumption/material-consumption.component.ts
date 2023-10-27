@@ -19,17 +19,15 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class MaterialConsumptionComponent implements OnInit {
-
-  sIsLoading: string = '';
-  isLoading = true;
-  FromStoreList:any=[];
-  Store1List:any[];
-  screenFromString = 'admission-form';
-  
-  dsIndentID = new MatTableDataSource<IndentID>();
-
-  dsIndentList = new MatTableDataSource<IndentList>();
-
+  displayedColumns = [
+    'action',
+    'Date',
+    'FromStoreName',
+    'PurchaseTotalAmount',
+    'TotalVatAmount',
+    'Remark',
+    'Addedby',
+  ];
   displayedNewMaterialList = [
     'ItemName',
     'BatchNo',
@@ -42,7 +40,16 @@ export class MaterialConsumptionComponent implements OnInit {
     'StkId'
   ];
 
- 
+  
+  StoreList: any = [];
+  screenFromString = 'admission-form';
+  sIsLoading: string = '';
+  isLoading = true;
+  
+  dsMaterialConLList = new MatTableDataSource<MaterialConList>();
+
+  dsNewMaterialConList = new MatTableDataSource<NewMaterialList>();
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,20 +59,19 @@ export class MaterialConsumptionComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     
   ) { }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
+   this. gePharStoreList();
+    // this.getMaterialConList();
   }
   
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
- 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
@@ -73,96 +79,84 @@ export class MaterialConsumptionComponent implements OnInit {
   }
 
  
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._MaterialConsumptionService.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._MaterialConsumptionService.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._MaterialConsumptionService.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+  getMaterialConList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "ToStoreId": this._MaterialConsumptionService.SearchGroup.get('StoreId').value.storeid || 1,
+       "From_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "To_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+ 
     }
-      this._MaterialConsumptionService.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
+    console.log(vdata);
+      this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
+      this.dsMaterialConLList.data = data as MaterialConList[];
+      this.dsMaterialConLList.sort = this.sort;
+      this.dsMaterialConLList.paginator = this.paginator;
       this.sIsLoading = '';
+      console.log(this.dsMaterialConLList.data)
     },
-      error => {
-        this.sIsLoading = '';
-      });
+    error => {
+      this.sIsLoading = '';
+    });
   }
 
-  
-
-
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-  getIndentStoreList(){
-    debugger
-    
-        this._MaterialConsumptionService.getStoreFromList().subscribe(data => {
-          // this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
-
-       }
-
-  onClear(){
-    
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    console.log(vdata);
+    this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      console.log(this.StoreList);
+      this._MaterialConsumptionService.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
+    });
   }
+
+ 
 }
 
-export class IndentList {
+export class NewMaterialList {
   ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
+  BatchNo: number;
+  ExpDate:number;
+  BalQty:number;
+  UsedQty:any;
+  Rate:any;
+  TotalAmount:any;
+  Remark:any;
+  StkId:any;
+ 
+  constructor(NewMaterialList) {
     {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
+      this.ItemName = NewMaterialList.ItemName || "";
+      this.BatchNo = NewMaterialList.BatchNo || 0;
+      this.ExpDate = NewMaterialList.ExpDate || 0;
+      this.BalQty = NewMaterialList.BalQty|| 0;
+      this.UsedQty = NewMaterialList.UsedQty || 0;
+      this.Rate =NewMaterialList.Rate || 0;
+      this.TotalAmount = NewMaterialList.TotalAmount|| 0;
+      this.Remark = NewMaterialList.Remark || ' ';
+      this.StkId =NewMaterialList.StkId || 0;
     }
   }
 }
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
+export class MaterialConList {
+  Date: Number;
   FromStoreName:string;
-  ToStoreName:string;
+  PurchaseTotalAmount: number;
+  TotalVatAmount:any;
   Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
+  Remark:any;
   
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
+  constructor(MaterialConList) {
     {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.Date = MaterialConList.Date || 0;
+      this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
+      this.FromStoreName = MaterialConList.FromStoreName || "";
+      this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
+      this.Addedby = MaterialConList.Addedby || 0;
+      this.Remark = MaterialConList.Remark || "";
+ 
     }
   }
 }

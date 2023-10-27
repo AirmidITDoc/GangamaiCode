@@ -8,9 +8,9 @@
     justify-content:left; 
   }
   .mat-column-IssueDate{
-    width: 220px;
-    max-width: 220px;
-    min-width: 220px;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
     align-items: left;
     justify-content:left; 
   }
@@ -23,14 +23,13 @@
   }
  
   .mat-column-FromStoreName{
-    width: 220px;
-    max-width: 220px;
-    min-width: 220px;
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
     align-items: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
     justify-content:left; 
   }
   .mat-column-NetAmount{
@@ -45,7 +44,10 @@
     max-width: 150px;
     min-width: 150px;
     align-items: left;
-    justify-content:left; 
+    justify-content:left;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap; 
   }
   .mat-column-Receivedby{
     width: 150px;
@@ -68,28 +70,27 @@
 }
 .table2{
   .mat-column-BatchExpDate{
-    width: 220px;
-    max-width: 220px;
-    min-width: 220px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-BatchNo{
     width: 150px;
     max-width: 150px;
     min-width: 150px;
     align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-BatchNo{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
     justify-content:left;
   }
   .mat-column-ItemName{
-    width: 350px;
-    max-width: 350px;
-    min-width: 350px;
+    width: 280px;
+    max-width: 280px;
+    min-width: 280px;
     align-items: left;
+    text-overflow: ellipsis;
+    overflow: hidden; 
     white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
     justify-content:left; 
   }
   .mat-column-Qty{

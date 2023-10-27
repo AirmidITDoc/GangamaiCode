@@ -46,11 +46,12 @@
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>From Store</mat-label>
-                                <mat-select formControlName="FromStoreId" name="FromStoreId" >
-                                    <mat-option></mat-option>
-                                    <mat-option *ngFor="let m of FormStore" [value]="m">
+                                <mat-select name="StoreId" formControlName="StoreId" >
+    
+                                    <mat-option *ngFor="let m of StoreList" [value]="m">
                                         {{m.StoreName}}
                                     </mat-option>
+                                     
                                 </mat-select>
                             </mat-form-field>
 
@@ -107,7 +108,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+
+                                </div>
                                 <mat-table class="table1" matSort [dataSource]="dsItemMovement"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 

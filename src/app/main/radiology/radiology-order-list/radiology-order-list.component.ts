@@ -214,7 +214,7 @@ export class RadiologyOrderListComponent implements OnInit {
       this.dataSource.data = Visit as RadioPatientList[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      //  console.log(this.dataSource.data);
+      console.log(this.dataSource.data);
       this.sIsLoading = '';
       this.click = false;
 

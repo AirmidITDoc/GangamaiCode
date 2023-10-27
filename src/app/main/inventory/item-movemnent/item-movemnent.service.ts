@@ -22,7 +22,7 @@ export class ItemMovemnentService {
   createSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      FromStoreId:'',
+      StoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       ItemID:''
@@ -44,8 +44,8 @@ export class ItemMovemnentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
 
-  public getFormStoreFormList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
 }

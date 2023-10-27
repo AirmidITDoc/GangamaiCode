@@ -1,127 +1,77 @@
-app-current-stock {
-    .table1 {
-      height: 600px !important;
-      width: 1700px;
-    }
+ .table1 {
 
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-    }
-  
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
-  
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
-    }
-  
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
+     .mat-column-action {
+         width: 100px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
 
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
-  
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
+     .mat-column-ToStoreName {
+         width: 160px;
+         max-width: 160px;
+         min-width: 160px;
+         align-items: left;
+         justify-content: left;
+     }
 
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
+     .mat-column-ItemName {
+         width: 280px;
+         max-width: 280px;
+         min-width: 280px;
+         text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-right: 25px;
+         margin-top: 7px;
+     }
 
+     .mat-column-GenericName {
+         width: 350px;
+         max-width: 350px;
+         min-width: 350px;
+         text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-top: 7px;
+     }
 
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
+     .mat-column-BalanceQty {
+         width: 10px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
 
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
+     .mat-column-IssueQty {
+         width: 100px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
 
-    .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
-      text-align: left;
-    }
-    
-    .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-  
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: center;
-      justify-content: center;
-  
-    }
-    .mat-tab-group {
-  margin-bottom: 48px;
-    
-}
+     .mat-column-ReceivedQty {
+         width: 120px;
+         max-width: 120px;
+         min-width: 120px;
+         align-items: left;
+         justify-content: left;
+     }
 
-// .table-row:selected {
-
-//   background-color: rebeccapurple;
-// }
-
-}
-
-
-  
+     height: 690px;
+     min-height: 690px;
+     max-height: 690px;
+ }
