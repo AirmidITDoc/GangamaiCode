@@ -183,23 +183,35 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   onSaveEntry(row) {
-    
-   
     this.isLoading = 'save';
     this.dstable1.data = [];
+    if (this.chargeslist && this.chargeslist.length > 0) {
+      let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
+      if (duplicateItem && duplicateItem.length == 0) {
+        this.addChargList(row);
+        return;
+      }
+      this.isLoading = '';
+      this.dstable1.data = this.chargeslist;
+      this.dstable1.sort = this.sort;
+      this.dstable1.paginator = this.paginator;
+    } else if (this.chargeslist && this.chargeslist.length == 0) {
+      this.addChargList(row);
+    }
+  }
+
+  addChargList(row) {
     this.chargeslist.push(
       {
         ServiceId: row.ServiceId,
         ServiceName: row.ServiceName,
-        Price: row.Price|| 0
+        Price: row.Price || 0
       });
-
     this.isLoading = '';
-    console.log(this.chargeslist);
+    // console.log(this.chargeslist);
     this.dstable1.data = this.chargeslist;
     this.dstable1.sort = this.sort;
-      this.dstable1.paginator = this.paginator;
-    console.log(this.dstable1.data);
+    this.dstable1.paginator = this.paginator;
   }
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
