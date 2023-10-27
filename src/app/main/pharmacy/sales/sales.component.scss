@@ -47,9 +47,9 @@ app-sales {
     }
    
     .mat-column-BatchExpDate {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
       text-align: left;
     }
 
@@ -61,9 +61,9 @@ app-sales {
     }
 
     .mat-column-UnitMRP {
-      width: 80px;
-      max-width: 80px;
-      min-width:  80px;
+      width: 90px;
+      max-width: 90px;
+      min-width:  90px;
       text-align: left;
     }
 
@@ -76,9 +76,9 @@ app-sales {
     
 
     .mat-column-GSTAmount {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
       text-align: left;
     }
 
@@ -89,16 +89,16 @@ app-sales {
       text-align: left;
     }
     .mat-column-DiscAmt {
-      width: 80px;
-      max-width:  80px;
-      min-width: 80px;
+      width: 120px;
+      max-width:  120px;
+      min-width: 120px;
       text-align: left;
     }
 
     .mat-column-NetAmt {
-      width: 90px;
-      max-width: 90px;
-      min-width: 90px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: center;
     }
 
@@ -204,12 +204,16 @@ button:disabled {
 color: white;
 background-color: #7bd3ff  !important;
  //background-color: #b7e6fd ;
- border-radius: 10px;
+ border-radius: 16px;
 //  border-radius: 16px;
  // border: 1px solid #CCCCCC;
  border: 1px solid  #b7e6fd ;
  
 }
-
+.add-btn {
+  background-color: blue !important;
+  color: white !important;
+  font-size: 16px;
+}
 
 

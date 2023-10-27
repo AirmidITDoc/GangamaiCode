@@ -6,7 +6,7 @@
                 <!-- <input name="currentDate" matInput [(ngModel)]="currentDate" readonly> -->
                 <input matInput [matDatepicker]="picker1" formControlName="dateController" readonly
                 (dateChange)="onChangeDate($event.value)">
-                <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="isDatePckrDisabled" style="margin-left: 5px;"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
         </div>

@@ -70,8 +70,8 @@ export class RequestforlabtestComponent implements OnInit {
   Openpopup(){
     this.dialog.open(NewRequestforlabComponent,{
       width:'80%',
-      height:'800px'
-      
+      height:'800px',
+      panelClass: 'new-request-dialog'
     })
   }
 

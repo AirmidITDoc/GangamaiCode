@@ -75,10 +75,10 @@
                                 <h3 class="labels-h3">RegNo</h3>
                             </div>
                             <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
+                                <h3 class="labels-h6">:</h3>
                             </div>
                             <div class="flex-item">
-                                <h6 class="labels-h6">{{RegId}}</h6>
+                                <h3 class="labels-h6">{{RegId}}</h3>
                             </div>
                             <!-- <mat-error class="error"
                                 *ngIf="myFormGroup.get('RegId').touched">
@@ -93,10 +93,10 @@
                                 </h3>
                             </div>
                             <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
+                                <h3 class="labels-h6">:</h3>
                             </div>
                             <div class="flex-item">
-                                <h6 class="labels-h6">{{vAdmissionID}}</h6>
+                                <h3 class="labels-h6">{{vAdmissionID}}</h3>
                             </div>
                             <!-- <mat-error class="error"
                                 *ngIf="myFormGroup.get('AdmissionID').invalid && myFormGroup.get('AdmissionID').touched">
@@ -111,10 +111,10 @@
                                 </h3>
                             </div>
                             <div class="flex-item-middle">
-                                <h6 class="labels-h6">:</h6>
+                                <h3 class="labels-h6">:</h3>
                             </div>
                             <div class="flex-item">
-                                <h6 class="labels-h6">{{PatientName}}</h6>
+                                <h3 class="labels-h6">{{PatientName}}</h3>
                             </div>
                             <!-- <mat-error class="error"
                                 *ngIf="myFormGroup.get('PatientName').invalid && myFormGroup.get('PatientName').touched">
@@ -155,7 +155,7 @@
 
 
 
-        <div class="content-card" style="margin-bottom: 10px;">
+        <mat-card class="content-card" style="background-color: white;">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-top: 10px;">
 
                 <mat-radio-group formControlName="IsPathRad" name="IsPathRad" style="padding: 10px 0px 30px 30px;"
@@ -166,78 +166,16 @@
                 </mat-radio-group>
 
 
-                <!-- Table 1 -->
-                <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px" style=" height:10px">
-
-                    <mat-card style=" width:560px;">
-                        <mat-table class="table1" matSort [dataSource]="dstable1" [@animateStagger]="{value:'50'}">
-
-                            <ng-container matColumnDef="ServiceName" formControlName="ServiceName1">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Service Name</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.ServiceName}} </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Price" formControlName="Price1">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Price</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{element.Price}} </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <ng-container class="actions">
-
-                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;"
-                                            (click)="deleteTableRow($event ,contact)">
-                                            delete
-                                        </span>
-                                    </ng-container>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}">
-                            </mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dstable1!=null && dstable1.data.length==0)}">
-                            </mat-footer-row>
-
-                        </mat-table>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15" showFirstLastButtons>
-                        </mat-paginator>
-                    </mat-card>
-                </div>
+               
             </div>
-        </div>
+        </mat-card>
 
 
 
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+        <mat-card fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px" style="background-color: white;">
             <form [formGroup]="myFormGroup">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="background-color: white;
-                         padding: 0px 5px 5px 5px;" fxLayoutGap="4px">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding: 0px 5px 5px 5px;" fxLayoutGap="4px">
                     <div class="redio-container">
                         <mat-form-field appearance="outline" style="width:210%;margin-left:15px;"
                             disabled="isServiceSearchDisabled">
@@ -258,14 +196,14 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </mat-card>
 
         <!-- Table 2 -->
 
 
-        <div class="content-card" style="padding-left: 20px;">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <mat-card style="width:47%; ">
+        <div class="content-card" style="padding: 20px 20px 0 20px;" fxLayout="row" fxLayoutGap="5px">
+            <div style="width: 50%;">
+                <mat-card>
                     <mat-table class="table2" matSort [dataSource]="dsLabRequest2" [@animateStagger]="{value:'50'}">
 
 
@@ -292,6 +230,68 @@
                     <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15" showFirstLastButtons>
                     </mat-paginator>
 
+                </mat-card>
+            </div>
+             <!-- Table 1 -->
+             <div style="width: 50%;">
+
+                <mat-card>
+                    <mat-table class="table2" matSort [dataSource]="dstable1" [@animateStagger]="{value:'50'}">
+
+                        <ng-container matColumnDef="ServiceName" formControlName="ServiceName1">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Service Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.ServiceName}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Price" formControlName="Price1">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Price</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.Price}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="buttons" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact">
+                                <ng-container class="actions">
+
+                                    <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                        (click)="deleteTableRow($event ,contact)">
+                                        delete
+                                    </span>
+                                </ng-container>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
+                            [@animate]="{value:'*',params:{y:'100%'}}">
+                        </mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dstable1!=null && dstable1.data.length==0)}">
+                        </mat-footer-row>
+
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25]" [pageSize]="15" showFirstLastButtons>
+                    </mat-paginator>
                 </mat-card>
             </div>
         </div>
