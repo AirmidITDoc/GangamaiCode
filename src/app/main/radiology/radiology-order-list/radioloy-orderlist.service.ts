@@ -24,7 +24,7 @@ export class RadioloyOrderlistService {
       RegNoSearch:[],
       FirstNameSearch:[''],
       LastNameSearch:[''],
-      PatientTypeSearch:['1'],
+      PatientTypeSearch:['2'],
       StatusSearch: ['0'],
       TestStatusSearch:['0'],
       CategoryId:[''],

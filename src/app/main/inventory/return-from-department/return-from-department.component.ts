@@ -33,9 +33,11 @@ export class ReturnFromDepartmentComponent implements OnInit {
     'Addedby',
   ];
 
-  isLoading = true;
+  
   ToStoreList: any = [];
-  StoreList: any = [];
+  StoreList: any = []; 
+  sIsLoading: string = '';
+  isLoading = true;
 
 
   dsReturnToDepList = new MatTableDataSource<ReturnTODepList>();
@@ -77,7 +79,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
 
   getReturnToDepartmentList() {
-
+    this.sIsLoading = 'loading-data';
     var vdata = {
       "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('StoreId').value.storeid || 1,
       "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
@@ -89,7 +91,11 @@ export class ReturnFromDepartmentComponent implements OnInit {
       this.dsReturnToDepList.data = data as ReturnTODepList[];
       this.dsReturnToDepList.sort = this.sort;
       this.dsReturnToDepList.paginator = this.paginator;
+      this.sIsLoading = '';
       console.log(this.dsReturnToDepList.data);
+    },
+    error => {
+      this.sIsLoading = '';
     });
   }
  

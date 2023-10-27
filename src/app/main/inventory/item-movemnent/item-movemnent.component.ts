@@ -36,7 +36,10 @@ export class ItemMovemnentComponent implements OnInit {
   hasSelectedContacts: boolean;
   Store1List: any = [];
   ItemList: any = [];
-  FormStore:any = [];
+  StoreList: any = []; 
+  sIsLoading: string = '';
+  isLoading = true;
+
 
  
   dsItemMovement = new MatTableDataSource<ItemMovementList>();
@@ -48,6 +51,7 @@ export class ItemMovemnentComponent implements OnInit {
     public _ItemMovemnentService: ItemMovemnentService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
+    private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
  
   ) { }
@@ -56,7 +60,8 @@ export class ItemMovemnentComponent implements OnInit {
     this.getTOStoreList();
     // this.getItemMovement();
      this.getItemListto();
-     this.getFormStoreList();
+     this.gePharStoreList();
+    //  this.getFormStoreList();
      
      
   }
@@ -71,13 +76,13 @@ export class ItemMovemnentComponent implements OnInit {
   }
 
   getItemMovementList() {
-
+    this.sIsLoading = 'loading-data';
     var vdata = {
 
       "ToStoreId": this._ItemMovemnentService.ItemSearchGroup.get('ToStoreId').value.StoreId || 0,
       "FromDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "FromStoreID": this._ItemMovemnentService.ItemSearchGroup.get('FromStoreId').value.StoreId || 1,
+      "FromStoreID": this._ItemMovemnentService.ItemSearchGroup.get('StoreId').value.storeid || 1,
       'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0
     }
     console.log(vdata);
@@ -85,7 +90,11 @@ export class ItemMovemnentComponent implements OnInit {
       this.dsItemMovement.data = data as ItemMovementList[];
       this.dsItemMovement.sort = this.sort;
       this.dsItemMovement.paginator = this.paginator;
+      this.sIsLoading = '';
       console.log(this.dsItemMovement.data);
+    },
+    error => {
+      this.sIsLoading = '';
     });
   }
  
@@ -107,11 +116,22 @@ export class ItemMovemnentComponent implements OnInit {
       
     });
   }
-  getFormStoreList() {
-    this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
-      this.FormStore = data;
-      // console.log(this.FormStore);
+  // getFormStoreList() {
+  //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
+  //     this.FormStore = data;
+  //     // console.log(this.FormStore);
       
+  //   });
+  // }
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    // console.log(vdata);
+    this._ItemMovemnentService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      // console.log(this.StoreList);
+      this._ItemMovemnentService.ItemSearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
 }

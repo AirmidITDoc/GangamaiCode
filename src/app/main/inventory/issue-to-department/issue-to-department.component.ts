@@ -135,6 +135,7 @@ export class IssueToDepartmentComponent implements OnInit {
   }
   
   getIssueToDepList() {
+    this.sIsLoading = 'loading-data';
     var vdata = {
       "FromStoreId": this._IssueToDep.IssueSearchGroup.get('FromStoreId').value.FromStoreId || 1,
       "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.ToStoreId || 0,
@@ -147,8 +148,12 @@ export class IssueToDepartmentComponent implements OnInit {
       this.dsIssueToDep.data = data as IssueToDep[];
       this.dsIssueToDep.sort = this.sort;
       this.dsIssueToDep.paginator = this.paginator;
+      this.sIsLoading = '';
       console.log(this.dsIssueToDep.data);
-    } );
+    } ,
+    error => {
+      this.sIsLoading = '';
+    });
   }
 
   getIssueItemList(Param){

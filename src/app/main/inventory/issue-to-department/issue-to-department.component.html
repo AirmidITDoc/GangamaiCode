@@ -102,6 +102,15 @@
                                 <div fxlayout="row">
                                     <div style="width:100%;">
 
+                                        <div>
+
+                                        <div matColumnDef="loading"
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur">
+                                            <div class="spinner-border text-danger"></div>
+
+                                        </div>
+
                                         <mat-table #table class="table1" matSort [dataSource]="dsIssueToDep"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
@@ -202,7 +211,10 @@
                                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                             showFirstLastButtons>
                                         </mat-paginator>
+                                        </div>
 
+
+                                         
                                         <mat-table #table class="table2" matSort [dataSource]="dsIssueItemList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
                                             <ng-container matColumnDef="ItemName">
@@ -337,7 +349,7 @@
 
                     <div class="content-card" style="border-radius:4px; ">
 
-                        <form [formGroup]="_IssueToDep.IssueSearchGroup" >
+                        <form [formGroup]="_IssueToDep.IssueSearchGroup">
                             <div fxLayout="column" fxLayoutAlign="start none">
                                 <mat-card
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">
@@ -397,10 +409,12 @@
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="_IssueToDep.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                                 </span>
-                                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
+                                                <mat-autocomplete #auto="matAutocomplete"
+                                                    [displayWith]="getOptionItemText"
                                                     (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                                    <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                        {{option.ItemID}} | {{option.ItemName}} 
+                                                    <mat-option *ngFor="let option of filteredOptionsItem"
+                                                        [value]="option">
+                                                        {{option.ItemID}} | {{option.ItemName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <mat-error class="error"
@@ -440,7 +454,7 @@
                                         <div>
                                             <button mat-raised-button style="width:90px; height: 35px; margin-top: 12px; margin-left: 30px;
                                             color:white;" color="accent"> Add
-                                             </button>
+                                            </button>
                                         </div>
                                     </div>
                                 </mat-card>
@@ -449,112 +463,112 @@
                                     <div fxFlex.gt-sm="100%" fxFlex>
 
                                         <div fxlayout="row">
-                                            
-
-                                                <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px"
-                                                    style=" padding-left: 10px;padding-right: 5px;">
 
 
-                                                    <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
-                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                                        <ng-container matColumnDef="ItemName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                ItemName </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.ItemName}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="Qty">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Qty </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.Qty}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-header-cell *matFooterCellDef colspan="6"
-                                                                style="display: none;">
-                                                            </mat-header-cell>
-                                                        </ng-container>
-    
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList1;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                         <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                        </mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
-                                                        </mat-footer-row>
-                                                    </mat-table>
-                                                   
+                                            <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px"
+                                                style=" padding-left: 10px;padding-right: 5px;">
 
 
-                                                    <mat-table class="tab2" matSort [dataSource]="dsNewIssueList2"
-                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                                <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
+                                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                                        <ng-container matColumnDef="BatchNo">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                BatchNo </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.BatchNo}} </mat-cell>
-                                                        </ng-container>
+                                                    <ng-container matColumnDef="ItemName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            fxShow.gt-sm>
+                                                            ItemName </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.ItemName}} </mat-cell>
+                                                    </ng-container>
 
-                                                        <ng-container matColumnDef="ExpDateNo">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Exp.DateNo </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.ExpDateNo}} </mat-cell>
-                                                        </ng-container>
+                                                    <ng-container matColumnDef="Qty">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            fxShow.gt-sm>
+                                                            Qty </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.Qty}} </mat-cell>
+                                                    </ng-container>
 
-                                                        <ng-container matColumnDef="BalQty">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Bal Qty </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.BalQty}} </mat-cell>
-                                                        </ng-container>
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-header-cell *matFooterCellDef colspan="6"
+                                                            style="display: none;">
+                                                        </mat-header-cell>
+                                                    </ng-container>
 
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-header-cell *matFooterCellDef colspan="6"
-                                                                style="display: none;">
-                                                            </mat-header-cell>
-                                                        </ng-container>
-    
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedNewIssuesList2; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList2;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                        </mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsNewIssueList2!=null && dsNewIssueList2.data.length==0)}">
-                                                        </mat-footer-row>
-                                                    </mat-table>
-                                                    
-                                                </div>
-                                               
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            no data found...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                                    <mat-header-row class="accent"
+                                                        *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let row; columns: displayedNewIssuesList1;"
+                                                        class="element"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                    </mat-footer-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                        [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
+                                                    </mat-footer-row>
+                                                </mat-table>
+
+
+
+                                                <mat-table class="tab2" matSort [dataSource]="dsNewIssueList2"
+                                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                                    <ng-container matColumnDef="BatchNo">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            fxShow.gt-sm>
+                                                            BatchNo </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.BatchNo}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="ExpDateNo">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            fxShow.gt-sm>
+                                                            Exp.DateNo </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.ExpDateNo}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="BalQty">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            fxShow.gt-sm>
+                                                            Bal Qty </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.BalQty}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-header-cell *matFooterCellDef colspan="6"
+                                                            style="display: none;">
+                                                        </mat-header-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            no data found...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                                    <mat-header-row class="accent"
+                                                        *matHeaderRowDef="displayedNewIssuesList2; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let row; columns: displayedNewIssuesList2;"
+                                                        class="element"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                    </mat-footer-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                        [ngClass]="{'hide':!(dsNewIssueList2!=null && dsNewIssueList2.data.length==0)}">
+                                                    </mat-footer-row>
+                                                </mat-table>
+
+                                            </div>
+
 
 
                                             <div style="width: 100%;">
@@ -657,57 +671,56 @@
                                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                                     showFirstLastButtons>
                                                 </mat-paginator>
-                                             
+
                                             </div>
-                                        
+
 
 
                                         </div>
-                                      
+
                                     </div>
-                                   
+
                                 </div>
-                               
+
                             </div>
-                            
-                            <mat-form-field appearance="outline"style="margin-top: 10px;width: 800px;background-color: white;">
+
+                            <mat-form-field appearance="outline"
+                                style="margin-top: 10px;width: 800px;background-color: white;">
                                 <mat-label>Remark</mat-label>
                                 <input type="text" name="Remark" formControlName="Remark" matInput required>
-                                
+
                             </mat-form-field>&nbsp;&nbsp;
-                            <mat-form-field appearance="outline" style="margin-top: 10px;width: 300px;background-color: white;" >
+                            <mat-form-field appearance="outline"
+                                style="margin-top: 10px;width: 300px;background-color: white;">
                                 <mat-label>GST Amount</mat-label>
                                 <input type="text" name="GST Amount" formControlName="GST Amount" matInput required>
-                                
+
                             </mat-form-field>&nbsp;&nbsp;
-                            <mat-form-field appearance="outline" style="margin-top: 10px;width: 300px;background-color: white;">
+                            <mat-form-field appearance="outline"
+                                style="margin-top: 10px;width: 300px;background-color: white;">
                                 <mat-label>Total Amount</mat-label>
                                 <input type="text" name="Total Amount" formControlName="Total Amount" matInput required>
-                                
+
                             </mat-form-field>&nbsp;&nbsp;
-                    
+
                             <div class="footer-navigation-container" fxLayout.gt-xs="row">
 
                                 <div style="margin-top: 10px; margin-right: 10px; ">
-                                    <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
-                                        >Save</button>
-                                    <button class="footer-btn" id="btncancel" >Close</button>
+                                    <button class="next-btn" color="accent"
+                                        style="border-radius: 16px; width: 80px;">Save</button>
+                                    <button class="footer-btn" id="btncancel">Close</button>
                                 </div>
                             </div>
-                       
-                            
+
+
                         </form>
-                        
+
 
                     </div>
                 </div>
             </div>
- 
+
         </div>
- 
+
     </mat-tab>
 </mat-tab-group>
-
-
- 
-     

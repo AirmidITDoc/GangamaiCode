@@ -1,1 +1,77 @@
- 
+ .table1 {
+
+     .mat-column-action {
+         width: 100px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
+
+     .mat-column-ToStoreName {
+         width: 160px;
+         max-width: 160px;
+         min-width: 160px;
+         align-items: left;
+         justify-content: left;
+     }
+
+     .mat-column-ItemName {
+         width: 280px;
+         max-width: 280px;
+         min-width: 280px;
+         text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-right: 25px;
+         margin-top: 7px;
+     }
+
+     .mat-column-GenericName {
+         width: 350px;
+         max-width: 350px;
+         min-width: 350px;
+         text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-top: 7px;
+     }
+
+     .mat-column-BalanceQty {
+         width: 10px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
+
+     .mat-column-IssueQty {
+         width: 100px;
+         max-width: 100px;
+         min-width: 100px;
+         align-items: left;
+         justify-content: left;
+     }
+
+     .mat-column-ReceivedQty {
+         width: 120px;
+         max-width: 120px;
+         min-width: 120px;
+         align-items: left;
+         justify-content: left;
+     }
+
+     height: 690px;
+     min-height: 690px;
+     max-height: 690px;
+ }

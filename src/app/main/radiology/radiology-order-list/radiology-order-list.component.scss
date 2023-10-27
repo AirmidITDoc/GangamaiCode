@@ -108,10 +108,11 @@
 
 app-radiology-order-list{
 
-    table1{
-        height: 250px !important;
-   
+    .table1{
 
+        height: 650px;
+        max-height: 650px;
+        min-height: 650px;
 button:disabled {
     color: #FFFFFF !important;
     background-color: #CCCCCC !important;
@@ -130,35 +131,35 @@ button:disabled {
      width: 100%;
 }
 
-.mat-header-row {
-    width: 100%;
-    max-width:1690px;
-    min-width:1690px; 
-    min-height: 20px;     
-}
+// .mat-header-row {
+//     width: 100%;
+//     max-width:1690px;
+//     min-width:1690px; 
+//     min-height: 20px;     
+// }
 
-.mat-row {
-    width: 100%;
-    max-width:1690px;
-    min-width:1690px;   
-    min-height: 20px;  
-    text-align: center;  
+// .mat-row {
+//     width: 100%;
+//     max-width:1690px;
+//     min-width:1690px;   
+//     min-height: 20px;  
+//     text-align: center;  
         
-}
+// }
 }
 // PatientData
 .mat-column-RadDate {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
+    width:100px;
+    max-width:100px;
+    min-width:100px;
     text-align:left;
 }
 
 .mat-column-RadTime {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
-    text-align: left;
+    width:100px;
+    max-width:100px;
+    min-width:100px;
+    text-align:left;
 }
 
 .mat-column-RegNo {
@@ -166,11 +167,12 @@ button:disabled {
     max-width:90px;
     min-width:90px;
     justify-content:left;
+    text-align: left;
 }
 .mat-column-PatientName {
-    width:320px;
-    max-width:320px;
-    min-width:320px;
+    width:230px;
+    max-width:230px;
+    min-width:230px;
     text-align: left;
     justify-content:left;
     white-space: nowrap; 
@@ -184,20 +186,34 @@ button:disabled {
 }
 
 .mat-column-PatientType {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    justify-content:center;
-}
-table2{
-    height: 180px !important;
-    width: 100%;
-}
-.mat-column-TestName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
+    width:90px;
+    max-width:90px;
+    min-width:90px;
     justify-content:left;
+    text-align: left;
+}
+ 
+// .mat-column-TestName {
+//     width:250px;
+//     max-width:250px;
+//     min-width:250px;
+//     justify-content:left;
+//     text-align: left;
+//     justify-content:left;
+//     white-space: nowrap; 
+//     overflow: hidden;
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
+//     display: inline-flex;
+//     display:inline;
+//     margin-top: 7px;
+//     margin-right: 10px;   
+// }
+
+.mat-column-ConsultantDoctor {
+    width:200px;
+    max-width:200px;
+    min-width:200px;
     text-align: left;
     justify-content:left;
     white-space: nowrap; 
@@ -207,54 +223,51 @@ table2{
     display: inline-flex;
     display:inline;
     margin-top: 7px;
-    margin-right: 10px;   
 }
 
-.mat-column-ConsultantDoctor {
-    width:200px;
-    max-width:200px;
-    min-width:200px;
-    justify-content:left;
-}
-
-.mat-column-CategoryName {
+// .mat-column-CategoryName {
+//     width:90px;
+//     max-width:90px;
+//     min-width:90px;
+//     justify-content:center;
+// }
+.mat-column-AgeDay {
     width:90px;
     max-width:90px;
     min-width:90px;
-    justify-content:center;
-}
-.mat-column-AgeDay {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
-    justify-content:center;
+    justify-content:left;
+    text-align: left;
 }
 
 .mat-column-AgeMonth {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
-    justify-content:center;
+    width:90px;
+    max-width:90px;
+    min-width:90px;
+    justify-content:left;
+    text-align: left;
 }
 .mat-column-AgeYear {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
-    justify-content:center;
+    width:80px;
+    max-width:80px;
+    min-width:80px;
+    justify-content:left;
+    text-align: left;
 }
 .mat-column-GenderName {
-    width:70px;
-    max-width:70px;
-    min-width:70px;
-    justify-content:center;
+    width:90px;
+    max-width:90px;
+    min-width:90px;
+    justify-content:left;
+    text-align: left;
 }
 
 
 .mat-column-PBillNo {
-    width:130px;
-    max-width:130px;
-    min-width:130px;
+    width:100px;
+    max-width:100px;
+    min-width:100px;
     justify-content:left;
+    text-align: left;
 }
 
 .mat-column-action {
@@ -268,46 +281,46 @@ table2{
 }
     // Sample
 
-    .mat-column-VADate {
-        width:100px;
-        max-width:100px;
-        min-width:100px;
-        justify-content:left;
-    }
+    // .mat-column-VADate {
+    //     width:100px;
+    //     max-width:100px;
+    //     min-width:100px;
+    //     justify-content:left;
+    // }
   
-    .mat-column-PathTestID {
-        width: 150px;
-        max-width:150px;
-        min-width:150px;
-        justify-content:left;
-    }
+    // .mat-column-PathTestID {
+    //     width: 150px;
+    //     max-width:150px;
+    //     min-width:150px;
+    //     justify-content:left;
+    // }
 
-    .mat-column-ServiceName {
-        width: 200px;
-        max-width: 290px;
-        min-width: 290px;
-        justify-content:left;
-    }
+    // .mat-column-ServiceName {
+    //     width: 200px;
+    //     max-width: 290px;
+    //     min-width: 290px;
+    //     justify-content:left;
+    // }
     
 
-    .mat-column-IsSampleCollection {
-    width: 200px;
-    max-width:200px;
-    min-width:320px;
-    }
+    // .mat-column-IsSampleCollection {
+    // width: 200px;
+    // max-width:200px;
+    // min-width:320px;
+    // }
 
-    .mat-column-SampleCollectionTime {
-            width: 200px;
-            max-width: 200px;
-            min-width: 200px;
-            justify-content:left;
-        }
-        .mat-column-PathReportID {
-            width: 100px;
-            max-width:100px;
-            min-width:100px;
-            justify-content:left;
-        }
+    // .mat-column-SampleCollectionTime {
+    //         width: 200px;
+    //         max-width: 200px;
+    //         min-width: 200px;
+    //         justify-content:left;
+    //     }
+    //     .mat-column-PathReportID {
+    //         width: 100px;
+    //         max-width:100px;
+    //         min-width:100px;
+    //         justify-content:left;
+    //     }
 
 
 

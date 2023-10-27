@@ -43,6 +43,8 @@ export class MaterialConsumptionComponent implements OnInit {
   
   StoreList: any = [];
   screenFromString = 'admission-form';
+  sIsLoading: string = '';
+  isLoading = true;
   
   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
 
@@ -78,7 +80,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
  
   getMaterialConList() {
-   
+    this.sIsLoading = 'loading-data';
     var vdata = {
       "ToStoreId": this._MaterialConsumptionService.SearchGroup.get('StoreId').value.storeid || 1,
        "From_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -90,8 +92,12 @@ export class MaterialConsumptionComponent implements OnInit {
       this.dsMaterialConLList.data = data as MaterialConList[];
       this.dsMaterialConLList.sort = this.sort;
       this.dsMaterialConLList.paginator = this.paginator;
+      this.sIsLoading = '';
       console.log(this.dsMaterialConLList.data)
-    } );
+    },
+    error => {
+      this.sIsLoading = '';
+    });
   }
 
   gePharStoreList() {

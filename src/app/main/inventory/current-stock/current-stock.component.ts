@@ -20,182 +20,124 @@ import Swal from 'sweetalert2';
   
 })
 export class CurrentStockComponent implements OnInit {
+  displayedColumns = [
+    'action',
+    'ToStoreName',
+    'ItemName',
+    'ReceivedQty',
+    'IssueQty',
+    'BalanceQty',
+    'GenericName'
+  ];
 
   sIsLoading: string = '';
   isLoading = true;
   Store1List:any=[];
   screenFromString = 'admission-form';
 
-  labelPosition: 'before' | 'after' = 'after';
+ 
   
-  dsIndentID = new MatTableDataSource<IndentID>();
+  dsCurrentStock= new MatTableDataSource<CurrentStockList>();
 
-  dsIndentList = new MatTableDataSource<IndentList>();
-
-  displayedColumns = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
-  ];
-
-  displayedColumns1 = [
-   'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
-  ];
-
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _IndentID: CurrentStockService,
+    public _CurrentStockService: CurrentStockService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     
   ) { }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
+    this.gePharStoreList();
+    
   }
   
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
- 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
-
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-    }
-      this._IndentID.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
-    }
-      this._IndentID.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
+ 
 
   
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-  getIndentStoreList(){
-    debugger
-   
-        this._IndentID.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
 
-       }
-
+  getCurrentStockList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "ItemName":'%',
+      "IsNarcotic":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      "ish1Drug":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      "isScheduleH":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      "IsHighRisk":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      "IsScheduleX":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      "ItemCategaryId":this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemCategaryId || 1,
+      "StoreId": this._CurrentStockService.SearchGroup.get('StoreId').value.StoreId || 1,
+      //  "From_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      //  "To_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        
+    }
+    console.log(vdata);
+      this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
+      this.dsCurrentStock.data = data as CurrentStockList[];
+      console.log(this.dsCurrentStock.data)
+      this.dsCurrentStock.sort = this.sort;
+      this.dsCurrentStock.paginator = this.paginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }  
+ 
   onClear(){
+
+    this._CurrentStockService.SearchGroup.get('start').reset();
+    this._CurrentStockService.SearchGroup.get('end').reset();
+    this._CurrentStockService.SearchGroup.get('StoreId').reset();
+    this._CurrentStockService.SearchGroup.get('IsDeleted').reset();
+    this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
     
   }
-}
-
-export class IndentList {
-  ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
-    {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
     }
+    // console.log(vdata);
+    this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+      this.Store1List = data;
+      // console.log(this.StoreList);
+      this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
+    });
   }
 }
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
+ 
+export class CurrentStockList {
+  IssueQty: Number;
+  ReceivedQty: number;
+  ItemName:string;
   ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
+  BalanceQty:number;
+  GenericName: string;
   
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
+
+  constructor(CurrentStockList) {
     {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.IssueQty = CurrentStockList.IssueQty || 0;
+      this.ReceivedQty = CurrentStockList.ReceivedQty || 0;
+      this.ItemName = CurrentStockList.ItemName || "";
+      this.ToStoreName = CurrentStockList.ToStoreName || "";
+      this.BalanceQty = CurrentStockList.BalanceQty || 0;
+      this.GenericName = CurrentStockList.GenericName || "";
+       
     }
   }
 }
