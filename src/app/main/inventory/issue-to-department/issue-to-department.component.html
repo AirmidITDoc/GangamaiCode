@@ -46,8 +46,7 @@
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChnage)="getIssueToDepList()">
+                                                <input matEndDate formControlName="end" placeholder="End date">
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -119,7 +118,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Issue Date </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IssueDate}}
+                                                    {{contact.IssueDate | date: 'dd/MM/yyyy'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -227,7 +226,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Batch Exp Date</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.BatchExpDate}}
+                                                    {{contact.BatchExpDate | date: 'MM/yyyy'}}
                                                 </mat-cell>
                                             </ng-container>
 

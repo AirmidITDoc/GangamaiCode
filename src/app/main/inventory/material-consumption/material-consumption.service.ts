@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MaterialConsumptionService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  SearchGroup :FormGroup;
 
 
   constructor(
@@ -16,13 +16,12 @@ export class MaterialConsumptionService {
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.createUserForm();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.SearchGroup= this.createSearchFrom();
   }
 
-  IndentSearchFrom() {
+  createSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
+      StoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -30,32 +29,36 @@ export class MaterialConsumptionService {
   
   createUserForm() {
     return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
+      FromStoreId: '',
+      BatchNO: '',
+      ItemName:'',
+      BalQty:'',
+      UsedQty:'',
+      Rate:'',
+      Remark: '',
       
     });
   }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  // public getIndentID(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  // }
+
+
+  // public getIndentList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  // }
+
+  // public getStoreFromList(){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+  // }
+
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
-  }
-
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getMaterialConList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MaterialConsumption_ByName",Param);
   }
   
 }

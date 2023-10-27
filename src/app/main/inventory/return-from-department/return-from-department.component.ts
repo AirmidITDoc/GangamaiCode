@@ -12,28 +12,17 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 
 @Component({
-  
+
   selector: 'app-return-from-department',
   templateUrl: './return-from-department.component.html',
   styleUrls: ['./return-from-department.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-  
+
 })
 export class ReturnFromDepartmentComponent implements OnInit {
-
-  sIsLoading: string = '';
-  isLoading = true;
-  ToStoreList:any=[];
-  FromStoreList:any;
-
-  screenFromString = 'admission-form';
-
-  labelPosition: 'before' | 'after' = 'after';
-  
-  dsReturnToDepartmentList = new MatTableDataSource<ReturnToDepartmentList>();
-
   displayedColumns = [
+    'action',
     'ReturnNo',
     'RDate',
     'FromStoreName',
@@ -42,128 +31,113 @@ export class ReturnFromDepartmentComponent implements OnInit {
     'TotalVatAmount',
     'Remark',
     'Addedby',
-    'action',
   ];
+
+  isLoading = true;
+  ToStoreList: any = [];
+  StoreList: any = [];
+
+
+  dsReturnToDepList = new MatTableDataSource<ReturnTODepList>();
+
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  
 
   constructor(
     public _ReturnToDepartmentList: ReturnFromDepartmentService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
-    
+
   ) { }
 
   ngOnInit(): void {
     this.getToStoreSearchList();
-    this.getFromStoreSearchList();
-    this.getReturnToDepartmentList() 
+   
+    this.getReturnToDepartmentList()
+    this.gePharStoreList();
   }
-  
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
- 
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
+
 
   getReturnToDepartmentList() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('FromStoreId').value.FromStoreId || 1,
-      "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-       "From_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  
+
+    var vdata = {
+      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('StoreId').value.storeid || 1,
+      "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "From_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
-      this._ReturnToDepartmentList.getReturnToDepartmentList(Param).subscribe(data => {
-      this.dsReturnToDepartmentList.data = data as ReturnToDepartmentList[];
-      console.log(this.dsReturnToDepartmentList.data)
-      this.dsReturnToDepartmentList.sort = this.sort;
-      this.dsReturnToDepartmentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    console.log(vdata);
+    this._ReturnToDepartmentList.getReturnToDepartmentList(vdata).subscribe(data => {
+      this.dsReturnToDepList.data = data as ReturnTODepList[];
+      this.dsReturnToDepList.sort = this.sort;
+      this.dsReturnToDepList.paginator = this.paginator;
+      console.log(this.dsReturnToDepList.data);
+    });
+  }
+ 
+
+
+  getToStoreSearchList() {
+    this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList = data;
+      //console.log(this.ToStoreList);
+    });
   }
 
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-
-getToStoreSearchList() {
-  this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
-    this.ToStoreList = data;
-  });
-}
-
-getFromStoreSearchList() {
-  var data = {
-    "Id": 1
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    // console.log(vdata);
+    this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      // console.log(this.StoreList);
+      this._ReturnToDepartmentList.ReturnSearchGroup.get('StoreId').setValue(this.StoreList[0]);
+    });
   }
-  this._ReturnToDepartmentList.getFromStoreSearchList(data).subscribe(data => {
-    this.FromStoreList = data;
-    this._ReturnToDepartmentList.ReturnSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-  });
+
 }
 
-  onClear(){
-    
-  }
-}
-
-export class ReturnToDepartmentList {
+export class ReturnTODepList {
   ReturnNo: Number;
   RDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  PurchaseTotalAmount:number;
+  FromStoreName: string;
+  ToStoreName: string;
+  PurchaseTotalAmount: number;
   TotalVatAmount: number;
-  Remark:String;
-  Addedby:string;
-  FromStoreId:boolean;
-  StoreId:any;
-  StoreName:any;
+  Remark: String;
+  Addedby: string;
   
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
+
+  constructor(ReturnTODepList) {
     {
-      this.ReturnNo = IndentID.ReturnNo || 0;
-      this.RDate = IndentID.RDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.PurchaseTotalAmount = IndentID.PurchaseTotalAmount || 0;
-      this.TotalVatAmount = IndentID.TotalVatAmount || 0;
-      this.Remark = IndentID.Remark || "";
-      this.Addedby = IndentID.Addedby || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
-      this.StoreId = IndentID.StoreId || "";
-      this.StoreName = IndentID.StoreName || "";
+      this.ReturnNo = ReturnTODepList.ReturnNo || 0;
+      this.RDate = ReturnTODepList.RDate || 0;
+      this.FromStoreName = ReturnTODepList.FromStoreName || "";
+      this.ToStoreName = ReturnTODepList.ToStoreName || "";
+      this.PurchaseTotalAmount = ReturnTODepList.PurchaseTotalAmount || 0;
+      this.TotalVatAmount = ReturnTODepList.TotalVatAmount || 0;
+      this.Remark = ReturnTODepList.Remark || "";
+      this.Addedby = ReturnTODepList.Addedby || "";
+      
     }
   }
 }

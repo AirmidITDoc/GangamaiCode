@@ -103,7 +103,7 @@ export class IssueToDepartmentComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    // this.getItemNameList();
+   
     this.getToStoreSearchList();
     this.getFromStoreSearchList();
     // this.getIssueToDepList();
@@ -130,39 +130,8 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this._IssueToDep.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
-      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
-  }
-  getSearchItemList() {
-    var m_data = {
-      "ItemName": `${this._IssueToDep.userFormGroup.get('ItemID').value}%`
-      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
-    }
-    console.log(m_data);
-    if (this._IssueToDep.userFormGroup.get('ItemID').value.length >= 2) {
-      this._IssueToDep.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        console.log(this.filteredOptionsItem.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName ;
-  }
-  getSelectedObjItem(obj) {
-    // this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemID;
- 
-
   }
   
   getIssueToDepList() {
@@ -197,7 +166,41 @@ export class IssueToDepartmentComponent implements OnInit {
   OnSelect(Param){
     console.log(Param.IssueId);
     this.getIssueItemList(Param.IssueId)
-  }    
+  } 
+  
+  
+  
+  getSearchItemList() {
+    var m_data = {
+      "ItemName": `${this._IssueToDep.userFormGroup.get('ItemID').value}%`
+      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+    }
+    // console.log(m_data);
+    if (this._IssueToDep.userFormGroup.get('ItemID').value.length >= 2) {
+      this._IssueToDep.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        // console.log(this.filteredOptionsItem.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  }
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemID + ' ' + option.ItemName ;
+  }
+  getSelectedObjItem(obj) {
+    // this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId = obj.ItemID;
+ 
+
+  }
  
 }
 export class NewIssueList3{
