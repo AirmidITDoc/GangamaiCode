@@ -32,7 +32,7 @@
             <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="80%" fxFlex style="background-color: white;">
+                    <div fxFlex.gt-sm="80%" fxFlex>
 
                         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
@@ -42,7 +42,9 @@
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <form [formGroup]="ItemSubform" style="padding: 6px 6px 5px 5px;">
-                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-card>
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                                                <div>
                                                 <!-- (change)="onChangeReg($event)" -->
                                                 <mat-radio-group aria-label="Select an option"
                                                     formControlName="PatientType" name="PatientType"
@@ -53,7 +55,28 @@
                                                         (checked)="true">External</mat-radio-button>
                                                 </mat-radio-group>
 
-                                                <mat-form-field appearance="outline" style="width: 10%;">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'IP'">
+                                                    <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No"
+                                                        matInput [matAutocomplete]="auto1" (input)="getSearchList()">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
+                                                        (optionSelected)='getSelectedObjReg($event.option.value)'>
+                                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                                            {{option.MobileNo}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-error *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
+                                                        Required field cannot be left blank
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'IP'" style="margin-right:15px;">
                                                     <mat-label>Mobile Number</mat-label>
                                                     <input name="MobileNo" formControlName="MobileNo"
                                                         placeholder="Mobile Number" matInput required
@@ -71,14 +94,14 @@
 
 
                                                 <mat-form-field appearance="outline"
-                                                    style="margin-right:20px !important;width: 20%;">
+                                                    style="margin-right:15px !important;" *ngIf="ItemSubform.get('PatientType').value != 'IP'">
                                                     <mat-label>Patient Name</mat-label>
                                                     <input matInput placeholder="PatientName"
                                                         formControlName="PatientName" [(ngModel)]="PatientName" required
                                                         (keydown)="onEnterpatientname($event)" #patientname type="text">
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'IP'">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
                                                         (keydown)="onEnterDoctorname($event)" #doctorname
@@ -98,12 +121,16 @@
                                                         </mat-option>
                                                     </mat-select>
                                                 </mat-form-field> -->
+                                                </div>
+                                                <div>
+                                                    <app-common-date [screenFrom]="screenFromString"
+                                                        (dateTimeEventEmitter)="getDateTime($event)">
+                                                    </app-common-date>
 
-                                                <app-common-date [screenFrom]="screenFromString"
-                                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                                </app-common-date>
+                                                </div>
 
                                             </div>
+                                        </mat-card>
                                         </form>
                                         <form [formGroup]="_salesService.IndentSearchGroup"
                                             style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
@@ -200,10 +227,10 @@
                                                 <div matTooltip="Select doctor name to enable this button!!"
                                                     [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                                     [matTooltipPosition]="'above'">
-                                                    <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                        [disabled]="!add" (click)="OnAddUpdate($event)"
-                                                        style="background-color: blue; color: white; width: 70px;margin-left:10px; ">
-                                                        <mat-icon> add </mat-icon> &nbsp;Add
+                                                    <button mat-raised-button fxLayoutAlign="center center" #addbutton class="add-btn"
+                                                        [disabled]="!add" (click)="OnAddUpdate($event)">
+                                                        <mat-icon> add </mat-icon>
+                                                        Add
                                                     </button>
                                                     <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                                                 </div>
@@ -328,7 +355,7 @@
 
                                             <ng-container matColumnDef="buttons" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef class="table-actions"
-                                                    style="color: red;">Action
+                                                    style="color: #6cec11;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact">
                                                     <ng-container class="actions">
@@ -381,44 +408,44 @@
                                     </mat-card>
 
 
-                                    <div class="table-footer">
-
-                                        <div class="net-amt">
-                                            <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left: 20px;">No of
-                                                Items:</span>&nbsp;<span class="net-amt-value"
-                                                style="margin-right: 200px;">{{saleSelectedDatasource.data.length}}</span>
-                                            <!-- <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left: 600px;">
-                                                GSTAmount</span>&nbsp;<span class="net-amt-value"
-                                                style="margin-right: 250px;">{{getGSTSum(saleSelectedDatasource.data)
-                                                | currency:'INR' }}
-                                            </span> -->
-                                            <!-- <span class="net-amt-value"
-                                            style="margin-right: 250px;">{{getTotalAmtSum(saleSelectedDatasource.data)
-                                            | currency:'INR' }}
-                                              </span>
-                                             <span class="net-amt-value"
-                                              style="margin-right: 250px;">{{getDiscAmtSum(saleSelectedDatasource.data)
-                                              | currency:'INR' }}
-                                               </span> -->
-                                            <span class="net-amt-label"
-                                                style="width: 200px;font-weight: bold;margin-left:500px;">
-                                                NetAmount::</span>&nbsp;<span class="net-amt-value"
-                                                style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
-                                                | currency:'INR' }}</span>
-
-                                        </div>
-                                    </div>
+                                   
 
                                 </div>
 
-                                <form class="example-form" [formGroup]="ItemSubform" style="font-size:20px;">
+                                <form class="example-form" [formGroup]="ItemSubform" style="font-size:20px; margin-top: 20px;">
 
                                     <mat-card style="width: 100%;font-size: large;">
-                                        <div class="footer-container" fxLayoutAlign="start center"
+                                        <div class="footer-container" fxLayout="column" fxLayoutAlign="start"
                                             style="padding:5x 5px 5px 5px;">
+                                            <div class="table-footer">
 
+                                                <div class="net-amt" style="margin-bottom: 20px;">
+                                                    <span class="net-amt-label"
+                                                        style="width: 200px;font-weight: bold;">No of
+                                                        Items:</span>&nbsp;<span class="net-amt-value"
+                                                        style="margin-right: 200px;">{{saleSelectedDatasource.data.length}}</span>
+                                                    <!-- <span class="net-amt-label"
+                                                        style="width: 200px;font-weight: bold;margin-left: 600px;">
+                                                        GSTAmount</span>&nbsp;<span class="net-amt-value"
+                                                        style="margin-right: 250px;">{{getGSTSum(saleSelectedDatasource.data)
+                                                        | currency:'INR' }}
+                                                    </span> -->
+                                                    <!-- <span class="net-amt-value"
+                                                    style="margin-right: 250px;">{{getTotalAmtSum(saleSelectedDatasource.data)
+                                                    | currency:'INR' }}
+                                                      </span>
+                                                     <span class="net-amt-value"
+                                                      style="margin-right: 250px;">{{getDiscAmtSum(saleSelectedDatasource.data)
+                                                      | currency:'INR' }}
+                                                       </span> -->
+                                                    <span class="net-amt-label"
+                                                        style="width: 200px;font-weight: bold;margin-left:500px;">
+                                                        NetAmount::</span>&nbsp;<span class="net-amt-value"
+                                                        style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
+                                                        | currency:'INR' }}</span>
+        
+                                                </div>
+                                            </div>
                                             <div class="row row-container" style="width: 100%;">
                                                 <!-- <div class="som"> -->
                                                 <div class=" amount-section" style="width: 100%;">
@@ -507,7 +534,7 @@
                                                             <mat-label>Referance no</mat-label>
                                                             <input matInput name="referanceNo" formControlName="referanceNo">
                                                         </mat-form-field>&nbsp;
-                                                        <button class="next-btn" (click)="onSave()"
+                                                        <button class="submit-button" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
@@ -963,25 +990,25 @@
                         </div>
 
                     </div>
-
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white; padding: 3px 3px 3px 3px;">
-                        <div *ngIf="sIsLoading == 'get-sales-data'">
-                            <mat-spinner [diameter]='30' style="margin: auto;"></mat-spinner>
-                        </div>
-                        <div *ngFor="let item of salesIdWiseObj | keyvalue">
-                            <div>
-                                <h2>Sales NO: {{item.key}} <button class="next-btn"
-                                        style="margin-left: 10px;">Repete</button> </h2>
-
+                    <mat-card>
+                        <div fxFlex style="padding: 15px;">
+                            <div *ngIf="sIsLoading == 'get-sales-data'">
+                                <mat-spinner [diameter]='30' style="margin: auto;"></mat-spinner>
                             </div>
-                            <div *ngFor="let ele of item.value">
-                                {{ele.ItemShortName}} | {{ele.Qty}} | {{ele.UnitMRP}}
+                            <div *ngFor="let item of salesIdWiseObj | keyvalue">
+                                <div>
+                                    <h2>Sales NO: {{item.key}} <button class="next-btn"
+                                            style="margin-left: 10px;">Repete</button> </h2>
+
+                                </div>
+                                <div *ngFor="let ele of item.value">
+                                    {{ele.ItemShortName}} | {{ele.Qty}} | {{ele.UnitMRP}}
+                                </div>
+
+                                <hr>
                             </div>
-
-                            <hr>
                         </div>
-                    </div>
-
+                    </mat-card>
                 </div>
             </div>
             <!-- / CONTENT -->

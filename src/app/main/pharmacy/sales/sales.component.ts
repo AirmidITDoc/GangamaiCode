@@ -24,6 +24,8 @@ import { HeaderComponent } from 'app/main/shared/componets/header/header.compone
 import { element } from 'protractor';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { map, startWith } from 'rxjs/operators';
+import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 
 
 @Component({
@@ -238,6 +240,10 @@ IsCreditflag : boolean=false
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   data:any;
+  PatientListfilteredOptions: any;
+  registerObj = new RegInsert({});
+  RegId: any;
+  vAdmissionID: any;
   constructor(
     public _salesService: SalesService,
     public _matDialog: MatDialog,
@@ -252,6 +258,7 @@ IsCreditflag : boolean=false
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
+    public _RequestforlabtestService: RequestforlabtestService
 
   ) {
     this.nowDate = new Date();
@@ -952,6 +959,7 @@ IsCreditflag : boolean=false
       BalanceAmt: '',
       CashPay: ['CashPay'],
       referanceNo: '',
+      RegID: ''
       // Credit: [0]
     });
   }
@@ -1647,6 +1655,7 @@ IsCreditflag : boolean=false
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
     }
+    console.log(this.ItemSubform.get('PatientType').value)
   }
 
 
@@ -2235,6 +2244,40 @@ IsCreditflag : boolean=false
   onClose() {
     // this.dialogRef.close({ result: "cancel" });
     this.Itemchargeslist = [];
+  }
+
+  getOptionTextReg(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  }
+
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.ItemSubform.get('RegID').value}%`
+    }
+    if (this.ItemSubform.get('RegID').value.length >= 1) {
+      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData);
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+  }
+  getSelectedObjReg(obj) {
+    
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.RegId = obj.RegID;
+    // this.vAdmissionID = obj.AdmissionID;
+    // this.DoctorName = obj.DoctorName;
+   // console.log( this.PatientName)
+    // this.setDropdownObjs();
   }
 }
 

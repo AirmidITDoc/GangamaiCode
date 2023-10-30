@@ -28,7 +28,7 @@
    
 
     .mat-header-row {
-        min-height: 30px;
+        min-height: 40px;
        
     }
     .mat-sort-header-content {
@@ -55,6 +55,7 @@
 
 .mat-header-cell {
     color: white;
+    font-size: 16px !important;
 }
 .mat-card{
     width: 100%;
@@ -559,4 +560,12 @@ legend {
     display: flex;
     justify-content: center;
     cursor: pointer;
+}
+
+.submit-button {
+    color: white;
+    background-color: #7bd3ff !important;
+    border: 1px solid #b7e6fd;
+    padding: 10px;
+    border-radius: 16px;
 }
