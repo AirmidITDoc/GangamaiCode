@@ -16,7 +16,7 @@
             </button>
 
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Pathology Report Entry
+                Pathology Result Entry
             </span>
         </div>
 
@@ -57,7 +57,7 @@
 
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top: 5px; background-color: white;height:95%;">
+        margin-left: 12px; margin-top: 5px; background-color: white;height:99%;">
             <div class="content">
                 <div class="sidebar-content">
 
@@ -93,12 +93,14 @@
                                             <mat-label style="padding:1px" fxFlex>Patient Type:</mat-label>
                                             <mat-radio-group name="PatientTypeSearch"
                                                 formControlName="PatientTypeSearch" value='2'
-                                                style="margin-right:61px;" (change)="onShow($event)">
+                                                style="margin-right:10px;" (change)="onShow($event)">
                                                 <mat-radio-button value='2'>All</mat-radio-button>
                                                 <mat-radio-button value='1' checked=true>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
+
+                                        
 
                                         <div fxLayoutAlign="center center" appearance="outline"
                                             style="margin-bottom: 9px;" fxFlex>
@@ -205,7 +207,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.Date}}
+                                                {{contact.DOA   }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -214,7 +216,7 @@
                                                 Time
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.Time}}
+                                                {{contact.DOT}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -245,6 +247,8 @@
                                                 {{contact.DoctorName}}
                                             </mat-cell>
                                         </ng-container>
+                                        
+
 
                                         <ng-container matColumnDef="PatientType">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -288,7 +292,7 @@
                                                 PathDues
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.PathDues}}
+                                                {{contact.PathAmount }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -368,16 +372,9 @@
 
 
                                         </form>
-<!-- 
+
                                         
-                                        <button style="float:right;margin-right: 1%" mat-raised-button color="accent"
-                                            (click)="onExport1('Pdf')" matTooltip="Export To Pdf">
-                                            <mat-icon>picture_as_pdf</mat-icon>
-                                        </button>
-                                        <button  mat-raised-button color="accent"
-                                            (click)="onExport1('Excel')" matTooltip="Export To Excel">
-                                            <mat-icon>save_alt</mat-icon>
-                                        </button> -->
+                                        
                                     </div>
 
                                     <mat-table class="table2" #table matSort [dataSource]="dataSource1"
@@ -395,24 +392,14 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="VADate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                Date
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.VADate | date:'short'}}
-                                                {{contact.VADate }}
-                                            </mat-cell>
-                                        </ng-container>
-
-
-                                        <ng-container matColumnDef="ServiceName" sticky>
+                                        <ng-container matColumnDef="TestName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TestName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.ServiceName}}
                                             </mat-cell>
                                         </ng-container>
+
                                         <ng-container matColumnDef="IsCompleted">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 Completed
@@ -424,17 +411,15 @@
                                                     close</mat-icon>
                                             </mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="IsSampleCollection">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsSampleCollection
+
+                                        <ng-container matColumnDef="Age" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Age
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsSampleCollection"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsSampleCollection"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.AgeYear }}
                                             </mat-cell>
                                         </ng-container>
+
                                         <ng-container matColumnDef="SampleCollectionTime">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 SampleCollectionDate/Time
@@ -444,7 +429,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="PathTestID">
+                                        <ng-container matColumnDef="SampleNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 SampleNo
                                             </mat-header-cell>
@@ -453,27 +438,16 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="IsVerifySign">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                    IsVerifySign
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                    <mat-icon *ngIf="!contact.IsVerifySign"
-                                                        class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                    <mat-icon *ngIf="contact.IsVerifySign"
-                                                        class="active-icon red-500 s-16">
-                                                        close</mat-icon>
-                                                </mat-cell>
-                                            </ng-container>
+                                        <ng-container matColumnDef="PathRefDoc">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                PathRefDoc
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                {{contact.PathReportID }}
+                                            </mat-cell>
+                                        </ng-container>
 
-                                            <ng-container matColumnDef="IsTemplateTest">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                    IsTemplateTest
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                    {{contact.IsTemplateTest}}
-                                                </mat-cell>
-                                            </ng-container> -->
+                                      
                                         <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                                 Action</mat-header-cell>
@@ -542,11 +516,12 @@
                             </div>
                         </div>
                     </div>
+                    
 
 
 
                 </div>
-                <div fxlayout="row" style="margin-top: 10px;background-color: white;">
+                <div fxlayout="row" style="margin-top: 1px;background-color: white;">
                     <div style="margin-top: 2px; padding: 5px;width:60%;">
                         <span style="font-weight: bold;"> Help :</span>&nbsp;
                         <mat-icon

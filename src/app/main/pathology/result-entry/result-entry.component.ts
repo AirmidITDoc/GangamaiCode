@@ -24,6 +24,20 @@ import { PathTemplateViewComponent } from './path-template-view/path-template-vi
   animations: fuseAnimations
 })
 export class ResultEntryComponent implements OnInit {
+  displayedColumns: string[] = [
+   
+    'Date',
+    'Time',
+    'RegNo',
+    'PatientName',
+    'DoctorName',
+    'PatientType',
+    'PBillNo',
+    'GenderName',
+    'AgeYear',
+    'PathDues'
+    
+  ];
 
   
   reportPrintObjList: SampleDetailObj[] = [];
@@ -66,43 +80,21 @@ export class ResultEntryComponent implements OnInit {
 
 
   dataSource = new MatTableDataSource<PatientList>();
-  displayedColumns: string[] = [
-    //  'checkbox',
-
-    'RegNo',
-    'OPD_IPD_ID',
-    'PatientName',
-    'DOA',
-    'DOT',
-    'DoctorName',
-    'PatientType',
-    'PBillNo',
-    'GenderName',
-    'AgeYear',
-    'AgeMonth',
-    'AgeDay'
-
-    // 'action'
-
-
-  ];
+ 
 
   dataSource1 = new MatTableDataSource<SampleList>();
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
   displayedColumns1: string[] = [
     'checkbox',
-    // 'VADate',
-    'ServiceName',
+    'TestName',
     'IsCompleted',
-    'IsSampleCollection',
+    'Age',
     'SampleCollectionTime',
-    'PathTestID',
-    'action',
-    // 'IsVerifySign',
-    // 'IsTemplateTest'
-    // 'PathReportID',
-    // 'buttons' 
+    'SampleNo',
+    'PathRefDoc',
+    'action'
+     
   ];
 
   hasSelectedContacts: boolean;
@@ -248,7 +240,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   getPatientsList() {
-    debugger;
+   
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() +'%' || '%',
@@ -259,13 +251,14 @@ export class ResultEntryComponent implements OnInit {
       "IsCompleted": (this._SampleService.myformSearch.get("StatusSearch").value) || 0,
       "OP_IP_Type": (this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
     }
+    
     this._SampleService.getPatientList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as PatientList[];
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-
       this.sIsLoading = '';
       this.click = false;
+      console.log(this.dataSource.data);
     },
       error => {
         this.sIsLoading = '';

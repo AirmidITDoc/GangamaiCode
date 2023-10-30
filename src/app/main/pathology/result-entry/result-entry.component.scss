@@ -78,7 +78,7 @@ app-result-entry{
     
     // .mat-table {
      
-    //     height: 400px !important;
+    //     height: 800px !important;
     //     width: 100%;
     //     background: transparent;
     //     box-shadow: none;
@@ -238,35 +238,29 @@ app-result-entry{
 
 
 .table1{
-    height: 250px !important;
-.mat-header-row {
-   width: 100%;
-   min-width: 1030px;  
-   min-height: 25px;     
-}
-.mat-row {
-    width: 100%;
-    min-width: 1030px;  
-    min-height: 25px;         
-}
-// PatientData
+    height: 275px;
+    min-height: 275px;
+     max-height: 275px;
+   
+ 
 
 .mat-column-checkbox {
     width:60px;
     max-width:60px;
     min-width:60px;
+    align-items: left;
 }
-.mat-column-DOA {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
+.mat-column-Date {
+    width:150px;
+    max-width:150px;
+    min-width:150px;
     align-items: left;
 }
 
-.mat-column-DOT {
-    width:80px;
-    max-width:80px;
-    min-width:80px;
+.mat-column-Time {
+    width:100px;
+    max-width:100px;
+    min-width:100px;
     align-items: left;
 }
 
@@ -278,13 +272,6 @@ app-result-entry{
     justify-content: left;
 }
 
-.mat-column-OPD_IPD_ID {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: left;
-    justify-content: left;
-}
 .mat-column-PatientName {
     width:230px;
     max-width:230px;
@@ -303,23 +290,11 @@ app-result-entry{
     width:90px;
     max-width:90px;
     min-width:90px;
-    text-align: right;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
 }
-.mat-column-AgeMonth {
-    width:90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: right;
-    justify-content: center;
-}
-.mat-column-AgeDay {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    text-align: right;
-    justify-content: center;
-}
+ 
+ 
 .mat-column-GenderName {
     width:70px;
     max-width:70px;
@@ -332,8 +307,8 @@ app-result-entry{
     width:90px;
     max-width:90px;
     min-width:90px;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: left;
 }
 
 .mat-column-DoctorName {
@@ -360,22 +335,14 @@ app-result-entry{
     justify-content: left;
 }
 
-
-.mat-column-PathDate {
-    width:100px;
-    max-width:100px;
-    min-width:100px;
-    text-align: left;
-    justify-content: left;
-}
-
 .mat-column-action {
    
     width:40px;
     max-width:40px;
     min-width:40px;
     min-height: 25px;     
-    text-align:right;
+    text-align: left;
+    justify-content: left;
     
 }
 }
@@ -388,18 +355,10 @@ app-result-entry{
 
 
     .table2{
-        height: 200px !important;
-        .mat-header-row {
-            width: 100%;
-            min-width: 700px; 
-            min-height: 25px;     
-         }
-         
-         .mat-row {
-             width: 100%;
-             min-width: 700px; 
-             min-height: 25px;         
-         }
+        height: 275px;
+        min-height: 275px;
+         max-height: 275px;
+       
 
         .mat-column-checkbox {
             width:60px;
@@ -414,40 +373,44 @@ app-result-entry{
         align-items: left;
     }
   
-    .mat-column-PathTestID {
+    .mat-column-SampleNo {
         width: 120px;
         max-width:120px;
         min-width:120px;
-        align-items: center;
+        text-align: left;
+    justify-content: left;
     }
-
-    .mat-column-ServiceName {
-        width: 350px;
-        max-width:350px;
-        min-width:350px;
+    .mat-column-PathRefDoc {
+        width: 120px;
+        max-width:120px;
+        min-width:120px;
+        text-align: left;
+        justify-content: left;
+    }
+    .mat-column-TestName {
+        width: 250px;
+        max-width:250px;
+        min-width:250px;
         justify-content:flex-start;
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
         display: inline-block;
+        margin-top: 7px;
+        text-align: left;
+       
       
     }
     .mat-column-IsCompleted {
         width: 110px;
         max-width:110px;
         min-width:110px;
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        justify-content: left;
      }
 
-       .mat-column-IsSampleCollection {
-          width: 110px;
-          max-width:110px;
-          min-width:110px;
-          text-align: center;
-          justify-content: center;
-       }
+      
 
     .mat-column-SampleCollectionTime {
             width: 200px;
@@ -459,30 +422,16 @@ app-result-entry{
             text-overflow: ellipsis; 
             overflow: hidden !important;
             display: inline-block;
+            margin-top: 7px;
           
         }
 
-        .mat-column-PathReportID {
-            width: 130px;
-            max-width:130px;
-            min-width:130px;
-            align-items: center;
-        }
-        
-
-        .mat-column-IsVerifySign {
-            width: 120px;
-            max-width:120px;
-            min-width:120px;
-           text-align: center;
-           justify-content: center;
-        }
-        .mat-column-IsTemplateTest {
-            width: 100px;
-            max-width:100px;
-            min-width:100px;
-           text-align: center;
-           justify-content: center;
+        .mat-column-Age {
+            width: 90px;
+            max-width:90px;
+            min-width:90px;
+            text-align: left;
+            justify-content: left;
         }
 
     }
@@ -543,43 +492,43 @@ app-result-entry{
     //     text-align: center;
     //     justify-content:center;
     // }
-    .mat-column-buttons {
-        color: white !important;
-        width:70px;
-        max-width: 70px;
-        min-width: 70px;
-        text-align: center;
-        justify-content:center;
-    }
+    // .mat-column-buttons {
+    //     color: white !important;
+    //     width:70px;
+    //     max-width: 70px;
+    //     min-width: 70px;
+    //     text-align: center;
+    //     justify-content:center;
+    // }
 
-    .page-layout.simple.inner-sidebar > .header {
-        height: 60px;
-        min-height: 35px;
-        max-height: 50px;
-    }
+    // .page-layout.simple.inner-sidebar > .header {
+    //     height: 60px;
+    //     min-height: 35px;
+    //     max-height: 50px;
+    // }
     
-    .hover-width {
-        width: fit-content;
-        // height: 20px;
-        // overflow: hidden;
-    }
+    // .hover-width {
+    //     width: fit-content;
+    //     // height: 20px;
+    //     // overflow: hidden;
+    // }
     
-    .logo {
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
+    // .logo {
+    //     width: 100%;
+    //     justify-content: space-between;
+    //     align-items: center;
+    // }
     
-    .navbar{
-        justify-content: space-between;
-    }
-    .icon{
-        padding-right: 1rem;
-    }
+    // .navbar{
+    //     justify-content: space-between;
+    // }
+    // .icon{
+    //     padding-right: 1rem;
+    // }
     
-    .left-icon{
-        color:white;
-    }
+    // .left-icon{
+    //     color:white;
+    // }
     
     h1, .h1 {
         font-size: 20px;

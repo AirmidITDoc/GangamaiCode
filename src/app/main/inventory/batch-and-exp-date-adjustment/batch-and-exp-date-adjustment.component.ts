@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 
 @Component({
   selector: 'app-batch-and-exp-date-adjustment',
@@ -30,7 +31,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     'BalQty',
   ];
 
-  Store1List: any = [];
+  StoreList: any = [];
   screenFromString = 'admission-form';
   filteredOptions: any;
   filteredOptionsItem: any;
@@ -38,6 +39,13 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   isItemIdSelected: boolean = false;
   ItemId:any;
   ItemName:any;
+  registerObj = new RegInsert({});
+  isRegSearchDisabled:boolean =false;
+  VLandedrate:any;
+  VPurchaseRate:any;
+  VMRP:any;
+  VBatchNO:any;
+
   
 
   dsBatchAndExpDate = new MatTableDataSource<BatchAndExpList>();
@@ -47,24 +55,26 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
 
   userFormGroup: FormGroup;
   SearchGroup :FormGroup;
+  BalanceQty: any;
+ 
 
   constructor(
     public _BatchAndExpDateAdjustmentService: BatchAndExpDateAdjustmentService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
+     private _loggedService: AuthenticationService,
     private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.SearchGroup= this.createSearchFrom();
-    this.getIndentStoreList();
+    this.gePharStoreList();
     this.getSearchItemList();
   }
   createSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
+      StoreId: '',
       ItemID: '',
-      ItemName: '',
       BatchNO:'',
       MRP:'',
       BtachExpDate:'',
@@ -72,8 +82,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
       NewExpDate:'',
       Landedrate:'',
       NewBatchNo:'',
-
-      
+      BalanceQty:''
 
     });
   }
@@ -84,27 +93,31 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getIndentStoreList() {
-
-    this._BatchAndExpDateAdjustmentService.getStoreFromList().subscribe(data => {
-      this.Store1List = data;
-      // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    // console.log(vdata);
+    this._BatchAndExpDateAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      // console.log(this.StoreList);
+      this.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
-
   }
   
   getSearchItemList() {
     var m_data = {
-      "ItemName": `${this.SearchGroup.get('ItemID').value}%`,
-      "ItemID": 2 // this.myForm.get('StoreId').value.storeid || 0
+      "ItemName": '%',
+      "ItemID": ''//this.SearchGroup.get('ItemID').value.ItemID || 0
+      
     }
     console.log(m_data);
     if (this.SearchGroup.get('ItemID').value.length >= 2) {
       this._BatchAndExpDateAdjustmentService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
+        this.filteredOptions = data;
        // console.log(this.data);
         this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
+        if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
@@ -116,7 +129,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   getOptionItemText(option) {
     this.ItemId = option.ItemID;
     if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName ;
+    return option.ItemID + ' ' + option.ItemName  ;
   }
   getSelectedObjItem(obj) {
     // this.registerObj = obj;
@@ -124,6 +137,23 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     this.ItemId = obj.ItemID;
   
   }
+  onEdit(row) {
+    console.log(row);
+
+    this.registerObj = row;
+    this.getSelectedObjItem(row);
+  }
+  onChangeReg(event) {
+    if (event.value == 'registration') {
+      this.registerObj = new RegInsert({});
+      this.SearchGroup.get('RegID').disable();
+    }
+    else {
+      this.isRegSearchDisabled = false;
+    }
+  }
+
+ 
 
 
 }
