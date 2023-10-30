@@ -8,54 +8,40 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class StockAdjustmentService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+ 
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    
+    this.userFormGroup = this.createUserForm();
   }
 
-  IndentSearchFrom() {
+  createUserForm() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-    });
-  }
-  
-    IndentID() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
+      StoreId: '',
+      ItemID: '',
+      BatchNO:'',
+      MRP:'',
+      Qty:'',
+      IsDeleted:['0'],
+      UpdatedQty:''
       
     });
   }
- 
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+   
+  public getStockAdjustList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
   }
 
 
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getItemlist1(){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{})
   }
   
 }

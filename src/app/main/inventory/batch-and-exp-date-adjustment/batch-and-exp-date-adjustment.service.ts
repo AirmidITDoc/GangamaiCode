@@ -26,6 +26,13 @@ export class BatchAndExpDateAdjustmentService {
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
+  public getItemlist1(){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientAdmittedListSearch",{})
+  }
+
+  public getBatchAdjustList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  }
   
   
 }

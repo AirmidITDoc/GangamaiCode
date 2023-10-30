@@ -10,8 +10,10 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-batch-and-exp-date-adjustment',
@@ -32,6 +34,8 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   ];
 
   StoreList: any = [];
+  sIsLoading: string = '';
+  isLoading = true;
   screenFromString = 'admission-form';
   filteredOptions: any;
   filteredOptionsItem: any;
@@ -45,6 +49,11 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   VPurchaseRate:any;
   VMRP:any;
   VBatchNO:any;
+  ItemList:any=[];
+  
+  public itemFilterCtrl: FormControl = new FormControl();
+  public filteredItemList: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
 
   
 
@@ -69,7 +78,14 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   ngOnInit(): void {
     this.SearchGroup= this.createSearchFrom();
     this.gePharStoreList();
-    this.getSearchItemList();
+    this.getBatchAndAdjList();
+    this.getItemList();
+
+    this.itemFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterItem();
+    });
   }
   createSearchFrom() {
     return this._formBuilder.group({
@@ -104,56 +120,52 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
       this.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
-  
-  getSearchItemList() {
-    var m_data = {
-      "ItemName": '%',
-      "ItemID": ''//this.SearchGroup.get('ItemID').value.ItemID || 0
-      
-    }
-    console.log(m_data);
-    if (this.SearchGroup.get('ItemID').value.length >= 2) {
-      this._BatchAndExpDateAdjustmentService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptions = data;
-       // console.log(this.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
+  getBatchAndAdjList() {
+    this.sIsLoading = 'loading-data';
+   var vdata= {
+     
+     "StoreId": this.SearchGroup.get('StoreId').value.StoreId || 1,
+      "ItemId":1       
+   }
+   console.log(vdata);
+     this._BatchAndExpDateAdjustmentService.getBatchAdjustList(vdata).subscribe(data => {
+     this.dsBatchAndExpDate.data = data as BatchAndExpList[];
+     this.dsBatchAndExpDate.sort = this.sort;
+     this.dsBatchAndExpDate.paginator = this.paginator;
+     this.sIsLoading = '';
+     console.log(this.dsBatchAndExpDate.data);
+   },
+     error => {
+       this.sIsLoading = '';
+     });
+ }
 
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName  ;
-  }
-  getSelectedObjItem(obj) {
-    // this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemID;
-  
-  }
-  onEdit(row) {
-    console.log(row);
+  getItemList() {
+    this._BatchAndExpDateAdjustmentService.getItemlist1().subscribe(data => {
+      this.ItemList = data;
+      this.filteredItemList.next(this.ItemList.slice());
+    })
 
-    this.registerObj = row;
-    this.getSelectedObjItem(row);
   }
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.registerObj = new RegInsert({});
-      this.SearchGroup.get('RegID').disable();
+  private filterItem() {
+
+    if (!this.ItemList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.itemFilterCtrl.value;
+    if (!search) {
+      this.filteredItemList.next(this.ItemList.slice());
+      return;
     }
     else {
-      this.isRegSearchDisabled = false;
+      search = search.toLowerCase();
     }
+    // filter
+    this.filteredItemList.next(
+      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
+    );
   }
-
- 
 
 
 }

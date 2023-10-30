@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-adjustment',
@@ -20,51 +23,52 @@ import Swal from 'sweetalert2';
   
 })
 export class StockAdjustmentComponent implements OnInit {
+  displayedColumns = [
+    'BatchNo',
+    'ExpDate',
+    'UnitMRP',
+    'PurchaseRate',
+    'BalQty',
+  ];
 
   sIsLoading: string = '';
   isLoading = true;
-  Store1List:any=[];
+  StoreList:any=[];
+  ItemList:any=[];
   screenFromString = 'admission-form';
+  VQty:any;
+  VBatchNO:any;
 
-  labelPosition: 'before' | 'after' = 'after';
   
-  dsIndentID = new MatTableDataSource<IndentID>();
-
-  dsIndentList = new MatTableDataSource<IndentList>();
-
-  displayedColumns = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
-  ];
-
-  displayedColumns1 = [
-   'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
-  ];
+  dsStockAdjList = new MatTableDataSource<StockAdjList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  
+  public itemFilterCtrl: FormControl = new FormControl();
+  public filteredItemList: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
 
   constructor(
-    public _IndentID: StockAdjustmentService,
+    public _StockAdjustment: StockAdjustmentService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
+    private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
+   
     
   ) { }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
+    this.getMRPAdjList() ;
+    this.gePharStoreList();
+    this.getItemList();
+
+    this.itemFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterItem();
+    });
   }
   
   toggleSidebar(name): void {
@@ -77,126 +81,86 @@ export class StockAdjustmentComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
-
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
     }
-      this._IndentID.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    console.log(vdata);
+    this._StockAdjustment.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      console.log(this.StoreList);
+      this._StockAdjustment.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+    });
   }
-
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
-    }
-      this._IndentID.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
 
   
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
+  getMRPAdjList() {
+    this.sIsLoading = 'loading-data';
+   var vdata= {
+     
+     "StoreId": this._StockAdjustment.userFormGroup.get('StoreId').value.StoreId || 1,
+      "ItemId":1       
+   }
+   console.log(vdata);
+     this._StockAdjustment.getStockAdjustList(vdata).subscribe(data => {
+     this.dsStockAdjList.data = data as StockAdjList[];
+     this.dsStockAdjList.sort = this.sort;
+     this.dsStockAdjList.paginator = this.paginator;
+     this.sIsLoading = '';
+     console.log(this.dsStockAdjList.data);
+   },
+     error => {
+       this.sIsLoading = '';
+     });
+ }
+
+getItemList() {
+  this._StockAdjustment.getItemlist1().subscribe(data => {
+    this.ItemList = data;
+    console.log(this.ItemList);
+    this.filteredItemList.next(this.ItemList.slice());
+  })
+
 }
-  getIndentStoreList(){
-    debugger
-   
-        this._IndentID.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
+private filterItem() {
 
-       }
-
-  onClear(){
-    
+  if (!this.ItemList) {
+    return;
   }
+  // get the search keyword
+  let search = this.itemFilterCtrl.value;
+  if (!search) {
+    this.filteredItemList.next(this.ItemList.slice());
+    return;
+  }
+  else {
+    search = search.toLowerCase();
+  }
+  // filter
+  this.filteredItemList.next(
+    this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
+  );
+}
 }
 
-export class IndentList {
-  ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
+ 
+
+export class StockAdjList {
+  BalQty: any;
+  BatchNo: number;
+  ExpDate:number;
+  UnitMRP:number;
+  Landedrate:any;
+  PurchaseRate:any;
+ 
+  constructor(StockAdjList) {
     {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
+      this.BalQty = StockAdjList.BalQty || 0;
+      this.BatchNo = StockAdjList.BatchNo || 0;
+      this.ExpDate = StockAdjList.ExpDate || 0;
+      this.UnitMRP = StockAdjList.UnitMRP|| 0;
+      this.Landedrate = StockAdjList.Landedrate || 0;
+      this.PurchaseRate =StockAdjList.PurchaseRate || 0;
     }
   }
 }
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
-  
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
-    {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
-    }
-  }
-}
-
