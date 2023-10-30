@@ -267,8 +267,7 @@
 
 
                                             <ng-container matColumnDef="BatchExpDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchExp
-                                                    Date
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Exp.Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.BatchExpDate}}
@@ -530,11 +529,12 @@
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->
                                                         </mat-radio-group>
-                                                        <mat-form-field appearance="outline" fxFlex="10%" *ngIf="ItemSubform.get('CashPay').value === 'Online'">
+                                                        <mat-form-field appearance="outline" fxFlex="15%" *ngIf="ItemSubform.get('CashPay').value === 'Online'">
                                                             <mat-label>Referance no</mat-label>
                                                             <input matInput name="referanceNo" formControlName="referanceNo">
                                                         </mat-form-field>&nbsp;
-                                                        <button class="submit-button" (click)="onSave()" style="margin-right: 8px; width: 80px;"
+                                                        <button class="next-btn" 
+                                                        (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
@@ -998,7 +998,7 @@
                             <div *ngFor="let item of salesIdWiseObj | keyvalue">
                                 <div>
                                     <h2>Sales NO: {{item.key}} <button class="next-btn"
-                                            style="margin-left: 10px;">Repete</button> </h2>
+                                            style="margin-left: 10px;">repeat</button> </h2>
 
                                 </div>
                                 <div *ngFor="let ele of item.value">
