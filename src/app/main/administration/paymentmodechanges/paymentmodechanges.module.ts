@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentmodeComponent } from './paymentmode.component';
+import { PaymentmodechangesComponent } from './paymentmodechanges.component';
+
 
 const routes: Routes = [
   {
-      path: "**",
-      component: PaymentmodeComponent,
+      path: '**',
+      component: PaymentmodechangesComponent,
   },
 ];
 
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forChild(routes),
+     RouterModule.forChild(routes),
     CommonModule
   ]
 })
-export class PaymentmodeModule { }
+export class PaymentmodechangesModule { }

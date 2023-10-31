@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../administration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
+import { BatchAndExpDateAdjustmentService } from 'app/main/inventory/batch-and-exp-date-adjustment/batch-and-exp-date-adjustment.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss']
+  styleUrls: ['./user-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations, 
 })
 export class UserDetailComponent implements OnInit {
 
   submitted = false;
   data1:[];
 
-  StoreList:any=[];
+  StoreList: any = [];
   RoleList:any=[];
   DoctortypecmbList:any=[];
   UserForm:FormGroup;
@@ -37,13 +41,17 @@ public storeFilterCtrl: FormControl = new FormControl();
 public filteredStore: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 private _onDestroy = new Subject<void>();
-  formBuilder: any;
+  
+  
 
   constructor( public _UserService: AdministrationService,
     private accountService: AuthenticationService,
       // public notification:NotificationServiceService,
       public _matDialog: MatDialog,
+      public _BatchAndExpDateAdjustmentService: BatchAndExpDateAdjustmentService,
+      private _loggedService: AuthenticationService,
       public dialogRef: MatDialogRef<UserDetailComponent>,
+      private _formBuilder: FormBuilder
 
   ) { }
 
@@ -52,16 +60,12 @@ private _onDestroy = new Subject<void>();
     this.UserForm = this.createPesonalForm();
 
 
-    this.getstorelist();
+   this.gePharStoreList();
     this.getRolelist();
     this.getDoctorlist();
 
     
-    this.storeFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterStore();
-    });
+   
 
     this.roleFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
@@ -77,21 +81,29 @@ private _onDestroy = new Subject<void>();
   }
 
   createPesonalForm() {
-    return this.formBuilder.group({
-      UserId: '',
-      UserName: '',
+    return this._formBuilder.group({
+      FirstName: '',
+      LastName: '',
       LoginName: '',
       Password: '',
       StoreId:'',
-      RoleId: '',
+      MailId: '',
       MailDomain: '',
       DoctorId: '',
+      RoleName:'',
       Status: '',
       poverify: '',
       Ipoverify:'',
       Grnverify: '',
       Indentverify: '',
-      IIverify: ''
+      IIverify: '',
+      CollectionInformation: '',
+      CurrentStock:'',
+      PatientInformation: '',
+      ViewBrowseBill: '',
+      IsAddChargeDelete:'',
+      IsPharmacyBalClearnace: '',
+      BedStatus: '',
     });
     
   }
@@ -119,26 +131,7 @@ private _onDestroy = new Subject<void>();
     );
 }
   
-   // store filter code  
-   private filterStore() {
-
-    if (!this.StoreList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.storeFilterCtrl.value;
-    if (!search) {
-      this.filteredStore.next(this.StoreList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredStore.next(
-      this.StoreList.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
-    );
-}
+  
 
 
    // role filter code  
@@ -162,12 +155,18 @@ private _onDestroy = new Subject<void>();
     );
 }
 
-  getstorelist(){
-    this._UserService.getStoreCombo().subscribe(data => { this.StoreList = data; 
-      this.filteredStore.next(this.StoreList.slice());
-    })
+ 
+gePharStoreList() {
+  var vdata = {
+    Id: this._loggedService.currentUserValue.user.storeId
   }
-
+  console.log(vdata);
+  this._BatchAndExpDateAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+    this.StoreList = data;
+    // console.log(this.StoreList);
+    this.UserForm.get('StoreId').setValue(this.StoreList[0]);
+  });
+}
   getRolelist(){
     this._UserService.getRoleCombobox().subscribe(data => { this.RoleList = data; 
       this.filteredRole.next(this.RoleList.slice());

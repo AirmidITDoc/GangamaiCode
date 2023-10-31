@@ -176,7 +176,7 @@ gePharStoreList() {
     if (this._MrpAdjustmentService.userFormGroup.get('ItemID').value.length >= 1) {
       this._MrpAdjustmentService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
-        console.log(resData)
+        console.log( this.filteredOptions.resData)
         this.ItemListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -189,9 +189,10 @@ gePharStoreList() {
 
     
   }
-  getOptionText(option) {
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
     if (!option) return '';
-    return option.ItemName + ' ' + option.ItemName  ;
+    return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
 
 

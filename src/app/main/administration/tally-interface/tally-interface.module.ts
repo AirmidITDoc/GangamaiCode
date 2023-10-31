@@ -6,7 +6,7 @@ import { TallyInterfaceComponent } from './tally-interface.component';
 
 const routes: Routes = [
   {
-      path: "**",
+      path:"**",
       component: TallyInterfaceComponent,
   },
 ];

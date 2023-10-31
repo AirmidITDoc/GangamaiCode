@@ -14,10 +14,10 @@
 }
 
 .mat-column-TransactionType {
-  width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    align-items: left;
+  width: 150px;
+  max-width: 150px;
+  min-width: 150px;
+  align-items: left;
   white-space: nowrap;
   overflow: hidden;
    text-overflow: ellipsis;
@@ -27,9 +27,9 @@
 }
 
 .mat-column-FromStoreName {
-    width: 190px;
-    max-width: 190px;
-    min-width: 190px;
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
     align-items: left;
     white-space: nowrap;
     overflow: hidden;
@@ -44,9 +44,9 @@
     align-items: left;
 }
 .mat-column-ItemName {
-   width: 350px;
-   max-width: 350px;
-   min-width: 350px;
+   width: 280px;
+   max-width: 280px;
+   min-width: 280px;
     align-items: left;
     white-space: nowrap;
     overflow: hidden;
@@ -55,8 +55,8 @@
     justify-content: left;
 }
 .mat-column-BatchNO {
-  width: 150px;
-  max-width: 150px;
+  width: 120px;
+  max-width: 120px;
   min-width: 100px;
   align-items: left;
 }
@@ -73,13 +73,13 @@
   align-items: left;
 }
 .mat-column-BalQty {
-  width: 85px;
-  max-width: 85px;
-  min-width: 85px;
+  width: 100px;
+  max-width: 100px;
+  min-width: 100px;
   align-items: left;
 }
-  height: 700px;
-  max-height: 700px;
-  min-height: 700px;
+  height: 650px;
+  max-height: 650px;
+  min-height: 650px;
 
  }

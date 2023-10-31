@@ -253,7 +253,7 @@ export class CreateUserComponent implements OnInit {
       {
         maxWidth: "75vw",
         // maxHeight: "95vh", 
-        height: "60vh",
+        height: "600px",
         width: '100%',
         // height: "100%"
       });

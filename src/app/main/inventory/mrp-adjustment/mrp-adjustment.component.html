@@ -61,10 +61,10 @@
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_MrpAdjustmentService.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionItemText"
                                                 (optionSelected)='getSelectedObj($event.option.value)'>
                                                 <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
-                                                    {{option.ItemName}} {{option.ItemID}}  
+                                                    {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
                                                     
                                                 </mat-option>
                                             </mat-autocomplete>

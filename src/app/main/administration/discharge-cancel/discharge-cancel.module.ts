@@ -4,10 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { DischargeCancelComponent } from './discharge-cancel.component';
 
 
-const routes : Routes =[
+const routes: Routes = [
   {
-    path:"**",
-    component:DischargeCancelComponent,
+      path:"**",
+      component: DischargeCancelComponent,
   },
 ];
 

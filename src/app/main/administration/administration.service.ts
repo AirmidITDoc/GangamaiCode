@@ -57,5 +57,8 @@ export class AdministrationService {
     public UserUpdate(employee) {
       return this._httpClient.post("DoctorMaster/DoctorUpdate", employee);
     }
+    public getLoggedStoreList(Param){
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+    }
     
 }
