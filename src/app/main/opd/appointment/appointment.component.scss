@@ -477,3 +477,41 @@ body.theme-default .accent{
 .autocomplete-item {
   height: 50px;
 }
+
+.view-image-box{
+  height: 150px;
+  width: 150px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  margin: 0 10px 10px 0;
+  padding: 0 !important;
+  z-index: 0;
+  &::after{
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: -1;
+  }
+
+  img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .clear-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 16px;
+    z-index: 1;
+    mat-icon{
+      color: white;
+    }
+  }
+}

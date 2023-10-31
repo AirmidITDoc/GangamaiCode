@@ -32,7 +32,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
     <ng-container matColumnDef="BatchExpDate">
         <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'mediumDate'}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="BalanceQty">
@@ -51,7 +51,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
     </ng-container>
 
     <ng-container matColumnDef="ConversionFactor">
-        <mat-header-cell *matHeaderCellDef> Con Fac </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.ConversionFactor}} </mat-cell>
     </ng-container>
 

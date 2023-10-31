@@ -344,12 +344,12 @@
                       <mat-radio-button value="registration">New Registration </mat-radio-button>
                       <mat-radio-button value="registrered">Registered</mat-radio-button>
                     </mat-radio-group>
-<!-- 
+
                     <mat-form-field appearance="outline" style="width:30%;margin-left:15px;"
                       disabled="isRegSearchDisabled">
                       <input type="text" name="RegId" formControlName="RegId"
                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
-                        >
+                        (input)="getSearchList()">
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                           (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -367,9 +367,9 @@
                       <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
                         Required field cannot be left blank
                       </mat-error>
-                    </mat-form-field> -->
+                    </mat-form-field>
 
-                  <mat-form-field appearance="outline" fxFlex>
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Reg Search</mat-label>
                     <input matAutocompletePosition="below" type="text" placeholder="Select Reg" matInput
                       formControlName="RegId" [matAutocomplete]="autoRegsearch" required (keyup)="Regsearchtext($event)">
@@ -385,7 +385,7 @@
                         {{option.FirstName}}
                       </mat-option>
                     </mat-autocomplete>
-                  </mat-form-field>
+                  </mat-form-field> -->
                     
 
                     <mat-form-field appearance="outline" fxFlex>

@@ -1113,8 +1113,8 @@ IsCreditflag : boolean=false
 
   }
   calculateTotalAmt() {
-
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+    console.log(this.BalanceQty);
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
       this.ItemFormreset();
@@ -1415,7 +1415,7 @@ IsCreditflag : boolean=false
       this.TotalMRP = this.Qty * this.MRP;
       this.DiscAmt = 0;
       this.NetAmt = this.TotalMRP;
-      this.BalanceQty = this.BalanceQty;
+      this.BalanceQty = result.BalanceQty;
       this.ItemObj = result;
 
       this.VatPer = result.VatPercentage;
@@ -1425,9 +1425,6 @@ IsCreditflag : boolean=false
       this.IgstPer = result.IGSTPer;
 
       this.VatAmount = result.VatPercentage;
-      // this.CGSTAmt = result.VatPercentage;
-      // this.SGSTAmt = result.VatPercentage;
-      // this.IGSTAmt = result.VatPercentage;
       this.StockId = result.StockId
       this.StoreId = result.StoreId;
       this.LandedRate = result.LandedRate;

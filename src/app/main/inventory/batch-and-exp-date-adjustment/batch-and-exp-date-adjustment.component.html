@@ -19,20 +19,57 @@
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
-                <div class="nav material2">
+                <form [formGroup]="SearchGroup" fusePerfectScrollbar>
+                    <div class="nav material2">
 
-                    <form [formGroup]="SearchGroup" fusePerfectScrollbar>
+
                         <div fxLayout="column" fxLayoutAlign="start none">
 
                             <mat-card style="margin-bottom: 10px;">
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                    <mat-form-field appearance="outline" fxFlex="50%">
-                                        <mat-label>To Store</mat-label>
-                                        <mat-select formControlName="ToStoreId" name="StoreId2">
+                                    <!-- <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
+                                        <mat-label>ItemName</mat-label>
+                                        <input type="text" name="ItemID" formControlName="ItemID"
+                                            placeholder="Item Name " matInput [matAutocomplete]="auto"
+                                            (input)="getSearchItemList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="SearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="SearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
+                                            (optionSelected)='getSelectedObjItem($event.option.value)'>
+                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                                {{option.ItemID}} | {{option.ItemName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        
+                                    </mat-form-field>&nbsp;&nbsp; -->
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Item Name</mat-label>
+                                        <mat-select formControlName="ItemID" placeholder="Bank" #singleSelect>
+                                            <mat-option>
+                                                <ngx-mat-select-search [formControl]="itemFilterCtrl"
+                                                    [placeholderLabel]="'Search'"
+                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                            </mat-option>
+                                            <mat-option *ngFor="let element of filteredItemList | async"
+                                                [value]="element">
+                                                {{element.ItemName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+
+                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                        <mat-label>Store Name</mat-label>
+                                        <mat-select formControlName="StoreId" name="StoreId">
                                             <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of Store1List" [value]="m">
+                                            <mat-option *ngFor="let m of StoreList" [value]="m">
                                                 {{m.StoreName}}
                                             </mat-option>
                                         </mat-select>
@@ -45,215 +82,244 @@
                                 </div>
 
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                    <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                                        <mat-label>Item Name</mat-label>
-                                        <input name="RegNoSearch" formControlName="RegNoSearch" matInput
-                                            (click)="getIndentID()">
 
-                                    </mat-form-field> -->
-                                    <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
-                                        <mat-label>ItemName</mat-label>
-                                        <input type="text" name="ItemID" formControlName="ItemID" #itemid
-                                            placeholder="Item Name " matInput [matAutocomplete]="auto"
-                                            (input)="getSearchItemList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="SearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="SearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
-                                            (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                {{option.ItemID}} | {{option.ItemName}} 
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error class="error"
-                                            *ngIf="SearchGroup.get('ItemID').invalid &&  SearchGroup.get('ItemID').touched">
-                                            Select ItemName
-                                        </mat-error>
-                                    </mat-form-field>
+                            </mat-card>
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout="row">
+                        <div>
+                            <mat-table #table class="table1" matSort [dataSource]="dsBatchAndExpDate"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                <ng-container matColumnDef="BatchNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Batch No</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.BatchNo}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ExpDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        Exp.Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.ExpDate}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="UnitMRP">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Unit MRP</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.UnitMRP}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Landedrate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Landed Rate</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.Landedrate}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PurchaseRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Purchase Rate</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.PurchaseRate}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="BalQty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Bal Qty</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.BalQty}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsBatchAndExpDate!=null && dsBatchAndExpDate.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
+                            </mat-paginator>
+                        </div>
+
+                        <div class="content-card"
+                            style="margin-bottom: 10px; width: 40%; margin-left: 65px;margin-top: 120px;">
+
+                            <mat-card style="padding: 0 9px;">
+
+                                <div fxFlexFill fxLayout="column" fxLayout="row">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="49%">
+                                         <mat-label>BatchNo</mat-label>
+                                         <input name="BatchNo" formControlName="BatchNO" matInput>
+                                      </mat-form-field>&nbsp;&nbsp; -->
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                                        formControlName="BatchNO" required>
+                                        <div class="flex-item" style="width:250px">
+                                            <h3 class="labels-h3">BatchNO</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{VBatchNO}}</h6>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </mat-card>
+                            <mat-card style="padding: 0 9px; ">
+
+                                <div fxFlexFill fxLayout="column" fxLayout="row">
+                                    <!-- 
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>MRP</mat-label>
+                                <input name="MRP" formControlName="MRP" matInput>
+                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                                        formControlName="MRP" required>
+                                        <div class="flex-item" style="width:250px">
+                                            <h3 class="labels-h3">MRP</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{VMRP}}</h6>
+                                        </div>
+
+                                    </div>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Btach Exp.Date</mat-label>
+                                        <input name="BtachExpDate" formControlName="BtachExpDate" matInput>
+                                    </mat-form-field>&nbsp;&nbsp;
+
+                                </div>
+                            </mat-card>
+                            <mat-card style="padding: 0 9px;">
+
+                                <div fxFlexFill fxLayout="column" fxLayout="row">
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Purchase Rate</mat-label>
+                                    <input name="PurchaseRate" formControlName="PurchaseRate" matInput>
+                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                                        formControlName="PurchaseRate" required>
+                                        <div class="flex-item" style="width:250px">
+                                            <h3 class="labels-h3">PurchaseRate</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{VPurchaseRate}}</h6>
+                                        </div>
+
+                                    </div>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>New Exp.Date</mat-label>
+                                        <input name="NewExpDate" formControlName="NewExpDate" matInput>
+                                    </mat-form-field>&nbsp;&nbsp;
+                                </div>
+                            </mat-card>
+                            <mat-card style="padding: 0 9px;">
+
+                                <div fxFlexFill fxLayout="column" fxLayout="row">
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Landed rate</mat-label>
+                                <input name="Landedrate" formControlName="Landedrate" matInput>
+                            </mat-form-field>&nbsp;&nbsp; -->
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
+                                        formControlName="Landedrate" required>
+                                        <div class="flex-item" style="width:250px">
+                                            <h3 class="labels-h3">Landedrate</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{VLandedrate}}</h6>
+                                        </div>
+
+                                    </div>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>New BatchNo</mat-label>
+                                        <input name="NewBatchNo" formControlName="NewBatchNo" matInput>
+                                    </mat-form-field>&nbsp;&nbsp;
+
+                                </div>
+                            </mat-card>
+
+                            <mat-card style="padding: 0 9px; margin-top: 250px;">
+
+
+                                <div fxFlexFill fxLayout="column" fxLayout="row">
+                                    <mat-form-field appearance="outline" fxFlex="55%" style="margin-right: 90px;">
+                                        <mat-label>Balance Qty</mat-label>
+                                        <input name="BalanceQty" formControlName="BalanceQty" matInput>
+                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                    <div class="footer-navigation-container" fxLayout="row">
+
+                                        <div style="margin-top: 10px; margin-right: 8px; float: right;">
+
+                                            <button class="next-btn" color="accent"
+                                                style="border-radius: 16px; width: 80px;">Ok</button>&nbsp;&nbsp;
+                                            <button class="footer-btn" id="btncancel">Close</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </mat-card>
 
                         </div>
 
-                    </form>
 
-                </div>
 
-                <div fxFlexFill fxLayout="column" fxLayout="row">
-                    <div>
-                        <mat-table #table class="table1" matSort [dataSource]="dsBatchAndExpDate" [@animateStagger]="{value:'50'}"
-                            style="overflow:auto;">
 
-                            <ng-container matColumnDef="BatchNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Batch No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.BatchNo}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="ExpDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    Exp.Date
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.ExpDate}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="UnitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Unit MRP</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.UnitMRP}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="Landedrate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Landed Rate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.Landedrate}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="PurchaseRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Purchase Rate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PurchaseRate}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="BalQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Bal Qty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.BalQty}}
-                                </mat-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
 
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsBatchAndExpDate!=null && dsBatchAndExpDate.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-
-                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
-                        </mat-paginator>
                     </div>
-
-                    <div class="content-card"
-                    style="margin-bottom: 10px; width: 40%; margin-left: 65px;margin-top: 120px;">
-                    <mat-card style="padding: 0 9px;">
-
-                        <div fxFlexFill fxLayout="column" fxLayout="row">
-                            <mat-form-field appearance="outline" fxFlex="49%">
-                                <mat-label>BatchNo</mat-label>
-                                <input name="BatchNo" formControlName="BatchNO" matInput>
-                            </mat-form-field>&nbsp;&nbsp;
-                        </div>
-                    </mat-card>
-                    <mat-card style="padding: 0 9px; ">
-
-                        <div fxFlexFill fxLayout="column" fxLayout="row">
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>MRP</mat-label>
-                                <input name="MRP" formControlName="MRP" matInput>
-                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Btach Exp.Date</mat-label>
-                                <input name="BtachExpDate" formControlName="BtachExpDate" matInput>
-                            </mat-form-field>&nbsp;&nbsp;
-
-                        </div>
-                    </mat-card>
-                    <mat-card style="padding: 0 9px;">
-
-                        <div fxFlexFill fxLayout="column" fxLayout="row">
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Purchase Rate</mat-label>
-                                <input name="PurchaseRate" formControlName="PurchaseRate" matInput>
-                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>New Exp.Date</mat-label>
-                                <input name="NewExpDate" formControlName="NewExpDate" matInput>
-                            </mat-form-field>&nbsp;&nbsp;
-                        </div>
-                    </mat-card>
-                    <mat-card style="padding: 0 9px;">
-
-                        <div fxFlexFill fxLayout="column" fxLayout="row">
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Landed rate</mat-label>
-                                <input name="Landedrate" formControlName="Landedrate" matInput>
-                            </mat-form-field>&nbsp;&nbsp;
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>New BatchNo</mat-label>
-                                <input name="NewBatchNo" formControlName="NewBatchNo" matInput>
-                            </mat-form-field>&nbsp;&nbsp;
-
-                        </div>
-                    </mat-card>
-                    
-                    <mat-card style="padding: 0 9px; margin-top: 190px;">
-
-
-                        <div fxFlexFill fxLayout="column" fxLayout="row">
-                            <mat-form-field appearance="outline" fxFlex="55%" style="margin-right: 70px;">
-                                <mat-label>Balance Qty</mat-label>
-                                <input name="BalanceQty" formControlName="BalanceQty" matInput>
-                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                            <div class="footer-navigation-container" fxLayout="row">
-
-                                <div style="margin-top: 10px; margin-right: 8px; float: right;">
-                                    
-                                    <button class="next-btn" color="accent"
-                                        style="border-radius: 16px; width: 80px;">Ok</button>&nbsp;&nbsp;
-                                    <button class="footer-btn" id="btncancel">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-                </div>
+                </form>
 
             </div>
         </div>
