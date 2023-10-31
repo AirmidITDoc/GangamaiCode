@@ -569,3 +569,9 @@ legend {
     padding: 10px;
     border-radius: 16px;
 }
+
+.submit-button:disabled {
+    color: #139fe4;
+    background-color: #fff !important;
+    border: 1px solid #139fe4;
+}
