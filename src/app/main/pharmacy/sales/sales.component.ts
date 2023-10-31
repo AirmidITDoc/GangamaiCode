@@ -242,7 +242,7 @@ IsCreditflag : boolean=false
   data:any;
   PatientListfilteredOptions: any;
   registerObj = new RegInsert({});
-  RegId: any;
+  RegId: any = '';
   vAdmissionID: any;
   constructor(
     public _salesService: SalesService,
@@ -1634,6 +1634,7 @@ IsCreditflag : boolean=false
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').setValidators([Validators.required]);
       this.ItemSubform.get('PatientName').enable();
+      // this.RegId = '';
 
 
     } else {
@@ -2273,7 +2274,7 @@ IsCreditflag : boolean=false
     this.RegId = obj.RegID;
     // this.vAdmissionID = obj.AdmissionID;
     // this.DoctorName = obj.DoctorName;
-   // console.log( this.PatientName)
+   console.log( this.registerObj)
     // this.setDropdownObjs();
   }
 }
