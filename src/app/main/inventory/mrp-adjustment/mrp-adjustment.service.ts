@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MrpAdjustmentService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  
 
 
   constructor(
@@ -16,46 +16,44 @@ export class MrpAdjustmentService {
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.createUserForm();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    
   }
 
   createUserForm() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      StoreId: '',
+      ItemID: '',
+      BatchNO:'',
+      MRP:'',
+      MRP1:'',
+      Landedrate1:'',
+      Landedrate:'',
+      PurchaseRate:'',
+      PurchaseRate1:'',
+      Qty:'',
+      BarcodeQty:'',
+      BarCodeNo:'',
+      BalanceQty:'',
+    
     });
   }
   
-  IndentSearchFrom() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      
-    });
-  }
+  
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getMRPAdjustList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
   }
 
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getItemlist1(){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{})
   }
 
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+ 
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  public getRegistrationList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo", employee)
   }
   
 }

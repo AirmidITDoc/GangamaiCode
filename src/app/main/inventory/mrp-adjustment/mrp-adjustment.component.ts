@@ -10,6 +10,10 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 
 @Component({
   selector: 'app-mrp-adjustment',
@@ -19,18 +23,6 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class MRPAdjustmentComponent implements OnInit {
-
-  sIsLoading: string = '';
-  isLoading = true;
-  Store1List:any=[];
-  screenFromString = 'admission-form';
-
-  labelPosition: 'before' | 'after' = 'after';
-  
-  dsIndentID = new MatTableDataSource<IndentID>();
-
-  dsIndentList = new MatTableDataSource<IndentList>();
-
   displayedColumns = [
     'BatchNo',
     'ExpDate',
@@ -40,10 +32,28 @@ export class MRPAdjustmentComponent implements OnInit {
     'BalQty',
   ];
 
-  
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  sIsLoading: string = '';
+  isLoading = true;
+  StoreList:any=[];
+  screenFromString = 'admission-form';
+  ItemList:any=[];
+  VBatchNO:any;
+  VMRP:any;
+  VLandedrate:any;
+  VPurchaseRate:any;
+  VBarCodeNo:any;
+  VQty:any;
+  
+  dsMrpAdjList = new MatTableDataSource<MrpAdjList>();
+ 
+
+  public itemFilterCtrl: FormControl = new FormControl();
+  public filteredItemList: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
+  
 
   constructor(
     public _MrpAdjustmentService: MrpAdjustmentService,
@@ -51,12 +61,21 @@ export class MRPAdjustmentComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService
     
   ) { }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
+    
+    this.getMRPAdjList();
+    this.getItemList();
+    this.gePharStoreList();
+
+    this.itemFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterItem();
+    });
   }
   
   toggleSidebar(name): void {
@@ -70,114 +89,174 @@ export class MRPAdjustmentComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  
-
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
+  getMRPAdjList() {
+     this.sIsLoading = 'loading-data';
+    var vdata= {
       
-      "ToStoreId": this._MrpAdjustmentService.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._MrpAdjustmentService.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._MrpAdjustmentService.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+      "StoreId": this._MrpAdjustmentService.userFormGroup.get('StoreId').value.StoreId || 1,
+       "ItemId":1       
     }
-      this._MrpAdjustmentService.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
+    console.log(vdata);
+      this._MrpAdjustmentService.getMRPAdjustList(vdata).subscribe(data => {
+      this.dsMrpAdjList.data = data as MrpAdjList[];
+      this.dsMrpAdjList.sort = this.sort;
+      this.dsMrpAdjList.paginator = this.paginator;
       this.sIsLoading = '';
+      console.log(this.dsMrpAdjList.data);
     },
       error => {
         this.sIsLoading = '';
       });
   }
-
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
-    }
-      this._MrpAdjustmentService.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-
   
 onclickrow(contact){
 Swal.fire("Row selected :" + contact)
 }
-  getIndentStoreList(){
-    debugger
-   
-        this._MrpAdjustmentService.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
 
-       }
+gePharStoreList() {
+  var vdata = {
+    Id: this._loggedService.currentUserValue.user.storeId
+  }
+  console.log(vdata);
+  this._MrpAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+    this.StoreList = data;
+    console.log(this.StoreList);
+    this._MrpAdjustmentService.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+  });
+}
 
-  onClear(){
+  
+ 
+  
+  getItemList() {
+    this._MrpAdjustmentService.getItemlist1().subscribe(data => {
+      this.ItemList = data;
+     // console.log(this.ItemList);
+      this.filteredItemList.next(this.ItemList.slice());
+    })
+
+  }
+  private filterItem() {
+
+    if (!this.ItemList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.itemFilterCtrl.value;
+    if (!search) {
+      this.filteredItemList.next(this.ItemList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredItemList.next(
+      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+  
+  noOptionFound: boolean = false;
+  isItemIdSelected: boolean = false;
+  registerObj = new RegInsert({});
+ 
+  filteredOptions: any;
+  ItemListfilteredOptions: any;
+   isItemSearchDisabled: boolean;
+   ItemName: any;
+   ItemId: any;
+  registration: any;
+
+  getSearchList() {
+    var m_data = {
+      "ItemName": `${this._MrpAdjustmentService.userFormGroup.get('ItemID').value}%`,
+      "ItemID":0
+    }
+    console.log(m_data);
+    if (this._MrpAdjustmentService.userFormGroup.get('ItemID').value.length >= 1) {
+      this._MrpAdjustmentService.getRegistrationList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.ItemListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
     
   }
-}
-
-export class IndentList {
-  ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
-    {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
-    }
+  getOptionText(option) {
+    if (!option) return '';
+    return option.ItemName + ' ' + option.ItemName  ;
   }
-}
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
+
+
+  // getOptionTextPatientName(option) {
+  //   return option && option.ItemName ? option.ItemName : '';
+  // }
   
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
+  // getOptionTextRegNo(option) {
+  //   return option && option.ItemName ? option.ItemID : '';
+  // }
+  onEdit(row) {
+    console.log(row);
+
+    this.registerObj = row;
+    this.getSelectedObj(row);
+  }
+
+  getSelectedObj(obj) {
+    
+    // debugger
+    this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId= obj.ItemID;
+    console.log(obj);
+  }
+
+  onChangeReg(event) {
+    if (event.value == 'registration') {
+      this.registerObj = new RegInsert({});
+      this._MrpAdjustmentService.userFormGroup.get('ItemID').disable();
+    }
+    else {
+      this.isItemSearchDisabled = false;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+export class MrpAdjList {
+  BalQty: any;
+  BatchNo: number;
+  ExpDate:number;
+  UnitMRP:number;
+  Landedrate:any;
+  PurchaseRate:any;
+ 
+  constructor(MrpAdjList) {
     {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.BalQty = MrpAdjList.BalQty || 0;
+      this.BatchNo = MrpAdjList.BatchNo || 0;
+      this.ExpDate = MrpAdjList.ExpDate || 0;
+      this.UnitMRP = MrpAdjList.UnitMRP|| 0;
+      this.Landedrate = MrpAdjList.Landedrate || 0;
+      this.PurchaseRate =MrpAdjList.PurchaseRate || 0;
     }
   }
 }
-
