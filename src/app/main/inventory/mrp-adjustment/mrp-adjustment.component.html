@@ -35,20 +35,7 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Item Name</mat-label>
-                                        <mat-select formControlName="ItemID" placeholder="Bank" #singleSelect>
-                                            <mat-option>
-                                                <ngx-mat-select-search [formControl]="itemFilterCtrl"
-                                                    [placeholderLabel]="'Search'"
-                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                            </mat-option>
-                                            <mat-option *ngFor="let element of filteredItemList | async"
-                                                [value]="element">
-                                                {{element.ItemName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                                   
                                     <div class="redio-container">
                                         <mat-form-field appearance="outline" style="width:90%;margin-left:20px; margin-right: 400px;"
                                             disabled="isItemSearchDisabled">
@@ -80,10 +67,11 @@
                                         <mat-select formControlName="StoreId" name="StoreId">
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of StoreList" [value]="m">
-                                                {{m.StoreName}}
+                                               {{m.StoreName}}  
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                   
 
                                     <app-common-date [screenFrom]="screenFromString"
                                         (dateTimeEventEmitter)="getDateTime($event)">
@@ -186,7 +174,7 @@
                                 <div fxFlexFill fxLayout="column" fxLayout="row">
                                     <!-- <mat-form-field appearance="outline" fxFlex="49%">
                                         <mat-label>BatchNo</mat-label>
-                                        <input name="BatchNo" formControlName="BatchNO" matInput>
+                                        <input name="BatchNo" formControlName="BatchNO"   matInput readonly>
                                     </mat-form-field>&nbsp;&nbsp; -->
                                     <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
                                         formControlName="BatchNO">
@@ -197,7 +185,7 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VBatchNO}}</h6>
+                                            <h6 class="labels-h6">{{BatchNo}}</h6>
                                         </div>
 
                                     </div>
@@ -209,7 +197,7 @@
 
                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>MRP</mat-label>
-                                        <input name="MRP" formControlName="MRP" matInput>
+                                        <input name="MRP" formControlName="MRP" matInput readonly>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
                                     <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
                                         formControlName="MRP">
@@ -220,7 +208,7 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VMRP}}</h6>
+                                            <h6 class="labels-h6">{{MRP}}</h6>
                                         </div>
 
                                     </div>
@@ -237,7 +225,7 @@
                                 <div fxFlexFill fxLayout="column" fxLayout="row">
                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Landed rate</mat-label>
-                                        <input name="Landedrate" formControlName="Landedrate" matInput>
+                                        <input name="Landedrate" formControlName="Landedrate" matInput readonly>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
 
                                     <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
@@ -249,7 +237,7 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VLandedrate}}</h6>
+                                            <h6 class="labels-h6">{{Landedrate}}</h6>
                                         </div>
 
                                     </div>
@@ -277,7 +265,7 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VPurchaseRate}}</h6>
+                                            <h6 class="labels-h6">{{PurchaseRate}}</h6>
                                         </div>
 
                                     </div>
@@ -306,14 +294,14 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VQty}}</h6>
+                                            <h6 class="labels-h6">{{Qty}}</h6>
                                         </div>
 
                                     </div>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label> Barcode Qty</mat-label>
-                                        <input name="BarcodeQty" formControlName="BarcodeQty" matInput>
+                                        <input name="BarcodeQty" formControlName="BarcodeQty" matInput >
                                     </mat-form-field>&nbsp;&nbsp;
 
                                 </div>
@@ -334,7 +322,7 @@
                                             <h6 class="labels-h6">:</h6>
                                         </div>
                                         <div class="flex-item">
-                                            <h6 class="labels-h6">{{VBarCodeNo}}</h6>
+                                            <h6 class="labels-h6">{{BarCodeNo}}</h6>
                                         </div>
 
                                     </div>

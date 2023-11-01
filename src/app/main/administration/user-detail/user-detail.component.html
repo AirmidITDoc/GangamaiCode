@@ -87,7 +87,7 @@
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Password</mat-label>
-                    <input name="Password" formControlName="Password" matInput required>
+                    <input name="Password" formControlName="Password" matInput type="password" required>
                     <mat-error class="error" *ngIf="UserForm.get('Password').invalid && UserForm.get('Password').touched">
                       Password is required
                     </mat-error>
@@ -104,7 +104,7 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left: 7px;">
 
-                  <mat-form-field appearance="outline" fxFlex>
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>RoleName</mat-label>
                     <mat-select formControlName="RoleName" placeholder="Bank" #singleSelect required>
                       <mat-option>
@@ -118,26 +118,49 @@
                     <mat-error class="error" *ngIf="UserForm.get('RoleName').invalid && UserForm.get('RoleName').touched">
                       RoleName is required
                     </mat-error>
-                  </mat-form-field>&nbsp;
+                  </mat-form-field>&nbsp; -->
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>RoleName</mat-label>
+                    <mat-select formControlName="RoleName" name="RoleName">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let m of RoleNameList" [value]="m">
+                            {{m.RoleName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error class="error" *ngIf="UserForm.get('RoleName').invalid && UserForm.get('RoleName').touched">
+                      RoleName is required
+                    </mat-error>
+                    
+                </mat-form-field>
 
                   <div fxLayoutAlign="center center" style="width: 120px;">
                     <mat-checkbox [checked] style="margin-right: 2px;font-size: 12px;" formControlName="Status">IsDoctor
                     </mat-checkbox>
                   </div>
 
-                  <mat-form-field appearance="outline" fxFlex>
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Docotor Name</mat-label>
-                    <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect required>
+                    <mat-select formControlName="DoctorId" placeholder="Bank"  required>
                       <mat-option>
                         <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
                           [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                       </mat-option>
                       <mat-option *ngFor="let element of filteredDoctor" [value]="element">
-                        {{element.DocotorName}}
+                        {{element.DoctorName}}
                       </mat-option>
                     </mat-select>
 
-                  </mat-form-field>&nbsp;
+                  </mat-form-field>&nbsp; -->
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Docotor Name</mat-label>
+                    <mat-select formControlName="DoctorId" name="DoctorId">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let m of DocotorList" [value]="m">
+                            {{m.DoctorName}}
+                        </mat-option>
+                    </mat-select>
+                    
+                </mat-form-field>
 
                   <div fxLayoutAlign="center center" style="width: 120px;">
                     <mat-label>Status:</mat-label>&nbsp;
@@ -228,7 +251,7 @@
 
             <div style="float: right; margin-top: 52px;">
 
-              <button class="next-btn" color="accent" (click)="Save()" style="border-radius: 16px;">
+              <button class="next-btn" color="accent" (click)="Save()" style="border-radius: 16px;"  [disabled]="UserForm.invalid">
                 <span style="display: flex;justify-content: center;">
                   <!-- <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner> -->
                   <span style="margin-left: 6px;">Save</span>

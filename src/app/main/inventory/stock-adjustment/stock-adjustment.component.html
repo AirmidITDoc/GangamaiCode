@@ -29,20 +29,30 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Item Name</mat-label>
-                                        <mat-select formControlName="ItemID" placeholder="Bank" #singleSelect>
-                                            <mat-option>
-                                                <ngx-mat-select-search [formControl]="itemFilterCtrl"
-                                                    [placeholderLabel]="'Search'"
-                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                            </mat-option>
-                                            <mat-option *ngFor="let element of filteredItemList | async"
-                                                [value]="element">
-                                                {{element.ItemName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="redio-container">
+                                        <mat-form-field appearance="outline" style="width:90%;margin-left:20px; margin-right: 400px;"
+                                            disabled="isItemSearchDisabled">
+                                            <input type="text" name="ItemID" formControlName="ItemID"
+                                                placeholder="ItemID / ItemName" matInput
+                                                [matAutocomplete]="auto1" (input)="getSearchList()">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_StockAdjustment.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_StockAdjustment.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionItemText"
+                                                (optionSelected)='getSelectedObj($event.option.value)'>
+                                                <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
+                                                    {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
+                                                    
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <mat-error *ngIf="_StockAdjustment.userFormGroup.get('ItemID').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
                                     <mat-form-field appearance="outline" fxFlex="30%">

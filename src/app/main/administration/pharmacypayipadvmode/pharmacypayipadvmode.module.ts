@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PharmacyPaymentIPAdvModeComponent } from './pharmacy-payment-ipadv-mode.component';
+import { PharmacypayipadvmodeComponent } from './pharmacypayipadvmode.component';
 
 
 const routes: Routes = [
   {
-      path:"**",
-      component: PharmacyPaymentIPAdvModeComponent,
+      path: '**',
+      component: PharmacypayipadvmodeComponent,
   },
 ];
-
 @NgModule({
   declarations: [],
   imports: [
@@ -18,4 +17,4 @@ const routes: Routes = [
     CommonModule
   ]
 })
-export class PharmacyPaymentIPAdvModeModule { }
+export class PharmacypayipadvmodeModule { }

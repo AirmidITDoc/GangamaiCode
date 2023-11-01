@@ -34,6 +34,7 @@ export class MrpAdjustmentService {
       BarcodeQty:'',
       BarCodeNo:'',
       BalanceQty:'',
+     
     
     });
   }
@@ -52,8 +53,9 @@ export class MrpAdjustmentService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getRegistrationList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo", employee)
+  public getRegistrationList(e) {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo", e)
   }
+ 
   
 }

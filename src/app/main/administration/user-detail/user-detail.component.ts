@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { BatchAndExpDateAdjustmentService } from 'app/main/inventory/batch-and-exp-date-adjustment/batch-and-exp-date-adjustment.service';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-detail',
@@ -41,6 +42,7 @@ public storeFilterCtrl: FormControl = new FormControl();
 public filteredStore: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 private _onDestroy = new Subject<void>();
+  isLoading: string;
   
   
 
@@ -59,7 +61,8 @@ private _onDestroy = new Subject<void>();
 
     this.UserForm = this.createPesonalForm();
 
-
+    this.getDoctorlist1();
+    this. getRoleNamelist1();
    this.gePharStoreList();
     this.getRolelist();
     this.getDoctorlist();
@@ -67,17 +70,17 @@ private _onDestroy = new Subject<void>();
     
    
 
-    this.roleFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterRole();
-    });
+    // this.roleFilterCtrl.valueChanges
+    // .pipe(takeUntil(this._onDestroy))
+    // .subscribe(() => {
+    //   this.filterRole();
+    // });
     
-    this.doctorFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterDoctor();
-    });
+    // this.doctorFilterCtrl.valueChanges
+    // .pipe(takeUntil(this._onDestroy))
+    // .subscribe(() => {
+    //   this.filterDoctor();
+    // });
   }
 
   createPesonalForm() {
@@ -178,21 +181,49 @@ gePharStoreList() {
       this.filteredDoctor.next(this.DoctortypecmbList.slice());
     })
   }
+  DocotorList:any = [];
+  RoleNameList:any = [];
+  getDoctorlist1(){
+    this._UserService.getDoctorMasterCombo().subscribe(data => {
+       this.DocotorList = data; 
+       //console.log(this.DocotorList);
+    
+    })
+  }
+  getRoleNamelist1(){
+    this._UserService.getRoleCombobox().subscribe(data => {
+       this.RoleNameList = data; 
+       console.log(this.RoleNameList);
+    
+    })
+  }
+ 
+
+
+
+
+
+
+
 
   onClose()
   {
     this.dialogRef.close();
   }
+
   Save() {
+    this.isLoading = 'submit';
 
   var m_data = {
     "insertUserDetail": {
       "UserId": 0,
-      "UserName": this.UserForm.get('UserName').value || '',
+      "UserName":  '',
+      "FirstName": this.UserForm.get('FirstName').value || '',
+      "LastName": this.UserForm.get('LastName').value || '',
       "LoginName": this.UserForm.get('LoginName').value || '',
       "Password": this.UserForm.get('Password').value || 0,
       "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
-      "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
+      "RoleId": this.UserForm.get('RoleName').value.RoleId || 0,
       "MailDomain":  this.UserForm.get('MailDomain').value || 0,
       "DoctorId":  this.UserForm.get('DoctorId').value.DoctorId || 0,
       "Status": this.UserForm.get('Status').value || '',
@@ -200,19 +231,42 @@ gePharStoreList() {
       "Ipoverify": this.UserForm.get('Ipoverify').value || 0,
       "Grnverify": this.UserForm.get('Grnverify').value || 0,
       "Indentverify": this.UserForm.get('Indentverify').value || 0,
-      "IIverify": this.UserForm.get('IIverify').value || 0
+      "IIverify": this.UserForm.get('IIverify').value || 0,
+      "CollectionInformation": this.UserForm.get('CollectionInformation').value || '',
+      "CurrentStock": this.UserForm.get('CurrentStock').value || 0,
+      "PatientInformation": this.UserForm.get('PatientInformation').value || 0,
+      "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
+      "IsAddChargeDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
+      "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
+      "BedStatus":  this.UserForm.get('BedStatus').value.DoctorId || 0,
+      
     }
   }
-  this._UserService.UserInsert(m_data).subscribe(response => {
-    if (response) {
-      this.myFunction("UserDetail Data  saved', 'error !");
-          this._matDialog.closeAll();
-    } else {
-      this.myFunction("UserDetail Data  not saved', 'error !");
-      // Swal.fire('Error !', 'Register Data  not saved', 'error');
-    }
-  });
+  // this._UserService.UserInsert(m_data).subscribe(response => {
+  //   if (response) {
+  //     this.myFunction("UserDetail Data  saved', 'error !");
+  //         this._matDialog.closeAll();
+  //   } else {
+  //     this.myFunction("UserDetail Data  not saved', 'error !");
+  //     // Swal.fire('Error !', 'Register Data  not saved', 'error');
+  //   }
+  // });
 
+  console.log(m_data);
+
+  this._UserService.UserInsert(m_data).subscribe(response => {
+    console.log(response);
+    if (response) {
+      Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
+        if (result.isConfirmed) {
+          this._matDialog.closeAll();
+        }   
+      });
+    } else {
+      Swal.fire('Error !', 'Prescription Not Updated', 'error');
+    }
+    this.isLoading = '';
+  });
 
 }
 
