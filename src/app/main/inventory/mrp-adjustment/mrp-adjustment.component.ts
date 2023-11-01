@@ -40,19 +40,27 @@ export class MRPAdjustmentComponent implements OnInit {
   StoreList:any=[];
   screenFromString = 'admission-form';
   ItemList:any=[];
-  VBatchNO:any;
-  VMRP:any;
-  VLandedrate:any;
-  VPurchaseRate:any;
-  VBarCodeNo:any;
-  VQty:any;
+  BatchNo:any;
+  MRP:any;
+  Landedrate:any;
+  PurchaseRate:any;
+  BarCodeNo:any;
+  Qty:any;
+  noOptionFound: boolean = false;
+  isItemIdSelected: boolean = false;
+  registerObj = new RegInsert({});
+ 
+  filteredOptions: any;
+  ItemListfilteredOptions: any;
+   isItemSearchDisabled: boolean;
+   ItemName: any;
+   ItemId: any;
+  registration: any;
   
   dsMrpAdjList = new MatTableDataSource<MrpAdjList>();
  
 
-  public itemFilterCtrl: FormControl = new FormControl();
-  public filteredItemList: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
+ 
   
 
   constructor(
@@ -66,23 +74,14 @@ export class MRPAdjustmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
-    this.getMRPAdjList();
-    this.getItemList();
     this.gePharStoreList();
-
-    this.itemFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterItem();
-    });
+    this.getMRPAdjList();
+    
   }
   
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
- 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
@@ -90,19 +89,21 @@ export class MRPAdjustmentComponent implements OnInit {
   }
 
   getMRPAdjList() {
+ 
      this.sIsLoading = 'loading-data';
     var vdata= {
-      
-      "StoreId": this._MrpAdjustmentService.userFormGroup.get('StoreId').value.StoreId || 1,
-       "ItemId":1       
+      "StoreId": this._MrpAdjustmentService.userFormGroup.get('StoreId').value.storeid,
+       "ItemId": this._MrpAdjustmentService.userFormGroup.get('ItemID').value.ItemID
     }
     console.log(vdata);
       this._MrpAdjustmentService.getMRPAdjustList(vdata).subscribe(data => {
       this.dsMrpAdjList.data = data as MrpAdjList[];
+
+      console.log(data);
       this.dsMrpAdjList.sort = this.sort;
       this.dsMrpAdjList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsMrpAdjList.data);
+    console.log(this.dsMrpAdjList.data);
     },
       error => {
         this.sIsLoading = '';
@@ -117,66 +118,27 @@ gePharStoreList() {
   var vdata = {
     Id: this._loggedService.currentUserValue.user.storeId
   }
-  console.log(vdata);
+  //console.log(vdata);
   this._MrpAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
     this.StoreList = data;
-    console.log(this.StoreList);
+    //console.log(this.StoreList);
     this._MrpAdjustmentService.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
   });
 }
 
   
- 
-  
-  getItemList() {
-    this._MrpAdjustmentService.getItemlist1().subscribe(data => {
-      this.ItemList = data;
-     // console.log(this.ItemList);
-      this.filteredItemList.next(this.ItemList.slice());
-    })
 
-  }
-  private filterItem() {
-
-    if (!this.ItemList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.itemFilterCtrl.value;
-    if (!search) {
-      this.filteredItemList.next(this.ItemList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredItemList.next(
-      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  
-  noOptionFound: boolean = false;
-  isItemIdSelected: boolean = false;
-  registerObj = new RegInsert({});
- 
-  filteredOptions: any;
-  ItemListfilteredOptions: any;
-   isItemSearchDisabled: boolean;
-   ItemName: any;
-   ItemId: any;
-  registration: any;
 
   getSearchList() {
     var m_data = {
       "ItemName": `${this._MrpAdjustmentService.userFormGroup.get('ItemID').value}%`
       // "ItemID":0
     }
-    console.log(m_data);
+    //console.log(m_data);
     if (this._MrpAdjustmentService.userFormGroup.get('ItemID').value.length >= 1) {
       this._MrpAdjustmentService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
-        console.log( this.filteredOptions.resData)
+       // console.log(resData)
         this.ItemListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -186,7 +148,6 @@ gePharStoreList() {
 
       });
     }
-
     
   }
   getOptionItemText(option) {
@@ -195,14 +156,6 @@ gePharStoreList() {
     return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
 
-
-  // getOptionTextPatientName(option) {
-  //   return option && option.ItemName ? option.ItemName : '';
-  // }
-  
-  // getOptionTextRegNo(option) {
-  //   return option && option.ItemName ? option.ItemID : '';
-  // }
   onEdit(row) {
     console.log(row);
 
@@ -214,9 +167,8 @@ gePharStoreList() {
     
     // debugger
     this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId= obj.ItemID;
-    console.log(obj);
+   
+    //console.log(obj);
   }
 
   onChangeReg(event) {
@@ -228,6 +180,7 @@ gePharStoreList() {
       this.isItemSearchDisabled = false;
     }
   }
+ 
 
 
 

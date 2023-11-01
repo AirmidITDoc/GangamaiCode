@@ -38,24 +38,18 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   isLoading = true;
   screenFromString = 'admission-form';
   filteredOptions: any;
-  filteredOptionsItem: any;
+  ItemListfilteredOptions: any;
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
   ItemId:any;
   ItemName:any;
   registerObj = new RegInsert({});
-  isRegSearchDisabled:boolean =false;
+  isItemSearchDisabled:boolean =false;
   VLandedrate:any;
   VPurchaseRate:any;
   VMRP:any;
   VBatchNO:any;
   ItemList:any=[];
-  
-  public itemFilterCtrl: FormControl = new FormControl();
-  public filteredItemList: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
-
-  
 
   dsBatchAndExpDate = new MatTableDataSource<BatchAndExpList>();
 
@@ -79,13 +73,8 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     this.SearchGroup= this.createSearchFrom();
     this.gePharStoreList();
     this.getBatchAndAdjList();
-    this.getItemList();
-
-    this.itemFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterItem();
-    });
+     
+ 
   }
   createSearchFrom() {
     return this._formBuilder.group({
@@ -140,32 +129,57 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
      });
  }
 
-  getItemList() {
-    this._BatchAndExpDateAdjustmentService.getItemlist1().subscribe(data => {
-      this.ItemList = data;
-      this.filteredItemList.next(this.ItemList.slice());
-    })
-
+ getSearchList() {
+  var m_data = {
+    "ItemName": `${this.SearchGroup.get('ItemID').value}%`
+    // "ItemID":0
   }
-  private filterItem() {
+  //console.log(m_data);
+  if (this.SearchGroup.get('ItemID').value.length >= 1) {
+    this._BatchAndExpDateAdjustmentService.getItemlist(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+     // console.log(resData)
+      this.ItemListfilteredOptions = resData;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
 
-    if (!this.ItemList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.itemFilterCtrl.value;
-    if (!search) {
-      this.filteredItemList.next(this.ItemList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredItemList.next(
-      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
-    );
+    });
   }
+  
+}
+getOptionItemText(option) {
+  this.ItemId = option.ItemID;
+  if (!option) return '';
+  return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+}
+
+onEdit(row) {
+  console.log(row);
+
+  this.registerObj = row;
+  this.getSelectedObj(row);
+}
+
+getSelectedObj(obj) {
+  
+  // debugger
+  this.registerObj = obj;
+ 
+  //console.log(obj);
+}
+
+onChangeReg(event) {
+  if (event.value == 'registration') {
+    this.registerObj = new RegInsert({});
+    this.SearchGroup.get('ItemID').disable();
+  }
+  else {
+    this.isItemSearchDisabled = false;
+  }
+}
 
 
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+ 
    
  
  
@@ -48,18 +49,17 @@ const appRoutes: Routes = [
     path:"tallyinterface",
     loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
    },
-   {
-    path:"pharamacypayipadvmode",
-    loadChildren: () => import("./pharmacy-payment-ipadv-mode/pharmacy-payment-ipadv-mode.module").then((m) => m.PharmacyPaymentIPAdvModeModule),
-   },
-  
+  //  {
+  //   path:"PharmacyPaymentIPAdvMode",
+  //   loadChildren: () => import("./pharmacy-payment-ipadv-mode/pharmacy-payment-ipadv-mode.module").then((m) => m.PharmacyPaymentIPAdvModeModule),
+  //  },
+   
  
  
 ];
 
-
 @NgModule({
-  declarations: [    ],
+  declarations: [   ],
   imports: [
     RouterModule.forChild(appRoutes),
   ]

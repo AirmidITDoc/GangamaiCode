@@ -40,8 +40,8 @@ export class StockAdjustmentService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getItemlist1(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{})
+  public getItemlist1(e){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",e)
   }
   
 }
