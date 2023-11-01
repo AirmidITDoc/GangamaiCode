@@ -105,6 +105,7 @@ export class SalesComponent implements OnInit {
   PurTotAmt: any = 0;
   TotDiscAmt: any = 0;
   PatientName: any;
+  RegID:any;
 
   BalAmount: any = 0;
   MobileNo: any;
@@ -1636,7 +1637,7 @@ OP_IPType:any=0;
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').setValidators([Validators.required]);
       this.ItemSubform.get('PatientName').enable();
-    // this.paymethod=false;
+      this.paymethod=false;
   
       this.OP_IPType=2;
       // this.OP_IP_Id=0;
@@ -1661,14 +1662,14 @@ OP_IPType:any=0;
       this.paymethod=true;
     }
     console.log(this.ItemSubform.get('PatientType').value)
-
+debugger
     if (event.value == 'OP') {
     this.OP_IPType=0;
-    // this.OP_IP_Id=this.registerObj.VisitId;
+    this.RegId="";
     }
     else if(event.value == 'IP'){
       this.OP_IPType=1;
-      // this.OP_IP_Id=this.registerObj.AdmissionID;
+      this.RegId="";
     }
 
   }
@@ -2456,6 +2457,7 @@ export class Printsal {
   CreditReason: any;
   CompanyName: any;
   HTotalAmount:any;
+  ExtMobileNo:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2506,6 +2508,7 @@ export class Printsal {
     this.CompanyName = Printsal.CompanyName || "";
     this.ItemShortName=Printsal.ItemShortName || ''
     this.HTotalAmount=Printsal.HTotalAmount || '';
+    this.ExtMobileNo=Printsal.ExtMobileNo || '';
   }
 }
 
