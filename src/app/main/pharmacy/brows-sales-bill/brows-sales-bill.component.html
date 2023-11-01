@@ -297,8 +297,7 @@
                                                         fxShow.gt-sm>Exp.Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.BatchExpDate
-                                                        }}
+                                                        {{contact.BatchExpDate | date: 'MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
 

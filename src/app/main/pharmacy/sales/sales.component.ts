@@ -1124,19 +1124,19 @@ OP_IPType:any=0;
     }
 
     if (Qty && this.MRP) {
-      debugger;
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
       //this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
 
-      console.log(this.VatPer);
+      console.log("Purchase rate");
+      console.log(this.PurchaseRate);
       this.GSTAmount = (((this.UnitMRP) * (this.VatPer) / 100) * parseInt(Qty)).toFixed(2);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
       this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
       
-      console.log(this.GSTAmount);
+      // console.log(this.GSTAmount);
       
     }
 
@@ -1202,6 +1202,8 @@ OP_IPType:any=0;
     }
     this.itemid.nativeElement.focus();
     this.add = false;
+    debugger;
+    this.getFinalDiscAmount();
   }
 
   // OnAddUpdate(event) {
@@ -1352,7 +1354,6 @@ OP_IPType:any=0;
       this.onAdd();
     }else{
        
-      debugger;
           this.Itemchargeslist.push(
             {
               ItemId: this.ItemId,
@@ -1508,7 +1509,16 @@ OP_IPType:any=0;
   // }
 
   calculateDiscAmt() {
+    debugger;
+    let PurTotalAmount = this.PurTotAmt;
+    let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
+      console.log(PurTotalAmount);
+      console.log(m_MRPTotal);
+      if (this.DiscAmt > PurTotalAmount)
+      {
+        Swal.fire('Discount greater than Purchase Rate !')
+      }
       this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
       this.addbutton.focus();
@@ -1570,18 +1580,17 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-
       this.ConseId.nativeElement.focus();
-
     }
 
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
   }
 
   getFinalDiscAmount() {
+    debugger;
     let Discamt = this.ItemSubform.get('FinalDiscAmt').value
-
-    if (Discamt > 0 && Discamt < this.FinalNetAmount) {
+    console.log(Discamt);
+    if (Discamt > 0 ) {
       this.FinalNetAmount = ((this.FinalNetAmount) - (Discamt)).toFixed(2);
       this.ConShow = true
       this.ItemSubform.get('ConcessionId').reset();
@@ -1589,14 +1598,12 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').enable();
 
     } else {
-
+      this.ConShow = false
       this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-
-      this.ConseId.nativeElement.focus();
-
+      //this.ConseId.nativeElement.focus();
     }
   }
 
@@ -1768,7 +1775,7 @@ debugger
     SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     SalesInsert['oP_IP_Type'] = this.OP_IPType;
     SalesInsert['totalAmount'] = this.FinalTotalAmt
-    SalesInsert['vatAmount'] = this.VatAmount;
+    SalesInsert['vatAmount'] =  this.ItemSubform.get('FinalGSTAmt').value;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
     SalesInsert['netAmount'] = NetAmt;
     SalesInsert['paidAmount'] = NetAmt;

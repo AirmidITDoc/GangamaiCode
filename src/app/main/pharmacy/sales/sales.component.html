@@ -200,7 +200,7 @@
                                                                             </div>
                                             
                                                                             <div class="patient-sub">
-                                                                                <!-- <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Reg ID</h2>
                                                                                     </div>
@@ -221,11 +221,11 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.RegNo}}</h3>
                                                                                     </div>
-                                                                                </div> -->
+                                                                                </div>
                                                                             </div>
                                             
                                                                             <div class="patient-sub">
-                                                                                <!-- <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Admission ID</h2>
                                                                                     </div>
@@ -235,8 +235,8 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.AdmissionID}}</h3>
                                                                                     </div>
-                                                                                </div> -->
-                                                                                <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                </div>
+                                                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h5">Admission Date</h2>
                                                                                     </div>
@@ -246,10 +246,10 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.AdmissionDate | date}}</h3>
                                                                                     </div>
-                                                                                </div> -->
+                                                                                </div>
                                                                             </div>
                                             
-                                                                            <!-- <div class="patient-sub">
+                                                                            <div class="patient-sub">
                                                                                 <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Bed Id</h2>
@@ -272,7 +272,7 @@
                                                                                         <h3 class="labels-h6">{{registerObj.ClassId}}</h3>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div> -->
+                                                                            </div>
                                                                         </div>
                                                                     <!-- </fieldset>  -->
                                                                 </div>
@@ -628,11 +628,10 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div *ngIf="ConShow">
-                                                            <mat-form-field appearance="outline">
+                                                            <mat-form-field appearance="outline" fxFlex="25%">
                                                                 <mat-label>Concession Reason Type</mat-label>
                                                                 <mat-select formControlName="ConcessionId" #ConseId>
-                                                                    <mat-option *ngFor="let Doc of ConcessionReasonList"
-                                                                        [value]="Doc">
+                                                                    <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
                                                                         {{Doc.ConcessionReason}}
                                                                     </mat-option>
                                                                 </mat-select>
