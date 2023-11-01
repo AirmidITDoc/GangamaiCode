@@ -1,5 +1,11 @@
 .Table1 {
-
+  .mat-column-action2{
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    align-items: left;
+    justify-content:left; 
+  }
   .mat-column-action{
     width: 70px;
     max-width: 70px;
@@ -91,72 +97,71 @@
 .Table2 {
 
   .mat-column-ItemName{
-    width: 250px;
-    max-width: 250px;
-    min-width: 250px;
+    width: 390px;
+    max-width: 390px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-BatchNo{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-Expdate{
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-Qty{
-    width: 70px;
-    max-width: 70px;
-    min-width: 70px;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-MRP{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-TotalMRP{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-GST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-CGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-SGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     align-items: left;
     justify-content:left; 
   }
   .mat-column-IGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     align-items: left;
     justify-content:left; 
   }

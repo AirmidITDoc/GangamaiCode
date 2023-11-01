@@ -2308,6 +2308,8 @@ export class RegInsert {
     AadharCardNo: string;
     PanCardNo: string;
     currentDate = new Date();
+    AdmissionID:any;
+    WardId:any;
     /**
      * Constructor
      *
@@ -2349,6 +2351,8 @@ export class RegInsert {
             this.AreaName = RegInsert.AreaName || "";
             this.AadharCardNo = RegInsert.AadharCardNo || "";
             this.PanCardNo = RegInsert.PanCardNo || "";
+            this.AdmissionID=RegInsert.AdmissionID || 0;
+            this.WardId=RegInsert.WardId || 0;
         }
     }
 }

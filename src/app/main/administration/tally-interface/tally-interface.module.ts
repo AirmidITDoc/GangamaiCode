@@ -4,17 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { TallyInterfaceComponent } from './tally-interface.component';
 
 
-const routes: Routes = [
-  {
-      path:"**",
-      component: TallyInterfaceComponent,
-  },
-];
 
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forChild(routes),
     CommonModule
   ]
 })

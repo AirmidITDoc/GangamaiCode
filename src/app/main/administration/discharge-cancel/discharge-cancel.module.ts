@@ -7,7 +7,7 @@ import { DischargeCancelComponent } from './discharge-cancel.component';
 const routes: Routes = [
   {
       path:"**",
-      component: DischargeCancelComponent,
+      component: DischargeCancelComponent
   },
 ];
 
