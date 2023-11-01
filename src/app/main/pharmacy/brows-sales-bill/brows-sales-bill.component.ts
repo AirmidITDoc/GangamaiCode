@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowsSalesBillService } from './brows-sales-bill.service';
@@ -25,6 +25,8 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
   
 })
 export class BrowsSalesBillComponent implements OnInit { 
+
+  @ViewChild('billTemplate') billTemplate:ElementRef;
 
   
   reportPrintObjList: Printsal[] = [];
@@ -339,7 +341,27 @@ debugger
     })
   );
 }
-getTemplate() {
+getPrint2(el) {
+  debugger
+    var D_data = {
+      "SalesID":el.SalesId,// 
+      "OP_IP_Type": el.OP_IP_Type
+    }
+  
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+  
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as Printsal;
+  
+        this.getTemplate(false);
+  
+      })
+    );
+  }
+getTemplate(old = true) {
   debugger
   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
   this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
@@ -405,7 +427,7 @@ getTemplate() {
     console.log(this.printTemplate);
 
     setTimeout(() => {
-      this.print();
+      old ? this.print() : this.print2();
     }, 1000);
   });
 
@@ -440,6 +462,40 @@ print() {
   </html>`);
   
   popupWin.document.close();
+}
+
+print2() {
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: landscape; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+  // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  // </html>`);
+  
+  // popupWin.document.close();
 }
 }
 
