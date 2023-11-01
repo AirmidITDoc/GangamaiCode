@@ -50,6 +50,7 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
+  paymethod: boolean = false;
   // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
@@ -201,7 +202,8 @@ export class SalesComponent implements OnInit {
   isBank1elected4: boolean = false
   
 IsCreditflag : boolean=false
-
+OP_IP_Id:any=0;
+OP_IPType:any=0;
     
 
   displayedColumns = [
@@ -1634,8 +1636,12 @@ IsCreditflag : boolean=false
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').setValidators([Validators.required]);
       this.ItemSubform.get('PatientName').enable();
-      // this.RegId = '';
-
+    // this.paymethod=false;
+  
+      this.OP_IPType=2;
+      // this.OP_IP_Id=0;
+      
+      
 
     } else {
       // this.Regdisplay = true;
@@ -1652,8 +1658,19 @@ IsCreditflag : boolean=false
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
+      this.paymethod=true;
     }
     console.log(this.ItemSubform.get('PatientType').value)
+
+    if (event.value == 'OP') {
+    this.OP_IPType=0;
+    // this.OP_IP_Id=this.registerObj.VisitId;
+    }
+    else if(event.value == 'IP'){
+      this.OP_IPType=1;
+      // this.OP_IP_Id=this.registerObj.AdmissionID;
+    }
+
   }
 
 
@@ -1730,6 +1747,10 @@ IsCreditflag : boolean=false
   }
 
   onCashpaySave() {
+
+   
+
+    
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
    
     let ConcessionId = 0;
@@ -1743,8 +1764,8 @@ IsCreditflag : boolean=false
     let SalesInsert = {};
     SalesInsert['Date'] = this.dateTimeObj.date;
     SalesInsert['time'] = this.dateTimeObj.time;
-    SalesInsert['oP_IP_ID'] = 0;
-    SalesInsert['oP_IP_Type'] = 2;
+    SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    SalesInsert['oP_IP_Type'] = this.OP_IPType;
     SalesInsert['totalAmount'] = this.FinalTotalAmt
     SalesInsert['vatAmount'] = this.VatAmount;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
@@ -1969,8 +1990,8 @@ IsCreditflag : boolean=false
     let salesInsertCredit = {};
     salesInsertCredit['Date'] = this.dateTimeObj.date;
     salesInsertCredit['time'] = this.dateTimeObj.time;
-    salesInsertCredit['oP_IP_ID'] = 0;
-    salesInsertCredit['oP_IP_Type'] = 2;
+    salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    salesInsertCredit['oP_IP_Type'] = this.OP_IPType;
     salesInsertCredit['totalAmount'] = this.FinalTotalAmt
     salesInsertCredit['vatAmount'] = this.VatAmount;
     salesInsertCredit['discAmount'] = this.FinalDiscAmt;
@@ -2270,12 +2291,13 @@ IsCreditflag : boolean=false
   getSelectedObjReg(obj) {
     
     this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName+ ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     // this.vAdmissionID = obj.AdmissionID;
     // this.DoctorName = obj.DoctorName;
-   console.log( this.registerObj)
-    // this.setDropdownObjs();
+   console.log(this.registerObj)
+   this.OP_IP_Id = this.registerObj.AdmissionID;
+
   }
 }
 

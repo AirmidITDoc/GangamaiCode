@@ -50,8 +50,8 @@ const appRoutes: Routes = [
     loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
    },
    {
-    path:"pharmacypayipadvmode",
-    loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m)=>m.PharmacypayipadvmodeModule),
+    path:"PharmacyPaymentIPAdvMode",
+    loadChildren: () => import("./pharmacy-payment-ipadv-mode/pharmacy-payment-ipadv-mode.module").then((m) => m.PharmacyPaymentIPAdvModeModule),
    },
    
  

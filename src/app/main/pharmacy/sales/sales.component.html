@@ -34,14 +34,14 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="80%" fxFlex>
 
-                        <div class="center p-12 pb-56" fxFlexAlign="start center">
+                        <div class="center p-2 pb-56" fxFlexAlign="start center">
 
                             <div class="content-card" style="border-radius:4px; ">
                                 <div class="nav material2">
 
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
-                                        <form [formGroup]="ItemSubform" style="padding: 6px 6px 5px 5px;">
+                                        <form [formGroup]="ItemSubform" style="padding: 6px 2px 5px 2px;">
                                             <mat-card>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                                                 <div>
@@ -136,37 +136,71 @@
                                                         <div fxFlex.gt-sm="100%" fxFlex>
                                                             <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                                                                 <!-- ================================ LABEL HEADER  -->
-                                                                <div>
-                                                                    <fieldset class="fieldset-div">
-                                                                        <legend>Patient Information</legend>
+                                                                <div style="font-size: medium;background-color: rgb(203, 214, 214);">
+                                                                 <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
+                                                                        <span style="font-weight: 700;">Patient Information</span> <span style="margin-left: 700px;font-weight: bold;">AdmissionID:{{registerObj.AdmissionID}}</span> <span style="margin-left:20px;font-weight: bold;">AdmissionDate:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
                                                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                                                             <div class="patient-sub">
-                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                                                    <div class="flex-item" style="width: 375px;">
-                                                                                        <h2 class="labels-h3">Patient Name</h2>
+                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center" style="padding-top: 10px;">
+                                                                                    <div style="width:70px;">
+                                                                                        <span>Reg ID</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
-                                                                                        <h3 class="labels-h6">:</h3>
+                                                                                        <span>:</span>
                                                                                     </div>
-                                                                                    <div class="flex-item">
-                                                                                        <h3 class="labels-h6">{{registerObj.PatientName}}</h3>
+                                                                                    <div>
+                                                                                        <span>{{registerObj.RegID}}</span>
                                                                                     </div>
+
+                                                                                    <div  style="width:120px;margin-left: 10px;">
+                                                                                        <span>Patient Name</span>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div class="flex-item-middle">
+                                                                                        <span>:</span>
+                                                                                    </div>
+                                                                                    <div style="width: 400px;">
+                                                                                        <span>{{PatientName}}</span>
+                                                                                    </div>
+
+                                                                                    <div style="width:80px;margin-left: 10px;">
+                                                                                        <span>Mobile No</span>
+                                                                                    </div>
+                                                                                    <div class="flex-item-middle">
+                                                                                        <span>:</span>
+                                                                                    </div>
+                                                                                    <div style="width: 150px;">
+                                                                                        <span>{{registerObj.MobileNo}}</span>
+                                                                                    </div>
+
+                                                                                    <div style="width:100px;margin-left: 10px;">
+                                                                                        <span>Ward /Bed</span>
+                                                                                    </div>
+                                                                                    <div class="flex-item-middle">
+                                                                                        <span>:</span>
+                                                                                    </div>
+                                                                                    <div  style="width: 200px;">
+                                                                                        <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
+                                                                                    </div>
+
+
+
                                                                                 </div>
                                                                                 <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                                                    <div class="flex-item" style="width: 375px;">
-                                                                                        <h2 class="labels-h3">Mobile No</h2>
+                                                                                    <!-- <div class="flex-item" style="width: 275px;">
+                                                                                        <h2 class="labels-h5">Mobile No</h2>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
                                                                                         <h3 class="labels-h6">:</h3>
                                                                                     </div>
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.MobileNo}}</h3>
-                                                                                    </div>
+                                                                                    </div> -->
                                                                                 </div>
                                                                             </div>
                                             
                                                                             <div class="patient-sub">
-                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                <!-- <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Reg ID</h2>
                                                                                     </div>
@@ -179,7 +213,7 @@
                                                                                 </div>
                                                                                 <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
-                                                                                        <h2 class="labels-h3">Reg No</h2>
+                                                                                        <h2 class="labels-h5">Reg No</h2>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
                                                                                         <h3 class="labels-h6">:</h3>
@@ -187,11 +221,11 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.RegNo}}</h3>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div> -->
                                                                             </div>
                                             
                                                                             <div class="patient-sub">
-                                                                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                <!-- <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Admission ID</h2>
                                                                                     </div>
@@ -201,10 +235,10 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.AdmissionID}}</h3>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                </div> -->
+                                                                                <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
-                                                                                        <h2 class="labels-h3">Admission Date</h2>
+                                                                                        <h2 class="labels-h5">Admission Date</h2>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
                                                                                         <h3 class="labels-h6">:</h3>
@@ -212,10 +246,10 @@
                                                                                     <div class="flex-item">
                                                                                         <h3 class="labels-h6">{{registerObj.AdmissionDate | date}}</h3>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div> -->
                                                                             </div>
                                             
-                                                                            <div class="patient-sub">
+                                                                            <!-- <div class="patient-sub">
                                                                                 <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
                                                                                         <h2 class="labels-h3">Bed Id</h2>
@@ -229,7 +263,7 @@
                                                                                 </div>
                                                                                 <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
                                                                                     <div class="flex-item item-header">
-                                                                                        <h2 class="labels-h3">ClassId</h2>
+                                                                                        <h2 class="labels-h5">ClassId</h2>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
                                                                                         <h3 class="labels-h6">:</h3>
@@ -238,9 +272,9 @@
                                                                                         <h3 class="labels-h6">{{registerObj.ClassId}}</h3>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            </div> -->
                                                                         </div>
-                                                                    </fieldset>
+                                                                    <!-- </fieldset>  -->
                                                                 </div>
                                                                 <!-- ================================ LABEL HEADER  -->
                                                             </div>
@@ -529,14 +563,14 @@
 
                                 </div>
 
-                                <form class="example-form" [formGroup]="ItemSubform" style="font-size:20px; margin-top: 20px;">
+                                <form class="example-form" [formGroup]="ItemSubform" style="font-size:20px; margin-top:2px;">
 
                                     <mat-card style="width: 100%;font-size: large;">
                                         <div class="footer-container" fxLayout="column" fxLayoutAlign="start"
                                             style="padding:5x 5px 5px 5px;">
                                             <div class="table-footer">
 
-                                                <div class="net-amt" style="margin-bottom: 20px;">
+                                                <div class="net-amt" style="margin-bottom: 10px;">
                                                     <span class="net-amt-label"
                                                         style="width: 200px;font-weight: bold;">No of
                                                         Items:</span>&nbsp;<span class="net-amt-value"
@@ -642,7 +676,7 @@
                                                     <div style="justify-content: end; float: right;">
                                                         <mat-radio-group aria-label="Select an option"
                                                             formControlName="CashPay" style="margin-top: 12px;">
-                                                            <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                                            <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->

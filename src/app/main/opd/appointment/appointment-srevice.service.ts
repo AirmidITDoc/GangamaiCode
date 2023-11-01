@@ -170,7 +170,12 @@ export class AppointmentSreviceService {
 
   
 public documentuploadInsert(employee){
-  return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
+  return this._httpClient.post("File/UploadFile", employee);
+}
+
+  
+public documentdownloadInsert(employee){
+  return this._httpClient.post("File/UploadFile", employee);
 }
   // display Appointment list
   public getAppointmentList(employee) {

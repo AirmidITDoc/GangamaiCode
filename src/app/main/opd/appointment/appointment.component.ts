@@ -1843,7 +1843,18 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
         element.name = this.imgArr[index];
       });
     }
-    console.log(this.imageForm.get('imgFileSource')?.value);
+
+
+  
+
+    var Imagename=this.imageForm.get('imgFileSource')?.value[0].name;
+    console.log(Imagename);
+    this._AppointmentSreviceService.documentuploadInsert(Imagename).subscribe((data) => {
+      if(data){
+        Swal.fire("Document uploaded Successfully  ! ");
+      }
+    
+  });
   }
 
   onSubmitDocFiles() {
@@ -2297,6 +2308,8 @@ export class RegInsert {
     AadharCardNo: string;
     PanCardNo: string;
     currentDate = new Date();
+    AdmissionID:any;
+    WardId:any;
     /**
      * Constructor
      *
@@ -2338,6 +2351,8 @@ export class RegInsert {
             this.AreaName = RegInsert.AreaName || "";
             this.AadharCardNo = RegInsert.AadharCardNo || "";
             this.PanCardNo = RegInsert.PanCardNo || "";
+            this.AdmissionID=RegInsert.AdmissionID || 0;
+            this.WardId=RegInsert.WardId || 0;
         }
     }
 }
