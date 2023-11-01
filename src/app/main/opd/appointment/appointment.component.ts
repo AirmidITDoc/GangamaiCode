@@ -1843,7 +1843,18 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
         element.name = this.imgArr[index];
       });
     }
-    console.log(this.imageForm.get('imgFileSource')?.value);
+
+
+  
+
+    var Imagename=this.imageForm.get('imgFileSource')?.value[0].name;
+    console.log(Imagename);
+    this._AppointmentSreviceService.documentuploadInsert(Imagename).subscribe((data) => {
+      if(data){
+        Swal.fire("Document uploaded Successfully  ! ");
+      }
+    
+  });
   }
 
   onSubmitDocFiles() {

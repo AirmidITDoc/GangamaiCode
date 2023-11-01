@@ -169,8 +169,8 @@ gePharStoreList() {
 
   getSearchList() {
     var m_data = {
-      "ItemName": `${this._MrpAdjustmentService.userFormGroup.get('ItemID').value}%`,
-      "ItemID":0
+      "ItemName": `${this._MrpAdjustmentService.userFormGroup.get('ItemID').value}%`
+      // "ItemID":0
     }
     console.log(m_data);
     if (this._MrpAdjustmentService.userFormGroup.get('ItemID').value.length >= 1) {
