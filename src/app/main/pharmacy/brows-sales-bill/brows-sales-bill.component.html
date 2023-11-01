@@ -777,10 +777,10 @@
                     <table style="width: 100%;border-collapse: collapse;">
                         <tr>
                             <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
-                                Customer Id : {{CustomerId}} <br>
-                                Customer Name: {{CustomerName}} <br>
-                                Age & Gen: 32/M  <span style="margin-left: 10px;">Mob: {{ExMobile}}</span><br>
-                                Address: {{CustAddress}}
+                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                                Age & Gen: 32/M  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Address: {{'-'}}
                             </td>
                         </tr>
                         <tr>
@@ -796,12 +796,12 @@
                     <div style="display:flex;align-items:center;margin-bottom: 5px;margin-top: 5px;">
                         <span style="width:100px;display:inline-block;">Bill No</span>
                         <span style="margin:0 5px">:</span>
-                        <span>310212</span>
+                        <span>{{reportPrintObjList[0]?.SalesNo}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill Date & Time</span>
                         <span style="margin:0 5px">:</span>
-                        <span>20/10/2023 09:30 am</span>
+                        <span>{{reportPrintObjList[0]?.Date | date: 'medium'}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill type</span>
@@ -822,9 +822,27 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP ₹</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount ₹</td>
             </tr>
-            <tr>
-                <td colspan="10" style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 30px;"></td>
+            <tr *ngFor="let item of reportPrintObjList">
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.SalesNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.HSNcode}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.ItemName}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.BatchNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.BatchExpDate | date: 'medium'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.Qty}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.UnitMRP}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
                 <td colspan="4" style="border: 1px solid black;vertical-align: top;
@@ -894,12 +912,12 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Discount</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span style="margin:0 5px">₹ 0.00</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt + reportPrintObjList[0]?.IGSTAmt}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Round off</span>
@@ -909,7 +927,7 @@
                     <div style="display:flex;align-items: center;font-size: 17px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
                     </div>
                 </td>
             </tr>
