@@ -1513,8 +1513,9 @@ OP_IPType:any=0;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
-      console.log(PurTotalAmount);
-      console.log(m_MRPTotal);
+      // console.log(PurTotalAmount);
+      // console.log(m_MRPTotal);
+      this.ConShow=true;
       if (this.DiscAmt > PurTotalAmount)
       {
         Swal.fire('Discount greater than Purchase Rate !')
@@ -1559,6 +1560,7 @@ OP_IPType:any=0;
 
   getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value;
+    let DiscAmt=this.ItemSubform.get('FinalDiscAmt').value;
     // this.FinalDiscAmt=0
     // if (Disc > 0) {
     //   this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
@@ -1566,7 +1568,7 @@ OP_IPType:any=0;
     //   this.ConShow = true
     // }
 
-    if (Disc > 0) {
+    if (Disc > 0 || DiscAmt > 0) {
       this.ConShow = true
       this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
       this.FinalNetAmount = ((this.FinalTotalAmt) - (this.FinalDiscAmt)).toFixed(2);
@@ -1588,17 +1590,17 @@ OP_IPType:any=0;
 
   getFinalDiscAmount() {
     debugger;
-    let Discamt = this.ItemSubform.get('FinalDiscAmt').value
-    console.log(Discamt);
-    if (Discamt > 0 ) {
-      this.FinalNetAmount = ((this.FinalNetAmount) - (Discamt)).toFixed(2);
+    // let Discamt =this.FinalDiscAmt;// this.ItemSubform.get('FinalDiscAmt').value
+    console.log(this.FinalDiscAmt);
+    if (this.FinalDiscAmt > 0 ) {
+      this.FinalNetAmount = ((this.FinalNetAmount) - (this.FinalDiscAmt)).toFixed(2);
       this.ConShow = true
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
 
     } else {
-      this.ConShow = false
+      // this.ConShow = false
       this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
