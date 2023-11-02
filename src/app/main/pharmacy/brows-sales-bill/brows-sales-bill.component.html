@@ -779,7 +779,7 @@
                             <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
                                 Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
                                 Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
-                                Age & Gen: 32/M  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
                                 Address: {{'-'}}
                             </td>
                         </tr>
@@ -836,7 +836,7 @@
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 30px;">{{item?.BatchNo}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 30px;">{{item?.BatchExpDate | date: 'medium'}}</td>
+                padding: 0;height: 30px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 30px;">{{item?.Qty}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
@@ -874,7 +874,7 @@
                 <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
                     <table style="width: 100%;border-collapse: collapse;">
                         <tr>
-                            <td style="vertical-align: top;border-bottom: 1px solid black;border-right: 1px solid black;padding:0 10px 10px; color: #e26d14;text-transform: uppercase; font-size: 20px; font-weight: bold; text-align: center;">
+                            <td style="vertical-align: top;border-bottom: 1px solid black;border-right: 1px solid black;padding:0 10px 10px; color: #e26d14;text-transform: uppercase; font-size:15px; font-weight: bold; text-align: center;">
                                 For Free Home delivery <br>
                                 Call/Whatsapp <br>
                                 9986397222 / 9986371222
@@ -907,7 +907,7 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Sub Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Discount</span>
@@ -927,7 +927,7 @@
                     <div style="display:flex;align-items: center;font-size: 17px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
                     </div>
                 </td>
             </tr>
@@ -935,7 +935,7 @@
                 <td colspan="9" style="border: 1px solid black;vertical-align: top;
                 padding: 5px 10px;">
                     <div style="font-size: 22px;font-weight: bold">
-                        Your Saved Amount: ₹ 236.00
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
                     </div>
                 </td>
                 <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
