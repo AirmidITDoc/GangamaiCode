@@ -950,7 +950,7 @@ OP_IPType:any=0;
       GSTPer: '',
       DiscAmt: '',
       concessionAmt: [0],
-      ConcessionId: 0,
+      ConcessionId: [0,[Validators.required]],
       Remark: [''],
       FinalAmount: '',
       BalAmount: '',
@@ -1353,7 +1353,6 @@ OP_IPType:any=0;
     if (this.stockidflag == true) {
       this.onAdd();
     }else{
-       
           this.Itemchargeslist.push(
             {
               ItemId: this.ItemId,
@@ -1382,15 +1381,13 @@ OP_IPType:any=0;
               PurTotAmt:this.PurTotAmt
             });
           this.saleSelectedDatasource.data = this.Itemchargeslist;
-          console.log(this.saleSelectedDatasource.data);
+          // console.log(this.saleSelectedDatasource.data);
           this.ItemFormreset();
 
     }
-    console.log(this.saleSelectedDatasource.data);
+    // console.log(this.saleSelectedDatasource.data);
     this.itemid.nativeElement.focus();
     this.add = false;
-
-
   }
 
   getBatch() {
@@ -1408,7 +1405,7 @@ OP_IPType:any=0;
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
@@ -1423,7 +1420,7 @@ OP_IPType:any=0;
       this.ItemObj = result;
 
       this.VatPer = result.VatPercentage;
-      console.log(this.VatPer);
+      // console.log(this.VatPer);
       this.CgstPer = result.CGSTPer;
       this.SgstPer = result.SGSTPer;
       this.IgstPer = result.IGSTPer;
@@ -1469,6 +1466,11 @@ OP_IPType:any=0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
     this.ItemSubform.get('referanceNo').reset('');
+    // this.ConShow = false
+    // this.ItemSubform.get('ConcessionId').reset();
+    // this.ItemSubform.get('ConcessionId').clearValidators();
+    // this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+    // this.ItemSubform.get('ConcessionId').disable();
   }
 
 
@@ -1509,13 +1511,16 @@ OP_IPType:any=0;
   // }
 
   calculateDiscAmt() {
-    debugger;
+    // debugger;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // console.log(PurTotalAmount);
       // console.log(m_MRPTotal);
       this.ConShow=true;
+      this.ItemSubform.get('ConcessionId').reset();
+      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
+      this.ItemSubform.get('ConcessionId').enable();
       if (this.DiscAmt > PurTotalAmount)
       {
         Swal.fire('Discount greater than Purchase Rate !')
@@ -1561,6 +1566,7 @@ OP_IPType:any=0;
   getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value;
     let DiscAmt=this.ItemSubform.get('FinalDiscAmt').value;
+
     // this.FinalDiscAmt=0
     // if (Disc > 0) {
     //   this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
@@ -1589,7 +1595,6 @@ OP_IPType:any=0;
   }
 
   getFinalDiscAmount() {
-    debugger;
     // let Discamt =this.FinalDiscAmt;// this.ItemSubform.get('FinalDiscAmt').value
     console.log(this.FinalDiscAmt);
     if (this.FinalDiscAmt > 0 ) {
@@ -1600,7 +1605,7 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').enable();
 
     } else {
-      // this.ConShow = false
+      this.ConShow = false
       this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
@@ -1639,7 +1644,6 @@ OP_IPType:any=0;
 
   onChangePatientType(event) {
     if (event.value == 'External') {
-
       this.ItemSubform.get('MobileNo').reset();
       this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
       this.ItemSubform.get('MobileNo').enable();
@@ -1647,31 +1651,23 @@ OP_IPType:any=0;
       this.ItemSubform.get('PatientName').setValidators([Validators.required]);
       this.ItemSubform.get('PatientName').enable();
       this.paymethod=false;
-  
       this.OP_IPType=2;
       // this.OP_IP_Id=0;
-      
-      
-
     } else {
       // this.Regdisplay = true;
 
       this.ItemSubform.get('MobileNo').disable();
-
       this.ItemSubform.get('PatientName').disable();
       this.isPatienttypeDisabled = false;
-
       this.ItemSubform.get('MobileNo').reset();
       this.ItemSubform.get('MobileNo').clearValidators();
       this.ItemSubform.get('MobileNo').updateValueAndValidity();
-
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
       this.paymethod=true;
     }
     console.log(this.ItemSubform.get('PatientType').value)
-debugger
     if (event.value == 'OP') {
     this.OP_IPType=0;
     this.RegId="";
@@ -1683,10 +1679,7 @@ debugger
 
   }
 
-
-
   convertToWord(e) {
-
     return converter.toWords(e);
   }
 
@@ -1757,12 +1750,7 @@ debugger
   }
 
   onCashpaySave() {
-
-   
-
-    
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
-   
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
