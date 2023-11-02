@@ -266,20 +266,10 @@ OP_IPType:any=0;
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
-    
-    // this.advanceData = this.data.vPatientHeaderObj;
-    
+    // this.onChangePatientType($event)
+    // this.ItemSubform.get('PatientType').setValidators([Validators.required]);
+    // this.ItemSubform.get('PatientType').updateValueAndValidity();
 
-    // if (this.data.FromName == "Advance") {
-    //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.paidAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.billNo = parseInt(this.advanceData.BillId);
-    //   this.Paymentobj['TransactionType'] = 1;
-    //   this.getBalanceAmt();
-    //   this.IsCreditflag=true;
-    // }
-    // if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
 
       this.netPayAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
@@ -290,39 +280,17 @@ OP_IPType:any=0;
       this.getBalanceAmt();
       // this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag=false
-    // }
-    // if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
-    //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-    //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.paidAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.billNo = parseInt(this.advanceData.BillId);
-    //   this.PatientName = this.advanceData.PatientName;
-    //   this.BillDate = this.advanceData.Date;
-    //   this.getBalanceAmt();
-    //   this.Paymentobj['TransactionType'] = 0;
-    //   this.IsCreditflag=true;
-    // }
-    // else {
-    //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.paidAmt = parseInt(this.advanceData.NetPayAmount);
-    //   this.Paymentobj['TransactionType'] = 2;
-    //   this.getBalanceAmt();
-    // }
+    
    }
 
   ngOnInit(): void {
-    // this.Itemchargeslist = [];
     this.patientDetailsFormGrp = this.createForm();
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
-    // this.getTopSalesDetailsList();
 
     // pament Code
-    
     this.patientDetailsFormGrp = this.createForm();
-  //  debugger
     this.selectedPaymnet1 = this.paymentArr1[0].value;
     this.amount1 = this.FinalNetAmount// this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
     this.getBalanceAmt();
@@ -333,6 +301,9 @@ OP_IPType:any=0;
     this.getBankNameList2();
     this.getBankNameList3();
     this.getBankNameList4();
+
+
+
   }
 
   createForm() {
@@ -945,7 +916,7 @@ OP_IPType:any=0;
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['External'],
+      PatientType: ['External',[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
       DiscAmt: '',
@@ -1117,7 +1088,7 @@ OP_IPType:any=0;
   }
   calculateTotalAmt() {
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    console.log(this.BalanceQty);
+    // console.log(this.BalanceQty);
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
       this.ItemFormreset();
@@ -1129,8 +1100,8 @@ OP_IPType:any=0;
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
       this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
 
-      console.log("Purchase rate");
-      console.log(this.PurchaseRate);
+      // console.log("Purchase rate");
+      // console.log(this.PurchaseRate);
       this.GSTAmount = (((this.UnitMRP) * (this.VatPer) / 100) * parseInt(Qty)).toFixed(2);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
@@ -1202,8 +1173,6 @@ OP_IPType:any=0;
     }
     this.itemid.nativeElement.focus();
     this.add = false;
-    // debugger;
-    // this.getFinalDiscAmount();
   }
 
   // OnAddUpdate(event) {
@@ -1548,7 +1517,6 @@ OP_IPType:any=0;
   // }
 
   getDiscPer() {
-    // debugger
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
@@ -1566,13 +1534,6 @@ OP_IPType:any=0;
   getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value;
     let DiscAmt=this.ItemSubform.get('FinalDiscAmt').value;
-
-    // this.FinalDiscAmt=0
-    // if (Disc > 0) {
-    //   this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
-    //   this.FinalNetAmount = ((this.FinalTotalAmt) - (this.FinalDiscAmt)).toFixed(2);
-    //   this.ConShow = true
-    // }
 
     if (Disc > 0 || DiscAmt > 0) {
       this.ConShow = true
@@ -1645,32 +1606,7 @@ OP_IPType:any=0;
 
 
   onChangePatientType(event) {
-    if (event.value == 'External') {
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-      this.ItemSubform.get('MobileNo').enable();
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-      this.ItemSubform.get('PatientName').enable();
-      this.paymethod=false;
-      this.OP_IPType=2;
-      // this.OP_IP_Id=0;
-    // } else {
-    //   // this.Regdisplay = true;
-
-    //   this.ItemSubform.get('MobileNo').disable();
-    //   this.ItemSubform.get('PatientName').disable();
-    //   this.isPatienttypeDisabled = false;
-    //   this.ItemSubform.get('MobileNo').reset();
-    //   this.ItemSubform.get('MobileNo').clearValidators();
-    //   this.ItemSubform.get('MobileNo').updateValueAndValidity();
-    //   this.ItemSubform.get('PatientName').reset();
-    //   this.ItemSubform.get('PatientName').clearValidators();
-    //   this.ItemSubform.get('PatientName').updateValueAndValidity();
-    //   this.paymethod=true;
-    }
-   
-    else if (event.value == 'OP') {
+    if (event.value == 'OP') {
     this.OP_IPType = 0;
     this.RegId="";
     this.paymethod=true;
@@ -1679,8 +1615,31 @@ OP_IPType:any=0;
       this.OP_IPType = 1;
       this.RegId="";
       this.paymethod=true;
+    }else{
+        this.ItemSubform.get('MobileNo').reset();
+        this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+        this.ItemSubform.get('MobileNo').enable();
+        this.ItemSubform.get('PatientName').reset();
+        this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+        this.ItemSubform.get('PatientName').enable();
+        this.paymethod=false;
+        this.OP_IPType=2;
+        // this.OP_IP_Id=0;
+      // } else {
+      //   // this.Regdisplay = true;
+  
+      //   this.ItemSubform.get('MobileNo').disable();
+      //   this.ItemSubform.get('PatientName').disable();
+      //   this.isPatienttypeDisabled = false;
+      //   this.ItemSubform.get('MobileNo').reset();
+      //   this.ItemSubform.get('MobileNo').clearValidators();
+      //   this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      //   this.ItemSubform.get('PatientName').reset();
+      //   this.ItemSubform.get('PatientName').clearValidators();
+      //   this.ItemSubform.get('PatientName').updateValueAndValidity();
+      //   this.paymethod=true;
     }
-    console.log(this.ItemSubform.get('PatientType').value)
+    // console.log(this.ItemSubform.get('PatientType').value)
   }
 
   convertToWord(e) {
@@ -1745,6 +1704,8 @@ OP_IPType:any=0;
 
   Paymentobj = {};
   onSave() {
+    this.ItemSubform.get('PatientType').setValidators([Validators.required]);
+    this.ItemSubform.get('PatientType').updateValueAndValidity();
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashpaySave()
     }
@@ -1763,9 +1724,19 @@ OP_IPType:any=0;
     SalesInsert['Date'] = this.dateTimeObj.date;
     SalesInsert['time'] = this.dateTimeObj.time;
 
-    SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    SalesInsert['oP_IP_Type'] = this.OP_IPType;
-    
+    if (this.ItemSubform.get('PatientType').value == 'External')
+    {
+      SalesInsert['oP_IP_Type'] = 2;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'OP')
+    {
+      SalesInsert['oP_IP_Type'] = 0;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'IP')
+    {
+      SalesInsert['oP_IP_Type'] = 1;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    }
     SalesInsert['totalAmount'] = this.FinalTotalAmt
     SalesInsert['vatAmount'] =  this.ItemSubform.get('FinalGSTAmt').value;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
@@ -1779,8 +1750,8 @@ OP_IPType:any=0;
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName;
-    SalesInsert['doctorName'] = "";
+    SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
     SalesInsert['creditReason'] = '';
@@ -1793,11 +1764,11 @@ OP_IPType:any=0;
     SalesInsert['salesHeadName'] = ""
     SalesInsert['salesTypeId'] = 0;
     SalesInsert['salesId'] = 0;
-    SalesInsert['extMobileNo'] = this.MobileNo;
+    SalesInsert['extMobileNo'] = this.MobileNo || 0;
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
-      console.log(element);
+      // console.log(element);
       let salesDetailInsert = {};
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
@@ -1942,7 +1913,7 @@ OP_IPType:any=0;
   
     // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
 
-    console.log("Procced with Payment Option");
+    // console.log("Procced with Payment Option");
 
     let submitData = {
       "salesInsert": SalesInsert,
@@ -1952,7 +1923,7 @@ OP_IPType:any=0;
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
-    console.log(submitData);
+    // console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
@@ -1990,8 +1961,16 @@ OP_IPType:any=0;
     let salesInsertCredit = {};
     salesInsertCredit['Date'] = this.dateTimeObj.date;
     salesInsertCredit['time'] = this.dateTimeObj.time;
-    salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    salesInsertCredit['oP_IP_Type'] = this.OP_IPType;
+    if (this.ItemSubform.get('PatientType').value == 'External') {
+      salesInsertCredit['oP_IP_Type'] = 2;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+      salesInsertCredit['oP_IP_Type'] = 0;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+      salesInsertCredit['oP_IP_Type'] = 1;
+      salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
+    }
     salesInsertCredit['totalAmount'] = this.FinalTotalAmt
     salesInsertCredit['vatAmount'] = this.VatAmount;
     salesInsertCredit['discAmount'] = this.FinalDiscAmt;
@@ -2068,7 +2047,7 @@ OP_IPType:any=0;
     let cal_GSTAmount_SalesCredit = {};
     cal_GSTAmount_SalesCredit['salesID'] = 0;
 
-    console.log("Procced with Payment Option");
+    // console.log("Procced with Payment Option");
 
     let submitData = {
       "salesInsertCredit": salesInsertCredit,
@@ -2283,7 +2262,7 @@ OP_IPType:any=0;
     if (this.ItemSubform.get('RegID').value.length >= 1) {
       this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
-        console.log(resData);
+        // console.log(resData);
         this.PatientListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
