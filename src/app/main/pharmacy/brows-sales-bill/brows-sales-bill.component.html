@@ -891,11 +891,11 @@
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
                                         Mode of Payment : Cash / Credit / UPI <br>
-                                        UTR No: 2152321523212523
+                                        <!-- UTR No: 2152321523212523 -->
                                     </div>
                                     <div style="text-align: right;">
                                         <span style="opacity: .6;">Payment Date & time:</span> <br>
-                                        DD/MM/YYYY hh:mm am 
+                                        {{reportPrintObjList[0]?.Date | date: 'medium'}}
                                     </div>
                                 </div>
                             </td>
@@ -952,7 +952,7 @@
             </tr>
             <tr style="font-weight: 500;">
                 <td colspan="5">
-                    Billed By: Mr. Girish
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
                 </td>
                 <td colspan="5" style="text-align: right;">
                     Printed on 12/10/2023 12:45 pm
