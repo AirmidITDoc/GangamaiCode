@@ -297,8 +297,7 @@
                                                         fxShow.gt-sm>Exp.Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.BatchExpDate
-                                                        }}
+                                                        {{contact.BatchExpDate | date: 'MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -778,10 +777,10 @@
                     <table style="width: 100%;border-collapse: collapse;">
                         <tr>
                             <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
-                                Customer Id : 1052 <br>
-                                Customer Name: Naveen raj <br>
-                                Age & Gen: 32/M  <span style="margin-left: 10px;">Mob: 9743900080</span><br>
-                                Address: JSS Hospitals, Vijayapura
+                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                                Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Address: {{'-'}}
                             </td>
                         </tr>
                         <tr>
@@ -797,12 +796,12 @@
                     <div style="display:flex;align-items:center;margin-bottom: 5px;margin-top: 5px;">
                         <span style="width:100px;display:inline-block;">Bill No</span>
                         <span style="margin:0 5px">:</span>
-                        <span>310212</span>
+                        <span>{{reportPrintObjList[0]?.SalesNo}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill Date & Time</span>
                         <span style="margin:0 5px">:</span>
-                        <span>20/10/2023 09:30 am</span>
+                        <span>{{reportPrintObjList[0]?.Date | date: 'medium'}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill type</span>
@@ -823,9 +822,27 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP ₹</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount ₹</td>
             </tr>
-            <tr>
-                <td colspan="10" style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 30px;"></td>
+            <tr *ngFor="let item of reportPrintObjList">
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.SalesNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.HSNcode}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.ItemName}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.BatchNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.Qty}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.UnitMRP}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 30px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
                 <td colspan="4" style="border: 1px solid black;vertical-align: top;
@@ -857,7 +874,7 @@
                 <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
                     <table style="width: 100%;border-collapse: collapse;">
                         <tr>
-                            <td style="vertical-align: top;border-bottom: 1px solid black;border-right: 1px solid black;padding:0 10px 10px; color: #e26d14;text-transform: uppercase; font-size: 20px; font-weight: bold; text-align: center;">
+                            <td style="vertical-align: top;border-bottom: 1px solid black;border-right: 1px solid black;padding:0 10px 10px; color: #e26d14;text-transform: uppercase; font-size:15px; font-weight: bold; text-align: center;">
                                 For Free Home delivery <br>
                                 Call/Whatsapp <br>
                                 9986397222 / 9986371222
@@ -874,11 +891,11 @@
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
                                         Mode of Payment : Cash / Credit / UPI <br>
-                                        UTR No: 2152321523212523
+                                        <!-- UTR No: 2152321523212523 -->
                                     </div>
                                     <div style="text-align: right;">
                                         <span style="opacity: .6;">Payment Date & time:</span> <br>
-                                        DD/MM/YYYY hh:mm am 
+                                        {{reportPrintObjList[0]?.Date | date: 'medium'}}
                                     </div>
                                 </div>
                             </td>
@@ -890,17 +907,17 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Sub Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Discount</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span style="margin:0 5px">₹ 0.00</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt + reportPrintObjList[0]?.IGSTAmt}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:100px;display:inline-block;">Round off</span>
@@ -910,7 +927,7 @@
                     <div style="display:flex;align-items: center;font-size: 17px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
                     </div>
                 </td>
             </tr>
@@ -918,7 +935,7 @@
                 <td colspan="9" style="border: 1px solid black;vertical-align: top;
                 padding: 5px 10px;">
                     <div style="font-size: 22px;font-weight: bold">
-                        Your Saved Amount: ₹ 236.00
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
                     </div>
                 </td>
                 <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
@@ -935,7 +952,7 @@
             </tr>
             <tr style="font-weight: 500;">
                 <td colspan="5">
-                    Billed By: Mr. Girish
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
                 </td>
                 <td colspan="5" style="text-align: right;">
                     Printed on 12/10/2023 12:45 pm

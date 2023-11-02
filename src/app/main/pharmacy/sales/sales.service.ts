@@ -21,10 +21,8 @@ export class SalesService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-   
       StoreId: '',
       ItemId:'',
-
       ItemName:'',
       BatchNo:'',
       BatchExpDate:'',

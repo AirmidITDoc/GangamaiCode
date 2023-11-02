@@ -32,8 +32,13 @@ export class BrowsSalesBillComponent implements OnInit {
   reportPrintObjList: Printsal[] = [];
   printTemplate: any;
   reportPrintObj: Printsal;
+  reportPrintObjTax: Printsal;
   subscriptionArr: Subscription[] = [];
   currentDate =new Date();
+  CustomerName:any="";
+  CustomerId:any="";
+  CustAddress:any="";
+  ExMobile:any="";
 
   displayedColumns: string[] = [
     'action2',
@@ -357,10 +362,15 @@ getPrint2(el) {
 
       this.reportPrintObjList = res as Printsal[];
       console.log(this.reportPrintObjList);
+     
       this.reportPrintObj = res[0] as Printsal;
-
+      console.log(this.reportPrintObj);
       this.getTemplateTax();
 
+      this.CustomerName=this.reportPrintObj.PatientName;
+      this.CustomerId=this.reportPrintObj.RegNo;
+      this.CustAddress= " " //this.reportPrintObj.Address;
+      this.ExMobile=this.reportPrintObj.ExtMobileNo;
     })
   );
   }
