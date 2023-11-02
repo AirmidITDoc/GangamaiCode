@@ -87,5 +87,10 @@ export class SalesReturnService {
   public getSalesDetCreditList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",Param);
   }
+
+  public InsertSalesReturn(employee){
+    return this._httpClient.post("Pharmacy/InsertSalesReturn", employee)
+  }
+
   
 }

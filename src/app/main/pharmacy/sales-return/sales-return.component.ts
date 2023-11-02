@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { SalesReturnService } from './sales-return.service';
@@ -23,6 +23,27 @@ import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-s
 })
 export class SalesReturnComponent implements OnInit {
 
+  GrossAmt:any;
+  DiscAmt:any;
+  VatAmount:any;
+  CGSTAmount:any;
+  SGSTAmount:any;
+  IGSTAmount:any;
+  TotalAmt:any;
+  LandAmt:any;
+  PurAmt:any; 
+  dateTimeObj: any;
+
+  StoreList:any = [];
+  Itemselectedlist: any = [];
+  ReturnAmt:any=0;
+  NetAmt:any=0;
+  Qty:any=0;
+  RQty:any=0;
+  FinalTotalAmount:any=0;
+  sIsLoading:any;
+  screenFromString = 'payment-form';
+  
   displayedColumns = [
     'SalesId',
     'Date',
@@ -64,10 +85,11 @@ export class SalesReturnComponent implements OnInit {
     'StkID'
   ]
   SearchForm: FormGroup;
+  FinalReturnform: FormGroup;
   dssaleList = new MatTableDataSource<SaleBillList>();
   dssaleDetailList= new MatTableDataSource<SalesDetailList>();
-
-  StoreList:any = [];
+  selectedssaleDetailList= new MatTableDataSource<SalesDetailList>();
+  
 
   constructor(
     public _SalesReturnService: SalesReturnService,
@@ -79,6 +101,7 @@ export class SalesReturnComponent implements OnInit {
     
   ) { 
     this.SearchForm=this.SearchFilter();
+    this.FinalReturnform=this.Returnform();
   }
 
   ngOnInit(): void {
@@ -98,6 +121,13 @@ export class SalesReturnComponent implements OnInit {
     })
   }
 
+  Returnform() {
+    return this._formBuilder.group({
+      NetAmt:'',
+      ReturnAmt:''
+    });
+  }
+
   getPharStoreList() {
     var vdata={
       Id : this._loggedService.currentUserValue.user.storeId
@@ -110,6 +140,7 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getSalesList(){
+    debugger
     var vdata={
       F_Name:this.SearchForm.get('F_Name').value || '%' ,                                            
       L_Name: this.SearchForm.get('L_Name').value || '%'  ,                                     
@@ -170,10 +201,229 @@ export class SalesReturnComponent implements OnInit {
     })
   }
 
-  getCellCalculation(contact){
-    console.log(contact);
+  getCellCalculation(contact,ReturnQty){
+    debugger
+    this.RQty=parseInt(ReturnQty);
+    console.log(contact.ReturnQty);
+    console.log(this.RQty);
+
+    if( (parseInt(this.RQty)) > (parseInt(contact.Qty))){
+      Swal.fire("Return Qty cannot be greater than Qty")
+    }
+    else{
+      let index = this.Itemselectedlist.indexOf(contact);
+      if (index >= 0) {
+        this.Itemselectedlist.splice(index, 1);
+        this.selectedssaleDetailList.data = [];
+        this.selectedssaleDetailList.data = this.Itemselectedlist;
+      }
+  
+
+      this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) /100).toFixed(2);
+      // this.VatAmount = (parseFloat(contact.UnitMRP)  * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.CGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);//(Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+
+      
+      this.SGSTAmount =((((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.IGSTAmount =((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.TotalAmt =  (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
+      this.PurAmt =  (parseFloat(contact.PurPrice) * parseInt(this.RQty)).toFixed(2);
+      this.Qty= parseInt(contact.Qty) - parseInt(this.RQty);
+
+
+      this.Itemselectedlist.push(
+        {
+  
+          SalesNo:contact.SalesNo,
+          OP_IP_ID:contact.OP_IP_ID,
+          ItemName:contact.ItemName,
+          BatchNo:contact.BatchNo,
+          UnitMRP:contact.UnitMRP,
+          Qty:this.Qty,
+          ReturnQty:this.RQty,
+          TotalAmount:this.TotalAmt,
+          VatPer:contact.VatPer,
+          VatAmount:this.VatAmount,
+          DiscPer:contact.DiscPer,
+          DiscAmount:this.DiscAmt,
+          GrossAmount:this.GrossAmt,
+          CGSTPer:contact.CGSTPer,
+          SGSTPer:contact.SGSTPer,
+          IGSTPer:contact.IGSTPer,
+          IsPurRate:contact.IsPurRate,
+          StkID:contact.StkID
+  
+        });
+      this.selectedssaleDetailList.data = this.Itemselectedlist;
+
+    }
+    this.ReturnQty.nativeElement.focus();
+  }
+  @ViewChild('ReturnQty') ReturnQty: ElementRef;
+  SelectedItem(contact) {
+
+    let Amount = contact.UnitMRP * contact.ReturnQty;
+   
+    this.Itemselectedlist.push(
+      {
+        SalesNo:contact.SalesNo,
+        OP_IP_ID:contact.OP_IP_ID,
+        ItemName:contact.ItemName,
+        BatchNo:contact.BatchNo,
+        UnitMRP:contact.UnitMRP,
+        Qty:contact.Qty,
+        ReturnQty:contact.Qty,
+        TotalAmount:contact.TotalAmount,
+        VatPer:contact.VatPer,
+        VatAmount:contact.VatAmount,
+        DiscPer:contact.DiscPer,
+        DiscAmount:contact.DiscAmount,
+        GrossAmount:contact.GrossAmount,
+        CGSTPer:contact.CGSTPer,
+        SGSTPer:contact.SGSTPer,
+        IGSTPer:contact.IGSTPer,
+        IsPurRate:contact.IsPurRate,
+        StkID:contact.StkID
+      
+      });
+    this.selectedssaleDetailList.data = this.Itemselectedlist;
+
+    // this.RQty=contact.Qty;
   }
 
+  onclickrow(contact) {
+    Swal.fire("Row selected :" + contact)
+  }
+
+  onSave(){
+    
+    let salesReturnHeader = {};
+    salesReturnHeader['Date'] = this.dateTimeObj.date;
+    salesReturnHeader['time'] = this.dateTimeObj.time;
+    salesReturnHeader['salesId'] =0,// this.salesId;
+    salesReturnHeader['oP_IP_ID'] =1,// this.OP_IP_Id;
+    salesReturnHeader['oP_IP_Type'] =1,// this.OP_IPType;
+    salesReturnHeader['totalAmount'] =0,// this.FinalTotalAmt
+    salesReturnHeader['vatAmount'] = this.VatAmount;
+    salesReturnHeader['discAmount'] = 0,//this.FinalDiscAmt;
+    salesReturnHeader['netAmount'] = this.NetAmt;
+    salesReturnHeader['paidAmount'] = 0;
+    salesReturnHeader['balanceAmount'] = this.NetAmt;
+    salesReturnHeader['isSellted'] = 0;
+    salesReturnHeader['isPrint'] = 0;
+    salesReturnHeader['isFree'] = 0;
+    salesReturnHeader['unitID'] = 1;
+    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
+    salesReturnHeader['storeID'] = this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['salesReturnId'] = 0;
+  
+
+    let salesReturnDetailarr = [];
+    this.selectedssaleDetailList.data.forEach((element) => {
+      let salesReturnDetail = {};
+      salesReturnDetail['salesID'] = 0;
+      salesReturnDetail['itemId'] = element.ItemId;
+      salesReturnDetail['batchNo'] = element.BatchNo;
+      salesReturnDetail['batchExpDate'] = element.BatchExpDate;
+      salesReturnDetail['unitMRP'] = element.UnitMRP;
+      salesReturnDetail['qty'] = element.Qty;
+      salesReturnDetail['totalAmount'] = element.TotalAmount;
+      salesReturnDetail['vatPer'] = element.VatPer;
+      salesReturnDetail['vatAmount'] = element.VatAmount;
+      salesReturnDetail['discPer'] = element.DiscPer;
+      salesReturnDetail['discAmount'] = element.DiscAmount;
+      salesReturnDetail['grossAmount'] = element.GrossAmount;
+      salesReturnDetail['landedPrice'] =0,// element.LandedRate;
+      salesReturnDetail['totalLandedAmount'] = 0,//element.LandedRateandedTotal;
+      salesReturnDetail['purRateWf'] = 0,//element.PurchaseRate;
+      salesReturnDetail['purTotAmt'] = element.PurTotAmt;
+      salesReturnDetail['cgstPer'] = element.CGSTPer;
+      salesReturnDetail['cgstAmt'] = this.CGSTAmount;
+      salesReturnDetail['sgstPer'] = element.SGSTPer;
+      salesReturnDetail['sgstAmt'] = this.SGSTAmount;
+      salesReturnDetail['igstPer'] = element.IGSTPer
+      salesReturnDetail['igstAmt'] = this.IGSTAmount
+      salesReturnDetail['isPurRate'] = 0;
+      salesReturnDetail['stkID'] = 0,//element.StockId;
+      salesReturnDetailarr.push(salesReturnDetail);
+    });
+
+    let salesReturn_CurStk_Uptarray = [];
+    this.selectedssaleDetailList.data.forEach((element) => {
+      let salesReturn_CurStk_Upt = {};
+      salesReturn_CurStk_Upt['itemId'] = element.ItemId;
+      salesReturn_CurStk_Upt['issueQty'] = element.Qty;
+      salesReturn_CurStk_Upt['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      salesReturn_CurStk_Upt['stkID'] = 0,//element.StockId;
+
+      salesReturn_CurStk_Uptarray.push(salesReturn_CurStk_Upt);
+    });
+
+    let update_SalesReturnQty_SalesTblarray = [];
+    this.selectedssaleDetailList.data.forEach((element) => {
+      let update_SalesReturnQty_SalesTbl = {};
+      update_SalesReturnQty_SalesTbl['salesDetId'] = element.ItemId;
+      update_SalesReturnQty_SalesTbl['returnQty'] = element.Qty;
+     
+      update_SalesReturnQty_SalesTblarray.push(update_SalesReturnQty_SalesTbl);
+    });
+
+    let update_SalesRefundAmt_SalesHeader = {};
+    update_SalesRefundAmt_SalesHeader['salesReturnId'] = 0;
+
+    let cal_GSTAmount_SalesReturn = {};
+    cal_GSTAmount_SalesReturn['salesReturnID'] = 0;
+
+    let insert_ItemMovementReport_Cursor = {};
+    insert_ItemMovementReport_Cursor['id'] = 0;
+    insert_ItemMovementReport_Cursor['typeId'] = 0;
+
+    console.log("Procced with Payment Option");
+
+    let submitData = {
+      "salesReturnHeader": salesReturnHeader,
+      "salesReturnDetail": salesReturnDetailarr,
+      "salesReturn_CurStk_Upt": salesReturn_CurStk_Uptarray,
+      "update_SalesReturnQty_SalesTbl": update_SalesReturnQty_SalesTblarray,
+      "update_SalesRefundAmt_SalesHeader": update_SalesRefundAmt_SalesHeader,
+      "cal_GSTAmount_SalesReturn": cal_GSTAmount_SalesReturn,
+      "insert_ItemMovementReport_Cursor": insert_ItemMovementReport_Cursor
+    };
+    console.log(submitData);
+    this._SalesReturnService.InsertSalesReturn(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire(' Sales Return !', 'Record Saved Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            // let m = response;
+            // this.getPrint(response);
+            // this.Itemchargeslist = [];
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Sale data not saved', 'error');
+      }
+      this.sIsLoading = '';
+    });
+  }
+
+  
+  getTotAmtSum(element) {
+   
+    this.FinalTotalAmount =(element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+
+    return this.FinalTotalAmount;
+  }
+
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  onClose(){
+    this.Itemselectedlist = [];
+  }
 }
 
 export class SaleBillList {
@@ -285,3 +535,36 @@ export class SalesDetailList {
   }
 }
 
+
+    // If lngQty < lngReturnQty Then
+    //             MessageBox.Show("Return Qty cannot be greater than Qty.")
+    //             'dgvReturnItemList.Item(6, j).Value = 0
+    //             dgvReturnItemList.Item(10, j).Value = 0
+
+    //             dgvReturnItemList.Item(11, j).Value = dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(10, j).Value
+    //             dgvReturnItemList.Item(16, j).Value = dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(10, j).Value
+
+    //             ' Gross Amt = MRP * Return Qty
+    //             dgvReturnItemList.Item(16, j).Value = dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(10, j).Value
+    //             'Disc Amt = Gross Amt * Dis Per /100
+    //             dgvReturnItemList.Item(15, j).Value = Format(((dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(10, j).Value) * dgvReturnItemList.Item(14, j).Value / 100), "0.00")
+    //             'Vat Amount = (Val(txtPerMRP.Text) * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
+    //             dgvReturnItemList.Item(13, j).Value = Format((Val(dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(12, j).Value) / 100) * dgvReturnItemList.Item(10, j).Value, "0.00")
+
+    //             'CGST Amount = (Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    //             dgvReturnItemList.Item(24, j).Value = Format((Val(dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(23, j).Value) / 100) * dgvReturnItemList.Item(10, j).Value, "0.00")
+
+    //             'SGST Amount = (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    //             dgvReturnItemList.Item(26, j).Value = Format((Val(dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(25, j).Value) / 100) * dgvReturnItemList.Item(10, j).Value, "0.00")
+
+    //             'IGST Amount = (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+    //             dgvReturnItemList.Item(28, j).Value = Format((Val(dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(27, j).Value) / 100) * dgvReturnItemList.Item(10, j).Value, "0.00")
+
+    //             ' Total Amt = MRP * Return Qty
+    //             dgvReturnItemList.Item(11, j).Value = (dgvReturnItemList.Item(8, j).Value * dgvReturnItemList.Item(10, j).Value) - dgvReturnItemList.Item(15, j).Value
+    //             ' Land Amt = Landed Price * Return Qty
+    //             dgvReturnItemList.Item(18, j).Value = dgvReturnItemList.Item(17, j).Value * dgvReturnItemList.Item(10, j).Value
+    //             ' Pur Amt = Pur Price * Return Qty
+    //             dgvReturnItemList.Item(21, j).Value = dgvReturnItemList.Item(20, j).Value * dgvReturnItemList.Item(10, j).Value
+    //             Exit For
+    //         End If
