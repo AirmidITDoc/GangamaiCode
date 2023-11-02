@@ -628,7 +628,7 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div *ngIf="ConShow">
-                                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                                            <mat-form-field appearance="outline" style="width:200px">
                                                                 <mat-label>Concession Reason Type</mat-label>
                                                                 <mat-select formControlName="ConcessionId" #ConseId>
                                                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
