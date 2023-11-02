@@ -1202,8 +1202,8 @@ OP_IPType:any=0;
     }
     this.itemid.nativeElement.focus();
     this.add = false;
-    debugger;
-    this.getFinalDiscAmount();
+    // debugger;
+    // this.getFinalDiscAmount();
   }
 
   // OnAddUpdate(event) {
@@ -1466,11 +1466,11 @@ OP_IPType:any=0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
     this.ItemSubform.get('referanceNo').reset('');
-    // this.ConShow = false
-    // this.ItemSubform.get('ConcessionId').reset();
-    // this.ItemSubform.get('ConcessionId').clearValidators();
-    // this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-    // this.ItemSubform.get('ConcessionId').disable();
+    this.ConShow = false;
+    this.ItemSubform.get('ConcessionId').reset();
+    this.ItemSubform.get('ConcessionId').clearValidators();
+    this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+    this.ItemSubform.get('ConcessionId').disable();
   }
 
 
@@ -1577,10 +1577,12 @@ OP_IPType:any=0;
     if (Disc > 0 || DiscAmt > 0) {
       this.ConShow = true
       this.FinalDiscAmt = ((this.FinalTotalAmt * (Disc)) / 100).toFixed(2);
+      this.ItemSubform.get('FinalDiscAmt').setValue(this.FinalDiscAmt);
       this.FinalNetAmount = ((this.FinalTotalAmt) - (this.FinalDiscAmt)).toFixed(2);
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
+      this.ItemSubform.updateValueAndValidity();
 
     } else {
       this.ConShow = false
@@ -1588,7 +1590,7 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').clearValidators();
       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-      this.ConseId.nativeElement.focus();
+      // this.ConseId.nativeElement.focus();
     }
 
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
@@ -1620,7 +1622,7 @@ OP_IPType:any=0;
     let GST = this.ItemSubform.get('FinalGSTAmt').value
     if (GST > 0 && GST < this.FinalNetAmount) {
       this.FinalNetAmount = ((this.FinalNetAmount) + (GST))
-      this.ConShow = true
+      // this.ConShow = true
     }
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
   }
@@ -2259,8 +2261,14 @@ OP_IPType:any=0;
 
 
   onClose() {
-    // this.dialogRef.close({ result: "cancel" });
     this.Itemchargeslist = [];
+    this.ItemFormreset();
+    this.patientDetailsFormGrp.reset();
+    this.Formreset();
+    this.ItemSubform.get('ConcessionId').reset();
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
   }
 
   getOptionTextReg(option) {
