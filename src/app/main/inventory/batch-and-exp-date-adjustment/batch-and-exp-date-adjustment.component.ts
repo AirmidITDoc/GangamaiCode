@@ -43,13 +43,13 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   isItemIdSelected: boolean = false;
   ItemId:any;
   ItemName:any;
-  registerObj = new RegInsert({});
   isItemSearchDisabled:boolean =false;
   VLandedrate:any;
   VPurchaseRate:any;
   VMRP:any;
   VBatchNO:any;
-  ItemList:any=[];
+  NewBatchNo:any;
+  BtachExpDate:any;
 
   dsBatchAndExpDate = new MatTableDataSource<BatchAndExpList>();
 
@@ -72,23 +72,15 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
   ngOnInit(): void {
     this.SearchGroup= this.createSearchFrom();
     this.gePharStoreList();
-    this.getBatchAndAdjList();
-     
- 
   }
   createSearchFrom() {
     return this._formBuilder.group({
       StoreId: '',
       ItemID: '',
-      BatchNO:'',
-      MRP:'',
       BtachExpDate:'',
-      PurchaseRate:'',
       NewExpDate:'',
-      Landedrate:'',
       NewBatchNo:'',
       BalanceQty:''
-
     });
   }
 
@@ -109,12 +101,11 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
       this.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
-  getBatchAndAdjList() {
+  getBatchAndAdjList(Param) {
     this.sIsLoading = 'loading-data';
-   var vdata= {
-     
-     "StoreId": this.SearchGroup.get('StoreId').value.StoreId || 1,
-      "ItemId":1       
+   var vdata= { 
+     "StoreId": this.SearchGroup.get('StoreId').value.storeid ,
+     "ItemId": Param.ItemID
    }
    console.log(vdata);
      this._BatchAndExpDateAdjustmentService.getBatchAdjustList(vdata).subscribe(data => {
@@ -148,39 +139,28 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
 
     });
   }
-  
 }
 getOptionItemText(option) {
   this.ItemId = option.ItemID;
   if (!option) return '';
-  return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+  return option.ItemID + ' ' + option.ItemName  ;
 }
-
-onEdit(row) {
-  console.log(row);
-
-  this.registerObj = row;
-  this.getSelectedObj(row);
-}
-
-getSelectedObj(obj) {
-  
-  // debugger
-  this.registerObj = obj;
  
+getSelectedObj(obj) {
+  this.getBatchAndAdjList(obj);
   //console.log(obj);
 }
+OnSelect(param){
 
-onChangeReg(event) {
-  if (event.value == 'registration') {
-    this.registerObj = new RegInsert({});
-    this.SearchGroup.get('ItemID').disable();
-  }
-  else {
-    this.isItemSearchDisabled = false;
-  }
+this.VBatchNO=param.BatchNo,
+this.VLandedrate=param.LandedRate,
+this.VMRP=param.UnitMRP,
+this.VPurchaseRate=param.PurUnitRateWF,
+this.NewBatchNo=param.BatchNo,
+this.BtachExpDate=param.BatchExpDate,
+this.BalanceQty=param.BalanceQty
+console.log(param);
 }
-
 
 }
 
