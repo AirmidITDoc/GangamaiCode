@@ -1618,14 +1618,14 @@ OP_IPType:any=0;
 
 
 
-  CalfinalGST() {
-    let GST = this.ItemSubform.get('FinalGSTAmt').value
-    if (GST > 0 && GST < this.FinalNetAmount) {
-      this.FinalNetAmount = ((this.FinalNetAmount) + (GST))
-      // this.ConShow = true
-    }
-    this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
-  }
+  // CalfinalGST() {
+  //   let GST = this.ItemSubform.get('FinalGSTAmt').value
+  //   if (GST > 0 && GST < this.FinalNetAmount) {
+  //     this.FinalNetAmount = ((this.FinalNetAmount) + (GST))
+  //     // this.ConShow = true
+  //   }
+  //   this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
+  // }
   // key: any;
   // @HostListener('document:keyup', ['$event'])
   // handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
@@ -1655,30 +1655,32 @@ OP_IPType:any=0;
       this.paymethod=false;
       this.OP_IPType=2;
       // this.OP_IP_Id=0;
-    } else {
-      // this.Regdisplay = true;
+    // } else {
+    //   // this.Regdisplay = true;
 
-      this.ItemSubform.get('MobileNo').disable();
-      this.ItemSubform.get('PatientName').disable();
-      this.isPatienttypeDisabled = false;
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
+    //   this.ItemSubform.get('MobileNo').disable();
+    //   this.ItemSubform.get('PatientName').disable();
+    //   this.isPatienttypeDisabled = false;
+    //   this.ItemSubform.get('MobileNo').reset();
+    //   this.ItemSubform.get('MobileNo').clearValidators();
+    //   this.ItemSubform.get('MobileNo').updateValueAndValidity();
+    //   this.ItemSubform.get('PatientName').reset();
+    //   this.ItemSubform.get('PatientName').clearValidators();
+    //   this.ItemSubform.get('PatientName').updateValueAndValidity();
+    //   this.paymethod=true;
+    }
+   
+    else if (event.value == 'OP') {
+    this.OP_IPType = 0;
+    this.RegId="";
+    this.paymethod=true;
+    }
+    else if(event.value == 'IP'){
+      this.OP_IPType = 1;
+      this.RegId="";
       this.paymethod=true;
     }
     console.log(this.ItemSubform.get('PatientType').value)
-    if (event.value == 'OP') {
-    this.OP_IPType=0;
-    this.RegId="";
-    }
-    else if(event.value == 'IP'){
-      this.OP_IPType=1;
-      this.RegId="";
-    }
-
   }
 
   convertToWord(e) {
@@ -1756,16 +1758,14 @@ OP_IPType:any=0;
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
-      // debugger
       
-    // if (this.patientDetailsFormGrp.get('balanceAmountController').value==0) {
-    // console.log("Procced with Payment Option");
-
     let SalesInsert = {};
     SalesInsert['Date'] = this.dateTimeObj.date;
     SalesInsert['time'] = this.dateTimeObj.time;
+
     SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     SalesInsert['oP_IP_Type'] = this.OP_IPType;
+    
     SalesInsert['totalAmount'] = this.FinalTotalAmt
     SalesInsert['vatAmount'] =  this.ItemSubform.get('FinalGSTAmt').value;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
@@ -2295,15 +2295,11 @@ OP_IPType:any=0;
     }
   }
   getSelectedObjReg(obj) {
-    
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName+ ' ' + obj.PatientName;
     this.RegId = obj.RegID;
-    // this.vAdmissionID = obj.AdmissionID;
-    // this.DoctorName = obj.DoctorName;
-   console.log(this.registerObj)
-   this.OP_IP_Id = this.registerObj.AdmissionID;
-
+    // console.log(this.registerObj)
+    this.OP_IP_Id = this.registerObj.AdmissionID;
   }
 }
 
