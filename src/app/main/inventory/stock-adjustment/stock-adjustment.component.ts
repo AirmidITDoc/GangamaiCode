@@ -35,21 +35,22 @@ export class StockAdjustmentComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
-  ItemList:any=[];
   screenFromString = 'admission-form';
   VQty:any;
   VBatchNO:any;
-
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
   registerObj = new RegInsert({});
- 
   filteredOptions: any;
   ItemListfilteredOptions: any;
    isItemSearchDisabled: boolean;
    ItemName: any;
    ItemId: any;
-  registration: any;
+   BalanceQty:any;
+   MRP:any;
+   Qty:any;
+   UpdatedQty:any;
+   result:any;
 
   
   dsStockAdjList = new MatTableDataSource<StockAdjList>();
@@ -60,25 +61,13 @@ export class StockAdjustmentComponent implements OnInit {
 
   constructor(
     public _StockAdjustment: StockAdjustmentService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
     private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
-   
-    
+    public datePipe: DatePipe,  
   ) { }
 
   ngOnInit(): void {
-    this.getMRPAdjList() ;
     this.gePharStoreList();
-  
   }
-  
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
- 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
@@ -96,13 +85,12 @@ export class StockAdjustmentComponent implements OnInit {
     });
   }
 
-  
-  getMRPAdjList() {
+  getMRPAdjList(Param) {
     this.sIsLoading = 'loading-data';
    var vdata= {
      
-     "StoreId": this._StockAdjustment.userFormGroup.get('StoreId').value.StoreId || 1,
-      "ItemId":1       
+     "StoreId": this._StockAdjustment.userFormGroup.get('StoreId').value.storeid,
+     "ItemId": Param.ItemID   
    }
    console.log(vdata);
      this._StockAdjustment.getStockAdjustList(vdata).subscribe(data => {
@@ -116,9 +104,6 @@ export class StockAdjustmentComponent implements OnInit {
        this.sIsLoading = '';
      });
  }
- 
- 
-
 getSearchList() {
   var m_data = {
     "ItemName": `${this._StockAdjustment.userFormGroup.get('ItemID').value}%`
@@ -145,30 +130,30 @@ getOptionItemText(option) {
   return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
 }
 
-onEdit(row) {
-  console.log(row);
-
-  this.registerObj = row;
-  this.getSelectedObj(row);
-}
-
 getSelectedObj(obj) {
-  
-  // debugger
   this.registerObj = obj;
+  this.getMRPAdjList(obj) ;
  
   //console.log(obj);
 }
+OnSelect(param){
 
-onChangeReg(event) {
-  if (event.value == 'registration') {
-    this.registerObj = new RegInsert({});
-    this._StockAdjustment.userFormGroup.get('ItemID').disable();
-  }
-  else {
-    this.isItemSearchDisabled = false;
-  }
+  this.VBatchNO=param.BatchNo,
+  this.BalanceQty=param.BalanceQty,
+  this.Qty=param.BalanceQty,
+  this.MRP=param.UnitMRP
+  console.log(param);
 }
+addition(){
+  this.UpdatedQty = this.Qty + this.BalanceQty;
+  
+}
+Substraction(){
+  this.UpdatedQty =  this.BalanceQty - this.Qty;
+  
+}
+
+ 
 }
 
  

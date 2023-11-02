@@ -23,17 +23,12 @@ export class MrpAdjustmentService {
     return this._formBuilder.group({
       StoreId: '',
       ItemID: '',
-      BatchNO:'',
-      MRP:'',
       MRP1:'',
       Landedrate1:'',
-      Landedrate:'',
-      PurchaseRate:'',
       PurchaseRate1:'',
-      Qty:'',
       BarcodeQty:'',
-      BarCodeNo:'',
       BalanceQty:'',
+      
      
     
     });

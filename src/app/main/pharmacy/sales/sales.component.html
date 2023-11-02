@@ -138,18 +138,18 @@
                                                                 <!-- ================================ LABEL HEADER  -->
                                                                 <div style="font-size: medium;background-color: rgb(203, 214, 214);">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
-                                                                        <span style="font-weight: 700;">Patient Information</span> <span style="margin-left: 700px;font-weight: bold;">AdmissionID:{{registerObj.AdmissionID}}</span> <span style="margin-left:20px;font-weight: bold;">AdmissionDate:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
+                                                                        <span style="font-weight: 700;">Patient Information</span> <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span> <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
                                                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                                                             <div class="patient-sub">
                                                                                 <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center" style="padding-top: 10px;">
                                                                                     <div style="width:70px;">
-                                                                                        <span>Reg ID</span>
+                                                                                        <span>Reg No</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
                                                                                         <span>:</span>
                                                                                     </div>
                                                                                     <div>
-                                                                                        <span>{{registerObj.RegID}}</span>
+                                                                                        <span>{{registerObj.RegNo}}</span>
                                                                                     </div>
 
                                                                                     <div  style="width:120px;margin-left: 10px;">
@@ -159,7 +159,7 @@
                                                                                     <div class="flex-item-middle">
                                                                                         <span>:</span>
                                                                                     </div>
-                                                                                    <div style="width: 400px;">
+                                                                                    <div style="width: 350px;">
                                                                                         <span>{{PatientName}}</span>
                                                                                     </div>
 
@@ -627,8 +627,8 @@
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
-                                                        <div *ngIf="ConShow">
-                                                            <mat-form-field appearance="outline" style="width:200px">
+                                                        <div>
+                                                            <mat-form-field appearance="outline" style="width:200px"  *ngIf="ConShow">
                                                                 <mat-label>Concession Reason Type</mat-label>
                                                                 <mat-select formControlName="ConcessionId" #ConseId>
                                                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
@@ -642,7 +642,7 @@
                                                             <mat-label>GST Amount</mat-label>
                                                             <input matInput name="FinalGSTAmt"
                                                                 formControlName="FinalGSTAmt" [(ngModel)]="FinalGSTAmt"
-                                                                placeholder="0" (keyup)='CalfinalGST()' readonly
+                                                                placeholder="0" readonly
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;"
                                                                 type="number">
                                                         </mat-form-field>&nbsp;
@@ -684,8 +684,8 @@
                                                             <mat-label>Referance no</mat-label>
                                                             <input matInput name="referanceNo" formControlName="referanceNo">
                                                         </mat-form-field>&nbsp;
-                                                        <button class="submit-button" (click)="onSave()" style="margin-right: 8px; width: 80px;"
-                                                            [disabled]="ItemSubform.invalid || _salesService.IndentSearchGroup.invalid || saleSelectedDatasource.data.length == 0">Save</button>
+                                                        <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
+                                                            [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                                     </div>
 
