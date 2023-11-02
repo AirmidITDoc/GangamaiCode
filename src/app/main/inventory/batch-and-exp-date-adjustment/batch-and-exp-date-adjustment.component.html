@@ -44,7 +44,7 @@
                                             <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionItemText"
                                                 (optionSelected)='getSelectedObj($event.option.value)'>
                                                 <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
-                                                    {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
+                                                    {{option.ItemID}} | {{option.ItemName}} 
                                                     
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -101,7 +101,7 @@
                                         Exp.Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ExpDate}}
+                                        {{contact.BatchExpDate  | date: 'dd/MM/yyyy' }}
                                     </mat-cell>
                                 </ng-container>
 
@@ -115,17 +115,17 @@
 
                                 <ng-container matColumnDef="Landedrate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Landed Rate</mat-header-cell>
+                                        LandedRate</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Landedrate}}
+                                        {{contact.LandedRate}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PurchaseRate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Purchase Rate</mat-header-cell>
+                                        PurchaseRate</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurchaseRate}}
+                                        {{contact.PurUnitRateWF }}
                                     </mat-cell>
                                 </ng-container>
 
@@ -133,7 +133,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         Bal Qty</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.BalQty}}
+                                        {{contact.BalanceQty }}
                                     </mat-cell>
                                 </ng-container>
 
@@ -151,7 +151,7 @@
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="OnSelect(contact)"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                 </mat-footer-row>
@@ -173,9 +173,10 @@
                                     <!-- <mat-form-field appearance="outline" fxFlex="49%">
                                          <mat-label>BatchNo</mat-label>
                                          <input name="BatchNo" formControlName="BatchNO" matInput>
-                                      </mat-form-field>&nbsp;&nbsp; -->
-                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                                        formControlName="BatchNO" required>
+                                   </mat-form-field>&nbsp;&nbsp; -->
+
+                                    <div  fxLayout="row" fxLayoutAlign="space-between center" style="width: 270px;"
+                                          required>
                                         <div class="flex-item" style="width:250px">
                                             <h3 class="labels-h3">BatchNO</h3>
                                         </div>
@@ -194,13 +195,13 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout="row">
                                     <!-- 
-                            <mat-form-field appearance="outline" fxFlex>
+                                     <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>MRP</mat-label>
                                 <input name="MRP" formControlName="MRP" matInput>
-                            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
+                                 </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
 
-                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                                        formControlName="MRP" required>
+                                    <div  fxLayout="row" fxLayoutAlign="space-between center" style="width: 270px;"
+                                        required>
                                         <div class="flex-item" style="width:250px">
                                             <h3 class="labels-h3">MRP</h3>
                                         </div>
@@ -215,7 +216,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Btach Exp.Date</mat-label>
-                                        <input name="BtachExpDate" formControlName="BtachExpDate" matInput>
+                                        <input name="BtachExpDate" formControlName="BtachExpDate" [(ngModel)]="BtachExpDate" matInput required>
                                     </mat-form-field>&nbsp;&nbsp;
 
                                 </div>
@@ -228,8 +229,8 @@
                                     <input name="PurchaseRate" formControlName="PurchaseRate" matInput>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; -->
 
-                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                                        formControlName="PurchaseRate" required>
+                                    <div  fxLayout="row" fxLayoutAlign="space-between center" style="width: 270px;"
+                                        required>
                                         <div class="flex-item" style="width:250px">
                                             <h3 class="labels-h3">PurchaseRate</h3>
                                         </div>
@@ -244,7 +245,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>New Exp.Date</mat-label>
-                                        <input name="NewExpDate" formControlName="NewExpDate" matInput>
+                                        <input name="NewExpDate" formControlName="NewExpDate"   matInput required>
                                     </mat-form-field>&nbsp;&nbsp;
                                 </div>
                             </mat-card>
@@ -255,8 +256,8 @@
                                 <mat-label>Landed rate</mat-label>
                                 <input name="Landedrate" formControlName="Landedrate" matInput>
                             </mat-form-field>&nbsp;&nbsp; -->
-                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                                        formControlName="Landedrate" required>
+                                    <div   fxLayout="row" fxLayoutAlign="space-between center" style="width: 270px;"
+                                         required>
                                         <div class="flex-item" style="width:250px">
                                             <h3 class="labels-h3">Landedrate</h3>
                                         </div>
@@ -271,7 +272,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>New BatchNo</mat-label>
-                                        <input name="NewBatchNo" formControlName="NewBatchNo" matInput>
+                                        <input name="NewBatchNo" formControlName="NewBatchNo" [(ngModel)]="NewBatchNo" matInput required>
                                     </mat-form-field>&nbsp;&nbsp;
 
                                 </div>
@@ -283,7 +284,7 @@
                                 <div fxFlexFill fxLayout="column" fxLayout="row">
                                     <mat-form-field appearance="outline" fxFlex="55%" style="margin-right: 50px;">
                                         <mat-label>Balance Qty</mat-label>
-                                        <input name="BalanceQty" formControlName="BalanceQty" matInput>
+                                        <input name="BalanceQty" formControlName="BalanceQty" [(ngModel)]="BalanceQty" matInput readonly>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                                     <div class="footer-navigation-container" fxLayout="row">

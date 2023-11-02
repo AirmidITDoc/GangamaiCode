@@ -27,7 +27,9 @@ export class StockAdjustmentService {
       MRP:'',
       Qty:'',
       IsDeleted:['0'],
-      UpdatedQty:''
+      UpdatedQty:'',
+      BalanceQty:'',
+      
       
     });
   }
