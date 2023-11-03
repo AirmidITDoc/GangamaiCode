@@ -559,6 +559,9 @@ print2() {
   <head><style type="text/css">`);
   popupWin.document.write(`
     </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
         <title></title>
     </head>
   `);
@@ -581,7 +584,7 @@ print2() {
   // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
   // </html>`);
   
-  popupWin.document.close();
+  // popupWin.document.close();
 }
 }
 
