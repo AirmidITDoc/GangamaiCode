@@ -367,10 +367,10 @@ getPrint2(el) {
       console.log(this.reportPrintObj);
       this.getTemplateTax();
 
-      this.CustomerName=this.reportPrintObj.PatientName;
-      this.CustomerId=this.reportPrintObj.RegNo;
-      this.CustAddress= " " //this.reportPrintObj.Address;
-      this.ExMobile=this.reportPrintObj.ExtMobileNo;
+      // this.CustomerName=this.reportPrintObj.PatientName;
+      // this.CustomerId=this.reportPrintObj.RegNo;
+      // this.CustAddress= " " //this.reportPrintObj.Address;
+      // this.ExMobile=this.reportPrintObj.ExtMobileNo;
     })
   );
   }
@@ -559,12 +559,15 @@ print2() {
   <head><style type="text/css">`);
   popupWin.document.write(`
     </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
         <title></title>
     </head>
   `);
   popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate.nativeElement.innerHTML}</body>
   <script>
-    var css = '@page { size: landscape; }',
+    var css = '@page { size: portrait; }',
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
     style.type = 'text/css';

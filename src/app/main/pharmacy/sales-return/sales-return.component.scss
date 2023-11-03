@@ -5,16 +5,17 @@
 }
 
 app-sales-return {
+    font-size: medium;
     .SalesDet {
         .mat-header-row {
-            min-width: 2000px;
+            min-width: 1500px;
             height: 10px;
             background-color: blue;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 2000px;
+            min-width: 1500px;
             min-height: 20px;
         }
 
@@ -33,12 +34,18 @@ app-sales-return {
         // }
 
         .mat-column-SalesNo {
-            width: 50px;
-            max-width: 50px;
-            min-width: 50px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             text-align: left;
         }
-
+        .mat-column-OP_IP_ID {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: left;
+        }
+        
 
         .mat-column-ItemName {
             width: 250px;
@@ -76,9 +83,9 @@ app-sales-return {
         }
 
         .mat-column-ReturnQty {
-            width: 50px;
-            max-width: 50px;
-            min-width: 50px;
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
             text-align: left;
         }
         
@@ -158,23 +165,90 @@ app-sales-return {
         // }
 
         .mat-column-CGSTPer {
-            width: 50px;
-            max-width: 50px;
-            min-width: 50px;
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
             text-align: center;
         }
 
         .mat-column-SGSTPer {
-            width: 50px;
-            max-width: 50px;
-            min-width: 50px;
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
             text-align: center;
         }
 
         .mat-column-IGSTPer {
-            width: 50px;
-            max-width: 50px;
-            min-width: 50px;
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .mat-column-StkID {
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        
+        .mat-column-IsPurRate {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: center;
+        }
+    }
+
+    .table1{
+       
+        .mat-column-SalesId {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .mat-column-Date {
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .mat-column-SalesNo {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .mat-column-RegNo {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .mat-column-PatientName {
+            width: 550px;
+            max-width: 550px;
+            min-width: 550px;
+            text-align: left;
+            text-align: left;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            overflow: hidden !important;
+            // display: inline-block;
+            justify-content:left; 
+        }
+
+        .mat-column-TotalAmount {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
             text-align: center;
         }
     }
