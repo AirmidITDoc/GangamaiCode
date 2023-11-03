@@ -2305,6 +2305,24 @@ OP_IPType:any=0;
    this.OP_IP_Id = this.registerObj.AdmissionID;
 
   }
+  // payOnline() {
+  //   let req = {
+  //     "TransactionNumber":"1234567890",   
+  //     "SequenceNumber": 1,                            
+  //     "AllowedPaymentMode": "10",                              
+  //     "MerchantStorePosCode": "1221258270",
+  //     "Amount": "1",                          
+  //     "UserID": "",          
+  //     "MerchantID": '29610' ,                                
+  //     "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
+  //     "IMEI": "TEST1001270",
+  //     "AutoCancelDurationInMinutes": 5
+  //   };
+  //   this._RequestforlabtestService.payOnline(req).subscribe(resData => {
+  //     console.log(resData);
+      
+  //   });
+  // }
 }
 
 

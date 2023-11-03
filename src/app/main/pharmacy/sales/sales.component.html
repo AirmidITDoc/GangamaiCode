@@ -614,7 +614,7 @@
                                                             <mat-label>Discount %</mat-label>
                                                             <input matInput [(ngModel)]="FinalDiscPer"
                                                                 name="FinalDiscPer" formControlName="FinalDiscPer"
-                                                                (keyup)="getFinalDiscperAmt()" type="number"
+                                                                (blur)="getFinalDiscperAmt()" type="number"
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
@@ -687,6 +687,7 @@
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || _salesService.IndentSearchGroup.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
+                                                        <!-- <button class="footer-btn" (click)="payOnline()">Pay Online</button> -->
                                                     </div>
 
                                                 </div>
