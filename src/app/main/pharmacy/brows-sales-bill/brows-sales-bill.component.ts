@@ -564,7 +564,7 @@ print2() {
   `);
   popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate.nativeElement.innerHTML}</body>
   <script>
-    var css = '@page { size: landscape; }',
+    var css = '@page { size: portrait; }',
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
     style.type = 'text/css';
@@ -581,7 +581,7 @@ print2() {
   // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
   // </html>`);
   
-  // popupWin.document.close();
+  popupWin.document.close();
 }
 }
 
