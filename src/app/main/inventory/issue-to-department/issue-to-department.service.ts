@@ -25,7 +25,8 @@ export class IssueToDepartmentService {
       ToStoreId: '',
       FromStoreId:'',
       start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()]
+      end: [(new Date()).toISOString()],
+     
     });
   }
   
@@ -62,6 +63,10 @@ export class IssueToDepartmentService {
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
+  public getBatchList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  }
+
 
 
    

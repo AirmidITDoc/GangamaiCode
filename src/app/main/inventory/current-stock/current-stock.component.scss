@@ -29,7 +29,7 @@
          display: inline-flex;
          display: inline;
          margin-right: 25px;
-         margin-top: 7px;
+         margin-top: 16px;
      }
 
      .mat-column-GenericName {
@@ -44,7 +44,7 @@
          overflow: hidden !important;
          display: inline-flex;
          display: inline;
-         margin-top: 7px;
+         margin-top: 16px;
      }
 
      .mat-column-BalanceQty {
@@ -71,7 +71,8 @@
          justify-content: left;
      }
 
-     height: 690px;
-     min-height: 690px;
-     max-height: 690px;
+     height: 650px;
+     min-height: 650px;
+     max-height: 650px;
+     width: 100%;
  }

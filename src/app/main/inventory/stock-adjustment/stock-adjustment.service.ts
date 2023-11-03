@@ -26,7 +26,7 @@ export class StockAdjustmentService {
       BatchNO:'',
       MRP:'',
       Qty:'',
-      IsDeleted:['0'],
+      IsDeleted:'',
       UpdatedQty:'',
       BalanceQty:'',
       

@@ -14,6 +14,7 @@ import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+import { request } from 'http';
 
 @Component({
   selector: 'app-stock-adjustment',
@@ -145,7 +146,8 @@ OnSelect(param){
   console.log(param);
 }
 addition(){
-  this.UpdatedQty = this.Qty + this.BalanceQty;
+var q=this._StockAdjustment.userFormGroup.get('Qty').value;
+  this.UpdatedQty = this.BalanceQty + q;
   
 }
 Substraction(){

@@ -45,6 +45,13 @@ export class MaterialConsumptionComponent implements OnInit {
   screenFromString = 'admission-form';
   sIsLoading: string = '';
   isLoading = true;
+  filteredOptions: any;
+  showAutocomplete = false;
+  noOptionFound: boolean = false;
+  ItemName:any;
+  filteredOptionsItem:any;
+  isItemIdSelected:boolean = false;
+  ItemId: any;
   
   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
 
@@ -109,8 +116,41 @@ export class MaterialConsumptionComponent implements OnInit {
       this.StoreList = data;
       console.log(this.StoreList);
       this._MaterialConsumptionService.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._MaterialConsumptionService.userFormGroup.get('FromStoreId').setValue(this.StoreList[0]);
     });
   }
+
+ 
+  
+  getSearchItemList() {
+    var m_data = {
+      "ItemName": `${this._MaterialConsumptionService.userFormGroup.get('ItemID').value}%`
+      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+    }
+    // console.log(m_data);
+    if (this._MaterialConsumptionService.userFormGroup.get('ItemID').value.length >= 2) {
+      this._MaterialConsumptionService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        // console.log(this.filteredOptionsItem.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  }
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemID + ' ' + option.ItemName ;
+  }
+  getSelectedObjItem(obj) {
+   // console.log(obj);
+ 
+  }
+
 
  
 }
