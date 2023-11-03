@@ -367,10 +367,10 @@ getPrint2(el) {
       console.log(this.reportPrintObj);
       this.getTemplateTax();
 
-      this.CustomerName=this.reportPrintObj.PatientName;
-      this.CustomerId=this.reportPrintObj.RegNo;
-      this.CustAddress= " " //this.reportPrintObj.Address;
-      this.ExMobile=this.reportPrintObj.ExtMobileNo;
+      // this.CustomerName=this.reportPrintObj.PatientName;
+      // this.CustomerId=this.reportPrintObj.RegNo;
+      // this.CustAddress= " " //this.reportPrintObj.Address;
+      // this.ExMobile=this.reportPrintObj.ExtMobileNo;
     })
   );
   }
