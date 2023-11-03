@@ -304,7 +304,7 @@
                                         {{contact.GrossAmount}}
                                     </mat-cell>
                                 </ng-container>
-                                <!-- <ng-container matColumnDef="LandedPrice">
+                              <ng-container matColumnDef="LandedPrice">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -313,19 +313,19 @@
                                 </ng-container>
 
                                  <ng-container matColumnDef="TotalLandedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalLandedAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.TotalLandedAmount}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="IsBatchRequired">
+                               <!--    <ng-container matColumnDef="IsBatchRequired">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.IsBatchRequired}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container>-->
 
                                 <ng-container matColumnDef="PurRateWf">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
@@ -342,7 +342,7 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="IsPrescription">
+                               <!--    <ng-container matColumnDef="IsPrescription">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -411,7 +411,7 @@
                             </mat-table>
 
 
-                            <mat-table class="SalesDet" matSort [dataSource]="selectedssaleDetailList"
+                            <mat-table class="SalesDetselected" matSort [dataSource]="selectedssaleDetailList"
                                 [@animateStagger]="{value:'100'}"
                                 style="overflow:auto; height: 200px !important;width:50%;">
 
@@ -546,7 +546,7 @@
                                         {{contact.GrossAmount}}
                                     </mat-cell>
                                 </ng-container>
-                                <!-- <ng-container matColumnDef="LandedPrice">
+                                <ng-container matColumnDef="LandedPrice">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -555,19 +555,19 @@
                                 </ng-container>
 
                                  <ng-container matColumnDef="TotalLandedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalLandedAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.TotalLandedAmount}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="IsBatchRequired">
+                                <!-- <ng-container matColumnDef="IsBatchRequired">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.IsBatchRequired}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="PurRateWf">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
@@ -584,7 +584,7 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="IsPrescription">
+                                <!-- <ng-container matColumnDef="IsPrescription">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -598,6 +598,14 @@
                                         {{contact.CGSTPer}}
                                     </mat-cell>
                                 </ng-container>
+
+                                <ng-container matColumnDef="CGSTAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGSTAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.CGSTPer}}
+                                    </mat-cell>
+                                </ng-container>
                                 <ng-container matColumnDef="SGSTPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST%
                                     </mat-header-cell>
@@ -605,11 +613,25 @@
                                         {{contact.SGSTPer}}
                                     </mat-cell>
                                 </ng-container>
+                                <ng-container matColumnDef="SGSTAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGSTAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.CGSTPer}}
+                       A             </mat-cell>
+                                </ng-container>
                                 <ng-container matColumnDef="IGSTPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST%
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.IGSTPer}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="IGSTAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGSTAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.CGSTPer}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="IsPurRate">
@@ -643,9 +665,9 @@
                                     </mat-footer-cell>
                                 </ng-container> -->
 
-                                <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
+                                <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetselectedColumns; sticky: true">
                                 </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: dspSalesDetColumns;"
+                                <mat-row *matRowDef="let contact; columns: dspSalesDetselectedColumns;"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
                                 </mat-footer-row> -->
