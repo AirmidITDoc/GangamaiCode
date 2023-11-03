@@ -36,7 +36,8 @@ export class MRPAdjustmentComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   sIsLoading: string = '';
-  isLoading = true;
+  // isLoading = true;
+  isLoading : string='';
   StoreList:any=[];
   screenFromString = 'admission-form';
   ItemList:any=[];
@@ -48,20 +49,20 @@ export class MRPAdjustmentComponent implements OnInit {
   Qty:any;
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
-  registerObj = new RegInsert({});
- 
   filteredOptions: any;
   ItemListfilteredOptions: any;
    isItemSearchDisabled: boolean;
    ItemName: any;
    ItemId: any;
-  registration: any;
+   MRP1: any;
+   Landedrate1: any;
+   BarcodeQty: any;
+   PurchaseRate1: any;
+   BalanceQty:any;
+ 
   
   dsMrpAdjList = new MatTableDataSource<MrpAdjList>();
  
-
- 
-  
 
   constructor(
     public _MrpAdjustmentService: MrpAdjustmentService,
@@ -75,25 +76,20 @@ export class MRPAdjustmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.gePharStoreList();
-    this.getMRPAdjList();
-    
   }
-  
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+ 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
-  getMRPAdjList() {
+  getMRPAdjList(Param) {
  
-     this.sIsLoading = 'loading-data';
+    this.sIsLoading = 'loading-data';
     var vdata= {
       "StoreId": this._MrpAdjustmentService.userFormGroup.get('StoreId').value.storeid,
-       "ItemId": this._MrpAdjustmentService.userFormGroup.get('ItemID').value.ItemID
+       "ItemId": Param.ItemID
     }
     console.log(vdata);
       this._MrpAdjustmentService.getMRPAdjustList(vdata).subscribe(data => {
@@ -103,36 +99,16 @@ export class MRPAdjustmentComponent implements OnInit {
       this.dsMrpAdjList.sort = this.sort;
       this.dsMrpAdjList.paginator = this.paginator;
       this.sIsLoading = '';
-    console.log(this.dsMrpAdjList.data);
+     console.log(this.dsMrpAdjList.data);
     },
       error => {
         this.sIsLoading = '';
       });
   }
-  
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
-}
-
-gePharStoreList() {
-  var vdata = {
-    Id: this._loggedService.currentUserValue.user.storeId
-  }
-  //console.log(vdata);
-  this._MrpAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
-    this.StoreList = data;
-    //console.log(this.StoreList);
-    this._MrpAdjustmentService.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
-  });
-}
-
-  
-
 
   getSearchList() {
     var m_data = {
       "ItemName": `${this._MrpAdjustmentService.userFormGroup.get('ItemID').value}%`
-      // "ItemID":0
     }
     //console.log(m_data);
     if (this._MrpAdjustmentService.userFormGroup.get('ItemID').value.length >= 1) {
@@ -147,6 +123,7 @@ gePharStoreList() {
         }
 
       });
+      // this.getMRPAdjList();
     }
     
   }
@@ -156,43 +133,40 @@ gePharStoreList() {
     return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
 
-  onEdit(row) {
-    console.log(row);
-
-    this.registerObj = row;
-    this.getSelectedObj(row);
-  }
-
   getSelectedObj(obj) {
+    console.log(obj);
+    this.getMRPAdjList(obj);
+  }
+  
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    //console.log(vdata);
+    this._MrpAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      //console.log(this.StoreList);
+      this._MrpAdjustmentService.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+    });
+  }
+
+  OnSelect(Param){
+
+    console.log(Param);
+
+      this.BatchNo= Param.BatchNo,
+      this.MRP= Param.UnitMRP,
+      this.Landedrate=Param.LandedRate,
+      this.PurchaseRate=Param.PurUnitRateWF,
+      this.Qty=Param.BalanceQty,
+      this.BarCodeNo= Param.BarCodeSeqNo,
+      this.MRP1= Param.UnitMRP,
+      this.Landedrate1=Param.LandedRate,
+      this.PurchaseRate1=Param.PurUnitRateWF,
+      this.BarcodeQty=Param.BalanceQty,
+      this.BalanceQty=Param.BalanceQty
     
-    // debugger
-    this.registerObj = obj;
-   
-    //console.log(obj);
-  }
-
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.registerObj = new RegInsert({});
-      this._MrpAdjustmentService.userFormGroup.get('ItemID').disable();
-    }
-    else {
-      this.isItemSearchDisabled = false;
-    }
-  }
- 
-
-
-
-
-
-
-
-
-
-
-
-
+  } 
 }
 
 export class MrpAdjList {
