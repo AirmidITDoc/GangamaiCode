@@ -225,7 +225,7 @@ export class BrowsSalesBillComponent implements OnInit {
             CreditPaymentobj['AdvanceUsedAmount'] = 0;
             CreditPaymentobj['AdvanceId'] = 0;
             CreditPaymentobj['RefundId'] = 0;
-            CreditPaymentobj['TransactionType'] = result.submitDataPay.ipPaymentInsert.TransactionType || 0;
+            CreditPaymentobj['TransactionType'] = 4,// result.submitDataPay.ipPaymentInsert.TransactionType || 4;
             CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
             CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
             CreditPaymentobj['IsCancelled'] = 0;
@@ -247,9 +247,11 @@ export class BrowsSalesBillComponent implements OnInit {
               "salesPayment": CreditPaymentobj
             };
             console.log(Data);
-                
+                debugger
             this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+              console.log(response)
               if (response) {
+                console.log(response)
                 Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) {
                     // let m = response;

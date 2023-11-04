@@ -168,7 +168,7 @@ IsCreditflag : boolean=false
     this.BillDate = this.advanceData.Date;
     this.amount1=parseInt(this.advanceData.TotalAmount);
     this.getBalanceAmt();
-    this.Paymentobj['TransactionType'] = 2;
+    this.Paymentobj['TransactionType'] = 4;
     }
     this.onAddClick('cash');
     this.getBankNameList2();
