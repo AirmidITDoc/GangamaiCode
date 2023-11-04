@@ -186,16 +186,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   OnPayment(SelectedValue) {
     
-    // let PatientHeaderObj = {};
-    // debugger
-    // PatientHeaderObj['Date'] = SelectedValue.BillDate;
-    // PatientHeaderObj['PatientName'] = SelectedValue.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] = SelectedValue.OPD_IPD_ID;
-    // PatientHeaderObj['NetPayAmount'] = SelectedValue.NetPayableAmt;
-    // PatientHeaderObj['BillId'] = SelectedValue.BillNo;
-
-
-
+  
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "100vw",
@@ -218,7 +209,7 @@ export class BrowsSalesBillComponent implements OnInit {
             //const updateBill = new UpdateBill(updateBillobj);
             let CreditPaymentobj = {};
             CreditPaymentobj['paymentId'] = 0;
-            CreditPaymentobj['BillNo'] = SelectedValue.BillNo;
+            CreditPaymentobj['BillNo'] = SelectedValue.SalesId;
             CreditPaymentobj['ReceiptNo'] = '';
             CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
             CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
