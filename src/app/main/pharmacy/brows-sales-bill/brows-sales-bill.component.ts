@@ -44,7 +44,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   displayedColumns: string[] = [
     'action2',
-    'action',
+    // 'action',
     'payment',
     'Date',
     'SalesNo',
@@ -721,7 +721,7 @@ print3() {
   // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
   // </html>`);
   
-  // popupWin.document.close();
+  popupWin.document.close();
 }
 }
 
