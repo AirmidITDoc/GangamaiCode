@@ -82,7 +82,6 @@ IsCreditflag : boolean=false
 
   constructor(
     private formBuilder: FormBuilder,
-
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
@@ -126,6 +125,17 @@ IsCreditflag : boolean=false
       this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag=true;
     }
+    if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.TotalAmount);
+      this.cashAmt = parseInt(this.advanceData.TotalAmount);
+      this.paidAmt = parseInt(this.advanceData.TotalAmount);
+      this.billNo = parseInt(this.advanceData.SalesId);
+      this.PatientName = this.advanceData.PatientName;
+      this.BillDate = this.advanceData.Date;
+      this.getBalanceAmt();
+      this.Paymentobj['TransactionType'] = 2;
+      this.IsCreditflag=true;
+    }
     else {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -136,15 +146,30 @@ IsCreditflag : boolean=false
   }
 
   ngOnInit(): void {
-
+    debugger
     this.patientDetailsFormGrp = this.createForm();
-   debugger
+    if(this.PatientHeaderObj.FromName == "SalesSETTLEMENT"){
+      this.PatientHeaderObj=this.data.vPatientHeaderObj;
+    this.advanceData=this.data.vPatientHeaderObj;
+    console.log( this.PatientHeaderObj)
+  
     this.selectedPaymnet1 = this.paymentArr1[0].value;
     this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
     this.getBalanceAmt();
     this.paymentRowObj["cash"] = true;
     this.onPaymentChange(1, 'cash');
     this.paidAmt = this.netPayAmt;
+
+    this.netPayAmt = parseInt(this.advanceData.TotalAmount);
+    this.cashAmt = parseInt(this.advanceData.TotalAmount);
+    this.paidAmt = parseInt(this.advanceData.TotalAmount);
+    this.billNo = parseInt(this.advanceData.SalesId);
+    this.PatientName = "SAS",//this.advanceData.PatientName;
+    this.BillDate = this.advanceData.Date;
+    this.amount1=parseInt(this.advanceData.TotalAmount);
+    this.getBalanceAmt();
+    this.Paymentobj['TransactionType'] = 4;
+    }
     this.onAddClick('cash');
     this.getBankNameList2();
     this.getBankNameList3();
@@ -749,6 +774,7 @@ IsCreditflag : boolean=false
   }
 
   getCardObj(type: string) {
+    debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
       this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
@@ -887,6 +913,7 @@ IsCreditflag : boolean=false
 
   saveClicked() {
     debugger
+    if(this.patientDetailsFormGrp.get('balanceAmountController').value==0){
 
     this.getCashObj('cash');
     this.getChequeObj('cheque');
@@ -911,7 +938,10 @@ IsCreditflag : boolean=false
     console.log(IsSubmit);
     this.dialogRef.close(IsSubmit);
   
+  }else{
+    Swal.fire("Chk Balance Amount")
   }
+}
 
   onClose1() {
     debugger

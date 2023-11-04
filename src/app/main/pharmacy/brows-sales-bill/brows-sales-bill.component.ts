@@ -28,6 +28,8 @@ export class BrowsSalesBillComponent implements OnInit {
 
   @ViewChild('billTemplate') billTemplate:ElementRef;
 
+  @ViewChild('billTemplate2') billTemplate2:ElementRef;
+
   
   reportPrintObjList: Printsal[] = [];
   printTemplate: any;
@@ -42,7 +44,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   displayedColumns: string[] = [
     'action2',
-    'action',
+    // 'action',
     'payment',
     'Date',
     'SalesNo',
@@ -183,6 +185,8 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   OnPayment(SelectedValue) {
+    
+  
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "100vw",
@@ -190,7 +194,7 @@ export class BrowsSalesBillComponent implements OnInit {
         width: '100%',
         data: {
           vPatientHeaderObj: SelectedValue,
-          FromName: "Pharmacy"
+          FromName: "SalesSETTLEMENT"
         }
       });
 
@@ -199,13 +203,13 @@ export class BrowsSalesBillComponent implements OnInit {
       if (result.IsSubmitFlag == true) {
 
             let updateBillobj = {};
-            updateBillobj['BillNo'] = SelectedValue.BillNo;
-            updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+            updateBillobj['BillNo'] = SelectedValue.SalesId;
+            updateBillobj['BillBalAmount'] =0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
             //const updateBill = new UpdateBill(updateBillobj);
             let CreditPaymentobj = {};
             CreditPaymentobj['paymentId'] = 0;
-            CreditPaymentobj['BillNo'] = SelectedValue.BillNo;
+            CreditPaymentobj['BillNo'] = SelectedValue.SalesId;
             CreditPaymentobj['ReceiptNo'] = '';
             CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
             CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
@@ -221,7 +225,7 @@ export class BrowsSalesBillComponent implements OnInit {
             CreditPaymentobj['AdvanceUsedAmount'] = 0;
             CreditPaymentobj['AdvanceId'] = 0;
             CreditPaymentobj['RefundId'] = 0;
-            CreditPaymentobj['TransactionType'] = result.submitDataPay.ipPaymentInsert.TransactionType || 0;
+            CreditPaymentobj['TransactionType'] = 4,// result.submitDataPay.ipPaymentInsert.TransactionType || 4;
             CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
             CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
             CreditPaymentobj['IsCancelled'] = 0;
@@ -239,26 +243,28 @@ export class BrowsSalesBillComponent implements OnInit {
 //            const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
 
             let Data = {
-              "updateBill": updateBillobj,
-              "paymentCreditUpdate": CreditPaymentobj
+              "update_Pharmacy_BillBalAmount": updateBillobj,
+              "salesPayment": CreditPaymentobj
             };
             console.log(Data);
-                
-            // this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-            //   if (response) {
-            //     Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-            //       if (result.isConfirmed) {
-            //         // let m = response;
-            //         // this.getpaymentPrint(response);
-            //         this._matDialog.closeAll();
-            //       }
-            //     });
-            //   }
-            //   else {
-            //     Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-            //   }
+                debugger
+            this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+              console.log(response)
+              if (response) {
+                console.log(response)
+                Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
+                  if (result.isConfirmed) {
+                    // let m = response;
+                    // this.getpaymentPrint(response);
+                    this._matDialog.closeAll();
+                  }
+                });
+              }
+              else {
+                Swal.fire('Error !', 'Sales  Payment not saved', 'error');
+              }
 
-            // });
+            });
 
           }
           else {
@@ -349,30 +355,56 @@ console.log(event);
     })
   );
 }
-getPrint2(el) {
-  debugger
-  var D_data = {
-    "SalesID":el.SalesId,// 
-    "OP_IP_Type": el.OP_IP_Type
+  getPrint2(el) {
+    debugger
+    var D_data = {
+      "SalesID": el.SalesId,// 
+      "OP_IP_Type": el.OP_IP_Type
+    }
+
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+
+        this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj);
+        this.getTemplateTax();
+
+        // this.CustomerName=this.reportPrintObj.PatientName;
+        // this.CustomerId=this.reportPrintObj.RegNo;
+        // this.CustAddress= " " //this.reportPrintObj.Address;
+        // this.ExMobile=this.reportPrintObj.ExtMobileNo;
+      })
+    );
   }
 
-  let printContents;
-  this.subscriptionArr.push(
-    this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+  getPrint3(el) {
+    debugger
+    var D_data = {
+      "SalesID": el.SalesId,// 
+      "OP_IP_Type": el.OP_IP_Type
+    }
 
-      this.reportPrintObjList = res as Printsal[];
-      console.log(this.reportPrintObjList);
-     
-      this.reportPrintObj = res[0] as Printsal;
-      console.log(this.reportPrintObj);
-      this.getTemplateTax();
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
 
-      // this.CustomerName=this.reportPrintObj.PatientName;
-      // this.CustomerId=this.reportPrintObj.RegNo;
-      // this.CustAddress= " " //this.reportPrintObj.Address;
-      // this.ExMobile=this.reportPrintObj.ExtMobileNo;
-    })
-  );
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+
+        this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj);
+        this.getTemplateTax2();
+
+        // this.CustomerName=this.reportPrintObj.PatientName;
+        // this.CustomerId=this.reportPrintObj.RegNo;
+        // this.CustAddress= " " //this.reportPrintObj.Address;
+        // this.ExMobile=this.reportPrintObj.ExtMobileNo;
+      })
+    );
   }
 
   getTemplateTax() {
@@ -399,7 +431,7 @@ getPrint2(el) {
   
         var strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
-        <div style="display:flex;width:40px;margin-left:20px;">
+        <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
         </div>
       
@@ -447,6 +479,79 @@ getPrint2(el) {
   
   
   }
+  getTemplateTax2() {
+    debugger
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
+  
+      this.printTemplate = resData[0].TempDesign;
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
+      // ;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
+      var strrowslist = "";
+      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+        console.log(this.reportPrintObjList);
+        var objreportPrint = this.reportPrintObjList[i - 1];
+        let PackValue = '1200'
+        // <div style="display:flex;width:60px;margin-left:20px;">
+        //     <div>`+ i + `</div> 
+        // </div>
+  
+        var strabc = `<hr style="border-color:white" >
+        <div style="display:flex;margin:8px 0">
+        <div style="display:flex;width:20px;margin-left:20px;">
+            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+      
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+ objreportPrint.HSNcode + `</div> 
+        </div>
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+objreportPrint.ManufShortName + `</div> 
+        </div>
+        <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
+            <div>`+ objreportPrint.ItemName + `</div> 
+        </div>
+         <div style="display:flex;width:60px;text-align:left;">
+            <div>`+ objreportPrint.Qty + `</div> 
+        </div>
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+ objreportPrint.BatchNo + `</div> 
+         </div>
+        <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+        <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+        </div>
+        <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
+        <div>`+ objreportPrint.UnitMRP + `</div> 
+        </div>
+        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+            <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+        </div>
+        </div>`;
+        strrowslist += strabc;
+      }
+      var objPrintWordInfo = this.reportPrintObjList[0];
+  
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+  
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      console.log(this.printTemplate);
+  
+      setTimeout(() => {
+         this.print3();
+      }, 1000);
+    });
+  
+  
+  }
+
 getTemplate(old = true) {
   debugger
   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
@@ -585,6 +690,42 @@ print2() {
   // </html>`);
   
   // popupWin.document.close();
+}
+print3() {
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+  // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  // </html>`);
+  
+  popupWin.document.close();
 }
 }
 

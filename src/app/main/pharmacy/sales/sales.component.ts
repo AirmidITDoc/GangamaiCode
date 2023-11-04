@@ -50,7 +50,7 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-  paymethod: boolean = false;
+  paymethod: boolean = true;
   // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
@@ -1492,7 +1492,8 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').enable();
       if (this.DiscAmt > PurTotalAmount)
       {
-        Swal.fire('Discount greater than Purchase Rate !')
+        Swal.fire('Discount greater than Purchase Rate !');
+        this.ItemFormreset();
       }
       this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
@@ -1622,7 +1623,7 @@ OP_IPType:any=0;
         this.ItemSubform.get('PatientName').reset();
         this.ItemSubform.get('PatientName').setValidators([Validators.required]);
         this.ItemSubform.get('PatientName').enable();
-        this.paymethod=false;
+        this.paymethod=true;
         this.OP_IPType=2;
         // this.OP_IP_Id=0;
       // } else {
@@ -2456,6 +2457,7 @@ export class Printsal {
   CompanyName: any;
   HTotalAmount:any;
   ExtMobileNo:any;
+  StoreAddress:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2507,6 +2509,7 @@ export class Printsal {
     this.ItemShortName=Printsal.ItemShortName || ''
     this.HTotalAmount=Printsal.HTotalAmount || '';
     this.ExtMobileNo=Printsal.ExtMobileNo || '';
+    this.StoreAddress=Printsal.StoreAddress || '';
   }
 }
 

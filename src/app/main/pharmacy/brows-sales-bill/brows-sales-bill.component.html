@@ -58,8 +58,8 @@
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
                                                     <input matStartDate formControlName="startdate"
-                                                        placeholder="Start date">
-                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                        placeholder="Start date" (dateChange)="getSalesList()">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getSalesList()">
                                                 </mat-date-range-input>
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -67,25 +67,25 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Search RegNo</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput>
+                                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="getSalesList()">
                                             </mat-form-field>
                                             <mat-form-field appearance="outline">
                                                 <mat-label>First Name</mat-label>
-                                                <input name="FirstName" formControlName="F_Name" matInput>
+                                                <input name="FirstName" formControlName="F_Name" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Last Name</mat-label>
-                                                <input name="LastName" formControlName="L_Name" matInput>
+                                                <input name="LastName" formControlName="L_Name" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Sales No</mat-label>
-                                                <input name="LastName" formControlName="SalesNo" matInput>
+                                                <input name="LastName" formControlName="SalesNo" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                                <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type" (change)="getSalesList()">
                                                     <mat-radio-button value="3"> All</mat-radio-button>
                                                     <mat-radio-button value="0">OP</mat-radio-button>
                                                     <mat-radio-button value="1">IP</mat-radio-button>
@@ -137,14 +137,17 @@
                                                         style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <button mat-icon-button matTooltip="Print2"
-                                                            (click)="getPrint2(contact)">
+                                                        <!-- <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
                                                             <mat-icon>print2</mat-icon>
+                                                        </button> -->
+                                                        <button mat-icon-button matTooltip="Print2" (click)="getPrint3(contact)">
+                                                            <mat-icon>print3</mat-icon>
                                                         </button>
+
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="action" stickyEnd>
+                                                <!-- <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -154,9 +157,9 @@
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
-                                                <ng-container matColumnDef="payment" stickyEnd>
+                                                <!-- <ng-container matColumnDef="payment" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -164,6 +167,19 @@
                                                         <button mat-icon-button matTooltip="Payment" (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
+                                                    </mat-cell>
+                                                </ng-container> -->
+
+                                                <ng-container matColumnDef="payment" sticky>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">Payment
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <mat-icon *ngIf="contact.PaidType=='Credit' " matTooltip="Credit Bill" (click)="OnPayment(contact)">payment</mat-icon>
+                                                        <!-- <mat-icon
+                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                            *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
+                                                            class="red-600 s-16 ">circle</mat-icon> -->
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -810,16 +826,16 @@
                 </td>
             </tr>
             <tr style="font-size:12px;">
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Sr No.</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">HSN</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">Sr No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">HSN</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MFR</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Product Name</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Pack</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Batch No.</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Expiry Date</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">ExpDate</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Qty</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP ₹</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount ₹</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount</td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
@@ -964,3 +980,195 @@
         This is Computer generated invoice hence doesn’t require signature
     </div>
 </div>
+
+<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
+    <div class="watermark" style="position:absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 0.1;
+        z-index: 99;
+        color: black;
+        font-size: 70px;
+        transform: translate(-50%,-50%) rotate(-45deg);
+        white-space: nowrap;
+        pointer-events: none;">Shri Siddeshwar Medicals</div>
+    <div style="display:flex; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
+        <h3 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h3>
+        <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%; float: right;">  Billed By: {{reportPrintObjList[0]?.UserName}} </span> -->
+    </div>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <h3 style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        {{reportPrintObjList[0]?.StoreName}}</h3>
+
+                    <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
+                    <!-- <div>GST No. 29ABCTS6874R1Z8</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
+                        <span>D.L.No. 123456789456123</span>
+                    </div> -->
+                    <div>
+                        <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
+                        <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
+                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                                Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Address: {{'-'}}
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+                <!-- <td>
+                </td> -->
+              
+            </tr>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <div>GST No. {{reportPrintObjList[0]?.GSTIN}}</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span>
+                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
+                                Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Date}}</span><br>
+                                <!-- BillNo : {{reportPrintObjList[0]?.SalesNo}} <br> -->
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+            </tr>
+
+            <tr style="font-size:10px;">
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Sr No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">HSN</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MFR</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 100px;">Product Name</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Pack</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Batch No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">ExpDate</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Qty</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Total Amount</td>
+            </tr>
+            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.SalesNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.HSNcode}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.ItemName}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.BatchNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.Qty}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
+                <td style="border: 1px solid black;vertical-align: top; align-content: right;
+                padding: 0;height: 15px;">{{item?.TotalAmount}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;"> 
+                    <div style="font-weight: 400;">Terms & Conditions</div>
+                    <ul style="margin: 5px 0 0 0;
+                    font-size: 10px;
+                    padding-left: 17px;
+                    font-weight: 400;">
+                        <li>
+                           Please check the item before leaving medical.
+                        </li>
+                        <li>
+                            Please consult your doctor before consuming the medicine
+                        </li>
+                        <li>
+                            All disputes are subject to Vijayapura jurisdiction only
+                        </li>
+                    </ul>
+                </td>
+                <!-- <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
+                </td> -->
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;width: 300px;font-size:10px;"> 
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Sub Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Discount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Total GST</span>
+                        <span style="margin:0 5px">:</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt + reportPrintObjList[0]?.IGSTAmt}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Round off</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ 0.00</span>
+                    </div>
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Grand Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    <div style="font-size: 15px;font-weight: bold">
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
+                    </div>
+                </td>
+                <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
+                padding: 5px 10px;text-align: center;">
+                
+                    <span style="font-size: 11px;opacity:.6;">For Shri Siddeshwar Medicals 24/7</span>
+                </td>
+            </tr> -->
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    Total Invoice Value in words: 
+                </td>
+            </tr> -->
+            <tr style="font-size: 10px;">
+                <td colspan="5">
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
+                </td>
+                <td colspan="5" style="text-align: right;">
+                    This is Computer generated invoice hence doesn’t require signature
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
+    </div> -->
+</div>
+
+

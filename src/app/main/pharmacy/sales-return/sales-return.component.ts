@@ -43,7 +43,11 @@ export class SalesReturnComponent implements OnInit {
   FinalTotalAmount:any=0;
   sIsLoading:any;
   screenFromString = 'payment-form';
-  
+  SalesID:any;
+  SalesDetId:any;
+  OP_IP_Id:any;
+  IspureRate:boolean=true;
+
   displayedColumns = [
     // 'SalesId',
     'Date',
@@ -56,7 +60,38 @@ export class SalesReturnComponent implements OnInit {
   
   dspSalesDetColumns = [
     // 'SalesId',
-    'SalesNo',
+    // 'SalesNo',
+    // 'SalesDetId',
+    // 'OP_IP_ID',
+    // 'ItemId',
+    'ItemName',
+    'BatchNo',
+    // 'BatchExpDate',
+    // 'UnitMRP',
+    'Qty',
+    // 'ReturnQty',
+    'TotalAmount',
+    // 'VatPer',
+    // 'VatAmount',
+    'DiscPer',
+    // 'DiscAmount',
+    // 'GrossAmount',
+    // 'LandedPrice',
+    // 'TotalLandedAmount',
+    // 'IsBatchRequired',
+    // 'PurRateWf',
+    // 'PurTotAmt',
+    // 'IsPrescription',
+    // 'CGSTPer',
+    // 'SGSTPer',
+    // 'IGSTPer',
+    // 'IsPurRate',
+    // 'StkID'
+  ]
+
+  dspSalesDetselectedColumns = [
+    // 'SalesId',
+    // 'SalesNo',
     // 'SalesDetId',
     // 'OP_IP_ID',
     // 'ItemId',
@@ -68,21 +103,23 @@ export class SalesReturnComponent implements OnInit {
     'ReturnQty',
     'TotalAmount',
     'VatPer',
-    // 'VatAmount',
+    'VatAmount',
     'DiscPer',
     'DiscAmount',
     'GrossAmount',
-    // 'LandedPrice',
-    // 'TotalLandedAmount',
+    'LandedPrice',
+    'TotalLandedAmount',
     // 'IsBatchRequired',
-    // 'PurRateWf',
-    // 'PurTotAmt',
-    // 'IsPrescription',
+    'PurRateWf',
+    'PurTotAmt',
     'CGSTPer',
+    'CGSTAmount',
     'SGSTPer',
+    'SGSTAmount',
     'IGSTPer',
+    'IGSTAmount',
     // 'IsPurRate',
-    // 'StkID'
+    'StkID'
   ]
   SearchForm: FormGroup;
   FinalReturnform: FormGroup;
@@ -170,13 +207,14 @@ export class SalesReturnComponent implements OnInit {
  }
  
   getSalesDetCashList(Params){
+    this.SalesID=Params.SalesId;
     var vdata={
       SalesId:Params.SalesId,                                            
       SalesNo: Params.SalesNo  ,                                     
       StoreId :this.SearchForm.get('StoreId').value.storeid || 0  ,
       CashCounterId : Params.CashCounterID 
     }
-  //  console.log(vdata);
+   console.log(vdata);
     this._SalesReturnService.getSalesDetCashList(vdata).subscribe(data=>{
       this.dssaleDetailList.data= data as SalesDetailList[];
       // this.dssaleList.sort = this.sort;
@@ -202,15 +240,15 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getCellCalculation(contact,ReturnQty){
-    debugger
+   
     this.RQty=parseInt(ReturnQty);
-    console.log(contact.ReturnQty);
-    console.log(this.RQty);
-
+   
     if( (parseInt(this.RQty)) > (parseInt(contact.Qty))){
       Swal.fire("Return Qty cannot be greater than Qty")
+
     }
     else{
+      
       let index = this.Itemselectedlist.indexOf(contact);
       if (index >= 0) {
         this.Itemselectedlist.splice(index, 1);
@@ -221,27 +259,30 @@ export class SalesReturnComponent implements OnInit {
 
       this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) /100).toFixed(2);
-      // this.VatAmount = (parseFloat(contact.UnitMRP)  * Val(txtVatPer.Text) / 100) * Val(txtIssueQty.Text)
-      this.CGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);//(Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.VatAmount = ((parseFloat(contact.UnitMRP)  * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer)) /100)) * parseInt(this.RQty)).toFixed(2);//(Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
 
-      
-      this.SGSTAmount =((((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-      this.IGSTAmount =((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) /100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      debugger
+      this.SGSTAmount =(((parseFloat(contact.UnitMRP)) * (parseFloat(contact.SGSTPer)) /100) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.IGSTAmount =((((parseFloat(contact.UnitMRP)) * (parseFloat(contact.IGSTPer)) /100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
       this.TotalAmt =  (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      if(parseFloat(contact.LandedPrice) > 0.0){
       this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
-      this.PurAmt =  (parseFloat(contact.PurPrice) * parseInt(this.RQty)).toFixed(2);
-      this.Qty= parseInt(contact.Qty) - parseInt(this.RQty);
+      }
+      this.PurAmt =  (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
+      // this.Qty= parseInt(contact.Qty) - parseInt(this.RQty);
 
 
       this.Itemselectedlist.push(
         {
   
           SalesNo:contact.SalesNo,
+          SalesDetId:contact.SalesDetId,
           OP_IP_ID:contact.OP_IP_ID,
           ItemName:contact.ItemName,
           BatchNo:contact.BatchNo,
           UnitMRP:contact.UnitMRP,
-          Qty:this.Qty,
+          Qty:contact.Qty,
           ReturnQty:this.RQty,
           TotalAmount:this.TotalAmt,
           VatPer:contact.VatPer,
@@ -249,9 +290,16 @@ export class SalesReturnComponent implements OnInit {
           DiscPer:contact.DiscPer,
           DiscAmount:this.DiscAmt,
           GrossAmount:this.GrossAmt,
+          LandedPrice:contact.LandedPrice,
+          TotalLandedAmount:this.LandAmt,
+          PurRateWf:contact.PurRateWf,
+          PurTotAmt:this.PurAmt,
           CGSTPer:contact.CGSTPer,
+          CGSTAmount:this.CGSTAmount,
           SGSTPer:contact.SGSTPer,
+          SGSTAmount:this.SGSTAmount,
           IGSTPer:contact.IGSTPer,
+          IGSTAmount:this.IGSTAmount,
           IsPurRate:contact.IsPurRate,
           StkID:contact.StkID
   
@@ -269,6 +317,7 @@ export class SalesReturnComponent implements OnInit {
     this.Itemselectedlist.push(
       {
         SalesNo:contact.SalesNo,
+        SalesDetId:contact.SalesDetId,
         OP_IP_ID:contact.OP_IP_ID,
         ItemName:contact.ItemName,
         BatchNo:contact.BatchNo,
@@ -281,6 +330,10 @@ export class SalesReturnComponent implements OnInit {
         DiscPer:contact.DiscPer,
         DiscAmount:contact.DiscAmount,
         GrossAmount:contact.GrossAmount,
+        LandedPrice:contact.LandedPrice,
+        TotalLandedAmount:contact.LandAmt,
+        PurRateWf:contact.PurRateWf,
+        PurTotAmt:contact.PurAmt,
         CGSTPer:contact.CGSTPer,
         SGSTPer:contact.SGSTPer,
         IGSTPer:contact.IGSTPer,
@@ -290,7 +343,9 @@ export class SalesReturnComponent implements OnInit {
       });
     this.selectedssaleDetailList.data = this.Itemselectedlist;
 
-    // this.RQty=contact.Qty;
+    this.OP_IP_Id=contact.OP_IP_ID;
+    this.SalesDetId=contact.SalesDetId;
+    this.NetAmt=contact.GrossAmount;
   }
 
   onclickrow(contact) {
@@ -300,33 +355,34 @@ export class SalesReturnComponent implements OnInit {
   onSave(){
     
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] = this.dateTimeObj.date;
-    salesReturnHeader['time'] = this.dateTimeObj.time;
-    salesReturnHeader['salesId'] =0,// this.salesId;
-    salesReturnHeader['oP_IP_ID'] =1,// this.OP_IP_Id;
-    salesReturnHeader['oP_IP_Type'] =1,// this.OP_IPType;
-    salesReturnHeader['totalAmount'] =0,// this.FinalTotalAmt
+    salesReturnHeader['Date'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'; //'2023-11-03T08:07:41.318Z';//this.dateTimeObj.date;
+    salesReturnHeader['time'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//'2023-11-03T08:07:41.318Z';//this.dateTimeObj.time;
+    salesReturnHeader['salesId'] =  this.SalesID;
+    salesReturnHeader['oP_IP_ID'] =this.OP_IP_Id;
+    salesReturnHeader['oP_IP_Type'] =2,// this.OP_IPType;
+    salesReturnHeader['totalAmount'] = this.FinalTotalAmount;
     salesReturnHeader['vatAmount'] = this.VatAmount;
-    salesReturnHeader['discAmount'] = 0,//this.FinalDiscAmt;
-    salesReturnHeader['netAmount'] = this.NetAmt;
-    salesReturnHeader['paidAmount'] = 0;
-    salesReturnHeader['balanceAmount'] = this.NetAmt;
+    salesReturnHeader['discAmount'] = this.DiscAmt;
+    salesReturnHeader['netAmount'] =  this.FinalTotalAmount;
+    salesReturnHeader['paidAmount'] = this.FinalTotalAmount;
+    salesReturnHeader['balanceAmount'] = 0;
     salesReturnHeader['isSellted'] = 0;
     salesReturnHeader['isPrint'] = 0;
     salesReturnHeader['isFree'] = 0;
     salesReturnHeader['unitID'] = 1;
     salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
     salesReturnHeader['storeID'] = this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['Narration'] = '';
     salesReturnHeader['salesReturnId'] = 0;
   
 
     let salesReturnDetailarr = [];
     this.selectedssaleDetailList.data.forEach((element) => {
       let salesReturnDetail = {};
-      salesReturnDetail['salesID'] = 0;
+      salesReturnDetail['salesID'] =  element.SalesId;
       salesReturnDetail['itemId'] = element.ItemId;
       salesReturnDetail['batchNo'] = element.BatchNo;
-      salesReturnDetail['batchExpDate'] = element.BatchExpDate;
+      salesReturnDetail['batchExpDate'] = this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//element.BatchExpDate;
       salesReturnDetail['unitMRP'] = element.UnitMRP;
       salesReturnDetail['qty'] = element.Qty;
       salesReturnDetail['totalAmount'] = element.TotalAmount;
@@ -335,9 +391,9 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetail['discPer'] = element.DiscPer;
       salesReturnDetail['discAmount'] = element.DiscAmount;
       salesReturnDetail['grossAmount'] = element.GrossAmount;
-      salesReturnDetail['landedPrice'] =0,// element.LandedRate;
-      salesReturnDetail['totalLandedAmount'] = 0,//element.LandedRateandedTotal;
-      salesReturnDetail['purRateWf'] = 0,//element.PurchaseRate;
+      salesReturnDetail['landedPrice'] =element.LandedPrice;
+      salesReturnDetail['totalLandedAmount'] = element.TotalLandedAmount;
+      salesReturnDetail['purRateWf'] = element.PurRateWf;
       salesReturnDetail['purTotAmt'] = element.PurTotAmt;
       salesReturnDetail['cgstPer'] = element.CGSTPer;
       salesReturnDetail['cgstAmt'] = this.CGSTAmount;
@@ -346,7 +402,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetail['igstPer'] = element.IGSTPer
       salesReturnDetail['igstAmt'] = this.IGSTAmount
       salesReturnDetail['isPurRate'] = 0;
-      salesReturnDetail['stkID'] = 0,//element.StockId;
+      salesReturnDetail['stkID'] = element.StkID;
       salesReturnDetailarr.push(salesReturnDetail);
     });
 
@@ -356,7 +412,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturn_CurStk_Upt['itemId'] = element.ItemId;
       salesReturn_CurStk_Upt['issueQty'] = element.Qty;
       salesReturn_CurStk_Upt['storeID'] = this._loggedService.currentUserValue.user.storeId,
-      salesReturn_CurStk_Upt['stkID'] = 0,//element.StockId;
+      salesReturn_CurStk_Upt['stkID'] = element.StkID;
 
       salesReturn_CurStk_Uptarray.push(salesReturn_CurStk_Upt);
     });
@@ -364,7 +420,7 @@ export class SalesReturnComponent implements OnInit {
     let update_SalesReturnQty_SalesTblarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
       let update_SalesReturnQty_SalesTbl = {};
-      update_SalesReturnQty_SalesTbl['salesDetId'] = element.ItemId;
+      update_SalesReturnQty_SalesTbl['salesDetId'] = element.SalesDetId;
       update_SalesReturnQty_SalesTbl['returnQty'] = element.Qty;
      
       update_SalesReturnQty_SalesTblarray.push(update_SalesReturnQty_SalesTbl);
@@ -377,8 +433,8 @@ export class SalesReturnComponent implements OnInit {
     cal_GSTAmount_SalesReturn['salesReturnID'] = 0;
 
     let insert_ItemMovementReport_Cursor = {};
-    insert_ItemMovementReport_Cursor['id'] = 0;
-    insert_ItemMovementReport_Cursor['typeId'] = 0;
+    insert_ItemMovementReport_Cursor['id'] =   this.SalesID
+    insert_ItemMovementReport_Cursor['typeId'] = 2;
 
     console.log("Procced with Payment Option");
 
@@ -493,8 +549,12 @@ export class SalesDetailList {
   PurTotAmt:any;
   IsPrescription:any;
   CGSTPer:any;
+  CGSTAmount:any;
   SGSTPer:any;
+  SGSTAmount:any;
   IGSTPer:any;
+  IGSTAmount:any;
+  Narration:any;
   IsPurRate:any;
   StkID:any;
   /**
@@ -527,8 +587,12 @@ export class SalesDetailList {
       this.PurTotAmt= SalesDetailList.PurTotAmt || 0;
       this.IsPrescription= SalesDetailList.IsPrescription || 0;
       this.CGSTPer= SalesDetailList.CGSTPer || 0;
+      this.CGSTAmount= SalesDetailList.CGSTAmount || 0;
       this.SGSTPer= SalesDetailList.SGSTPer || 0;
+      this.SGSTAmount= SalesDetailList.SGSTAmount || 0;
       this.IGSTPer= SalesDetailList.IGSTPer || 0;
+      this.IGSTAmount= SalesDetailList.IGSTAmount || 0;
+      this.Narration=SalesDetailList.Narration || '';
       this.IsPurRate= SalesDetailList.IsPurRate || 0;
       this.StkID= SalesDetailList.StkID || 0;
     }
