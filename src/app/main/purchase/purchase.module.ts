@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { RetailerGrnlistForAccountComponent } from './retailer-grnlist-for-account/retailer-grnlist-for-account.component';
-import { MaterialConsumptionComponent } from './material-consumption/material-consumption.component';
-import { WorkOrderComponent } from './work-order/work-order.component';
+ 
 
 
 const appRoutes: Routes = [
@@ -92,7 +90,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [ RetailerGrnlistForAccountComponent, MaterialConsumptionComponent, WorkOrderComponent],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(appRoutes),
   ]
