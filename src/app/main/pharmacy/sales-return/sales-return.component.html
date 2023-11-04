@@ -173,7 +173,7 @@
                         <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                             <mat-table class="SalesDet" matSort [dataSource]="dssaleDetailList"
                                 [@animateStagger]="{value:'100'}" 
-                                style="overflow:auto; height:250px !important;width:50%;">
+                                style="overflow:auto; height:250px !important;width:40%;">
 
                                 <!-- <ng-container matColumnDef="SalesId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
@@ -189,13 +189,13 @@
                                         {{contact.SalesDetId}}
                                     </mat-cell>
                                 </ng-container> -->
-                                <ng-container matColumnDef="SalesNo">
+                                <!-- <ng-container matColumnDef="SalesNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.SalesNo}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <!-- <ng-container matColumnDef="OP_IP_ID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
                                     </mat-header-cell>
@@ -413,7 +413,7 @@
 
                             <mat-table class="SalesDetselected" matSort [dataSource]="selectedssaleDetailList"
                                 [@animateStagger]="{value:'100'}"
-                                style="overflow:auto; height: 250px !important;width:50%;">
+                                style="overflow:auto; height: 250px !important;width:60%;">
 
                                 <!-- <ng-container matColumnDef="SalesId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
@@ -429,13 +429,13 @@
                                         {{contact.SalesDetId}}
                                     </mat-cell>
                                 </ng-container> -->
-                                <ng-container matColumnDef="SalesNo">
+                                <!-- <ng-container matColumnDef="SalesNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.SalesNo}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <!-- <ng-container matColumnDef="OP_IP_ID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
                                     </mat-header-cell>
@@ -634,13 +634,13 @@
                                         {{contact.CGSTPer}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="IsPurRate">
+                                <!-- <ng-container matColumnDef="IsPurRate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.IsPurRate}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="StkID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
@@ -688,7 +688,7 @@
                             | currency:'INR' }}</span>
                             <hr>
                             <form [formGroup]="FinalReturnform">
-                                <div style="margin-left: 900px;">
+                                <div style="margin-left: 800px;">
                                     <div>Net Amount</div>
                                     <div>
                                         <mat-form-field appearance="outline" style="width: 180px;">

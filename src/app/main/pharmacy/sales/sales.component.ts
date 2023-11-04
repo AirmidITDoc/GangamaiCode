@@ -1492,7 +1492,8 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').enable();
       if (this.DiscAmt > PurTotalAmount)
       {
-        Swal.fire('Discount greater than Purchase Rate !')
+        Swal.fire('Discount greater than Purchase Rate !');
+        this.ItemFormreset();
       }
       this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       this.add = true;
@@ -2456,6 +2457,7 @@ export class Printsal {
   CompanyName: any;
   HTotalAmount:any;
   ExtMobileNo:any;
+  StoreAddress:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2507,6 +2509,7 @@ export class Printsal {
     this.ItemShortName=Printsal.ItemShortName || ''
     this.HTotalAmount=Printsal.HTotalAmount || '';
     this.ExtMobileNo=Printsal.ExtMobileNo || '';
+    this.StoreAddress=Printsal.StoreAddress || '';
   }
 }
 

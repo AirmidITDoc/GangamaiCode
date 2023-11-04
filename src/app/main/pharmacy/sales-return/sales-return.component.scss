@@ -220,14 +220,14 @@ app-sales-return {
 
     .SalesDetselected {
         .mat-header-row {
-            min-width: 3000px;
+            min-width: 2000px;
             height: 10px;
             background-color: blue;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 3000px;
+            min-width: 2000px;
             min-height: 20px;
         }
 
@@ -258,7 +258,6 @@ app-sales-return {
             text-align: left;
         }
         
-
         .mat-column-ItemName {
             width: 350px;
             max-width: 350px;

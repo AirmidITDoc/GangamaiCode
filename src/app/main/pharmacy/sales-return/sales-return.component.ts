@@ -60,7 +60,7 @@ export class SalesReturnComponent implements OnInit {
   
   dspSalesDetColumns = [
     // 'SalesId',
-    'SalesNo',
+    // 'SalesNo',
     // 'SalesDetId',
     // 'OP_IP_ID',
     // 'ItemId',
@@ -91,7 +91,7 @@ export class SalesReturnComponent implements OnInit {
 
   dspSalesDetselectedColumns = [
     // 'SalesId',
-    'SalesNo',
+    // 'SalesNo',
     // 'SalesDetId',
     // 'OP_IP_ID',
     // 'ItemId',
@@ -118,7 +118,7 @@ export class SalesReturnComponent implements OnInit {
     'SGSTAmount',
     'IGSTPer',
     'IGSTAmount',
-    'IsPurRate',
+    // 'IsPurRate',
     'StkID'
   ]
   SearchForm: FormGroup;

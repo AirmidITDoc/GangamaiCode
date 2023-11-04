@@ -137,9 +137,9 @@
                                                         style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
+                                                        <!-- <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
                                                             <mat-icon>print2</mat-icon>
-                                                        </button>
+                                                        </button> -->
                                                         <button mat-icon-button matTooltip="Print2" (click)="getPrint3(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
@@ -147,7 +147,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="action" stickyEnd>
+                                                <!-- <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -157,7 +157,7 @@
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <!-- <ng-container matColumnDef="payment" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
@@ -993,18 +993,19 @@
         white-space: nowrap;
         pointer-events: none;">Shri Siddeshwar Medicals</div>
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
-        <h1 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h1>
+        <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
+        <h3 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h3>
+        <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%; float: right;">  Billed By: {{reportPrintObjList[0]?.UserName}} </span> -->
     </div>
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
         <tbody>
             <tr>
                 <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
-                    <h3 style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">Shri Siddeshwar Medicals</h3>
+                    <h3 style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        {{reportPrintObjList[0]?.StoreName}}</h3>
 
-                    <div>Shri Shivanubhava Samudaya Bhavan Ground Floor, behind Shri
-                        Siddeshwara Temple, Vijayapura, Karnataka 586101</div>
+                    <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
                     <!-- <div>GST No. 29ABCTS6874R1Z8</div>
                     <div>
                         <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
@@ -1033,17 +1034,17 @@
             </tr>
             <tr>
                 <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
-                    <div>GST No. 29ABCTS6874R1Z8</div>
+                    <div>GST No. {{reportPrintObjList[0]?.GSTIN}}</div>
                     <div>
-                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
-                        <span>D.L.No. 123456789456123</span>
+                        <span style="margin-right: 20px;">D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span>
+                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
                     </div>
                 </td>
                 <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
                     <table style="width: 100%;border-collapse: collapse;font-size:10px;">
                         <!-- <tr> -->
                             <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
-                                <!-- Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.SalesDate}}</span><br> -->
+                                Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Date}}</span><br>
                                 <!-- BillNo : {{reportPrintObjList[0]?.SalesNo}} <br> -->
                             </td>
                         <!-- </tr> -->
@@ -1051,17 +1052,17 @@
                 </td>
             </tr>
 
-            <tr style="font-size:12px;">
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">Sr No.</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">HSN</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MFR</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Product Name</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Pack</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Batch No.</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">ExpDate</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Qty</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount</td>
+            <tr style="font-size:10px;">
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Sr No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">HSN</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MFR</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 100px;">Product Name</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Pack</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Batch No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">ExpDate</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Qty</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Total Amount</td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
@@ -1086,7 +1087,7 @@
                 padding: 0;height: 15px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
-                <td colspan="4" style="border: 1px solid black;vertical-align: top;
+                <td colspan="6" style="border: 1px solid black;vertical-align: top;
                 padding: 0 10px 10px;"> 
                     <div style="font-weight: 400;">Terms & Conditions</div>
                     <ul style="margin: 5px 0 0 0;
@@ -1153,19 +1154,19 @@
                 padding: 5px 10px;">
                     Total Invoice Value in words: 
                 </td>
-            </tr>
-            <tr style="font-weight: 500;">
+            </tr> -->
+            <tr style="font-size: 10px;">
                 <td colspan="5">
                     Billed By: {{reportPrintObjList[0]?.UserName}}
                 </td>
                 <td colspan="5" style="text-align: right;">
-                    Printed on 12/10/2023 12:45 pm
+                    This is Computer generated invoice hence doesn’t require signature
                 </td>
-            </tr> -->
+            </tr>
         </tbody>
     </table>
 
-    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
+    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
         This is Computer generated invoice hence doesn’t require signature
     </div> -->
 </div>
