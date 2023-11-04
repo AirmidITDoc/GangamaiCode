@@ -58,8 +58,8 @@
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
                                                     <input matStartDate formControlName="startdate"
-                                                        placeholder="Start date">
-                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                        placeholder="Start date" (dateChange)="getSalesList()">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getSalesList()">
                                                 </mat-date-range-input>
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -67,25 +67,25 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Search RegNo</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput>
+                                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="getSalesList()">
                                             </mat-form-field>
                                             <mat-form-field appearance="outline">
                                                 <mat-label>First Name</mat-label>
-                                                <input name="FirstName" formControlName="F_Name" matInput>
+                                                <input name="FirstName" formControlName="F_Name" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Last Name</mat-label>
-                                                <input name="LastName" formControlName="L_Name" matInput>
+                                                <input name="LastName" formControlName="L_Name" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Sales No</mat-label>
-                                                <input name="LastName" formControlName="SalesNo" matInput>
+                                                <input name="LastName" formControlName="SalesNo" matInput  (keyup)="getSalesList()">
                                             </mat-form-field>
 
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                                <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type" (change)="getSalesList()">
                                                     <mat-radio-button value="3"> All</mat-radio-button>
                                                     <mat-radio-button value="0">OP</mat-radio-button>
                                                     <mat-radio-button value="1">IP</mat-radio-button>
@@ -159,7 +159,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="payment" stickyEnd>
+                                                <!-- <ng-container matColumnDef="payment" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -167,6 +167,19 @@
                                                         <button mat-icon-button matTooltip="Payment" (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
+                                                    </mat-cell>
+                                                </ng-container> -->
+
+                                                <ng-container matColumnDef="payment" sticky>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">Payment
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <mat-icon *ngIf="contact.PaidType=='Credit' " matTooltip="Credit Bill" (click)="OnPayment(contact)">payment</mat-icon>
+                                                        <!-- <mat-icon
+                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                            *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
+                                                            class="red-600 s-16 ">circle</mat-icon> -->
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -1030,7 +1043,7 @@
                     <table style="width: 100%;border-collapse: collapse;font-size:10px;">
                         <!-- <tr> -->
                             <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
-                                Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.SalesDate}}</span><br>
+                                <!-- Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.SalesDate}}</span><br> -->
                                 <!-- BillNo : {{reportPrintObjList[0]?.SalesNo}} <br> -->
                             </td>
                         <!-- </tr> -->

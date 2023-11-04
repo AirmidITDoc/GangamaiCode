@@ -50,7 +50,7 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-  paymethod: boolean = false;
+  paymethod: boolean = true;
   // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
@@ -1622,7 +1622,7 @@ OP_IPType:any=0;
         this.ItemSubform.get('PatientName').reset();
         this.ItemSubform.get('PatientName').setValidators([Validators.required]);
         this.ItemSubform.get('PatientName').enable();
-        this.paymethod=false;
+        this.paymethod=true;
         this.OP_IPType=2;
         // this.OP_IP_Id=0;
       // } else {

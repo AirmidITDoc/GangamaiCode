@@ -185,6 +185,17 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   OnPayment(SelectedValue) {
+    
+    // let PatientHeaderObj = {};
+    // debugger
+    // PatientHeaderObj['Date'] = SelectedValue.BillDate;
+    // PatientHeaderObj['PatientName'] = SelectedValue.PatientName;
+    // PatientHeaderObj['OPD_IPD_Id'] = SelectedValue.OPD_IPD_ID;
+    // PatientHeaderObj['NetPayAmount'] = SelectedValue.NetPayableAmt;
+    // PatientHeaderObj['BillId'] = SelectedValue.BillNo;
+
+
+
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "100vw",
@@ -192,7 +203,7 @@ export class BrowsSalesBillComponent implements OnInit {
         width: '100%',
         data: {
           vPatientHeaderObj: SelectedValue,
-          FromName: "Pharmacy"
+          FromName: "SalesSETTLEMENT"
         }
       });
 
@@ -201,8 +212,8 @@ export class BrowsSalesBillComponent implements OnInit {
       if (result.IsSubmitFlag == true) {
 
             let updateBillobj = {};
-            updateBillobj['BillNo'] = SelectedValue.BillNo;
-            updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+            updateBillobj['BillNo'] = SelectedValue.SalesId;
+            updateBillobj['BillBalAmount'] =0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
             //const updateBill = new UpdateBill(updateBillobj);
             let CreditPaymentobj = {};
@@ -241,26 +252,26 @@ export class BrowsSalesBillComponent implements OnInit {
 //            const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
 
             let Data = {
-              "updateBill": updateBillobj,
-              "paymentCreditUpdate": CreditPaymentobj
+              "update_Pharmacy_BillBalAmount": updateBillobj,
+              "salesPayment": CreditPaymentobj
             };
             console.log(Data);
                 
-            // this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-            //   if (response) {
-            //     Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-            //       if (result.isConfirmed) {
-            //         // let m = response;
-            //         // this.getpaymentPrint(response);
-            //         this._matDialog.closeAll();
-            //       }
-            //     });
-            //   }
-            //   else {
-            //     Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-            //   }
+            this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+              if (response) {
+                Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
+                  if (result.isConfirmed) {
+                    // let m = response;
+                    // this.getpaymentPrint(response);
+                    this._matDialog.closeAll();
+                  }
+                });
+              }
+              else {
+                Swal.fire('Error !', 'Sales  Payment not saved', 'error');
+              }
 
-            // });
+            });
 
           }
           else {

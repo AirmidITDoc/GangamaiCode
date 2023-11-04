@@ -71,6 +71,9 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesReturnDetails", Param);
   }
 
+  public InsertSalessettlement(emp){
+    return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
+  }
   
   
 }
