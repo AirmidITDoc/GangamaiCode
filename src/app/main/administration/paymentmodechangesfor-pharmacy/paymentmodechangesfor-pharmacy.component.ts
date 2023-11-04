@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
-import { PaymentmodechangeforpharmacyService } from './paymentmodechangeforpharmacy.service';
+import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -33,7 +33,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
  
 
   constructor(
-    public _PaymentmodechangeforpharmacyService:PaymentmodechangeforpharmacyService,
+    public _PaymentmodechangeforpharmacyService:PaymentmodechangesforpharmacyService,
     private _fuseSidebarService: FuseSidebarService,
   ) { }
 
