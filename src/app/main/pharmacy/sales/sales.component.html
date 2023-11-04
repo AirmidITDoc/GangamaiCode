@@ -48,11 +48,11 @@
                                                 <!-- (change)="onChangeReg($event)" -->
                                                 <mat-radio-group aria-label="Select an option"
                                                     formControlName="PatientType" name="PatientType"
-                                                    style="margin-top: 12px;" (change)="onChangePatientType($event)">
+                                                    style="margin-top: 12px;" (change)="onChangePatientType($event)"
+                                                    (blur)="onChangePatientType($event)">
                                                     <mat-radio-button value="OP">OP</mat-radio-button>
                                                     <mat-radio-button value="IP">IP</mat-radio-button>
-                                                    <mat-radio-button value="External"
-                                                        (checked)="true">External</mat-radio-button>
+                                                    <mat-radio-button value="External" (checked)="true">External</mat-radio-button>
                                                 </mat-radio-group>
 
                                                 <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'">
@@ -614,7 +614,7 @@
                                                             <mat-label>Discount %</mat-label>
                                                             <input matInput [(ngModel)]="FinalDiscPer"
                                                                 name="FinalDiscPer" formControlName="FinalDiscPer"
-                                                                (keyup)="getFinalDiscperAmt()" type="number"
+                                                                (blur)="getFinalDiscperAmt()" type="number"
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
@@ -687,6 +687,7 @@
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
+                                                        <!-- <button class="footer-btn" (click)="payOnline()">Pay Online</button> -->
                                                     </div>
 
                                                 </div>
@@ -1147,7 +1148,7 @@
                             </div>
                             <div *ngFor="let item of salesIdWiseObj | keyvalue">
                                 <div>
-                                    <h2>Sales NO: {{item.key}} <button class="next-btn"
+                                    <h2>Sales No: {{item.key}} <button class="next-btn"
                                             style="margin-left: 10px;">repeat</button> </h2>
 
                                 </div>

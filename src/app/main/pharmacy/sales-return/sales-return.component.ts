@@ -49,7 +49,7 @@ export class SalesReturnComponent implements OnInit {
   IspureRate:boolean=true;
 
   displayedColumns = [
-    'SalesId',
+    // 'SalesId',
     'Date',
     'SalesNo',
     'RegNo',
@@ -62,7 +62,7 @@ export class SalesReturnComponent implements OnInit {
     // 'SalesId',
     'SalesNo',
     // 'SalesDetId',
-    'OP_IP_ID',
+    // 'OP_IP_ID',
     // 'ItemId',
     'ItemName',
     'BatchNo',
@@ -72,7 +72,7 @@ export class SalesReturnComponent implements OnInit {
     'ReturnQty',
     'TotalAmount',
     'VatPer',
-    'VatAmount',
+    // 'VatAmount',
     'DiscPer',
     'DiscAmount',
     'GrossAmount',
@@ -85,8 +85,8 @@ export class SalesReturnComponent implements OnInit {
     'CGSTPer',
     'SGSTPer',
     'IGSTPer',
-    'IsPurRate',
-    'StkID'
+    // 'IsPurRate',
+    // 'StkID'
   ]
 
   dspSalesDetselectedColumns = [

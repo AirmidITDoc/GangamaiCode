@@ -41,5 +41,11 @@ export class RequestforlabtestService {
   public LabRequestSave(employee) {
     return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee);
   }
+
+  // paymentBaseUrl = 'https://www.plutuscloudserviceuat.in:8201/API/CloudBasedIntegration/V1';
+
+  // public payOnline(req) {
+  //   return this._httpClient.post(this.paymentBaseUrl + "/UploadBilledTransaction", req);
+  // }
  
 }

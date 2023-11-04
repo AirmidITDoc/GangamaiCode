@@ -93,20 +93,20 @@
 
                         <div>
                             <mat-table matSort [dataSource]="dssaleList" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto; height: 300px !important;" class="table1">
+                                style="overflow:auto; height: 200px !important;" class="table1">
 
-                                <ng-container matColumnDef="SalesId">
+                                <!-- <ng-container matColumnDef="SalesId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
                                         {{contact.SalesId}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Date | date:'sortDate'}}
+                                        {{contact.Date | date:'ddMMyyyy'}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -173,7 +173,7 @@
                         <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                             <mat-table class="SalesDet" matSort [dataSource]="dssaleDetailList"
                                 [@animateStagger]="{value:'100'}" 
-                                style="overflow:auto; height:200px !important;width:50%;">
+                                style="overflow:auto; height:250px !important;width:50%;">
 
                                 <!-- <ng-container matColumnDef="SalesId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
@@ -196,13 +196,13 @@
                                         {{contact.SalesNo}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="OP_IP_ID">
+                                <!-- <ng-container matColumnDef="OP_IP_ID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.OP_IP_ID}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <!-- <ng-container matColumnDef="ItemId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
                                     </mat-header-cell>
@@ -274,13 +274,13 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="VatAmount">
+                                <!-- <ng-container matColumnDef="VatAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.VatAmount}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="DiscPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
@@ -370,7 +370,7 @@
                                         {{contact.IGSTPer}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="IsPurRate">
+                                <!-- <ng-container matColumnDef="IsPurRate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -384,7 +384,7 @@
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.StkID}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <!-- <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -413,7 +413,7 @@
 
                             <mat-table class="SalesDetselected" matSort [dataSource]="selectedssaleDetailList"
                                 [@animateStagger]="{value:'100'}"
-                                style="overflow:auto; height: 200px !important;width:50%;">
+                                style="overflow:auto; height: 250px !important;width:50%;">
 
                                 <!-- <ng-container matColumnDef="SalesId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
@@ -436,13 +436,13 @@
                                         {{contact.SalesNo}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="OP_IP_ID">
+                                <!-- <ng-container matColumnDef="OP_IP_ID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.OP_IP_ID}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <!-- <ng-container matColumnDef="ItemId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
                                     </mat-header-cell>
@@ -516,13 +516,13 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="VatAmount">
+                                <!-- <ng-container matColumnDef="VatAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.VatAmount}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="DiscPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer

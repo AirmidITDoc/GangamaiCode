@@ -36,13 +36,12 @@ export class MaterialConsumptionService {
       UsedQty:'',
       Rate:'',
       Remark: '',
+      ItemID:''
       
     });
   }
  
-  // public getIndentID(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
-  // }
+ 
 
 
   // public getIndentList(Param){
@@ -59,6 +58,9 @@ export class MaterialConsumptionService {
 
   public getMaterialConList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MaterialConsumption_ByName",Param);
+  }
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
   
 }

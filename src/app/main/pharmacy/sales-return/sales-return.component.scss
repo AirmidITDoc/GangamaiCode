@@ -8,14 +8,14 @@ app-sales-return {
     font-size: medium;
     .SalesDet {
         .mat-header-row {
-            min-width: 2500px;
+            min-width: 2000px;
             height: 10px;
             background-color: blue;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 2500px;
+            min-width: 2000px;
             min-height: 20px;
         }
 
@@ -48,9 +48,9 @@ app-sales-return {
         
 
         .mat-column-ItemName {
-            width: 350px;
-            max-width: 350px;
-            min-width: 350px;
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
             text-align: left;
             text-align: left;
             white-space: nowrap;

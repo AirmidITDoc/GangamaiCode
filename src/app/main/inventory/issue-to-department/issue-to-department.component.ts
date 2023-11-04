@@ -67,13 +67,12 @@ export class IssueToDepartmentComponent implements OnInit {
   FromStoreList:any=[];
   screenFromString = 'admission-form';
   filteredOptions: any;
-  ItemnameList = [];
+ 
   showAutocomplete = false;
   noOptionFound: boolean = false;
   ItemCode:any;
   ItemName:any;
   Qty:any;
-  chargeslist: any = [];
   filteredOptionsItem:any;
   ItemId: any;
   BalanceQty: any;
@@ -99,13 +98,14 @@ export class IssueToDepartmentComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService
     
   ) {  }
 
   ngOnInit(): void {
    
     this.getToStoreSearchList();
-    this.getFromStoreSearchList();
+    this.gePharStoreList();
     // this.getIssueToDepList();
   }
   
@@ -124,13 +124,15 @@ export class IssueToDepartmentComponent implements OnInit {
     });
   }
 
-  getFromStoreSearchList() {
-    var data = {
-      "Id": 1
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
     }
-    this._IssueToDep.getFromStoreSearchList(data).subscribe(data => {
+    //console.log(vdata);
+    this._IssueToDep.getFromStoreSearchList(vdata).subscribe(data => {
       this.FromStoreList = data;
-       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+      //console.log(this.StoreList);
+      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
   
@@ -200,12 +202,10 @@ export class IssueToDepartmentComponent implements OnInit {
     return option.ItemID + ' ' + option.ItemName ;
   }
   getSelectedObjItem(obj) {
-    // this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemID;
+   // console.log(obj);
  
-
   }
+ 
  
 }
 export class NewIssueList3{
