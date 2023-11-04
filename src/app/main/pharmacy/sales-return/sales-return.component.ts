@@ -345,6 +345,7 @@ export class SalesReturnComponent implements OnInit {
 
     this.OP_IP_Id=contact.OP_IP_ID;
     this.SalesDetId=contact.SalesDetId;
+    this.NetAmt=contact.GrossAmount;
   }
 
   onclickrow(contact) {
@@ -354,8 +355,8 @@ export class SalesReturnComponent implements OnInit {
   onSave(){
     
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] ='2023-11-03T08:07:41.318Z';//this.dateTimeObj.date;
-    salesReturnHeader['time'] = '2023-11-03T08:07:41.318Z';//this.dateTimeObj.time;
+    salesReturnHeader['Date'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'; //'2023-11-03T08:07:41.318Z';//this.dateTimeObj.date;
+    salesReturnHeader['time'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//'2023-11-03T08:07:41.318Z';//this.dateTimeObj.time;
     salesReturnHeader['salesId'] =  this.SalesID;
     salesReturnHeader['oP_IP_ID'] =this.OP_IP_Id;
     salesReturnHeader['oP_IP_Type'] =2,// this.OP_IPType;
@@ -381,7 +382,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetail['salesID'] =  element.SalesId;
       salesReturnDetail['itemId'] = element.ItemId;
       salesReturnDetail['batchNo'] = element.BatchNo;
-      salesReturnDetail['batchExpDate'] = '2023-11-03T08:07:41.318Z';//element.BatchExpDate;
+      salesReturnDetail['batchExpDate'] = this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//element.BatchExpDate;
       salesReturnDetail['unitMRP'] = element.UnitMRP;
       salesReturnDetail['qty'] = element.Qty;
       salesReturnDetail['totalAmount'] = element.TotalAmount;
