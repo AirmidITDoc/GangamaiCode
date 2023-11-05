@@ -1188,7 +1188,7 @@
 
 
 <div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
-    <div class="watermark" style="position:absolute;
+    <!-- <div class="watermark" style="position:absolute;
         top: 50%;
         left: 50%;
         opacity: 0.1;
@@ -1197,7 +1197,7 @@
         font-size: 70px;
         transform: translate(-50%,-50%) rotate(-45deg);
         white-space: nowrap;
-        pointer-events: none;">Shri Siddeshwar Medicals</div>
+        pointer-events: none;">Shri Siddeshwar Medicals</div> -->
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
         <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h4>
@@ -1224,7 +1224,7 @@
                 <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
                     <table style="width: 100%;border-collapse: collapse;font-size:10px;">
                         <!-- <tr> -->
-                            <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
+                            <td style="vertical-align: top;padding:0 10px 10px">
                                 Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
                                 Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
                                 Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
@@ -1246,11 +1246,11 @@
                     </div>
                 </td>
                 <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
-                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                    <table style="width: 100%;font-size:10px;">
                         <!-- <tr> -->
-                            <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
+                            <td style="vertical-align: top;padding:0 10px 10px">
                                 Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Date}}</span><br>
-                                <!-- BillNo : {{reportPrintObjList[0]?.SalesNo}} <br> -->
+                                Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                             </td>
                         <!-- </tr> -->
                     </table>
@@ -1284,12 +1284,12 @@
                 padding: 0;height: 15px;">{{item?.BatchNo}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border: 1px solid black;vertical-align: top;text-align: center;
                 padding: 0;height: 15px;">{{item?.Qty}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border: 1px solid black;vertical-align: top;text-align: right;
                 padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
                 <td style="border: 1px solid black;vertical-align: top; text-align: right;
-                padding: 1px;height: 15px;">{{item?.TotalAmount}}</td>
+                padding: 3px;height: 15px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
                 <td colspan="6" style="border: 1px solid black;vertical-align: top;
