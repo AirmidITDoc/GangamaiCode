@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentmodechangeforpharmacyService {
+export class PaymentmodechangesforpharmacyService {
 
   userFormGroup:FormGroup;
   constructor(

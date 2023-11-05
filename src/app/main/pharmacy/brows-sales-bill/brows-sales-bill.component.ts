@@ -185,6 +185,8 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   OnPayment(SelectedValue) {
+    
+  
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "100vw",
@@ -192,7 +194,7 @@ export class BrowsSalesBillComponent implements OnInit {
         width: '100%',
         data: {
           vPatientHeaderObj: SelectedValue,
-          FromName: "Pharmacy"
+          FromName: "SalesSETTLEMENT"
         }
       });
 
@@ -201,13 +203,13 @@ export class BrowsSalesBillComponent implements OnInit {
       if (result.IsSubmitFlag == true) {
 
             let updateBillobj = {};
-            updateBillobj['BillNo'] = SelectedValue.BillNo;
-            updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
+            updateBillobj['BillNo'] = SelectedValue.SalesId;
+            updateBillobj['BillBalAmount'] =0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
             //const updateBill = new UpdateBill(updateBillobj);
             let CreditPaymentobj = {};
             CreditPaymentobj['paymentId'] = 0;
-            CreditPaymentobj['BillNo'] = SelectedValue.BillNo;
+            CreditPaymentobj['BillNo'] = SelectedValue.SalesId;
             CreditPaymentobj['ReceiptNo'] = '';
             CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
             CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
@@ -223,7 +225,7 @@ export class BrowsSalesBillComponent implements OnInit {
             CreditPaymentobj['AdvanceUsedAmount'] = 0;
             CreditPaymentobj['AdvanceId'] = 0;
             CreditPaymentobj['RefundId'] = 0;
-            CreditPaymentobj['TransactionType'] = result.submitDataPay.ipPaymentInsert.TransactionType || 0;
+            CreditPaymentobj['TransactionType'] = 4,// result.submitDataPay.ipPaymentInsert.TransactionType || 4;
             CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
             CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
             CreditPaymentobj['IsCancelled'] = 0;
@@ -241,26 +243,28 @@ export class BrowsSalesBillComponent implements OnInit {
 //            const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
 
             let Data = {
-              "updateBill": updateBillobj,
-              "paymentCreditUpdate": CreditPaymentobj
+              "update_Pharmacy_BillBalAmount": updateBillobj,
+              "salesPayment": CreditPaymentobj
             };
             console.log(Data);
-                
-            // this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-            //   if (response) {
-            //     Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-            //       if (result.isConfirmed) {
-            //         // let m = response;
-            //         // this.getpaymentPrint(response);
-            //         this._matDialog.closeAll();
-            //       }
-            //     });
-            //   }
-            //   else {
-            //     Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-            //   }
+                debugger
+            this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+              console.log(response)
+              if (response) {
+                console.log(response)
+                Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
+                  if (result.isConfirmed) {
+                    // let m = response;
+                    // this.getpaymentPrint(response);
+                    this._matDialog.closeAll();
+                  }
+                });
+              }
+              else {
+                Swal.fire('Error !', 'Sales  Payment not saved', 'error');
+              }
 
-            // });
+            });
 
           }
           else {

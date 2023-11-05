@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentmodechangesComponent } from './paymentmodechanges.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatSelectModule } from '@angular/material/select';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
@@ -21,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
@@ -35,19 +32,23 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatChipsModule } from '@angular/material/chips';
+import { SimplereportComponent } from './simplereport.component';
 
 
-const routes: Routes = [
+
+const routes : Routes =[
   {
-      path: '**',
-      component: PaymentmodechangesComponent,
+    path:"**",
+    component:SimplereportComponent,
   },
 ];
 
 @NgModule({
-  declarations: [PaymentmodechangesComponent],
+  declarations: [SimplereportComponent],
   imports: [
-     RouterModule.forChild(routes),
+    RouterModule.forChild(routes),
     CommonModule,
     MatExpansionModule,
     MatSlideToggleModule ,
@@ -86,13 +87,13 @@ const routes: Routes = [
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
+
   ],
   providers:[
     DatePipe,
   ],
   entryComponents: [
-    PaymentmodechangesComponent,
+    SimplereportComponent,
   ]
-
 })
-export class PaymentmodechangesModule { }
+export class SimpleReportModule { }
