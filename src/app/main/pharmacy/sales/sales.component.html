@@ -45,7 +45,6 @@
                                             <mat-card>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                                                 <div>
-                                                <!-- (change)="onChangeReg($event)" -->
                                                 <mat-radio-group aria-label="Select an option"
                                                     formControlName="PatientType" name="PatientType"
                                                     style="margin-top: 12px;" (change)="onChangePatientType($event)"
@@ -107,20 +106,6 @@
                                                         (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
                                                 </mat-form-field>
-
-                                                <!-- <span
-                                                    style="font-weight: 400;font-size: medium;margin-right: 10px !important;">
-                                                    {{StoreName}}</span> -->
-
-                                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>From Store</mat-label>
-                                                    <mat-select formControlName="StoreId" name="StoreId">
-                                                        <mat-option></mat-option>
-                                                        <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                            {{m.StoreName}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field> -->
                                                 </div>
                                                 <div>
                                                     <app-common-date [screenFrom]="screenFromString"
@@ -139,17 +124,8 @@
                                                                 <div style="font-size: medium;background-color: rgb(203, 214, 214);">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
                                                                         <span style="font-weight: 700;">Patient Information</span> 
-                                                                        
-                                                                        <!-- <mat-form-field appearance="outline">
-                                                                            <input matInput placeholder="OP_IP_ID" [(ngModel)]="OP_IP_Id" formControlName="OP_IP_ID">
-                                                                        </mat-form-field> -->
-
-                                                                        <!-- <div>
-                                                                            {{registerObj.AdmissionID}}
-                                                                        </div> -->
-
-                                                                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
-                                                                            <div class="flex-item" style="width: 150px;">
+                                                                        <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
+                                                                            <div class="flex-item" style="width: 30px;">
                                                                                 <h3 class="labels-h3">OP_IP_ID</h3>
                                                                             </div>
                                                                             <div class="flex-item-middle">
@@ -161,11 +137,11 @@
                                                                             <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
                                                                                 OP_IP_ID is required
                                                                             </mat-error>
-                                                                        </div>
+                                                                        </div> -->
 
 
-                                                                        <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span> 
-                                                                        <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
+                                                                        <!-- <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span>  -->
+                                                                        <!-- <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span> -->
 
                                                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                                                             <div class="patient-sub">
@@ -191,7 +167,7 @@
                                                                                         <span>{{PatientName}}</span>
                                                                                     </div>
 
-                                                                                    <div style="width:80px;margin-left: 10px;">
+                                                                                    <!-- <div style="width:80px;margin-left: 10px;">
                                                                                         <span>Mobile No</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
@@ -199,7 +175,7 @@
                                                                                     </div>
                                                                                     <div style="width: 150px;">
                                                                                         <span>{{registerObj.MobileNo}}</span>
-                                                                                    </div>
+                                                                                    </div> -->
 
                                                                                     <div style="width:100px;margin-left: 10px;">
                                                                                         <span>Ward /Bed</span>
@@ -211,6 +187,18 @@
                                                                                         <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
                                                                                     </div>
 
+                                                                                    <div style="width:100px;margin-left: 10px;" formControlName="OP_IP_ID" required>
+                                                                                        <span>Admission Id</span>
+                                                                                    </div>
+                                                                                    <div class="flex-item-middle">
+                                                                                        <span>:</span>
+                                                                                    </div>
+                                                                                    <div  style="width: 200px;">
+                                                                                        <span>{{registerObj.AdmissionID}}</span>
+                                                                                        <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                            OP_IP_ID is required
+                                                                                        </mat-error>
+                                                                                    </div>
 
 
                                                                                 </div>
