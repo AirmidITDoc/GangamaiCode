@@ -138,7 +138,35 @@
                                                                 <!-- ================================ LABEL HEADER  -->
                                                                 <div style="font-size: medium;background-color: rgb(203, 214, 214);">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
-                                                                        <span style="font-weight: 700;">Patient Information</span> <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span> <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
+                                                                        <span style="font-weight: 700;">Patient Information</span> 
+                                                                        
+                                                                        <!-- <mat-form-field appearance="outline">
+                                                                            <input matInput placeholder="OP_IP_ID" [(ngModel)]="OP_IP_Id" formControlName="OP_IP_ID">
+                                                                        </mat-form-field> -->
+
+                                                                        <!-- <div>
+                                                                            {{registerObj.AdmissionID}}
+                                                                        </div> -->
+
+                                                                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
+                                                                            <div class="flex-item" style="width: 150px;">
+                                                                                <h3 class="labels-h3">OP_IP_ID</h3>
+                                                                            </div>
+                                                                            <div class="flex-item-middle">
+                                                                                <h6 class="labels-h6">:</h6>
+                                                                            </div>
+                                                                            <div class="flex-item">
+                                                                                <h6 class="labels-h6"> {{registerObj.AdmissionID}}</h6>
+                                                                            </div>
+                                                                            <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                OP_IP_ID is required
+                                                                            </mat-error>
+                                                                        </div>
+
+
+                                                                        <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span> 
+                                                                        <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
+
                                                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                                                             <div class="patient-sub">
                                                                                 <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center" style="padding-top: 10px;">
@@ -284,6 +312,7 @@
                                             </div>
                                         </mat-card>
                                         </form>
+                                        <!-- Item Search  Option  -->
                                         <form [formGroup]="_salesService.IndentSearchGroup"
                                             style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
@@ -673,16 +702,16 @@
                                                         </div> -->
                                                     </div>
                                                     <div style="justify-content: end; float: right;">
-                                                        <mat-radio-group aria-label="Select an option"
-                                                            formControlName="CashPay" style="margin-top: 12px;">
+                                                        <mat-radio-group aria-label="Select an option" formControlName="CashPay" style="margin-top: 12px;"
+                                                        (change)="onChangePaymentMode($event)">
                                                             <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->
                                                         </mat-radio-group>
-                                                        <mat-form-field appearance="outline" fxFlex="15%" *ngIf="ItemSubform.get('CashPay').value === 'Online'">
+                                                        <mat-form-field appearance="outline" fxFlex="15%" *ngIf="IsOnlineRefNo">
                                                             <mat-label>Referance no</mat-label>
-                                                            <input matInput name="referanceNo" formControlName="referanceNo">
+                                                            <input matInput name="referanceNo" formControlName="referanceNo" required>
                                                         </mat-form-field>&nbsp;
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
@@ -1148,8 +1177,8 @@
                             </div>
                             <div *ngFor="let item of salesIdWiseObj | keyvalue">
                                 <div>
-                                    <h2>Sales No: {{item.key}} <button class="next-btn"
-                                            style="margin-left: 10px;">repeat</button> </h2>
+                                    <h3>Sales No: {{item.key}} <button class="next-btn"
+                                            style="margin-left: 10px;">repeat</button> </h3>
 
                                 </div>
                                 <div *ngFor="let ele of item.value">
