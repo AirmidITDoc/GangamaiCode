@@ -12,6 +12,10 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
+import { Subscription } from 'rxjs';
+import { Printsal } from '../sales/sales.component';
+import * as converter from 'number-to-words';
+
 
 @Component({
   selector: 'app-sales-return',
@@ -23,12 +27,14 @@ import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-s
 })
 export class SalesReturnComponent implements OnInit {
 
+  @ViewChild('billTemplate2') billTemplate2:ElementRef;
+
   GrossAmt: any;
   DiscAmt: any;
   VatAmount: any;
   CGSTAmount: any;
-  SGSTAmount: any;
   IGSTAmount: any;
+  SGSTAmount: any=0.0;
   TotalAmt: any;
   LandAmt: any;
   PurAmt: any;
@@ -36,6 +42,7 @@ export class SalesReturnComponent implements OnInit {
 
   StoreList: any = [];
   Itemselectedlist: any = [];
+  TempItemselectedlist: any = [];
   ReturnAmt: any = 0;
   NetAmt: any = 0.0;
   Qty: any = 0;
@@ -47,6 +54,15 @@ export class SalesReturnComponent implements OnInit {
   SalesDetId: any;
   OP_IP_Id: any;
   IspureRate: boolean = true;
+
+  reportPrintObj: Printsal;
+  reportPrintObjTax: Printsal;
+  subscriptionArr: Subscription[] = [];
+  reportPrintObjList: Printsal[] = [];
+  printTemplate: any;
+  currentDate =new Date();
+  OP_IP_Type:any;
+  IsPrescriptionFlag:boolean;
 
   displayedColumns = [
     // 'SalesId',
@@ -90,6 +106,7 @@ export class SalesReturnComponent implements OnInit {
   ]
 
   dspSalesDetselectedColumns = [
+    "buttons",
     // 'SalesId',
     // 'SalesNo',
     // 'SalesDetId',
@@ -199,7 +216,7 @@ export class SalesReturnComponent implements OnInit {
   onSelect(Parama) {
     // console.log(Parama);
     this.dssaleDetailList.data = [];
-    // this.selectedssaleDetailList.data = [];
+    this.selectedssaleDetailList.data = [];
 
     if (Parama.PaidType == "Paid") {
       this.getSalesDetCashList(Parama)
@@ -224,6 +241,7 @@ export class SalesReturnComponent implements OnInit {
       // this.dssaleList.paginator = this.paginator;
       console.log(this.dssaleDetailList.data);
     })
+    // this.OP_IP_Type=this.dssaleDetailList.data[0].OP
   }
 
   getSalesDetCreditList(Params) {
@@ -256,10 +274,9 @@ export class SalesReturnComponent implements OnInit {
       this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
       this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);//(Val(txtPerMRP.Text) * Val(txtCGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-
-      this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtSGSTPer.Text) / 100) * Val(txtIssueQty.Text)
-      this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);// (Val(txtPerMRP.Text) * Val(txtIGSTPer.Text) / 100) * Val(txtIssueQty.Text)
+      this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
       this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       if (parseFloat(contact.LandedPrice) > 0.0) {
         this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
@@ -298,18 +315,21 @@ export class SalesReturnComponent implements OnInit {
       // this.selectedssaleDetailList.data = this.Itemselectedlist;
 
     }
-    // this.ReturnQty.nativeElement.focus();
+    
   }
 
 
-  // @ViewChild('ReturnQty') ReturnQty: ElementRef;
-
+  
   SelectedItem(contact) {
     debugger
+    this.OP_IP_Type=contact.OP_IP_Type;
+    this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
+    this.TempItemselectedlist=this.selectedssaleDetailList;
+    console.log(this.TempItemselectedlist)
     if(parseInt(contact.Qty) >=1){
     if (this.selectedssaleDetailList.data.length >= 1) {
       this.selectedssaleDetailList.data.forEach((element) => {
-        // console.log(element)
+        
         if (element.ItemName == contact.ItemName) {
           Swal.fire("Item Already Present");
         } else {
@@ -331,36 +351,57 @@ export class SalesReturnComponent implements OnInit {
 
   AddItem(contact) {
     debugger
+    this.RQty=parseInt(contact.Qty);
     let Amount = contact.UnitMRP * contact.ReturnQty;
     this.NetAmt =parseFloat(contact.GrossAmount) + parseFloat(this.NetAmt);
+    this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+    this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+    this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+    this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    if (parseFloat(contact.LandedPrice) > 0.0) {
+      this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
+    }
+    this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
+
     this.Itemselectedlist.push(
       {
-        SalesNo: contact.SalesNo,
-        SalesDetId: contact.SalesDetId,
-        OP_IP_ID: contact.OP_IP_ID,
-        ItemName: contact.ItemName,
-        BatchNo: contact.BatchNo,
-        UnitMRP: contact.UnitMRP,
-        Qty: contact.Qty,
-        ReturnQty: contact.Qty,
-        TotalAmount: contact.TotalAmount,
-        VatPer: contact.VatPer,
-        VatAmount: contact.VatAmount,
-        DiscPer: contact.DiscPer,
-        DiscAmount: contact.DiscAmount,
-        GrossAmount: contact.GrossAmount,
-        LandedPrice: contact.LandedPrice,
-        TotalLandedAmount: contact.LandAmt,
-        PurRateWf: contact.PurRateWf,
-        PurTotAmt: contact.PurAmt,
-        CGSTPer: contact.CGSTPer,
-        SGSTPer: contact.SGSTPer,
-        IGSTPer: contact.IGSTPer,
-        IsPurRate: contact.IsPurRate,
-        StkID: contact.StkID
+       
+        SalesNo :contact.SalesNo,
+        SalesId:contact.SalesId,
+        SalesDetId : contact.SalesDetId,
+        OP_IP_ID :contact.OP_IP_ID,
+        ItemId:contact.ItemId,
+        ItemName : contact.ItemName,
+        BatchNo :contact.BatchNo,
+        UnitMRP : contact.UnitMRP,
+        Qty : contact.Qty,
+        ReturnQty : contact.Qty,
+        TotalAmount :this.TotalAmt,
+        VatPer : contact.VatPer,
+        VatAmount : this.VatAmount,
+        DiscPer : contact.DiscPer,
+        DiscAmount : this.DiscAmt,
+        GrossAmount : this.GrossAmt,
+        LandedPrice : contact.LandedPrice,
+        TotalLandedAmount : this.LandAmt,
+        PurRateWf : contact.PurRateWf,
+        PurTotAmt : this.PurAmt,
+        CGSTPer : contact.CGSTPer,
+        CGSTAmount : this.CGSTAmount,
+        SGSTPer : contact.SGSTPer,
+        SGSTAmount : this.SGSTAmount,
+        IGSTPer : contact.IGSTPer,
+        IGSTAmount : this.IGSTAmount,
+        IsPurRate : contact.IsPurRate,
+        StkID : contact.StkID
 
       });
-    this.selectedssaleDetailList.data = this.Itemselectedlist;
+      // Swal.fire(this.Itemselectedlist);
+      this.selectedssaleDetailList.data = this.Itemselectedlist;
+      // this.TempItemselectedlist=this.Itemselectedlist;
 
     this.OP_IP_Id = contact.OP_IP_ID;
     this.SalesDetId = contact.SalesDetId;
@@ -371,14 +412,15 @@ export class SalesReturnComponent implements OnInit {
   }
 
   onSave() {
-
+    // this.selectedssaleDetailList.data = this.TempItemselectedlist;
+console.log(this.TempItemselectedlist)
     let salesReturnHeader = {};
     salesReturnHeader['Date'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'; //'2023-11-03T08:07:41.318Z';//this.dateTimeObj.date;
     salesReturnHeader['time'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//'2023-11-03T08:07:41.318Z';//this.dateTimeObj.time;
     salesReturnHeader['salesId'] = this.SalesID;
     salesReturnHeader['oP_IP_ID'] = this.OP_IP_Id;
     salesReturnHeader['oP_IP_Type'] = 2,// this.OP_IPType;
-      salesReturnHeader['totalAmount'] = this.FinalTotalAmount;
+    salesReturnHeader['totalAmount'] = this.FinalTotalAmount;
     salesReturnHeader['vatAmount'] = this.VatAmount;
     salesReturnHeader['discAmount'] = this.DiscAmt;
     salesReturnHeader['netAmount'] = this.FinalTotalAmount;
@@ -389,13 +431,13 @@ export class SalesReturnComponent implements OnInit {
     salesReturnHeader['isFree'] = 0;
     salesReturnHeader['unitID'] = 1;
     salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
-      salesReturnHeader['storeID'] = this._loggedService.currentUserValue.user.storeId,
-      salesReturnHeader['Narration'] = '';
+    salesReturnHeader['storeID'] = this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['Narration'] = '';
     salesReturnHeader['salesReturnId'] = 0;
 
 
     let salesReturnDetailarr = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
+    this.TempItemselectedlist.data.forEach((element) => {
       let salesReturnDetail = {};
       salesReturnDetail['salesID'] = element.SalesId;
       salesReturnDetail['itemId'] = element.ItemId;
@@ -425,7 +467,7 @@ export class SalesReturnComponent implements OnInit {
     });
 
     let salesReturn_CurStk_Uptarray = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
+    this.TempItemselectedlist.data.forEach((element) => {
       let salesReturn_CurStk_Upt = {};
       salesReturn_CurStk_Upt['itemId'] = element.ItemId;
       salesReturn_CurStk_Upt['issueQty'] = element.Qty;
@@ -436,7 +478,7 @@ export class SalesReturnComponent implements OnInit {
     });
 
     let update_SalesReturnQty_SalesTblarray = [];
-    this.selectedssaleDetailList.data.forEach((element) => {
+    this.TempItemselectedlist.data.forEach((element) => {
       let update_SalesReturnQty_SalesTbl = {};
       update_SalesReturnQty_SalesTbl['salesDetId'] = element.SalesDetId;
       update_SalesReturnQty_SalesTbl['returnQty'] = element.Qty;
@@ -471,7 +513,7 @@ export class SalesReturnComponent implements OnInit {
         Swal.fire(' Sales Return !', 'Record Saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             // let m = response;
-            // this.getPrint(response);
+            this.getSalesRetPrint(response);
             // this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -491,14 +533,162 @@ export class SalesReturnComponent implements OnInit {
     return this.FinalTotalAmount;
   }
 
+  getSalesRetPrint(el){
+    debugger
+    var D_data = {
+      "SalesID": el,// 
+      "OP_IP_Type": this.OP_IP_Type,
+      "IsPrescriptionFlag": this.IsPrescriptionFlag
+    }
   
-  // getNetAmtSum(element) {
+    let printContents;
+    this.subscriptionArr.push(
+      this._SalesReturnService.getSalesReturnPrint(D_data).subscribe(res => {
+  
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+  
+        this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj);
+        this.getTemplateTax2();
+  
+     
+      })
+    );
+  }
 
-  //   this.FinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-  //   this.NetAmt =(element.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0)).toFixed(2);
-  //   return this.FinalTotalAmount;
-  // }
+  getTemplateTax2() {
+    debugger
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    this._SalesReturnService.getTemplate(query).subscribe((resData: any) => {
+  
+      this.printTemplate = resData[0].TempDesign;
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
+      // ;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
+      var strrowslist = "";
+      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+        console.log(this.reportPrintObjList);
+        var objreportPrint = this.reportPrintObjList[i - 1];
+        let PackValue = '1200'
+        // <div style="display:flex;width:60px;margin-left:20px;">
+        //     <div>`+ i + `</div> 
+        // </div>
+  
+        var strabc = `<hr style="border-color:white" >
+        <div style="display:flex;margin:8px 0">
+        <div style="display:flex;width:20px;margin-left:20px;">
+            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+      
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+ objreportPrint.HSNcode + `</div> 
+        </div>
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+objreportPrint.ManufShortName + `</div> 
+        </div>
+        <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
+            <div>`+ objreportPrint.ItemName + `</div> 
+        </div>
+         <div style="display:flex;width:60px;text-align:left;">
+            <div>`+ objreportPrint.Qty + `</div> 
+        </div>
+        <div style="display:flex;width:90px;text-align:center;">
+        <div>`+ objreportPrint.BatchNo + `</div> 
+         </div>
+        <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+        <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+        </div>
+        <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
+        <div>`+ objreportPrint.UnitMRP + `</div> 
+        </div>
+        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+            <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+        </div>
+        </div>`;
+        strrowslist += strabc;
+      }
+      var objPrintWordInfo = this.reportPrintObjList[0];
+  
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+  
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      console.log(this.printTemplate);
+  
+      setTimeout(() => {
+         this.print3();
+      }, 1000);
+    });
+  
+  
+  }
 
+  convertToWord(e) {
+
+    return converter.toWords(e);
+  }
+  
+  transform2(value: string) {
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+    return value;
+  }
+  
+
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
+  }
+  deleteTableRow(element) {
+   
+  // Delete row in datatable level
+    let index = this.Itemselectedlist.indexOf(element);
+    if (index >= 0) {
+      this.Itemselectedlist.splice(index, 1);
+      this.selectedssaleDetailList.data = [];
+      this.selectedssaleDetailList.data = this.Itemselectedlist;
+    }
+    Swal.fire('Success !', 'Item Row Deleted Successfully', 'success');
+  }
 
 
   getDateTime(dateTimeObj) {
@@ -617,7 +807,7 @@ export class SalesDetailList {
       this.CGSTPer = SalesDetailList.CGSTPer || 0;
       this.CGSTAmount = SalesDetailList.CGSTAmount || 0;
       this.SGSTPer = SalesDetailList.SGSTPer || 0;
-      this.SGSTAmount = SalesDetailList.SGSTAmount || 0;
+      this.SGSTAmount = SalesDetailList.SGSTAmount || 0.0;
       this.IGSTPer = SalesDetailList.IGSTPer || 0;
       this.IGSTAmount = SalesDetailList.IGSTAmount || 0;
       this.Narration = SalesDetailList.Narration || '';

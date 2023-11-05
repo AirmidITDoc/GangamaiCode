@@ -530,7 +530,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
                                                         <button mat-icon-button matTooltip="delete">
-                                                            <mat-icon>print</mat-icon>
+                                                            <mat-icon (click)="getSalesRetPrint(row)">print</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
