@@ -1200,8 +1200,7 @@
         pointer-events: none;">Shri Siddeshwar Medicals</div>
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
-        <h3 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h3>
-        <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%; float: right;">  Billed By: {{reportPrintObjList[0]?.UserName}} </span> -->
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h4>
     </div>
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
@@ -1229,7 +1228,7 @@
                                 Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
                                 Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
                                 Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
-                                Address: {{'-'}}
+                                Doctor Name: {{reportPrintObjList[0]?.DoctorName}}
                             </td>
                         <!-- </tr> -->
                     </table>
@@ -1261,14 +1260,14 @@
             <tr style="font-size:10px;">
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Sr No.</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">HSN</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MFR</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 100px;">Product Name</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Pack</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Batch No.</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">ExpDate</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">Qty</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 15px;">MRP</td>
-                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;width: 35px;">Total Amount</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MFR</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 100px;">Product Name</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Pack</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Batch No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">ExpDate</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Qty</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
@@ -1289,8 +1288,8 @@
                 padding: 0;height: 15px;">{{item?.Qty}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
-                <td style="border: 1px solid black;vertical-align: top; align-content: right;
-                padding: 0;height: 15px;">{{item?.TotalAmount}}</td>
+                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                padding: 1px;height: 15px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
                 <td colspan="6" style="border: 1px solid black;vertical-align: top;
