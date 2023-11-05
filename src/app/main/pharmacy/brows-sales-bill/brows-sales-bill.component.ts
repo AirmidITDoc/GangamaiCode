@@ -95,9 +95,6 @@ export class BrowsSalesBillComponent implements OnInit {
   Store1List:any = [];
   hasSelectedContacts: boolean;
    
-   
-
-  
   
   dssaleList1 = new MatTableDataSource<SaleList>();
   dssalesList2 = new MatTableDataSource<SalesDetList>();
@@ -399,10 +396,7 @@ console.log(event);
         console.log(this.reportPrintObj);
         this.getTemplateTax2();
 
-        // this.CustomerName=this.reportPrintObj.PatientName;
-        // this.CustomerId=this.reportPrintObj.RegNo;
-        // this.CustAddress= " " //this.reportPrintObj.Address;
-        // this.ExMobile=this.reportPrintObj.ExtMobileNo;
+    
       })
     );
   }
@@ -726,6 +720,30 @@ print3() {
   // </html>`);
   
   popupWin.document.close();
+}
+
+getSalesRetPrint(el){
+  debugger
+  var D_data = {
+    "SalesID": el.SalesReturnId,// 
+    "OP_IP_Type": el.OP_IP_Type,
+    "IsPrescriptionFlag": 0//el.IsPrescriptionFlag
+  }
+
+  let printContents;
+  this.subscriptionArr.push(
+    this._BrowsSalesService.getSalesReturnPrint(D_data).subscribe(res => {
+
+      this.reportPrintObjList = res as Printsal[];
+      console.log(this.reportPrintObjList);
+
+      this.reportPrintObj = res[0] as Printsal;
+      console.log(this.reportPrintObj);
+      this.getTemplateTax2();
+
+   
+    })
+  );
 }
 }
 
