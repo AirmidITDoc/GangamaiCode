@@ -114,6 +114,11 @@ const appRoutes: Routes = [
             import("./main/pharmacy/pharmacy.module").then((m) => m.PharmacyModule),
     },
     {
+        path: "reports",
+        loadChildren: () =>
+            import("./main/reports/reports.module").then((m) => m.ReportsModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
     }

@@ -50,7 +50,9 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-  paymethod: boolean = true;
+  paymethod: boolean = false;
+  IsOnlineRefNo: boolean = false;
+
   // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
@@ -268,11 +270,6 @@ OP_IPType:any=2;
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
-    // this.onChangePatientType($event)
-    // this.ItemSubform.get('PatientType').setValidators([Validators.required]);
-    // this.ItemSubform.get('PatientType').updateValueAndValidity();
-
-
       this.netPayAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
@@ -919,6 +916,7 @@ OP_IPType:any=2;
       Validators.minLength(10),
       Validators.maxLength(10),]],
       PatientType: ['External',[Validators.required]],
+      OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
       DiscAmt: '',
@@ -1436,7 +1434,12 @@ OP_IPType:any=2;
     this.BalAmount = 0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
+
+    this.ItemSubform.get('CashPay').reset('CashPay');
+
+    this.IsOnlineRefNo=false;
     this.ItemSubform.get('referanceNo').reset('');
+    
     this.ConShow = false;
     this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
@@ -1644,7 +1647,16 @@ OP_IPType:any=2;
     }
     // console.log(this.ItemSubform.get('PatientType').value)
   }
-
+  onChangePaymentMode(event){
+    if (event.value == 'Online') {
+      this.IsOnlineRefNo=true;
+      this.ItemSubform.get('referanceNo').reset();
+      this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
+      this.ItemSubform.get('referanceNo').enable();
+    }else{
+      this.IsOnlineRefNo=false;
+    }
+  }
   convertToWord(e) {
     return converter.toWords(e);
   }
@@ -1707,8 +1719,6 @@ OP_IPType:any=2;
 
   Paymentobj = {};
   onSave() {
-    this.ItemSubform.get('PatientType').setValidators([Validators.required]);
-    this.ItemSubform.get('PatientType').updateValueAndValidity();
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashpaySave()
     }
