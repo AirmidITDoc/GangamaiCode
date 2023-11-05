@@ -1485,7 +1485,6 @@ OP_IPType:any=2;
   // }
 
   calculateDiscAmt() {
-    // debugger;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
@@ -1497,12 +1496,13 @@ OP_IPType:any=2;
       this.ItemSubform.get('ConcessionId').enable();
       if (this.DiscAmt > PurTotalAmount)
       {
-        Swal.fire('Discount greater than Purchase Rate !');
+        Swal.fire('Discount greater than Purchase Rate, Please check !');
         this.ItemFormreset();
+      }else{
+        this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+        this.add = true;
+        this.addbutton.focus();
       }
-      this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
-      this.add = true;
-      this.addbutton.focus();
     }
     else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
       Swal.fire('Check Discount Amount !')
@@ -1525,10 +1525,10 @@ OP_IPType:any=2;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.chkdiscper=true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
       this.ItemSubform.get('DiscAmt').disable();
-      this.chkdiscper=true;
     } else {
       this.chkdiscper = false;
       this.DiscAmt=0;
@@ -1582,79 +1582,36 @@ OP_IPType:any=2;
       //this.ConseId.nativeElement.focus();
     }
   }
-
-
-
-  // CalfinalGST() {
-  //   let GST = this.ItemSubform.get('FinalGSTAmt').value
-  //   if (GST > 0 && GST < this.FinalNetAmount) {
-  //     this.FinalNetAmount = ((this.FinalNetAmount) + (GST))
-  //     // this.ConShow = true
-  //   }
-  //   this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
-  // }
-  // key: any;
-  // @HostListener('document:keyup', ['$event'])
-  // handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
-  //   if (event.key === 'Delete') {
-  //     this.key = 'Delete';
-
-  //   }
-  // }
-  // @HostListener('document:keydown.delete', ['$event'])
-
-  // show(eve, contact) {
-  //   // Swal.fire(contact);
-  //   if (this.key == "Delete") {
-  //     this.deleteTableRow(eve, contact);
-  //   }
-  // }
-
-
   onChangePatientType(event) {
     if (event.value == 'OP') {
-    this.OP_IPType = 0;
-    this.RegId="";
-    this.paymethod=true;
+      this.OP_IPType = 0;
+      this.RegId = "";
+      this.paymethod = true;
     }
-    else if(event.value == 'IP'){
+    else if (event.value == 'IP') {
       this.OP_IPType = 1;
-      this.RegId="";
-      this.paymethod=true;
-    }else{
-        this.ItemSubform.get('MobileNo').reset();
-        this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-        this.ItemSubform.get('MobileNo').enable();
-        this.ItemSubform.get('PatientName').reset();
-        this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-        this.ItemSubform.get('PatientName').enable();
-        this.paymethod=true;
-        this.OP_IPType=2;
-        // this.OP_IP_Id=0;
-      // } else {
-      //   // this.Regdisplay = true;
-  
-      //   this.ItemSubform.get('MobileNo').disable();
-      //   this.ItemSubform.get('PatientName').disable();
-      //   this.isPatienttypeDisabled = false;
-      //   this.ItemSubform.get('MobileNo').reset();
-      //   this.ItemSubform.get('MobileNo').clearValidators();
-      //   this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      //   this.ItemSubform.get('PatientName').reset();
-      //   this.ItemSubform.get('PatientName').clearValidators();
-      //   this.ItemSubform.get('PatientName').updateValueAndValidity();
-      //   this.paymethod=true;
+      this.RegId = "";
+      this.paymethod = true;
+    } else {
+      this.ItemSubform.get('MobileNo').reset();
+      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('MobileNo').enable();
+      this.ItemSubform.get('PatientName').reset();
+      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('PatientName').enable();
+      this.paymethod = false;
+      this.OP_IPType = 2;
     }
     // console.log(this.ItemSubform.get('PatientType').value)
   }
-  onChangePaymentMode(event){
+  onChangePaymentMode(event) {
     if (event.value == 'Online') {
-      this.IsOnlineRefNo=true;
+      this.IsOnlineRefNo = true;
       this.ItemSubform.get('referanceNo').reset();
       this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
       this.ItemSubform.get('referanceNo').enable();
-    }else{
-      this.IsOnlineRefNo=false;
+    } else {
+      this.IsOnlineRefNo = false;
     }
   }
   convertToWord(e) {
