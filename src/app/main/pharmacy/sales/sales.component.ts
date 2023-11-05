@@ -135,7 +135,7 @@ export class SalesComponent implements OnInit {
   vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
   isPaymentSelected: boolean = false;
-
+  OP_IP_Type:any;
   // payment code
 
   
@@ -191,6 +191,8 @@ export class SalesComponent implements OnInit {
   cardAmt: any;
   neftNo: any;
   paytmAmt: any;
+
+  @ViewChild('billTemplate2') billTemplate2:ElementRef;
   
   filteredOptionsBank2: Observable<string[]>;
   optionsBank2: any[] = [];
@@ -204,7 +206,7 @@ export class SalesComponent implements OnInit {
   
 IsCreditflag : boolean=false
 OP_IP_Id:any=0;
-OP_IPType:any=0;
+OP_IPType:any=2;
     
 
   displayedColumns = [
@@ -1927,10 +1929,11 @@ OP_IPType:any=0;
     // console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
+         console.log(response);
         Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             // let m = response;
-            this.getPrint(response);
+            this.getPrint3(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -1952,6 +1955,138 @@ OP_IPType:any=0;
     this.saleSelectedDatasource.data = [];
   // }
 }
+getPrint3(el) {
+  debugger
+  var D_data = {
+    "SalesID": el,// 
+    "OP_IP_Type":  this.OP_IPType 
+  }
+
+  let printContents;
+  this.subscriptionArr.push(
+    this._salesService.getSalesPrint(D_data).subscribe(res => {
+
+      this.reportPrintObjList = res as Printsal[];
+      console.log(this.reportPrintObjList);
+
+      this.reportPrintObj = res[0] as Printsal;
+      // console.log(this.reportPrintObj);
+      this.getTemplateTax2();
+
+    })
+  );
+}
+
+getTemplateTax2() {
+  debugger
+  let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+  this._salesService.getTemplate(query).subscribe((resData: any) => {
+
+    this.printTemplate = resData[0].TempDesign;
+    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
+    // ;
+    for (let i = 0; i < keysArray.length; i++) {
+      let reString = "{{" + keysArray[i] + "}}";
+      let re = new RegExp(reString, "g");
+      this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+    }
+    var strrowslist = "";
+    for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      console.log(this.reportPrintObjList);
+      var objreportPrint = this.reportPrintObjList[i - 1];
+      let PackValue = '1200'
+      // <div style="display:flex;width:60px;margin-left:20px;">
+      //     <div>`+ i + `</div> 
+      // </div>
+
+      var strabc = `<hr style="border-color:white" >
+      <div style="display:flex;margin:8px 0">
+      <div style="display:flex;width:20px;margin-left:20px;">
+          <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+      </div>
+    
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.HSNcode + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+objreportPrint.ManufShortName + `</div> 
+      </div>
+      <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
+          <div>`+ objreportPrint.ItemName + `</div> 
+      </div>
+       <div style="display:flex;width:60px;text-align:left;">
+          <div>`+ objreportPrint.Qty + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.BatchNo + `</div> 
+       </div>
+      <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+      <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+      </div>
+      <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
+      <div>`+ objreportPrint.UnitMRP + `</div> 
+      </div>
+      <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+          <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+      </div>
+      </div>`;
+      strrowslist += strabc;
+    }
+    var objPrintWordInfo = this.reportPrintObjList[0];
+
+    this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+    this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+    this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+    this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+    console.log(this.printTemplate);
+
+    setTimeout(() => {
+       this.print3();
+    }, 1000);
+  });
+
+
+}
+
+print3() {
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+  // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  // </html>`);
+  
+  popupWin.document.close();
+}
+
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2063,8 +2198,7 @@ OP_IPType:any=0;
       if (response) {
         Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            let m = response;
-            this.getPrint(m);
+            this.getPrint3(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
