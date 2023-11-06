@@ -194,7 +194,11 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getSalesList() {
-    debugger
+    
+    this.dssaleDetailList.data = [];
+    this.selectedssaleDetailList.data = [];
+    this.TempItemselectedlist.data=[];
+
     var vdata = {
       F_Name: this.SearchForm.get('F_Name').value || '%',
       L_Name: this.SearchForm.get('L_Name').value || '%',
@@ -207,9 +211,8 @@ export class SalesReturnComponent implements OnInit {
     console.log(vdata);
     this._SalesReturnService.getSalesBillList(vdata).subscribe(data => {
       this.dssaleList.data = data as SaleBillList[];
-      // this.dssaleList.sort = this.sort;
-      // this.dssaleList.paginator = this.paginator;
-      console.log(this.dssaleList.data);
+      
+      
     })
   }
 
@@ -321,23 +324,31 @@ export class SalesReturnComponent implements OnInit {
 
   
   SelectedItem(contact) {
-    debugger
+  
     this.OP_IP_Type=contact.OP_IP_Type;
     this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
-    this.TempItemselectedlist=this.selectedssaleDetailList;
+    this.TempItemselectedlist.data=this.selectedssaleDetailList.data;
     console.log(this.TempItemselectedlist)
     if(parseInt(contact.Qty) >=1){
-    if (this.selectedssaleDetailList.data.length >= 1) {
-      this.selectedssaleDetailList.data.forEach((element) => {
+    if (this.TempItemselectedlist.data.length >= 1) {
+      debugger
+      let id=1;
+      this.TempItemselectedlist.data.forEach((element) => {
         
         if (element.ItemName == contact.ItemName) {
+          id=0;
           Swal.fire("Item Already Present");
-        } else {
+        } 
+        // else {
+        //   id=0
+        // }
 
-          this.AddItem(contact);
-
-        }
       });
+
+      if(id==1){
+        this.AddItem(contact);
+      }
+
     } else {
       this.AddItem(contact);
     }
