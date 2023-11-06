@@ -26,4 +26,13 @@ export class PaymentmodechangesService {
       ReceiptNo:''
     })
   }
+  public getOpReceiptList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOPDPaymentReceipt",Param)
+  }
+  public getIpReceiptList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDPaymentReceipt",Param)
+  }
+  public getIpAdvanceList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
+  }
 }

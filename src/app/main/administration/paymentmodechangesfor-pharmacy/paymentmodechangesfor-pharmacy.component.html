@@ -62,8 +62,8 @@
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                             <mat-radio-group formControlName="Radio" name="Radio">
                                 <mat-label>Type :</mat-label>&nbsp;
-                                <mat-radio-button value="1">Sales</mat-radio-button>
-                                <mat-radio-button value="2">IP Phar Advance</mat-radio-button>
+                                <mat-radio-button value="1" (click)="getSalesList()">Sales</mat-radio-button>
+                                <mat-radio-button value="2" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
                             </mat-radio-group>
                         </div>
 
@@ -72,7 +72,7 @@
                                 <mat-icon class="cleariconbutton">close</mat-icon>
                             </button>&nbsp;&nbsp;
                             <button mat-raised-button class="searchButton" matTooltip="search">
-                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                <mat-icon class="searchiconbutton" (click)="getIPPharAdvanceList()">search</mat-icon>
                             </button>
                         </div>
 
@@ -106,9 +106,9 @@
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Issue Date </mat-header-cell>
+                                    PayDate </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.IssueDate | date: 'dd/MM/yyyy'}}
+                                    {{contact.PaymentDate | date: 'dd/MM/yyyy'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -130,7 +130,7 @@
 
                             <ng-container matColumnDef="PaidAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Paid Amount </mat-header-cell>
+                                    Paid Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.PaidAmount}}
                                 </mat-cell>
@@ -140,7 +140,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Cash Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CashAmt}}
+                                    {{contact.CashPayAmount}}
                                 </mat-cell>
                             </ng-container>
 
@@ -148,7 +148,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Cheque Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.ChequeAmt}}
+                                    {{contact.ChequePayAmount}}
                                 </mat-cell>
                             </ng-container>
 
@@ -156,7 +156,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Card Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CardAmt}}
+                                    {{contact.CardPayAmount}}
                                 </mat-cell>
                             </ng-container>
 
@@ -164,7 +164,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Neft Pay </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.NeftPay}}
+                                    {{contact.NEFTPayAmount}}
                                 </mat-cell>
                             </ng-container>
 

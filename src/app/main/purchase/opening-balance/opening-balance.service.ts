@@ -30,7 +30,7 @@ NewUseForm:FormGroup;
     return this._formbuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      StoreId:'',
+      StoreID:'',
       Code:'',
       BalanceQty:'',
       GST:'',
