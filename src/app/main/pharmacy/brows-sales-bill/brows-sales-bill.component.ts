@@ -738,7 +738,7 @@ getSalesRetPrint(el){
       console.log(this.reportPrintObjList);
 
       this.reportPrintObj = res[0] as Printsal;
-      console.log(this.reportPrintObj);
+      // console.log(this.reportPrintObj);
       this.getTemplateTax2();
 
    

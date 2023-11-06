@@ -151,8 +151,6 @@ app-purchase-order {
       overflow: hidden;
       text-overflow: ellipsis; 
       overflow: hidden !important;
-      display: inline-block;
-      margin-top: 7px;
       justify-content:left; 
     }
     
@@ -228,7 +226,12 @@ app-purchase-order {
       min-width: 150px;
       text-align: left;
     }
-   
+    .add-btn {
+      background-color: blue !important;
+      color: white !important;
+      font-size: 16px;
+    }
+    
  
 
 // .table-row:selected {
