@@ -2559,7 +2559,7 @@ export class Printsal {
   HTotalAmount:any;
   ExtMobileNo:any;
   StoreAddress:any;
-
+  PayMode:any;
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2611,6 +2611,7 @@ export class Printsal {
     this.HTotalAmount=Printsal.HTotalAmount || '';
     this.ExtMobileNo=Printsal.ExtMobileNo || '';
     this.StoreAddress=Printsal.StoreAddress || '';
+    this.PayMode=Printsal.PayMode || '';
   }
 }
 
