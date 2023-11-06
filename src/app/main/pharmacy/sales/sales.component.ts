@@ -1441,6 +1441,7 @@ OP_IPType:any=2;
     this.ItemSubform.get('referanceNo').reset('');
     
     this.ConShow = false;
+    this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
@@ -1509,6 +1510,9 @@ OP_IPType:any=2;
     }
     if (parseFloat(this.DiscAmt) == 0) {
       this.add = true;
+      this.ConShow = false;
+      this.ItemSubform.get('ConcessionId').clearValidators();
+      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
       this.addbutton.focus();
     }
   }
@@ -1587,11 +1591,19 @@ OP_IPType:any=2;
       this.OP_IPType = 0;
       this.RegId = "";
       this.paymethod = true;
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
     }
     else if (event.value == 'IP') {
       this.OP_IPType = 1;
       this.RegId = "";
       this.paymethod = true;
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
     } else {
       this.ItemSubform.get('MobileNo').reset();
       this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
@@ -1599,6 +1611,7 @@ OP_IPType:any=2;
       this.ItemSubform.get('PatientName').reset();
       this.ItemSubform.get('PatientName').setValidators([Validators.required]);
       this.ItemSubform.get('PatientName').enable();
+      this.ItemSubform.updateValueAndValidity();
       this.paymethod = false;
       this.OP_IPType = 2;
     }

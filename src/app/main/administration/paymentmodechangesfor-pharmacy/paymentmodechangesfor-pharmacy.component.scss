@@ -3,4 +3,86 @@
     height: 650px;
     min-height: 650px;
     max-height: 650px;
+
+    .mat-column-action {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-Date {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-ReceiptNo {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-SalesNo {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-PatientName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 25px;
+        margin-top: 16px;
+    }
+    .mat-column-PaidAmount {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .mat-column-NeftPay {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-CashAmt {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .mat-column-ChequeAmt {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+        justify-content: left;
+    }
+    .mat-column-CardAmt {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+        justify-content: left;
+    }
+   
 }

@@ -51,7 +51,7 @@
                             <mat-label>Supplier Name</mat-label>
                             <mat-select formControlName="SupplierName" name="SupplierName">
                                 <mat-option></mat-option>
-                                <mat-option *ngFor="let m of StoreList" [value]="m">
+                                <mat-option *ngFor="let m of SupplierList" [value]="m">
                                     {{m.SupplierName}}
                                 </mat-option>
                             </mat-select>
@@ -62,7 +62,7 @@
                                 <mat-icon class="cleariconbutton">close</mat-icon>
                             </button>&nbsp;&nbsp;
                             <button mat-raised-button class="searchButton" matTooltip="search">
-                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                <mat-icon class="searchiconbutton" (click)="getWorkOrdersList()">search</mat-icon>
                             </button>
                         </div>
 
