@@ -54,7 +54,7 @@
                                                     <mat-radio-button value="External" (checked)="true">External</mat-radio-button>
                                                 </mat-radio-group>
 
-                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'" style="width: 500px !important;">
                                                     <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No"
                                                         matInput [matAutocomplete]="auto1" (input)="getSearchList()">
                                                     <span matSuffix style="display: flex;">
