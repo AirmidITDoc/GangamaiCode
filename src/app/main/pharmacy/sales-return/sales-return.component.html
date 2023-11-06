@@ -11,9 +11,10 @@
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Sales Return :
                 </span>
+                <span style="margin-left: 1000px;">
                 <app-common-date [screenFrom]="screenFromString"
                 (dateTimeEventEmitter)="getDateTime($event)">
-                 </app-common-date>
+                 </app-common-date></span>
                 <!-- <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
             </div>
         </div>

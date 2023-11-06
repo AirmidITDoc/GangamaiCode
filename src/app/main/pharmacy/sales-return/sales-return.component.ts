@@ -197,8 +197,10 @@ export class SalesReturnComponent implements OnInit {
     
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
-    this.TempItemselectedlist.data=[];
-
+    this.TempItemselectedlist.data =[];
+    this.Itemselectedlist.data =[];
+    this.Itemselectedlist =[];
+   
     var vdata = {
       F_Name: this.SearchForm.get('F_Name').value || '%',
       L_Name: this.SearchForm.get('L_Name').value || '%',
@@ -220,6 +222,9 @@ export class SalesReturnComponent implements OnInit {
     // console.log(Parama);
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
+    this.Itemselectedlist.data =[];
+    this.Itemselectedlist =[];
+    
 
     if (Parama.PaidType == "Paid") {
       this.getSalesDetCashList(Parama)
@@ -240,11 +245,10 @@ export class SalesReturnComponent implements OnInit {
     console.log(vdata);
     this._SalesReturnService.getSalesDetCashList(vdata).subscribe(data => {
       this.dssaleDetailList.data = data as SalesDetailList[];
-      // this.dssaleList.sort = this.sort;
-      // this.dssaleList.paginator = this.paginator;
-      console.log(this.dssaleDetailList.data);
+    
+      
     })
-    // this.OP_IP_Type=this.dssaleDetailList.data[0].OP
+    
   }
 
   getSalesDetCreditList(Params) {
@@ -257,9 +261,7 @@ export class SalesReturnComponent implements OnInit {
     //  console.log(vdata);
     this._SalesReturnService.getSalesDetCreditList(vdata).subscribe(data => {
       this.dssaleDetailList.data = data as SalesDetailList[];
-      // this.dssaleList.sort = this.sort;
-      // this.dssaleList.paginator = this.paginator;
-      console.log(this.dssaleDetailList.data);
+    
     })
   }
 
@@ -328,7 +330,10 @@ export class SalesReturnComponent implements OnInit {
     this.OP_IP_Type=contact.OP_IP_Type;
     this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
     this.TempItemselectedlist.data=this.selectedssaleDetailList.data;
+
     console.log(this.TempItemselectedlist)
+
+    
     if(parseInt(contact.Qty) >=1){
     if (this.TempItemselectedlist.data.length >= 1) {
       debugger
@@ -339,10 +344,7 @@ export class SalesReturnComponent implements OnInit {
           id=0;
           Swal.fire("Item Already Present");
         } 
-        // else {
-        //   id=0
-        // }
-
+      
       });
 
       if(id==1){
@@ -410,21 +412,20 @@ export class SalesReturnComponent implements OnInit {
         StkID : contact.StkID
 
       });
-      // Swal.fire(this.Itemselectedlist);
+      
       this.selectedssaleDetailList.data = this.Itemselectedlist;
-      // this.TempItemselectedlist=this.Itemselectedlist;
+      
 
     this.OP_IP_Id = contact.OP_IP_ID;
     this.SalesDetId = contact.SalesDetId;
-    // this.NetAmt = contact.GrossAmount;
+    
   }
   onclickrow(contact) {
     Swal.fire("Row selected :" + contact)
   }
 
   onSave() {
-    // this.selectedssaleDetailList.data = this.TempItemselectedlist;
-console.log(this.TempItemselectedlist)
+    
     let salesReturnHeader = {};
     salesReturnHeader['Date'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'; //'2023-11-03T08:07:41.318Z';//this.dateTimeObj.date;
     salesReturnHeader['time'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd 00:00:00.000") || '01/01/1900';//'2023-11-03T08:07:41.318Z';//this.dateTimeObj.time;
@@ -549,7 +550,7 @@ console.log(this.TempItemselectedlist)
     var D_data = {
       "SalesID": el,// 
       "OP_IP_Type": this.OP_IP_Type,
-      "IsPrescriptionFlag": this.IsPrescriptionFlag
+      "IsPrescriptionFlag":0,// this.IsPrescriptionFlag
     }
   
     let printContents;
