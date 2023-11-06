@@ -105,4 +105,8 @@ export class SalesService {
   public getSalesPrint(emp){
     return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);
   }
+  
+  public getSalesReturnPrint(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint",emp);
+  }
 }

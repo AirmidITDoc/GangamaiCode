@@ -50,7 +50,9 @@ export class SalesComponent implements OnInit {
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-  paymethod: boolean = true;
+  paymethod: boolean = false;
+  IsOnlineRefNo: boolean = false;
+
   // dsIndentID = new MatTableDataSource<IndentID>();
 
   ItemName: any;
@@ -135,7 +137,7 @@ export class SalesComponent implements OnInit {
   vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
   isPaymentSelected: boolean = false;
-
+  OP_IP_Type:any;
   // payment code
 
   
@@ -191,6 +193,8 @@ export class SalesComponent implements OnInit {
   cardAmt: any;
   neftNo: any;
   paytmAmt: any;
+
+  @ViewChild('billTemplate2') billTemplate2:ElementRef;
   
   filteredOptionsBank2: Observable<string[]>;
   optionsBank2: any[] = [];
@@ -204,7 +208,7 @@ export class SalesComponent implements OnInit {
   
 IsCreditflag : boolean=false
 OP_IP_Id:any=0;
-OP_IPType:any=0;
+OP_IPType:any=2;
     
 
   displayedColumns = [
@@ -266,11 +270,6 @@ OP_IPType:any=0;
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
-    // this.onChangePatientType($event)
-    // this.ItemSubform.get('PatientType').setValidators([Validators.required]);
-    // this.ItemSubform.get('PatientType').updateValueAndValidity();
-
-
       this.netPayAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
@@ -917,6 +916,7 @@ OP_IPType:any=0;
       Validators.minLength(10),
       Validators.maxLength(10),]],
       PatientType: ['External',[Validators.required]],
+      OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
       DiscAmt: '',
@@ -1434,8 +1434,14 @@ OP_IPType:any=0;
     this.BalAmount = 0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
+
+    this.ItemSubform.get('CashPay').reset('CashPay');
+
+    this.IsOnlineRefNo=false;
     this.ItemSubform.get('referanceNo').reset('');
+    
     this.ConShow = false;
+    this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
@@ -1480,7 +1486,6 @@ OP_IPType:any=0;
   // }
 
   calculateDiscAmt() {
-    // debugger;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
@@ -1492,18 +1497,22 @@ OP_IPType:any=0;
       this.ItemSubform.get('ConcessionId').enable();
       if (this.DiscAmt > PurTotalAmount)
       {
-        Swal.fire('Discount greater than Purchase Rate !');
+        Swal.fire('Discount greater than Purchase Rate, Please check !');
         this.ItemFormreset();
+      }else{
+        this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+        this.add = true;
+        this.addbutton.focus();
       }
-      this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
-      this.add = true;
-      this.addbutton.focus();
     }
     else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
       Swal.fire('Check Discount Amount !')
     }
     if (parseFloat(this.DiscAmt) == 0) {
       this.add = true;
+      this.ConShow = false;
+      this.ItemSubform.get('ConcessionId').clearValidators();
+      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
       this.addbutton.focus();
     }
   }
@@ -1520,10 +1529,10 @@ OP_IPType:any=0;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.chkdiscper=true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
       this.ItemSubform.get('DiscAmt').disable();
-      this.chkdiscper=true;
     } else {
       this.chkdiscper = false;
       this.DiscAmt=0;
@@ -1577,72 +1586,47 @@ OP_IPType:any=0;
       //this.ConseId.nativeElement.focus();
     }
   }
-
-
-
-  // CalfinalGST() {
-  //   let GST = this.ItemSubform.get('FinalGSTAmt').value
-  //   if (GST > 0 && GST < this.FinalNetAmount) {
-  //     this.FinalNetAmount = ((this.FinalNetAmount) + (GST))
-  //     // this.ConShow = true
-  //   }
-  //   this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount.toFixed(2));
-  // }
-  // key: any;
-  // @HostListener('document:keyup', ['$event'])
-  // handleDeleteKeyboardEvent(event: KeyboardEvent, s) {
-  //   if (event.key === 'Delete') {
-  //     this.key = 'Delete';
-
-  //   }
-  // }
-  // @HostListener('document:keydown.delete', ['$event'])
-
-  // show(eve, contact) {
-  //   // Swal.fire(contact);
-  //   if (this.key == "Delete") {
-  //     this.deleteTableRow(eve, contact);
-  //   }
-  // }
-
-
   onChangePatientType(event) {
     if (event.value == 'OP') {
-    this.OP_IPType = 0;
-    this.RegId="";
-    this.paymethod=true;
+      this.OP_IPType = 0;
+      this.RegId = "";
+      this.paymethod = true;
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
     }
-    else if(event.value == 'IP'){
+    else if (event.value == 'IP') {
       this.OP_IPType = 1;
-      this.RegId="";
-      this.paymethod=true;
-    }else{
-        this.ItemSubform.get('MobileNo').reset();
-        this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-        this.ItemSubform.get('MobileNo').enable();
-        this.ItemSubform.get('PatientName').reset();
-        this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-        this.ItemSubform.get('PatientName').enable();
-        this.paymethod=true;
-        this.OP_IPType=2;
-        // this.OP_IP_Id=0;
-      // } else {
-      //   // this.Regdisplay = true;
-  
-      //   this.ItemSubform.get('MobileNo').disable();
-      //   this.ItemSubform.get('PatientName').disable();
-      //   this.isPatienttypeDisabled = false;
-      //   this.ItemSubform.get('MobileNo').reset();
-      //   this.ItemSubform.get('MobileNo').clearValidators();
-      //   this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      //   this.ItemSubform.get('PatientName').reset();
-      //   this.ItemSubform.get('PatientName').clearValidators();
-      //   this.ItemSubform.get('PatientName').updateValueAndValidity();
-      //   this.paymethod=true;
+      this.RegId = "";
+      this.paymethod = true;
+      this.ItemSubform.get('MobileNo').clearValidators();
+      this.ItemSubform.get('PatientName').clearValidators();
+      this.ItemSubform.get('MobileNo').updateValueAndValidity();
+      this.ItemSubform.get('PatientName').updateValueAndValidity();
+    } else {
+      this.ItemSubform.get('MobileNo').reset();
+      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('MobileNo').enable();
+      this.ItemSubform.get('PatientName').reset();
+      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('PatientName').enable();
+      this.ItemSubform.updateValueAndValidity();
+      this.paymethod = false;
+      this.OP_IPType = 2;
     }
     // console.log(this.ItemSubform.get('PatientType').value)
   }
-
+  onChangePaymentMode(event) {
+    if (event.value == 'Online') {
+      this.IsOnlineRefNo = true;
+      this.ItemSubform.get('referanceNo').reset();
+      this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
+      this.ItemSubform.get('referanceNo').enable();
+    } else {
+      this.IsOnlineRefNo = false;
+    }
+  }
   convertToWord(e) {
     return converter.toWords(e);
   }
@@ -1705,8 +1689,6 @@ OP_IPType:any=0;
 
   Paymentobj = {};
   onSave() {
-    this.ItemSubform.get('PatientType').setValidators([Validators.required]);
-    this.ItemSubform.get('PatientType').updateValueAndValidity();
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashpaySave()
     }
@@ -1927,10 +1909,11 @@ OP_IPType:any=0;
     // console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
+         console.log(response);
         Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             // let m = response;
-            this.getPrint(response);
+            this.getPrint3(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -1952,6 +1935,138 @@ OP_IPType:any=0;
     this.saleSelectedDatasource.data = [];
   // }
 }
+getPrint3(el) {
+  debugger
+  var D_data = {
+    "SalesID": el,// 
+    "OP_IP_Type":  this.OP_IPType 
+  }
+
+  let printContents;
+  this.subscriptionArr.push(
+    this._salesService.getSalesPrint(D_data).subscribe(res => {
+
+      this.reportPrintObjList = res as Printsal[];
+      console.log(this.reportPrintObjList);
+
+      this.reportPrintObj = res[0] as Printsal;
+      // console.log(this.reportPrintObj);
+      this.getTemplateTax2();
+
+    })
+  );
+}
+
+getTemplateTax2() {
+  debugger
+  let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+  this._salesService.getTemplate(query).subscribe((resData: any) => {
+
+    this.printTemplate = resData[0].TempDesign;
+    let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
+    // ;
+    for (let i = 0; i < keysArray.length; i++) {
+      let reString = "{{" + keysArray[i] + "}}";
+      let re = new RegExp(reString, "g");
+      this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+    }
+    var strrowslist = "";
+    for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+      console.log(this.reportPrintObjList);
+      var objreportPrint = this.reportPrintObjList[i - 1];
+      let PackValue = '1200'
+      // <div style="display:flex;width:60px;margin-left:20px;">
+      //     <div>`+ i + `</div> 
+      // </div>
+
+      var strabc = `<hr style="border-color:white" >
+      <div style="display:flex;margin:8px 0">
+      <div style="display:flex;width:20px;margin-left:20px;">
+          <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+      </div>
+    
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.HSNcode + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+objreportPrint.ManufShortName + `</div> 
+      </div>
+      <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
+          <div>`+ objreportPrint.ItemName + `</div> 
+      </div>
+       <div style="display:flex;width:60px;text-align:left;">
+          <div>`+ objreportPrint.Qty + `</div> 
+      </div>
+      <div style="display:flex;width:90px;text-align:center;">
+      <div>`+ objreportPrint.BatchNo + `</div> 
+       </div>
+      <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
+      <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
+      </div>
+      <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
+      <div>`+ objreportPrint.UnitMRP + `</div> 
+      </div>
+      <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
+          <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
+      </div>
+      </div>`;
+      strrowslist += strabc;
+    }
+    var objPrintWordInfo = this.reportPrintObjList[0];
+
+    this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+    this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+    this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+    this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+    this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+    console.log(this.printTemplate);
+
+    setTimeout(() => {
+       this.print3();
+    }, 1000);
+  });
+
+
+}
+
+print3() {
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+  // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  // </html>`);
+  
+  popupWin.document.close();
+}
+
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2063,8 +2178,7 @@ OP_IPType:any=0;
       if (response) {
         Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            let m = response;
-            this.getPrint(m);
+            this.getPrint3(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }
@@ -2458,7 +2572,7 @@ export class Printsal {
   HTotalAmount:any;
   ExtMobileNo:any;
   StoreAddress:any;
-
+  PayMode:any;
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2510,6 +2624,7 @@ export class Printsal {
     this.HTotalAmount=Printsal.HTotalAmount || '';
     this.ExtMobileNo=Printsal.ExtMobileNo || '';
     this.StoreAddress=Printsal.StoreAddress || '';
+    this.PayMode=Printsal.PayMode || '';
   }
 }
 

@@ -45,7 +45,6 @@
                                             <mat-card>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                                                 <div>
-                                                <!-- (change)="onChangeReg($event)" -->
                                                 <mat-radio-group aria-label="Select an option"
                                                     formControlName="PatientType" name="PatientType"
                                                     style="margin-top: 12px;" (change)="onChangePatientType($event)"
@@ -55,7 +54,7 @@
                                                     <mat-radio-button value="External" (checked)="true">External</mat-radio-button>
                                                 </mat-radio-group>
 
-                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'" style="width: 500px !important;">
                                                     <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No"
                                                         matInput [matAutocomplete]="auto1" (input)="getSearchList()">
                                                     <span matSuffix style="display: flex;">
@@ -107,20 +106,6 @@
                                                         (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
                                                 </mat-form-field>
-
-                                                <!-- <span
-                                                    style="font-weight: 400;font-size: medium;margin-right: 10px !important;">
-                                                    {{StoreName}}</span> -->
-
-                                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>From Store</mat-label>
-                                                    <mat-select formControlName="StoreId" name="StoreId">
-                                                        <mat-option></mat-option>
-                                                        <mat-option *ngFor="let m of Store1List" [value]="m">
-                                                            {{m.StoreName}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field> -->
                                                 </div>
                                                 <div>
                                                     <app-common-date [screenFrom]="screenFromString"
@@ -138,7 +123,26 @@
                                                                 <!-- ================================ LABEL HEADER  -->
                                                                 <div style="font-size: medium;background-color: rgb(203, 214, 214);">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
-                                                                        <span style="font-weight: 700;">Patient Information</span> <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span> <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span>
+                                                                        <span style="font-weight: 700;">Patient Information</span> 
+                                                                        <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
+                                                                            <div class="flex-item" style="width: 30px;">
+                                                                                <h3 class="labels-h3">OP_IP_ID</h3>
+                                                                            </div>
+                                                                            <div class="flex-item-middle">
+                                                                                <h6 class="labels-h6">:</h6>
+                                                                            </div>
+                                                                            <div class="flex-item">
+                                                                                <h6 class="labels-h6"> {{registerObj.AdmissionID}}</h6>
+                                                                            </div>
+                                                                            <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                OP_IP_ID is required
+                                                                            </mat-error>
+                                                                        </div> -->
+
+
+                                                                        <!-- <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span>  -->
+                                                                        <!-- <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span> -->
+
                                                                         <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                                                             <div class="patient-sub">
                                                                                 <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center" style="padding-top: 10px;">
@@ -163,7 +167,7 @@
                                                                                         <span>{{PatientName}}</span>
                                                                                     </div>
 
-                                                                                    <div style="width:80px;margin-left: 10px;">
+                                                                                    <!-- <div style="width:80px;margin-left: 10px;">
                                                                                         <span>Mobile No</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
@@ -171,7 +175,7 @@
                                                                                     </div>
                                                                                     <div style="width: 150px;">
                                                                                         <span>{{registerObj.MobileNo}}</span>
-                                                                                    </div>
+                                                                                    </div> -->
 
                                                                                     <div style="width:100px;margin-left: 10px;">
                                                                                         <span>Ward /Bed</span>
@@ -183,6 +187,18 @@
                                                                                         <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
                                                                                     </div>
 
+                                                                                    <div style="width:100px;margin-left: 10px;" formControlName="OP_IP_ID" required>
+                                                                                        <span>Admission Id</span>
+                                                                                    </div>
+                                                                                    <div class="flex-item-middle">
+                                                                                        <span>:</span>
+                                                                                    </div>
+                                                                                    <div  style="width: 200px;">
+                                                                                        <span>{{registerObj.AdmissionID}}</span>
+                                                                                        <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                            OP_IP_ID is required
+                                                                                        </mat-error>
+                                                                                    </div>
 
 
                                                                                 </div>
@@ -284,6 +300,7 @@
                                             </div>
                                         </mat-card>
                                         </form>
+                                        <!-- Item Search  Option  -->
                                         <form [formGroup]="_salesService.IndentSearchGroup"
                                             style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
@@ -673,16 +690,16 @@
                                                         </div> -->
                                                     </div>
                                                     <div style="justify-content: end; float: right;">
-                                                        <mat-radio-group aria-label="Select an option"
-                                                            formControlName="CashPay" style="margin-top: 12px;">
+                                                        <mat-radio-group aria-label="Select an option" formControlName="CashPay" style="margin-top: 12px;"
+                                                        (change)="onChangePaymentMode($event)">
                                                             <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->
                                                         </mat-radio-group>
-                                                        <mat-form-field appearance="outline" fxFlex="15%" *ngIf="ItemSubform.get('CashPay').value === 'Online'">
+                                                        <mat-form-field appearance="outline" fxFlex="15%" *ngIf="IsOnlineRefNo">
                                                             <mat-label>Referance no</mat-label>
-                                                            <input matInput name="referanceNo" formControlName="referanceNo">
+                                                            <input matInput name="referanceNo" formControlName="referanceNo" required>
                                                         </mat-form-field>&nbsp;
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
@@ -1148,8 +1165,8 @@
                             </div>
                             <div *ngFor="let item of salesIdWiseObj | keyvalue">
                                 <div>
-                                    <h2>Sales No: {{item.key}} <button class="next-btn"
-                                            style="margin-left: 10px;">repeat</button> </h2>
+                                    <h3>Sales No: {{item.key}} <button class="next-btn"
+                                            style="margin-left: 10px;">repeat</button> </h3>
 
                                 </div>
                                 <div *ngFor="let ele of item.value">
@@ -1169,3 +1186,192 @@
     <!-- / CONTENT-->
 </div>
 
+
+<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
+    <!-- <div class="watermark" style="position:absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 0.1;
+        z-index: 99;
+        color: black;
+        font-size: 70px;
+        transform: translate(-50%,-50%) rotate(-45deg);
+        white-space: nowrap;
+        pointer-events: none;">Shri Siddeshwar Medicals</div> -->
+    <div style="display:flex; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h4>
+    </div>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <h3 style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        {{reportPrintObjList[0]?.StoreName}}</h3>
+
+                    <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
+                    <!-- <div>GST No. 29ABCTS6874R1Z8</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
+                        <span>D.L.No. 123456789456123</span>
+                    </div> -->
+                    <div>
+                        <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
+                        <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;padding:0 10px 10px">
+                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                                Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Doctor Name: {{reportPrintObjList[0]?.DoctorName}}
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+                <!-- <td>
+                </td> -->
+              
+            </tr>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <div>GST No. {{reportPrintObjList[0]?.GSTIN}}</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span>
+                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;padding:0 10px 10px">
+                                Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Date}}</span><br>
+                                Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+            </tr>
+
+            <tr style="font-size:10px;">
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Sr No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">HSN</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MFR</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 100px;">Product Name</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Pack</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Batch No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">ExpDate</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Qty</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
+            </tr>
+            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.SalesNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.HSNcode}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.ItemName}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{'-'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.BatchNo}}</td>
+                <td style="border: 1px solid black;vertical-align: top;
+                padding: 0;height: 15px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border: 1px solid black;vertical-align: top;text-align: center;
+                padding: 0;height: 15px;">{{item?.Qty}}</td>
+                <td style="border: 1px solid black;vertical-align: top;text-align: right;
+                padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
+                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                padding: 3px;height: 15px;">{{item?.TotalAmount}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;"> 
+                    <div style="font-weight: 400;">Terms & Conditions</div>
+                    <ul style="margin: 5px 0 0 0;
+                    font-size: 10px;
+                    padding-left: 17px;
+                    font-weight: 400;">
+                        <li>
+                           Please check the item before leaving medical.
+                        </li>
+                        <li>
+                            Please consult your doctor before consuming the medicine
+                        </li>
+                        <li>
+                            All disputes are subject to Vijayapura jurisdiction only
+                        </li>
+                    </ul>
+                </td>
+                <!-- <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
+                </td> -->
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;width: 300px;font-size:10px;"> 
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Sub Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Discount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Total GST</span>
+                        <span style="margin:0 5px">:</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt + reportPrintObjList[0]?.IGSTAmt}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Round off</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ 0.00</span>
+                    </div>
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Grand Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    <div style="font-size: 15px;font-weight: bold">
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
+                    </div>
+                </td>
+                <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
+                padding: 5px 10px;text-align: center;">
+                
+                    <span style="font-size: 11px;opacity:.6;">For Shri Siddeshwar Medicals 24/7</span>
+                </td>
+            </tr> -->
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    Total Invoice Value in words: 
+                </td>
+            </tr> -->
+            <tr style="font-size: 10px;">
+                <td colspan="5">
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
+                </td>
+                <td colspan="5" style="text-align: right;">
+                    This is Computer generated invoice hence doesn’t require signature
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
+    </div> -->
+</div>
