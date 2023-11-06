@@ -80,6 +80,7 @@ export class OpeningBalanceComponent {
       this.StoreList = data;
       // console.log(this.StoreList);
       this._OpeningBalanceService.UseFormGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._OpeningBalanceService.NewUseForm.get('StoreID').setValue(this.StoreList[0]);
     });
   }
   

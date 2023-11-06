@@ -1,9 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { WorkOrderService } from './work-order.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-work-order',
@@ -28,17 +31,22 @@ export class WorkOrderComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
+  SupplierList:any=[];
 
   dsWorkOrderList=new MatTableDataSource<WorkOrderList>();
 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     public _WorkOrderService:WorkOrderService,
     private _fuseSidebarService: FuseSidebarService,
     private _loggedService: AuthenticationService,
+    public datePipe:DatePipe
   ) { } 
 
   ngOnInit(): void {
     this.gePharStoreList();
+    this.getSuppliernameList();
   }
 
   toggleSidebar(name): void {
@@ -60,6 +68,37 @@ export class WorkOrderComponent implements OnInit {
       this._WorkOrderService.myFormGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+  getSuppliernameList() {
+    
+ 
+    this._WorkOrderService.getSupplierList().subscribe(data => {
+      this.SupplierList = data;
+      console.log(this.SupplierList);
+      this._WorkOrderService.myFormGroup.get('SupplierName').setValue(this.SupplierList[0]);
+    });
+  } 
+getWorkOrdersList() {
+  this.sIsLoading = 'loading-data';
+  var m_data = {
+    "ToStoreId":this._WorkOrderService.myFormGroup.get("StoreId").value.storeid,
+    "From_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("startdate").value, "MM-dd-yyyy") || '01/01/1900',
+    "To_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("enddate").value, "MM-dd-yyyy") || '01/01/1900',
+    "Supplier_Id": this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId 
+    
+  }
+  console.log(m_data);
+  this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
+    this.dsWorkOrderList.data = data as WorkOrderList[];
+    this.dsWorkOrderList.sort = this.sort;
+    this.dsWorkOrderList.paginator = this.paginator;
+    console.log(this.dsWorkOrderList.data);
+    this.sIsLoading = '';
+  },
+    error => {
+      this.sIsLoading = '';
+    });
+
+}          
 
 }
 

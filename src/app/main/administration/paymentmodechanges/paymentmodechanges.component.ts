@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { DatePipe } from '@angular/common';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -12,6 +15,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
   animations: fuseAnimations,
 })
 export class PaymentmodechangesComponent implements OnInit {
+  
   displayedColumns:string[] = [
     'action',
     'PayDate',
@@ -31,14 +35,18 @@ export class PaymentmodechangesComponent implements OnInit {
   isLoading = true;
 
  dsPaymentChanges = new MatTableDataSource<PaymentChange>();
-
+ 
+ @ViewChild(MatSort) sort: MatSort;
+ @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     public _PaymentmodechangesService:PaymentmodechangesService,
     private _fuseSidebarService: FuseSidebarService,
+    public datePipe: DatePipe,
 
   ) { }
 
   ngOnInit(): void {
+ 
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -48,6 +56,80 @@ export class PaymentmodechangesComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+ getOPReceiptList(){
+  this.sIsLoading = 'loading-data';
+  var vdata={
+    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
+    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+  }
+  console.log(vdata);
+  this._PaymentmodechangesService.getOpReceiptList(vdata).subscribe(data =>{
+    this.dsPaymentChanges.data= data as PaymentChange [];
+    this.dsPaymentChanges.sort = this.sort;
+    this.dsPaymentChanges.paginator = this.paginator;
+    this.sIsLoading = '';
+    console.log(this.dsPaymentChanges.data);
+  } ,
+  error => {
+    this.sIsLoading = '';
+  });
+ }
+
+ getIPReceiptList(){
+  this.sIsLoading = 'loading-data';
+  var vdata={
+    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
+    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+  }
+  console.log(vdata);
+  this._PaymentmodechangesService.getIpReceiptList(vdata).subscribe(data =>{
+    this.dsPaymentChanges.data= data as PaymentChange [];
+    this.dsPaymentChanges.sort = this.sort;
+    this.dsPaymentChanges.paginator = this.paginator;
+    this.sIsLoading = '';
+    console.log(this.dsPaymentChanges.data);
+  } ,
+  error => {
+    this.sIsLoading = '';
+  });
+ }
+
+ getIPAdvanceList(){
+  this.sIsLoading = 'loading-data';
+  var vdata={
+    'F_Name':this._PaymentmodechangesService.UseFormGroup.get('FirstName').value || '%',
+    'L_Name':this._PaymentmodechangesService.UseFormGroup.get('LastName').value   || '%', 
+    'From_Dt': this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'To_Dt':this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    'Reg_No':this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || 0,
+    'PBillNo':this._PaymentmodechangesService.UseFormGroup.get('BillNo').value  || 0,
+    'ReceiptNo':this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || 0
+  }
+  console.log(vdata);
+  this._PaymentmodechangesService.getIpAdvanceList(vdata).subscribe(data =>{
+    this.dsPaymentChanges.data= data as PaymentChange [];
+    this.dsPaymentChanges.sort = this.sort;
+    this.dsPaymentChanges.paginator = this.paginator;
+    this.sIsLoading = '';
+    console.log(this.dsPaymentChanges.data);
+  } ,
+  error => {
+    this.sIsLoading = '';
+  });
+ }
+ 
+ 
+         
 
 
 }

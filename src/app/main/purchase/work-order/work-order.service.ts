@@ -26,5 +26,11 @@ export class WorkOrderService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
+  public getSupplierList( ){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName", {});
+  }
+  public getWorkOrderList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_WorkOrderList_by_Name", Param);
+  }
   
 }

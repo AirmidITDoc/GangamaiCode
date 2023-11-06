@@ -22,10 +22,15 @@ export class PaymentmodechangesforpharmacyService {
         FirstName:'',
         LastName:'',
         SalesNo:'',
-        Radio:['1']
-
-
-
+        Radio:['1'],
+        StoreId:''
       })
+    }
+
+    public getIpPharAdvanceList(Param){
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPayPharReceipt",Param)
+    }
+    public getSalesNoList(Param){
+      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
     }
 }
