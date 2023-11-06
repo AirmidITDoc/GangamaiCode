@@ -24,7 +24,6 @@ import { map } from 'rxjs/operators';
 export class GRNReturnComponent implements OnInit {
   
   dsGRNReturnHeaderList = new MatTableDataSource<GRNReturnHeaderList>();
-
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
 
   ToStoreList:any=[];
@@ -50,14 +49,14 @@ export class GRNReturnComponent implements OnInit {
     "ItemName",
     "BatchNo",
     "BatchExpiryDate",
-    "BalQty",
+    // "BalQty",
     "ReturnQty",
     "PureRate",
     "Amount",
     "GST",
     "GSTAmount",
     "NetAmount",
-    "BQty",
+    // "BQty",
     "StkId",
   ];
 
@@ -115,7 +114,7 @@ export class GRNReturnComponent implements OnInit {
       this.dsGRNReturnList.sort = this.sort;
       this.dsGRNReturnList.paginator = this.paginator;
       this.sIsLoading = '';
-      // console.log(this.dsGrnItemList.data)
+      console.log(this.dsGRNReturnList.data)
     },
       error => {
         this.sIsLoading = '';

@@ -170,7 +170,7 @@
                                                                     fxShow.gt-sm>
                                                                     GST Amount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.GSTAmount}}
+                                                                    {{contact.TotalVatAmount}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -293,30 +293,30 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="BalQty">
+                                                            <!-- <ng-container matColumnDef="BalQty">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
                                                                     BalQty</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.BalQty}}
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
 
                                                             <ng-container matColumnDef="ReturnQty">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
                                                                     RQty</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.ReturnQty}}
+                                                                    {{contact.TotalQty}}
                                                                 </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="PureRate">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    PureRate</mat-header-cell>
+                                                                    Landed Rate</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.PureRate}}
+                                                                    {{contact.LandedRate}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -325,7 +325,7 @@
                                                                     fxShow.gt-sm>
                                                                     Amount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.Amount}}
+                                                                    {{contact.LandedTotalAmount}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -334,7 +334,7 @@
                                                                     fxShow.gt-sm>
                                                                     GST</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.GST}}
+                                                                    {{contact.VatPercentage}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -343,7 +343,7 @@
                                                                     fxShow.gt-sm>
                                                                     GSTAmount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.GSTAmount}}
+                                                                    {{contact.VatAmount}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -352,18 +352,18 @@
                                                                     fxShow.gt-sm>
                                                                     NetAmount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.NetAmount}}
+                                                                    {{contact.LandedTotalAmount}}
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="BQty">
+                                                            <!-- <ng-container matColumnDef="BQty">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
                                                                     BQty</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.BQty}}
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
 
                                                             <ng-container matColumnDef="StkId">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
