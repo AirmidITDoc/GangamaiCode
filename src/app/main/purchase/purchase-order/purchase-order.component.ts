@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
+import { IndentList } from 'app/main/pharmacy/sales/sales.component';
 
 
 
@@ -25,11 +27,14 @@ import { Observable } from 'rxjs';
   
 })
 export class PurchaseOrderComponent implements OnInit {
-  [x: string]: any;
+  // [x: string]: any;
 
   sIsLoading: string = '';
   isLoading = true;
   ToStoreList:any=[];
+  StoreList:any=[];
+  Store1List:any=[];
+  StoreName:any;
   FromStoreList:any;
   SupplierList:any;
   screenFromString = 'admission-form';
@@ -44,15 +49,54 @@ export class PurchaseOrderComponent implements OnInit {
   noOptionFound: boolean = false;
   chargeslist: any = [];
   optionsMarital: any[] = [];
+  optionsPayment: any[] = [];
+  optionsItemName: any[] = [];
 
+  GSTAmt: any=0.0;
+  CGSTAmount: any;
+  IGSTAmount: any;
+  SGSTAmount: any=0.0;
+  grandTotalAmount: any=0.0;
+  isItemIdSelected: boolean = false;
+  VatPercentage: any=0.0;
   state = false;
   optionsInc = null;
-  allKeysIncomings = [
-    {value: 'volvo', viewValue: 'Volvo'},
-    {value: 'saab', viewValue: 'Saab'},
-    {value: 'mercedes', viewValue: 'Mercedes'}
-  ];
   
+  
+  BatchNo: any;
+  BatchExpDate: any;
+  UnitMRP: any;
+  Qty: any = 1;
+  IssQty: any;
+  Bal: any;
+  
+  GSTPer: any;
+  MRP: any;
+  DiscPer: any = 0;
+  DiscAmt: any = 0;
+  FinalDiscPer: any = 0;
+  FinalDiscAmt: any = 0;
+  NetAmt: any = 0;
+  TotalMRP: any = 0;
+  FinalTotalAmt: any;
+  FinalNetAmount: any = 0;
+  FinalGSTAmt: any = 0;
+
+  VatPer: any;
+  CgstPer: any;
+  SgstPer: any;
+  IgstPer: any;
+  
+  VatAmount: any;
+  CGSTAmt: any;
+  SGSTAmt: any;
+  IGSTAmt: any;
+
+  PaymentTerm: any;
+  // PatientName: any;
+  ItemObj: IndentList;
+
+ 
   dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
 
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
@@ -98,7 +142,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   ItemName: any;
   UOM:any;
-  Qty:any;
+  BalanceQty:any;
   Rate:any;
   TotalAmount:any;
   Dis:any=0;
@@ -109,7 +153,7 @@ export class PurchaseOrderComponent implements OnInit {
   disableTextbox: boolean;
   DiscAmount: any=0;
   GSTAmount: any =0;
-  MRP: any;
+  
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
@@ -126,14 +170,15 @@ export class PurchaseOrderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getItemNameList();
+    // this.getItemNameList();
     this.getPaymentSearchCombo();
     this.getFromStoreSearchList();
     this.getPurchaseOrder(); 
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
-    this.getItemNameSearchCombo();
-    this.getItemNameList();
+    // this.getItemNameSearchCombo();
+    // this.getItemNameList();
+    this.gePharStoreList();
   }
   
   getOptionText(option) {
@@ -163,8 +208,10 @@ export class PurchaseOrderComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  
 
   getPurchaseOrder() {
+    debugger
     // this.sIsLoading = 'loading-data';
     var Param = {
       
@@ -174,9 +221,9 @@ export class PurchaseOrderComponent implements OnInit {
        "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
        "SupplierId": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
+    console.log(Param)
       this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      // console.log(this.dsPurchaseOrder.data)
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -201,34 +248,69 @@ export class PurchaseOrderComponent implements OnInit {
       });
   }
 
-disableSelect = new FormControl(true);
+  focusNextService() {
+    // this.renderer.selectRootElement('#myInput').focus();
+  }
+  
+
+  getPharItemList() {
+    debugger
+    var m_data = {
+      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
+      "StoreId": this._PurchaseOrder.PurchaseStoreform.get('StoreId').value.storeid || 0
+    }
+    if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) {
+      this._PurchaseOrder.getItemList(m_data).subscribe(data => {
+        this.filteredOptions = data;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+  }
+
+
+  //   getSelectedObj(obj) {
+  //   // this.registerObj = obj;
+  //   this.ItemName = obj.ItemName;
+  //   this.ItemId = obj.ItemId;
+  //   this.BalanceQty = obj.BalanceQty;
+
+  //   if (this.BalanceQty > 0) {
+  //     this.getBatch();
+  //   }
+  // }
+
+disableSelect = new FormControl(false);
 
 OnSave() {
-
+debugger
   let purchaseHeaderInsertObj = {};
   purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
   purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
   purchaseHeaderInsertObj['storeId'] = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0;
   purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0;
-  purchaseHeaderInsertObj['totalAmount'] = 0;
-  purchaseHeaderInsertObj['discAmount'] = 0;
+  purchaseHeaderInsertObj['totalAmount'] =this.FinalTotalAmt;
+  purchaseHeaderInsertObj['discAmount'] =this.DiscAmount;
   purchaseHeaderInsertObj['taxAmount'] = 0;
-  purchaseHeaderInsertObj['freightAmount'] = 0;
+  purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
   purchaseHeaderInsertObj['octriAmount'] = 0;
-  purchaseHeaderInsertObj['grandTotal'] = 0;
+  purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
   purchaseHeaderInsertObj['isclosed'] = false;
   purchaseHeaderInsertObj['isVerified'] = false;
   purchaseHeaderInsertObj['remarks'] = "";
   purchaseHeaderInsertObj['taxID'] = 0;
-  purchaseHeaderInsertObj['addedby'] = 0;
-  purchaseHeaderInsertObj['updatedBy'] = 0;
-  purchaseHeaderInsertObj['paymentTermId'] =0;
-  purchaseHeaderInsertObj['modeofPayment'] = 0;
-  purchaseHeaderInsertObj['worrenty'] = "";
+  // purchaseHeaderInsertObj['addedby'] =this.accountService.currentUserValue.user.id,
+  purchaseHeaderInsertObj['updatedBy'] =this.accountService.currentUserValue.user.id,
+  purchaseHeaderInsertObj['paymentTermId'] = 2,//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value || '';
+  purchaseHeaderInsertObj['modeofPayment'] =1,// this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
+  purchaseHeaderInsertObj['worrenty'] = '',//this._PurchaseOrder.userFormGroup.get('Warranty').value || 0;
   purchaseHeaderInsertObj['roundVal'] =0;
-  purchaseHeaderInsertObj['totCGSTAmt'] = 0;
-  purchaseHeaderInsertObj['totSGSTAmt'] = 0;
-  purchaseHeaderInsertObj['totIGSTAmt'] =0;
+  purchaseHeaderInsertObj['totCGSTAmt'] =this.GSTAmount;
+  purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
+  purchaseHeaderInsertObj['totIGSTAmt'] =this.IGSTAmount;
   purchaseHeaderInsertObj['transportChanges'] = 0;
   purchaseHeaderInsertObj['handlingCharges'] = 0;
   purchaseHeaderInsertObj['freightCharges'] = 0;
@@ -247,18 +329,18 @@ OnSave() {
     purchaseDetailInsertObj['rate'] = element.Rate;
     purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
     purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-    purchaseDetailInsertObj['discPer'] = 0 ; //element.DiscPer;
-    purchaseDetailInsertObj['vatAmount'] = 0 ;//element.vatAmount;
-    purchaseDetailInsertObj['vatPer'] = 0; //element.vatPer;;
-    purchaseDetailInsertObj['grandTotalAmount'] = 0 ;//this.grandTotalAmount;
+    purchaseDetailInsertObj['discPer'] = element.DiscPer;
+    purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+    purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+    purchaseDetailInsertObj['grandTotalAmount'] = this.NetAmount;
     purchaseDetailInsertObj['mrp'] = element.MRP;
-    purchaseDetailInsertObj['specification'] = 0; // element.Specification;
-    purchaseDetailInsertObj['cgstPer'] = 0; // this.CgstPer;
-    purchaseDetailInsertObj['cgstAmt'] = 0 ;//this.CgstAmt;
-    purchaseDetailInsertObj['sgstPer'] = 0; //this.SgstPer;
-    purchaseDetailInsertObj['sgstAmt'] = 0 ;//this.SgstAmt;
-    purchaseDetailInsertObj['igstPer'] = 0; //this.IgstPer;
-    purchaseDetailInsertObj['igstAmt'] = 0; //this.IgstAmt;
+    purchaseDetailInsertObj['specification'] = element.Specification;
+    purchaseDetailInsertObj['cgstPer'] =element.GST;
+    purchaseDetailInsertObj['cgstAmt'] = this.CGSTAmount;
+    purchaseDetailInsertObj['sgstPer'] =element.GST;
+    purchaseDetailInsertObj['sgstAmt'] = this.SGSTAmount;
+    purchaseDetailInsertObj['igstPer'] = element.GST;
+    purchaseDetailInsertObj['igstAmt'] =this.IGSTAmount;
     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
 
   });
@@ -288,7 +370,7 @@ OnSave() {
 
 calculateTotalAmount() {
   if (this.Rate && this.Qty) {
-    this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
+    this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
     this.NetAmount = this.TotalAmount;
     // this.calculatePersc();
   }
@@ -296,35 +378,36 @@ calculateTotalAmount() {
 
 getTotalNet(element) {
   let NetAmt;
-  NetAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0) , 0);
-  return NetAmt;
+  this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0) , 0);
+  return  this.FinalNetAmount;
 }
 
 getTotalGST(element) {
-  let GSTAmt;
-  GSTAmt = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
-  return GSTAmt;
+  
+  this.GSTAmount = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
+  return this.GSTAmount;
 }
 
 getTotalDisc(element) {
-  let Dis;
-  Dis = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
-  return Dis;
+  
+  this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
+  return  this.DiscAmount;
 }
 
 getTotalAmt(element)
 {
-  let TotalAmt;
-  TotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
-  return TotalAmt;
+  
+  this.FinalTotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+  return  this.FinalTotalAmt;
 }
 
 calculateDiscperAmount(){
-  if (this.Dis) {
+  debugger
+  if (this.Dis ) {
     let disc=this._PurchaseOrder.userFormGroup.get('Dis').value
-    this.DiscAmount = Math.round(disc * parseInt(this.NetAmount) /100 );
+    this.DiscAmt = (disc * parseFloat(this.NetAmount) /100 ).toFixed(2);
     // this.DiscAmount =  DiscAmt
-    this.NetAmount = this.NetAmount - this.DiscAmount;
+    this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
 
   }
     
@@ -340,24 +423,24 @@ calculateDiscAmount() {
 
 calculateGSTperAmount() {
 
-  if (this.GST) {
+  if (this.GSTPer) {
   
-    this.GSTAmount = Math.round((this.TotalAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.TotalAmount) + parseInt(this.GSTAmount));
+    this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+    this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
  
   }
 }
 
-calculateGSTAmount(){
-  if (this.GSTAmount) {
+// calculateGSTAmount(){
+//   if (this.GSTAmt) {
   
-    // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-    this.NetAmount = Math.round(parseInt(this.NetAmount) + parseInt(this.GSTAmount));
-    this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+//     // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
+//     this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+//     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
  
-  }
-}
+//   }
+// }
 
 calculatePersc(){
   if (this.Dis)
@@ -395,9 +478,9 @@ onScroll() {
 }
 
 getToStoreSearchList() {
-  debugger;
+  
   var vdata = {
-    Id: this._loggedService.currentUserValue.user.storeId
+    Id: this.accountService.currentUserValue.user.storeId
   }
   console.log(vdata);
   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
@@ -433,7 +516,7 @@ getSupplierSearchCombo() {
     this.SupplierList = data;
     // console.log(data);
     this.optionsMarital = this.SupplierList.slice();
-    this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').valueChanges.pipe(
+    this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').valueChanges.pipe(
       startWith(''),
       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
     );
@@ -454,24 +537,24 @@ getPaymentSearchCombo() {
     });
   }
 
-  getItemNameSearchCombo() {
-    var Param = {
+  // getItemNameSearchCombo() {
+  //   var Param = {
 
-      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
-    }
-    // console.log(Param);
-    this._PurchaseOrder.getItemNameList(Param).subscribe(data =>{
-        this.ItemName = data;
-        // console.log(data);
-        this.optionsItemName = this.ItemName.slice();
-        this.filteredoptionsItemName = this._PurchaseOrder.userFormGroup.get('ItemName').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterItemName(value) : this.ItemName.slice()),
-        );
+  //     "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
+  //     "StoreId": this._PurchaseOrder.userFormGroup.get("StoreId").value.StoreId || 0
+  //   }
+  //   // console.log(Param);
+  //   this._PurchaseOrder.getItemNameList(Param).subscribe(data =>{
+  //       this.ItemName = data;
+  //       // console.log(data);
+  //       this.optionsItemName = this.ItemName.slice();
+  //       this.filteredoptionsItemName = this._PurchaseOrder.userFormGroup.get('ItemName').valueChanges.pipe(
+  //         startWith(''),
+  //         map(value => value ? this._filterItemName(value) : this.ItemName.slice()),
+  //       );
     
-      });
-    }
+  //     });
+  //   }
 
 private _filterSupplier(value: any): string[] {
   if (value) {
@@ -496,18 +579,21 @@ private _filterItemName(value: any): string[] {
 
 getFromStoreSearchList() {
   var data = {
-    "Id": 1
+    Id: this.accountService.currentUserValue.user.storeId
   }
   this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
     this.FromStoreList = data;
     this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
   });
 }
+
+
   getItemNameList(){
+    debugger
     var Param = {
 
-      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
+      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
+      "StoreId": this._PurchaseOrder.userFormGroup.get("StoreId").value.StoreId || 0
     }
     // console.log(Param);
     this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
@@ -520,14 +606,53 @@ getFromStoreSearchList() {
       }
     });
   }
-  @ViewChild('itemname') itemname: ElementRef;
+  
+  @ViewChild('SupplierId') SupplierId: ElementRef;
+  @ViewChild('Freight') Freight: ElementRef;
+  @ViewChild('DeliveryDate') DeliveryDate: ElementRef;
+  @ViewChild('PaymentMode') PaymentMode: ElementRef;
+  @ViewChild('Paymentterm') Paymentterm: ElementRef;
+  
+  @ViewChild('TaxNature') TaxNature: ElementRef;
+  @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('dis') dis: ElementRef;
   @ViewChild('gst') gst: ElementRef;
   @ViewChild('mrp') mrp: ElementRef;
   @ViewChild('specification') specification: ElementRef;
- 
+  add: boolean = true;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+  
+  public onEnterSupplier(event): void {
+    if (event.which === 13) {
+      this.Freight.nativeElement.focus();
+    }
+  }
+
+   
+  public onEnterFreight(event): void {
+    if (event.which === 13) {
+      this.DeliveryDate.nativeElement.focus();
+    }
+  }
+  public onEnterDeliveryDate(event): void {
+    if (event.which === 13) {
+      this.PaymentMode.nativeElement.focus();
+    }
+  }
+  public onEnterPaymentMode(event): void {
+    if (event.which === 13) {
+      this.Paymentterm.nativeElement.focus();
+    }
+  }
+  
+  public onEnterPaymentTerm(event): void {
+    if (event.which === 13) {
+      this.TaxNature.nativeElement.focus();
+    }
+  }
   
   public onEnterItemName(event): void {
     if (event.which === 13) {
@@ -567,29 +692,50 @@ getFromStoreSearchList() {
 
   public onEnterSpecification(event): void {
     if (event.which === 13) {
-      this.itemname.nativeElement.focus();
+      this.addbutton.focus();
     }
   }
+
+  gePharStoreList() {
+    debugger
+    var vdata = {
+      Id: this.accountService.currentUserValue.user.storeId
+    }
+    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
+    });
+  }
   
-getSelectedObj(obj) {
-  this.ItemID=obj.ItemID;
+getSelectedObj(obj) {this.accountService
+  debugger
+  this.ItemID=obj.ItemId;
   this.ItemName = obj.ItemName;
-  this.Qty = obj.Qty;
-  this.UOM = obj.UOM;
-  this.Rate = obj.Rate;
-  this.TotalAmount = obj.TotalAmount;
-  this.Dis = 0;
-  this.DiscAmount = 0;
-  this.GST = 0;
-  this.GSTAmount = 0;
-  this.NetAmount = obj.NetAmount;
-  this.MRP = obj.MRP;
-  this.Specification = obj.Specification;
+  this.Qty = obj.BalanceQty;
+  
+  if(this.Qty > 0){
+    this.UOM = obj.UOM;
+    this.Rate = obj.PurchaseRate;
+    this.TotalAmount = (parseInt(obj.BalanceQty)* parseFloat(this.Rate)).toFixed(2);
+   this.NetAmount=  this.TotalAmount ;
+    this.VatPercentage=obj.VatPercentage;
+    // this.CGSTPer =onj.CGSTPer;
+    this.GSTPer = obj.GSTPer;
+    this.GSTAmount = 0;
+    // this.NetAmount = obj.NetAmount;
+    // this.MRP = obj.MRP;
+    this.Specification = obj.Specification;
+  }
+  this.qty.nativeElement.focus();
 }
+
+
+
 
 onAdd(){
   this.dsItemNameList.data = [];
-  // this.chargeslist=this.chargeslist;
+ debugger
   this.chargeslist.push(
     {
       ItemID:this.ItemID,
@@ -599,18 +745,35 @@ onAdd(){
       Rate:this.Rate ,
       TotalAmount:this.TotalAmount,
       Dis :this.Dis ,
-      DiscAmount:this.DiscAmount,
+      DiscAmount:this.DiscAmt,
       GST:this.GST,
-      GSTAmount :this.GSTAmount ,
+      GSTAmount :this.GSTAmt ,
       NetAmount:this.NetAmount,
-      MRP:this.MRP ,
+      MRP:this.MRP,
       Specification:this.Specification ,
 
     });
 
     this.dsItemNameList.data=this.chargeslist;
+   
+    this.itemid.nativeElement.focus();
+    // this.add = false;
+    this.ResetItem();
   }
 
+  ResetItem(){
+    this._PurchaseOrder.userFormGroup.get('UOM').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('Qty').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('TotalAmount').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('Dis').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('DiscAmount').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('GSTPer').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('GSTAmount').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('MRP').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('Specification').setValue(0);
+    this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(0);
+  }
 
   
   onClose(){ } 
