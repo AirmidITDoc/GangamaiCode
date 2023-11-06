@@ -26,8 +26,11 @@ import * as converter from 'number-to-words';
 
 })
 export class SalesReturnComponent implements OnInit {
+  isLoadingStr: string = '';
+  isLoading: String = '';
 
   @ViewChild('billTemplate2') billTemplate2:ElementRef;
+  vStoreName: any;
 
   GrossAmt: any;
   DiscAmt: any;
@@ -71,7 +74,7 @@ export class SalesReturnComponent implements OnInit {
     'RegNo',
     'PatientName',
     'TotalAmount',
-    // 'action',
+    'PaymentType',
   ];
 
   dspSalesDetColumns = [
@@ -120,15 +123,15 @@ export class SalesReturnComponent implements OnInit {
     'ReturnQty',
     'TotalAmount',
     'VatPer',
-    'VatAmount',
+    // 'VatAmount',
     'DiscPer',
     'DiscAmount',
     'GrossAmount',
     'LandedPrice',
     'TotalLandedAmount',
     // 'IsBatchRequired',
-    'PurRateWf',
-    'PurTotAmt',
+    // 'PurRateWf',
+    // 'PurTotAmt',
     'CGSTPer',
     'CGSTAmount',
     'SGSTPer',
@@ -136,7 +139,7 @@ export class SalesReturnComponent implements OnInit {
     'IGSTPer',
     'IGSTAmount',
     // 'IsPurRate',
-    'StkID'
+    // 'StkID'
   ]
   SearchForm: FormGroup;
   FinalReturnform: FormGroup;
@@ -189,18 +192,17 @@ export class SalesReturnComponent implements OnInit {
     this._SalesReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
       this.SearchForm.get('StoreId').setValue(this.StoreList[0]);
-
+      this.vStoreName =  this.SearchForm.get('StoreId').value.StoreName;
     });
   }
 
   getSalesList() {
-    
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
-    this.TempItemselectedlist.data =[];
-    this.Itemselectedlist.data =[];
-    this.Itemselectedlist =[];
-   
+    this.TempItemselectedlist.data = [];
+    this.Itemselectedlist.data = [];
+    this.Itemselectedlist = [];
+
     var vdata = {
       F_Name: this.SearchForm.get('F_Name').value || '%',
       L_Name: this.SearchForm.get('L_Name').value || '%',
@@ -210,22 +212,28 @@ export class SalesReturnComponent implements OnInit {
       SalesNo: this.SearchForm.get('SalesNo').value || 0,
       StoreId: this.SearchForm.get('StoreId').value.storeid || 0,
     }
-    console.log(vdata);
-    this._SalesReturnService.getSalesBillList(vdata).subscribe(data => {
-      this.dssaleList.data = data as SaleBillList[];
-      
-      
-    })
+    setTimeout(() => {
+      this.isLoadingStr = 'loading';
+      this._SalesReturnService.getSalesBillList(vdata).subscribe(
+        (data) => {
+          this.dssaleList.data = data as SaleBillList[];
+          console.log(this.dssaleList.data);
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
+          this.isLoadingStr = this.dssaleList.data.length == 0 ? 'no-data' : '';
+        },
+        (error) => {
+          this.isLoading = 'list-loaded';
+        }
+      );
+    }, 1000);
   }
 
   onSelect(Parama) {
-    // console.log(Parama);
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
     this.Itemselectedlist.data =[];
     this.Itemselectedlist =[];
-    
-
     if (Parama.PaidType == "Paid") {
       this.getSalesDetCashList(Parama)
     }
@@ -242,12 +250,24 @@ export class SalesReturnComponent implements OnInit {
       StoreId: this.SearchForm.get('StoreId').value.storeid || 0,
       CashCounterId: Params.CashCounterID
     }
-    console.log(vdata);
-    this._SalesReturnService.getSalesDetCashList(vdata).subscribe(data => {
-      this.dssaleDetailList.data = data as SalesDetailList[];
+    setTimeout(() => {
+      this.isLoadingStr = 'loading';
+      this._SalesReturnService.getSalesDetCashList(vdata).subscribe(
+        (data) => {
+          this.dssaleDetailList.data = data as SalesDetailList[];
+          this.isLoadingStr = this.dssaleDetailList.data.length == 0 ? 'no-data' : '';
+        },
+        (error) => {
+          this.isLoading = 'list-loaded';
+        }
+      );
+    }, 1000);
+
+    // this._SalesReturnService.getSalesDetCashList(vdata).subscribe(data => {
+    //   this.dssaleDetailList.data = data as SalesDetailList[];
     
       
-    })
+    // })
     
   }
 
@@ -268,14 +288,12 @@ export class SalesReturnComponent implements OnInit {
   getCellCalculation(contact, ReturnQty) {
 
     this.RQty = parseInt(ReturnQty);
-
+    debugger;
     if ((parseInt(this.RQty)) > (parseInt(contact.Qty))) {
       Swal.fire("Return Qty cannot be greater than Qty")
-
+      contact.ReturnQty = this.RQty
     }
     else {
-
-      debugger
       this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
       this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
@@ -289,7 +307,7 @@ export class SalesReturnComponent implements OnInit {
       this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
 
 
-      contact.SalesNo = contact.SalesNo,
+        contact.SalesNo = contact.SalesNo,
         contact.SalesDetId = contact.SalesDetId,
         contact.OP_IP_ID = contact.OP_IP_ID,
         contact.ItemName = contact.ItemName,
@@ -315,8 +333,6 @@ export class SalesReturnComponent implements OnInit {
         contact.IGSTAmount = this.IGSTAmount,
         contact.IsPurRate = contact.IsPurRate,
         contact.StkID = contact.StkID
-
-
       // this.selectedssaleDetailList.data = this.Itemselectedlist;
 
     }

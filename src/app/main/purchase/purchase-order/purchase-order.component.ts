@@ -211,17 +211,14 @@ export class PurchaseOrderComponent implements OnInit {
   
 
   getPurchaseOrder() {
-    debugger
     // this.sIsLoading = 'loading-data';
     var Param = {
-      
       "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
        "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
        "SupplierId": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    console.log(Param)
       this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
       this.dsPurchaseOrder.sort = this.sort;
@@ -254,7 +251,6 @@ export class PurchaseOrderComponent implements OnInit {
   
 
   getPharItemList() {
-    debugger
     var m_data = {
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._PurchaseOrder.PurchaseStoreform.get('StoreId').value.storeid || 0
@@ -286,12 +282,11 @@ export class PurchaseOrderComponent implements OnInit {
 disableSelect = new FormControl(false);
 
 OnSave() {
-debugger
   let purchaseHeaderInsertObj = {};
   purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
   purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
-  purchaseHeaderInsertObj['storeId'] = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0;
-  purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0;
+  purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+  purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
   purchaseHeaderInsertObj['totalAmount'] =this.FinalTotalAmt;
   purchaseHeaderInsertObj['discAmount'] =this.DiscAmount;
   purchaseHeaderInsertObj['taxAmount'] = 0;
@@ -318,9 +313,6 @@ debugger
  
   let InsertpurchaseDetailObj = [];
   this.dsItemNameList.data.forEach((element) => {
-
-    console.log(element);
-
     let purchaseDetailInsertObj = {};
     purchaseDetailInsertObj['purchaseId'] = 0;
     purchaseDetailInsertObj['itemId'] =  element.ItemID;
@@ -342,16 +334,13 @@ debugger
     purchaseDetailInsertObj['igstPer'] = element.GST;
     purchaseDetailInsertObj['igstAmt'] =this.IGSTAmount;
     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-
   });
 
   let submitData = {
     "purchaseHeaderInsert": purchaseHeaderInsertObj,
     "purchaseDetailInsert": InsertpurchaseDetailObj,
   };
-
   console.log(submitData);
-
     this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
     if (response) {
       Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
@@ -647,49 +636,41 @@ getFromStoreSearchList() {
       this.Paymentterm.nativeElement.focus();
     }
   }
-  
   public onEnterPaymentTerm(event): void {
     if (event.which === 13) {
       this.TaxNature.nativeElement.focus();
     }
   }
-  
   public onEnterItemName(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
     }
   }
-
   public onEnterQty(event): void {
     if (event.which === 13) {
       this.rate.nativeElement.focus();
     }
   }
-  
   public onEnterRate(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
     }
   }
-
   public onEnterDis(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
     }
   }
-
   public onEnterGST(event): void {
     if (event.which === 13) {
       this.mrp.nativeElement.focus();
     }
   }
-
   public onEnterMRP(event): void {
     if (event.which === 13) {
       this.specification.nativeElement.focus();
     }
   }
-
   public onEnterSpecification(event): void {
     if (event.which === 13) {
       this.addbutton.focus();
@@ -697,7 +678,6 @@ getFromStoreSearchList() {
   }
 
   gePharStoreList() {
-    debugger
     var vdata = {
       Id: this.accountService.currentUserValue.user.storeId
     }
@@ -709,16 +689,15 @@ getFromStoreSearchList() {
   }
   
 getSelectedObj(obj) {this.accountService
-  debugger
   this.ItemID=obj.ItemId;
   this.ItemName = obj.ItemName;
-  this.Qty = obj.BalanceQty;
+  this.Qty = 1 ; //obj.BalanceQty;
   
   if(this.Qty > 0){
     this.UOM = obj.UOM;
     this.Rate = obj.PurchaseRate;
-    this.TotalAmount = (parseInt(obj.BalanceQty)* parseFloat(this.Rate)).toFixed(2);
-   this.NetAmount=  this.TotalAmount ;
+    this.TotalAmount = (parseInt(this.Qty)* parseFloat(this.Rate)).toFixed(2);
+    this.NetAmount=  this.TotalAmount ;
     this.VatPercentage=obj.VatPercentage;
     // this.CGSTPer =onj.CGSTPer;
     this.GSTPer = obj.GSTPer;
@@ -735,22 +714,21 @@ getSelectedObj(obj) {this.accountService
 
 onAdd(){
   this.dsItemNameList.data = [];
- debugger
   this.chargeslist.push(
     {
       ItemID:this.ItemID,
       ItemName:this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
-      Qty:this.Qty,
-      UOM:this.UOM,
-      Rate:this.Rate ,
+      Qty:this.Qty ||0,
+      UOM:this.UOM ||0,
+      Rate:this.Rate ||0,
       TotalAmount:this.TotalAmount,
-      Dis :this.Dis ,
+      Dis :this.Dis ||0,
       DiscAmount:this.DiscAmt,
-      GST:this.GST,
-      GSTAmount :this.GSTAmt ,
+      GST:this.GST ||0,
+      GSTAmount :this.GSTAmt ||0 ,
       NetAmount:this.NetAmount,
-      MRP:this.MRP,
-      Specification:this.Specification ,
+      MRP:this.MRP ||0,
+      Specification:this.Specification ||'' ,
 
     });
 
