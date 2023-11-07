@@ -362,7 +362,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   calculateTotalAmount() {
     if (this.Rate && this.Qty) {
-      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
+      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
       this.NetAmount = this.TotalAmount;
       // this.calculatePersc();
     }
@@ -406,9 +406,9 @@ export class PurchaseOrderComponent implements OnInit {
     debugger
     if (this.Dis) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      this.DiscAmt = (disc * parseFloat(this.NetAmount) / 100).toFixed(2);
+      this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
       // this.DiscAmount =  DiscAmt
-      this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
+      this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(4);
 
     }
 
@@ -416,7 +416,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   calculateDiscAmount() {
     if (this.Dis) {
-      this.NetAmount = this.NetAmount - this.DiscAmount;
+      this.NetAmount =(parseFloat(this.NetAmount) - parseFloat(this.DiscAmount));
       // this.DiscAmount;
       // this.calculatePersc();
     }
@@ -426,8 +426,8 @@ export class PurchaseOrderComponent implements OnInit {
 
     if (this.GSTPer) {
 
-      this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
-      this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+      this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+      this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
       this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
 
     }
@@ -437,7 +437,7 @@ export class PurchaseOrderComponent implements OnInit {
   //   if (this.GSTAmt) {
 
   //     // this.GSTAmount = Math.round((this.NetAmount * parseInt(this.GST)) / 100);
-  //     this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+  //     this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
   //     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
 
   //   }
@@ -753,7 +753,7 @@ export class PurchaseOrderComponent implements OnInit {
     if (this.Qty > 0) {
       this.UOM = obj.UOM;
       this.Rate = obj.PurchaseRate;
-      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(2);
+      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
       this.NetAmount = this.TotalAmount;
       this.VatPercentage = obj.VatPercentage;
       // this.CGSTPer =onj.CGSTPer;
@@ -812,8 +812,8 @@ export class PurchaseOrderComponent implements OnInit {
 
       if (parseFloat(this.GSTPer) > 0) {
 
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
       }
     }
     else if (event.value == 'false') {
@@ -821,16 +821,16 @@ export class PurchaseOrderComponent implements OnInit {
       // if (parseFloat(this.GSTPer) > 0) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       if (disc > 0) {
-        this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(2);
-        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(2);
+        this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(4);
         if (parseFloat(this.GSTPer) > 0) {
-          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
-          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
         }
       } 
       else {
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
       }
     }
   }
