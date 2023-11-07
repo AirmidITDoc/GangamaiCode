@@ -12,7 +12,8 @@ import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/operators';
-
+import Swal from 'sweetalert2';
+import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-grn-return',
@@ -25,6 +26,7 @@ export class GRNReturnComponent implements OnInit {
   
   dsGRNReturnHeaderList = new MatTableDataSource<GRNReturnHeaderList>();
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
+  dsGRNReturnItemList = new MatTableDataSource<GRNReturnItemList>();
 
   ToStoreList:any=[];
   SupplierList:any;
@@ -32,6 +34,10 @@ export class GRNReturnComponent implements OnInit {
   optionsSupplier: any;
   isPaymentSelected : boolean = false;
   isSupplierSelected: boolean = false;
+  isChecked: boolean = true;
+  chargeslist: any = [];
+  screenFromString = 'admission-form';
+  labelPosition: 'before' | 'after' = 'after';
 
   displayedColumns = [
     'GRNReturnId',
@@ -49,15 +55,32 @@ export class GRNReturnComponent implements OnInit {
     "ItemName",
     "BatchNo",
     "BatchExpiryDate",
-    // "BalQty",
     "ReturnQty",
     "PureRate",
     "Amount",
     "GST",
     "GSTAmount",
     "NetAmount",
-    // "BQty",
     "StkId",
+  ];
+
+  displayedColumns2 = [  
+    "GRNNO",
+    "ItemName",
+    "BatchNo",
+    'Batch',
+    'BalQty',
+    "ReturnQty",
+    "LandedRate",
+    "TotalAmount",
+    "GST",
+    "GSTAmount",
+    'NetAmount',
+    'IsBatchRequired',
+    'StkID',
+    'CF',
+    'TotalQty',
+    'GrnId',
   ];
 
 
@@ -66,6 +89,7 @@ export class GRNReturnComponent implements OnInit {
   sIsLoading: string;
   filteredoptionsToStore: Observable<string[]>;
   filteredoptionsSupplier: Observable<string[]>;
+  vGRNReturnItemFilter: any;
 
   constructor(
     public _GRNReturnHeaderList: GrnReturnService,
@@ -145,18 +169,15 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
-  // getToStoreSearchCombo() {
-  //   this._GRNReturnHeaderList.getToStoreSearchList().subscribe(data => {
-  //     this.ToStoreList = data;
-  //     console.log(data);
-  //     this.optionsToStore = this.ToStoreList.slice();
-  //     this.filteredoptionsToStore = this._GRNReturnHeaderList.vGRNReturnSearchFilter.get('ToStoreId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterStore(value) : this.ToStoreList.slice()),
-  //     );
-  
-  //   });
-  // }
+  onChangeDateofBirth(DateOfBirth) {
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this.vGRNReturnItemFilter.get('DateOfBirth').setValue(DateOfBirth);
+    }
+
+  }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -175,8 +196,6 @@ export class GRNReturnComponent implements OnInit {
     
       });
     }
-
-
   
     private _filterSupplier(value: any): string[] {
       if (value) {
@@ -206,8 +225,21 @@ export class GRNReturnComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  onClear(){
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsGRNReturnItemList.data = [];
+      this.dsGRNReturnItemList.data = this.chargeslist;
+    }
+    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
   }
+  
+  OnSave(){}
+
+  OnReset(){}
+  
+  onClear(){}
 
 }
 
@@ -281,3 +313,46 @@ export class GRNReturnHeaderList {
       }
     }
 
+    export class GRNReturnItemList {
+
+      GRNNO: number;
+      ItemName: number;
+      BatchNo: number;
+      BalQty: number;
+      ReturnQty: number;
+      LandedRate: number;
+      TotalAmount: number;
+      GST: number;
+      GSTAmount: number;
+      NetAmount: number;
+      IsBatchRequired: number;
+      StkID: number;
+      CF: number;
+      TotalQty: number;
+      GrnId: number;
+  
+      /**
+       * Constructor
+       *
+       * @param GRNReturnItemList
+       */
+      constructor(GRNReturnItemList) {
+        {
+          this.GRNNO = GRNReturnItemList.GRNNO || 0;
+          this.ItemName = GRNReturnItemList.ItemName || 0;
+          this.BatchNo = GRNReturnItemList.BatchNo || 0;
+          this.BalQty =GRNReturnItemList.BalQty || 0;
+          this.ReturnQty = GRNReturnItemList.ReturnQty || 0;
+          this.LandedRate = GRNReturnItemList.LandedRate || 0;
+          this.TotalAmount = GRNReturnItemList.TotalAmount || 0;
+          this.GST = GRNReturnItemList.GST || 0;
+          this.GSTAmount = GRNReturnItemList.GSTAmount || 0;
+          this.NetAmount = GRNReturnItemList.NetAmount || 0;
+          this.IsBatchRequired = GRNReturnItemList.IsBatchRequired || 0;
+          this.StkID = GRNReturnItemList.StkID || 0;
+          this.CF = GRNReturnItemList.CF || 0;
+          this.TotalQty = GRNReturnItemList.TotalQty || 0;
+          this.GrnId = GRNReturnItemList.GrnId || 0;
+        }
+      }
+    }

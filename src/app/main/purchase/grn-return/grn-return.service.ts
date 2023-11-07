@@ -10,7 +10,7 @@ export class GrnReturnService {
 
   vGRNReturnheaderList: FormGroup;
   vGRNReturnSearchFilter :FormGroup;
-
+  vGRNReturnItemFilter :FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -18,6 +18,7 @@ export class GrnReturnService {
   ) { 
     this.vGRNReturnheaderList = this.GRNReturnHeaderList();
     this.vGRNReturnSearchFilter= this.GRNSearchFrom();
+    this.vGRNReturnItemFilter = this.GRNSearchItemList();
   }
 
   GRNSearchFrom() {
@@ -31,6 +32,11 @@ export class GrnReturnService {
   }
   
   GRNReturnHeaderList() {
+    return this._formBuilder.group({
+    });
+  }
+
+  GRNSearchItemList() {
     return this._formBuilder.group({
     });
   }

@@ -12,12 +12,12 @@ app-grn-return {
     }
 
     .table3 {
-        height: 220px !important;
+        height: 350px !important;
         width: 100%;
     }
 
     .mat-header-row {
-        width: 115%;
+        width: 120%;
         //max-width: 1600px;
         min-width: 110%;
         min-height: 30px;
@@ -29,6 +29,8 @@ app-grn-return {
         min-width: 1200px;
         min-height: 30px;
     }
+
+   // Table 1
 
     .mat-column-GRNReturnId {
         width: 150px;
@@ -73,9 +75,9 @@ app-grn-return {
     }
 
     .mat-column-GSTAmount {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
         text-align: left;
     }
 
@@ -118,6 +120,8 @@ app-grn-return {
     .mat-tab-group {
         margin-bottom: 48px;
     }
+
+    // Table 2
 
     .mat-column-ItemName {
         width: 250px;
@@ -196,6 +200,95 @@ app-grn-return {
     }
 
     .mat-column-StkId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    //Table 3
+
+    .mat-column-GRNNO {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+
+    .mat-column-BatchNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-BalQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-ReturnQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-LandedRate {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-TotalAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-GST {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-GSTAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-NetAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-IsBatchRequired {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+    }
+    .mat-column-StkID {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-CF {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+        text-align: left;
+    }
+    .mat-column-TotalQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-GrnId {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
