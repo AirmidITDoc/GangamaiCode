@@ -884,7 +884,7 @@ getItemNameList(){
 
   public onEnterInvoiceNo(event): void {
     if (event.which === 13) {
-      this.DateOfBirth.nativeElement.focus()
+      this.DateOfInvoice.nativeElement.focus()
     }
   }
 
