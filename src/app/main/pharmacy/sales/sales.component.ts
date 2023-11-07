@@ -1625,6 +1625,8 @@ OP_IPType:any=2;
       this.ItemSubform.get('referanceNo').enable();
     } else {
       this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
     }
   }
   convertToWord(e) {
