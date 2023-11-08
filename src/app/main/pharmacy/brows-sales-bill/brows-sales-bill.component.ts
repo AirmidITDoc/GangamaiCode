@@ -170,8 +170,7 @@ export class BrowsSalesBillComponent implements OnInit {
        IPNo :this._BrowsSalesBillService.userForm.get('IPNo').value || 0
       
     }
-   console.log(vdata);
-
+  //  console.log(vdata);
     this._BrowsSalesBillService.getSalesList(vdata).subscribe(data=>{
       this.dssaleList1.data= data as SaleList[];
       this.dssaleList1.sort = this.sort;
@@ -278,9 +277,9 @@ export class BrowsSalesBillComponent implements OnInit {
     }
     this._BrowsSalesBillService.getSalesDetList(vdata).subscribe(data=>{
       this.dssalesList2.data = data as SalesDetList[];
-      this.dssalesList2.sort = this.sort;
-      this.dssalesList2.paginator = this.paginator;
-      console.log( this.dssalesList2.data);
+      // this.dssalesList2.sort = this.sort;
+      // this.dssalesList2.paginator = this.paginator;
+      // console.log( this.dssalesList2.data);
     })
   }
 
@@ -316,13 +315,13 @@ export class BrowsSalesBillComponent implements OnInit {
  
   this._BrowsSalesBillService.getSalesReturnDetList(vdata).subscribe(data =>{
     this.dssalesReturnList1.data = data as SalesReturnDetList[];
-    this.dssalesReturnList1.sort = this.sort;
-    this.dssalesReturnList1.paginator = this.paginator;
-    console.log(this.dssalesReturnList1.data);
+    // this.dssalesReturnList1.sort = this.sort;
+    // this.dssalesReturnList1.paginator = this.paginator;
+    // console.log(this.dssalesReturnList1.data);
   })
   }
   onSelect1(Parama){
-    console.log(Parama);
+    // console.log(Parama);
    this.getSalesReturnDetList(Parama)
  }
 
