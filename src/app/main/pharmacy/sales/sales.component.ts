@@ -912,6 +912,7 @@ OP_IPType:any=2;
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
       DoctorName: '',
+      extAddress:'',
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
@@ -2207,6 +2208,7 @@ print3() {
   @ViewChild('disper') disper: ElementRef;
   @ViewChild('discamount') discamount: ElementRef;
   @ViewChild('patientname') patientname: ElementRef;
+  @ViewChild('address') address: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
@@ -2242,8 +2244,13 @@ print3() {
 
   public onEnterDoctorname(event): void {
     if (event.which === 13) {
-      this.itemid.nativeElement.focus();
+      this.address.nativeElement.focus();
     }
+  }
+  public onEnterAddress(event): void {
+      if (event.which === 13) {
+        this.itemid.nativeElement.focus();
+      }
   }
 
 

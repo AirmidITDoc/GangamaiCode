@@ -75,7 +75,7 @@
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'" style="margin-right:15px;">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'" style="margin-right:10px;">
                                                     <mat-label>Mobile Number</mat-label>
                                                     <input name="MobileNo" formControlName="MobileNo"
                                                         placeholder="Mobile Number" matInput required
@@ -92,8 +92,7 @@
                                                 </mat-form-field>
 
 
-                                                <mat-form-field appearance="outline"
-                                                    style="margin-right:15px !important;" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                     <mat-label>Patient Name</mat-label>
                                                     <input matInput placeholder="PatientName"
                                                         formControlName="PatientName" [(ngModel)]="PatientName" required
@@ -105,6 +104,13 @@
                                                     <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
                                                         (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                    <mat-label>Address</mat-label>
+                                                    <input matInput placeholder="extAddress" [(ngModel)]="extAddress"
+                                                        (keydown)="onEnterAddress($event)" #address
+                                                        formControlName="extAddress">
                                                 </mat-form-field>
                                                 </div>
                                                 <div>

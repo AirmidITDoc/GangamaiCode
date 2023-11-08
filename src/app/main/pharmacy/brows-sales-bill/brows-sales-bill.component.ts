@@ -300,7 +300,6 @@ export class BrowsSalesBillComponent implements OnInit {
       OP_IP_Type : this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0  ,
       StoreId   :this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,
     }
-    
     console.log(vdata);
     this._BrowsSalesBillService.getSalesReturnList(vdata).subscribe(data =>{
       this.dssalesReturnList.data = data as SalesReturnList[];
