@@ -127,7 +127,7 @@
                                                         <div fxFlex.gt-sm="100%" fxFlex>
                                                             <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                                                                 <!-- ================================ LABEL HEADER  -->
-                                                                <div style="font-size: medium;background-color: rgb(203, 214, 214);">
+                                                                <div class="patien-info-sales">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
                                                                         <span style="font-weight: 700;">Patient Information</span> 
                                                                         <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
@@ -193,7 +193,7 @@
                                                                                         <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
                                                                                     </div>
 
-                                                                                    <div style="width:100px;margin-left: 10px;" formControlName="OP_IP_ID" required>
+                                                                                    <div style="width:100px;margin-left: 10px;">
                                                                                         <span>Admission Id</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
@@ -201,9 +201,9 @@
                                                                                     </div>
                                                                                     <div  style="width: 200px;">
                                                                                         <span>{{registerObj.AdmissionID}}</span>
-                                                                                        <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                        <!-- <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
                                                                                             OP_IP_ID is required
-                                                                                        </mat-error>
+                                                                                        </mat-error> -->
                                                                                     </div>
 
 

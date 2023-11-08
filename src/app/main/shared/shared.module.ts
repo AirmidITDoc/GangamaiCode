@@ -13,6 +13,8 @@ import { HeaderComponent } from './componets/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ExcelDownloadService } from './services/excel-download.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackBarService } from './services/snack-bar.service';
 
 @NgModule({
   declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
@@ -26,11 +28,13 @@ import { ExcelDownloadService } from './services/excel-download.service';
     MatTimepickerModule,
     MatButtonModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSnackBarModule
     
   ],
   providers: [
-    ExcelDownloadService
+    ExcelDownloadService,
+    SnackBarService
   ],
   exports: [
     TrimPipe,

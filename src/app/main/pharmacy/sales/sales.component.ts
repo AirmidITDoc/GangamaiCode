@@ -26,6 +26,7 @@ import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.ser
 import { map, startWith } from 'rxjs/operators';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 
 
 @Component({
@@ -265,7 +266,8 @@ OP_IPType:any=2;
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
-    public _RequestforlabtestService: RequestforlabtestService
+    public _RequestforlabtestService: RequestforlabtestService,
+    private snackBarService: SnackBarService
 
   ) {
     this.nowDate = new Date();
@@ -917,7 +919,7 @@ OP_IPType:any=2;
       Validators.minLength(10),
       Validators.maxLength(10),]],
       PatientType: ['External',[Validators.required]],
-      OP_IP_ID: [0,[Validators.required]],
+      // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
       DiscAmt: '',
@@ -1435,15 +1437,17 @@ OP_IPType:any=2;
     this.BalAmount = 0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
-
-    this.ItemSubform.get('CashPay').reset('CashPay');
+    this.ItemSubform.reset();
+    this.RegId = '';
+    this.ItemSubform.get('PatientType').setValue('IP');
+    this.ItemSubform.get('CashPay').setValue('CashPay');
 
     this.IsOnlineRefNo=false;
-    this.ItemSubform.get('referanceNo').reset('');
+    // this.ItemSubform.get('referanceNo').reset('');
     
     this.ConShow = false;
     this.ItemSubform.get('ConcessionId').clearValidators();
-    this.ItemSubform.get('ConcessionId').reset();
+    // this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     this.ItemSubform.get('ConcessionId').disable();
@@ -1728,6 +1732,12 @@ OP_IPType:any=2;
 
   Paymentobj = {};
   onSave() {
+    let patientTypeValue = this.ItemSubform.get('PatientType').value;
+    if((patientTypeValue == 'OP' || patientTypeValue == 'IP')
+      && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
+        this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
+        return;
+    }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashpaySave()
     }
@@ -1952,18 +1962,24 @@ OP_IPType:any=2;
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
          console.log(response);
-        Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            // let m = response;
-            this.getPrint3(response);
-            this.Itemchargeslist = [];
-            this._matDialog.closeAll();
-          }
-        });
+         this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
+         this.getPrint3(response);
+          this.Itemchargeslist = [];
+          this._matDialog.closeAll();
+        // Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
+        //   if (result.isConfirmed) {
+        //     // let m = response;
+        //     this.getPrint3(response);
+        //     this.Itemchargeslist = [];
+        //     this._matDialog.closeAll();
+        //   }
+        // });
       } else {
         Swal.fire('Error !', 'Sale data not saved', 'error');
       }
       this.sIsLoading = '';
+    }, error => {
+      this.snackBarService.showErrorSnackBar('Sale data not saved', 'Error !');
     });
     // }
     // });
@@ -1987,9 +2003,9 @@ onSavePayOption() {
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('FinalNetAmount').value;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
-        maxWidth: "100vw",
-        height: '600px',
-        width: '100%',
+        // maxWidth: "100vw",
+        // height: '600px',
+        // width: '100%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
           FromName: "Phar-SalesPay"
@@ -2258,7 +2274,10 @@ getPrint3(el) {
 
       this.reportPrintObj = res[0] as Printsal;
       // console.log(this.reportPrintObj);
-      this.getTemplateTax2();
+      // this.getTemplateTax2();
+      setTimeout(() => {
+        this.print3();
+     }, 1000);
 
     })
   );

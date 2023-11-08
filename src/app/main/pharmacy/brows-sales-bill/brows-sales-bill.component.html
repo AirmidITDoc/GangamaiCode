@@ -836,9 +836,9 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount</td>
             </tr>
-            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.SalesNo}}</td>
+                padding: 0;height: 20px;">{{indx + 1}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 20px;">{{item?.HSNcode}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
@@ -1062,9 +1062,9 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
             </tr>
-            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.SalesNo}}</td>
+                padding: 0;height: 15px;">{{indx+1}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.HSNcode}}</td>
                 <td style="border: 1px solid black;vertical-align: top;

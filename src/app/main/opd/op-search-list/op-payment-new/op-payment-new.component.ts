@@ -137,11 +137,12 @@ IsCreditflag : boolean=false
       this.IsCreditflag=true;
     }else if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
       debugger;
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
-      this.cashAmt = parseInt(this.advanceData.NetPayAmount);
-      this.paidAmt = parseInt(this.advanceData.NetPayAmount);
+      this.netPayAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.cashAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = this.advanceData.PatientName;
+      this.selectedPaymnet1 = 'cash';
       this.BillDate = this.advanceData.Date;
       this.Paymentobj['TransactionType'] = 2;
       this.IsCreditflag=true;
@@ -960,7 +961,7 @@ IsCreditflag : boolean=false
   onClose1() {
      let IsSubmit = {
       // "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": this.IsCreditflag
+      "IsSubmitFlag": false
     }
     this.dialogRef.close(IsSubmit);
   //   // debugger
