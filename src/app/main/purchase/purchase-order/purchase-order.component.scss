@@ -1,4 +1,7 @@
 app-purchase-order {
+
+
+  
     .table1 {
       height: 300px !important;
       width: 100%;
@@ -36,15 +39,29 @@ app-purchase-order {
       color:  white;
      
   }
-  
+  .add-btn {
+    background-color: blue !important;
+    color: white !important;
+    font-size: 16px;
+  }
+
   button:disabled {
-      color: white;
-     background-color: #7bd3ff  !important;
+    color: white;
+    background-color: #7bd3ff  !important;
      //background-color: #b7e6fd ;
-      border-radius: 2px;
+     border-radius: 16px;
+    //  border-radius: 16px;
      // border: 1px solid #CCCCCC;
      border: 1px solid  #b7e6fd ;
-  }
+     
+    }
+
+    .enable-1-add {
+      cursor: pointer;
+      pointer-events: visible;
+    }
+
+    
     .highlightTableColor{
       background-color: rgb(240, 240, 74) !important;
     }
@@ -63,7 +80,7 @@ app-purchase-order {
     .mat-header-row {
       width:200;
       //max-width: 1600px;
-      min-width: 1000px;
+      min-width: 1400px;
       min-height: 30px;
       background-color: blue;
     }
@@ -85,9 +102,9 @@ app-purchase-order {
     }
 
     .mat-column-PurchaseNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
       text-align: left;
   
     }
@@ -101,38 +118,50 @@ app-purchase-order {
     }
   
     .mat-column-PurchaseDate {
-      width: 180px;
-      max-width: 180px;
-      min-width: 180px;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
       text-align: left;
     }
   
     .mat-column-PurchaseTime {
-      width: 180px;
-      max-width: 180px;
-      min-width: 180px;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
       text-align: left;
     }
 
     .mat-column-StoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-    .mat-column-SupplierName {
       width: 300px;
       max-width: 300px;
       min-width: 300px;
       text-align: left;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+     
+    }
+
+    .mat-column-SupplierName {
+      width: 400px;
+      max-width: 400px;
+      min-width: 400px;
+      text-align: left;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+     
     }
 
     .mat-column-TotalAmount {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
+      text-align: center;
     }
 
     .mat-column-Action {
@@ -143,9 +172,9 @@ app-purchase-order {
     }
 
     .mat-column-ItemName {
-      width: 260px;
-      max-width: 260px;
-      min-width: 260px;
+      width: 360px;
+      max-width: 360px;
+      min-width: 360px;
       text-align: left;
       white-space: nowrap; 
       overflow: hidden;
@@ -226,12 +255,6 @@ app-purchase-order {
       min-width: 150px;
       text-align: left;
     }
-    .add-btn {
-      background-color: blue !important;
-      color: white !important;
-      font-size: 16px;
-    }
-    
  
 
 // .table-row:selected {
