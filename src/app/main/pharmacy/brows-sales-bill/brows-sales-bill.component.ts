@@ -264,9 +264,9 @@ export class BrowsSalesBillComponent implements OnInit {
             });
 
           }
-          else {
-            Swal.fire('Payment not Done.....');
-          }
+          // else {
+          //   // Swal.fire('Payment not Done.....');
+          // }
         });
          
     }
