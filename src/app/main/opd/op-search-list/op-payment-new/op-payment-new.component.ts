@@ -7,6 +7,7 @@ import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.compon
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-op-payment-new',
@@ -75,10 +76,9 @@ export class OpPaymentNewComponent implements OnInit {
   isBank1elected3: boolean = false;
   filteredOptionsBank4: Observable<string[]>;
   optionsBank4: any[] = [];
-  isBank1elected4: boolean = false
-
-
-IsCreditflag : boolean=false
+  isBank1elected4: boolean = false;
+  IsCreditflag: boolean = false;
+  isSaveDisabled: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,6 +86,7 @@ IsCreditflag : boolean=false
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
     private accountService: AuthenticationService,
+    private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = data;
@@ -371,8 +372,20 @@ IsCreditflag : boolean=false
     this.paymentRowObj[caseId] = false;
     switch (caseId) {
       case 'upi':
+        this.removeSecondValidators();
+        break;
+
+      case 'cheque':
         this.removeThirdValidators();
         break;
+      
+      case 'card':
+        this.removeFourthValidators();
+        break;
+
+        case 'neft':
+          this.removeFifthValidators();
+          break;
 
       default:
         break;
@@ -547,7 +560,7 @@ IsCreditflag : boolean=false
       this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.removeThirdValidators();
+      this.removeSecondValidators();
     }
   }
 
@@ -579,12 +592,68 @@ IsCreditflag : boolean=false
     }
   }
 
-  removeThirdValidators() {
-    this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+  removeSecondValidators() {
+    this.patientDetailsFormGrp.get('paymentType2').clearValidators();
+    this.patientDetailsFormGrp.get('amount2').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo2').clearValidators();
+    this.patientDetailsFormGrp.get('bankName2').clearValidators();
+    this.patientDetailsFormGrp.get('regDate2').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType2').setValue('');
+    this.patientDetailsFormGrp.get('amount2').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo2').setValue('');
+    this.patientDetailsFormGrp.get('bankName2').setValue('');
+    this.patientDetailsFormGrp.get('regDate2').setValue('');
     this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+
+  removeThirdValidators() {
+    this.patientDetailsFormGrp.get('paymentType3').clearValidators();
+    this.patientDetailsFormGrp.get('amount3').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo3').clearValidators();
+    this.patientDetailsFormGrp.get('bankName3').clearValidators();
+    this.patientDetailsFormGrp.get('regDate3').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType3').setValue('');
+    this.patientDetailsFormGrp.get('amount3').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo3').setValue('');
+    this.patientDetailsFormGrp.get('bankName3').setValue('');
+    this.patientDetailsFormGrp.get('regDate3').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+  
+  removeFourthValidators() {
+    this.patientDetailsFormGrp.get('paymentType4').clearValidators();
+    this.patientDetailsFormGrp.get('amount4').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo4').clearValidators();
+    this.patientDetailsFormGrp.get('bankName4').clearValidators();
+    this.patientDetailsFormGrp.get('regDate4').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType4').setValue('');
+    this.patientDetailsFormGrp.get('amount4').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo4').setValue('');
+    this.patientDetailsFormGrp.get('bankName4').setValue('');
+    this.patientDetailsFormGrp.get('regDate4').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+
+  removeFifthValidators() {
+    this.patientDetailsFormGrp.get('paymentType5').clearValidators();
+    this.patientDetailsFormGrp.get('amount5').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo5').clearValidators();
+    this.patientDetailsFormGrp.get('bankName5').clearValidators();
+    this.patientDetailsFormGrp.get('regDate5').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType5').setValue('');
+    this.patientDetailsFormGrp.get('amount5').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo5').setValue('');
+    this.patientDetailsFormGrp.get('bankName5').setValue('');
+    this.patientDetailsFormGrp.get('regDate5').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
   }
   /**
   amountChange1(controlName) {
@@ -1027,11 +1096,23 @@ IsCreditflag : boolean=false
 
   getBalanceAmt() {
     // debugger
-    this.balanceAmt = this.netPayAmt - ((this.amount1 ? parseInt(this.amount1) : 0)
-      + (this.amount2 ? parseInt(this.amount2) : 0)
-      + (this.amount3 ? parseInt(this.amount3) : 0)
-      + (this.amount4 ? parseInt(this.amount4) : 0)
-      + (this.amount5 ? parseInt(this.amount5) : 0));
+    let totalAmountAdded = ((this.amount1 ? parseInt(this.amount1) : 0)
+    + (this.amount2 ? parseInt(this.amount2) : 0)
+    + (this.amount3 ? parseInt(this.amount3) : 0)
+    + (this.amount4 ? parseInt(this.amount4) : 0)
+    + (this.amount5 ? parseInt(this.amount5) : 0));
+    if((this.netPayAmt - totalAmountAdded) < 0) {
+      this.snackBarService.showErrorSnackBar('Amout should be less than Balance amount', 'Done');
+      this.isSaveDisabled = true;
+      return;
+    }
+    
+    this.balanceAmt = this.netPayAmt - totalAmountAdded;
+    if(this.balanceAmt > 0) {
+      this.isSaveDisabled = true;
+      return;
+    }
+    this.isSaveDisabled = false;
   }
 
 }

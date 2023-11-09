@@ -2,13 +2,14 @@
     <fieldset style="font-size: 17px;">
      
         <span style="font-family: sans-serif;font-weight: bold;font-size: large;">Bill Information</span>
+        <span style="float: right;">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+            style="border-color: red;"></app-common-date></span>
        
         <div>
             <fieldset class="fieldset-div">
                 <legend>Patient Information</legend>
-                <span style="float: right;">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                    style="border-color: red;"></app-common-date></span>
+                
                 <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                     <div class="patient-sub">
                         <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
@@ -520,7 +521,7 @@
                 </div>
             </div>
             <div style="margin-right: 100px;">
-                <button class="next-btn" style="border-radius: 16px;" (click)="saveClicked()">Save</button>
+                <button class="next-btn" style="border-radius: 16px;" (click)="saveClicked()" [disabled]="patientDetailsFormGrp.invalid || isSaveDisabled">Save</button>
                 <button class="footer-btn" (click)="onClose1()" style="border-radius: 16px;">Close</button>
             </div>
         </div>

@@ -1063,25 +1063,25 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{indx+1}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{item?.HSNcode}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{'-'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{item?.ItemName}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{'-'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{item?.BatchNo}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;text-align: center;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;text-align: center;
                 padding: 0;height: 15px;">{{item?.Qty}}</td>
-                <td style="border: 1px solid black;vertical-align: top;text-align: right;
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
                 padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                <td style="border-left: 1px solid black;border-right: 1px solid black;text-align:center;vertical-align: middle; 
                 padding: 3px;height: 15px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>

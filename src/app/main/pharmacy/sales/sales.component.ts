@@ -2013,7 +2013,7 @@ onSavePayOption() {
       });
 
     dialogRef.afterClosed().subscribe(result => {
-       if (result.IsSubmitFlag == true) {
+       if (result?.IsSubmitFlag == true) {
 
 
         let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);

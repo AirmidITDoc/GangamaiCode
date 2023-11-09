@@ -15,6 +15,7 @@ export class SnackBarService {
       duration: 5000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
+      panelClass: ['error-snackbar']
     });
   }
 }
