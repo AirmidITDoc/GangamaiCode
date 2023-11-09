@@ -89,8 +89,8 @@ export class OpPaymentNewComponent implements OnInit {
     private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
+  
     this.PatientHeaderObj = data;
-    
     this.advanceData = this.data.vPatientHeaderObj;
     
 
@@ -137,7 +137,6 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 2;
       this.IsCreditflag=true;
     }else if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
-      debugger;
       this.netPayAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.cashAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
@@ -162,7 +161,6 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // debugger
     this.patientDetailsFormGrp = this.createForm();
     if(this.PatientHeaderObj.FromName == "SalesSETTLEMENT"){
     this.PatientHeaderObj=this.data.vPatientHeaderObj;
@@ -996,102 +994,72 @@ export class OpPaymentNewComponent implements OnInit {
 
 
   saveClicked() {
-    // debugger
-    if(this.patientDetailsFormGrp.get('balanceAmountController').value==0){
+    let submitDataPay;
+    if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
+      if (this.patientDetailsFormGrp.get('balanceAmountController').value == 0) {
+      this.getCashObj('cash');
+      this.getChequeObj('cheque');
+      this.getCardObj('card');
+      this.getNeftObj('neft');
+      this.getUpiObj('upi');
+      this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
+      this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+      this.Paymentobj['TransactionType'] = 4;
+      this.Paymentobj['OPD_IPD_Type'] = 3;
+      this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+      this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
 
-    this.getCashObj('cash');
-    this.getChequeObj('cheque');
-    this.getCardObj('card');
-    this.getNeftObj('neft');
-    this.getUpiObj('upi');
-    this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
-    this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-    
-    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
-
-    const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
-    let submitDataPay = {
-      ipPaymentInsert,
-    };
-    let IsSubmit = {
-      "submitDataPay": submitDataPay,
-      "IsSubmitFlag": true,
-      "BalAmt":this.balanceAmt 
+      const ipPaymentInsert = new PharPaymentInsert(this.Paymentobj);
+      submitDataPay = {
+        ipPaymentInsert,
+      };
+      let IsSubmit = {
+        "submitDataPay": submitDataPay,
+        "IsSubmitFlag": true,
+        "BalAmt": this.balanceAmt
+      }
+      console.log(IsSubmit);
+      this.dialogRef.close(IsSubmit);
+    }else{
+      Swal.fire("Chk Balance Amount")
     }
-    console.log(IsSubmit);
-    this.dialogRef.close(IsSubmit);
-  
-  }else{
-    Swal.fire("Chk Balance Amount")
+    } else {
+      if (this.patientDetailsFormGrp.get('balanceAmountController').value == 0) {
+        this.getCashObj('cash');
+        this.getChequeObj('cheque');
+        this.getCardObj('card');
+        this.getNeftObj('neft');
+        this.getUpiObj('upi');
+        this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
+        this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+
+        this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
+
+        const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
+        submitDataPay = {
+          ipPaymentInsert,
+        };
+        let IsSubmit = {
+          "submitDataPay": submitDataPay,
+          "IsSubmitFlag": true,
+          "BalAmt": this.balanceAmt
+        }
+        console.log(IsSubmit);
+        this.dialogRef.close(IsSubmit);
+      }
+      else{
+         Swal.fire("Chk Balance Amount")
+      }
+    }
+   
   }
-}
 
   onClose1() {
      let IsSubmit = {
-      // "submitDataPay": submitDataPay1,
       "IsSubmitFlag": false
     }
     this.dialogRef.close(IsSubmit);
-  //   // debugger
-
-  //   if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
-
-  //   let Paymentobj = {};
-    
-  //   Paymentobj['BillNo'] = 0,// this.billNo;
-  //     Paymentobj['ReceiptNo'] = '',//'RE';
-  //     Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
-  //     Paymentobj['PaymentTime'] = '',//this.dateTimeObj.time;
-  //     Paymentobj['CashPayAmount'] = 0,// parseInt(this.cashAmt.toString());
-  //     Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-  //     Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-  //     Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-  //     Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-  //     Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-  //     Paymentobj['CardNo'] = '',//this.cardNo;
-  //     Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-  //     Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-  //     Paymentobj['AdvanceUsedAmount'] = 0;
-  //     Paymentobj['AdvanceId'] = 0;
-  //     Paymentobj['RefundId'] = 0;
-  //     Paymentobj['TransactionType'] = 2;
-  //     Paymentobj['Remark'] = '',//'REMArk';
-  //     Paymentobj['AddBy'] = '',// this.accountService.currentUserValue.user.id,
-  //     Paymentobj['IsCancelled'] = 0;
-  //     Paymentobj['IsCancelledBy'] = 0;
-  //     Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-  //     Paymentobj['CashCounterId'] = 0;
-  //     Paymentobj['IsSelfORCompany'] = 0;
-  //     Paymentobj['CompanyId'] = 0;
-  //     Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-  //     Paymentobj['NEFTNo'] = '',// this.neftNo;
-  //     Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-  //     Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-  //     Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-  //     Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-  //     Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-  //     Paymentobj['PaidAmt'] = 0,//this.paymentForm.get('paidAmountController').value;
-  //     Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-
-  //   const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-  //   let submitDataPay1 = {
-  //     ipPaymentInsert,
-  //   };
-
-  //   let IsSubmit = {
-  //     "submitDataPay": submitDataPay1,
-  //     "IsSubmitFlag": this.IsCreditflag
-  //   }
-  //   this.dialogRef.close(IsSubmit);
-  // }
-  // else{
-  //   let IsSubmit = {
-  //     // "submitDataPay": submitDataPay1,
-  //     "IsSubmitFlag": this.IsCreditflag
-  //   }
-  //   this.dialogRef.close(IsSubmit);
-  // }
   }
 
   getBalanceAmt() {
@@ -1113,6 +1081,90 @@ export class OpPaymentNewComponent implements OnInit {
       return;
     }
     this.isSaveDisabled = false;
+  }
+
+}
+export class PharPaymentInsert {
+  PaymentId: number;
+  BillNo: number;
+  ReceiptNo: any;
+  PaymentDate: Date;
+  PaymentTime: any;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: any;
+  BankName: any;
+  ChequeDate: Date;
+  CardPayAmount: number;
+  CardNo: any;
+  CardBankName: any;
+  CardDate: Date;
+  AdvanceUsedAmount: number;
+  AdvanceId: any;
+  RefundId: any;
+  TransactionType: any;
+  Remark: any;
+  AddBy: any;
+  IsCancelled: boolean;
+  IsCancelledBy: any;
+  IsCancelledDate: Date;
+  OPD_IPD_Type:any;
+  // CashCounterId: number;
+  // IsSelfORCompany: number;
+  // CompanyId: any;
+  NEFTPayAmount: number;
+  NEFTNo: any;
+  NEFTBankMaster: any;
+  NEFTDate: any;
+  PayTMAmount: number;
+  PayTMTranNo: any;
+  PayTMDate: Date;
+  PaidAmt: number;
+  BalanceAmt: number;
+
+  constructor(PharPaymentInsert) {
+    this.PaymentId = PharPaymentInsert.PaymentId || 0;
+    this.BillNo = PharPaymentInsert.BillNo || 0;
+    this.ReceiptNo = PharPaymentInsert.ReceiptNo || '';
+    this.PaymentDate = PharPaymentInsert.PaymentDate || '01/01/1900';
+    this.PaymentTime = PharPaymentInsert.PaymentTime || '';
+    this.CashPayAmount = PharPaymentInsert.CashPayAmount || 0;
+    this.ChequePayAmount = PharPaymentInsert.ChequePayAmount || 0;
+    this.ChequeNo = PharPaymentInsert.ChequeNo || '';
+
+    this.BankName = PharPaymentInsert.BankName || '';
+    this.ChequeDate = PharPaymentInsert.ChequeDate || '01/01/1900';
+    this.CardPayAmount = PharPaymentInsert.CardPayAmount || 0;
+    this.CardNo = PharPaymentInsert.CardNo || '';
+    this.CardBankName = PharPaymentInsert.CardBankName || '';
+
+    this.CardDate = PharPaymentInsert.CardDate || '01/01/1900';
+    this.AdvanceUsedAmount = PharPaymentInsert.AdvanceUsedAmount || 0;
+    this.AdvanceId = PharPaymentInsert.AdvanceId || 0;
+    this.RefundId = PharPaymentInsert.RefundId || 0;
+    this.TransactionType = PharPaymentInsert.TransactionType || 0;
+    this.Remark = PharPaymentInsert.Remark || '';
+
+    this.AddBy = PharPaymentInsert.AddBy || 0;
+    this.IsCancelled = PharPaymentInsert.IsCancelled || 0;
+    this.IsCancelledBy = PharPaymentInsert.IsCancelledBy || 0;
+    this.IsCancelledDate = PharPaymentInsert.IsCancelledDate || '01/01/1900';
+
+    this.OPD_IPD_Type = PharPaymentInsert.OPD_IPD_Type || 0;
+    // this.IsSelfORCompany = PharPaymentInsert.IsSelfORCompany || 0;
+    // this.CompanyId = PharPaymentInsert.CompanyId || 0;
+
+    this.NEFTPayAmount = PharPaymentInsert.NEFTPayAmount || 0;
+    this.NEFTNo = PharPaymentInsert.NEFTNo || '';
+    this.NEFTBankMaster = PharPaymentInsert.NEFTBankMaster || '';
+    this.NEFTDate = PharPaymentInsert.NEFTDate || '01/01/1900';
+
+    this.PayTMAmount = PharPaymentInsert.PayTMAmount || 0;
+    this.PayTMTranNo = PharPaymentInsert.PayTMTranNo || '';
+    this.PayTMDate = PharPaymentInsert.PayTMDate || '01/01/1900';
+
+    this.PaidAmt = PharPaymentInsert.PaidAmt || 0;
+    this.BalanceAmt = PharPaymentInsert.BalanceAmt || 0;
   }
 
 }

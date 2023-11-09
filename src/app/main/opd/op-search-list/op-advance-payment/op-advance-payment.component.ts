@@ -1022,3 +1022,86 @@ export class IpPaymentInsert {
   }
 
 }
+export class PharPaymentInsert {
+  PaymentId: number;
+  BillNo: number;
+  ReceiptNo: any;
+  PaymentDate: Date;
+  PaymentTime: any;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: any;
+  BankName: any;
+  ChequeDate: Date;
+  CardPayAmount: number;
+  CardNo: any;
+  CardBankName: any;
+  CardDate: Date;
+  AdvanceUsedAmount: number;
+  AdvanceId: any;
+  RefundId: any;
+  TransactionType: any;
+  Remark: any;
+  AddBy: any;
+  IsCancelled: boolean;
+  IsCancelledBy: any;
+  IsCancelledDate: Date;
+  CashCounterId: number;
+  IsSelfORCompany: number;
+  CompanyId: any;
+  NEFTPayAmount: number;
+  NEFTNo: any;
+  NEFTBankMaster: any;
+  NEFTDate: any;
+  PayTMAmount: number;
+  PayTMTranNo: any;
+  PayTMDate: Date;
+  PaidAmt: number;
+  BalanceAmt: number;
+
+  constructor(PharPaymentInsert) {
+    this.PaymentId = PharPaymentInsert.PaymentId || 0;
+    this.BillNo = PharPaymentInsert.BillNo || 0;
+    this.ReceiptNo = PharPaymentInsert.ReceiptNo || '';
+    this.PaymentDate = PharPaymentInsert.PaymentDate || '01/01/1900';
+    this.PaymentTime = PharPaymentInsert.PaymentTime || '';
+    this.CashPayAmount = PharPaymentInsert.CashPayAmount || 0;
+    this.ChequePayAmount = PharPaymentInsert.ChequePayAmount || 0;
+    this.ChequeNo = PharPaymentInsert.ChequeNo || '';
+
+    this.BankName = PharPaymentInsert.BankName || '';
+    this.ChequeDate = PharPaymentInsert.ChequeDate || '01/01/1900';
+    this.CardPayAmount = PharPaymentInsert.CardPayAmount || 0;
+    this.CardNo = PharPaymentInsert.CardNo || '';
+    this.CardBankName = PharPaymentInsert.CardBankName || '';
+
+    this.CardDate = PharPaymentInsert.CardDate || '01/01/1900';
+    this.AdvanceUsedAmount = PharPaymentInsert.AdvanceUsedAmount || 0;
+    this.AdvanceId = PharPaymentInsert.AdvanceId || 0;
+    this.RefundId = PharPaymentInsert.RefundId || 0;
+    this.TransactionType = PharPaymentInsert.TransactionType || 0;
+    this.Remark = PharPaymentInsert.Remark || '';
+
+    this.AddBy = PharPaymentInsert.AddBy || 0;
+    this.IsCancelled = PharPaymentInsert.IsCancelled || 0;
+    this.IsCancelledBy = PharPaymentInsert.IsCancelledBy || 0;
+    this.IsCancelledDate = PharPaymentInsert.IsCancelledDate || '01/01/1900';
+
+    this.CashCounterId = PharPaymentInsert.CashCounterId || 0;
+    this.IsSelfORCompany = PharPaymentInsert.IsSelfORCompany || 0;
+    this.CompanyId = PharPaymentInsert.CompanyId || 0;
+
+    this.NEFTPayAmount = PharPaymentInsert.NEFTPayAmount || 0;
+    this.NEFTNo = PharPaymentInsert.NEFTNo || '';
+    this.NEFTBankMaster = PharPaymentInsert.NEFTBankMaster || '';
+    this.NEFTDate = PharPaymentInsert.NEFTDate || '01/01/1900';
+
+    this.PayTMAmount = PharPaymentInsert.PayTMAmount || 0;
+    this.PayTMTranNo = PharPaymentInsert.PayTMTranNo || '';
+    this.PayTMDate = PharPaymentInsert.PayTMDate || '01/01/1900';
+
+    this.PaidAmt = PharPaymentInsert.PaidAmt || 0;
+    this.BalanceAmt = PharPaymentInsert.BalanceAmt || 0;
+  }
+
+}
