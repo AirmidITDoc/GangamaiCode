@@ -19,11 +19,11 @@
     height: 520px !important;
     .mat-row {
         &:hover {
-            background: #e1f5fe;
+            background: #7cc0df;
         }
-        // &:active {
-        //     background:#e1f5fe;
-        // }
+        &:active {
+            background:#7cc0df;
+        }
     }
    
 
@@ -50,7 +50,7 @@
         height: 50% !important;   
         .mat-row {
             &:hover {
-                background: #e1f5fe;
+                background: #46a8d6;
             }
 }}
 
