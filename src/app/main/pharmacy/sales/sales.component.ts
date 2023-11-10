@@ -28,6 +28,7 @@ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabt
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 
 @Component({
   selector: 'app-sales',
@@ -1364,6 +1365,7 @@ OP_IPType:any=2;
 
   getBatch() {
     this.Quantity.nativeElement.focus();
+    // setTimeout(() => this.Quantity.nativeElement.focus(), 1000);
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
         maxWidth: "800px",
@@ -1405,7 +1407,7 @@ OP_IPType:any=2;
       this.UnitMRP = result.UnitMRP;
     });
 
-    this.Quantity.nativeElement.focus();
+    // this.Quantity.nativeElement.focus();
   }
 
   focusNextService() {
@@ -2600,24 +2602,33 @@ print3() {
     // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
   }
-  // payOnline() {
-  //   let req = {
-  //     "TransactionNumber":"1234567890",   
-  //     "SequenceNumber": 1,                            
-  //     "AllowedPaymentMode": "10",                              
-  //     "MerchantStorePosCode": "1221258270",
-  //     "Amount": "1",                          
-  //     "UserID": "",          
-  //     "MerchantID": '29610' ,                                
-  //     "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-  //     "IMEI": "TEST1001270",
-  //     "AutoCancelDurationInMinutes": 5
-  //   };
-  //   this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-  //     console.log(resData);
+  payOnline() {
+    const matDialog = this._matDialog.open(PaymentModeComponent, {
+      maxWidth: "800px",
+      minWidth: '800px',
+      width: '800px',
+      height: '380px',
+    });
+    matDialog.afterClosed().subscribe(result => {
+
+    });
+    // let req = {
+    //   "TransactionNumber":"2234567890",   
+    //   "SequenceNumber": 1,                            
+    //   "AllowedPaymentMode": "1",                              
+    //   "MerchantStorePosCode": "1221258270",
+    //   "Amount": "1",                          
+    //   "UserID": "",          
+    //   "MerchantID": '29610' ,                                
+    //   "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
+    //   "IMEI": "TEST1001270",
+    //   "AutoCancelDurationInMinutes": 5
+    // };
+    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
+    //   console.log(resData);
       
-  //   });
-  // }
+    // });
+  }
 }
 
 

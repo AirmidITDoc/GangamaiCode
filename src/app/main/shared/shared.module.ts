@@ -17,9 +17,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './services/snack-bar.service';
 import { ToasterService } from './services/toaster.service';
 import { ToastrModule } from 'ngx-toastr';
+import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -47,8 +48,9 @@ import { ToastrModule } from 'ngx-toastr';
   exports: [
     TrimPipe,
     CommonDateComponent,
-    HeaderComponent
+    HeaderComponent,
+    PaymentModeComponent
   ],
-  entryComponents: [HeaderComponent]
+  entryComponents: [HeaderComponent, PaymentModeComponent]
 })
 export class SharedModule { }

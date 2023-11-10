@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -12,6 +12,7 @@ export class RequestforlabtestService {
   constructor(
     public _httpClient:HttpClient,
     private _FormBuilder:FormBuilder,
+    private handler: HttpBackend
   ) { this.mySearchForm = this.SearchFilterForm();}
 
   mySearchForm:FormGroup;
@@ -42,10 +43,20 @@ export class RequestforlabtestService {
     return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee);
   }
 
-  // paymentBaseUrl = 'https://www.plutuscloudserviceuat.in:8201/API/CloudBasedIntegration/V1';
+  paymentBaseUrl = 'https://www.plutuscloudserviceuat.in:8201/API/CloudBasedIntegration/V1';
 
-  // public payOnline(req) {
-  //   return this._httpClient.post(this.paymentBaseUrl + "/UploadBilledTransaction", req);
-  // }
+  public payOnline(req) {
+    this._httpClient = new HttpClient(this.handler);
+    
+    
+    let headers = new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+    let  httpOptions = {
+        
+        headers: headers,
+      };
+    return this._httpClient.post(this.paymentBaseUrl + "/UploadBilledTransaction", req, httpOptions);
+  }
  
 }
