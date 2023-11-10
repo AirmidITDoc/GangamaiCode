@@ -284,6 +284,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   OnSave() {
     debugger
+    if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
@@ -357,7 +358,10 @@ export class PurchaseOrderComponent implements OnInit {
       }
       // this.isLoading = '';
     });
+  }
+  else{
 
+  }
   }
 
   calculateTotalAmount() {
