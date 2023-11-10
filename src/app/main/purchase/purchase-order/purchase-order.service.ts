@@ -39,7 +39,7 @@ export class PurchaseOrderService {
 
   PurchaseStoreFrom() {
     return this._formBuilder.group({
-     
+      purchaseId:[''],
       Freight:[''],
       StoreId:[''],
       SupplierId:[''],
