@@ -15,6 +15,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ExcelDownloadService } from './services/excel-download.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './services/snack-bar.service';
+import { ToasterService } from './services/toaster.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
@@ -29,12 +31,18 @@ import { SnackBarService } from './services/snack-bar.service';
     MatButtonModule,
     MatCardModule,
     MatTabsModule,
-    MatSnackBarModule
-    
+    MatSnackBarModule,
+    ToastrModule.forRoot({timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    })
   ],
   providers: [
     ExcelDownloadService,
-    SnackBarService
+    SnackBarService,
+    ToasterService
   ],
   exports: [
     TrimPipe,

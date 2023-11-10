@@ -89,9 +89,21 @@ mat-footer-row mat-footer-cell {
 }
 
 //notification stlyes
-snack-bar-container success {
-    background-color: green;
-    color: white;
+
+::ng-deep mat-snack-bar-container .success-snackbar {
+    background-color: #cc3333 !important;
+    color: #ffffff !important;
+}
+.toast-success {
+    padding-left: 80px;
+    text-align: center;
+    background-position: 35% !important;
+}
+
+.toast-error {
+    padding-left: 80px;
+    text-align: center;
+    background-position: 35% !important;
 }
 
 // Header dialog part of content // Subhash
