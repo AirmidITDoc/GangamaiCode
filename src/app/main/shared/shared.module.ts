@@ -15,9 +15,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ExcelDownloadService } from './services/excel-download.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './services/snack-bar.service';
+import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -39,8 +40,9 @@ import { SnackBarService } from './services/snack-bar.service';
   exports: [
     TrimPipe,
     CommonDateComponent,
-    HeaderComponent
+    HeaderComponent,
+    PaymentModeComponent
   ],
-  entryComponents: [HeaderComponent]
+  entryComponents: [HeaderComponent, PaymentModeComponent]
 })
 export class SharedModule { }
