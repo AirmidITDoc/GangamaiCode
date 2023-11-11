@@ -18,4 +18,12 @@ export class SnackBarService {
       panelClass: ['error-snackbar']
     });
   }
+  showSuccessSnackBar(message: string, action: string, className: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: [className]
+    });
+  }
 }

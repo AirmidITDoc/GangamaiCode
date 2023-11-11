@@ -27,8 +27,8 @@ import { map, startWith } from 'rxjs/operators';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
-
 
 @Component({
   selector: 'app-sales',
@@ -268,8 +268,8 @@ OP_IPType:any=2;
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
-    private snackBarService: SnackBarService
-
+    private snackBarService: SnackBarService,
+    // public _toastr : ToasterService,
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
@@ -1935,14 +1935,20 @@ OP_IPType:any=2;
     // console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-         console.log(response);
-         this.snackBarService.showErrorSnackBar('Record Saved Successfully', 'success');
+        //  console.log(response);
+        //  this._toastr.showSuccess('Record Saved Successfully');
+         this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
          this.getPrint3(response);
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
-        // Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
+        // Swal.fire({
+        //   position: "center",
+        //   icon: "success",
+        //   title: "Record Saved Successfully",
+        //   showConfirmButton: false,
+        //   timer: 1500
+        // }).then((result) => {
         //   if (result.isConfirmed) {
-        //     // let m = response;
         //     this.getPrint3(response);
         //     this.Itemchargeslist = [];
         //     this._matDialog.closeAll();
@@ -1953,7 +1959,7 @@ OP_IPType:any=2;
       }
       this.sIsLoading = '';
     }, error => {
-      this.snackBarService.showErrorSnackBar('Sale data not saved', 'Error !');
+      this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
     });
 
     this.ItemFormreset();
@@ -2084,39 +2090,6 @@ onSavePayOption() {
         let cal_GSTAmount_Sales = {};
         cal_GSTAmount_Sales['salesID'] = 0;
         
-        // let PaymentInsertobj = {};
-        // console.log(result.submitDataPay.ipPaymentInsert);
-        // PaymentInsertobj['BillNo'] = 0,
-        // PaymentInsertobj['ReceiptNo'] = '',
-        // PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-        // PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-        // PaymentInsertobj['CashPayAmount'] = result.submitDataPay.cashAmount;
-        // PaymentInsertobj['ChequePayAmount'] = 0,
-        // PaymentInsertobj['ChequeNo'] = 0,
-        // PaymentInsertobj['BankName'] = '',
-        // PaymentInsertobj['ChequeDate'] = '01/01/1900',
-        // PaymentInsertobj['CardPayAmount'] = 0,
-        // PaymentInsertobj['CardNo'] = '',
-        // PaymentInsertobj['CardBankName'] = '',
-        // PaymentInsertobj['CardDate'] = '01/01/1900',
-        // PaymentInsertobj['AdvanceUsedAmount'] = 0;
-        // PaymentInsertobj['AdvanceId'] = 0;
-        // PaymentInsertobj['RefundId'] = 0;
-        // PaymentInsertobj['TransactionType'] = 4;
-        // PaymentInsertobj['Remark'] = '',
-        // PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        // PaymentInsertobj['IsCancelled'] = 0;
-        // PaymentInsertobj['IsCancelledBy'] = 0;
-        // PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-        // PaymentInsertobj['OPD_IPD_Type'] = 3;
-        // PaymentInsertobj['NEFTPayAmount'] = 0; 
-        // PaymentInsertobj['NEFTNo'] = '',
-        // PaymentInsertobj['NEFTBankMaster'] = '',
-        // PaymentInsertobj['NEFTDate'] = "01/01/1900",
-        // PaymentInsertobj['PayTMAmount'] = NetAmt,
-        // PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value ||0,
-        // PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
-
         let submitData = {
           "salesInsert": SalesInsert,
           "salesDetailInsert": salesDetailInsertarr,
@@ -2128,8 +2101,14 @@ onSavePayOption() {
         console.log(submitData);
         this._salesService.InsertCashSales(submitData).subscribe(response => {
           if (response) {
-             console.log(response);
-            Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
+            //  console.log(response);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Record Saved Successfully",
+              showConfirmButton: false,
+              timer: 1500
+            }).then((result) => {
               if (result.isConfirmed) {
                 this.getPrint3(response);
                 this.Itemchargeslist = [];
