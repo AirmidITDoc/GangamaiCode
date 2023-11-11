@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { GoodReceiptnoteComponent } from '../good-receiptnote/good-receiptnote.component';
+import { UpdateGRNComponent } from './update-grn/update-grn.component';
 
 const routes: Routes = [
   { 
@@ -46,6 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     GoodReceiptnoteComponent,
+    UpdateGRNComponent,
     
     
   ],
