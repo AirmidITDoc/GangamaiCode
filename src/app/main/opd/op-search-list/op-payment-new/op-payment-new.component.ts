@@ -7,6 +7,7 @@ import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.compon
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-op-payment-new',
@@ -75,10 +76,9 @@ export class OpPaymentNewComponent implements OnInit {
   isBank1elected3: boolean = false;
   filteredOptionsBank4: Observable<string[]>;
   optionsBank4: any[] = [];
-  isBank1elected4: boolean = false
-
-
-IsCreditflag : boolean=false
+  isBank1elected4: boolean = false;
+  IsCreditflag: boolean = false;
+  isSaveDisabled: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,10 +86,11 @@ IsCreditflag : boolean=false
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
     private accountService: AuthenticationService,
+    private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
+  
     this.PatientHeaderObj = data;
-    
     this.advanceData = this.data.vPatientHeaderObj;
     
 
@@ -135,6 +136,20 @@ IsCreditflag : boolean=false
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 2;
       this.IsCreditflag=true;
+    }else if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
+      this.netPayAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.cashAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.SalesId);
+      this.PatientName = this.advanceData.PatientName;
+      this.selectedPaymnet1 = 'cash';
+      this.BillDate = this.advanceData.Date;
+      this.Paymentobj['TransactionType'] = 2;
+      this.IsCreditflag=true;
+      this.paymentRowObj["cash"] = true;
+      this.onPaymentChange(1, 'cash');
+      this.paidAmt = this.netPayAmt;
+      this.getBalanceAmt();
     }
     else {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
@@ -146,10 +161,9 @@ IsCreditflag : boolean=false
   }
 
   ngOnInit(): void {
-    debugger
     this.patientDetailsFormGrp = this.createForm();
     if(this.PatientHeaderObj.FromName == "SalesSETTLEMENT"){
-      this.PatientHeaderObj=this.data.vPatientHeaderObj;
+    this.PatientHeaderObj=this.data.vPatientHeaderObj;
     this.advanceData=this.data.vPatientHeaderObj;
     console.log( this.PatientHeaderObj)
   
@@ -356,8 +370,20 @@ IsCreditflag : boolean=false
     this.paymentRowObj[caseId] = false;
     switch (caseId) {
       case 'upi':
+        this.removeSecondValidators();
+        break;
+
+      case 'cheque':
         this.removeThirdValidators();
         break;
+      
+      case 'card':
+        this.removeFourthValidators();
+        break;
+
+        case 'neft':
+          this.removeFifthValidators();
+          break;
 
       default:
         break;
@@ -369,7 +395,7 @@ IsCreditflag : boolean=false
   }
 
   onPaymentChange(rowId: number, value: string) {
-    debugger
+    // debugger
     switch (rowId) {
       case 1:
         this.paymentArr2 = this.opService.getPaymentArr();
@@ -532,7 +558,7 @@ IsCreditflag : boolean=false
       this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.removeThirdValidators();
+      this.removeSecondValidators();
     }
   }
 
@@ -564,12 +590,68 @@ IsCreditflag : boolean=false
     }
   }
 
-  removeThirdValidators() {
-    this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+  removeSecondValidators() {
+    this.patientDetailsFormGrp.get('paymentType2').clearValidators();
+    this.patientDetailsFormGrp.get('amount2').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo2').clearValidators();
+    this.patientDetailsFormGrp.get('bankName2').clearValidators();
+    this.patientDetailsFormGrp.get('regDate2').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType2').setValue('');
+    this.patientDetailsFormGrp.get('amount2').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo2').setValue('');
+    this.patientDetailsFormGrp.get('bankName2').setValue('');
+    this.patientDetailsFormGrp.get('regDate2').setValue('');
     this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+
+  removeThirdValidators() {
+    this.patientDetailsFormGrp.get('paymentType3').clearValidators();
+    this.patientDetailsFormGrp.get('amount3').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo3').clearValidators();
+    this.patientDetailsFormGrp.get('bankName3').clearValidators();
+    this.patientDetailsFormGrp.get('regDate3').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType3').setValue('');
+    this.patientDetailsFormGrp.get('amount3').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo3').setValue('');
+    this.patientDetailsFormGrp.get('bankName3').setValue('');
+    this.patientDetailsFormGrp.get('regDate3').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+  
+  removeFourthValidators() {
+    this.patientDetailsFormGrp.get('paymentType4').clearValidators();
+    this.patientDetailsFormGrp.get('amount4').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo4').clearValidators();
+    this.patientDetailsFormGrp.get('bankName4').clearValidators();
+    this.patientDetailsFormGrp.get('regDate4').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType4').setValue('');
+    this.patientDetailsFormGrp.get('amount4').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo4').setValue('');
+    this.patientDetailsFormGrp.get('bankName4').setValue('');
+    this.patientDetailsFormGrp.get('regDate4').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
+  }
+
+  removeFifthValidators() {
+    this.patientDetailsFormGrp.get('paymentType5').clearValidators();
+    this.patientDetailsFormGrp.get('amount5').clearValidators();
+    this.patientDetailsFormGrp.get('referenceNo5').clearValidators();
+    this.patientDetailsFormGrp.get('bankName5').clearValidators();
+    this.patientDetailsFormGrp.get('regDate5').clearValidators();
+
+    this.patientDetailsFormGrp.get('paymentType5').setValue('');
+    this.patientDetailsFormGrp.get('amount5').setValue('');
+    this.patientDetailsFormGrp.get('referenceNo5').setValue('');
+    this.patientDetailsFormGrp.get('bankName5').setValue('');
+    this.patientDetailsFormGrp.get('regDate5').setValue('');
+    this.patientDetailsFormGrp.updateValueAndValidity();
+    this.getBalanceAmt();
   }
   /**
   amountChange1(controlName) {
@@ -726,13 +808,13 @@ IsCreditflag : boolean=false
       this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
       return;
     }
-    debugger
+    // debugger
     console.log(this.Paymentobj)
     return;
   }
 
   getChequeObj(type: string) {
-    debugger
+    // debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
@@ -774,7 +856,7 @@ IsCreditflag : boolean=false
   }
 
   getCardObj(type: string) {
-    debugger
+    // debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
       this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
@@ -912,106 +994,177 @@ IsCreditflag : boolean=false
 
 
   saveClicked() {
-    debugger
-    if(this.patientDetailsFormGrp.get('balanceAmountController').value==0){
+    let submitDataPay;
+    if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
+      if (this.patientDetailsFormGrp.get('balanceAmountController').value == 0) {
+      this.getCashObj('cash');
+      this.getChequeObj('cheque');
+      this.getCardObj('card');
+      this.getNeftObj('neft');
+      this.getUpiObj('upi');
+      this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
+      this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+      this.Paymentobj['TransactionType'] = 4;
+      this.Paymentobj['OPD_IPD_Type'] = 3;
+      this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+      this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
 
-    this.getCashObj('cash');
-    this.getChequeObj('cheque');
-    this.getCardObj('card');
-    this.getNeftObj('neft');
-    this.getUpiObj('upi');
-    this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
-    this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-    
-    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
-
-    const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
-    let submitDataPay = {
-      ipPaymentInsert,
-    };
-    let IsSubmit = {
-      "submitDataPay": submitDataPay,
-      "IsSubmitFlag": true,
-      "BalAmt":this.balanceAmt 
+      const ipPaymentInsert = new PharPaymentInsert(this.Paymentobj);
+      submitDataPay = {
+        ipPaymentInsert,
+      };
+      let IsSubmit = {
+        "submitDataPay": submitDataPay,
+        "IsSubmitFlag": true,
+        "BalAmt": this.balanceAmt
+      }
+      console.log(IsSubmit);
+      this.dialogRef.close(IsSubmit);
+    }else{
+      Swal.fire("Chk Balance Amount")
     }
-    console.log(IsSubmit);
-    this.dialogRef.close(IsSubmit);
-  
-  }else{
-    Swal.fire("Chk Balance Amount")
+    } else {
+      if (this.patientDetailsFormGrp.get('balanceAmountController').value == 0) {
+        this.getCashObj('cash');
+        this.getChequeObj('cheque');
+        this.getCardObj('card');
+        this.getNeftObj('neft');
+        this.getUpiObj('upi');
+        this.Paymentobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
+        this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
+
+        this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
+
+        const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
+        submitDataPay = {
+          ipPaymentInsert,
+        };
+        let IsSubmit = {
+          "submitDataPay": submitDataPay,
+          "IsSubmitFlag": true,
+          "BalAmt": this.balanceAmt
+        }
+        console.log(IsSubmit);
+        this.dialogRef.close(IsSubmit);
+      }
+      else{
+         Swal.fire("Chk Balance Amount")
+      }
+    }
+   
   }
-}
 
   onClose1() {
-    debugger
-
-    if (this.data.FromName == "OP-Bill" || this.PatientHeaderObj.FromName == "IP-Bill") {
-
-    let Paymentobj = {};
-    
-    Paymentobj['BillNo'] = 0,// this.billNo;
-      Paymentobj['ReceiptNo'] = '',//'RE';
-      Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = '',//this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = 0,// parseInt(this.cashAmt.toString());
-      Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
-      Paymentobj['ChequeNo'] = 0,//this.chequeNo;
-      Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
-      Paymentobj['ChequeDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CardPayAmount'] = '',//parseInt(this.cardAmt.toString());
-      Paymentobj['CardNo'] = '',//this.cardNo;
-      Paymentobj['CardBankName'] = '',// this.paymentForm.get('cardBankNameController').value.BankName;
-      Paymentobj['CardDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['AdvanceUsedAmount'] = 0;
-      Paymentobj['AdvanceId'] = 0;
-      Paymentobj['RefundId'] = 0;
-      Paymentobj['TransactionType'] = 2;
-      Paymentobj['Remark'] = '',//'REMArk';
-      Paymentobj['AddBy'] = '',// this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-      Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['CashCounterId'] = 0;
-      Paymentobj['IsSelfORCompany'] = 0;
-      Paymentobj['CompanyId'] = 0;
-      Paymentobj['NEFTPayAmount'] = '',//parseInt(this.neftAmt.toString());
-      Paymentobj['NEFTNo'] = '',// this.neftNo;
-      Paymentobj['NEFTBankMaster'] = '',//this.paymentForm.get('neftBankNameController').value.BankName;
-      Paymentobj['NEFTDate'] = '',//this.dateTimeObj.date;
-      Paymentobj['PayTMAmount'] = '',//parseInt(this.paytmAmt.toString());
-      Paymentobj['PayTMTranNo'] = '',// this.paytmTransNo;
-      Paymentobj['PayTMDate'] = '',// this.dateTimeObj.date;
-      Paymentobj['PaidAmt'] = 0,//this.paymentForm.get('paidAmountController').value;
-      Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-
-    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-    let submitDataPay1 = {
-      ipPaymentInsert,
-    };
-
-    let IsSubmit = {
-      "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": this.IsCreditflag
+     let IsSubmit = {
+      "IsSubmitFlag": false
     }
     this.dialogRef.close(IsSubmit);
-  }
-  else{
-    let IsSubmit = {
-      // "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": this.IsCreditflag
-    }
-    this.dialogRef.close(IsSubmit);
-  }
   }
 
   getBalanceAmt() {
-    debugger
-    this.balanceAmt = this.netPayAmt - ((this.amount1 ? parseInt(this.amount1) : 0)
-      + (this.amount2 ? parseInt(this.amount2) : 0)
-      + (this.amount3 ? parseInt(this.amount3) : 0)
-      + (this.amount4 ? parseInt(this.amount4) : 0)
-      + (this.amount5 ? parseInt(this.amount5) : 0));
+    // debugger
+    let totalAmountAdded = ((this.amount1 ? parseInt(this.amount1) : 0)
+    + (this.amount2 ? parseInt(this.amount2) : 0)
+    + (this.amount3 ? parseInt(this.amount3) : 0)
+    + (this.amount4 ? parseInt(this.amount4) : 0)
+    + (this.amount5 ? parseInt(this.amount5) : 0));
+    if((this.netPayAmt - totalAmountAdded) < 0) {
+      this.snackBarService.showErrorSnackBar('Amout should be less than Balance amount', 'Done');
+      this.isSaveDisabled = true;
+      return;
+    }
+    
+    this.balanceAmt = this.netPayAmt - totalAmountAdded;
+    if(this.balanceAmt > 0) {
+      this.isSaveDisabled = true;
+      return;
+    }
+    this.isSaveDisabled = false;
+  }
+
+}
+export class PharPaymentInsert {
+  PaymentId: number;
+  BillNo: number;
+  ReceiptNo: any;
+  PaymentDate: Date;
+  PaymentTime: any;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: any;
+  BankName: any;
+  ChequeDate: Date;
+  CardPayAmount: number;
+  CardNo: any;
+  CardBankName: any;
+  CardDate: Date;
+  AdvanceUsedAmount: number;
+  AdvanceId: any;
+  RefundId: any;
+  TransactionType: any;
+  Remark: any;
+  AddBy: any;
+  IsCancelled: boolean;
+  IsCancelledBy: any;
+  IsCancelledDate: Date;
+  OPD_IPD_Type:any;
+  // CashCounterId: number;
+  // IsSelfORCompany: number;
+  // CompanyId: any;
+  NEFTPayAmount: number;
+  NEFTNo: any;
+  NEFTBankMaster: any;
+  NEFTDate: any;
+  PayTMAmount: number;
+  PayTMTranNo: any;
+  PayTMDate: Date;
+  PaidAmt: number;
+  BalanceAmt: number;
+
+  constructor(PharPaymentInsert) {
+    this.PaymentId = PharPaymentInsert.PaymentId || 0;
+    this.BillNo = PharPaymentInsert.BillNo || 0;
+    this.ReceiptNo = PharPaymentInsert.ReceiptNo || '';
+    this.PaymentDate = PharPaymentInsert.PaymentDate || '01/01/1900';
+    this.PaymentTime = PharPaymentInsert.PaymentTime || '';
+    this.CashPayAmount = PharPaymentInsert.CashPayAmount || 0;
+    this.ChequePayAmount = PharPaymentInsert.ChequePayAmount || 0;
+    this.ChequeNo = PharPaymentInsert.ChequeNo || '';
+
+    this.BankName = PharPaymentInsert.BankName || '';
+    this.ChequeDate = PharPaymentInsert.ChequeDate || '01/01/1900';
+    this.CardPayAmount = PharPaymentInsert.CardPayAmount || 0;
+    this.CardNo = PharPaymentInsert.CardNo || '';
+    this.CardBankName = PharPaymentInsert.CardBankName || '';
+
+    this.CardDate = PharPaymentInsert.CardDate || '01/01/1900';
+    this.AdvanceUsedAmount = PharPaymentInsert.AdvanceUsedAmount || 0;
+    this.AdvanceId = PharPaymentInsert.AdvanceId || 0;
+    this.RefundId = PharPaymentInsert.RefundId || 0;
+    this.TransactionType = PharPaymentInsert.TransactionType || 0;
+    this.Remark = PharPaymentInsert.Remark || '';
+
+    this.AddBy = PharPaymentInsert.AddBy || 0;
+    this.IsCancelled = PharPaymentInsert.IsCancelled || 0;
+    this.IsCancelledBy = PharPaymentInsert.IsCancelledBy || 0;
+    this.IsCancelledDate = PharPaymentInsert.IsCancelledDate || '01/01/1900';
+
+    this.OPD_IPD_Type = PharPaymentInsert.OPD_IPD_Type || 0;
+    // this.IsSelfORCompany = PharPaymentInsert.IsSelfORCompany || 0;
+    // this.CompanyId = PharPaymentInsert.CompanyId || 0;
+
+    this.NEFTPayAmount = PharPaymentInsert.NEFTPayAmount || 0;
+    this.NEFTNo = PharPaymentInsert.NEFTNo || '';
+    this.NEFTBankMaster = PharPaymentInsert.NEFTBankMaster || '';
+    this.NEFTDate = PharPaymentInsert.NEFTDate || '01/01/1900';
+
+    this.PayTMAmount = PharPaymentInsert.PayTMAmount || 0;
+    this.PayTMTranNo = PharPaymentInsert.PayTMTranNo || '';
+    this.PayTMDate = PharPaymentInsert.PayTMDate || '01/01/1900';
+
+    this.PaidAmt = PharPaymentInsert.PaidAmt || 0;
+    this.BalanceAmt = PharPaymentInsert.BalanceAmt || 0;
   }
 
 }

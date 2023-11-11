@@ -26,7 +26,9 @@ import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.ser
 import { map, startWith } from 'rxjs/operators';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
-
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 
 @Component({
   selector: 'app-sales',
@@ -265,8 +267,9 @@ OP_IPType:any=2;
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
-    public _RequestforlabtestService: RequestforlabtestService
-
+    public _RequestforlabtestService: RequestforlabtestService,
+    private snackBarService: SnackBarService,
+    // public _toastr : ToasterService,
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
@@ -912,11 +915,12 @@ OP_IPType:any=2;
     this.ItemSubform = this.formBuilder.group({
       PatientName: '',
       DoctorName: '',
+      extAddress:'',
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
       PatientType: ['External',[Validators.required]],
-      OP_IP_ID: [0,[Validators.required]],
+      // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
       DiscAmt: '',
@@ -1361,6 +1365,7 @@ OP_IPType:any=2;
 
   getBatch() {
     this.Quantity.nativeElement.focus();
+    // setTimeout(() => this.Quantity.nativeElement.focus(), 1000);
     const dialogRef = this._matDialog.open(SalePopupComponent,
       {
         maxWidth: "800px",
@@ -1402,7 +1407,7 @@ OP_IPType:any=2;
       this.UnitMRP = result.UnitMRP;
     });
 
-    this.Quantity.nativeElement.focus();
+    // this.Quantity.nativeElement.focus();
   }
 
   focusNextService() {
@@ -1434,15 +1439,17 @@ OP_IPType:any=2;
     this.BalAmount = 0;
     this.FinalGSTAmt = 0;
     this.FinalNetAmount = 0;
-
-    this.ItemSubform.get('CashPay').reset('CashPay');
+    this.ItemSubform.reset();
+    this.RegId = '';
+    this.ItemSubform.get('PatientType').setValue('External');
+    this.ItemSubform.get('CashPay').setValue('CashPay');
 
     this.IsOnlineRefNo=false;
-    this.ItemSubform.get('referanceNo').reset('');
+    // this.ItemSubform.get('referanceNo').reset('');
     
     this.ConShow = false;
     this.ItemSubform.get('ConcessionId').clearValidators();
-    this.ItemSubform.get('ConcessionId').reset();
+    // this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     this.ItemSubform.get('ConcessionId').disable();
@@ -1478,13 +1485,6 @@ OP_IPType:any=2;
     return this.FinalNetAmount;
   }
 
-
-  // getGSTSum(element) {
-  //   let TotGST;
-  //   TotGST = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-  //   return TotGST;
-  // }
-
   calculateDiscAmt() {
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
@@ -1516,16 +1516,6 @@ OP_IPType:any=2;
       this.addbutton.focus();
     }
   }
-
-  // calculateGSTAmt() {
-  //   let GST = this._salesService.IndentSearchGroup.get('GSTPer').value
-  //   if (GST > 0) {
-  //     this.GSTAmount = ((this.NetAmt * (GST)) / 100);
-  //     // this.DiscAmt = this.GSTAmount.toFixed(2);
-  //     this.NetAmt = ((this.NetAmt) - (discAmt)).toFixed(2);
-  //   }
-  // }
-
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
@@ -1615,18 +1605,55 @@ OP_IPType:any=2;
       this.paymethod = false;
       this.OP_IPType = 2;
     }
-    // console.log(this.ItemSubform.get('PatientType').value)
   }
   onChangePaymentMode(event) {
     if (event.value == 'Online') {
       this.IsOnlineRefNo = true;
+   
       this.ItemSubform.get('referanceNo').reset();
       this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
       this.ItemSubform.get('referanceNo').enable();
-    } else {
+      // other payment Option   
+      this.isPaymentSelected=false;
+
+    } else if (event.value =='Other'){
+      this.isPaymentSelected=true;
+      this.amount1=this.FinalNetAmount;
+      this.paidAmt = this.FinalNetAmount;
+      this.netPayAmt=this.FinalNetAmount;
+      this.getBalanceAmt();
+      this.paymentRowObj["cash"] = true;
+      this.onPaymentChange(1, 'cash');
+
       this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
+    } else if (event.value=="PayOption"){
+      this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
     }
+    else {
+      this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
+       // other payment Option   
+       this.isPaymentSelected=false;
+    }
+   
   }
+  // OtherPayment(){
+  //   // debugger
+  //     this.amount1=this.FinalNetAmount;
+  //     this.paidAmt = this.FinalNetAmount;
+  //     this.isPaymentSelected=true;
+  //     this.netPayAmt=this.FinalNetAmount;
+  //     this.getBalanceAmt();
+  //     this.paymentRowObj["cash"] = true;
+  //     this.onPaymentChange(1, 'cash');
+      
+  //   }
+  
   convertToWord(e) {
     return converter.toWords(e);
   }
@@ -1689,15 +1716,24 @@ OP_IPType:any=2;
 
   Paymentobj = {};
   onSave() {
+    let patientTypeValue = this.ItemSubform.get('PatientType').value;
+    if((patientTypeValue == 'OP' || patientTypeValue == 'IP')
+      && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
+        this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
+        return;
+    }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
-      this.onCashpaySave()
+      this.onCashOnlinePaySave()
     }
     else if (this.ItemSubform.get('CashPay').value == 'Credit') {
       this.onCreditpaySave()
     }
+    else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
+      this.onSavePayOption()
+    }
   }
 
-  onCashpaySave() {
+  onCashOnlinePaySave() {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
@@ -1810,14 +1846,11 @@ OP_IPType:any=2;
       PaymentInsertobj['AdvanceId'] = 0;
       PaymentInsertobj['RefundId'] = 0;
       PaymentInsertobj['TransactionType'] = 4;
-      PaymentInsertobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
+      PaymentInsertobj['Remark'] = ""
       PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
       PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
-      // this.Paymentobj['CashCounterId'] = 0;
-      // this.Paymentobj['IsSelfORCompany'] = 0;
-      // this.Paymentobj['CompanyId'] = 0;
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
@@ -1856,8 +1889,6 @@ OP_IPType:any=2;
     PaymentInsertobj['PayTMAmount'] = 0,
     PaymentInsertobj['PayTMTranNo'] = '',
     PaymentInsertobj['PayTMDate'] = '01/01/1900' 
-    // this.Paymentobj['PaidAmt'] = NetAmt;
-    // this.Paymentobj['BalanceAmt'] = 0;
     }else if (this.ItemSubform.get('CashPay').value == 'Online') {
       // let Paymentobj = {};
      PaymentInsertobj['BillNo'] = 0,
@@ -1890,14 +1921,9 @@ OP_IPType:any=2;
      PaymentInsertobj['PayTMAmount'] = NetAmt,
      PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value ||0,
      PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
-    //  this.Paymentobj['PaidAmt'] = NetAmt;
-    //  this.Paymentobj['BalanceAmt'] = 0;
+   
     }
   
-    // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
-
-    // console.log("Procced with Payment Option");
-
     let submitData = {
       "salesInsert": SalesInsert,
       "salesDetailInsert": salesDetailInsertarr,
@@ -1909,22 +1935,32 @@ OP_IPType:any=2;
     // console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-         console.log(response);
-        Swal.fire('Cash Sales !', 'Record Saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            // let m = response;
-            this.getPrint3(response);
-            this.Itemchargeslist = [];
-            this._matDialog.closeAll();
-          }
-        });
+        //  console.log(response);
+        //  this._toastr.showSuccess('Record Saved Successfully');
+         this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
+         this.getPrint3(response);
+          this.Itemchargeslist = [];
+          this._matDialog.closeAll();
+        // Swal.fire({
+        //   position: "center",
+        //   icon: "success",
+        //   title: "Record Saved Successfully",
+        //   showConfirmButton: false,
+        //   timer: 1500
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     this.getPrint3(response);
+        //     this.Itemchargeslist = [];
+        //     this._matDialog.closeAll();
+        //   }
+        // });
       } else {
         Swal.fire('Error !', 'Sale data not saved', 'error');
       }
       this.sIsLoading = '';
+    }, error => {
+      this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
     });
-    // }
-    // });
 
     this.ItemFormreset();
     this.patientDetailsFormGrp.reset();
@@ -1935,8 +1971,170 @@ OP_IPType:any=2;
     this.saleSelectedDatasource.data = [];
   // }
 }
+onSavePayOption() {
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
+    PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('FinalNetAmount').value;
+    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      {
+        // maxWidth: "100vw",
+        // height: '600px',
+        // width: '100%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Phar-SalesPay"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+       if (result?.IsSubmitFlag == true) {
+
+
+        let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+        let ConcessionId = 0;
+        if (this.ItemSubform.get('ConcessionId').value)
+          ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+          
+        let SalesInsert = {};
+        SalesInsert['Date'] = this.dateTimeObj.date;
+        SalesInsert['time'] = this.dateTimeObj.time;
+      
+        if (this.ItemSubform.get('PatientType').value == 'External')
+        {
+          SalesInsert['oP_IP_Type'] = 2;
+          SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+        } else if (this.ItemSubform.get('PatientType').value == 'OP')
+        {
+          SalesInsert['oP_IP_Type'] = 0;
+          SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+        } else if (this.ItemSubform.get('PatientType').value == 'IP')
+        {
+          SalesInsert['oP_IP_Type'] = 1;
+          SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+        }
+        SalesInsert['totalAmount'] = this.FinalTotalAmt
+        SalesInsert['vatAmount'] =  this.ItemSubform.get('FinalGSTAmt').value;
+        SalesInsert['discAmount'] = this.FinalDiscAmt;
+        SalesInsert['netAmount'] = NetAmt;
+        SalesInsert['paidAmount'] = NetAmt;
+        SalesInsert['balanceAmount'] = 0;
+        SalesInsert['concessionReasonID'] = ConcessionId || 0;
+        SalesInsert['concessionAuthorizationId'] = 0;
+        SalesInsert['isSellted'] = 0;
+        SalesInsert['isPrint'] = 0;
+        SalesInsert['isFree'] = 0;
+        SalesInsert['unitID'] = 1;
+        SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+        SalesInsert['externalPatientName'] = this.PatientName || '';
+        SalesInsert['doctorName'] = this.DoctorName || '';
+        SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
+        SalesInsert['isPrescription'] = 0;
+        SalesInsert['creditReason'] = '';
+        SalesInsert['creditReasonID'] = 0;
+        SalesInsert['wardId'] = 0;
+        SalesInsert['bedID'] = 0;
+        SalesInsert['discper_H'] = 0;
+        SalesInsert['isPurBill'] = 0;
+        SalesInsert['isBillCheck'] = 0;
+        SalesInsert['salesHeadName'] = ""
+        SalesInsert['salesTypeId'] = 0;
+        SalesInsert['salesId'] = 0;
+        SalesInsert['extMobileNo'] = this.MobileNo || 0;
+      
+        let salesDetailInsertarr = [];
+        this.saleSelectedDatasource.data.forEach((element) => {
+          // console.log(element);
+          let salesDetailInsert = {};
+          salesDetailInsert['salesID'] = 0;
+          salesDetailInsert['itemId'] = element.ItemId;
+          salesDetailInsert['batchNo'] = element.BatchNo;
+          salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+          salesDetailInsert['unitMRP'] = element.UnitMRP;
+          salesDetailInsert['qty'] = element.Qty;
+          salesDetailInsert['totalAmount'] = element.TotalMRP;
+          salesDetailInsert['vatPer'] = element.VatPer;
+          salesDetailInsert['vatAmount'] = element.VatAmount;
+          salesDetailInsert['discPer'] = element.DiscPer;
+          salesDetailInsert['discAmount'] = element.DiscAmt;
+          salesDetailInsert['grossAmount'] = element.NetAmt;
+          salesDetailInsert['landedPrice'] = element.LandedRate;
+          salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
+          salesDetailInsert['purRateWf'] = element.PurchaseRate;
+          salesDetailInsert['purTotAmt'] = element.PurTotAmt;
+          salesDetailInsert['cgstPer'] = element.CgstPer;
+          salesDetailInsert['cgstAmt'] = element.CGSTAmt;
+          salesDetailInsert['sgstPer'] = element.SgstPer;
+          salesDetailInsert['sgstAmt'] = element.SGSTAmt;
+          salesDetailInsert['igstPer'] = element.IgstPer
+          salesDetailInsert['igstAmt'] = element.IGSTAmt
+          salesDetailInsert['isPurRate'] = 0;
+          salesDetailInsert['stkID'] = element.StockId;
+          salesDetailInsertarr.push(salesDetailInsert);
+        });
+        let updateCurStkSalestarr = [];
+        this.saleSelectedDatasource.data.forEach((element) => {
+          let updateCurStkSales = {};
+          updateCurStkSales['itemId'] = element.ItemId;
+          updateCurStkSales['issueQty'] = element.Qty;
+          updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+          updateCurStkSales['stkID'] = element.StockId;
+      
+          updateCurStkSalestarr.push(updateCurStkSales);
+        });
+      
+        let cal_DiscAmount_Sales = {};
+        cal_DiscAmount_Sales['salesID'] = 0;
+      
+        let cal_GSTAmount_Sales = {};
+        cal_GSTAmount_Sales['salesID'] = 0;
+        
+        let submitData = {
+          "salesInsert": SalesInsert,
+          "salesDetailInsert": salesDetailInsertarr,
+          "updateCurStkSales": updateCurStkSalestarr,
+          "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
+          "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
+          "salesPayment": result.submitDataPay.ipPaymentInsert
+        };
+        console.log(submitData);
+        this._salesService.InsertCashSales(submitData).subscribe(response => {
+          if (response) {
+            //  console.log(response);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Record Saved Successfully",
+              showConfirmButton: false,
+              timer: 1500
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.getPrint3(response);
+                this.Itemchargeslist = [];
+                this._matDialog.closeAll();
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'Sale data not saved', 'error');
+          }
+          this.sIsLoading = '';
+        });
+      
+        this.ItemFormreset();
+        this.patientDetailsFormGrp.reset();
+        this.Formreset();
+        this.ItemSubform.get('ConcessionId').reset();
+        this.PatientName = '';
+        this.MobileNo = '';
+        this.saleSelectedDatasource.data = [];
+       }
+    })
+
+
+}
 getPrint3(el) {
-  debugger
+  // debugger
   var D_data = {
     "SalesID": el,// 
     "OP_IP_Type":  this.OP_IPType 
@@ -1951,14 +2149,17 @@ getPrint3(el) {
 
       this.reportPrintObj = res[0] as Printsal;
       // console.log(this.reportPrintObj);
-      this.getTemplateTax2();
+      // this.getTemplateTax2();
+      setTimeout(() => {
+        this.print3();
+     }, 1000);
 
     })
   );
 }
 
 getTemplateTax2() {
-  debugger
+  // debugger
   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
   this._salesService.getTemplate(query).subscribe((resData: any) => {
 
@@ -2205,6 +2406,7 @@ print3() {
   @ViewChild('disper') disper: ElementRef;
   @ViewChild('discamount') discamount: ElementRef;
   @ViewChild('patientname') patientname: ElementRef;
+  @ViewChild('address') address: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
@@ -2240,8 +2442,13 @@ print3() {
 
   public onEnterDoctorname(event): void {
     if (event.which === 13) {
-      this.itemid.nativeElement.focus();
+      this.address.nativeElement.focus();
     }
+  }
+  public onEnterAddress(event): void {
+      if (event.which === 13) {
+        this.itemid.nativeElement.focus();
+      }
   }
 
 
@@ -2395,24 +2602,33 @@ print3() {
     // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
   }
-  // payOnline() {
-  //   let req = {
-  //     "TransactionNumber":"1234567890",   
-  //     "SequenceNumber": 1,                            
-  //     "AllowedPaymentMode": "10",                              
-  //     "MerchantStorePosCode": "1221258270",
-  //     "Amount": "1",                          
-  //     "UserID": "",          
-  //     "MerchantID": '29610' ,                                
-  //     "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-  //     "IMEI": "TEST1001270",
-  //     "AutoCancelDurationInMinutes": 5
-  //   };
-  //   this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-  //     console.log(resData);
+  payOnline() {
+    const matDialog = this._matDialog.open(PaymentModeComponent, {
+      maxWidth: "800px",
+      minWidth: '800px',
+      width: '800px',
+      height: '380px',
+    });
+    matDialog.afterClosed().subscribe(result => {
+
+    });
+    // let req = {
+    //   "TransactionNumber":"2234567890",   
+    //   "SequenceNumber": 1,                            
+    //   "AllowedPaymentMode": "1",                              
+    //   "MerchantStorePosCode": "1221258270",
+    //   "Amount": "1",                          
+    //   "UserID": "",          
+    //   "MerchantID": '29610' ,                                
+    //   "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
+    //   "IMEI": "TEST1001270",
+    //   "AutoCancelDurationInMinutes": 5
+    // };
+    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
+    //   console.log(resData);
       
-  //   });
-  // }
+    // });
+  }
 }
 
 

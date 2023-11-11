@@ -10,19 +10,26 @@ export class GoodReceiptnoteService {
   userFormGroup: FormGroup;
   GRNSearchGroup :FormGroup;
   GRNForm:FormGroup;
+  GRNFinalForm:FormGroup;
+  GRNFirstForm:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.getGRNForm();
-    this.GRNSearchGroup= this.GRNSearchFrom();
+    this.GRNSearchGroup= this.GRNSearchFrom();  
+    this.GRNFinalForm=this.getGrnFinalformForm();
+    this.GRNFirstForm=this.getGRNfirstForm();
+
+
   }
 
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
+      StoreId:'',
       Supplier_Id:'',
       Status:0,
       Status1:0,
@@ -31,7 +38,19 @@ export class GoodReceiptnoteService {
       Verify:0,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+
     });
+  }
+
+  getGRNfirstForm() {
+    return this._formBuilder.group({
+      Supplier_Id:'',
+      StoreId:'',
+      InvoiceNo:'',
+      DateOfInvoice:[(new Date()).toISOString()],
+      GateEntryNo:'',
+      
+ });
   }
   
   getGRNForm() {
@@ -60,6 +79,34 @@ export class GoodReceiptnoteService {
       
     });
   }
+
+  getGrnFinalformForm() {
+    return this._formBuilder.group({
+      Status3:[''],
+      Remark:[''],
+      ReceivedBy:[''],
+      DebitAmount:[''],
+      CreditAmount:[''],
+      DiscAmount:[''],
+      NetPayamt:[''],
+      OtherCharges:[''],
+      RoundingAmt:[''],
+      // TotalAmount:[''],
+      // Disc:[''],
+      // DisAmount:[''],
+      // GST:[''],
+      // GSTAmount:[''],
+      // CGST:[''],
+      // CGSTAmount:[''],
+      // SGST:[''],
+      // SGSTAmount:[''],
+      // IGST:[''],
+      // IGSTAmount:[''],
+      // NetAmount:[''],
+      
+    });
+  }
+
  
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
@@ -68,6 +115,11 @@ export class GoodReceiptnoteService {
   public getGrnItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
   }
+
+  public getGrnItemDetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNDetail_ByGRNId",Param);
+  }
+
 
   public getToStoreSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
@@ -86,7 +138,10 @@ export class GoodReceiptnoteService {
   }
   
   public GRNSave(Param){
-    return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
+    return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
+  }
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
 }

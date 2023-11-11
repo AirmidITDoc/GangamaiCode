@@ -2,7 +2,7 @@
     <div class="center">
 
         <mat-toolbar class="accent"
-            style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+            style="height:50px; justify-content: space-between;width: 100%;">
             <div fxLayout="row">
                 <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                     style="color: white;">
@@ -112,8 +112,7 @@
                                                             <input matAutocompletePosition="below" type="text"
                                                                 placeholder="Select Item Name" matInput
                                                                 formControlName="ItemName"
-                                                                (keydown)="onEnterItemName($event)"  #itemname
-                                                                (keydown.enter)="focusNextService()"
+                                                                  (keydown.enter)="focusNextService()"
                                                                 [matAutocomplete]="autoItemName" required >
                                                             <span matSuffix style="display: flex;">
                                                                 <mat-icon class="mat-icon-close"
@@ -333,6 +332,9 @@
                                                                         (click)="getPrint(row,m)">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>
+                                                                    <button mat-icon-button (click)="onEdit(row)">
+                                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                    </button>
                                                                 </mat-cell>
                                                             </ng-container>
                                                             <ng-container matColumnDef="loading">
@@ -455,7 +457,7 @@
                                                             <ng-container matColumnDef="TotalAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    TotalAmount</mat-header-cell>
+                                                                    TotalAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.TotalAmount}}
                                                                 </mat-cell>
@@ -473,7 +475,7 @@
                                                             <ng-container matColumnDef="VatPercentage">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    VatPercentage</mat-header-cell>
+                                                                    Vat%</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.VatPercentage}}
                                                                 </mat-cell>
@@ -482,7 +484,7 @@
                                                             <ng-container matColumnDef="DiscPercentage">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    DiscPercentage</mat-header-cell>
+                                                                    Disc%</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.DiscPercentage}}
                                                                 </mat-cell>
@@ -500,7 +502,7 @@
                                                             <ng-container matColumnDef="NetAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    NetAmount</mat-header-cell>
+                                                                    NetAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.NetAmount}}
                                                                 </mat-cell>
@@ -572,11 +574,11 @@
                                         <div class="nav material2">
 
                                             <div fxLayout="column" fxLayoutAlign="start none">
-                                                <form  [formGroup]="_GRNList.GRNSearchGroup">
+                                                <form  [formGroup]="_GRNList.GRNFirstForm">
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                         fxLayoutGap="4px">
                                                   
-                                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                                        <!-- <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Store Name</mat-label>
                                                             <input matAutocompletePosition="below" type="text"
                                                                 placeholder="Select Payment" matInput
@@ -596,7 +598,16 @@
                                                                     {{option.StoreName}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
-                                                        </mat-form-field>&nbsp;&nbsp;&nbsp;
+                                                         </mat-form-field>&nbsp;&nbsp;&nbsp; -->
+                                                            <mat-form-field appearance="outline" fxFlex="25%">
+                                                                <mat-select formControlName="StoreId" name="StoreId">
+                                                                    <mat-option></mat-option>
+                                                                    <mat-option *ngFor="let m of StoreList" [value]="m">
+                                                                        {{m.StoreName}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                       
 
                                                         <mat-radio-group name="Status" formControlName="Status"
                                                             fxFlex="70%" value="before">
@@ -617,7 +628,7 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Supplier Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text"
+                                                            <input matAutocompletePosition="below" type="text"  (keydown)="onEnterSupplier($event)" 
                                                                 placeholder="Select Supplier" matInput
                                                                 formControlName="Supplier_Id"
                                                                 [matAutocomplete]="autoSupllier">
@@ -640,13 +651,13 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="35%">
                                                             <mat-label>Invoice No</mat-label>
-                                                            <input matInput placeholder="Placeholder">
+                                                            <input matInput placeholder="Placeholder"  formControlName="InvoiceNo" #InvoiceNo (keydown)="onEnterInvoiceNo($event)">
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>Invoice Date</mat-label>
-                                                            <input name="DateOfBirth" matInput [matDatepicker]="picker"
-                                                                [value]="registerObj.DateofBirth" [readonly]="true">
+                                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker"
+                                                               [readonly]="true" formControlName="DateOfInvoice" #DateOfInvoice (keydown)="onEnterDateOfInvoice($event)">
                                                             <mat-datepicker-toggle matSuffix
                                                                 [for]="picker"></mat-datepicker-toggle>
                                                             <mat-datepicker #picker></mat-datepicker>
@@ -654,11 +665,11 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="35%">
                                                             <mat-label>Gate Entry No</mat-label>
-                                                            <input matInput placeholder="Placeholder">
+                                                            <input matInput placeholder="Placeholder" formControlName="GateEntryNo" #GateEntryNo (keydown)="onEnterGateEntryNo($event)">
                                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                                                         <mat-radio-group name="Status2" formControlName="Status2"
-                                                            fxFlex="12%" value="Cash"  style="padding-top:13px;">
+                                                            fxFlex="12%" value="Cash"  style="padding-top:13px;"   formControlName="Status2"  #Status2>
                                                             <mat-radio-button value="Credit" 
                                                             [checked]="isChecked"  class="mr-sm-12">Credit</mat-radio-button>
 
@@ -676,7 +687,7 @@
                                                         style="padding: 6px 6px 5px 5px;">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="4px">
-
+<!-- 
                                                             <mat-form-field appearance="outline" fxFlex="25%">
                                                                 <mat-label>Item Name</mat-label>
                                                                 <input matAutocompletePosition="below" type="text"
@@ -699,12 +710,39 @@
                                                                         {{option.ItemName}} | BalQty {{option.Qty}}
                                                                     </mat-option>
                                                                 </mat-autocomplete>
-                                                            </mat-form-field>
+                                                            </mat-form-field> -->
+
+
+                                                            <mat-form-field appearance="outline"
+                                                            style="width:50%;margin-left:20px;">
+                                                            <input type="text" name="ItemName" formControlName="ItemName" #itemid
+                                                                placeholder="Item Name (enter 2 char) " matInput
+                                                                [matAutocomplete]="auto" (input)="getGRNItemList()"  (keydown)="onEnteritemid($event)">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="_GRNList.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto="matAutocomplete"
+                                                                [displayWith]="getOptionText"
+                                                                (optionSelected)='getSelectedObj($event.option.value)'>
+                                                                <mat-option *ngFor="let option of filteredOptions"
+                                                                    [value]="option">
+                                                                    {{option.ItemId}} | {{option.ItemName}}
+                                                                    |{{option.BalanceQty}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                            <mat-error
+                                                                *ngIf="_GRNList.userFormGroup.get('ItemName').hasError('required')">
+                                                                Required field cannot be left blank
+                                                            </mat-error>
+                                                        </mat-form-field>
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                                 <mat-label>UOM</mat-label>
-                                                                <input matInput [(ngModel)]="UOM" name="UOM"
-                                                                    formControlName="UOM" id="UOM" readonly>
+                                                                <input matInput [(ngModel)]="UOM" name="UOM" #Uom (keydown)="onEnterUOM($event)"
+                                                                    formControlName="UOM">
                                                             </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="7%">
@@ -786,7 +824,7 @@
                                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                                 <mat-label>Dis Amount </mat-label>
                                                                 <input matInput [(ngModel)]="DisAmount" name="DisAmount"
-                                                                (keyup)="calculateDiscAmount()"   formControlName="DisAmount" id="DisAmount" readonly>
+                                                                (keyup)="calculateDiscAmount()"   formControlName="DisAmount"  readonly>
                                                             </mat-form-field>&nbsp;
 
                                                             <mat-form-field appearance="outline" fxFlex="8%">
@@ -987,7 +1025,7 @@
                                                             <ng-container matColumnDef="TotalAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    TotalAmount </mat-header-cell>
+                                                                    TotalAmt </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.TotalAmount}}
                                                                 </mat-cell>
@@ -996,7 +1034,7 @@
                                                             <ng-container matColumnDef="Disc">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    Disc</mat-header-cell>
+                                                                    Disc%</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.Disc}}
                                                                 </mat-cell>
@@ -1005,7 +1043,7 @@
                                                             <ng-container matColumnDef="DisAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    DisAmount</mat-header-cell>
+                                                                    DisAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.DisAmount}}
                                                                 </mat-cell>
@@ -1023,7 +1061,7 @@
                                                             <ng-container matColumnDef="GSTAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    GSTAmount</mat-header-cell>
+                                                                    GSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.CGSTAmount}}
                                                                 </mat-cell>
@@ -1041,7 +1079,7 @@
                                                             <ng-container matColumnDef="CGSTAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    CGSTAmount</mat-header-cell>
+                                                                    CGSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.CGSTAmount}}
                                                                 </mat-cell>
@@ -1059,7 +1097,7 @@
                                                             <ng-container matColumnDef="SGSTAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    SGSTAmount</mat-header-cell>
+                                                                    SGSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.SGSTAmount}}
                                                                 </mat-cell>
@@ -1077,7 +1115,7 @@
                                                             <ng-container matColumnDef="IGSTAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    IGSTAmount</mat-header-cell>
+                                                                    IGSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.IGSTAmount}}
                                                                 </mat-cell>
@@ -1086,7 +1124,7 @@
                                                             <ng-container matColumnDef="NetAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
-                                                                    NetAmount</mat-header-cell>
+                                                                    NetAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.NetAmount}}
                                                                 </mat-cell>
@@ -1129,7 +1167,7 @@
                                         </div>
 
                                         <div fxLayout="column" fxLayoutAlign="start none">
-                                            <form [formGroup]="_GRNList.userFormGroup" >
+                                            <form [formGroup]="_GRNList.GRNFinalForm" >
 
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                     fxLayoutGap="4px">
@@ -1200,42 +1238,50 @@
 
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>Remark</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
+                                                        (keydown)="onEnterRemark($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>Received By</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="ReceivedBy" #ReceivedBy
+                                                        (keydown)="onEnterReceivedBy($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Debit Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="DebitAmount" #DebitAmount
+                                                        (keydown)="onEnterDebitAmount($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Credit Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="CreditAmount" #CreditAmount
+                                                        (keydown)="onEnterCreditAmount($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Disc Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="DiscAmount" [(ngModel)]="FinalDisAmount" #DiscAmount
+                                                        (keydown)="onEnterDiscAmount($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Net Pay Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="NetPayamt" [(ngModel)]="NetPayamount" #NetPayamt
+                                                        (keydown)="onEnterNetPayamt($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>Other Charges</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="OtherCharges" #OtherCharges
+                                                        (keydown)="onEnterOtherCharges($event)">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>Rounding Amt</mat-label>
-                                                        <input matInput placeholder="Placeholder">
+                                                        <input matInput placeholder="Placeholder" formControlName="RoundingAmt" #RoundingAmt
+                                                      >
                                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                                     <button class="next-btn"

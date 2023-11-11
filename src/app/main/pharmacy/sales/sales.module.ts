@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { SalesComponent } from './sales.component';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
+import { ToasterService } from 'app/main/shared/services/toaster.service';
 
 const routes: Routes = [
   { 
@@ -48,9 +49,6 @@ const routes: Routes = [
   declarations: [
     SalesComponent,
     SalePopupComponent,
-    
-    
-    
   ],
   imports: [
     CommonModule,
@@ -81,7 +79,6 @@ const routes: Routes = [
     FuseConfirmDialogModule,
     FuseSidebarModule,
     ReactiveFormsModule,
-    MatSnackBarModule,
     MatStepperModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
@@ -91,15 +88,10 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
-        
   ],
   providers: [
-    
-    DatePipe,
-    
-  
+    DatePipe
 ],
 entryComponents: [
   SalesComponent,

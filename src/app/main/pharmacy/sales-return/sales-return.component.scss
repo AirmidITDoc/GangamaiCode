@@ -8,31 +8,16 @@ app-sales-return {
     font-size: medium;
     .SalesDet {
         .mat-header-row {
-            min-width: 800px;
+            min-width: 550px;
             height: 10px;
             background-color: blue;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 800px;
+            min-width: 550px;
             min-height: 20px;
         }
-
-        // .mat-column-ItemId {
-        //     width: 50px;
-        //     max-width: 50px;
-        //     min-width: 50px;
-        //     text-align: left;
-        // }
-
-        // .mat-column-SalesDetId {
-        //     width: 50px;
-        //     max-width: 50px;
-        //     min-width: 50px;
-        //     text-align: left;
-        // }
-
         .mat-column-SalesNo {
             width: 110px;
             max-width: 110px;
@@ -48,10 +33,9 @@ app-sales-return {
         
 
         .mat-column-ItemName {
-            width: 250px;
-            max-width: 250px;
-            min-width: 250px;
-            text-align: left;
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
             text-align: left;
             white-space: nowrap;
             overflow: hidden;
@@ -59,13 +43,19 @@ app-sales-return {
             overflow: hidden !important;
             // display: inline-block;
             justify-content: left;
+            display: inline-flex;
+            display: inline;
         }
 
         .mat-column-BatchNo {
-            width: 110px;
-            max-width: 110px;
-            min-width: 110px;
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
             text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
         }
 
         .mat-column-BatchExpDate {
@@ -119,9 +109,9 @@ app-sales-return {
         }
 
         .mat-column-DiscPer {
-            width: 80px;
-            max-width: 80px;
-            min-width: 80px;
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
             text-align: left;
         }
         .mat-column-DiscAmount {
@@ -221,31 +211,17 @@ app-sales-return {
 
     .SalesDetselected {
         .mat-header-row {
-            min-width: 2500px;
+            min-width: 1700px;
             height: 10px;
             background-color: blue;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 2500px;
+            min-width: 1700px;
             min-height: 20px;
         }
-
-        // .mat-column-ItemId {
-        //     width: 50px;
-        //     max-width: 50px;
-        //     min-width: 50px;
-        //     text-align: left;
-        // }
-
-        // .mat-column-SalesDetId {
-        //     width: 50px;
-        //     max-width: 50px;
-        //     min-width: 50px;
-        //     text-align: left;
-        // }
-
+     
         .mat-column-SalesNo {
             width: 110px;
             max-width: 110px;
@@ -260,9 +236,9 @@ app-sales-return {
         }
         
         .mat-column-ItemName {
-            width: 350px;
-            max-width: 350px;
-            min-width: 350px;
+            width: 230px;
+            max-width: 230px;
+            min-width: 230px;
             text-align: left;
             text-align: left;
             white-space: nowrap;
@@ -436,13 +412,17 @@ app-sales-return {
         }
     }
 
-    .table1{
-       
-        .mat-column-SalesId {
-            width: 120px;
-            max-width: 120px;
-            min-width: 120px;
-            text-align: center;
+    .tblPatientInfo{
+        .mat-header-row {
+            min-width: 700px;
+            height: 10px;
+            background-color: blue;
+        }
+
+        .mat-row {
+            width: 100%;
+            min-width: 700px;
+            min-height: 20px;
         }
 
         .mat-column-Date {
@@ -467,9 +447,9 @@ app-sales-return {
         }
 
         .mat-column-PatientName {
-            width: 550px;
-            max-width: 550px;
-            min-width: 550px;
+            width: 350px;
+            max-width: 350px;
+            min-width: 350px;
             text-align: left;
             text-align: left;
             white-space: nowrap; 

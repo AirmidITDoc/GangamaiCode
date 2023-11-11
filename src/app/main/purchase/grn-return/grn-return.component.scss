@@ -1,0 +1,298 @@
+@import "src/@fuse/scss/fuse";
+
+app-grn-return {
+    .table1 {
+        height: 280px !important;
+        width: 100%;
+    }
+
+    .table2 {
+        height: 220px !important;
+        width: 100%;
+    }
+
+    .table3 {
+        height: 350px !important;
+        width: 100%;
+    }
+
+    .mat-header-row {
+        width: 120%;
+        //max-width: 1600px;
+        min-width: 110%;
+        min-height: 30px;
+        background-color: blue;
+    }
+
+    .mat-row {
+        width: 100%;
+        min-width: 1200px;
+        min-height: 30px;
+    }
+
+   // Table 1
+
+    .mat-column-GRNReturnId {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: center;
+    }
+
+    .mat-column-GRNReturnDate {
+        width: 180px;
+        max-width: 180px;
+        min-width: 180px;
+        text-align: left;
+    }
+
+    .mat-column-StoreName {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content: left;
+    }
+
+    .mat-column-SupplierName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content: left;
+    }
+
+    .mat-column-GSTAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+
+    .mat-column-NetAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-Remark {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content: left;
+    }
+
+    .mat-column-AddedBy {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-action {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mat-tab-group {
+        margin-bottom: 48px;
+    }
+
+    // Table 2
+
+    .mat-column-ItemName {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content: left;
+    }
+
+    .mat-column-BatchNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-BatchExpiryDate {
+        width: 180px;
+        max-width: 180px;
+        min-width: 180px;
+        text-align: left;
+    }
+
+    .mat-column-BalQty {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+    }
+
+    .mat-column-ReturnQty {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+    }
+
+    .mat-column-PureRate {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-Amount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-GST {
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        text-align: left;
+    }
+    .mat-column-NetAmount {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+    }
+
+    .mat-column-BQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-StkId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    //Table 3
+
+    .mat-column-GRNNO {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+
+    .mat-column-BatchNo {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .mat-column-BalQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-ReturnQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-LandedRate {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-TotalAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-GST {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-GSTAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-NetAmount {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+    }
+    .mat-column-IsBatchRequired {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+    }
+    .mat-column-StkID {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-CF {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+        text-align: left;
+    }
+    .mat-column-TotalQty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-GrnId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+    }
+
+}

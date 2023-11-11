@@ -391,8 +391,8 @@
                                              </mat-footer-row> -->
 
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
-                                                showFirstLastButtons> </mat-paginator>
+                                            <!-- <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                                showFirstLastButtons> </mat-paginator> -->
 
                                         </div>
                                     </div>
@@ -529,7 +529,7 @@
                                                         style="color: white;">Action
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
-                                                        <button mat-icon-button matTooltip="delete">
+                                                        <button mat-icon-button matTooltip="Print">
                                                             <mat-icon (click)="getSalesRetPrint(row)">print</mat-icon>
                                                         </button>
                                                     </mat-cell>
@@ -537,10 +537,10 @@
 
                                                 <ng-container matColumnDef="SalesDate" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        fxShow.gt-sm>Sales Date
+                                                        fxShow.gt-sm>Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Date}}
+                                                        {{contact.Date | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -631,7 +631,6 @@
 
                                             <mat-table class="Table4" matSort [dataSource]="dssalesReturnList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
-                                                z
                                                 <ng-container matColumnDef="ItemName" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Item
                                                         Name
@@ -656,7 +655,7 @@
                                                         fxShow.gt-sm>Exp.Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.BatchExpDate}}
+                                                        {{contact.BatchExpDate | date: 'MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -734,8 +733,8 @@
                                              </mat-footer-row> -->
 
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
-                                                showFirstLastButtons> </mat-paginator>
+                                            <!-- <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                                showFirstLastButtons> </mat-paginator> -->
 
                                         </div>
                                     </div>
@@ -837,9 +836,9 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">MRP</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">Total Amount</td>
             </tr>
-            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.SalesNo}}</td>
+                padding: 0;height: 20px;">{{indx + 1}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 20px;">{{item?.HSNcode}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
@@ -1063,6 +1062,195 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
             </tr>
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{indx+1}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.HSNcode}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{'-'}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.ItemName}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{'-'}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.BatchNo}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;text-align: center;
+                padding: 0;height: 10px;">{{item?.Qty}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{item?.UnitMRP}}</td>
+                <td style="border-left: 1px solid black;border-right: 1px solid black;vertical-align: middle; 
+                padding: 3px;height: 10px;">{{item?.TotalAmount}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;"> 
+                    <div style="font-weight: 400;">Terms & Conditions</div>
+                    <ul style="margin: 5px 0 0 0;
+                    font-size: 10px;
+                    padding-left: 17px;
+                    font-weight: 400;">
+                        <li>
+                           Please check the item before leaving medical.
+                        </li>
+                        <li>
+                            Please consult your doctor before consuming the medicine
+                        </li>
+                        <li>
+                            All disputes are subject to Vijayapura jurisdiction only
+                        </li>
+                    </ul>
+                </td>
+                <!-- <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
+                </td> -->
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 0 10px 10px;width: 300px;font-size:10px;"> 
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Sub Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Discount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Total GST</span>
+                        <span style="margin:0 5px">:</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt + reportPrintObjList[0]?.IGSTAmt}}</span>
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        <span style="width:90px;display:inline-block;">Round off</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ 0.00</span>
+                    </div>
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Grand Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    <div style="font-size: 15px;font-weight: bold">
+                        Your Saved Amount: {{reportPrintObjList[0]?.DiscAmount}}
+                    </div>
+                </td>
+                <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
+                padding: 5px 10px;text-align: center;">
+                
+                    <span style="font-size: 11px;opacity:.6;">For Shri Siddeshwar Medicals 24/7</span>
+                </td>
+            </tr> -->
+            <!-- <tr>
+                <td colspan="9" style="border: 1px solid black;vertical-align: top;
+                padding: 5px 10px;">
+                    Total Invoice Value in words: 
+                </td>
+            </tr> -->
+            <tr style="font-size: 10px;">
+                <td colspan="5">
+                    Billed By: {{reportPrintObjList[0]?.UserName}}
+                </td>
+                <td colspan="5" style="text-align: right;">
+                    This is Computer generated invoice hence doesn’t require signature
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
+    </div> -->
+</div>
+
+<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billSalesReturn>
+    <!-- <div class="watermark" style="position:absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 0.1;
+        z-index: 99;
+        color: black;
+        font-size: 70px;
+        transform: translate(-50%,-50%) rotate(-45deg);
+        white-space: nowrap;
+        pointer-events: none;">Shri Siddeshwar Medicals</div> -->
+    <div style="display:flex; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable Trust)</span>
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice</h4>
+    </div>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <h3 style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        {{reportPrintObjList[0]?.StoreName}}</h3>
+
+                    <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
+                    <!-- <div>GST No. 29ABCTS6874R1Z8</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
+                        <span>D.L.No. 123456789456123</span>
+                    </div> -->
+                    <div>
+                        <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
+                        <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;padding:0 10px 10px">
+                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
+                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
+                                Age & Gen: -  <span style="margin-left: 10px;">Mob: {{reportPrintObjList[0]?.ExtMobileNo}}</span><br>
+                                Doctor Name: {{reportPrintObjList[0]?.DoctorName}}
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+                <!-- <td>
+                </td> -->
+              
+            </tr>
+            <tr>
+                <td colspan="4" style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
+                    <div>GST No. {{reportPrintObjList[0]?.GSTIN}}</div>
+                    <div>
+                        <span style="margin-right: 20px;">D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span>
+                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
+                    </div>
+                </td>
+                <td colspan="6" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
+                    <table style="width: 100%;font-size:10px;">
+                        <!-- <tr> -->
+                            <td style="vertical-align: top;padding:0 10px 10px">
+                                Bill No: {{reportPrintObjList[0]?.SalesNo}}  <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Date}}</span><br>
+                                Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
+                            </td>
+                        <!-- </tr> -->
+                    </table>
+                </td>
+            </tr>
+
+            <tr style="font-size:10px;">
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Sr No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">HSN</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MFR</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 100px;">Product Name</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Pack</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Batch No.</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">ExpDate</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">Qty</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
+                <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
+            </tr>
             <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.SalesNo}}</td>
@@ -1169,5 +1357,6 @@
         This is Computer generated invoice hence doesn’t require signature
     </div> -->
 </div>
+
 
 

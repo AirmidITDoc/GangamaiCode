@@ -10,29 +10,48 @@ export class PurchaseOrderService {
   userFormGroup: FormGroup;
   PurchaseSearchGroup :FormGroup;
   PurchaseOrderForm:FormGroup;
-
+  FinalPurchaseform:FormGroup;
+  PurchaseStoreform:FormGroup;
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.getPurchaseOrderForm();
     this.PurchaseSearchGroup= this.PurchaseSearchFrom();
-   
+    this.FinalPurchaseform=this.getPurchaseOrderFinalForm();
+    this.PurchaseStoreform=this.PurchaseStoreFrom();
   }
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
+      StoreId:[''],
       ToStoreId: '',
       FromStoreId:'',
       SupplierId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      ItemName:'',
+
+
+    
+      // ItemName:'',
+    });
+  }
+
+  PurchaseStoreFrom() {
+    return this._formBuilder.group({
+      purchaseId:[''],
+      Freight:[''],
+      StoreId:[''],
+      SupplierId:[''],
+      PaymentMode:[''],
+      PaymentTerm:[''],
+      TaxNature:[''],
     });
   }
   
   getPurchaseOrderForm() {
     return this._formBuilder.group({
+   
       ItemName:[''],
       Qty:[''],
       UOM:[''],
@@ -40,11 +59,24 @@ export class PurchaseOrderService {
       TotalAmount:[''],
       Dis :[''],
       DiscAmount:[''],
-      GST:[''],
+      GSTPer:[''],
       GSTAmount:[''],
       NetAmount :[''],
       MRP:[''],
       Specification:[''],
+
+    });
+
+  }
+
+  getPurchaseOrderFinalForm() {
+    return this._formBuilder.group({
+   
+      PaymentTerm:[''],
+      Warranty:[''],
+      Schedule:[''],
+      OtherTax:[''],
+      Remark:[''],
     });
 
   }
@@ -87,12 +119,26 @@ export class PurchaseOrderService {
     return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
   }
   
-  // public PurchaseUpdate(Param){
-  //   return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
-  // }
+  public getItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
+  }
+  public PurchaseUpdate(Param){
+    return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
+  }
   
-  // public PurchaseVerify(Param){
-  //   return this._httpClient.post("Pharmacy/VerifyPurchaseOrder", Param)
-  // }
+  public PurchaseInsert(Param){
+    return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
+  }
+public InsertPurchaseUpdate(Param){
+  return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
+}
 
+
+public getPurchaseOrderDetail(Param){
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Purchasedetail_BuPurchaseId",Param);
+}
+
+populateForm(employee) {
+  // this.PurchaseStoreFrom.patchValue(employee);
+}
 }

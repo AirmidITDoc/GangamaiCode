@@ -75,7 +75,7 @@
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'" style="margin-right:15px;">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'" style="margin-right:10px;">
                                                     <mat-label>Mobile Number</mat-label>
                                                     <input name="MobileNo" formControlName="MobileNo"
                                                         placeholder="Mobile Number" matInput required
@@ -92,8 +92,7 @@
                                                 </mat-form-field>
 
 
-                                                <mat-form-field appearance="outline"
-                                                    style="margin-right:15px !important;" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                     <mat-label>Patient Name</mat-label>
                                                     <input matInput placeholder="PatientName"
                                                         formControlName="PatientName" [(ngModel)]="PatientName" required
@@ -105,6 +104,13 @@
                                                     <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
                                                         (keydown)="onEnterDoctorname($event)" #doctorname
                                                         formControlName="DoctorName">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                    <mat-label>Address</mat-label>
+                                                    <input matInput placeholder="extAddress" [(ngModel)]="extAddress"
+                                                        (keydown)="onEnterAddress($event)" #address
+                                                        formControlName="extAddress">
                                                 </mat-form-field>
                                                 </div>
                                                 <div>
@@ -121,7 +127,7 @@
                                                         <div fxFlex.gt-sm="100%" fxFlex>
                                                             <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                                                                 <!-- ================================ LABEL HEADER  -->
-                                                                <div style="font-size: medium;background-color: rgb(203, 214, 214);">
+                                                                <div class="patien-info-sales">
                                                                  <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
                                                                         <span style="font-weight: 700;">Patient Information</span> 
                                                                         <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
@@ -187,7 +193,7 @@
                                                                                         <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
                                                                                     </div>
 
-                                                                                    <div style="width:100px;margin-left: 10px;" formControlName="OP_IP_ID" required>
+                                                                                    <div style="width:100px;margin-left: 10px;">
                                                                                         <span>Admission Id</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
@@ -195,9 +201,9 @@
                                                                                     </div>
                                                                                     <div  style="width: 200px;">
                                                                                         <span>{{registerObj.AdmissionID}}</span>
-                                                                                        <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                        <!-- <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
                                                                                             OP_IP_ID is required
-                                                                                        </mat-error>
+                                                                                        </mat-error> -->
                                                                                     </div>
 
 
@@ -695,8 +701,10 @@
                                                             <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
-                                                            <!-- <mat-radio-button value="Other">Other</mat-radio-button> -->
+                                                            <mat-radio-button value="PayOption">PayOption</mat-radio-button>
+                                                            <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                                         </mat-radio-group>
+
                                                         <mat-form-field appearance="outline" fxFlex="15%" *ngIf="IsOnlineRefNo">
                                                             <mat-label>Referance no</mat-label>
                                                             <input matInput name="referanceNo" formControlName="referanceNo" required>
@@ -704,7 +712,7 @@
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
-                                                        <!-- <button class="footer-btn" (click)="payOnline()">Pay Online</button> -->
+                                                        <button class="footer-btn" (click)="payOnline()">Pay Online</button>
                                                     </div>
 
                                                 </div>
@@ -1269,27 +1277,27 @@
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 15px;">MRP</td>
                 <td style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">Amount</td>
             </tr>
-            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.SalesNo}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.HSNcode}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{'-'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.ItemName}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{'-'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.BatchNo}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;text-align: center;
-                padding: 0;height: 15px;">{{item?.Qty}}</td>
-                <td style="border: 1px solid black;vertical-align: top;text-align: right;
-                padding: 0;height: 15px;">{{item?.UnitMRP}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
-                padding: 3px;height: 15px;">{{item?.TotalAmount}}</td>
+            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{indx+1}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.HSNcode}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{'-'}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.ItemName}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{'-'}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.BatchNo}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{item?.BatchExpDate | date: 'MM/yyyy'}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;text-align: center;
+                padding: 0;height: 10px;">{{item?.Qty}}</td>
+                <td style="border-left: 1px solid black;text-align:center;vertical-align: middle;
+                padding: 0;height: 10px;">{{item?.UnitMRP}}</td>
+                <td style="border-left: 1px solid black;border-right: 1px solid black;vertical-align: middle; 
+                padding: 3px;height: 10px;">{{item?.TotalAmount}}</td>
             </tr>
             <tr>
                 <td colspan="6" style="border: 1px solid black;vertical-align: top;

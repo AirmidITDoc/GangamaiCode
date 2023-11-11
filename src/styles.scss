@@ -12,23 +12,24 @@
 //added by prasad
 .mat-row, .mat-footer-row {
     min-height: 20px;
-    height: 45px;
+    height: 35px;
 }
 
 .mat-table {
     height: 520px !important;
     .mat-row {
         &:hover {
-            background: #e1f5fe;
+            background: #7cc0df;
         }
-        // &:active {
-        //     background:#e1f5fe;
-        // }
+        &:active {
+            background:#7cc0df;
+        }
     }
    
 
     .mat-header-row {
         min-height: 40px;
+        height: 20px;
        
     }
     .mat-sort-header-content {
@@ -49,7 +50,7 @@
         height: 50% !important;   
         .mat-row {
             &:hover {
-                background: #e1f5fe;
+                background: #46a8d6;
             }
 }}
 
@@ -88,9 +89,21 @@ mat-footer-row mat-footer-cell {
 }
 
 //notification stlyes
-snack-bar-container success {
-    background-color: green;
-    color: white;
+
+::ng-deep mat-snack-bar-container .success-snackbar {
+    background-color: #cc3333 !important;
+    color: #ffffff !important;
+}
+.toast-success {
+    padding-left: 80px;
+    text-align: center;
+    background-position: 35% !important;
+}
+
+.toast-error {
+    padding-left: 80px;
+    text-align: center;
+    background-position: 35% !important;
 }
 
 // Header dialog part of content // Subhash
@@ -574,4 +587,8 @@ legend {
     color: #139fe4;
     background-color: #fff !important;
     border: 1px solid #139fe4;
+}
+
+.error-snackbar {
+    background: red;
 }

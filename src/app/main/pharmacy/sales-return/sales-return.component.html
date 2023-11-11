@@ -9,11 +9,12 @@
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Sales Return :
+                    Sales Return : {{vStoreName}}
                 </span>
+                <span style="margin-left: 800px;">
                 <app-common-date [screenFrom]="screenFromString"
                 (dateTimeEventEmitter)="getDateTime($event)">
-                 </app-common-date>
+                 </app-common-date></span>
                 <!-- <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
             </div>
         </div>
@@ -35,7 +36,7 @@
             <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="90%" fxFlex style="background-color: white;">
+                    <div fxFlex.gt-sm="95%" fxFlex style="background-color: white;">
 
                         <form [formGroup]="SearchForm" style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
@@ -92,15 +93,10 @@
                         </form>
 
                         <div>
-                            <mat-table matSort [dataSource]="dssaleList" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto; height: 200px !important;" class="table1">
-
-                                <!-- <ng-container matColumnDef="SalesId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        {{contact.SalesId}}
-                                    </mat-cell>
-                                </ng-container> -->
+                            <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                                <mat-table matSort [dataSource]="dssaleList" [@animateStagger]="{value:'50'}"
+                                style="overflow:auto; height: 200px !important;width:70%;" 
+                                class="tblPatientInfo">
 
                                 <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
@@ -142,7 +138,15 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <!-- <ng-container matColumnDef="loading">
+                                <ng-container matColumnDef="PaymentType">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Status
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.PaidType}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>
                                 </ng-container>
@@ -153,19 +157,20 @@
                                         </mat-spinner>
                                         <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                     </mat-footer-cell>
-                                </ng-container> -->
+                                </ng-container>
 
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                     [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
                                     [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
-                                <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
-                                </mat-footer-row> -->
-                                <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
-                                </mat-footer-row> -->
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
+                                </mat-footer-row>
                             </mat-table>
+                            </div>
+                           
 
                         </div>
                         <hr>
@@ -386,7 +391,7 @@
                                     </mat-cell>
                                 </ng-container> -->
 
-                                <!-- <ng-container matColumnDef="loading">
+                                <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>
                                 </ng-container>
@@ -397,17 +402,17 @@
                                         </mat-spinner>
                                         <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                     </mat-footer-cell>
-                                </ng-container> -->
+                                </ng-container>
 
                                 <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: dspSalesDetColumns;"
                                     [@animate]="{value:'*',params:{y:'100%'}}"  (click)="SelectedItem(contact)"></mat-row>
-                                <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
-                                </mat-footer-row> -->
-                                <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
-                                </mat-footer-row> -->
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleDetailList!=null}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dssaleDetailList!=null && dssaleDetailList.data.length==0)}">
+                                </mat-footer-row>
                             </mat-table>
 
 
@@ -523,20 +528,20 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="VatPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatPer
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST%
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.VatPer}}
                                     </mat-cell>
                                 </ng-container>
 
-                                 <ng-container matColumnDef="VatAmount">
+                                 <!-- <ng-container matColumnDef="VatAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.VatAmount}}
                                     </mat-cell>
-                                </ng-container> 
+                                </ng-container>  -->
 
                                 <ng-container matColumnDef="DiscPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
@@ -583,7 +588,7 @@
                                     </mat-cell>
                                 </ng-container> -->
 
-                                <ng-container matColumnDef="PurRateWf">
+                                <!-- <ng-container matColumnDef="PurRateWf">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -596,7 +601,7 @@
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.PurTotAmt}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <!-- <ng-container matColumnDef="IsPrescription">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
@@ -665,13 +670,13 @@
                                     </mat-cell>
                                 </ng-container> -->
 
-                                <ng-container matColumnDef="StkID">
+                                <!-- <ng-container matColumnDef="StkID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.StkID}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
 
 
@@ -706,13 +711,13 @@
                         <div>
                             
                             <span class="net-amt-label"
-                            style="width: 200px;font-weight: bold;margin-left:1200px;color: blue;">
+                            style="width: 200px;font-weight: bold;margin-left:1000px;color: blue;">
                             TotalAmount:</span>&nbsp;<span class="net-amt-value"
                             style="margin-right: 20px;">{{getTotAmtSum(selectedssaleDetailList.data)
                             | currency:'INR' }}</span>
                             <hr>
                             <form [formGroup]="FinalReturnform">
-                                <div style="margin-left: 800px;">
+                                <div style="margin-left: 600px;">
                                     <div>Net Amount</div>
                                     <div>
                                         <mat-form-field appearance="outline" style="width: 180px;">

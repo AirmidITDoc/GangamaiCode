@@ -13,9 +13,14 @@ import { HeaderComponent } from './componets/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ExcelDownloadService } from './services/excel-download.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackBarService } from './services/snack-bar.service';
+import { ToasterService } from './services/toaster.service';
+import { ToastrModule } from 'ngx-toastr';
+import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -26,17 +31,26 @@ import { ExcelDownloadService } from './services/excel-download.service';
     MatTimepickerModule,
     MatButtonModule,
     MatCardModule,
-    MatTabsModule
-    
+    MatTabsModule,
+    MatSnackBarModule,
+    ToastrModule.forRoot({timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    })
   ],
   providers: [
-    ExcelDownloadService
+    ExcelDownloadService,
+    SnackBarService,
+    ToasterService
   ],
   exports: [
     TrimPipe,
     CommonDateComponent,
-    HeaderComponent
+    HeaderComponent,
+    PaymentModeComponent
   ],
-  entryComponents: [HeaderComponent]
+  entryComponents: [HeaderComponent, PaymentModeComponent]
 })
 export class SharedModule { }
