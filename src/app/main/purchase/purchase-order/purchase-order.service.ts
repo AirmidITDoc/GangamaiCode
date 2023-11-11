@@ -138,7 +138,7 @@ public getPurchaseOrderDetail(Param){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Purchasedetail_BuPurchaseId",Param);
 }
 
-// populateForm(employee) {
-//   this.PurchaseStoreFrom.patchValue(employee);
-// }
+populateForm(employee) {
+  // this.PurchaseStoreFrom.patchValue(employee);
+}
 }
