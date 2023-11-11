@@ -139,6 +139,6 @@ public getPurchaseOrderDetail(Param){
 }
 
 populateForm(employee) {
-  this.PurchaseStoreFrom.patchValue(employee);
+  // this.PurchaseStoreFrom.patchValue(employee);
 }
 }
