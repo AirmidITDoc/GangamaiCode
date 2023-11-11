@@ -7,12 +7,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class WorkOrderService {
   myFormGroup:FormGroup;
+  NewWorkForm:FormGroup
 
   constructor(
     public _formBuilder:FormBuilder,
     public _httpClient:HttpClient
   ) 
-  { this.myFormGroup=this.createMyFormGroup() }
+  { this.myFormGroup=this.createMyFormGroup();
+  this.NewWorkForm=this.createNewWorkForm()}
 
   createMyFormGroup(){
     return this._formBuilder.group({
@@ -20,6 +22,23 @@ export class WorkOrderService {
       enddate: [(new Date()).toISOString()],
       StoreId:'',
       SupplierName:''
+    })
+  }
+  createNewWorkForm(){
+    return this._formBuilder.group({
+      StoreId:'',
+      SupplierName:'',
+      ItemID:'',
+      Qty:'',
+      UnitRate:'',
+      TotalAmount:'',
+      Disc:'',
+      DiscAmt:'',
+      GST:'',
+      VatAmt:'',
+      NetAmount:'',
+      Specification:'',
+     
     })
   }
 

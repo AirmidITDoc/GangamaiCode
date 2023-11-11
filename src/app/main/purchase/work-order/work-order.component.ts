@@ -28,6 +28,20 @@ export class WorkOrderComponent implements OnInit {
     'Remark'  
   ];
 
+  displayedColumnsnew:string[] = [
+    'action',
+    'ItemName',
+    'Qty',
+    'Rate',
+    'TotalAmount',
+    'Disc',
+    'DiscAmt',
+    'Vat',
+    'VatAmt',
+    'NetAmt',
+    'Specification' 
+  ];
+
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
@@ -66,6 +80,7 @@ export class WorkOrderComponent implements OnInit {
       this.StoreList = data;
       // console.log(this.StoreList);
       this._WorkOrderService.myFormGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._WorkOrderService.NewWorkForm.get('StoreId').setValue(this.StoreList[0]);
     });
   }
   getSuppliernameList() {
@@ -75,6 +90,7 @@ export class WorkOrderComponent implements OnInit {
       this.SupplierList = data;
       console.log(this.SupplierList);
       this._WorkOrderService.myFormGroup.get('SupplierName').setValue(this.SupplierList[0]);
+      this._WorkOrderService.NewWorkForm.get('SupplierName').setValue(this.SupplierList[0]);
     });
   } 
 getWorkOrdersList() {
@@ -98,7 +114,8 @@ getWorkOrdersList() {
       this.sIsLoading = '';
     });
 
-}          
+}   
+       
 
 }
 
