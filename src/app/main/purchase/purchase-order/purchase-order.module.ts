@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PurchaseOrderComponent } from './purchase-order.component';
+import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
 
 
 
@@ -48,6 +49,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PurchaseOrderComponent,
+    UpdatePurchaseorderComponent,
     
   ],
   imports: [

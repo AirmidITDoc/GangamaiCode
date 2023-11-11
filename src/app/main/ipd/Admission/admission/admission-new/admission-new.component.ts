@@ -154,6 +154,7 @@ export class AdmissionNewComponent implements OnInit {
 
 
   private _onDestroy = new Subject<void>();
+  toastr: any;
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -170,7 +171,7 @@ export class AdmissionNewComponent implements OnInit {
 
   ngOnInit(): void {
     
-
+    
     this.isAlive = true;
     // this.personalFormGroup = this.createPesonalForm();
     // this.hospitalFormGroup = this.createHospitalForm();
@@ -1355,7 +1356,7 @@ export class AdmissionNewComponent implements OnInit {
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
         console.log(submissionObj);
         if (response) {
-          // this.toastr.success('Congratulations !', 'Admission save Successfully !');
+          this.toastr.success('Congratulations !', 'Admission save Successfully !');
           Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();

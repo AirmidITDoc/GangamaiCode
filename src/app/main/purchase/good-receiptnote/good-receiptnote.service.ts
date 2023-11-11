@@ -116,6 +116,11 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
   }
 
+  public getGrnItemDetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNDetail_ByGRNId",Param);
+  }
+
+
   public getToStoreSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }

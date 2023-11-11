@@ -1,37 +1,29 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewEncapsulation, ChangeDetectorRef, ElementRef } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { PurchaseOrderService } from './purchase-order.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { PurchaseOrderService } from '../purchase-order.service';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
-import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
-import { IndentList } from 'app/main/pharmacy/sales/sales.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 import { MatSelect } from '@angular/material/select';
-import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
-import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-
-
+import { map, startWith } from 'rxjs/operators';
+import { IndentList } from 'app/main/inventory/patient-material-consumption/patient-material-consumption.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { ItemNameList, PurchaseItemList, PurchaseOrder } from '../purchase-order.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-purchase-order',
-  templateUrl: './purchase-order.component.html',
-  styleUrls: ['./purchase-order.component.scss'],
+  selector: 'app-update-purchaseorder',
+  templateUrl: './update-purchaseorder.component.html',
+  styleUrls: ['./update-purchaseorder.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-
 })
-export class PurchaseOrderComponent implements OnInit {
-  // [x: string]: any;
+export class UpdatePurchaseorderComponent implements OnInit {
 
   sIsLoading: string = '';
   isLoading = true;
@@ -97,10 +89,11 @@ export class PurchaseOrderComponent implements OnInit {
   IGSTAmt: any;
 
   PaymentTerm: any;
-  // PatientName: any;
+  registerObj = new ItemNameList({});
   ItemObj: IndentList;
 
- 
+
+  
   FreightList = [
     { id: 1, name: "NILL" },
     { id: 2, name: "RS 240" },
@@ -137,27 +130,12 @@ TaxNatureList = [
   {id: 4, name: "VAT 12.5 INCLUSIVE"},
   {id: 5, name: "VAT 12.5 EXTRA"}
 ];
-  dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
-
+  
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
+  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
-  displayedColumns = [
-    'PurchaseNo',
-    'PurchaseDate',
-    'PurchaseTime',
-    'StoreName',
-    'SupplierName',
-    'TotalAmount',
-    'action',
-  ];
-
-  displayedColumns1 = [
-    'ItemName',
-    'Qty',
-    'Rate',
-  ];
 
   displayedColumns2 = [
     'Action',
@@ -204,21 +182,59 @@ TaxNatureList = [
     private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,
+
 
   ) { }
 
   ngOnInit(): void {
-    // this.getItemNameList();
+   
+   
+    
     this.getPaymentSearchCombo();
     this.getFromStoreSearchList();
-    this.getPurchaseOrder();
+    this.getPurchaseOrder( this.registerObj.PurchaseID);
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
+
+    if(this.data){
+      
+      this.registerObj=this.data.Obj;
+     
+      //  this.setDropdownObjs1();
+    }
+ 
+  }
+
+  
+  setDropdownObjs1() {
+   
+    // const toSelect = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+    // this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(toSelect);
+
+    // const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
+    // this._PurchaseOrder.PurchaseStoreform.get('Freight').setValue(toSelectMarital);
+
+    // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
+    // this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
+
+    // const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
+    // this.personalFormGroup.get('AreaId').setValue(toSelectArea);
+
+    // const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+
+    // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+    
+    // this.onChangeCityList(this.personalFormGroup.get('CityId').value);
+    
+    // this.personalFormGroup.updateValueAndValidity();
+    // this.dialogRef.close();
+    
   }
 
   getOptionText(option) {
@@ -250,19 +266,17 @@ TaxNatureList = [
   }
 
 
-  getPurchaseOrder() {
-    // this.sIsLoading = 'loading-data';
+  getPurchaseOrder(el) {
+debugger
     var Param = {
-      "ToStoreId": 10003,// this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-      "From_Dt": '2022-10-01 00:00:00.000',//this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": '2022-10-01 00:00:00.000',// this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-      "Supplier_Id": 28// this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
+      "PurchaseId": el,
+     
     }
-    this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
-      this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      this.dsPurchaseOrder.sort = this.sort;
-      this.dsPurchaseOrder.paginator = this.paginator;
+    this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
+      this.dsItemNameList.data = data as ItemNameList[];
+      this.dsTempItemNameList.data= data as ItemNameList[];
+      this.dsItemNameList.sort = this.sort;
+      this.dsItemNameList.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {
@@ -323,83 +337,7 @@ TaxNatureList = [
 
   OnSave() {
     debugger
-    if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
-    let purchaseHeaderInsertObj = {};
-    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
-    purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
-    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
-    purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
-    purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
-    purchaseHeaderInsertObj['taxAmount'] = 0;
-    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
-    purchaseHeaderInsertObj['octriAmount'] = 0;
-    purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
-    purchaseHeaderInsertObj['isclosed'] = false;
-    purchaseHeaderInsertObj['isVerified'] = false;
-    purchaseHeaderInsertObj['remarks'] = "";
-    purchaseHeaderInsertObj['taxID'] = 0;
-    
-    purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      purchaseHeaderInsertObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-      purchaseHeaderInsertObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
-      purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.userFormGroup.get('Warranty').value || 0;
-    purchaseHeaderInsertObj['roundVal'] = 0;
-    purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
-    purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
-    purchaseHeaderInsertObj['totIGSTAmt'] = this.IGSTAmount;
-    purchaseHeaderInsertObj['transportChanges'] = 0;
-    purchaseHeaderInsertObj['handlingCharges'] = 0;
-    purchaseHeaderInsertObj['freightCharges'] = 0;
-    purchaseHeaderInsertObj['purchaseId'] = 0;
-
-    let InsertpurchaseDetailObj = [];
-    this.dsItemNameList.data.forEach((element) => {
-      let purchaseDetailInsertObj = {};
-      purchaseDetailInsertObj['purchaseId'] = 0;
-      purchaseDetailInsertObj['itemId'] = element.ItemID;
-      purchaseDetailInsertObj['uomId'] = element.UOMID;
-      purchaseDetailInsertObj['qty'] = element.Qty;
-      purchaseDetailInsertObj['rate'] = element.Rate;
-      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
-      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
-      purchaseDetailInsertObj['mrp'] = element.MRP;
-      purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
-      InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-    });
-
-    let submitData = {
-      "purchaseHeaderInsert": purchaseHeaderInsertObj,
-      "purchaseDetailInsert": InsertpurchaseDetailObj,
-    };
-    console.log(submitData);
-    this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            let m = response;
-            // this._matDialog.closeAll();
-            // this.OnReset()
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Purchase not saved', 'error');
-      }
-      // this.isLoading = '';
-    });
-  }
-  else{
-
+   
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
@@ -427,16 +365,16 @@ TaxNatureList = [
     updatePurchaseOrderHeaderObj['transportChanges'] = 0;
     updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
     updatePurchaseOrderHeaderObj['freightCharges'] = 0;
-    updatePurchaseOrderHeaderObj['purchaseId'] = 0;
+    updatePurchaseOrderHeaderObj['purchaseId'] = this.registerObj.PurchaseID;
 
     
     let delete_PurchaseDetailsObj = {};
-    delete_PurchaseDetailsObj['purchaseID'] = 0;
+    delete_PurchaseDetailsObj['purchaseID'] =this.registerObj.PurchaseID;
 
     let update_POVerify_StatusObjarray = [];
     this.dsItemNameList.data.forEach((element) => {
       let update_POVerify_StatusObj = {};
-      update_POVerify_StatusObj['purchaseId'] = 0;
+      update_POVerify_StatusObj['purchaseId'] = this.registerObj.PurchaseID;
       update_POVerify_StatusObj['itemId'] = element.ItemID;
       update_POVerify_StatusObj['uomId'] = element.UOMID;
       update_POVerify_StatusObj['qty'] = element.Qty;
@@ -465,7 +403,7 @@ TaxNatureList = [
       // this.isLoading = '';
     });
   }
-  }
+  
 
   calculateTotalAmount() {
     if (this.Rate && this.Qty) {
@@ -599,11 +537,6 @@ TaxNatureList = [
     });
   }
 
-  // getSupplierSearchList() {
-  //   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
-  //     this.SupplierList = data;
-  //   });
-  // }
 
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
@@ -623,7 +556,7 @@ TaxNatureList = [
   getSupplierSearchCombo() {
     this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      // console.log(data);
+      console.log(data);
       this.optionsMarital = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -877,7 +810,12 @@ TaxNatureList = [
 
 
   onAdd() {
+    debugger
     this.dsItemNameList.data = [];
+
+    if (this.chargeslist.length ==0){
+      this.chargeslist=this.dsTempItemNameList.data
+    }
     this.chargeslist.push(
       {
         ItemID: this.ItemID,
@@ -944,140 +882,27 @@ TaxNatureList = [
 
   onEdit(contact){
 
-  //   console.log(contact)
-  //   this.advanceDataStored.storage = new SearchInforObj(contact);
-  //   this._
-  //   const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
-  //     {
-  //       maxWidth: "100%",
-  //       height: '95%',
-  //       width: '95%',
-  //       data : {
-  //         Obj : contact,
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //   });
+    console.log(contact)
+
+    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data : {
+          PurchaseObj : contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
   }
 
   onClose() { }
   onClear() { }
 }
 
-export class ItemNameList {
-  Action: string;
-  ItemID: any;
-  ItemName: string;
-  Qty: number;
-  UOM: number;
-  Rate: number;
-  TotalAmount: number;
-  Dis: number;
-  DiscAmount: number;
-  GST: number;
-  GSTAmount: number;
-  CGSTPer: any;
-  CGSTAmt: any;
-  SGSTPer: any;
-  SGSTAmt: any;
-  IGSTPer: any;
-  IGSTAmt: any;
-  // CGSTPer:any;
-  NetAmount: number;
-  MRP: number;
-  Specification: string;
-  position: number;
-  DiscPer: any;
-  vatAmount: any;
-  vatPer: any;
-  UOMID: any;
-  PurchaseID: any;
-  SupplierID:any;
-  /**
-   * Constructor
-   *
-   * @param ItemNameList
-   */
-  constructor(ItemNameList) {
-    {
-      this.Action = ItemNameList.Action || "";
-      this.ItemID = ItemNameList.ItemID || 0;
-      this.ItemName = ItemNameList.ItemName || "";
-      this.Qty = ItemNameList.Quantity || 0;
-      this.UOM = ItemNameList.UOM || 0;
-      this.Rate = ItemNameList.Rate || 0;
-      this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Dis = ItemNameList.Dis || 0;
-      this.DiscAmount = ItemNameList.DiscAmount || 0;
-      this.GST = ItemNameList.GST || 0;
-      this.GSTAmount = ItemNameList.GSTAmount || 0;
-      this.CGSTPer = ItemNameList.CGSTPer || 0;
-      this.CGSTAmt = ItemNameList.CGSTAmt || 0;
-      this.SGSTPer = ItemNameList.SGSTPer || 0;
-      this.SGSTAmt = ItemNameList.SGSTAmt || 0;
-      this.IGSTPer = ItemNameList.IGSTPer || 0;
-      this.IGSTAmt = ItemNameList.IGSTAmt || 0;
-      this.NetAmount = ItemNameList.NetAmount || 0;
-      this.MRP = ItemNameList.MRP || 0;
-      this.Specification = ItemNameList.Specification || "";
-      this.PurchaseID = ItemNameList.PurchaseID || "";
-      this.SupplierID = ItemNameList.SupplierID || 0;
-    }
-  }
-}
 
-export class PurchaseItemList {
-  ItemName: string;
-  Qty: number;
-  Rate: number;
-  StoreId: any;
-  SupplierId: any;
-  StoreName: any;
-  /**
-   * Constructor
-   *
-   * @param PurchaseItemList
-   */
-  constructor(PurchaseItemList) {
-    {
-      this.ItemName = PurchaseItemList.ItemName || "";
-      this.Qty = PurchaseItemList.Qty || 0;
-      this.Rate = PurchaseItemList.Rate || 0;
-      this.StoreId = PurchaseItemList.StoreId || 0;
-      this.SupplierId = PurchaseItemList.SupplierId || 0;
-      this.StoreName = PurchaseItemList.StoreName || '';
-    }
-  }
-}
-export class PurchaseOrder {
-  PurchaseNo: string;
-  PurchaseDate: number;
-  PurchaseTime: number;
-  StoreName: number;
-  SupplierName: string;
-  TotalAmount: number;
-  PurchaseId: any;
-  FromStoreId: boolean;
-
-  /**
-   * Constructor
-   *
-   * @param PurchaseOrder
-   */
-  constructor(PurchaseOrder) {
-    {
-      this.PurchaseNo = PurchaseOrder.PurchaseNo || 0;
-      this.PurchaseDate = PurchaseOrder.PurchaseDate || 0;
-      this.PurchaseTime = PurchaseOrder.PurchaseTime || "";
-      this.StoreName = PurchaseOrder.StoreName || "";
-      this.SupplierName = PurchaseOrder.SupplierName || 0;
-      this.TotalAmount = PurchaseOrder.TotalAmount || "";
-      this.PurchaseId = PurchaseOrder.PurchaseId || "";
-      this.FromStoreId = PurchaseOrder.FromStoreId || "";
-    }
-  }
-}
 
 function elseif(GST: any) {
   throw new Error('Function not implemented.');
