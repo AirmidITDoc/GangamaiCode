@@ -128,14 +128,20 @@ PaymentModeList = [
   {id: 5, name: "ECS"}
 ];
 
-
-
 TaxNatureList = [
   { id: 1, name: "EXCISE DUTY 10.3 PERCENT CST13.5 PER" },
   { id: 2, name: "INCLUSIVE" },
   { id: 3, name: "VAT" },
   {id: 4, name: "VAT 12.5 INCLUSIVE"},
   {id: 5, name: "VAT 12.5 EXTRA"}
+];
+
+PaymentList = [
+  { id: 1, name: "Cash" },
+  { id: 2, name: "DD" },
+  { id: 3, name: "Cheque" },
+  {id: 4, name: "Credit"},
+  // {id: 5, name: "VAT 12.5 EXTRA"}
 ];
   dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
 
@@ -211,14 +217,14 @@ TaxNatureList = [
 
   ngOnInit(): void {
     // this.getItemNameList();
-    this.getPaymentSearchCombo();
-    this.getFromStoreSearchList();
-    this.getPurchaseOrder();
+    this.getStoreSearchCombo();
+    this.getFromStoreSearch();
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
+    this.getPurchaseOrderList();
   }
 
   getOptionText(option) {
@@ -250,17 +256,18 @@ TaxNatureList = [
   }
 
 
-  getPurchaseOrder() {
-    // this.sIsLoading = 'loading-data';
+  getPurchaseOrderList() {
+    debugger
     var Param = {
-      "ToStoreId": 10003,// this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-      "From_Dt": '2022-10-01 00:00:00.000',//this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": '2022-10-01 00:00:00.000',// this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
+      "From_Dt":this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '2022-10-01 00:00:00.000',
+      "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") ||  '2022-10-01 00:00:00.000',
       "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-      "Supplier_Id": 28// this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
+      "Supplier_Id":  this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
+      console.log(data)
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -341,9 +348,9 @@ TaxNatureList = [
     purchaseHeaderInsertObj['taxID'] = 0;
     
     purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      purchaseHeaderInsertObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-      purchaseHeaderInsertObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
-      purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.userFormGroup.get('Warranty').value || 0;
+    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
+    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
     purchaseHeaderInsertObj['roundVal'] = 0;
     purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
     purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
@@ -389,7 +396,8 @@ TaxNatureList = [
           if (result.isConfirmed) {
             let m = response;
             // this._matDialog.closeAll();
-            // this.OnReset()
+            this.OnReset();
+
           }
         });
       } else {
@@ -477,7 +485,7 @@ TaxNatureList = [
 
   getTotalNet(element) {
     let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    this.FinalNetAmount =(element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
     return this.FinalNetAmount;
   }
 
@@ -633,17 +641,27 @@ TaxNatureList = [
     });
   }
 
-  getPaymentSearchCombo() {
-    this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-      console.log(data);
-      this.optionsPayment = this.ToStoreList.slice();
-      this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
-      );
+  getStoreSearchCombo() {
+    // this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+    //   this.ToStoreList = data;
+    //   console.log(data);
+    //   this.optionsPayment = this.ToStoreList.slice();
+    //   this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
+    //   );
 
+    // });
+
+    var vdata = {
+      Id: this.accountService.currentUserValue.user.storeId
+    }
+    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
     });
+
   }
 
   // getItemNameSearchCombo() {
@@ -686,12 +704,14 @@ TaxNatureList = [
     }
   }
 
-  getFromStoreSearchList() {
+  getFromStoreSearch() {
+    debugger
     var data = {
       Id: this.accountService.currentUserValue.user.storeId
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
+      console.log(data)
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
@@ -719,16 +739,14 @@ TaxNatureList = [
 
 
   @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('Freight') Freight: MatSelect;
+  @ViewChild('Freight1') Freight1: ElementRef;
 
-  @ViewChild('DeliveryDate') DeliveryDate: MatSelect;
+  @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
   @ViewChild('PaymentMode') PaymentMode: MatSelect;
 
-  @ViewChild('Paymentterm') Paymentterm: ElementRef;
+  @ViewChild('Paymentterm') Paymentterm: MatSelect;
 
-
-
-  @ViewChild('TaxNature') TaxNature: MatSelect;
+  @ViewChild('TaxNature1') TaxNature1: MatSelect;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('rate') rate: ElementRef;
@@ -748,33 +766,41 @@ TaxNatureList = [
   public onEnterSupplier(event): void {
     if (event.which === 13) {
 
-      if (this.Freight) this.Freight.focus();
+      // if (this.Freight) this.Freight.focus();
+      this.Freight1.nativeElement.focus();
     }
   }
 
 
   public onEnterFreight(event): void {
     if (event.which === 13) {
-
-      if (this.DeliveryDate) this.DeliveryDate.focus();
+      this.DeliveryDate1.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
     }
   }
   public onEnterDeliveryDate(event): void {
     if (event.which === 13) {
 
-      if (this.PaymentMode) this.PaymentMode.focus();
+      if (this.Paymentterm) this.Paymentterm.focus();
     }
   }
   public onEnterPaymentMode(event): void {
     if (event.which === 13) {
-      this.Paymentterm.nativeElement.focus();
-
+      // this.Paymentterm.nativeElement.focus();
+      if (this.TaxNature1) this.TaxNature1.focus();
     }
   }
+  public onEnterTaxNature(event): void {
+    if (event.which === 13) {
+
+      this.itemid.nativeElement.focus();
+    }
+  }
+
   public onEnterPaymentTerm(event): void {
     if (event.which === 13) {
 
-      if (this.TaxNature) this.TaxNature.focus();
+      if (this.PaymentMode) this.PaymentMode.focus();
     }
   }
   public onEnterItemName(event): void {
@@ -944,22 +970,28 @@ TaxNatureList = [
 
   onEdit(contact){
 
-  //   console.log(contact)
-  //   this.advanceDataStored.storage = new SearchInforObj(contact);
-  //   this._
-  //   const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
-  //     {
-  //       maxWidth: "100%",
-  //       height: '95%',
-  //       width: '95%',
-  //       data : {
-  //         Obj : contact,
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //   });
+    console.log(contact)
+    this.advanceDataStored.storage = new SearchInforObj(contact);
+    // this._PurchaseOrder.populateForm();
+    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data : {
+          Obj : contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
   }
+
+  onVerify(){
+
+  }
+
+
 
   onClose() { }
   onClear() { }
@@ -994,6 +1026,13 @@ export class ItemNameList {
   UOMID: any;
   PurchaseID: any;
   SupplierID:any;
+  PaymentTermId:any;
+  FreightAmount:any;
+  DeliveryDate:any;
+  ModeOfPayment:any;
+  TaxNature:any;
+  Warranty:any;
+  Remark:any;
   /**
    * Constructor
    *
@@ -1023,6 +1062,13 @@ export class ItemNameList {
       this.Specification = ItemNameList.Specification || "";
       this.PurchaseID = ItemNameList.PurchaseID || "";
       this.SupplierID = ItemNameList.SupplierID || 0;
+      this.FreightAmount= ItemNameList.FreightAmount|| 0;
+      this.PaymentTermId= ItemNameList.PaymentTermId|| 0;
+      this.DeliveryDate= ItemNameList.DeliveryDate|| '';
+      this.ModeOfPayment= ItemNameList.ModeOfPayment|| '';
+      this.TaxNature= ItemNameList.TaxNature|| '';
+      this.Warranty = ItemNameList.Warranty|| '';
+      this.Remark = ItemNameList.Remark|| '';
     }
   }
 }

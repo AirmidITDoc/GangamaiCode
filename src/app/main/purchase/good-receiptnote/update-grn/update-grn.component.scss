@@ -51,8 +51,7 @@ app-update-grn {
       overflow: hidden;
       text-overflow: ellipsis; 
       overflow: hidden !important;
-      display: inline-block;
-      margin-top: 7px;
+    
       justify-content:left; 
     }
     .mat-column-TotalAmount {
@@ -129,9 +128,9 @@ app-update-grn {
     }
 
     .mat-column-action {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
       text-align: center;
       justify-content: center;
     }
@@ -140,12 +139,7 @@ app-update-grn {
      margin-bottom: 48px;
     }
 
-   .mat-column-Action {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    text-align: left;
-}
+
    .mat-column-ItemName {
       width: 200px;
       max-width: 200px;
@@ -254,8 +248,7 @@ app-update-grn {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
+   
     justify-content:left; 
   }
    .mat-column-DiscPercentage {

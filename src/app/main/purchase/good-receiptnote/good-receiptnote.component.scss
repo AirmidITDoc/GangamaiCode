@@ -16,16 +16,15 @@ app-good-receiptnote {
     }
   
     .mat-header-row {
-      width:140%;
-      //max-width: 1600px;
-      min-width: 100%;
-      min-height: 30px;
+      width: 100%;
+      min-width: 1800px;  
+      min-height: 30px; 
       background-color: blue;
     }
 
     .mat-row {
     width: 100%;
-    min-width: 1500px;  
+    min-width: 1800px;  
     min-height: 30px; 
     }
   
@@ -44,23 +43,21 @@ app-good-receiptnote {
     }
   
     .mat-column-InvoiceNo {
-      width: 130px;
-      max-width: 130px;
-      min-width: 130px;
+      width: 170px;
+      max-width: 170px;
+      min-width: 170px;
       text-align: left;
     }
     
     .mat-column-SupplierName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
       white-space: nowrap; 
       overflow: hidden;
       text-overflow: ellipsis; 
       overflow: hidden !important;
-      display: inline-block;
-      margin-top: 7px;
       justify-content:left; 
     }
     .mat-column-TotalAmount {
@@ -90,22 +87,22 @@ app-good-receiptnote {
       text-align: left;
     }
     .mat-column-RoundingAmt {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
       text-align: left;
     }
     
     .mat-column-DebitNote {
-      width: 70px;
-      max-width: 70px;
-      min-width: 70px;
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
       text-align: center;
     }
     .mat-column-CreditNote {
-      width: 70px;
-      max-width: 70px;
-      min-width: 70px;
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
       text-align: center;
     }
     
@@ -116,9 +113,9 @@ app-good-receiptnote {
       text-align: left;
     }
     .mat-column-Cash_CreditType {
-      width: 120px;
-      max-width: 120px;
-      min-width: 120px;
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
       text-align: left;
     }
  
@@ -149,15 +146,15 @@ app-good-receiptnote {
     }
 
    .mat-column-Action {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: left;
 }
    .mat-column-ItemName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
       white-space: nowrap; 
       overflow: hidden;
@@ -325,9 +322,9 @@ app-good-receiptnote {
   }
 
   .mat-column-Disc {
-    width: 40px;
-    max-width: 40px;
-    min-width: 40px;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
     text-align: left;
   }
   .mat-column-DisAmount {

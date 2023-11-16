@@ -49,6 +49,7 @@ export class GoodReceiptnoteService {
       InvoiceNo:'',
       DateOfInvoice:[(new Date()).toISOString()],
       GateEntryNo:'',
+      Status3:'',
       
  });
   }

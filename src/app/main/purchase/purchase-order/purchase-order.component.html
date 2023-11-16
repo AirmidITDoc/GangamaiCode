@@ -46,7 +46,7 @@
                                             <div class="nav material2">
 
                                                 <form [formGroup]="_PurchaseOrder.PurchaseSearchGroup"
-                                                    style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                                                    style="padding: 6px 6px 5px 5px;height: 99%;" fusePerfectScrollbar>
                                                     <div fxLayout="column" fxLayoutAlign="start none">
                                                         <br />
 
@@ -57,17 +57,16 @@
                                                                     placeholder="Start date">
                                                                 <input matEndDate formControlName="end"
                                                                     placeholder="End date"
-                                                                    (dateChnage)="getPurchaseOrder()">
+                                                                    (dateChnage)="getPurchaseOrderList()">
                                                             </mat-date-range-input>
                                                             <mat-datepicker-toggle matSuffix
                                                                 [for]="picker"></mat-datepicker-toggle>
                                                             <mat-date-range-picker #picker></mat-date-range-picker>
                                                         </mat-form-field>
-
+                                                        <!-- [disabled]="disableSelect.value" -->
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>From Store</mat-label>
-                                                            <mat-select formControlName="FromStoreId" name="FromStoreId"
-                                                                [disabled]="disableSelect.value">
+                                                            <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                                 <mat-option></mat-option>
                                                                 <mat-option *ngFor="let m of FromStoreList" [value]="m">
                                                                     {{m.StoreName}}
@@ -126,7 +125,7 @@
                                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                                             </button>&nbsp;
                                                             <button mat-raised-button class="searchButton"
-                                                                (click)="getPurchaseOrder()" matTooltip="search">
+                                                                (click)="getPurchaseOrderList()" matTooltip="search">
                                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                                             </button>
                                                         </div>
@@ -241,8 +240,14 @@
                                                                     style="color: white;">Action
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let row">
+                                                                    <button mat-icon-button (click)="getPrint(row)">
+                                                                        <mat-icon title="print Menu">print</mat-icon>
+                                                                    </button>
                                                                     <button mat-icon-button (click)="onEdit(row)">
                                                                         <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                    </button>
+                                                                    <button mat-icon-button (click)="onVerify(row)">
+                                                                        <mat-icon title="verify Menu">notification_important</mat-icon>
                                                                     </button>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -439,18 +444,23 @@
                                                             </mat-autocomplete>
                                                         </mat-form-field>
 
-                                                       
-
-                                                        
-                                                        <mat-form-field appearance="outline" fxFlex="20%" style="margin-right: 200px;">
-                                                            <mat-label>PaymentTerm</mat-label>
-                                                            <input matInput [(ngModel)]="PaymentTerm" name="PaymentTerm"
-                                                                formControlName="PaymentTerm"
-                                                                (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
-                                                        </mat-form-field>&nbsp;
+                                                        <mat-form-field appearance="outline" style="width: 25%;">
+                                                            <mat-label>Freight</mat-label>
+                                                            <input matInput placeholder="Freight" #Freight1
+                                                                type="text"
+                                                                formControlName="Freight"
+                                                                (keydown)="onEnterFreight($event)">
+                                                          </mat-form-field>
 
 
-
+                                                          <mat-form-field appearance="outline" style="width: 25%;">
+                                                            <mat-label>DeliveryDate</mat-label>
+                                                            <input matInput placeholder="DeliveryDate" #DeliveryDate1
+                                                               type="text"
+                                                                formControlName="DeliveryDate"
+                                                                (keydown)="onEnterDeliveryDate($event)">
+                                                          </mat-form-field>
+                                                     
                                                         <app-common-date [screenFrom]="screenFromString"
                                                             (dateTimeEventEmitter)="getDateTime($event)">ri
                                                         </app-common-date>
@@ -460,7 +470,7 @@
                                                         fxLayoutGap="4px">
                                                      
                                                          
-
+<!-- 
                                                         <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                                             <mat-label>-- Select Freight --</mat-label>
                                                             <mat-select formControlName="Freight" name="Freight">
@@ -469,9 +479,21 @@
                                                                 {{m.name}}
                                                               </mat-option>
                                                             </mat-select>
-                                                          </mat-form-field>
+                                                          </mat-form-field> -->
+
+                                                        
 
                                                           <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
+                                                            <mat-label>-- Select PaymentTerm --</mat-label>
+                                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm"  (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
+                                                              <mat-option></mat-option>
+                                                              <mat-option *ngFor="let m of PaymentList" [value]="m">
+                                                                {{m.name}}
+                                                              </mat-option>
+                                                            </mat-select>
+                                                          </mat-form-field>
+
+                                                          <!-- <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                                             <mat-label>-- Select DeliveryDate --</mat-label>
                                                             <mat-select formControlName="DeliveryDate" name="DeliveryDate">
                                                               <mat-option></mat-option>
@@ -479,12 +501,12 @@
                                                                 {{m.name}}
                                                               </mat-option>
                                                             </mat-select>
-                                                          </mat-form-field>
+                                                          </mat-form-field> -->
 
 
                                                         <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                                             <mat-label>-- Select PaymentMode --</mat-label>
-                                                            <mat-select formControlName="PaymentMode" name="PaymentMode">
+                                                            <mat-select formControlName="PaymentMode" name="PaymentMode"  (keydown)="onEnterPaymentMode($event)" #PaymentMode>
                                                               <mat-option></mat-option>
                                                               <mat-option *ngFor="let m of PaymentModeList" [value]="m">
                                                                 {{m.name}}
@@ -530,7 +552,7 @@
 
                                                         <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                                             <mat-label>-- Select TaxNature --</mat-label>
-                                                            <mat-select formControlName="TaxNature" name="TaxNature">
+                                                            <mat-select formControlName="TaxNature" name="TaxNature" (keydown)="onEnterTaxNature($event)" #TaxNature1>
                                                               <mat-option></mat-option>
                                                               <mat-option *ngFor="let m of TaxNatureList" [value]="m">
                                                                 {{m.name}}
