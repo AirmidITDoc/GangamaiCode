@@ -73,13 +73,23 @@
                                         </mat-autocomplete>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="15%">
-                                        <mat-label>PaymentTerm</mat-label>
-                                        <input matInput [(ngModel)]="PaymentTerm" name="PaymentTerm"
-                                            formControlName="PaymentTerm"
-                                            (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
-                                    </mat-form-field>&nbsp;
+                                    <mat-form-field appearance="outline" style="width: 25%;">
+                                        <mat-label>Freight</mat-label>
+                                        <input matInput placeholder="Freight" #Freight1
+                                            [(ngModel)]="registerObj.FreightAmount" type="text"
+                                            formControlName="Freight"
+                                            (keydown)="onEnterFreight($event)">
+                                      </mat-form-field>
 
+
+                                      <mat-form-field appearance="outline" style="width: 25%;">
+                                        <mat-label>DeliveryDate</mat-label>
+                                        <input matInput placeholder="DeliveryDate" #DeliveryDate1
+                                            [(ngModel)]="registerObj.DeliveryDate" type="text"
+                                            formControlName="DeliveryDate"
+                                            (keydown)="onEnterDeliveryDate($event)">
+                                      </mat-form-field>
+                                 
                                   
 
                                     <app-common-date [screenFrom]="screenFromString"
@@ -90,17 +100,18 @@
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                     fxLayoutGap="4px">
 
-                                    <mat-form-field class="section-dropdown" style="width: 20%;border-style: groove;">
-                                        <mat-label>-- Select Freight --</mat-label>
-                                        <mat-select formControlName="Freight" name="Freight">
+                                 
+                                    <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
+                                        <mat-label>-- Select PaymentTerm --</mat-label>
+                                        <mat-select formControlName="PaymentTerm" name="PaymentTerm"  (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
                                           <mat-option></mat-option>
-                                          <mat-option *ngFor="let m of FreightList" [value]="m">
+                                          <mat-option *ngFor="let m of PaymentList" [value]="m">
                                             {{m.name}}
                                           </mat-option>
                                         </mat-select>
                                       </mat-form-field>
 
-                                      <mat-form-field class="section-dropdown" style="width: 20%;border-style: groove;">
+                                      <!-- <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                         <mat-label>-- Select DeliveryDate --</mat-label>
                                         <mat-select formControlName="DeliveryDate" name="DeliveryDate">
                                           <mat-option></mat-option>
@@ -108,12 +119,12 @@
                                             {{m.name}}
                                           </mat-option>
                                         </mat-select>
-                                      </mat-form-field>
+                                      </mat-form-field> -->
 
 
-                                    <mat-form-field class="section-dropdown" style="width: 20%;border-style: groove;">
+                                    <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
                                         <mat-label>-- Select PaymentMode --</mat-label>
-                                        <mat-select formControlName="PaymentMode" name="PaymentMode">
+                                        <mat-select formControlName="PaymentMode" name="PaymentMode"  (keydown)="onEnterPaymentMode($event)" #PaymentMode>
                                           <mat-option></mat-option>
                                           <mat-option *ngFor="let m of PaymentModeList" [value]="m">
                                             {{m.name}}
@@ -121,45 +132,11 @@
                                         </mat-select>
                                       </mat-form-field>
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Payment Terms</mat-label>
-                                        <mat-select formControlName="ToStoreId" name="ToStoreId">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of ToStoreList" [value]="m">
-                                                {{m.StoreName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field> -->
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Payment Terms</mat-label>
-                                        <input matAutocompletePosition="below" type="text"
-                                            placeholder="Select Payment" matInput formControlName="PaymentTerm"
-                                            formControlName="ToStoreId"
-                                            [matAutocomplete]="autoPayment">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_PurchaseOrder.PurchaseStoreform.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_PurchaseOrder.PurchaseStoreform.get('ToStoreId').setValue(''); isPaymentSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoPayment="matAutocomplete"
-                                            [displayWith]="getOptionTextPayment">
-                                            <mat-option
-                                                *ngFor="let option of filteredoptionsPayment | async"
-                                                [value]="option">
-                                                {{option.StoreName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
-
-
-                                  
 
 
                                     <mat-form-field class="section-dropdown" style="width: 20%;border-style: groove;">
                                         <mat-label>-- Select TaxNature --</mat-label>
-                                        <mat-select formControlName="TaxNature" name="TaxNature">
+                                        <mat-select formControlName="TaxNature" name="TaxNature" (keydown)="onEnterTaxNature($event)" #TaxNature1>
                                           <mat-option></mat-option>
                                           <mat-option *ngFor="let m of TaxNatureList" [value]="m">
                                             {{m.name}}
@@ -520,7 +497,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Guarantee/ Warranty</mat-label>
-                                <input matInput placeholder="Guarantee/ Warranty" #Warranty   (keydown)="onEnterWarranty($event)"
+                                <input matInput placeholder="Guarantee/ Warranty" #Warranty   (keydown)="onEnterWarranty($event)" [(ngModel)]="registerObj.Warranty"
                                     formControlName="Warranty">
                             </mat-form-field>
 
@@ -540,7 +517,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="25%">
                                 <mat-label>Remark</mat-label>
-                                <input matInput placeholder="Remark" formControlName="Remark" #Remark >
+                                <input matInput placeholder="Remark" formControlName="Remark" #Remark [(ngModel)]="registerObj.Remark">
                             </mat-form-field>&nbsp;&nbsp;
 
                         </div>

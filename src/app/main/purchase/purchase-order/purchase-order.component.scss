@@ -10,6 +10,36 @@ app-purchase-order {
     .table2 {
       height: 180px !important;
       width:100%;
+
+      .mat-header-row {
+        width:200;
+        //max-width: 1600px;
+        min-width: 1000px;
+        min-height: 30px;
+        background-color: blue;
+      }
+    
+      .mat-row {
+        width: 100%;
+        //max-width: 1600px;
+        min-width: 1000px;
+        min-height: 30px;
+       
+      }
+  
+      
+
+      .mat-column-ItemName {
+        width: 760px;
+        max-width: 760px;
+        min-width: 760px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+      }
     }
 
     .table3 {

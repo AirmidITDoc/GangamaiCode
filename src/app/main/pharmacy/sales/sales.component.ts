@@ -29,6 +29,7 @@ import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sales',
@@ -269,7 +270,7 @@ OP_IPType:any=2;
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
     private snackBarService: SnackBarService,
-    // public _toastr : ToasterService,
+    public toastr : ToastrService,
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
@@ -1719,7 +1720,10 @@ OP_IPType:any=2;
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if((patientTypeValue == 'OP' || patientTypeValue == 'IP')
       && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
-        this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
+        // this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
+        this.toastr.warning('Please select Patient Type.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
         return;
     }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
@@ -1937,7 +1941,10 @@ OP_IPType:any=2;
       if (response) {
         //  console.log(response);
         //  this._toastr.showSuccess('Record Saved Successfully');
-         this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
+        this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        //  this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
          this.getPrint3(response);
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
@@ -1955,11 +1962,17 @@ OP_IPType:any=2;
         //   }
         // });
       } else {
-        Swal.fire('Error !', 'Sale data not saved', 'error');
+        // Swal.fire('Error !', 'Sale data not saved', 'error');
+         this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       this.sIsLoading = '';
     }, error => {
-      this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+      // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+      this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     });
 
     this.ItemFormreset();
