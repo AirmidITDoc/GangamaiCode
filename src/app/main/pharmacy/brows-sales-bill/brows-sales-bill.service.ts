@@ -8,63 +8,65 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class BrowsSalesBillService {
 
   userForm: FormGroup;
-   formReturn :FormGroup;
+  formReturn: FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
-  ) { this.userForm=this.SearchFilter();
-      this.formReturn=this.SearchFilterReturn();  }
+  ) {
+    this.userForm = this.SearchFilter();
+    this.formReturn = this.SearchFilterReturn();
+  }
 
-  SearchFilter():FormGroup{
+  SearchFilter(): FormGroup {
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      RegNo:'',
-      F_Name:'',                                           
-      L_Name: '',                                                      
-      SalesNo : '',
-      OP_IP_Type:['3'],
-      StoreId :'',
-       IPNo :''
+      RegNo: '',
+      F_Name: '',
+      L_Name: '',
+      SalesNo: '',
+      OP_IP_Type: ['3'],
+      StoreId: '',
+      IPNo: ''
 
     })
   }
-  SearchFilterReturn():FormGroup{
+  SearchFilterReturn(): FormGroup {
     return this._formBuilder.group({
       startdate1: [(new Date()).toISOString()],
       enddate1: [(new Date()).toISOString()],
-      RegNo:'',
-      F_Name:'',                                           
-      L_Name: '',                                                      
-      SalesNo : '',
-      OP_IP_Types:['3'],
-      StoreId :''
+      RegNo: '',
+      F_Name: '',
+      L_Name: '',
+      SalesNo: '',
+      OP_IP_Types: ['3'],
+      StoreId: ''
 
     })
   }
 
- 
-  
- 
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+
+
+
+  public getStoreFromList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
   }
 
 
-  public getSalesList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList",Param);
+  public getSalesList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList", Param);
   }
-  public getPdfSales(Param){
-    return this._httpClient.get("Pharmacy/view-pharmacy-sale-bill?SalesId=0&OP_IP_Type=1");
+  public getPdfSales(SalesId, OP_IP_Type) {
+    return this._httpClient.get("Pharmacy/view-pharmacy-sale-bill?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
   }
 
-  public getSalesDetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesDetails",Param);
+  public getSalesDetList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesDetails", Param);
   }
-  public getLoggedStoreList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  public getLoggedStoreList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
 
   public getSalesReturnList(Param) {
@@ -74,12 +76,12 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesReturnDetails", Param);
   }
 
-  public InsertSalessettlement(emp){
+  public InsertSalessettlement(emp) {
     return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
   }
-  
-  
-  public getSalesReturnPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint",emp);
+
+
+  public getSalesReturnPrint(emp) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
   }
 }

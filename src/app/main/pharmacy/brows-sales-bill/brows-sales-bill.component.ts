@@ -377,7 +377,7 @@ console.log(event);
     );
   }
   viewPdf(el){
-    this._BrowsSalesBillService.getPdfSales(el).subscribe(res=>{
+    this._BrowsSalesBillService.getPdfSales(el.SalesId,el.OP_IP_Type).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
       {   maxWidth: "85vw",
           height: '750px',
