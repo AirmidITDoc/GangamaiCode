@@ -32,6 +32,7 @@ import { M } from '@angular/cdk/keycodes';
 import { TestingComponent } from './main/testing/testing.component';
 import { AppConfigModule } from './app-config.module';
 import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const appRoutes: Routes = [
@@ -174,7 +175,13 @@ class PickDateAdapter extends NativeDateAdapter {
         FuseThemeOptionsModule,
 
         // App modules
-        LayoutModule
+        LayoutModule,
+        ToastrModule.forRoot({timeOut: 5000,
+          positionClass: 'toast-bottom-right',
+          preventDuplicates: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+        })
 
 
     ],
