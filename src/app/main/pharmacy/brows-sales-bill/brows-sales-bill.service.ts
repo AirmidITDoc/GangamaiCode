@@ -56,6 +56,9 @@ export class BrowsSalesBillService {
   public getSalesList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList",Param);
   }
+  public getPdfSales(Param){
+    return this._httpClient.get("Pharmacy/view-pharmacy-sale-bill?SalesId=0&OP_IP_Type=1");
+  }
 
   public getSalesDetList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesDetails",Param);

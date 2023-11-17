@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 
-
 const appRoutes: Routes = [
     {
     path: "sales",
@@ -53,7 +52,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [ ],
   imports: [
-    RouterModule.forChild(appRoutes),
+    RouterModule.forChild(appRoutes)
   ]
 })
 export class PharmacyModule { }
