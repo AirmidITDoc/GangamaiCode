@@ -146,12 +146,12 @@ export class UpdateGRNComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.data) {
+    if (this.data.chkNewGRN==2) {
 
       this.registerObj = this.data.Obj;
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo
-      this.getGRNList(this.registerObj.GRNID);
+      this.getGRNItemDetailList(this.registerObj);
       this.setDropdownObjs();
     }
 
@@ -167,7 +167,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    debugger
+    
 
     //  const toSelectPaymentTerm = this.Status3List.find(c => c.id == this.registerObj.Status3);
     //  this._GRNList.GRNSearchGroup.get('Status3').setValue(toSelectPaymentTerm);
@@ -194,10 +194,10 @@ export class UpdateGRNComponent implements OnInit {
 
 
 
-  getGRNList(el) {
+  getGRNItemDetailList(el) {
     debugger
     var Param = {
-      "GRNId": 41693// el,
+      "GRNID":  el.GRNID,
 
     }
     this._GRNList.getGrnItemDetailList(Param).subscribe(data => {
@@ -220,6 +220,7 @@ export class UpdateGRNComponent implements OnInit {
     this.chargeslist = this.dsTempItemNameList.data;
     this.chargeslist.push(
       {
+        ItemID:this.ItemID,
         ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
         UOM: this.UOM,
         HSNCode: this.HSNCode,
@@ -294,7 +295,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateTotalAmount() {
-    debugger
+    
     if (this.Rate && this.Qty) {
       // this.TotalAmount = Math.round(parseInt(this.Rate) * parseInt(this.Qty)).toString();
 
@@ -311,7 +312,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateDiscperAmount() {
-    debugger
+    
     if (this.Disc) {
       let dis = this._GRNList.userFormGroup.get('Disc').value
       this.DisAmount = (parseFloat(dis) * parseFloat(this.NetAmount) / 100).toFixed(2);
@@ -341,7 +342,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateGSTAmount() {
-    debugger
+    
     if (this.GSTAmount > 0) {
 
       this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmount)).toFixed(2);
@@ -437,7 +438,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   gePharStoreList() {
-    debugger
+    
     var vdata = {
       Id: this.accountService.currentUserValue.user.storeId
     }
@@ -460,7 +461,7 @@ export class UpdateGRNComponent implements OnInit {
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
       if (this.data) {
-        debugger
+        
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.GRNFirstForm.get('Supplier_Id').setValue(ddValue);
       }
@@ -473,7 +474,7 @@ export class UpdateGRNComponent implements OnInit {
 
   getSelectedObj(obj) {
     this.accountService
-    debugger
+    
     this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
     this.Qty = obj.BalanceQty;
@@ -519,9 +520,9 @@ export class UpdateGRNComponent implements OnInit {
     debugger
     var m_data = {
       "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
-      "StoreId": 2// this._GRNList.GRNSearchGroup.get('StoreId').value.storeid || 0
+      "StoreId": this._GRNList.GRNFirstForm.get('StoreId').value.storeid || 0
     }
-    if (this._GRNList.userFormGroup.get('ItemName').value.length >= 2) {
+    if (this._GRNList.userFormGroup.get('ItemName').value.length >= 1) {
       this._GRNList.getItemNameList(m_data).subscribe(data => {
         this.filteredOptions = data;
         if (this.filteredOptions.length == 0) {
@@ -564,7 +565,7 @@ export class UpdateGRNComponent implements OnInit {
     var Param = {
 
       "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
-      "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
+      "StoreId": this._GRNList.GRNFirstForm.get("StoreId").value.storeid || 0
     }
     console.log(Param);
     this._GRNList.getItemNameList(Param).subscribe(data => {
@@ -594,10 +595,139 @@ export class UpdateGRNComponent implements OnInit {
       .map((i, idx) => (i.position = (idx + 1), i));
   }
 
+  OnSave(){
+    if(this.data.chkNewGRN==1)
+    {
+      this.OnSavenew();
+    }else if(this.data.chkNewGRN==2){
+      this.OnSaveEdit()
+    }
+  }
 
-
-  OnSave() {
+  OnSavenew() {
     debugger
+        let grnSaveObj = {};
+        grnSaveObj['grnDate'] = this.dateTimeObj.date;
+        grnSaveObj['grnTime'] = this.dateTimeObj.time;
+        grnSaveObj['storeId'] = this._GRNList.GRNFirstForm.get('StoreId').value.storeid || 0;
+        grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
+        grnSaveObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
+        grnSaveObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
+        grnSaveObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;
+        grnSaveObj['cash_CreditType'] = true,
+        grnSaveObj['grnType'] = 0;
+        grnSaveObj['totalAmount'] = this.TotalFinalAmount;
+        grnSaveObj['totalDiscAmount'] = this.FinalDisAmount;
+        grnSaveObj['totalVATAmount'] = this.VatAmount;
+        grnSaveObj['netAmount'] = this.FinalNetAmount;
+        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || 0;
+        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || 0;
+        grnSaveObj['isVerified'] = false;
+        grnSaveObj['isClosed'] = false;
+        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        grnSaveObj['invDate'] = this.dateTimeObj.date;
+        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || '';
+        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || '';
+        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
+        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+        grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount;
+        grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount;
+        grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount;
+        grnSaveObj['tranProcessId'] = 0;
+        grnSaveObj['tranProcessMode'] = "";
+        grnSaveObj['billDiscAmt'] = this.FinalDisAmount;
+        grnSaveObj['grnid'] = 0;
+    
+        let SavegrnDetailObj = [];
+        this.dsItemNameList.data.forEach((element) => {
+    
+          console.log(element);
+    
+          let grnDetailSaveObj = {};
+          grnDetailSaveObj['grnDetID'] = 0;
+          grnDetailSaveObj['grnId'] = 0;
+          grnDetailSaveObj['itemId'] = element.ItemID;
+          grnDetailSaveObj['uomId'] = element.UOM;
+          grnDetailSaveObj['receiveQty'] = element.Qty;
+          grnDetailSaveObj['freeQty'] = element.FreeQty;
+          grnDetailSaveObj['mrp'] = element.MRP;
+          grnDetailSaveObj['rate'] = element.Rate;
+          grnDetailSaveObj['totalAmount'] = element.TotalAmount;
+          grnDetailSaveObj['conversionFactor'] = 0;//element.vatAmount;
+          grnDetailSaveObj['vatPercentage'] = element.VatPer || 0;
+          grnDetailSaveObj['vatAmount'] = element.VatAmt || 0;
+          grnDetailSaveObj['discPercentage'] = element.Disc || 0;
+          grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
+          grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
+          grnDetailSaveObj['landedRate'] = 0;//this.CgstAmt;
+          grnDetailSaveObj['netAmount'] = element.NetAmount;
+          grnDetailSaveObj['grossAmount'] = element.NetAmount;
+          grnDetailSaveObj['totalQty'] = element.Qty;
+          grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
+          grnDetailSaveObj['batchNo'] = element.BatchNo;
+          grnDetailSaveObj['batchExpDate'] = this.dateTimeObj.date;
+          grnDetailSaveObj['purUnitRate'] = 0; //this.SgstPer;
+          grnDetailSaveObj['purUnitRateWF'] = 0; //this.SgstPer;
+          grnDetailSaveObj['cgstPer'] = element.CGST || 0;
+          grnDetailSaveObj['cgstAmt'] = element.CGSTAmount || 0;
+          grnDetailSaveObj['sgstPer'] = element.SGST || 0;
+          grnDetailSaveObj['sgstAmt'] = element.SGSTAmount || 0;
+          grnDetailSaveObj['igstPer'] = element.IGST || 0;
+          grnDetailSaveObj['igstAmt'] = element.IGSTAmount || 0;
+          grnDetailSaveObj['mrP_Strip'] = element.MRP_Strip || 0;
+          grnDetailSaveObj['isVerified'] = 0,//element.SGSTAmount;
+          grnDetailSaveObj['igstPer'] = element.IGST || 0;
+          grnDetailSaveObj['isVerifiedDatetime'] = this.dateTimeObj.time;
+          grnDetailSaveObj['isVerifiedUserId'] = 1;//this.SgstAmt;
+    
+          SavegrnDetailObj.push(grnDetailSaveObj);
+    
+        });
+    
+        let updateItemMasterGSTPerObjarray = [];
+        this.dsItemNameList.data.forEach((element) => {
+    
+          console.log(element);
+    
+          let updateItemMasterGSTPerObj = {};
+          // updateItemMasterGSTPerObj['grnDetID'] = 0;
+          // updateItemMasterGSTPerObj['grnId'] = 0;
+          updateItemMasterGSTPerObj['itemId'] = element.ItemID;
+          updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
+          updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
+          updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
+          updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode;
+          updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
+        });
+    
+        let submitData = {
+          "grnSave": grnSaveObj,
+          "grnDetailSave": SavegrnDetailObj,
+          "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
+        };
+    
+        console.log(submitData);
+    
+        this._GRNList.GRNSave(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Save GRN !', 'Record Generated Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                let m = response;
+                this._matDialog.closeAll();
+                this.OnReset();
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'GRN not saved', 'error');
+          }
+          // this.isLoading = '';
+        });
+    
+      }
+    
+
+  OnSaveEdit() {
+    
     let updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
@@ -688,7 +818,7 @@ export class UpdateGRNComponent implements OnInit {
 
     console.log(submitData);
 
-    this._GRNList.GRNSave(submitData).subscribe(response => {
+    this._GRNList.GRNEdit(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Updated GRN !', 'Record Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -926,7 +1056,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   onChangeStatus3(event) {
-    debugger
+    
     if (event.value.name == 'GST Before Disc') {
 
       if (parseFloat(this.GST) > 0) {
@@ -936,7 +1066,7 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
     else if (event.value.name == 'GST After Disc') {
-      debugger
+      
 
       let disc = this._GRNList.userFormGroup.get('Disc').value
       if (disc > 0) {

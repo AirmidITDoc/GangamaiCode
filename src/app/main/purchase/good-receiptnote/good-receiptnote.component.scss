@@ -9,10 +9,22 @@ app-good-receiptnote {
     .table2 {
       height: 220px !important;
       width: 100%;
+
+      
+      
     }
     .table3 {
       height: 220px !important;
       width: 100%;
+
+      .mat-column-action {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        text-align: center;
+        justify-content: center;
+      }
+    
     }
   
     .mat-header-row {
@@ -133,14 +145,7 @@ app-good-receiptnote {
       text-align: left;
     }
 
-    .mat-column-action {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
-      text-align: center;
-      justify-content: center;
-    }
-  
+   
     .mat-tab-group {
      margin-bottom: 48px;
     }
@@ -151,18 +156,7 @@ app-good-receiptnote {
     min-width: 150px;
     text-align: left;
 }
-   .mat-column-ItemName {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
-      text-align: left;
-      white-space: nowrap; 
-      overflow: hidden;
-      text-overflow: ellipsis; 
-      overflow: hidden !important;
-      justify-content:left; 
-  }
-
+ 
   .mat-column-UOM {
     width: 90px;
     max-width: 90px;

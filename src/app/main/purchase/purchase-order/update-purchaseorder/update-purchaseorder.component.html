@@ -7,7 +7,7 @@
         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
         style="color: white;">
         Purchase Order List
-        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="margin-left: 1300px;">
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="margin-left: 1200px;">
             <mat-icon>close</mat-icon>
           </button>
       </span>
@@ -101,7 +101,7 @@
                                     fxLayoutGap="4px">
 
                                  
-                                    <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
+                                    <mat-form-field class="section-dropdown" style="width: 25%;">
                                         <mat-label>-- Select PaymentTerm --</mat-label>
                                         <mat-select formControlName="PaymentTerm" name="PaymentTerm"  (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
                                           <mat-option></mat-option>
@@ -122,7 +122,7 @@
                                       </mat-form-field> -->
 
 
-                                    <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
+                                    <mat-form-field class="section-dropdown" style="width: 25%;">
                                         <mat-label>-- Select PaymentMode --</mat-label>
                                         <mat-select formControlName="PaymentMode" name="PaymentMode"  (keydown)="onEnterPaymentMode($event)" #PaymentMode>
                                           <mat-option></mat-option>
@@ -134,7 +134,7 @@
 
 
 
-                                    <mat-form-field class="section-dropdown" style="width: 20%;border-style: groove;">
+                                    <mat-form-field class="section-dropdown" style="width: 20%;">
                                         <mat-label>-- Select TaxNature --</mat-label>
                                         <mat-select formControlName="TaxNature" name="TaxNature" (keydown)="onEnterTaxNature($event)" #TaxNature1>
                                           <mat-option></mat-option>
@@ -211,7 +211,7 @@
                                         <mat-label>UOM</mat-label>
                                         <input matInput [(ngModel)]="UOM" name="UOM"
                                             [disabled]="disableSelect.value" formControlName="UOM"
-                                            placeholder="UOM" id="UOM" readonly>
+                                            placeholder="UOM" id="UOM" type="number">
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
@@ -320,7 +320,7 @@
                                         [dataSource]="dsItemNameList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;height: 210px !important;">
 
-                                        <ng-container matColumnDef="Action" stickyEnd>
+                                        <ng-container matColumnDef="Action">
                                             <mat-header-cell *matHeaderCellDef
                                                 style="color: white;"> Action
                                             </mat-header-cell>
@@ -497,13 +497,13 @@
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Guarantee/ Warranty</mat-label>
-                                <input matInput placeholder="Guarantee/ Warranty" #Warranty   (keydown)="onEnterWarranty($event)" [(ngModel)]="registerObj.Warranty"
+                                <input matInput placeholder="Guarantee/ Warranty" #Warranty [(ngModel)]="registerObj.Warranty"   (keydown)="onEnterWarranty($event)" [(ngModel)]="registerObj.Warranty"
                                     formControlName="Warranty">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="25%">
                                 <mat-label>Schedule </mat-label>
-                                <mat-select formControlName="Schedule" name="Schedule" #Schedule   (keydown)="onEnterSchedule($event)">
+                                <mat-select formControlName="Schedule" name="Schedule" #Schedule [(ngModel)]="registerObj.Schedule"    (keydown)="onEnterSchedule($event)">
                                     <mat-option value="for">For Next 3 Months As Per Tel.
                                         Confirmation</mat-option>
                                     <mat-option value="Immediate">Immediate</mat-option>
@@ -512,7 +512,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="17%">
                                 <mat-label>Other Tax</mat-label>
-                                <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax   (keydown)="onEnterOtherTax($event)">
+                                <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax  [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="25%">

@@ -125,7 +125,7 @@
 
 
                                         <mat-form-field class="section-dropdown"
-                                            style="width:25%;border-style: groove;">
+                                            style="width:25%;">
                                             <mat-label>-- Select Status3 --</mat-label>
                                             <mat-select formControlName="Status3" name="Status3"
                                                 (selectionChange)="onChangeStatus3($event)">
@@ -353,7 +353,7 @@
 
                                             <div matTooltip="Select All Value to enable this button!!"
                                                 [matTooltipPosition]="'above'">
-                                                <button mat-raised-button fxLayoutAlign="center center"
+                                                <button mat-raised-button fxLayoutAlign="center center"  #addbutton 
                                                     (click)="onAdd()" [disabled]="!add"
                                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; ">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
