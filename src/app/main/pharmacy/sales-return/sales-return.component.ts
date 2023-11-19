@@ -213,9 +213,10 @@ export class SalesReturnComponent implements OnInit {
     this.Itemselectedlist.data = [];
     this.Itemselectedlist = [];
 
+    debugger
     var vdata = {
-      F_Name: this.SearchForm.get('F_Name').value || '%',
-      L_Name: this.SearchForm.get('L_Name').value || '%',
+      F_Name: this.SearchForm.get('F_Name').value + '%' || '%',
+      L_Name: this.SearchForm.get('L_Name').value + '%' || '%',
       From_Dt: this.datePipe.transform(this.SearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       To_Dt: this.datePipe.transform(this.SearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       Reg_No: this.SearchForm.get('RegNo').value || 0,

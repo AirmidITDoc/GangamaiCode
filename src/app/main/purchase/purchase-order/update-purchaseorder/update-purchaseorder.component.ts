@@ -15,6 +15,7 @@ import { IndentList } from 'app/main/inventory/patient-material-consumption/pati
 import { MatTableDataSource } from '@angular/material/table';
 import { ItemNameList, PurchaseItemList, PurchaseOrder } from '../purchase-order.component';
 import { fuseAnimations } from '@fuse/animations';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -189,6 +190,7 @@ PaymentList = [
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
+    private snackBarService: SnackBarService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -590,13 +592,8 @@ debugger
     return this.GSTAmount;
 
     this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(2);
-
-
     this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(2);
-
-
     this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(2);
-
 
   }
 
@@ -923,11 +920,17 @@ debugger
     }
   }
   public onEnterSpecification(event): void {
-    
+    debugger
     if (event.which === 13) {
-      this.add = true;
-      this.addbutton.focus();
+     
+      // setTimeout(() => {
+        this.add = true;
+        this.addbutton.focus();
+  
+      // }, 300);
     }
+
+   
   }
 
   public onEnterWarranty(event): void {
@@ -986,7 +989,7 @@ debugger
 
 
 
-  onAdd() {
+  onAdd(event) {
     
     this.dsItemNameList.data = [];
 
@@ -999,33 +1002,32 @@ debugger
         ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
         Qty: this.Qty || 0,
         UOM: this.UOM || 0,
-        Rate: this.Rate || 0,
-        TotalAmount: this.TotalAmount,
+        Rate: (this.Rate).toFixed(4) || 0,
+        TotalAmount: this.TotalAmount || 0,
         Dis: this.Dis || 0,
-        DiscAmount: this.DiscAmt,
-        VatAmount: this.VatAmount,
-        VatPer: this.DiscAmt,
+        DiscAmount: this.DiscAmt || 0,
+        VatAmount: this.VatAmount|| 0,
+        VatPer: this.DiscAmt|| 0,
         CGSTPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
+        CGSTAmt: this.CGSTAmt ||0,
         SGSTPer: this.SgstPer,
         SGSTAmt: this.SGSTAmt,
         IGSTPer: this.IgstPer,
         IGSTAmt: this.IGSTAmt,
         GST: this.GSTPer || 0,
-        GSTAmount: this.GSTAmt || 0,
+        GSTAmount: this.GSTAmt|| 0,
         NetAmount: this.NetAmount,
         MRP: this.MRP || 0,
         Specification: this.Specification || '',
 
-
-
       });
+     
 
     this.dsItemNameList.data = this.chargeslist;
-    // this.ResetItem();
     this._PurchaseOrder.userFormGroup.reset();
     this.itemid.nativeElement.focus();
     this.add = false;
+    
   }
 
   onChangeDiscountMode(event) {

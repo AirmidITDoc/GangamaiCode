@@ -1058,6 +1058,13 @@ export class ItemNameList {
   Remark:any;
   Schedule:any;
   OtherTax:any;
+  WorkId:any;
+
+ WODiscAmount:any;
+ WOTotalAmount:any;
+ WoNetAmount:any;
+ WOVatAmount:any;
+
   /**
    * Constructor
    *
@@ -1096,6 +1103,12 @@ export class ItemNameList {
       this.Remark = ItemNameList.Remark|| '';
       this.Schedule = ItemNameList.Schedule|| '';
       this.OtherTax = ItemNameList.OtherTax|| '';
+      this.WorkId = ItemNameList.WorkId|| '';
+      this.WODiscAmount = ItemNameList.WODiscAmount|| '';
+      this.WOTotalAmount = ItemNameList.WOTotalAmount|| '';
+      this.WoNetAmount = ItemNameList.WoNetAmount|| '';
+      this.WOVatAmount = ItemNameList.WOVatAmount|| '';
+      
     }
   }
 }

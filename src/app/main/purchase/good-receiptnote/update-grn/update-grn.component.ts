@@ -12,6 +12,8 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-grn',
@@ -141,7 +143,8 @@ export class UpdateGRNComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UpdateGRNComponent>,
     private accountService: AuthenticationService,
-
+    private snackBarService: SnackBarService,
+    public toastr : ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -710,13 +713,18 @@ export class UpdateGRNComponent implements OnInit {
     
         this._GRNList.GRNSave(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('Save GRN !', 'Record Generated Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                let m = response;
-                this._matDialog.closeAll();
-                this.OnReset();
-              }
+            // Swal.fire('Save GRN !', 'Record Generated Successfully !', 'success').then((result) => {
+            //   if (result.isConfirmed) {
+            //     let m = response;
+            //     this._matDialog.closeAll();
+            //     this.OnReset();
+            //   }
+            // });
+
+            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+              toastClass: 'tostr-tost custom-toast-success',
             });
+            
           } else {
             Swal.fire('Error !', 'GRN not saved', 'error');
           }
