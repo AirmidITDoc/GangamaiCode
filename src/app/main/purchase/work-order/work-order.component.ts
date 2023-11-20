@@ -119,6 +119,13 @@ getWorkOrdersList() {
 
 }
 
+filteredOptions: any;
+ 
+showAutocomplete = false;
+noOptionFound: boolean = false;
+ItemName:any;
+filteredOptionsItem:any;
+ItemId: any;
  
 
 getSearchItemList() {
@@ -154,14 +161,14 @@ getSelectedObjItem(obj) {
 
 
 newWorkorder(){
-  this.chkNewWorkorder=1;
+  //this.chkNewWorkorder=1;
   const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
     {
       maxWidth: "100%",
       height: '95%',
       width: '95%',
       data: {
-        chkNewWorkorder:this.chkNewWorkorder
+    //    chkNewWorkorder:this.chkNewWorkorder
       }
     });
   dialogRef.afterClosed().subscribe(result => {
@@ -172,7 +179,7 @@ newWorkorder(){
 
 
 onEdit(contact){
-  this.chkNewWorkorder=2;
+ // this.chkNewWorkorder=2;
   console.log(contact)
   this.advanceDataStored.storage = new SearchInforObj(contact);
   // this._PurchaseOrder.populateForm();
@@ -183,7 +190,7 @@ onEdit(contact){
       width: '95%',
       data : {
         Obj : contact,
-        chkNewWorkorder:this.chkNewWorkorder
+     //   chkNewWorkorder:this.chkNewWorkorder
       }
     });
   dialogRef.afterClosed().subscribe(result => {
