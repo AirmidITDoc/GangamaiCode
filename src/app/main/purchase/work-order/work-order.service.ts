@@ -51,5 +51,8 @@ export class WorkOrderService {
   public getWorkOrderList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_WorkOrderList_by_Name", Param);
   }
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+  }
   
 }

@@ -266,7 +266,9 @@
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                       
+
+                                        <mat-form-field appearance="outline" fxFlex="40%">
                                             <mat-label>ItemName</mat-label>
                                             <input type="text" name="ItemID" formControlName="ItemID" #itemid
                                                 placeholder="Item Name " matInput [matAutocomplete]="auto"
@@ -277,14 +279,16 @@
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_WorkOrderService.NewWorkForm.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
+                                            <mat-autocomplete #auto="matAutocomplete"
+                                                [displayWith]="getOptionItemText"
                                                 (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                                <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                                <mat-option *ngFor="let option of filteredOptionsItem"
+                                                    [value]="option">
                                                     {{option.ItemID}} | {{option.ItemName}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                             <mat-error class="error"
-                                                *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid &&  _WorkOrderService.NewWorkForm.get('ItemID').touched">
+                                                *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid && _WorkOrderService.NewWorkForm.get('ItemID').touched">
                                                 Select ItemName
                                             </mat-error>
                                         </mat-form-field>&nbsp;&nbsp;

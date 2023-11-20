@@ -46,6 +46,17 @@ export class WorkOrderComponent implements OnInit {
   isLoading = true;
   StoreList:any=[];
   SupplierList:any=[];
+ 
+  screenFromString = 'admission-form';
+  hasSelectedContacts: boolean;
+  isItemIdSelected: boolean = false;
+filteredOptions: any;
+
+showAutocomplete = false;
+noOptionFound: boolean = false;
+ItemName:any;
+filteredOptionsItem:any;
+ItemId: any;
 
   dsWorkOrderList=new MatTableDataSource<WorkOrderList>();
 
@@ -113,6 +124,37 @@ getWorkOrdersList() {
     error => {
       this.sIsLoading = '';
     });
+
+}
+
+ 
+
+getSearchItemList() {
+  var m_data = {
+    "ItemName": `${this._WorkOrderService.NewWorkForm.get('ItemID').value}%`
+    // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+  }
+  // console.log(m_data);
+  if (this._WorkOrderService.NewWorkForm.get('ItemID').value.length >= 2) {
+    this._WorkOrderService.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItem = data;
+      // console.log(this.filteredOptionsItem.data);
+      this.filteredOptionsItem = data;
+      if (this.filteredOptionsItem.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getOptionItemText(option) {
+  this.ItemId = option.ItemID;
+  if (!option) return '';
+  return option.ItemID + ' ' + option.ItemName ;
+}
+getSelectedObjItem(obj) {
+ // console.log(obj);
 
 }   
        
