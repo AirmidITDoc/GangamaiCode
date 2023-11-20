@@ -3,6 +3,8 @@
 
 // Import app.theme.scss
 @import "app/app.theme";
+
+@import "../node_modules/ngx-toastr/toastr.css";
 // @import '~font-awesome/css/font-awesome.min.css';
 
 //added by prasad
@@ -94,17 +96,7 @@ mat-footer-row mat-footer-cell {
     background-color: #cc3333 !important;
     color: #ffffff !important;
 }
-.toast-success {
-    padding-left: 80px;
-    text-align: center;
-    background-position: 35% !important;
-}
 
-.toast-error {
-    padding-left: 80px;
-    text-align: center;
-    background-position: 35% !important;
-}
 
 // Header dialog part of content // Subhash
 .mat-dialog-container {
@@ -591,4 +583,23 @@ legend {
 
 .error-snackbar {
     background: red;
+}
+
+.tostr-tost {
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 50px;
+    width: 400px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-size: 24px;
+    box-shadow: 0 0 12px #999999;
+    pointer-events: auto;
+    cursor: pointer;
+    text-align: start;
+}
+
+.toast-title, .toast-message {
+    font-size: 16px;
+    letter-spacing: 1.3px;
+    color: white;
 }
