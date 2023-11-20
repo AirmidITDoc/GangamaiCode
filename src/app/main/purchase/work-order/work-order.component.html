@@ -2,7 +2,7 @@
     <mat-tab label="Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
             <mat-toolbar
-                style="background-color: #039be5 !important; height: 50px; justify-content: space-between;width: 100%;">
+                style="height: 50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -16,6 +16,13 @@
                         Work Order List
                     </span>
                 </div>
+
+                <div fxLayout="row" fxLayoutGap="5px" style="margin-left:2% !important; ">
+                    <button mat-raised-button (click)="newWorkorder()"
+                      style="background-color: aliceblue;color: brown;margin-left:2% !important">New Work Order
+              
+                    </button>
+                  </div>
             </mat-toolbar>
 
             <div class="content">
@@ -91,11 +98,25 @@
                                 <mat-table class="table1" matSort [dataSource]="dsWorkOrderList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                    <ng-container matColumnDef="WoNo">
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button matTooltip="Print">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
+                                                <mat-icon>launch</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="WOId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             WO No </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.WoNo}}
+                                            {{contact.WOId}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -115,35 +136,35 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TotalAmt">
+                                    <ng-container matColumnDef="WOTotalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Total Amount</mat-header-cell>
+                                            Total Amt</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.TotalAmt}}
+                                            {{contact.WOTotalAmount}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="DiscAmt">
+                                    <ng-container matColumnDef="WODiscAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Disc Amount </mat-header-cell>
+                                            Disc Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.DiscAmt}}
+                                            {{contact.WODiscAmount}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="VatAmt">
+                                    <ng-container matColumnDef="WOVatAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Vat Amount </mat-header-cell>
+                                            Vat Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.VatAmt }}
+                                            {{contact.WOVatAmount }}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="NetAmt">
+                                    <ng-container matColumnDef="WoNetAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Net Amount </mat-header-cell>
+                                            Net Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.NetAmt}}
+                                            {{contact.WoNetAmount}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -155,15 +176,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button matTooltip="Print">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-                                        </mat-cell>
-                                    </ng-container>
+                                   
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -194,9 +207,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
 
             </div>
@@ -266,9 +276,7 @@
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                       
-
-                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                        <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>ItemName</mat-label>
                                             <input type="text" name="ItemID" formControlName="ItemID" #itemid
                                                 placeholder="Item Name " matInput [matAutocomplete]="auto"
@@ -279,16 +287,14 @@
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_WorkOrderService.NewWorkForm.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto="matAutocomplete"
-                                                [displayWith]="getOptionItemText"
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
                                                 (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                                <mat-option *ngFor="let option of filteredOptionsItem"
-                                                    [value]="option">
+                                                <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
                                                     {{option.ItemID}} | {{option.ItemName}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                             <mat-error class="error"
-                                                *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid && _WorkOrderService.NewWorkForm.get('ItemID').touched">
+                                                *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid &&  _WorkOrderService.NewWorkForm.get('ItemID').touched">
                                                 Select ItemName
                                             </mat-error>
                                         </mat-form-field>&nbsp;&nbsp;

@@ -32,6 +32,9 @@ import { M } from '@angular/cdk/keycodes';
 import { TestingComponent } from './main/testing/testing.component';
 import { AppConfigModule } from './app-config.module';
 import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
+import { ToastrModule } from 'ngx-toastr';
+import { PdfviewerComponent } from './main/pdfviewer/pdfviewer.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 const appRoutes: Routes = [
@@ -149,6 +152,7 @@ class PickDateAdapter extends NativeDateAdapter {
 @NgModule({
     declarations: [
         AppComponent,
+        PdfviewerComponent,
         InternetConnectionComponent,
     ],
     imports: [
@@ -174,7 +178,13 @@ class PickDateAdapter extends NativeDateAdapter {
         FuseThemeOptionsModule,
 
         // App modules
-        LayoutModule
+        LayoutModule,NgxExtendedPdfViewerModule,
+        ToastrModule.forRoot({timeOut: 5000,
+          positionClass: 'toast-bottom-right',
+          preventDuplicates: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+        })
 
 
     ],

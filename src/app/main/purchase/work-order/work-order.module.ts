@@ -35,6 +35,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UpdateWorkorderComponent } from './update-workorder/update-workorder.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [WorkOrderComponent],
+  declarations: [WorkOrderComponent, UpdateWorkorderComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

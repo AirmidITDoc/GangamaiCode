@@ -1,3 +1,5 @@
+
+
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
     <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -119,8 +121,7 @@
                     <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                         <div class="content-card" style="border-radius:4px; ">
-
-
+                           
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                                 <div fxFlex.gt-sm="100%" fxFlex>
 
@@ -137,13 +138,21 @@
                                                         style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <!-- <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
-                                                            <mat-icon>print2</mat-icon>
-                                                        </button> -->
                                                         <button mat-icon-button matTooltip="Print2" (click)="getPrint3(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
 
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <button mat-icon-button matTooltip="View As Pdf" (click)="viewPdf(contact)">
+                                                            <mat-icon>print3</mat-icon>
+                                                        </button>
+                                                       
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -1357,6 +1366,5 @@
         This is Computer generated invoice hence doesn’t require signature
     </div> -->
 </div>
-
 
 

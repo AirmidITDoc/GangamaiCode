@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,6 +15,7 @@ import { IndentList } from 'app/main/inventory/patient-material-consumption/pati
 import { MatTableDataSource } from '@angular/material/table';
 import { ItemNameList, PurchaseItemList, PurchaseOrder } from '../purchase-order.component';
 import { fuseAnimations } from '@fuse/animations';
+import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -130,6 +131,14 @@ TaxNatureList = [
   {id: 4, name: "VAT 12.5 INCLUSIVE"},
   {id: 5, name: "VAT 12.5 EXTRA"}
 ];
+
+PaymentList = [
+  { id: 1, name: "Cash" },
+  { id: 2, name: "DD" },
+  { id: 3, name: "Cheque" },
+  {id: 4, name: "Credit"},
+  // {id: 5, name: "VAT 12.5 EXTRA"}
+];
   
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
@@ -181,7 +190,9 @@ TaxNatureList = [
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
+    private snackBarService: SnackBarService,
     public datePipe: DatePipe,
+    public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
 
@@ -190,43 +201,38 @@ TaxNatureList = [
 
   ngOnInit(): void {
    
-   
+    if (this.data.chkNewGRN==2) {
+      
+      this.registerObj=this.data.Obj;
+      this.getOldPurchaseOrder( this.registerObj.PurchaseID);    
+         this.setDropdownObjs1();
+    }
     
-    this.getPaymentSearchCombo();
+    this.getTostoreSearchCombo();
     this.getFromStoreSearchList();
-    this.getPurchaseOrder( this.registerObj.PurchaseID);
+   
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
 
-    if(this.data){
-      
-      this.registerObj=this.data.Obj;
-     
-      //  this.setDropdownObjs1();
-    }
  
   }
 
   
   setDropdownObjs1() {
    
-    // const toSelect = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
-    // this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(toSelect);
+ 
+    const toSelectPaymentTerm = this.PaymentList.find(c => c.id == this.registerObj.PaymentTermId);
+    this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').setValue(toSelectPaymentTerm);
 
-    // const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-    // this._PurchaseOrder.PurchaseStoreform.get('Freight').setValue(toSelectMarital);
 
-    // const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    // this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
+    const toSelect = this.PaymentModeList.find(c => c.id == this.registerObj.ModeOfPayment);
+    this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').setValue(toSelect);
 
-    // const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-    // this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-    // const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+    const toSelectCity = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNature);
+    this._PurchaseOrder.PurchaseStoreform.get('TaxNature').setValue(toSelectCity);
 
     // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -266,10 +272,10 @@ TaxNatureList = [
   }
 
 
-  getPurchaseOrder(el) {
+  getOldPurchaseOrder(el) {
 debugger
     var Param = {
-      "PurchaseId": el,
+      "purchaseID": el,
      
     }
     this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
@@ -286,7 +292,7 @@ debugger
 
   getPurchaseItemList(Params) {
     var Param = {
-      "PurchaseId": 3
+      "PurchaseId": Params.purchaseId
     }
     this._PurchaseOrder.getPurchaseItemList(Param).subscribe(data => {
       this.dsPurchaseItemList.data = data as PurchaseItemList[];
@@ -322,21 +328,20 @@ debugger
   }
 
 
-  //   getSelectedObj(obj) {
-  //   // this.registerObj = obj;
-  //   this.ItemName = obj.ItemName;
-  //   this.ItemId = obj.ItemId;
-  //   this.BalanceQty = obj.BalanceQty;
-
-  //   if (this.BalanceQty > 0) {
-  //     this.getBatch();
-  //   }
-  // }
-
   disableSelect = new FormControl(false);
 
-  OnSave() {
-    debugger
+  OnSave(){
+    if(this.data.chkNewGRN==1)
+    {
+      this.OnSavenew();
+    }else if(this.data.chkNewGRN==2){
+      this.OnSaveEdit()
+    }
+  }
+
+
+  OnSaveEdit() {
+    
    
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
@@ -346,17 +351,17 @@ debugger
     updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
     updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
     updatePurchaseOrderHeaderObj['taxAmount'] = 0;
-    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value.id || 0;
     updatePurchaseOrderHeaderObj['octriAmount'] = 0;
     updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
     updatePurchaseOrderHeaderObj['isclosed'] = false;
     updatePurchaseOrderHeaderObj['isVerified'] = false;
-    updatePurchaseOrderHeaderObj['remarks'] = "";
+    updatePurchaseOrderHeaderObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     updatePurchaseOrderHeaderObj['taxID'] = 0;
     
     updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-    updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
+    updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
+    updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
     updatePurchaseOrderHeaderObj['roundVal'] = 0;
     updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
@@ -371,21 +376,37 @@ debugger
     let delete_PurchaseDetailsObj = {};
     delete_PurchaseDetailsObj['purchaseID'] =this.registerObj.PurchaseID;
 
-    let update_POVerify_StatusObjarray = [];
+   
+    let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_POVerify_StatusObj = {};
-      update_POVerify_StatusObj['purchaseId'] = this.registerObj.PurchaseID;
-      update_POVerify_StatusObj['itemId'] = element.ItemID;
-      update_POVerify_StatusObj['uomId'] = element.UOMID;
-      update_POVerify_StatusObj['qty'] = element.Qty;
-      update_POVerify_StatusObj['rate'] = element.Rate;
-      update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
+      let purchaseDetailInsertObj = {};
+      purchaseDetailInsertObj['purchaseId'] = 0;
+      purchaseDetailInsertObj['itemId'] = element.ItemID;
+      purchaseDetailInsertObj['uomId'] = element.UOM;
+      purchaseDetailInsertObj['qty'] = element.Qty;
+      purchaseDetailInsertObj['rate'] = element.Rate;
+      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
+      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+      purchaseDetailInsertObj['discPer'] = element.DiscPer;
+      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+      purchaseDetailInsertObj['mrp'] = element.MRP;
+      purchaseDetailInsertObj['specification'] = element.Specification;
+      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
+      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
+      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
+      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
+      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
+      InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
     });
+
 
     let submitData = {
       "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
        "delete_PurchaseDetails": delete_PurchaseDetailsObj,
-      "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
+      "purchaseDetailInsert": InsertpurchaseDetailObj,
     };
     console.log(submitData);
     this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
@@ -404,7 +425,153 @@ debugger
     });
   }
   
+  OnSavenew() {
+    
+    // if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
+    let purchaseHeaderInsertObj = {};
+    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+    purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
+    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+    purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
+    purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
+    purchaseHeaderInsertObj['taxAmount'] = 0;
+    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+    purchaseHeaderInsertObj['octriAmount'] = 0;
+    purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
+    purchaseHeaderInsertObj['isclosed'] = false;
+    purchaseHeaderInsertObj['isVerified'] = false;
+    purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
+    purchaseHeaderInsertObj['taxID'] = 0;
+    
+    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
+    purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
+    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
+    purchaseHeaderInsertObj['roundVal'] = 0;
+    purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
+    purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
+    purchaseHeaderInsertObj['totIGSTAmt'] = this.IGSTAmount;
+    purchaseHeaderInsertObj['transportChanges'] = 0;
+    purchaseHeaderInsertObj['handlingCharges'] = 0;
+    purchaseHeaderInsertObj['freightCharges'] = 0;
+    purchaseHeaderInsertObj['purchaseId'] = 0;
 
+    let InsertpurchaseDetailObj = [];
+    this.dsItemNameList.data.forEach((element) => {
+      let purchaseDetailInsertObj = {};
+      purchaseDetailInsertObj['purchaseId'] = 0;
+      purchaseDetailInsertObj['itemId'] = element.ItemID;
+      purchaseDetailInsertObj['uomId'] = element.UOM;
+      purchaseDetailInsertObj['qty'] = element.Qty;
+      purchaseDetailInsertObj['rate'] = element.Rate;
+      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
+      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+      purchaseDetailInsertObj['discPer'] = element.DiscPer;
+      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+      purchaseDetailInsertObj['mrp'] = element.MRP;
+      purchaseDetailInsertObj['specification'] = element.Specification;
+      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
+      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
+      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
+      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
+      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
+      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
+      InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
+    });
+
+    let submitData = {
+      "purchaseHeaderInsert": purchaseHeaderInsertObj,
+      "purchaseDetailInsert": InsertpurchaseDetailObj,
+    };
+    console.log(submitData);
+    this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
+      if (response) {
+        Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            let m = response;
+            // this._matDialog.closeAll();
+            this.OnReset();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Purchase not saved', 'error');
+      }
+      // this.isLoading = '';
+    });
+  // }
+  // else{
+
+  //   let updatePurchaseOrderHeaderObj = {};
+  //   updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
+  //   updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
+  //   updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+  //   updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+  //   updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
+  //   updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
+  //   updatePurchaseOrderHeaderObj['taxAmount'] = 0;
+  //   updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+  //   updatePurchaseOrderHeaderObj['octriAmount'] = 0;
+  //   updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
+  //   updatePurchaseOrderHeaderObj['isclosed'] = false;
+  //   updatePurchaseOrderHeaderObj['isVerified'] = false;
+  //   updatePurchaseOrderHeaderObj['remarks'] = "";
+  //   updatePurchaseOrderHeaderObj['taxID'] = 0;
+    
+  //   updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+  //   updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
+  //   updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
+  //   updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
+  //   updatePurchaseOrderHeaderObj['roundVal'] = 0;
+  //   updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
+  //   updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
+  //   updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
+  //   updatePurchaseOrderHeaderObj['transportChanges'] = 0;
+  //   updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
+  //   updatePurchaseOrderHeaderObj['freightCharges'] = 0;
+  //   updatePurchaseOrderHeaderObj['purchaseId'] = 0;
+
+    
+  //   let delete_PurchaseDetailsObj = {};
+  //   delete_PurchaseDetailsObj['purchaseID'] = 0;
+
+  //   let update_POVerify_StatusObjarray = [];
+  //   this.dsItemNameList.data.forEach((element) => {
+  //     let update_POVerify_StatusObj = {};
+  //     update_POVerify_StatusObj['purchaseId'] = 0;
+  //     update_POVerify_StatusObj['itemId'] = element.ItemID;
+  //     update_POVerify_StatusObj['uomId'] = element.UOMID;
+  //     update_POVerify_StatusObj['qty'] = element.Qty;
+  //     update_POVerify_StatusObj['rate'] = element.Rate;
+  //     update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
+  //   });
+
+  //   let submitData = {
+  //     "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
+  //      "delete_PurchaseDetails": delete_PurchaseDetailsObj,
+  //     "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
+  //   };
+  //   console.log(submitData);
+  //   this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+  //         if (result.isConfirmed) {
+  //           let m = response;
+  //           // this._matDialog.closeAll();
+  //           // this.OnReset()
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Purchase not Updated', 'error');
+  //     }
+  //     // this.isLoading = '';
+  //   });
+  // }
+  }
   calculateTotalAmount() {
     if (this.Rate && this.Qty) {
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
@@ -421,17 +588,12 @@ debugger
 
   getTotalGST(element) {
 
-    this.GSTAmount = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
+    this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
     return this.GSTAmount;
 
-    this.CGSTAmount = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0);
-
-
-    this.SGSTAmount = element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0);
-
-
-    this.IGSTAmount = element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0);
-
+    this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(2);
+    this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(2);
+    this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(2);
 
   }
 
@@ -443,12 +605,12 @@ debugger
 
   getTotalAmt(element) {
 
-    this.FinalTotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+    this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     return this.FinalTotalAmt;
   }
 
   calculateDiscperAmount() {
-    debugger
+    
     if (this.Dis) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
@@ -554,6 +716,7 @@ debugger
   }
 
   getSupplierSearchCombo() {
+  
     this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
       console.log(data);
@@ -563,10 +726,16 @@ debugger
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
 
+      if (this.data) {
+        
+        const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+        this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(ddValue);
+      }
+
     });
   }
 
-  getPaymentSearchCombo() {
+  getTostoreSearchCombo() {
     this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
       console.log(data);
@@ -576,6 +745,11 @@ debugger
         map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
       );
 
+      // if (this.data) {
+      //   
+      //   const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+      //   this._PurchaseOrder.PurchaseStoreform.get('ToStoreId').setValue(ddValue);
+      // }
     });
   }
 
@@ -631,7 +805,7 @@ debugger
 
 
   getItemNameList() {
-    debugger
+    
     var Param = {
 
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
@@ -652,16 +826,14 @@ debugger
 
 
   @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('Freight') Freight: MatSelect;
+  @ViewChild('Freight1') Freight1: ElementRef;
 
-  @ViewChild('DeliveryDate') DeliveryDate: MatSelect;
+  @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
   @ViewChild('PaymentMode') PaymentMode: MatSelect;
 
-  @ViewChild('Paymentterm') Paymentterm: ElementRef;
+  @ViewChild('Paymentterm') Paymentterm: MatSelect;
 
-
-
-  @ViewChild('TaxNature') TaxNature: MatSelect;
+  @ViewChild('TaxNature1') TaxNature1: MatSelect;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('rate') rate: ElementRef;
@@ -681,33 +853,40 @@ debugger
   public onEnterSupplier(event): void {
     if (event.which === 13) {
 
-      if (this.Freight) this.Freight.focus();
+      // if (this.Freight) this.Freight.focus();
+      this.Freight1.nativeElement.focus();
     }
   }
 
 
   public onEnterFreight(event): void {
     if (event.which === 13) {
-
-      if (this.DeliveryDate) this.DeliveryDate.focus();
+      this.DeliveryDate1.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
     }
   }
   public onEnterDeliveryDate(event): void {
     if (event.which === 13) {
 
-      if (this.PaymentMode) this.PaymentMode.focus();
+      if (this.Paymentterm) this.Paymentterm.focus();
     }
   }
   public onEnterPaymentMode(event): void {
     if (event.which === 13) {
-      this.Paymentterm.nativeElement.focus();
+      // this.Paymentterm.nativeElement.focus();
+      if (this.TaxNature1) this.TaxNature1.focus();
+    }
+  }
 
+  public onEnterTaxNature(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
     }
   }
   public onEnterPaymentTerm(event): void {
     if (event.which === 13) {
 
-      if (this.TaxNature) this.TaxNature.focus();
+      if (this.PaymentMode) this.PaymentMode.focus();
     }
   }
   public onEnterItemName(event): void {
@@ -743,9 +922,15 @@ debugger
   public onEnterSpecification(event): void {
     debugger
     if (event.which === 13) {
-      this.add = true;
-      this.addbutton.focus();
+     
+      // setTimeout(() => {
+        this.add = true;
+        this.addbutton.focus();
+  
+      // }, 300);
     }
+
+   
   }
 
   public onEnterWarranty(event): void {
@@ -766,11 +951,6 @@ debugger
       this.Remark.nativeElement.focus();
     }
   }
-  // public onEnterRemark(event): void {
-  //   if (event.which === 13) {
-  //     this.specification.nativeElement.focus();
-  //   }
-  // }
 
 
   gePharStoreList() {
@@ -809,8 +989,8 @@ debugger
 
 
 
-  onAdd() {
-    debugger
+  onAdd(event) {
+    
     this.dsItemNameList.data = [];
 
     if (this.chargeslist.length ==0){
@@ -822,37 +1002,36 @@ debugger
         ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
         Qty: this.Qty || 0,
         UOM: this.UOM || 0,
-        Rate: this.Rate || 0,
-        TotalAmount: this.TotalAmount,
+        Rate: (this.Rate).toFixed(4) || 0,
+        TotalAmount: this.TotalAmount || 0,
         Dis: this.Dis || 0,
-        DiscAmount: this.DiscAmt,
-        VatAmount: this.VatAmount,
-        VatPer: this.DiscAmt,
+        DiscAmount: this.DiscAmt || 0,
+        VatAmount: this.VatAmount|| 0,
+        VatPer: this.DiscAmt|| 0,
         CGSTPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
+        CGSTAmt: this.CGSTAmt ||0,
         SGSTPer: this.SgstPer,
         SGSTAmt: this.SGSTAmt,
         IGSTPer: this.IgstPer,
         IGSTAmt: this.IGSTAmt,
         GST: this.GSTPer || 0,
-        GSTAmount: this.GSTAmt || 0,
+        GSTAmount: this.GSTAmt|| 0,
         NetAmount: this.NetAmount,
         MRP: this.MRP || 0,
         Specification: this.Specification || '',
 
-
-
       });
+     
 
     this.dsItemNameList.data = this.chargeslist;
-    // this.ResetItem();
     this._PurchaseOrder.userFormGroup.reset();
     this.itemid.nativeElement.focus();
     this.add = false;
+    
   }
 
   onChangeDiscountMode(event) {
-    debugger
+    
     if (event.value == 'true') {
 
       if (parseFloat(this.GSTPer) > 0) {
@@ -862,7 +1041,7 @@ debugger
       }
     }
     else if (event.value == 'false') {
-      debugger
+      
       // if (parseFloat(this.GSTPer) > 0) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       if (disc > 0) {
@@ -898,7 +1077,9 @@ debugger
     });
   }
 
-  onClose() { }
+  onClose() {
+    this.dialogRef.close();
+   }
   onClear() { }
 }
 

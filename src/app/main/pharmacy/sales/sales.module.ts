@@ -36,7 +36,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { SalesComponent } from './sales.component';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
-import { ToasterService } from 'app/main/shared/services/toaster.service';
 
 const routes: Routes = [
   { 

@@ -8,13 +8,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class WorkOrderService {
   myFormGroup:FormGroup;
   NewWorkForm:FormGroup
+  WorkorderItemForm:FormGroup
+  WorkorderFinalForm:FormGroup
+
 
   constructor(
     public _formBuilder:FormBuilder,
     public _httpClient:HttpClient
   ) 
   { this.myFormGroup=this.createMyFormGroup();
-  this.NewWorkForm=this.createNewWorkForm()}
+  this.NewWorkForm=this.createNewWorkForm()
+  this.WorkorderItemForm=this.getWorOrderItemForm()
+  this.WorkorderFinalForm=this.getPurchaseOrderFinalForm();
+}
 
   createMyFormGroup(){
     return this._formBuilder.group({
@@ -28,6 +34,13 @@ export class WorkOrderService {
     return this._formBuilder.group({
       StoreId:'',
       SupplierName:'',
+    })
+  }
+
+  
+  getWorOrderItemForm() {
+    return this._formBuilder.group({
+      ItemName:'',
       ItemID:'',
       Qty:'',
       UnitRate:'',
@@ -35,12 +48,29 @@ export class WorkOrderService {
       Disc:'',
       DiscAmt:'',
       GST:'',
+      GSTAmount:'',
       VatAmt:'',
       NetAmount:'',
       Specification:'',
-     
-    })
+
+    });
+
   }
+
+  getPurchaseOrderFinalForm() {
+    return this._formBuilder.group({
+      FinalNetAmount:[''],
+      VatAmount:[''],
+      FinalTotalAmount:[''],
+      GSTAmount:[''],
+      FinalDiscAmount:[''],
+      Remark:[''],
+    });
+
+  }
+
+
+ 
 
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
@@ -55,4 +85,15 @@ export class WorkOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
   
+  public getItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
+  }
+
+  public InsertWorkorderSave(Param){
+    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+  }
+
+  public WorkorderUpdate(Param){
+    return this._httpClient.post("Pharmacy/updateWorkorder", Param)
+  }
 }
