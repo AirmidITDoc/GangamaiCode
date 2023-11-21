@@ -62,6 +62,7 @@ export class PatienttypeMasterComponent implements OnInit {
                 (Menu) =>
                     (this.DSPatientTypeMasterList.data =
                         Menu as PatientTypeMaster[])
+                      
             );
     }
 

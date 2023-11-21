@@ -7,6 +7,7 @@ import { NotificationServiceService } from "app/core/notification-service.servic
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { GenderMasterService } from "./gender-master.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-gender-master",
@@ -31,7 +32,8 @@ export class GenderMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _GenderService: GenderMasterService) {}
+    constructor(public _GenderService: GenderMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getGenderMasterList();
@@ -100,6 +102,10 @@ export class GenderMasterComponent implements OnInit {
                             );
                         }
                         this.getGenderMasterList();
+                    }, error => {
+                        this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
                     });
             } else {
                 var m_dataUpdate = {
