@@ -99,7 +99,7 @@ export class PurchaseOrderComponent implements OnInit {
   PaymentTerm: any;
   // PatientName: any;
   ItemObj: IndentList;
-
+  chkNewGRN:any;
  
   FreightList = [
     { id: 1, name: "NILL" },
@@ -128,14 +128,20 @@ PaymentModeList = [
   {id: 5, name: "ECS"}
 ];
 
-
-
 TaxNatureList = [
   { id: 1, name: "EXCISE DUTY 10.3 PERCENT CST13.5 PER" },
   { id: 2, name: "INCLUSIVE" },
   { id: 3, name: "VAT" },
   {id: 4, name: "VAT 12.5 INCLUSIVE"},
   {id: 5, name: "VAT 12.5 EXTRA"}
+];
+
+PaymentList = [
+  { id: 1, name: "Cash" },
+  { id: 2, name: "DD" },
+  { id: 3, name: "Cheque" },
+  {id: 4, name: "Credit"},
+  // {id: 5, name: "VAT 12.5 EXTRA"}
 ];
   dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
 
@@ -210,15 +216,17 @@ TaxNatureList = [
   ) { }
 
   ngOnInit(): void {
+
+    // this.OnReset();
     // this.getItemNameList();
-    this.getPaymentSearchCombo();
-    this.getFromStoreSearchList();
-    this.getPurchaseOrder();
+    this.getStoreSearchCombo();
+    this.getFromStoreSearch();
     this.getSupplierSearchCombo();
     this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
+    this.getPurchaseOrderList();
   }
 
   getOptionText(option) {
@@ -250,17 +258,18 @@ TaxNatureList = [
   }
 
 
-  getPurchaseOrder() {
-    // this.sIsLoading = 'loading-data';
+  getPurchaseOrderList() {
+    
     var Param = {
-      "ToStoreId": 10003,// this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-      "From_Dt": '2022-10-01 00:00:00.000',//this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": '2022-10-01 00:00:00.000',// this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
+      "From_Dt":this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '2022-10-01 00:00:00.000',
+      "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") ||  '2022-10-01 00:00:00.000',
       "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-      "Supplier_Id": 28// this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
+      "Supplier_Id":  this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
+      console.log(data)
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -271,8 +280,9 @@ TaxNatureList = [
   }
 
   getPurchaseItemList(Params) {
+    
     var Param = {
-      "PurchaseId": 3
+      "PurchaseId": Params.PurchaseID
     }
     this._PurchaseOrder.getPurchaseItemList(Param).subscribe(data => {
       this.dsPurchaseItemList.data = data as PurchaseItemList[];
@@ -322,8 +332,8 @@ TaxNatureList = [
   disableSelect = new FormControl(false);
 
   OnSave() {
-    debugger
-    if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
+    
+    // if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
@@ -337,13 +347,14 @@ TaxNatureList = [
     purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
     purchaseHeaderInsertObj['isclosed'] = false;
     purchaseHeaderInsertObj['isVerified'] = false;
-    purchaseHeaderInsertObj['remarks'] = "";
+    purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     purchaseHeaderInsertObj['taxID'] = 0;
     
+    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
     purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      purchaseHeaderInsertObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-      purchaseHeaderInsertObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
-      purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.userFormGroup.get('Warranty').value || 0;
+    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
+    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
     purchaseHeaderInsertObj['roundVal'] = 0;
     purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
     purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
@@ -389,7 +400,8 @@ TaxNatureList = [
           if (result.isConfirmed) {
             let m = response;
             // this._matDialog.closeAll();
-            // this.OnReset()
+            this.OnReset();
+
           }
         });
       } else {
@@ -397,74 +409,74 @@ TaxNatureList = [
       }
       // this.isLoading = '';
     });
-  }
-  else{
+  // }
+  // else{
 
-    let updatePurchaseOrderHeaderObj = {};
-    updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
-    updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
-    updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
-    updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
-    updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
-    updatePurchaseOrderHeaderObj['taxAmount'] = 0;
-    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
-    updatePurchaseOrderHeaderObj['octriAmount'] = 0;
-    updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
-    updatePurchaseOrderHeaderObj['isclosed'] = false;
-    updatePurchaseOrderHeaderObj['isVerified'] = false;
-    updatePurchaseOrderHeaderObj['remarks'] = "";
-    updatePurchaseOrderHeaderObj['taxID'] = 0;
+  //   let updatePurchaseOrderHeaderObj = {};
+  //   updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
+  //   updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
+  //   updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+  //   updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+  //   updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
+  //   updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
+  //   updatePurchaseOrderHeaderObj['taxAmount'] = 0;
+  //   updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+  //   updatePurchaseOrderHeaderObj['octriAmount'] = 0;
+  //   updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
+  //   updatePurchaseOrderHeaderObj['isclosed'] = false;
+  //   updatePurchaseOrderHeaderObj['isVerified'] = false;
+  //   updatePurchaseOrderHeaderObj['remarks'] = "";
+  //   updatePurchaseOrderHeaderObj['taxID'] = 0;
     
-    updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-    updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
-    updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
-    updatePurchaseOrderHeaderObj['roundVal'] = 0;
-    updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
-    updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
-    updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
-    updatePurchaseOrderHeaderObj['transportChanges'] = 0;
-    updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
-    updatePurchaseOrderHeaderObj['freightCharges'] = 0;
-    updatePurchaseOrderHeaderObj['purchaseId'] = 0;
+  //   updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+  //   updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
+  //   updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
+  //   updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
+  //   updatePurchaseOrderHeaderObj['roundVal'] = 0;
+  //   updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
+  //   updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
+  //   updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
+  //   updatePurchaseOrderHeaderObj['transportChanges'] = 0;
+  //   updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
+  //   updatePurchaseOrderHeaderObj['freightCharges'] = 0;
+  //   updatePurchaseOrderHeaderObj['purchaseId'] = 0;
 
     
-    let delete_PurchaseDetailsObj = {};
-    delete_PurchaseDetailsObj['purchaseID'] = 0;
+  //   let delete_PurchaseDetailsObj = {};
+  //   delete_PurchaseDetailsObj['purchaseID'] = 0;
 
-    let update_POVerify_StatusObjarray = [];
-    this.dsItemNameList.data.forEach((element) => {
-      let update_POVerify_StatusObj = {};
-      update_POVerify_StatusObj['purchaseId'] = 0;
-      update_POVerify_StatusObj['itemId'] = element.ItemID;
-      update_POVerify_StatusObj['uomId'] = element.UOMID;
-      update_POVerify_StatusObj['qty'] = element.Qty;
-      update_POVerify_StatusObj['rate'] = element.Rate;
-      update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
-    });
+  //   let update_POVerify_StatusObjarray = [];
+  //   this.dsItemNameList.data.forEach((element) => {
+  //     let update_POVerify_StatusObj = {};
+  //     update_POVerify_StatusObj['purchaseId'] = 0;
+  //     update_POVerify_StatusObj['itemId'] = element.ItemID;
+  //     update_POVerify_StatusObj['uomId'] = element.UOMID;
+  //     update_POVerify_StatusObj['qty'] = element.Qty;
+  //     update_POVerify_StatusObj['rate'] = element.Rate;
+  //     update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
+  //   });
 
-    let submitData = {
-      "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
-       "delete_PurchaseDetails": delete_PurchaseDetailsObj,
-      "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
-    };
-    console.log(submitData);
-    this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            let m = response;
-            // this._matDialog.closeAll();
-            // this.OnReset()
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Purchase not Updated', 'error');
-      }
-      // this.isLoading = '';
-    });
-  }
+  //   let submitData = {
+  //     "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
+  //      "delete_PurchaseDetails": delete_PurchaseDetailsObj,
+  //     "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
+  //   };
+  //   console.log(submitData);
+  //   this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+  //         if (result.isConfirmed) {
+  //           let m = response;
+  //           // this._matDialog.closeAll();
+  //           // this.OnReset()
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Purchase not Updated', 'error');
+  //     }
+  //     // this.isLoading = '';
+  //   });
+  // }
   }
 
   calculateTotalAmount() {
@@ -477,7 +489,7 @@ TaxNatureList = [
 
   getTotalNet(element) {
     let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    this.FinalNetAmount =(element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
     return this.FinalNetAmount;
   }
 
@@ -499,7 +511,7 @@ TaxNatureList = [
 
   getTotalDisc(element) {
 
-    this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
+    this.DiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     return this.DiscAmount;
   }
 
@@ -510,7 +522,7 @@ TaxNatureList = [
   }
 
   calculateDiscperAmount() {
-    debugger
+    
     if (this.Dis) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
@@ -633,17 +645,27 @@ TaxNatureList = [
     });
   }
 
-  getPaymentSearchCombo() {
-    this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-      console.log(data);
-      this.optionsPayment = this.ToStoreList.slice();
-      this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
-      );
+  getStoreSearchCombo() {
+    // this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+    //   this.ToStoreList = data;
+    //   console.log(data);
+    //   this.optionsPayment = this.ToStoreList.slice();
+    //   this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
+    //   );
 
+    // });
+
+    var vdata = {
+      Id: this.accountService.currentUserValue.user.storeId
+    }
+    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
     });
+
   }
 
   // getItemNameSearchCombo() {
@@ -686,19 +708,21 @@ TaxNatureList = [
     }
   }
 
-  getFromStoreSearchList() {
+  getFromStoreSearch() {
+    
     var data = {
       Id: this.accountService.currentUserValue.user.storeId
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
+      console.log(data)
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
 
 
   getItemNameList() {
-    debugger
+    
     var Param = {
 
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
@@ -719,16 +743,14 @@ TaxNatureList = [
 
 
   @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('Freight') Freight: MatSelect;
+  @ViewChild('Freight1') Freight1: ElementRef;
 
-  @ViewChild('DeliveryDate') DeliveryDate: MatSelect;
+  @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
   @ViewChild('PaymentMode') PaymentMode: MatSelect;
 
-  @ViewChild('Paymentterm') Paymentterm: ElementRef;
+  @ViewChild('Paymentterm') Paymentterm: MatSelect;
 
-
-
-  @ViewChild('TaxNature') TaxNature: MatSelect;
+  @ViewChild('TaxNature1') TaxNature1: MatSelect;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('rate') rate: ElementRef;
@@ -748,33 +770,41 @@ TaxNatureList = [
   public onEnterSupplier(event): void {
     if (event.which === 13) {
 
-      if (this.Freight) this.Freight.focus();
+      // if (this.Freight) this.Freight.focus();
+      this.Freight1.nativeElement.focus();
     }
   }
 
 
   public onEnterFreight(event): void {
     if (event.which === 13) {
-
-      if (this.DeliveryDate) this.DeliveryDate.focus();
+      this.DeliveryDate1.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
     }
   }
   public onEnterDeliveryDate(event): void {
     if (event.which === 13) {
 
-      if (this.PaymentMode) this.PaymentMode.focus();
+      if (this.Paymentterm) this.Paymentterm.focus();
     }
   }
   public onEnterPaymentMode(event): void {
     if (event.which === 13) {
-      this.Paymentterm.nativeElement.focus();
-
+      // this.Paymentterm.nativeElement.focus();
+      if (this.TaxNature1) this.TaxNature1.focus();
     }
   }
+  public onEnterTaxNature(event): void {
+    if (event.which === 13) {
+
+      this.itemid.nativeElement.focus();
+    }
+  }
+
   public onEnterPaymentTerm(event): void {
     if (event.which === 13) {
 
-      if (this.TaxNature) this.TaxNature.focus();
+      if (this.PaymentMode) this.PaymentMode.focus();
     }
   }
   public onEnterItemName(event): void {
@@ -808,7 +838,7 @@ TaxNatureList = [
     }
   }
   public onEnterSpecification(event): void {
-    debugger
+    
     if (event.which === 13) {
       this.add = true;
       this.addbutton.focus();
@@ -852,7 +882,7 @@ TaxNatureList = [
   }
 
   getSelectedObj(obj) {
-    this.accountService
+    // this.accountService
     this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
     this.Qty = 1; //obj.BalanceQty;
@@ -883,13 +913,13 @@ TaxNatureList = [
         ItemID: this.ItemID,
         ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
         Qty: this.Qty || 0,
-        UOM: this.UOM || 0,
+        UOM: this.UOM,
         Rate: this.Rate || 0,
         TotalAmount: this.TotalAmount,
         Dis: this.Dis || 0,
         DiscAmount: this.DiscAmt,
         VatAmount: this.VatAmount,
-        VatPer: this.DiscAmt,
+        VatPer: this.VatPer,
         CGSTPer: this.CgstPer,
         CGSTAmt: this.CGSTAmt,
         SGSTPer: this.SgstPer,
@@ -914,7 +944,7 @@ TaxNatureList = [
   }
 
   onChangeDiscountMode(event) {
-    debugger
+    
     if (event.value == 'true') {
 
       if (parseFloat(this.GSTPer) > 0) {
@@ -924,7 +954,7 @@ TaxNatureList = [
       }
     }
     else if (event.value == 'false') {
-      debugger
+      
       // if (parseFloat(this.GSTPer) > 0) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       if (disc > 0) {
@@ -942,24 +972,49 @@ TaxNatureList = [
     }
   }
 
-  onEdit(contact){
-
-  //   console.log(contact)
-  //   this.advanceDataStored.storage = new SearchInforObj(contact);
-  //   this._
-  //   const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
-  //     {
-  //       maxWidth: "100%",
-  //       height: '95%',
-  //       width: '95%',
-  //       data : {
-  //         Obj : contact,
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //   });
+  newPurchaseorder(){
+    this.chkNewGRN=1;
+    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data: {
+          chkNewGRN:this.chkNewGRN
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
   }
+
+
+
+  onEdit(contact){
+    this.chkNewGRN=2;
+    console.log(contact)
+    this.advanceDataStored.storage = new SearchInforObj(contact);
+    // this._PurchaseOrder.populateForm();
+    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data : {
+          Obj : contact,
+          chkNewGRN:this.chkNewGRN
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+
+  onVerify(){
+
+  }
+
+
 
   onClose() { }
   onClear() { }
@@ -994,6 +1049,22 @@ export class ItemNameList {
   UOMID: any;
   PurchaseID: any;
   SupplierID:any;
+  PaymentTermId:any;
+  FreightAmount:any;
+  DeliveryDate:any;
+  ModeOfPayment:any;
+  TaxNature:any;
+  Warranty:any;
+  Remark:any;
+  Schedule:any;
+  OtherTax:any;
+  WorkId:any;
+
+ WODiscAmount:any;
+ WOTotalAmount:any;
+ WoNetAmount:any;
+ WOVatAmount:any;
+
   /**
    * Constructor
    *
@@ -1023,11 +1094,27 @@ export class ItemNameList {
       this.Specification = ItemNameList.Specification || "";
       this.PurchaseID = ItemNameList.PurchaseID || "";
       this.SupplierID = ItemNameList.SupplierID || 0;
+      this.FreightAmount= ItemNameList.FreightAmount|| 0;
+      this.PaymentTermId= ItemNameList.PaymentTermId|| 0;
+      this.DeliveryDate= ItemNameList.DeliveryDate|| '';
+      this.ModeOfPayment= ItemNameList.ModeOfPayment|| '';
+      this.TaxNature= ItemNameList.TaxNature|| '';
+      this.Warranty = ItemNameList.Warranty|| '';
+      this.Remark = ItemNameList.Remark|| '';
+      this.Schedule = ItemNameList.Schedule|| '';
+      this.OtherTax = ItemNameList.OtherTax|| '';
+      this.WorkId = ItemNameList.WorkId|| '';
+      this.WODiscAmount = ItemNameList.WODiscAmount|| '';
+      this.WOTotalAmount = ItemNameList.WOTotalAmount|| '';
+      this.WoNetAmount = ItemNameList.WoNetAmount|| '';
+      this.WOVatAmount = ItemNameList.WOVatAmount|| '';
+      
     }
   }
 }
 
 export class PurchaseItemList {
+  ItemID:any;
   ItemName: string;
   Qty: number;
   Rate: number;
@@ -1041,6 +1128,7 @@ export class PurchaseItemList {
    */
   constructor(PurchaseItemList) {
     {
+      this.ItemID = PurchaseItemList.ItemID || "";
       this.ItemName = PurchaseItemList.ItemName || "";
       this.Qty = PurchaseItemList.Qty || 0;
       this.Rate = PurchaseItemList.Rate || 0;

@@ -36,19 +36,20 @@ export class GoodReceiptnoteService {
       Status2:0,
       Status3:0,
       Verify:0,
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      
     });
   }
 
   getGRNfirstForm() {
     return this._formBuilder.group({
-      Supplier_Id:'',
-      StoreId:'',
-      InvoiceNo:'',
+      Supplier_Id:[''],
+      StoreId:[''],
+      InvoiceNo:[''],
       DateOfInvoice:[(new Date()).toISOString()],
-      GateEntryNo:'',
+      GateEntryNo:[''],
+      Status3:[''],
       
  });
   }
@@ -117,7 +118,7 @@ export class GoodReceiptnoteService {
   }
 
   public getGrnItemDetailList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNDetail_ByGRNId",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForGRNUpdate",Param);
   }
 
 
@@ -140,8 +141,17 @@ export class GoodReceiptnoteService {
   public GRNSave(Param){
     return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
   }
+
+  public GRNEdit(Param){
+    return this._httpClient.post("Pharmacy/updateGRN", Param);
+  }
+  
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
 }
+
+
+//  Rtrv_ItemDetailsForPurchasepdate
+// Rtrv_ItemDetailsForGRNUpdate

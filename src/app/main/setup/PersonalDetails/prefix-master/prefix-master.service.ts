@@ -28,7 +28,7 @@ export class PrefixMasterService {
         return this._formBuilder.group({
             PrefixID: [""],
             PrefixName: [""],
-            SexID: [""],
+            SexID: [" "],
             GenderName: [""],
             IsActive: ["true"],
             AddedBy: ["0"],
@@ -40,10 +40,7 @@ export class PrefixMasterService {
     }
     // get Perfix Master list
     public getPrefixMasterList(Param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PrefixMaster_by_Name",
-            Param
-        );
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PrefixMaster_by_Name", Param);
     }
 
     // Gender Master Combobox List

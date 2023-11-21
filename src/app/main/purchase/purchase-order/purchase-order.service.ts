@@ -28,10 +28,9 @@ export class PurchaseOrderService {
       ToStoreId: '',
       FromStoreId:'',
       SupplierId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-
-
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      
     
       // ItemName:'',
     });
@@ -135,10 +134,13 @@ public InsertPurchaseUpdate(Param){
 
 
 public getPurchaseOrderDetail(Param){
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Purchasedetail_BuPurchaseId",Param);
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForPurchasepdate",Param);
 }
 
 populateForm(employee) {
   // this.PurchaseStoreFrom.patchValue(employee);
 }
 }
+
+
+// Rtrv_Purchasedetail_BuPurchaseId

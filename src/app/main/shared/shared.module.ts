@@ -16,7 +16,6 @@ import { ExcelDownloadService } from './services/excel-download.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './services/snack-bar.service';
 import { ToasterService } from './services/toaster.service';
-import { ToastrModule } from 'ngx-toastr';
 import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
 
 @NgModule({
@@ -32,13 +31,7 @@ import { PaymentModeComponent } from './componets/payment-mode/payment-mode.comp
     MatButtonModule,
     MatCardModule,
     MatTabsModule,
-    MatSnackBarModule,
-    ToastrModule.forRoot({timeOut: 5000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-      progressBar: true,
-      progressAnimation: 'increasing',
-    })
+    MatSnackBarModule
   ],
   providers: [
     ExcelDownloadService,

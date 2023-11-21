@@ -43,8 +43,8 @@ app-sales-return {
             overflow: hidden !important;
             // display: inline-block;
             justify-content: left;
-            display: inline-flex;
-            display: inline;
+            // display: inline-flex;
+            // display: inline;
         }
 
         .mat-column-BatchNo {
@@ -468,3 +468,7 @@ app-sales-return {
         }
     }
 }
+
+   .row-blue {
+        background-color: rgb(119, 197, 230) !important;
+    }

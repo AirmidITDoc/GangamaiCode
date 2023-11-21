@@ -44,14 +44,18 @@ app-update-purchaseorder {
      
     }
 
-    .enable-1-add {
-      cursor: pointer;
-      pointer-events: visible;
-    }
+  .enable-1-add {
+  cursor: pointer;
+  pointer-events: visible;
+}
+.disable-1-add {
+  pointer-events: none;
+  // cursor: ar;
+}
 
     
     .highlightTableColor{
-      background-color: rgb(240, 240, 74) !important;
+      background-color: rgb(139, 169, 240) !important;
     }
     .right
     {
@@ -151,9 +155,9 @@ app-update-purchaseorder {
     }
 
     .mat-column-Action {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
       text-align: left;
     }
 

@@ -5,6 +5,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToasterService } from "app/main/shared/services/toaster.service";
 
 @Component({
     selector: "app-prefix-master",
@@ -29,7 +30,8 @@ export class PrefixMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _PrefixService: PrefixMasterService) {}
+    constructor(public _PrefixService: PrefixMasterService,
+        public _toastr : ToasterService,) {}
 
     ngOnInit(): void {
         this.getPrefixMasterList();
@@ -47,19 +49,25 @@ export class PrefixMasterComponent implements OnInit {
         });
         this.getPrefixMasterList();
     }
+  
 
+    // getGenderNameCombobox() {
+    //     this._PrefixService.getGenderMasterCombo().subscribe((data) => (this.GendercmbList = data));
+         
+    // }
+    
     getGenderNameCombobox() {
-        this._PrefixService
-            .getGenderMasterCombo()
-            .subscribe((data) => (this.GendercmbList = data));
+        this._PrefixService.getGenderMasterCombo().subscribe(data => {
+            this.GendercmbList = data;
+            console.log(this.GendercmbList);
+        });
+         
     }
 
     getPrefixMasterList() {
         var Param = {
             PrefixName:
-                this._PrefixService.myformSearch
-                    .get("PrefixNameSearch")
-                    .value.trim() + "%" || "%",
+                this._PrefixService.myformSearch.get("PrefixNameSearch").value.trim() + "%" || "%",
             // p_IsDeleted:
             //     this._PrefixService.myformSearch.get("IsDeletedSearch").value,
         };
@@ -75,16 +83,12 @@ export class PrefixMasterComponent implements OnInit {
             if (!this._PrefixService.myform.get("PrefixID").value) {
                 var m_data = {
                     prefixMasterInsert: {
-                        prefixName: this._PrefixService.myform
-                            .get("PrefixName")
-                            .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value
-                            .GenderId,
+                        prefixName: this._PrefixService.myform.get("PrefixName") .value.trim(),
+                        sexID: this._PrefixService.myform.get("SexID").value.GenderId | 0,
                         // addedBy: 1,
                         isActive: Boolean(
                             JSON.parse(
-                                this._PrefixService.myform.get("IsActive")
-                                    .value
+                                this._PrefixService.myform.get("IsActive").value
                             )
                         ),
                     },
@@ -112,7 +116,14 @@ export class PrefixMasterComponent implements OnInit {
                             );
                         }
                         this.getPrefixMasterList();
-                    });
+                    },  
+                       // this._toastr.showSuccess(' Data not saved !, Please check API error..'+ 'Error !');
+                      
+                    
+                     error => {
+                        Swal.fire(' Data not saved !, Please check API error..', 'Error !')
+                       }
+                      );
             } else {
                 var m_dataUpdate = {
                     prefixMasterUpdate: {

@@ -15,21 +15,20 @@ import { Printsal } from '../sales/sales.component';
 import { SalesService } from '../sales/sales.service';
 import { Subscription } from 'rxjs';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-brows-sales-bill',
   templateUrl: './brows-sales-bill.component.html',
   styleUrls: ['./brows-sales-bill.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
-  
+  animations: fuseAnimations
 })
 export class BrowsSalesBillComponent implements OnInit { 
 
   @ViewChild('billTemplate') billTemplate:ElementRef;
   @ViewChild('billTemplate2') billTemplate2:ElementRef;
   @ViewChild('billSalesReturn') billSalesReturn:ElementRef;
-  
   
   reportPrintObjList: Printsal[] = [];
   printTemplate: any;
@@ -44,7 +43,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   displayedColumns: string[] = [
     'action2',
-    // 'action',
+     'action',
     'payment',
     'Date',
     'SalesNo',
@@ -123,7 +122,6 @@ export class BrowsSalesBillComponent implements OnInit {
     this.getSalesReturnList()
     this.gePharStoreList();
     this.gePharStoreList1();
-    
   }
   gePharStoreList() {
     var vdata={
@@ -366,7 +364,10 @@ console.log(event);
 
         this.reportPrintObj = res[0] as Printsal;
         console.log(this.reportPrintObj);
-        this.getTemplateTax();
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+        // this.getTemplateTax();
 
         // this.CustomerName=this.reportPrintObj.PatientName;
         // this.CustomerId=this.reportPrintObj.RegNo;
@@ -374,6 +375,20 @@ console.log(event);
         // this.ExMobile=this.reportPrintObj.ExtMobileNo;
       })
     );
+  }
+  viewPdf(el){
+    
+    this._BrowsSalesBillService.getPdfSales(el.SalesId,el.OP_IP_Type).subscribe(res=>{
+    const dialogRef = this._matDialog.open(PdfviewerComponent, 
+      {   maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+           data : {
+          base64 : res["base64"] as string,
+          title:"Pharma sales bill viewer"
+        }
+    });
+    });
   }
 
   getPrint3(el) {

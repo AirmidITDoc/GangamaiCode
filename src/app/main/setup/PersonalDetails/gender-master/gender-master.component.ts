@@ -68,9 +68,7 @@ export class GenderMasterComponent implements OnInit {
             if (!this._GenderService.myform.get("GenderId").value) {
                 var m_data = {
                     genderMasterInsert: {
-                        genderName: this._GenderService.myform
-                            .get("GenderName")
-                            .value.trim(),
+                        genderName: this._GenderService.myform.get("GenderName").value.trim(),
                         isActive: Boolean(
                             JSON.parse(
                                 this._GenderService.myform.get("IsDeleted")

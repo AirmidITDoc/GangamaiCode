@@ -1,16 +1,131 @@
+app-work-order{
+
+    .table1 {
+      height: 300px !important;
+      width: 100%;
+    }
+
+    .table2 {
+      height: 180px !important;
+      width:100%;
+
+      .mat-header-row {
+        width:200;
+        //max-width: 1600px;
+        min-width: 1000px;
+        min-height: 30px;
+        background-color: blue;
+      }
+    
+      .mat-row {
+        width: 100%;
+        //max-width: 1600px;
+        min-width: 1000px;
+        min-height: 30px;
+       
+      }
+  
+      
+
+      .mat-column-ItemName {
+        width: 760px;
+        max-width: 760px;
+        min-width: 760px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+      }
+    }
+
+    .table3 {
+      height: 210px !important;
+      width: 100%;
+    }
+
+    .next-btn {
+      width: 80px;
+      font-size: 16px;
+      font-weight: 700px;
+      padding: 10px;
+      margin-right: 5px;
+      color: #039be5 ;
+      border-radius: 16px;
+       border: 1px solid #039be5 ;
+        background-color: white;
+     // background-color: hsl(204, 92%, 38%);
+      //border:2px solid #0430c2;
+     
+      cursor: pointer;
+      border-radius: 16%;
+  }
+  .next-btn:hover{
+      background-color: #039be5 ;
+     // border: 1px solid rgb(247, 97, 97);
+      color:  white;
+     
+  }
+  .add-btn {
+    background-color: blue !important;
+    color: white !important;
+    font-size: 16px;
+  }
+
+  button:disabled {
+    color: white;
+    background-color: #7bd3ff  !important;
+     //background-color: #b7e6fd ;
+     border-radius: 16px;
+    //  border-radius: 16px;
+     // border: 1px solid #CCCCCC;
+     border: 1px solid  #b7e6fd ;
+     
+    }
+
+    .enable-1-add {
+      cursor: pointer;
+      pointer-events: visible;
+    }
+
+    
+    .highlightTableColor{
+      background-color: rgb(240, 240, 74) !important;
+    }
+    .right
+    {
+      float: right;
+      margin-left: 100px;
+      padding: 20px;
+    } 
+    .list {
+      display: grid;
+      grid-column-gap: 8px;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto;
+    }
+  
+
+// .table-row:selected {
+
+//   background-color: rebeccapurple;
+// }
+
 .table1{
     width: 100%;
     height: 650px;
     min-height: 650px;
     max-height: 650px;
+
     .mat-column-action {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
         align-items: left;
         justify-content: left;
     }
-    .mat-column-WoNo {
+    .mat-column-WOId {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
@@ -25,47 +140,44 @@
         justify-content: left;
     }
     .mat-column-SupplierName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 400px;
+        max-width: 400px;
+        min-width: 400px;
         text-align: left;
         justify-content: left;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 25px;
-        margin-top: 16px;
+      
     }
   
-    .mat-column-TotalAmt {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+    .mat-column-WOTotalAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
         justify-content: left;
     }
 
-    .mat-column-DiscAmt {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+    .mat-column-WODiscAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
         justify-content: left;
     }
-    .mat-column-VatAmt {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+    .mat-column-WOVatAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
         justify-content: left;
     }
-    .mat-column-NetAmt {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+    .mat-column-WoNetAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
         justify-content: left;
     }
@@ -85,3 +197,9 @@
         margin-top: 16px;
     }
 }
+.tab2{
+    height: 210px !important;
+    width: 100%;
+}
+}
+
