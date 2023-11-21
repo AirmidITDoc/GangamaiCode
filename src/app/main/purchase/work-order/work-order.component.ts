@@ -34,12 +34,33 @@ export class WorkOrderComponent implements OnInit {
     'WoNetAmount',
     'Remark'  
   ];
+  displayedColumnsnew:string[] = [
+    'action',
+    'ItemName',
+    'Qty',
+    'Rate',
+    'TotalAmount',
+    'Disc',
+    'DiscAmt',
+    'Vat',
+    'VatAmt',
+    'NetAmt',
+    'Specification'  
+  ];
 
  
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
   SupplierList:any=[];
+  filteredOptions: any;
+  screenFromString = 'admission-form';
+showAutocomplete = false;
+noOptionFound: boolean = false;
+ItemName:any;
+filteredOptionsItem:any;
+ItemId: any;
+isItemIdSelected:boolean=false;
 
   dsWorkOrderList=new MatTableDataSource<WorkOrderList>();
   
@@ -119,13 +140,7 @@ getWorkOrdersList() {
 
 }
 
-filteredOptions: any;
- 
-showAutocomplete = false;
-noOptionFound: boolean = false;
-ItemName:any;
-filteredOptionsItem:any;
-ItemId: any;
+
  
 
 getSearchItemList() {

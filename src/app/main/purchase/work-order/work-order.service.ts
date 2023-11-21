@@ -34,6 +34,19 @@ export class WorkOrderService {
     return this._formBuilder.group({
       StoreId:'',
       SupplierName:'',
+      ItemName:'',
+      ItemID:'',
+      Qty:'',
+      UnitRate:'',
+      TotalAmount:'',
+      Disc:'',
+      DiscAmt:'',
+      GST:'',
+      GSTAmount:'',
+      VatAmt:'',
+      NetAmount:'',
+      Specification:'',
+
     })
   }
 
