@@ -270,7 +270,7 @@ OP_IPType:any=2;
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
     private snackBarService: SnackBarService,
-    // public _toastr : ToasterService,
+    public toastr : ToastrService,
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
