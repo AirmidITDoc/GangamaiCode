@@ -34,6 +34,19 @@ export class WorkOrderService {
     return this._formBuilder.group({
       StoreId:'',
       SupplierName:'',
+      ItemName:'',
+      ItemID:'',
+      Qty:'',
+      UnitRate:'',
+      TotalAmount:'',
+      Disc:'',
+      DiscAmt:'',
+      GST:'',
+      GSTAmount:'',
+      VatAmt:'',
+      NetAmount:'',
+      Specification:'',
+
     })
   }
 
@@ -80,6 +93,9 @@ export class WorkOrderService {
   }
   public getWorkOrderList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_WorkOrderList_by_Name", Param);
+  }
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
   }
   
   public getItemList(Param){

@@ -5,6 +5,7 @@ import { PharmacyreportService } from './pharmacyreport.service';
 import { fuseAnimations } from '@fuse/animations';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import {MatTreeModule} from '@angular/material/tree';
 
 interface FoodNode {
   name: string;

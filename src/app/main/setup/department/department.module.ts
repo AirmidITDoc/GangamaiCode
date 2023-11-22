@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
-import { ProductTypeMasterComponent } from './product-type-master/product-type-master.component';
-import { VendorMasterComponent } from './vendor-master/vendor-master.component';
+ 
+ 
 import { ParameterDescriptiveMasterComponent } from './parameter-descriptive-master/parameter-descriptive-master.component';
-
+ 
 const appRoutes: Routes = [
     {
         path: "department-master",
@@ -41,10 +41,23 @@ const appRoutes: Routes = [
                 (m) => m.DischargetypeMasterModule
             ),
     },
+
+    {
+        path: "vendor-master",
+        loadChildren: () =>import("./vendor-master/vendor-master.module").then((m) => m.VendorMasterModule ),
+    },
+    {
+        path: "producttype-master",
+        loadChildren: () =>import("./producttype-master/producttype-master.module").then((m) => m.ProducttypeMasterModule),
+    },
+    {
+        path: "parameter-descriptive-master",
+        loadChildren: () =>import("./parameter-descriptive-master/parameter-descriptive-master.module").then((m) => m.ParameterDescriptiveMasterModule),
+    },
 ];
 
 @NgModule({
-    declarations: [ProductTypeMasterComponent, VendorMasterComponent, ParameterDescriptiveMasterComponent],
+    declarations: [ ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class DepartmentModule {}

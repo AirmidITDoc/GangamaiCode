@@ -5,6 +5,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-prefix-master",
@@ -25,11 +26,16 @@ export class PrefixMasterComponent implements OnInit {
         "action",
     ];
 
+    isLoading: String = '';
+    sIsLoading: string = "";
+
     dsPrefixMasterList = new MatTableDataSource<PrefixMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _PrefixService: PrefixMasterService) {}
+    constructor(public _PrefixService: PrefixMasterService,
+        public toastr : ToastrService,
+        ) {}
 
     ngOnInit(): void {
         this.getPrefixMasterList();
@@ -47,26 +53,34 @@ export class PrefixMasterComponent implements OnInit {
         });
         this.getPrefixMasterList();
     }
+  
 
+    // getGenderNameCombobox() {
+    //     this._PrefixService.getGenderMasterCombo().subscribe((data) => (this.GendercmbList = data));
+         
+    // }
+    
     getGenderNameCombobox() {
-        this._PrefixService
-            .getGenderMasterCombo()
-            .subscribe((data) => (this.GendercmbList = data));
+        this._PrefixService.getGenderMasterCombo().subscribe(data => {
+            this.GendercmbList = data;
+            console.log(this.GendercmbList);
+        });
+         
     }
 
     getPrefixMasterList() {
         var Param = {
             PrefixName:
-                this._PrefixService.myformSearch
-                    .get("PrefixNameSearch")
-                    .value.trim() + "%" || "%",
+                this._PrefixService.myformSearch.get("PrefixNameSearch").value.trim() + "%" || "%",
             // p_IsDeleted:
             //     this._PrefixService.myformSearch.get("IsDeletedSearch").value,
         };
+       // console.log(Param)
         this._PrefixService.getPrefixMasterList(Param).subscribe((Menu) => {
             this.dsPrefixMasterList.data = Menu as PrefixMaster[];
             this.dsPrefixMasterList.sort = this.sort;
             this.dsPrefixMasterList.paginator = this.paginator;
+            console.log( this.dsPrefixMasterList)
         });
     }
 
@@ -75,16 +89,12 @@ export class PrefixMasterComponent implements OnInit {
             if (!this._PrefixService.myform.get("PrefixID").value) {
                 var m_data = {
                     prefixMasterInsert: {
-                        prefixName: this._PrefixService.myform
-                            .get("PrefixName")
-                            .value.trim(),
-                        sexID: this._PrefixService.myform.get("SexID").value
-                            .GenderId,
+                        prefixName: this._PrefixService.myform.get("PrefixName") .value.trim(),
+                        sexID: this._PrefixService.myform.get("SexID").value.GenderId | 0,
                         // addedBy: 1,
                         isActive: Boolean(
                             JSON.parse(
-                                this._PrefixService.myform.get("IsActive")
-                                    .value
+                                this._PrefixService.myform.get("IsActive").value
                             )
                         ),
                     },
@@ -95,6 +105,9 @@ export class PrefixMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
+                            // this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                            //     toastClass: 'tostr-tost custom-toast-success',
+                            //   });
                             Swal.fire(
                                 "Saved !",
                                 "Record saved Successfully !",
@@ -105,14 +118,25 @@ export class PrefixMasterComponent implements OnInit {
                                 }
                             });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                            // Swal.fire(
+                            //     "Error !",
+                            //     "Appoinment not saved",
+                            //     "error"
+                            // );
                         }
                         this.getPrefixMasterList();
-                    });
+                    }, error => {
+                         this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+                          toastClass: 'tostr-tost custom-toast-error',
+                        });
+                      } 
+                    //  error => {
+                    //     Swal.fire(' Data not saved !, Please check API error..', 'Error !')
+                    //    }
+                      );
             } else {
                 var m_dataUpdate = {
                     prefixMasterUpdate: {
@@ -147,11 +171,16 @@ console.log(m_dataUpdate);
                                 }
                             });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            error => {
+                                this.toastr.error('Prefix Data not updated !, Please check  error..', 'Error !', {
+                                 toastClass: 'tostr-tost custom-toast-error',
+                               });
+                             } 
+                            // Swal.fire(
+                            //     "Error !",
+                            //     "Appoinment not updated",
+                            //     "error"
+                            // );
                         }
                         this.getPrefixMasterList();
                     });
@@ -159,6 +188,43 @@ console.log(m_dataUpdate);
             this.onClear();
         }
     }
+
+ 
+// onSubmit(){
+//     this.isLoading = 'submit';
+//     let submissionObj = {};
+//     let prefixMasterInsert = {};
+
+//     prefixMasterInsert['prefixName'] =  this._PrefixService.myform.get("PrefixName") .value.trim();
+//     prefixMasterInsert['sexID'] = this._PrefixService.myform.get("SexID").value.GenderId ;
+//     prefixMasterInsert['isActive'] =  Boolean(JSON.parse(this._PrefixService.myform.get("IsActive").value));
+   
+//     submissionObj['prefixMasterInsert'] = prefixMasterInsert;
+//     console.log(submissionObj);
+
+//     this._PrefixService.insertPrefixMaster(submissionObj).subscribe(response => {
+//       console.log(response);
+//       if (response) {
+//         Swal.fire('Congratulations !', 'Prefix Saved Successfully  !', 'success').then((result) => {
+//           if (result.isConfirmed) {
+//             this.getPrefixMasterList();
+//           }   
+//         });
+//       } else {
+//         this.toastr.error('Prefix Data not Saved !, Please check  error..', 'Error !', {
+//             toastClass: 'tostr-tost custom-toast-error', });
+//        // Swal.fire('Error !', 'Prescription Not Updated', 'error');
+//       }
+//       this.isLoading = '';
+//     },error => {
+//              this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+//                     toastClass: 'tostr-tost custom-toast-error',  });
+//              }
+//                     );
+    
+
+// }
+
 
     onClear() {
         this._PrefixService.myform.reset({ IsDeleted: "false" });

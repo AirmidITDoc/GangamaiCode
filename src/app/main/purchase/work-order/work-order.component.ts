@@ -34,14 +34,33 @@ export class WorkOrderComponent implements OnInit {
     'WoNetAmount',
     'Remark'  
   ];
+  displayedColumnsnew:string[] = [
+    'action',
+    'ItemName',
+    'Qty',
+    'Rate',
+    'TotalAmount',
+    'Disc',
+    'DiscAmt',
+    'Vat',
+    'VatAmt',
+    'NetAmt',
+    'Specification'  
+  ];
 
  
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
   SupplierList:any=[];
- 
- chkNewWorkorder: any;
+  filteredOptions: any;
+  screenFromString = 'admission-form';
+showAutocomplete = false;
+noOptionFound: boolean = false;
+ItemName:any;
+filteredOptionsItem:any;
+ItemId: any;
+isItemIdSelected:boolean=false;
 
   dsWorkOrderList=new MatTableDataSource<WorkOrderList>();
   
@@ -119,20 +138,52 @@ getWorkOrdersList() {
       this.sIsLoading = '';
     });
 
+}
+
+
+ 
+
+getSearchItemList() {
+  var m_data = {
+    "ItemName": `${this._WorkOrderService.NewWorkForm.get('ItemID').value}%`
+    // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+  }
+  // console.log(m_data);
+  if (this._WorkOrderService.NewWorkForm.get('ItemID').value.length >= 2) {
+    this._WorkOrderService.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItem = data;
+      // console.log(this.filteredOptionsItem.data);
+      this.filteredOptionsItem = data;
+      if (this.filteredOptionsItem.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getOptionItemText(option) {
+  this.ItemId = option.ItemID;
+  if (!option) return '';
+  return option.ItemID + ' ' + option.ItemName ;
+}
+getSelectedObjItem(obj) {
+ // console.log(obj);
+
 }   
 
 
 
 
 newWorkorder(){
-  this.chkNewWorkorder=1;
+  //this.chkNewWorkorder=1;
   const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
     {
       maxWidth: "100%",
       height: '95%',
       width: '95%',
       data: {
-        chkNewWorkorder:this.chkNewWorkorder
+    //    chkNewWorkorder:this.chkNewWorkorder
       }
     });
   dialogRef.afterClosed().subscribe(result => {
@@ -143,7 +194,7 @@ newWorkorder(){
 
 
 onEdit(contact){
-  this.chkNewWorkorder=2;
+ // this.chkNewWorkorder=2;
   console.log(contact)
   this.advanceDataStored.storage = new SearchInforObj(contact);
   // this._PurchaseOrder.populateForm();
@@ -154,7 +205,7 @@ onEdit(contact){
       width: '95%',
       data : {
         Obj : contact,
-        chkNewWorkorder:this.chkNewWorkorder
+     //   chkNewWorkorder:this.chkNewWorkorder
       }
     });
   dialogRef.afterClosed().subscribe(result => {
