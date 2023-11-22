@@ -142,6 +142,7 @@ export class SalesComponent implements OnInit {
   isPaymentSelected: boolean = false;
   OP_IP_Type:any;
   // payment code
+  DiscId:any;
 
   
   patientDetailsFormGrp: FormGroup;
@@ -1487,11 +1488,12 @@ OP_IPType:any=2;
   }
 
   calculateDiscAmt() {
+    debugger
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
-      // console.log(PurTotalAmount);
-      // console.log(m_MRPTotal);
+      // this.DiscId=1;
+     
       this.ConShow=true;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
@@ -1499,7 +1501,11 @@ OP_IPType:any=2;
       if (this.DiscAmt > PurTotalAmount)
       {
         Swal.fire('Discount greater than Purchase Rate, Please check !');
-        this.ItemFormreset();
+         this.ItemFormreset();
+         this.itemid.nativeElement.focus();
+         this.ConShow=false;
+         this.ItemSubform.get('ConcessionId').clearValidators();
+         this.ItemSubform.get('ConcessionId').updateValueAndValidity();
       }else{
         this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
         this.add = true;
@@ -2802,6 +2808,10 @@ export class Printsal {
   ExtMobileNo:any;
   StoreAddress:any;
   PayMode:any;
+  MRNO:any;
+  AdvanceUsedAmount:any;
+
+  
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2854,6 +2864,15 @@ export class Printsal {
     this.ExtMobileNo=Printsal.ExtMobileNo || '';
     this.StoreAddress=Printsal.StoreAddress || '';
     this.PayMode=Printsal.PayMode || '';
+
+      this.ItemShortName=Printsal.ItemShortName || ''
+    this.HTotalAmount=Printsal.HTotalAmount || '';
+    this.ExtMobileNo=Printsal.ExtMobileNo || '';
+    this.StoreAddress=Printsal.StoreAddress || '';
+    this.PayMode=Printsal.PayMode || '';
+    this.MRNO=Printsal.MRNO || '';
+    this.AdvanceUsedAmount=Printsal.PayMode || '';
+    
   }
 }
 
