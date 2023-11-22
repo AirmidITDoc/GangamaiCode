@@ -1363,6 +1363,14 @@ OP_IPType:any=2;
     // console.log(this.saleSelectedDatasource.data);
     this.itemid.nativeElement.focus();
     this.add = false;
+
+    if(this.DiscId==1){
+      this.ConShow=true;
+      this.ItemSubform.get('ConcessionId').reset();
+      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
+      this.ItemSubform.get('ConcessionId').enable();
+      this.ItemSubform.updateValueAndValidity();
+    }
   }
 
   getBatch() {
@@ -1492,7 +1500,7 @@ OP_IPType:any=2;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
-      // this.DiscId=1;
+      this.DiscId=1;
      
       this.ConShow=true;
       this.ItemSubform.get('ConcessionId').reset();
@@ -1526,6 +1534,7 @@ OP_IPType:any=2;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.DiscId=1;
       this.chkdiscper=true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -1560,7 +1569,7 @@ OP_IPType:any=2;
       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
       // this.ConseId.nativeElement.focus();
     }
-
+    
     this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
   }
 
