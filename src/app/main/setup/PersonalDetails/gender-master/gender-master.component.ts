@@ -52,6 +52,10 @@ export class GenderMasterComponent implements OnInit {
     }
 
     getGenderMasterList() {
+        var Param = {
+            GenderName:
+                this._GenderService.myform.get("GenderName").value || "%",
+        };
         this._GenderService.getGenderMasterList().subscribe((Menu) => {
             this.DSGenderMasterList.data = Menu as GenderMaster[];
             this.DSGenderMasterList.sort = this.sort;
@@ -151,6 +155,7 @@ export class GenderMasterComponent implements OnInit {
             this.onClear();
         }
     }
+  
 
     onEdit(row) {
         var m_data = {

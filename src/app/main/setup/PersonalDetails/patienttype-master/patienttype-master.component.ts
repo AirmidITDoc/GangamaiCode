@@ -7,6 +7,7 @@ import { NotificationServiceService } from "app/core/notification-service.servic
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { PatienttypeMasterService } from "./patienttype-master.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-patienttype-master",
@@ -33,7 +34,8 @@ export class PatienttypeMasterComponent implements OnInit {
     constructor(
         public _PatientTypeService: PatienttypeMasterService,
         private accountService: AuthenticationService,
-        public notification: NotificationServiceService
+        public notification: NotificationServiceService,
+        public toastr : ToastrService,
     ) {}
     onSearch() {
         this.getPatientTypeMasterList();
@@ -50,26 +52,25 @@ export class PatienttypeMasterComponent implements OnInit {
         this.getPatientTypeMasterList();
     }
     getPatientTypeMasterList() {
-        var param = {
-            PatientType:
-                this._PatientTypeService.myformSearch
-                    .get("PatientTypeSearch")
-                    .value.trim() || "%",
+        var param = {                    
+        PatientType:this._PatientTypeService.myformSearch.get("PatientTypeSearch").value.trim() + "%" || "%",
+ 
         };
-        this._PatientTypeService
-            .getPatientTypeMasterList(param)
-            .subscribe(
-                (Menu) =>
-                    (this.DSPatientTypeMasterList.data =
-                        Menu as PatientTypeMaster[])
-                      
-            );
+       // console.log(param)
+        this._PatientTypeService.getPatientTypeMasterList(param).subscribe((Menu) =>{
+            this.DSPatientTypeMasterList.data =Menu as PatientTypeMaster[];
+            this.DSPatientTypeMasterList.sort = this.sort;
+            this.DSPatientTypeMasterList.paginator = this.paginator;
+        });
     }
+
+  
 
     onClear() {
         this._PatientTypeService.myForm.reset({ IsDeleted: "false" });
         this._PatientTypeService.initializeFormGroup();
     }
+ 
 
     onSubmit() {
         if (this._PatientTypeService.myForm.valid) {
@@ -93,21 +94,23 @@ export class PatienttypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPatientTypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              //this.getPatientTypeMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPatientTypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Patient Type Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getPatientTypeMasterList();
                     });
@@ -129,26 +132,30 @@ export class PatienttypeMasterComponent implements OnInit {
                         updatedBy: 1,
                     },
                 };
+                console.log(m_dataUpdate);
                 this._PatientTypeService
                     .patientTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPatientTypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Updated Successfully.', 'Congratulations !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getPatientTypeMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPatientTypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                           
+                            this.toastr.error('Patient Type Master Data not Updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getPatientTypeMasterList();
                     });
@@ -157,16 +164,18 @@ export class PatienttypeMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
+        console.log(row);
         var m_data1 = {
             PatientTypeId: row.PatientTypeId,
             PatientType: row.PatientType.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
-        console.log(m_data1);
+       // console.log(m_data1);
         this._PatientTypeService.populateForm(m_data1);
     }
 }
+    
 
 export class PatientTypeMaster {
     PatientTypeId: number;

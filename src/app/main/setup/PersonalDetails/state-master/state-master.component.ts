@@ -99,9 +99,9 @@ export class StateMasterComponent implements OnInit {
     }
 
     getCountryNameCombobox() {
-        this._stateService
-            .getCountryMasterCombo()
-            .subscribe((data) => (this.CountrycmbList = data));
+        this._stateService.getCountryMasterCombo().subscribe((data) => {
+            this.CountrycmbList = data
+        });
     }
 
     onClear() {
