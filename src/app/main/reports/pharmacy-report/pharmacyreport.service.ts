@@ -22,7 +22,8 @@ export class PharmacyreportService {
 
       })
     }
-  public getDataByQuery(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  public getDataByQuery() {
+    // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",{})
   }
 }

@@ -2795,7 +2795,7 @@ export class Printsal {
   UserName: any;
   HSNcode: any;
   CashPayAmount: any;
-  CardPayAMount: any;
+  CardPayAmount: any;
   ChequePayAmount: any;
   PayTMAmount: any;
   NEFTPayAmount: any;
@@ -2850,7 +2850,7 @@ export class Printsal {
     this.HSNcode = Printsal.HSNcode || "";
 
     this.CashPayAmount = Printsal.CashPayAmount || '';
-    this.CardPayAMount = Printsal.CardPayAMount || 0;
+    this.CardPayAmount = Printsal.CardPayAmount || 0;
     this.NEFTPayAmount = Printsal.NEFTPayAmount || "";
     this.PayTMAmount = Printsal.PayTMAmount || "";
     this.ChequePayAmount = Printsal.ChequePayAmount || 0;
