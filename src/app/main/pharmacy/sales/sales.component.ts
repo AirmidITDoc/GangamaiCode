@@ -270,7 +270,6 @@ OP_IPType:any=2;
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
-    private snackBarService: SnackBarService,
     public toastr : ToastrService,
   ) {
     this.nowDate = new Date();
@@ -1956,7 +1955,7 @@ OP_IPType:any=2;
       if (response) {
         //  console.log(response);
         //  this._toastr.showSuccess('Record Saved Successfully');
-        this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         //  this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
@@ -1978,14 +1977,14 @@ OP_IPType:any=2;
         // });
       } else {
         // Swal.fire('Error !', 'Sale data not saved', 'error');
-         this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+         this.toastr.error('API error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
       // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-      this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+      this.toastr.error('API error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -2820,8 +2819,10 @@ export class Printsal {
   PayMode:any;
   MRNO:any;
   AdvanceUsedAmount:any;
+  BillVatAmount:any;
+  BillDiscAmount:any;
+  BillTotalAmount:any;
 
-  
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2882,7 +2883,10 @@ export class Printsal {
     this.PayMode=Printsal.PayMode || '';
     this.MRNO=Printsal.MRNO || '';
     this.AdvanceUsedAmount=Printsal.PayMode || '';
-    
+
+    this.BillTotalAmount=Printsal.BillTotalAmount || '';
+    this.BillVatAmount=Printsal.BillVatAmount || '';
+    this.BillDiscAmount=Printsal.BillDiscAmount || '';
   }
 }
 
