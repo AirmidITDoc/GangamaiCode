@@ -1,0 +1,32 @@
+.payment-content {
+    height: 100%;
+    padding: 10%;
+    text-align: center;
+}
+
+.payment-content h1 {
+    color: rebeccapurple;
+}
+
+.payment-content h2 {
+    font-size: 22px;
+    margin-top: 15px;
+    
+}
+
+.loading-spinner {
+    font-size: 50px;
+    color: #319fc0;
+}
+
+.timer-span {
+    font-size: 30px;
+}
+
+.payment-sent{
+    color: green;
+}
+
+.payment-pending {
+    color: #e34d4d;
+}

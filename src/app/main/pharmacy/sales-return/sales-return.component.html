@@ -487,13 +487,13 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <!-- <ng-container matColumnDef="BatchExpDate">
+                                <ng-container matColumnDef="BatchExpDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchExpDate
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.BatchExpDate}}
                                     </mat-cell>
-                                </ng-container> -->
+                                </ng-container>
 
                                 <ng-container matColumnDef="UnitMRP">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
@@ -724,7 +724,7 @@
                                     <div>
                                         <mat-form-field appearance="outline" style="width: 180px;">
                                             <mat-label>Net Amount</mat-label>
-                                            <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt" readonly>
+                                            <input matInput formControlName="NetAmt" [(ngModel)]="FinalTotalAmount" readonly>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 180px;">

@@ -30,6 +30,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 import { ToastrService } from 'ngx-toastr';
+import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 
 @Component({
   selector: 'app-sales',
@@ -255,6 +256,7 @@ OP_IPType:any=2;
   registerObj = new RegInsert({});
   RegId: any = '';
   vAdmissionID: any;
+  isPaymentSuccess: boolean = false;
   constructor(
     public _salesService: SalesService,
     public _matDialog: MatDialog,
@@ -270,8 +272,8 @@ OP_IPType:any=2;
     private applicationRef: ApplicationRef,
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
-    private snackBarService: SnackBarService,
     public toastr : ToastrService,
+    private onlinePaymentService: OnlinePaymentService
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
@@ -1956,7 +1958,7 @@ OP_IPType:any=2;
       if (response) {
         //  console.log(response);
         //  this._toastr.showSuccess('Record Saved Successfully');
-        this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         //  this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
@@ -1978,14 +1980,14 @@ OP_IPType:any=2;
         // });
       } else {
         // Swal.fire('Error !', 'Sale data not saved', 'error');
-         this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+         this.toastr.error('API error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
       // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-      this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+      this.toastr.error('API error!', 'error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -2632,30 +2634,18 @@ print3() {
   }
   payOnline() {
     const matDialog = this._matDialog.open(PaymentModeComponent, {
-      maxWidth: "800px",
-      minWidth: '800px',
-      width: '800px',
-      height: '380px',
+      data: {finalAmount: this.FinalNetAmount},
+      // height: '380px',
+      disableClose: true,
+      panelClass: 'payment-dialog'
+      // panelClass: ['animate__animated','animate__slideInRight']
     });
     matDialog.afterClosed().subscribe(result => {
-
+      if(result) {
+        this.isPaymentSuccess = true;
+        this.ItemSubform.get('referanceNo').setValue(this.onlinePaymentService.PlutusTransactionReferenceID);
+      }
     });
-    // let req = {
-    //   "TransactionNumber":"2234567890",   
-    //   "SequenceNumber": 1,                            
-    //   "AllowedPaymentMode": "1",                              
-    //   "MerchantStorePosCode": "1221258270",
-    //   "Amount": "1",                          
-    //   "UserID": "",          
-    //   "MerchantID": '29610' ,                                
-    //   "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-    //   "IMEI": "TEST1001270",
-    //   "AutoCancelDurationInMinutes": 5
-    // };
-    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-    //   console.log(resData);
-      
-    // });
   }
 }
 
@@ -2819,8 +2809,10 @@ export class Printsal {
   PayMode:any;
   MRNO:any;
   AdvanceUsedAmount:any;
+  BillVatAmount:any;
+  BillDiscAmount:any;
+  BillTotalAmount:any;
 
-  
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2881,7 +2873,10 @@ export class Printsal {
     this.PayMode=Printsal.PayMode || '';
     this.MRNO=Printsal.MRNO || '';
     this.AdvanceUsedAmount=Printsal.PayMode || '';
-    
+
+    this.BillTotalAmount=Printsal.BillTotalAmount || '';
+    this.BillVatAmount=Printsal.BillVatAmount || '';
+    this.BillDiscAmount=Printsal.BillDiscAmount || '';
   }
 }
 
