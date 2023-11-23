@@ -1,7 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
+import { environment } from 'environments/environment';
+import { Observable, Subscription, interval } from 'rxjs';
+import { OnlinePaymentService } from '../../services/online-payment.service';
 
 @Component({
   selector: 'app-payment-mode',
@@ -10,15 +13,27 @@ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabt
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class PaymentModeComponent implements OnInit {
+export class PaymentModeComponent implements OnInit, OnDestroy {
   isLoading: String = '';
   heading: String = 'Please wait...';
   statusStr: String = 'Please do not close window or tab, your payment is in process';
   paymentRetryCout: number = 0;
   isRetryOrClose: String = '';
+  PlutusTransactionReferenceID: number;
+
+  poller: Subscription;
+
+  autoCancelDuration = environment.AUTO_CANCEL_DURATION_MINUTES;
+
+  cancelDurationMin = 4;
+  cancelDurationSec = 59;
+  statusApiInterval = 10000;
+
   constructor(
     public _RequestforlabtestService: RequestforlabtestService,
-    private dialogRef: MatDialogRef<PaymentModeComponent>
+    private dialogRef: MatDialogRef<PaymentModeComponent>,
+    private onlinePaymentService: OnlinePaymentService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +41,7 @@ export class PaymentModeComponent implements OnInit {
   }
 
   initPayment() {
-    if(this.paymentRetryCout >= 3) {
+    if (this.paymentRetryCout >= 3) {
       this.isLoading = '';
       this.isRetryOrClose = 'close';
       this.heading = 'Sorry.! Attempt Exhausted !!';
@@ -37,31 +52,51 @@ export class PaymentModeComponent implements OnInit {
     this.heading = 'Please wait...';
     this.statusStr = 'Please do not close window or tab, your payment is in process';
     let req = {
-      "TransactionNumber": "2234567890",
-      "SequenceNumber": 1,
-      "AllowedPaymentMode": "1",
-      "MerchantStorePosCode": "1221258270",
-      "Amount": "1",
+      "TransactionNumber": Math.floor(Math.random() * 10000000000),
+      "SequenceNumber": environment.SEQUENCE_NUMBER,
+      "AllowedPaymentMode": environment.ALLOWED_PAYMENT_MODE,
+      "MerchantStorePosCode": environment.MERCHANT_STORE_POS_CODE,
+      "Amount": parseInt(this.data.finalAmount),
       "UserID": "",
-      "MerchantID": '29610',
-      "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-      "IMEI": "TEST1001270",
-      "AutoCancelDurationInMinutes": 5
+      "MerchantID": environment.MERCHANT_ID,
+      "SecurityToken": environment.SECURITY_TOKEN,
+      "IMEI": environment.IMEI,
+      "AutoCancelDurationInMinutes": this.autoCancelDuration
     };
     ++this.paymentRetryCout;
     this.isRetryOrClose = '';
     this._RequestforlabtestService.sendPaymentDetails(req).subscribe((resData: any) => {
       console.log(resData);
       this.isLoading = '';
-      if (resData && resData.ResponseCode === 0 && resData.ResponseMessage.toString().toUpparCase() === 'APPROVED') {
-        this.heading = 'Thank You...';
-        this.statusStr = 'Your transaction is Sucessful.!';
+      if (resData && resData.ResponseCode === 0 && resData.ResponseMessage.toString().toUpperCase() === 'APPROVED') {
+        this.heading = 'Please wait for';
+        this.statusStr = 'Your transaction sent to the Machine';
+        this.isLoading = 'timer-start';
+        this.PlutusTransactionReferenceID = resData.PlutusTransactionReferenceID;
+        this.onlinePaymentService.PlutusTransactionReferenceID = resData.PlutusTransactionReferenceID;
+        this.poller = interval(1000).subscribe(x => {
+          this.cancelDurationSec = this.cancelDurationSec - 1;
+          if (this.cancelDurationMin == 0 && this.cancelDurationSec == 0) {
+            this.cancelDurationSec = 0;
+            this.isLoading = 'timer-ends';
+            this.isRetryOrClose = 'retry';
+            this.heading = 'Time out.!';
+            this.statusStr = 'You cross the time for payment, please try again.';
+            this.poller.unsubscribe();
+          } else if (this.cancelDurationSec == 0) {
+            this.cancelDurationMin = this.cancelDurationMin - 1;
+            this.cancelDurationSec = 60;
+          }
+        });
+
+        this.getStatusOfPayment();
         return;
       }
-      if (resData && resData.ResponseCode === 1 && resData.ResponseMessage.toString().toUpperCase().includes('INVALID MERCHANT')) {
+      if (resData && resData.ResponseCode === 1 &&
+        (resData.ResponseMessage.toString().toUpperCase().includes('INVALID MERCHANT') || resData.ResponseMessage.toString().toUpperCase().includes('PLEASE APPROVE OPEN TXN FIRST'))) {
         this.heading = 'Something not right';
         this.isRetryOrClose = 'retry';
-        this.statusStr = 'Please check the details and retry the Payment';
+        this.statusStr = resData.ResponseMessage; //'Please check the details and retry the Payment';
         return;
       }
 
@@ -72,27 +107,44 @@ export class PaymentModeComponent implements OnInit {
       this.statusStr = 'Please try again';
 
     });
-    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-
-
-    // });
   }
 
-  status() {
+
+  getStatusOfPayment() {
     let req = {
+      "MerchantID": environment.MERCHANT_ID,
+      "SecurityToken": environment.SECURITY_TOKEN,
+      "IMEI": environment.IMEI,
+      "MerchantStorePosCode": environment.MERCHANT_STORE_POS_CODE,
+      "PlutusTransactionReferenceID": this.PlutusTransactionReferenceID
+    };
+    this.isRetryOrClose = '';
+    this._RequestforlabtestService.getPaymentStatus(req).subscribe((resData: any) => {
+      console.log(resData);
+      if (resData && resData.ResponseCode && resData.ResponseCode === 1001) {
+        if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5) {
+          setTimeout(() => {
+            this.getStatusOfPayment();
+          }, this.statusApiInterval);
+        }
+      } else if (resData && resData.ResponseMessage && resData.ResponseMessage == 'TXN APPROVED') {
+        console.log('Sucsess.......');
+        this.isLoading = 'payment-success';
+        this.heading = 'Thank you.!';
+        this.statusStr = 'Your payment is success, please Save the previous details.';
+      }
+      console.log(resData);
+    }, error => {
+      if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5) {
+        setTimeout(() => {
+          this.getStatusOfPayment();
+        }, this.statusApiInterval);
+      }
+    });
+  }
 
-      "MerchantID": "29610",
-      "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-      "IMEI": "TEST1001270",
-      "MerchantStorePosCode": "1221258270",
-      "PlutusTransactionReferenceID": 376395
-
-    }
-    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-    //   console.log(resData);
-    //   this.isLoading = '';
-
-    // });
+  ngOnDestroy() {
+    this.poller.unsubscribe();
   }
 
 }

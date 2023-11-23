@@ -49,6 +49,10 @@ export class RequestforlabtestService {
   public sendPaymentDetails(emp){
     return this._httpClient.post("PaymentGetway/OnlinePayment",emp);
   }
+
+  public getPaymentStatus(emp){
+    return this._httpClient.post("PaymentGetway/OnlinePaymentStatus",emp);
+  }
  
 }
 

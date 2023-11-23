@@ -30,6 +30,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 import { ToastrService } from 'ngx-toastr';
+import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 
 @Component({
   selector: 'app-sales',
@@ -255,6 +256,7 @@ OP_IPType:any=2;
   registerObj = new RegInsert({});
   RegId: any = '';
   vAdmissionID: any;
+  isPaymentSuccess: boolean = false;
   constructor(
     public _salesService: SalesService,
     public _matDialog: MatDialog,
@@ -272,6 +274,7 @@ OP_IPType:any=2;
     public _RequestforlabtestService: RequestforlabtestService,
     private snackBarService: SnackBarService,
     public toastr : ToastrService,
+    private onlinePaymentService: OnlinePaymentService
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
@@ -2632,31 +2635,18 @@ print3() {
   }
   payOnline() {
     const matDialog = this._matDialog.open(PaymentModeComponent, {
-      
+      data: {finalAmount: this.FinalNetAmount},
       // height: '380px',
       disableClose: true,
       panelClass: 'payment-dialog'
       // panelClass: ['animate__animated','animate__slideInRight']
     });
     matDialog.afterClosed().subscribe(result => {
-
+      if(result) {
+        this.isPaymentSuccess = true;
+        this.ItemSubform.get('referanceNo').setValue(this.onlinePaymentService.PlutusTransactionReferenceID);
+      }
     });
-    // let req = {
-    //   "TransactionNumber":"2234567890",   
-    //   "SequenceNumber": 1,                            
-    //   "AllowedPaymentMode": "1",                              
-    //   "MerchantStorePosCode": "1221258270",
-    //   "Amount": "1",                          
-    //   "UserID": "",          
-    //   "MerchantID": '29610' ,                                
-    //   "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
-    //   "IMEI": "TEST1001270",
-    //   "AutoCancelDurationInMinutes": 5
-    // };
-    // this._RequestforlabtestService.payOnline(req).subscribe(resData => {
-    //   console.log(resData);
-      
-    // });
   }
 }
 

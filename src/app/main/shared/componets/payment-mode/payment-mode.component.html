@@ -5,12 +5,20 @@
         <span *ngIf="isLoading === 'init-payment'">
             <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
         </span>
+        <span *ngIf="isLoading === 'timer-start'" class="timer-span">
+            {{cancelDurationMin < 10 ? '0' + cancelDurationMin : cancelDurationMin}} :
+             {{cancelDurationSec < 10 ? '0' + cancelDurationSec : cancelDurationSec}}
+        </span>
         <!-- </div> -->
         <div>
-            <h2>{{statusStr}}</h2>
+            <h2 [ngClass]="(isLoading == 'timer-start' || isLoading == 'payment-success') ? 'payment-sent' : 'payment-pending'">{{statusStr}}</h2>
         </div>
-        <button *ngIf="isRetryOrClose" class="footer-btn" (click)="isRetryOrClose && isRetryOrClose == 'retry' ? initPayment() : dialogRef.close()">
+        <button *ngIf="isRetryOrClose" class="footer-btn" (click)="isRetryOrClose && isRetryOrClose == 'retry' ? initPayment() : dialogRef.close(false)">
             {{isRetryOrClose && isRetryOrClose == 'retry' ? 'Retry' : 'Close'}}
+        </button>
+
+        <button *ngIf="isLoading === 'payment-success'" class="next-btn" (click)="dialogRef.close(true)">
+            Done
         </button>
     </div>
 </div>
