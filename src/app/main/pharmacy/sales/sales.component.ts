@@ -1980,22 +1980,14 @@ OP_IPType:any=2;
         // });
       } else {
         // Swal.fire('Error !', 'Sale data not saved', 'error');
-<<<<<<< HEAD
          this.toastr.error('API Error!', 'Error !', {
-=======
-         this.toastr.error('API error!', 'Error !', {
->>>>>>> 2ea778eb4bd6cebc20f900480ccd2867c65d6ae0
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
       // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-<<<<<<< HEAD
       this.toastr.error('API Error!', 'Error !', {
-=======
-      this.toastr.error('API error!', 'error !', {
->>>>>>> 2ea778eb4bd6cebc20f900480ccd2867c65d6ae0
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -2900,7 +2892,6 @@ export class Printsal {
     this.PayMode=Printsal.PayMode || '';
     this.MRNO=Printsal.MRNO || '';
     this.AdvanceUsedAmount=Printsal.PayMode || '';
-<<<<<<< HEAD
     this.Label=Printsal.Label || ';'
     this.TotalBillAmount=Printsal.PayMode || '';
     this.CashPay=Printsal.CashPay || '';
@@ -2910,12 +2901,6 @@ export class Printsal {
     this.OnlinePay=Printsal.OnlinePay || '';
     this.PrintStoreName=Printsal.PrintStoreName || '';
     this.PatientType=Printsal.PatientType || '';
-=======
-
-    this.BillTotalAmount=Printsal.BillTotalAmount || '';
-    this.BillVatAmount=Printsal.BillVatAmount || '';
-    this.BillDiscAmount=Printsal.BillDiscAmount || '';
->>>>>>> 2ea778eb4bd6cebc20f900480ccd2867c65d6ae0
   }
 }
 
