@@ -44,7 +44,7 @@ export class PaymentModeComponent implements OnInit {
       "Amount": "1",
       "UserID": "",
       "MerchantID": '29610',
-      "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e lll",
+      "SecurityToken": "a4c9741b-2889-47b8-be2f-ba42081a246e",
       "IMEI": "TEST1001270",
       "AutoCancelDurationInMinutes": 5
     };
