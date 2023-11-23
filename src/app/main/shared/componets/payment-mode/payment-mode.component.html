@@ -1,6 +1,16 @@
-
-<mat-spinner *ngIf="isLoading == 'init-payment'" [diameter]='30'>
-</mat-spinner>
-
-
-<button class="footer-btn" (click)="status()">Check Status</button>
+<div class="payment-content">
+    <div fxLayout="column" fxLayoutAlign="space-evenly center" style="height: 100%;">
+        <!-- <div> -->
+        <h1>{{heading}}</h1>
+        <span *ngIf="isLoading === 'init-payment'">
+            <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+        </span>
+        <!-- </div> -->
+        <div>
+            <h2>{{statusStr}}</h2>
+        </div>
+        <button *ngIf="isRetryOrClose" class="footer-btn" (click)="isRetryOrClose && isRetryOrClose == 'retry' ? initPayment() : dialogRef.close()">
+            {{isRetryOrClose && isRetryOrClose == 'retry' ? 'Retry' : 'Close'}}
+        </button>
+    </div>
+</div>

@@ -221,3 +221,19 @@ background-color: #7bd3ff  !important;
   background-color: rgb(203, 214, 214);
   padding: 15px;
 }
+
+.payment-dialog {
+  max-width: 800px;
+  min-width: 800px;
+  width: 800px;
+  @media (min-width: 100px) and (max-width: 320px) {
+    max-width: 300px;
+    min-width: 300px;
+    width: 300px;
+  }
+  @media (min-width: 375px) and (max-width: 425px) {
+    max-width: 400px;
+    min-width: 400px;
+    width: 400px;
+  }
+}

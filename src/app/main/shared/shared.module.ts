@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './services/snack-bar.service';
 import { ToasterService } from './services/toaster.service';
 import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
+import { FuseSharedModule } from '@fuse/shared.module';
 
 @NgModule({
   declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent],
@@ -31,7 +32,8 @@ import { PaymentModeComponent } from './componets/payment-mode/payment-mode.comp
     MatButtonModule,
     MatCardModule,
     MatTabsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    FuseSharedModule
   ],
   providers: [
     ExcelDownloadService,

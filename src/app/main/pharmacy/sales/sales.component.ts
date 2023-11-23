@@ -2632,10 +2632,11 @@ print3() {
   }
   payOnline() {
     const matDialog = this._matDialog.open(PaymentModeComponent, {
-      maxWidth: "800px",
-      minWidth: '800px',
-      width: '800px',
-      height: '380px',
+      
+      // height: '380px',
+      disableClose: true,
+      panelClass: 'payment-dialog'
+      // panelClass: ['animate__animated','animate__slideInRight']
     });
     matDialog.afterClosed().subscribe(result => {
 
