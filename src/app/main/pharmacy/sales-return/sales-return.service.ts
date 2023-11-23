@@ -92,7 +92,7 @@ export class SalesReturnService {
     return this._httpClient.post("Pharmacy/InsertSalesReturn", employee)
   }
   public getSalesReturnPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint",emp);
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
