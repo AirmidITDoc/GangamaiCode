@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-country-master",
@@ -28,7 +29,8 @@ export class CountryMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _CountryService: CountryMasterService) {}
+    constructor(public _CountryService: CountryMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getCountryMasterList();
@@ -85,25 +87,31 @@ export class CountryMasterComponent implements OnInit {
                     .countryMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
-                        if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getCountryMasterList();
-                                }
-                            });
+                        if (data) { 
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          this.getCountryMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getCountryMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Country Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getCountryMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Country Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             } else {
                 var m_dataUpdate = {
                     countryMasterUpdate: {
@@ -127,21 +135,23 @@ export class CountryMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getCountryMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getCountryMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getCountryMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Country Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getCountryMasterList();
                     });

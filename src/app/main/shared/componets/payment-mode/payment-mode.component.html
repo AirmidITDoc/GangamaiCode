@@ -1,6 +1,28 @@
+<div class="payment-content">
+    <div fxLayout="column" fxLayoutAlign="space-evenly center" style="height: 100%;">
+        <!-- <div> -->
+        <h1>{{heading}}</h1>
+        <span *ngIf="isLoading === 'init-payment'">
+            <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+        </span>
+        <span *ngIf="isLoading === 'timer-start'" class="timer-span">
+            {{cancelDurationMin < 10 ? '0' + cancelDurationMin : cancelDurationMin}} :
+             {{cancelDurationSec < 10 ? '0' + cancelDurationSec : cancelDurationSec}}
+        </span>
+        <!-- </div> -->
+        <div>
+            <h2 [ngClass]="(isLoading == 'timer-start' || isLoading == 'payment-success') ? 'payment-sent' : 'payment-pending'">{{statusStr}}</h2>
+        </div>
+        <button *ngIf="isRetryOrClose" class="footer-btn" (click)="isRetryOrClose && isRetryOrClose == 'retry' ? initPayment() : dialogRef.close(false)">
+            {{isRetryOrClose && isRetryOrClose == 'retry' ? 'Retry' : 'Close'}}
+        </button>
 
-<mat-spinner *ngIf="isLoading == 'init-payment'" [diameter]='30'>
-</mat-spinner>
+        <button *ngIf="isLoading === 'payment-success'" class="next-btn" (click)="dialogRef.close(true)">
+            Done
+        </button>
 
-
-<button class="footer-btn" (click)="status()">Check Status</button>
+        <button *ngIf="isLoading === 'timer-start' && !isRetryOrClose" class="footer-btn" (click)="cancelPayment()">
+            Cancel
+        </button>
+    </div>
+</div>

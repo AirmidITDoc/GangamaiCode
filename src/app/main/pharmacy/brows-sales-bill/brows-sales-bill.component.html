@@ -1351,9 +1351,9 @@
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;width: 35px;">
                     Amount</td>
             </tr>
-            <tr *ngFor="let item of reportPrintObjList" style="font-size:10px;">
+            <tr *ngFor="let item of reportPrintObjList let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{item?.SalesNo}}</td>
+                padding: 0;height: 15px;">{{indx+1}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.HSNcode}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
@@ -1399,18 +1399,17 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Sub Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.HTotalAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.BillTotalAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Discount</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.DiscAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.BillDiscAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt +
-                            reportPrintObjList[0]?.IGSTAmt}}</span>
+                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.BillVatAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Round off</span>

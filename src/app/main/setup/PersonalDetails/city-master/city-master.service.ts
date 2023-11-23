@@ -47,19 +47,26 @@ export class CityMasterService {
         );
     }
 
-    public getStateMasterCombo() {
+    public getCityMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_StateMaster ",
+            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
             {}
         );
     }
 
+    // public getStateMasterCombo() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_StateMaster ",
+    //         {}
+    //     );
+    // }
+
     public getStateList(CityId) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",
-            { Id: CityId }
-        );
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",
+        CityId 
+       );
     }
+    
 
     public cityMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/CitySave", param);

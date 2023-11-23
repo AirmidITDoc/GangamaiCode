@@ -160,13 +160,31 @@
 
                                     <input type="hidden" name="CityId" formControlName="CityId">
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>City Name</mat-label>
                                             <input name="CityName" formControlName="CityName" matInput required>
                                             <mat-error>Please enter City Name </mat-error>
                                         </mat-form-field>
+                                    </div> -->
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>City</mat-label>
+                                        <mat-select formControlName="CityName" placeholder="Bank" #singleSelect
+                                            required>
+                                            <mat-option>
+                                                <ngx-mat-select-search [formControl]="cityFilterCtrl"
+                                                    [placeholderLabel]="'Search'"
+                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                            </mat-option>
+                                            <mat-option *ngFor="let element of filteredCity | async"
+                                                [value]="element">
+                                                {{element.CityName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                     </div>
+
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>

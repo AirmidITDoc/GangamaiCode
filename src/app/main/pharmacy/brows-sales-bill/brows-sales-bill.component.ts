@@ -346,13 +346,10 @@ console.log(event);
   let printContents;
   this.subscriptionArr.push(
     this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
-
       this.reportPrintObjList = res as Printsal[];
       console.log(this.reportPrintObjList);
       this.reportPrintObj = res[0] as Printsal;
-
       this.getTemplate();
-
     })
   );
 }
@@ -980,25 +977,23 @@ print3() {
 }
 
 getSalesRetPrint(el){
-  
   var D_data = {
     "SalesID": el.SalesReturnId, 
     "OP_IP_Type": el.OP_IP_Type,
-    "IsPrescriptionFlag": 0//el.IsPrescriptionFlag
   }
   let printContents;
   this.subscriptionArr.push(
     this._BrowsSalesService.getSalesReturnPrint(D_data).subscribe(res => {
       this.reportPrintObjList = res as Printsal[];
-      console.log(this.reportPrintObjList);
-      // this.reportPrintObj = res[0] as Printsal;
-      this.getTemplateSalesReturn();
+      // console.log(this.reportPrintObjList);
+      setTimeout(() => {
+        this.printSalesReturn();
+     }, 1000);
     })
   );
 }
 printSalesReturn() {
   let popupWin, printContents;
- 
   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
   
   popupWin.document.write(` <html>

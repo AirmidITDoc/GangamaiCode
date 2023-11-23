@@ -105,7 +105,7 @@ export class PrefixMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                             // Swal.fire(
@@ -133,9 +133,7 @@ export class PrefixMasterComponent implements OnInit {
                           toastClass: 'tostr-tost custom-toast-error',
                         });
                       } 
-                    //  error => {
-                    //     Swal.fire(' Data not saved !, Please check API error..', 'Error !')
-                    //    }
+        
                       );
             } else {
                 var m_dataUpdate = {
@@ -161,9 +159,10 @@ export class PrefixMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
+                              this.getPrefixMasterList();
                             // Swal.fire(
                             //     "Updated !",
                             //     "Record updated Successfully !",

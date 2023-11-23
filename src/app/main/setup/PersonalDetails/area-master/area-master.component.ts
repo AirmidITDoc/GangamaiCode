@@ -9,6 +9,7 @@ import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-state-master",
@@ -25,7 +26,6 @@ export class AreaMasterComponent implements OnInit {
     // city filter
     public cityFilterCtrl: FormControl = new FormControl();
     public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
     private _onDestroy = new Subject<void>();
 
     displayedColumns: string[] = [
@@ -43,18 +43,19 @@ export class AreaMasterComponent implements OnInit {
 
     constructor(
         public _AreaService: AreaMasterService,
+        public toastr : ToastrService,
         private accountService: AuthenticationService
     ) {}
 
     ngOnInit(): void {
         this.getAreaMasterList();
-        this.getCityNameCombobox();
+        this.getCityMasterCombo();
 
         this.cityFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCity();
-            });
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+            this.filterCity();
+        });
     }
 
     onSearch() {
@@ -69,6 +70,7 @@ export class AreaMasterComponent implements OnInit {
         this.getAreaMasterList();
     }
     private filterCity() {
+        // debugger;
         if (!this.CitycmbList) {
             return;
         }
@@ -80,12 +82,20 @@ export class AreaMasterComponent implements OnInit {
         } else {
             search = search.toLowerCase();
         }
-        // filter the banks
+        // filter
         this.filteredCity.next(
             this.CitycmbList.filter(
                 (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
             )
-        );
+        );     
+    }
+    getCityMasterCombo() {
+        this._AreaService.getCityMasterCombo().subscribe((data) => {
+            this.CitycmbList = data;
+            this.filteredCity.next(this.CitycmbList.slice());
+        
+            console.log(this.CitycmbList)
+        });
     }
 
     getAreaMasterList() {
@@ -102,11 +112,7 @@ export class AreaMasterComponent implements OnInit {
         });
     }
 
-    getCityNameCombobox() {
-        this._AreaService
-            .getCityMasterCombo()
-            .subscribe((data) => (this.CitycmbList = data));
-    }
+  
 
     onClear() {
         this._AreaService.myform.reset({ IsDeleted: "false" });
@@ -133,17 +139,23 @@ export class AreaMasterComponent implements OnInit {
                 this._AreaService.areaMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getAreaMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          this.getAreaMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getAreaMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error('Area Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
                     this.getAreaMasterList();
                 });
@@ -169,24 +181,30 @@ export class AreaMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getAreaMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getAreaMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getAreaMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Area Master Data not Updated !, Please check API error..', 'Updated !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getAreaMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Area Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }
