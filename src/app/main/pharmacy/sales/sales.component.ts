@@ -1951,12 +1951,12 @@ OP_IPType:any=2;
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
-    // console.log(submitData);
+    console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
         //  console.log(response);
         //  this._toastr.showSuccess('Record Saved Successfully');
-        this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         //  this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
@@ -1978,14 +1978,14 @@ OP_IPType:any=2;
         // });
       } else {
         // Swal.fire('Error !', 'Sale data not saved', 'error');
-         this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
       // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-      this.toastr.error('Operation completed successfully!', 'Congratulations !', {
+      this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -2695,6 +2695,11 @@ export class IndentList {
   LandedRateandedTotal:any;
   PurchaseRate:any;
   PurTotAmt;any;
+  BalanceAmount:any;
+  PatientName:any;
+  SalesReturnId:any;
+  DiscAmount:any;
+  NetAmount:any;
   /**
    * Constructor
    *
@@ -2731,7 +2736,12 @@ export class IndentList {
       this.SgstPer=IndentList.SgstPer || 0;    
       this.SGSTAmt=IndentList.SGSTAmt || 0;    
       this.IgstPer=IndentList.IgstPer || 0;    
-      this.IGSTAmt=IndentList.IGSTAmt || 0;    
+      this.IGSTAmt=IndentList.IGSTAmt || 0;   
+      this.BalanceAmount =IndentList.BalanceAmount || 0; 
+      this.PatientName=IndentList.PatientName || '';
+      this.SalesReturnId=IndentList.SalesReturnId|| 0;
+      this.NetAmount=IndentList.NetAmount|| 0;
+      this.DiscAmount=IndentList.DiscAmount|| 0;
     }
   }
 }
@@ -2819,7 +2829,18 @@ export class Printsal {
   PayMode:any;
   MRNO:any;
   AdvanceUsedAmount:any;
+  Label:any;
 
+  TotalBillAmount:any;
+  BalAmount:any;
+  CashPay:any;
+  ChequePay:any;
+  CardPay:any;
+  NEFTPay:any;
+  OnlinePay:any;
+  PrintStoreName:any;
+  PatientType:any;
+  
   
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2881,7 +2902,15 @@ export class Printsal {
     this.PayMode=Printsal.PayMode || '';
     this.MRNO=Printsal.MRNO || '';
     this.AdvanceUsedAmount=Printsal.PayMode || '';
-    
+    this.Label=Printsal.Label || ';'
+    this.TotalBillAmount=Printsal.PayMode || '';
+    this.CashPay=Printsal.CashPay || '';
+    this.ChequePay=Printsal.ChequePay || '';
+    this.CardPay=Printsal.CardPay || '';
+    this.NEFTPay=Printsal.NEFTPay || '';
+    this.OnlinePay=Printsal.OnlinePay || '';
+    this.PrintStoreName=Printsal.PrintStoreName || '';
+    this.PatientType=Printsal.PatientType || '';
   }
 }
 

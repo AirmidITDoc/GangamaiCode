@@ -375,12 +375,7 @@ console.log(event);
         setTimeout(() => {
           this.print3();
         }, 1000);
-        // this.getTemplateTax();
-
-        // this.CustomerName=this.reportPrintObj.PatientName;
-        // this.CustomerId=this.reportPrintObj.RegNo;
-        // this.CustAddress= " " //this.reportPrintObj.Address;
-        // this.ExMobile=this.reportPrintObj.ExtMobileNo;
+      
       })
     );
   }
