@@ -94,7 +94,7 @@ export class PatienttypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               //this.getPatientTypeMasterList();
@@ -113,7 +113,11 @@ export class PatienttypeMasterComponent implements OnInit {
                               });
                         }
                         this.getPatientTypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Patient Type Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             } else {
                 var m_dataUpdate = {
                     patientTypeMasterUpdate: {
@@ -138,7 +142,7 @@ export class PatienttypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            this.toastr.success('Record Updated Successfully.', 'Congratulations !', {
+                            this.toastr.success('Record Updated Successfully.', 'Updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getPatientTypeMasterList();

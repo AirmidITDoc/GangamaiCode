@@ -8,6 +8,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { CityMasterService } from "./city-master.service";
 import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-city-master",
@@ -20,10 +21,14 @@ export class CityMasterComponent implements OnInit {
     CityMasterList: any;
     StatecmbList: any = [];
     msg: any;
+    CitycmbList: any = [];
 
     //state filter
     public stateFilterCtrl: FormControl = new FormControl();
     public filteredState: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public cityFilterCtrl: FormControl = new FormControl();
+    public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
+
 
     private _onDestroy = new Subject<void>();
 
@@ -43,16 +48,25 @@ export class CityMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _cityService: CityMasterService) {}
+    constructor(public _cityService: CityMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getCityMasterList();
         this.getStateNameCombobox();
+        this.getCityMasterCombo();
+       
 
         this.stateFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
                 this.filterState();
+            });
+
+            this.cityFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+                this.filterCity();
             });
     }
 
@@ -67,6 +81,35 @@ export class CityMasterComponent implements OnInit {
         });
         this.getCityMasterList();
     }
+    private filterCity() {
+        // debugger;
+        if (!this.CitycmbList) {
+            return;
+        }
+        // get the search keyword
+        let search = this.cityFilterCtrl.value;
+        if (!search) {
+            this.filteredCity.next(this.CitycmbList.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        // filter
+        this.filteredCity.next(
+            this.CitycmbList.filter(
+                (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
+            )
+        );    this. getStateNameCombobox();
+    }
+    getCityMasterCombo() {
+        this._cityService.getCityMasterCombo().subscribe((data) => {
+            this.CitycmbList = data;
+            this.filteredCity.next(this.CitycmbList.slice());
+        
+            console.log(this.CitycmbList)
+        });
+    }
+
     private filterState() {
         if (!this.StatecmbList) {
             return;
@@ -83,8 +126,22 @@ export class CityMasterComponent implements OnInit {
         this.filteredState.next(
             this.StatecmbList.filter(
                 (bank) => bank.StateName.toLowerCase().indexOf(search) > -1
+               
             )
         );
+    }
+    getStateNameCombobox() {
+        var vdata={
+            Id:this._cityService.myform.get('CityId').value
+        }
+        console.log(vdata)
+        this._cityService.getStateList(vdata).subscribe((data) => {
+            this.StatecmbList = data;
+            this.filteredState.next(this.StatecmbList.slice());
+            console.log(this.StatecmbList)
+            
+        });
+       
     }
 
     getCityMasterList() {
@@ -107,11 +164,13 @@ export class CityMasterComponent implements OnInit {
         });
     }
 
-    getStateNameCombobox() {
-        this._cityService
-            .getStateMasterCombo()
-            .subscribe((data) => (this.StatecmbList = data));
-    }
+    // getStateNameCombobox() {
+    //     this._cityService.getStateMasterCombo().subscribe((data) => {
+    //             this.StatecmbList = data
+    //         });
+    //         console.log(this.StatecmbList)
+    // }
+  
 
     onClear() {
         this._cityService.myform.reset({ IsDeleted: "false" });
@@ -141,20 +200,30 @@ export class CityMasterComponent implements OnInit {
                 this._cityService.cityMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getCityMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                        this.getCityMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getCityMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error('City Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
                     this.getCityMasterList();
-                });
+                },error => {
+                    this.toastr.error('City Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 } );
             } else {
                 var m_dataUpdate = {
                     cityMasterUpdate: {
@@ -179,21 +248,23 @@ export class CityMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getCityMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getCityMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getCityMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('City Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getCityMasterList();
                     });

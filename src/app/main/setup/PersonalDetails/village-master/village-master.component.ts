@@ -8,6 +8,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-village-master",
@@ -40,10 +41,11 @@ export class VillageMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _VillageService: VillageMasterService) {}
+    constructor(public _VillageService: VillageMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
-        this.getVillageMasterList();
+        this.getVillageMasterLists();
         this.getTalukaMasterCombo();
 
         this.talukaFilterCtrl.valueChanges
@@ -54,7 +56,7 @@ export class VillageMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getVillageMasterList();
+        this. getVillageMasterLists()
     }
 
     onSearchClear() {
@@ -62,7 +64,7 @@ export class VillageMasterComponent implements OnInit {
             VillageNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getVillageMasterList();
+        this. getVillageMasterLists()
     }
     private filterTaluka() {
         // debugger;
@@ -84,15 +86,17 @@ export class VillageMasterComponent implements OnInit {
             )
         );
     }
-
-    getVillageMasterList() {
+ 
+    getVillageMasterLists() {
         var param = {
-            VillageName: "%",
+            VillageName:this._VillageService.myformSearch.get("VillageNameSearch").value.trim() || "%",
         };
+       // console.log(param)
         this._VillageService.getVillageMasterList(param).subscribe((Menu) => {
             this.DSVillageMasterList.data = Menu as VillageMaster[];
             this.DSVillageMasterList.sort = this.sort;
             this.DSVillageMasterList.paginator = this.paginator;
+            console.log(this.DSVillageMasterList)
         });
     }
 
@@ -135,24 +139,30 @@ export class VillageMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getVillageMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getVillageMasterLists();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getVillageMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Village Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                        this.getVillageMasterList();
-                    });
+                        this.getVillageMasterLists();
+                    },error => {
+                        this.toastr.error('Village Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     villageMasterUpdate: {
@@ -178,24 +188,26 @@ export class VillageMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getVillageMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getVillageMasterLists();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getVillageMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Village Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                        this.getVillageMasterList();
-                    });
+                        this.getVillageMasterLists();
+                    } );
             }
             this.onClear();
         }

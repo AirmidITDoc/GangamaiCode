@@ -26,7 +26,8 @@ export class RelationshipMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _relationshipService: RelationshipMasterService) {}
+    constructor(public _relationshipService: RelationshipMasterService,
+        public toastr : ToastrService,) {}
     onSearch() {
         this.getrelationshipMasterList();
     }
@@ -90,24 +91,30 @@ export class RelationshipMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getrelationshipMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getrelationshipMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getrelationshipMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Relationship Data not saved !, Please check  error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getrelationshipMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('RelationShip Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             } else {
                 var m_dataUpdate = {
                     relationshipMasterUpdate: {
@@ -134,24 +141,29 @@ export class RelationshipMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getrelationshipMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getrelationshipMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getrelationshipMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            error => {
+                                this.toastr.error('Relationship Data not updated !, Please check  error..', 'Error !', {
+                                 toastClass: 'tostr-tost custom-toast-error',
+                               });
+                           }
                         }
                         this.getrelationshipMasterList();
                     });
+                
             }
             this.onClear();
         }
@@ -175,6 +187,7 @@ import { NotificationServiceService } from "app/core/notification-service.servic
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 export class RelationshipMaster {
     RelationshipId: number;
