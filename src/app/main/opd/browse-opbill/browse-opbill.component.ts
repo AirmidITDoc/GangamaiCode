@@ -474,7 +474,7 @@ print() {
   // if(this.reportPrintObj.Remark === '') {
   //   popupWin.document.getElementById('idremark').style.display = 'none';
   // }
-  this.createCDKPortal({}, popupWin);
+  // this.createCDKPortal({}, popupWin);
   popupWin.document.close();
 }
 

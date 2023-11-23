@@ -30,6 +30,8 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild('billTemplate2') billTemplate2:ElementRef;
   @ViewChild('billSalesReturn') billSalesReturn:ElementRef;
   
+  @ViewChild('Salescollectiontemplate') Salescollectiontemplate:ElementRef;
+  
   reportPrintObjList: Printsal[] = [];
   printTemplate: any;
   reportPrintObj: Printsal;
@@ -40,6 +42,12 @@ export class BrowsSalesBillComponent implements OnInit {
   CustomerId:any="";
   CustAddress:any="";
   ExMobile:any="";
+  TotalCashpay:any=0;
+  TotalCardpay:any=0;
+  TotalChequepay:any=0;
+  TotalNeftpay:any=0;
+  TotalPatTmpay:any=0;
+  TotalBalancepay:any=0;
 
   displayedColumns: string[] = [
     'action2',
@@ -241,7 +249,7 @@ export class BrowsSalesBillComponent implements OnInit {
               "salesPayment": CreditPaymentobj
             };
             console.log(Data);
-                debugger
+                
             this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
               console.log(response)
               if (response) {
@@ -327,7 +335,7 @@ export class BrowsSalesBillComponent implements OnInit {
  
 
  getPrint(el) {
-debugger
+
 
 console.log(event);
   var D_data = {
@@ -349,7 +357,7 @@ console.log(event);
   );
 }
   getPrint2(el) {
-    debugger
+    
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
@@ -391,8 +399,140 @@ console.log(event);
     });
   }
 
+getPrintsalescollection(el){
+
+    
+    var D_data = {
+
+      "FromDate":'11/01/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                           
+      "ToDate":'11/30/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                              
+      "StoreId": 10016,//this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,
+      "AddedById": 0//this._loggedService.currentUserValue.user.id,
+      
+    }
+
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesBillService.getSalesCollectionPrint(D_data).subscribe(res => {
+
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+
+        this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj);
+        this.getTemplatesalescollection();
+
+    
+      })
+    );
+}
+ getTemplatesalescollection() {
+    
+    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=38';
+    this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
+  
+      this.printTemplate = resData[0].TempDesign;
+      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo','StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName','HTotalAmount','ExtMobileNo'];
+      // ;
+      for (let i = 0; i < keysArray.length; i++) {
+        let reString = "{{" + keysArray[i] + "}}";
+        let re = new RegExp(reString, "g");
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+      }
+      var strrowslist = "";
+      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+        console.log(this.reportPrintObjList);
+
+
+        var objreportPrint = this.reportPrintObjList[i - 1];
+        let PackValue = '1200'
+        console.log(objreportPrint)
+        
+      this.TotalCashpay= (parseFloat(this.TotalCashpay) +  parseFloat(objreportPrint.CashPayAmount)).toFixed(4);
+      this.TotalCardpay= (parseFloat(this.TotalCardpay) +  parseFloat(objreportPrint.CardPayAmount)).toFixed(4);
+      this.TotalChequepay= (parseFloat(this.TotalChequepay) +  parseFloat(objreportPrint.ChequePayAmount)).toFixed(4);
+      this.TotalNeftpay= (parseFloat(this.TotalNeftpay) +  parseFloat(objreportPrint.NEFTPayAmount)).toFixed(4);
+      this.TotalPatTmpay= (parseFloat(this.TotalPatTmpay) +  parseFloat(objreportPrint.PayTMAmount)).toFixed(4);
+      this.TotalBalancepay = (parseFloat(this.TotalPatTmpay) +  parseFloat(objreportPrint.BalanceAmount)).toFixed(4);
+
+      console.log( this.TotalCashpay,this.TotalCardpay,this.TotalChequepay,this.TotalNeftpay,this.TotalPatTmpay)
+
+        // <div style="display:flex;width:60px;margin-left:20px;">
+        //     <div>`+ i + `</div> 
+        // </div>
+  
+        // <div style="display:flex;width:300px;margin-left:10px;">
+        // <div>`+ this.datePipe.transform(objreportPrint.Date, 'dd/MM/yyyy') + `</div>
+        // </div>
+        var strabc = `
+        <hr style="border-color:white" >
+        <div style="display:flex;margin:8px 0">
+        <div style="display:flex;width:50px;margin-left:20px;">
+            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+        </div>
+        <div style="display:flex;width:100px;text-align:center;">
+        <div>`+  this.datePipe.transform(objreportPrint.Date, 'dd/MM/yyyy') + `</div> 
+        </div>
+        <div style="display:flex;width:110px;text-align:left;">
+        <div>`+objreportPrint.SalesNo + `</div> 
+        </div>
+         <div style="display:flex;width:260px;text-align:left;">
+            <div>`+ objreportPrint.PatientName + `</div> 
+        </div>
+        <div style="display:flex;width:120px;text-align:left;">
+        <div>`+ objreportPrint.CashPayAmount + `</div> 
+         </div>
+        <div style="display:flex;width:120px;text-align:left;">
+        <div>`+objreportPrint.CardPayAmount + `</div> 
+        </div>
+        <div style="display:flex;width:120px;text-align:left;">
+        <div>`+ objreportPrint.ChequePayAmount + `</div> 
+        </div>
+          <div style="display:flex;width:120px;text-align:left;">
+        <div>`+ objreportPrint.NEFTPayAmount + `</div> 
+        </div>
+          <div style="display:flex;width:120px;text-align:left;">
+        <div>`+ objreportPrint.PayTMAmount + `</div> 
+        </div>
+          <div style="display:flex;width:120px;text-align:left;">
+        <div>`+ objreportPrint.AdvanceUsedAmount + `</div> 
+        </div>
+        <div style="display:flex;width:120px;margin-left:10px;text-align:left;">
+            <div>`+ '₹' + objreportPrint.BalanceAmount.toFixed(2) + `</div> 
+        </div>
+        </div>`;
+        strrowslist += strabc;
+      }
+
+     
+      var objPrintWordInfo = this.reportPrintObjList[0];
+  
+      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
+      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+
+      this.printTemplate = this.printTemplate.replace('SetTotalCashpay', this.TotalCashpay);
+      this.printTemplate = this.printTemplate.replace('SetTotalCardpay', this.TotalCardpay);
+      this.printTemplate = this.printTemplate.replace('SetTotalChequepay', this.TotalChequepay);
+      this.printTemplate = this.printTemplate.replace('SetTotalNeftpay', this.TotalNeftpay);
+      this.printTemplate = this.printTemplate.replace('SetTotalPatTmpay', this.TotalPatTmpay);
+      this.printTemplate = this.printTemplate.replace('SetTotalBalancepay', this.TotalBalancepay);
+
+
+      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+      console.log(this.printTemplate);
+  
+      setTimeout(() => {
+         this.printSalescollection();
+        // this.print2
+      }, 1000);
+    });
+  
+  
+  }
   getPrint3(el) {
-    debugger
+    
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
@@ -415,7 +555,7 @@ console.log(event);
   }
 
   getTemplateTax() {
-    debugger
+    
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
   
@@ -487,7 +627,7 @@ console.log(event);
   
   }
   getTemplateTax2() {
-    debugger
+    
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
   
@@ -560,7 +700,7 @@ console.log(event);
   }
   
   getTemplateSalesReturn() {
-    debugger
+    
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
   
@@ -633,7 +773,7 @@ console.log(event);
   }
 
 getTemplate(old = true) {
-  debugger
+  
   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
   this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
@@ -735,6 +875,42 @@ print() {
   popupWin.document.close();
 }
 
+printSalescollection() {
+  let popupWin, printContents;
+ 
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+  popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+  popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+  popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.Salescollectiontemplate.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+  // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  // </html>`);
+  
+  // popupWin.document.close();
+}
 print2() {
   let popupWin, printContents;
  
@@ -809,7 +985,7 @@ print3() {
 }
 
 getSalesRetPrint(el){
-  debugger
+  
   var D_data = {
     "SalesID": el.SalesReturnId, 
     "OP_IP_Type": el.OP_IP_Type,

@@ -13,7 +13,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
-import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -33,6 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatTableModule } from '@angular/material/table';
 
 const routes : Routes =[
   {
@@ -42,6 +42,10 @@ const routes : Routes =[
 ];
 
 @NgModule({
+  declarations: [
+    PharmacyReportComponent,
+    
+  ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -77,6 +81,7 @@ const routes : Routes =[
     SharedModule,
     MatSelectModule,
     MatTooltipModule,
+    
     MatTreeModule
   ],
   providers:[

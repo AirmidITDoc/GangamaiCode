@@ -84,4 +84,8 @@ export class BrowsSalesBillService {
   public getSalesReturnPrint(emp) {
     return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
   }
+
+  public getSalesCollectionPrint(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection", emp);
+  }
 }

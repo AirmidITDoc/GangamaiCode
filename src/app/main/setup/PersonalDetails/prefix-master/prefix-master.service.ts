@@ -40,7 +40,7 @@ export class PrefixMasterService {
     }
     // get Perfix Master list
     public getPrefixMasterList(Param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PrefixMaster_by_Name", Param);
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PrefixMaster_by_Name", Param);
     }
 
     // Gender Master Combobox List
