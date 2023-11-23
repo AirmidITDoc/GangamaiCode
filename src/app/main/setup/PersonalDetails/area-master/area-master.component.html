@@ -173,8 +173,8 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>City Name</mat-label>
-                                            <mat-select formControlName="CityId" placeholder="Bank" #singleSelect
+                                            <mat-label>City</mat-label>
+                                            <mat-select formControlName="CityName" placeholder="Bank" #singleSelect
                                                 required>
                                                 <mat-option>
                                                     <ngx-mat-select-search [formControl]="cityFilterCtrl"
@@ -187,7 +187,6 @@
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-
                                     </div>
 
 
