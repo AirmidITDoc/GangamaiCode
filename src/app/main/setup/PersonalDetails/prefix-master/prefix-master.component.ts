@@ -99,24 +99,24 @@ export class PrefixMasterComponent implements OnInit {
                         ),
                     },
                 };
-                console.log(m_data);
+                // console.log(m_data);
                 this._PrefixService
                     .insertPrefixMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            // this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
-                            //     toastClass: 'tostr-tost custom-toast-success',
-                            //   });
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPrefixMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPrefixMasterList();
+                            //     }
+                            // });
                         } else {
                             this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -155,21 +155,24 @@ export class PrefixMasterComponent implements OnInit {
                         ),
                     },
                 };
-console.log(m_dataUpdate);
+// console.log(m_dataUpdate);
                 this._PrefixService
                     .updatePrefixMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPrefixMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Congratulations !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPrefixMasterList();
+                            //     }
+                            // });
                         } else {
                             error => {
                                 this.toastr.error('Prefix Data not updated !, Please check  error..', 'Error !', {
@@ -185,6 +188,7 @@ console.log(m_dataUpdate);
                         this.getPrefixMasterList();
                     });
             }
+           
             this.onClear();
         }
     }
