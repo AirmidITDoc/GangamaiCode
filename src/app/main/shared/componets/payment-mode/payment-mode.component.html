@@ -20,5 +20,9 @@
         <button *ngIf="isLoading === 'payment-success'" class="next-btn" (click)="dialogRef.close(true)">
             Done
         </button>
+
+        <button *ngIf="isLoading === 'timer-start' && !isRetryOrClose" class="footer-btn" (click)="cancelPayment()">
+            Cancel
+        </button>
     </div>
 </div>

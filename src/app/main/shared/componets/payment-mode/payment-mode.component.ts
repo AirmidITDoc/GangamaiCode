@@ -5,6 +5,7 @@ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabt
 import { environment } from 'environments/environment';
 import { Observable, Subscription, interval } from 'rxjs';
 import { OnlinePaymentService } from '../../services/online-payment.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-payment-mode',
@@ -28,12 +29,15 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
   cancelDurationMin = 4;
   cancelDurationSec = 59;
   statusApiInterval = 10000;
+  isPaymentCancel: boolean = false;
+  timoutPoller: any;
 
   constructor(
     public _RequestforlabtestService: RequestforlabtestService,
     private dialogRef: MatDialogRef<PaymentModeComponent>,
     private onlinePaymentService: OnlinePaymentService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -68,7 +72,7 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
     this._RequestforlabtestService.sendPaymentDetails(req).subscribe((resData: any) => {
       console.log(resData);
       this.isLoading = '';
-      if (resData && resData.ResponseCode === 0 && resData.ResponseMessage.toString().toUpperCase() === 'APPROVED') {
+      if (resData && resData.ResponseCode.toString() == '0' && resData.ResponseMessage.toString().toUpperCase() === 'APPROVED') {
         this.heading = 'Please wait for';
         this.statusStr = 'Your transaction sent to the Machine';
         this.isLoading = 'timer-start';
@@ -122,12 +126,13 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
     this._RequestforlabtestService.getPaymentStatus(req).subscribe((resData: any) => {
       console.log(resData);
       if (resData && resData.ResponseCode && resData.ResponseCode === 1001) {
-        if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5) {
-          setTimeout(() => {
+        this.timoutPoller = setTimeout(() => {
+          if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5 && !this.isPaymentCancel) {
             this.getStatusOfPayment();
-          }, this.statusApiInterval);
-        }
-      } else if (resData && resData.ResponseMessage && resData.ResponseMessage == 'TXN APPROVED') {
+          }
+        }, this.statusApiInterval);
+
+      } else if (resData && resData.ResponseCode.toString() == '0' && resData.ResponseMessage && resData.ResponseMessage == 'TXN APPROVED') {
         console.log('Sucsess.......');
         this.isLoading = 'payment-success';
         this.heading = 'Thank you.!';
@@ -135,10 +140,32 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
       }
       console.log(resData);
     }, error => {
-      if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5) {
-        setTimeout(() => {
+
+      this.timoutPoller = setTimeout(() => {
+        if (this.cancelDurationMin > 0 && this.cancelDurationMin < 5 && !this.isPaymentCancel) {
           this.getStatusOfPayment();
-        }, this.statusApiInterval);
+        }
+      }, this.statusApiInterval);
+
+    });
+  }
+
+  cancelPayment() {
+    let req = {
+      "MerchantID": environment.MERCHANT_ID,
+      "SecurityToken": environment.SECURITY_TOKEN,
+      "IMEI": environment.IMEI,
+      "MerchantStorePosCode": environment.MERCHANT_STORE_POS_CODE,
+      "PlutusTransactionReferenceID": this.PlutusTransactionReferenceID,
+      "Amount": parseInt(this.data.finalAmount),
+    };
+    this._RequestforlabtestService.cancelPayment(req).subscribe((resData: any) => {
+      if (resData && resData.ResponseCode.toString() == '0') {
+        this.isPaymentCancel = true;
+        this.poller.unsubscribe();
+        clearTimeout(this.timoutPoller);
+        this.dialogRef.close(false);
+        this.toastrService.warning('', 'Your current payment was cancelled');
       }
     });
   }

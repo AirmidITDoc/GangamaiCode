@@ -53,6 +53,14 @@ export class RequestforlabtestService {
   public getPaymentStatus(emp){
     return this._httpClient.post("PaymentGetway/OnlinePaymentStatus",emp);
   }
+
+  public cancelPayment(emp){
+    return this._httpClient.post("PaymentGetway/OnlinePaymentCancel",emp);
+  }
+
+  callPaymentRequest() {
+    
+  }
  
 }
 
