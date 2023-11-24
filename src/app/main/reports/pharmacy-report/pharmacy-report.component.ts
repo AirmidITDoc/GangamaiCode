@@ -18,6 +18,7 @@ import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
 import { Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ import Swal from 'sweetalert2';
 export class PharmacyReportComponent implements OnInit {
   // treeControl = new NestedTreeControl<FoodNode>(node => node.children);
   // dataSource = new MatTreeNestedDataSource<FoodNode>();
-  @ViewChild('Salescollectiontemplate') Salescollectiontemplate: ElementRef;
+  @ViewChild('SalescollectiontSummaryemplate') SalescollectiontSummaryemplate: ElementRef;
 
   @ViewChild('SalesDailycollectiontemplate') SalesDailycollectiontemplate: ElementRef;
   @ViewChild('SalesReturntemplate') SalesReturntemplate: ElementRef;
@@ -58,6 +59,8 @@ export class PharmacyReportComponent implements OnInit {
   TotalAdvUsed: any = 0;
   TotalNETAmount: any = 0;
   TotalPaidAmount: any = 0;
+  TotalBillAmount: any = 0;
+
 
   TotalAmount: any = 0;
   TotalVatAmount: any = 0;
@@ -65,7 +68,26 @@ export class PharmacyReportComponent implements OnInit {
   TotalCGST: any = 0;
   TotalSGST: any = 0;
   TotalIGST: any = 0;
-  ReportName:any;
+  ReportName: any;
+  SalesNetAmount: any = 0;
+  SalesReturnNetAmount: any = 0;
+  SalesDiscAmount: any = 0;
+  SalesReturnDiscAmount: any = 0;
+  SalesBillAmount: any = 0;
+  SalesReturnBillAmount: any = 0;
+  SalesPaidAmount: any = 0;
+  SalesReturnPaidAmount: any = 0;
+  SalesBalAmount: any = 0;
+  SalesReturnBalAmount: any = 0;
+
+  SalesCashAmount: any = 0;
+  SalesReturnCashAmount: any = 0;
+
+  TotalBalAmount: any = 0;
+  TotalCashAmount: any = 0;
+  
+ FromDate:any;
+  Todate:any; 
 
   displayedColumns = [
     'ReportName'
@@ -82,12 +104,12 @@ export class PharmacyReportComponent implements OnInit {
   constructor(
     // this.dataSource.data = TREE_DATA;
     public _PharmacyreportService: PharmacyreportService,
-    public _BrowsSalesBillService: BrowsSalesBillService,
+    public _PrintPreviewService: PrintPreviewService,
     public _BrowsSalesService: SalesService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
-    // private dialogRef: MatDialogRef<IPAdvanceComponent>,
+    public _BrowsSalesBillService: BrowsSalesBillService,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder
   ) { }
@@ -103,7 +125,7 @@ export class PharmacyReportComponent implements OnInit {
 
     this._PharmacyreportService.getDataByQuery().subscribe(data => {
       this.dataSource.data = data as any[];
-     
+
     });
   }
 
@@ -113,7 +135,7 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   ReportSelection(el) {
-    this.ReportName= el.ReportName;
+    this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
 
   }
@@ -122,28 +144,93 @@ export class PharmacyReportComponent implements OnInit {
     if (this.ReportID == 1) {
       this.getPrintsalesDailycollection();
     } else if (this.ReportID == 2) {
-      this.getsalescollection();
+      this.getsalescollectionSummary();
     } else if (this.ReportID == 5) {
       this.getPrintsalesReturn();
     }
   }
 
-  getsalescollection() {
+  getsalescollectionSummary() {
+
+    var D_data = {
+      "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "StoreId": this.accountService.currentUserValue.user.storeId,
+      "AddedById": 0,//this.accountService.currentUserValue.user.id,
+
+    }
+    this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
+    this.Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900';
+   
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesBillService.getSalesCollectionSummary(D_data).subscribe(res => {
+
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+
+        for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+          debugger
+          var objreportPrint = this.reportPrintObjList[i - 1];
+          let PackValue = '1200'
+
+          if (objreportPrint.Label == 'Sales') {
+            this.SalesBillAmount = (parseFloat(this.SalesBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+            this.SalesDiscAmount = (parseFloat(this.SalesDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+            this.SalesNetAmount = (parseFloat(this.SalesNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+            this.SalesPaidAmount = (parseFloat(this.SalesPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+            this.SalesBalAmount = (parseFloat(this.SalesBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+            this.SalesCashAmount = (parseFloat(this.SalesCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+
+          } else if (objreportPrint.Label == 'Sales Return') {
+            this.SalesReturnBillAmount = (parseFloat(this.SalesReturnBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+            this.SalesReturnDiscAmount = (parseFloat(this.SalesReturnDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+            this.SalesReturnNetAmount = (parseFloat(this.SalesReturnNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+            this.SalesReturnPaidAmount = (parseFloat(this.SalesReturnPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+            this.SalesReturnBalAmount = (parseFloat(this.SalesReturnBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+            this.SalesReturnCashAmount = (parseFloat(this.SalesReturnCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+          }
+        }
+        this.TotalBillAmount = ((parseFloat(this.SalesBillAmount) - parseFloat(this.SalesReturnBillAmount))).toFixed(2);
+        this.TotalDiscAmount = ((parseFloat(this.SalesDiscAmount) - parseFloat(this.SalesReturnDiscAmount))).toFixed(2);
+        this.TotalNETAmount = ((parseFloat(this.SalesNetAmount) - parseFloat(this.SalesReturnNetAmount))).toFixed(2);
+        this.TotalPaidAmount = ((parseFloat(this.SalesPaidAmount) - parseFloat(this.SalesReturnPaidAmount))).toFixed(2);
+        this.TotalBalAmount = ((parseFloat(this.SalesBalAmount) - parseFloat(this.SalesReturnBalAmount))).toFixed(2);
+        this.TotalCashAmount = ((parseFloat(this.SalesCashAmount) - parseFloat(this.SalesReturnCashAmount))).toFixed(2);
+      
+
+        this.reportPrintObj = res[0] as Printsal;
+
+        setTimeout(() => {
+          this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
+        }, 1000);
+
+      })
+    );
+  }
+
+
+
+
+  getPrintsalesDailycollection() {
 
     var D_data = {
 
-      "FromDate": '11/01/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('start').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                           
-      "ToDate": '11/30/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('end').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                              
-      "StoreId": 10016,//this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,
-      "AddedById": 0//this._loggedService.currentUserValue.user.id,
+      "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "StoreId": this.accountService.currentUserValue.user.storeId,
+      "AddedById": 0,//this.accountService.currentUserValue.user.id,
 
     }
-
+    this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
+    this.Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900';
+   
     let printContents;
     this.subscriptionArr.push(
-      this._BrowsSalesBillService.getSalesCollectionPrint(D_data).subscribe(res => {
+      this._BrowsSalesBillService.getSalesDailyCollection(D_data).subscribe(res => {
 
         this.reportPrintObjList = res as Printsal[];
+        this.reportPrintObjList2 = res as Printsal[];
         console.log(this.reportPrintObjList);
 
         for (let i = 1; i <= this.reportPrintObjList.length; i++) {
@@ -157,138 +244,18 @@ export class PharmacyReportComponent implements OnInit {
           this.TotalNeftpay = (parseFloat(this.TotalNeftpay) + parseFloat(objreportPrint.NEFTPayAmount)).toFixed(2);
           this.TotalPayTmpay = (parseFloat(this.TotalPayTmpay) + parseFloat(objreportPrint.PayTMAmount)).toFixed(2);
           this.TotalBalancepay = (parseFloat(this.TotalBalancepay) + parseFloat(objreportPrint.BalanceAmount)).toFixed(2);
-          this.TotalAdvUsed = (parseFloat(this.TotalAdvUsed) + parseFloat(objreportPrint.AdvanceUsedAmount)).toFixed(2);
+          this.TotalPaidAmount = (parseFloat(this.TotalPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
           this.TotalNETAmount = (parseFloat(this.TotalNETAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
         }
 
         this.reportPrintObj = res[0] as Printsal;
 
         setTimeout(() => {
-          this.print3();
+          this._PrintPreviewService.PrintView(this.SalesDailycollectiontemplate.nativeElement.innerHTML);
         }, 1000);
 
       })
     );
-  }
-
-  print3() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.Salescollectiontemplate.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
-  
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    // popupWin.document.close();
-  }
-
-
-
-  getPrintsalesDailycollection() {
-
-    var D_data = {
-
-      "FromDate": '11/01/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('start').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                           
-      "ToDate": '11/15/2023',// this.datePipe.transform(this._BrowsSalesBillService.userForm.get('end').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',                                              
-      "StoreId": 10016,//this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,
-      "AddedById": 0//this._loggedService.currentUserValue.user.id,
-
-    }
-
-    let printContents;
-    this.subscriptionArr.push(
-      this._BrowsSalesBillService.getSalesDailyCollectionPrint(D_data).subscribe(res => {
-
-        this.reportPrintObjList = res as Printsal[];
-        this.reportPrintObjList2 = res as Printsal[];
-        console.log(this.reportPrintObjList);
-
-        for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-
-          var objreportPrint = this.reportPrintObjList[i - 1];
-          let PackValue = '1200'
-
-          this.TotalCashpay = (parseFloat(this.TotalCashpay) + parseFloat(objreportPrint.CashPay)).toFixed(2);
-          this.TotalCardpay = (parseFloat(this.TotalCardpay) + parseFloat(objreportPrint.CardPay)).toFixed(2);
-          this.TotalChequepay = (parseFloat(this.TotalChequepay) + parseFloat(objreportPrint.ChequePay)).toFixed(2);
-          this.TotalNeftpay = (parseFloat(this.TotalNeftpay) + parseFloat(objreportPrint.NEFTPay)).toFixed(2);
-          this.TotalPayTmpay = (parseFloat(this.TotalPayTmpay) + parseFloat(objreportPrint.OnlinePay)).toFixed(2);
-          this.TotalBalancepay = (parseFloat(this.TotalBalancepay) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
-          this.TotalPaidAmount = (parseFloat(this.TotalPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
-          this.TotalNETAmount = (parseFloat(this.TotalNETAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
-        }
-
-        this.reportPrintObj = res[0] as Printsal;
-
-        setTimeout(() => {
-          this.print4();
-        }, 1000);
-
-      })
-    );
-  }
-
-  print4() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.SalesDailycollectiontemplate.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
-  
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    // popupWin.document.close();
   }
 
 
