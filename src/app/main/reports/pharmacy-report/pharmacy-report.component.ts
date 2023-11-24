@@ -32,17 +32,18 @@ export class PharmacyReportComponent implements OnInit {
   // treeControl = new NestedTreeControl<FoodNode>(node => node.children);
   // dataSource = new MatTreeNestedDataSource<FoodNode>();
   @ViewChild('SalescollectiontSummaryemplate') SalescollectiontSummaryemplate: ElementRef;
-
+  @ViewChild('SalesPatientwiseTemplate') SalesPatientwiseTemplate: ElementRef;
   @ViewChild('SalesDailycollectiontemplate') SalesDailycollectiontemplate: ElementRef;
   @ViewChild('SalesReturntemplate') SalesReturntemplate: ElementRef;
-
-
   @ViewChild('billTemplate') billTemplate: ElementRef;
-  sIsLoading: string = '';
+
+UserList:any=[];
+sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   currentDate = new Date();
   reportPrintObjList: Printsal[] = [];
+  reportPrintObjListTest: Printsal[] = [];
   reportPrintObjList2: Printsal[] = [];
   reportPrintObjList1: IndentList[] = [];
   printTemplate: any;
@@ -105,6 +106,7 @@ export class PharmacyReportComponent implements OnInit {
     // this.dataSource.data = TREE_DATA;
     public _PharmacyreportService: PharmacyreportService,
     public _PrintPreviewService: PrintPreviewService,
+    
     public _BrowsSalesService: SalesService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
@@ -118,6 +120,7 @@ export class PharmacyReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.bindReportData();
+    this.GetUserList();
   }
 
   bindReportData() {
@@ -140,12 +143,25 @@ export class PharmacyReportComponent implements OnInit {
 
   }
 
+  GetUserList(){
+    var vdata={
+      UserName : this._BrowsSalesBillService.userForm.get('UserId').value + '%' || this.accountService.currentUserValue.user.storeId
+    }
+    this._PharmacyreportService.getUserdetailList(vdata).subscribe(data => {
+      this.UserList = data;
+      this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
+      
+    });
+  }
+
   getPrint() {
     if (this.ReportID == 1) {
       this.getPrintsalesDailycollection();
     } else if (this.ReportID == 2) {
       this.getsalescollectionSummary();
-    } else if (this.ReportID == 5) {
+    } else if (this.ReportID == 3) {
+      this.getsalesPatientWise();
+    }  else if (this.ReportID == 5) {
       this.getPrintsalesReturn();
     }
   }
@@ -156,7 +172,7 @@ export class PharmacyReportComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId": this.accountService.currentUserValue.user.storeId,
-      "AddedById": 0,//this.accountService.currentUserValue.user.id,
+      "AddedById": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
 
     }
     this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
@@ -202,7 +218,7 @@ export class PharmacyReportComponent implements OnInit {
         this.reportPrintObj = res[0] as Printsal;
 
         setTimeout(() => {
-          this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
+          this._PrintPreviewService.PrintView(this.SalesPatientwiseTemplate.nativeElement.innerHTML);
         }, 1000);
 
       })
@@ -219,7 +235,7 @@ export class PharmacyReportComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId": this.accountService.currentUserValue.user.storeId,
-      "AddedById": 0,//this.accountService.currentUserValue.user.id,
+      "AddedById": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
 
     }
     this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
@@ -236,6 +252,8 @@ export class PharmacyReportComponent implements OnInit {
         for (let i = 1; i <= this.reportPrintObjList.length; i++) {
 
           var objreportPrint = this.reportPrintObjList[i - 1];
+          // this.reportPrintObjListTest[i-1]=objreportPrint.Label;
+
           let PackValue = '1200'
 
           this.TotalCashpay = (parseFloat(this.TotalCashpay) + parseFloat(objreportPrint.CashPayAmount)).toFixed(2);
@@ -247,7 +265,7 @@ export class PharmacyReportComponent implements OnInit {
           this.TotalPaidAmount = (parseFloat(this.TotalPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
           this.TotalNETAmount = (parseFloat(this.TotalNETAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
         }
-
+        console.log(this.reportPrintObjListTest)
         this.reportPrintObj = res[0] as Printsal;
 
         setTimeout(() => {
@@ -258,6 +276,67 @@ export class PharmacyReportComponent implements OnInit {
     );
   }
 
+
+  getsalesPatientWise() {
+
+    var D_data = {
+      "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "RegNo ": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
+      "CreditReasonId": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
+      "StoreId": this.accountService.currentUserValue.user.storeId,
+     
+
+    }
+    this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
+    this.Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900';
+   
+    let printContents;
+    this.subscriptionArr.push(
+      this._BrowsSalesBillService.getSalesDetailPatientwise(D_data).subscribe(res => {
+
+        this.reportPrintObjList = res as Printsal[];
+        console.log(this.reportPrintObjList);
+
+        for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+          debugger
+          var objreportPrint = this.reportPrintObjList[i - 1];
+          let PackValue = '1200'
+
+          if (objreportPrint.Label == 'Sales') {
+            this.SalesBillAmount = (parseFloat(this.SalesBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+            this.SalesDiscAmount = (parseFloat(this.SalesDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+            this.SalesNetAmount = (parseFloat(this.SalesNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+            this.SalesPaidAmount = (parseFloat(this.SalesPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+            this.SalesBalAmount = (parseFloat(this.SalesBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+            this.SalesCashAmount = (parseFloat(this.SalesCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+
+          } else if (objreportPrint.Label == 'Sales Return') {
+            this.SalesReturnBillAmount = (parseFloat(this.SalesReturnBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+            this.SalesReturnDiscAmount = (parseFloat(this.SalesReturnDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+            this.SalesReturnNetAmount = (parseFloat(this.SalesReturnNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+            this.SalesReturnPaidAmount = (parseFloat(this.SalesReturnPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+            this.SalesReturnBalAmount = (parseFloat(this.SalesReturnBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+            this.SalesReturnCashAmount = (parseFloat(this.SalesReturnCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+          }
+        }
+        this.TotalBillAmount = ((parseFloat(this.SalesBillAmount) - parseFloat(this.SalesReturnBillAmount))).toFixed(2);
+        this.TotalDiscAmount = ((parseFloat(this.SalesDiscAmount) - parseFloat(this.SalesReturnDiscAmount))).toFixed(2);
+        this.TotalNETAmount = ((parseFloat(this.SalesNetAmount) - parseFloat(this.SalesReturnNetAmount))).toFixed(2);
+        this.TotalPaidAmount = ((parseFloat(this.SalesPaidAmount) - parseFloat(this.SalesReturnPaidAmount))).toFixed(2);
+        this.TotalBalAmount = ((parseFloat(this.SalesBalAmount) - parseFloat(this.SalesReturnBalAmount))).toFixed(2);
+        this.TotalCashAmount = ((parseFloat(this.SalesCashAmount) - parseFloat(this.SalesReturnCashAmount))).toFixed(2);
+      
+
+        this.reportPrintObj = res[0] as Printsal;
+
+        setTimeout(() => {
+          this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
+        }, 1000);
+
+      })
+    );
+  }
 
 
   getPrintsalesReturn() {

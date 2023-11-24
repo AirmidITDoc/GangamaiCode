@@ -29,7 +29,8 @@ export class BrowsSalesBillService {
       SalesNo: '',
       OP_IP_Type: ['3'],
       StoreId: '',
-      IPNo: ''
+      IPNo: '',
+      UserId:'',
 
     })
   }
@@ -90,11 +91,15 @@ export class BrowsSalesBillService {
     }
   
 
-  public getSalesCollectionPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection", emp);
+  public getSalesCollectionSummary(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary", emp);
+  }
+  
+  public getSalesDailyCollection(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection ", emp);
   }
 
-  public getSalesDailyCollectionPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary ", emp);
+  public getSalesDetailPatientwise(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=RptPharmacyCreditReport_PatientWise ", emp);
   }
 }

@@ -152,10 +152,17 @@ app-update-grn {
       justify-content:left; 
   }
 
-  .mat-column-UOM {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+  .mat-column-buttons{
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+
+  .mat-column-UOMId{
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
     text-align: left;
   }
  
@@ -179,9 +186,9 @@ app-update-grn {
     text-align: left;
   }
   .mat-column-FreeQty {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
     text-align: left;
   }
   .mat-column-MRP {
@@ -310,9 +317,9 @@ app-update-grn {
   }
 
   .mat-column-Disc {
-    width: 40px;
-    max-width: 40px;
-    min-width: 40px;
+    width: 60px;
+    max-width: 60px;
+    min-width: 60px;
     text-align: left;
   }
   .mat-column-DisAmount {

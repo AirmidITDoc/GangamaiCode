@@ -37,7 +37,7 @@ export class UpdateGRNComponent implements OnInit {
   isChecked: boolean = true;
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
-
+PaymentType:any;
 
   StoreList: any = [];
   StoreName: any;
@@ -63,9 +63,9 @@ export class UpdateGRNComponent implements OnInit {
 
 
   displayedColumns2 = [
-    'Action',
+    'buttons',
     'ItemName',
-    'UOM',
+    'UOMId',
     'HSNCode',
     'BatchNo',
     'ExpDate',
@@ -150,7 +150,7 @@ export class UpdateGRNComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.data.chkNewGRN==2) {
-
+debugger
       this.registerObj = this.data.Obj;
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo
@@ -225,7 +225,7 @@ export class UpdateGRNComponent implements OnInit {
       {
         ItemID:this.ItemID,
         ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
-        UOM: this.UOM,
+        UOMId: this.UOM,
         HSNCode: this.HSNCode,
         BatchNo: this.BatchNo,
         ExpDate: this.ExpDate,
@@ -270,17 +270,6 @@ export class UpdateGRNComponent implements OnInit {
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
 
-  }
-
-
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
-    }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
   }
 
   getOptionText(option) {
@@ -415,10 +404,9 @@ export class UpdateGRNComponent implements OnInit {
     this.TotalFinalAmount = TotalAmt;
 
     let FinalDisAmount
-    FinalDisAmount = element.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0);
+    this.FinalDisAmount = (element.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0)).toFixed(2);
 
-    this.FinalDisAmount = FinalDisAmount;
-
+    
     let FinalNetAmount;
     FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.FinalNetAmount = (FinalNetAmount).toFixed(2);
@@ -476,14 +464,15 @@ export class UpdateGRNComponent implements OnInit {
 
 
   getSelectedObj(obj) {
+    debugger
     this.accountService
     
-    this.ItemID = obj.ItemId;
+    this.ItemID = obj.ItemID;
     this.ItemName = obj.ItemName;
     this.Qty = obj.BalanceQty;
 
     if (this.Qty > 0) {
-      this.UOM = obj.UOM;
+      this.UOM = obj.UOMId;
       this.Rate = obj.PurchaseRate;
       this.TotalAmount = (parseInt(obj.BalanceQty) * parseFloat(this.Rate)).toFixed(2);
       this.NetAmount = this.TotalAmount;
@@ -598,12 +587,34 @@ export class UpdateGRNComponent implements OnInit {
       .map((i, idx) => (i.position = (idx + 1), i));
   }
 
+
+
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsItemNameList.data = [];
+      this.dsItemNameList.data = this.chargeslist;
+    }
+    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+  }
+
+
   OnSave(){
     if(this.data.chkNewGRN==1)
     {
       this.OnSavenew();
     }else if(this.data.chkNewGRN==2){
       this.OnSaveEdit()
+    }
+  }
+
+  PaymentTypeChk(){
+    if (this._GRNList.GRNFirstForm.get('PaymentType').value == 'Credit') {
+      this.PaymentType=false;
+    }
+    else if(this._GRNList.GRNFirstForm.get('PaymentType').value == 'Cash') {
+      this.PaymentType=true;
     }
   }
 
@@ -617,7 +628,7 @@ export class UpdateGRNComponent implements OnInit {
         grnSaveObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
         grnSaveObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;
-        grnSaveObj['cash_CreditType'] = true,
+        grnSaveObj['cash_CreditType'] =  this.PaymentType,
         grnSaveObj['grnType'] = 0;
         grnSaveObj['totalAmount'] = this.TotalFinalAmount;
         grnSaveObj['totalDiscAmount'] = this.FinalDisAmount;
@@ -650,7 +661,7 @@ export class UpdateGRNComponent implements OnInit {
           grnDetailSaveObj['grnDetID'] = 0;
           grnDetailSaveObj['grnId'] = 0;
           grnDetailSaveObj['itemId'] = element.ItemID;
-          grnDetailSaveObj['uomId'] = element.UOM;
+          grnDetailSaveObj['uomId'] = element.UOMId;
           grnDetailSaveObj['receiveQty'] = element.Qty;
           grnDetailSaveObj['freeQty'] = element.FreeQty;
           grnDetailSaveObj['mrp'] = element.MRP;
@@ -716,8 +727,8 @@ export class UpdateGRNComponent implements OnInit {
             // Swal.fire('Save GRN !', 'Record Generated Successfully !', 'success').then((result) => {
             //   if (result.isConfirmed) {
             //     let m = response;
-            //     this._matDialog.closeAll();
-            //     this.OnReset();
+                this._matDialog.closeAll();
+                this.OnReset();
             //   }
             // });
 
@@ -744,7 +755,7 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
     updateGRNHeaderObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
       updateGRNHeaderObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;
-    updateGRNHeaderObj['cash_CreditType'] = true,
+    updateGRNHeaderObj['cash_CreditType'] =  this.PaymentType,
       updateGRNHeaderObj['grnType'] = 0;
     updateGRNHeaderObj['totalAmount'] = this.TotalFinalAmount;
     updateGRNHeaderObj['totalDiscAmount'] = this.FinalDisAmount;
@@ -766,7 +777,7 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['tranProcessId'] = 0;
     updateGRNHeaderObj['tranProcessMode'] = "";
     updateGRNHeaderObj['billDiscAmt'] = this.FinalDisAmount || 0;
-    updateGRNHeaderObj['grnid'] = this.registerObj.GRNId;
+    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
@@ -775,9 +786,9 @@ export class UpdateGRNComponent implements OnInit {
 
       let grnDetailSaveObj = {};
       grnDetailSaveObj['grnDetID'] = 0;
-      grnDetailSaveObj['grnId'] = this.registerObj.GRNId;;
+      grnDetailSaveObj['grnId'] = this.registerObj.GRNID;
       grnDetailSaveObj['itemId'] = element.ItemID;
-      grnDetailSaveObj['uomId'] = element.UOM;
+      grnDetailSaveObj['uomId'] = element.UOMId;
       grnDetailSaveObj['receiveQty'] = element.Qty;
       grnDetailSaveObj['freeQty'] = element.FreeQty;
       grnDetailSaveObj['mrp'] = element.MRP;
@@ -825,7 +836,7 @@ export class UpdateGRNComponent implements OnInit {
     };
 
     console.log(submitData);
-
+debugger
     this._GRNList.GRNEdit(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Updated GRN !', 'Record Updated Successfully !', 'success').then((result) => {

@@ -712,7 +712,7 @@ debugger
       grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemID;
-      grnDetailSaveObj['uomId'] = element.UOM;
+      grnDetailSaveObj['uomId'] = element.UOMId;
       grnDetailSaveObj['receiveQty'] = element.Qty;
       grnDetailSaveObj['freeQty'] = element.FreeQty;
       grnDetailSaveObj['mrp'] = element.MRP;
@@ -1175,7 +1175,7 @@ export class GrnItemList {
 export class ItemNameList {
   Action: string;
   ItemName: string;
-  UOM: number;
+  UOMId: number;
   HSNCode: number;
   BatchNo: number;
   ExpDate: number;
@@ -1223,7 +1223,7 @@ export class ItemNameList {
     {
       this.Action = ItemNameList.Action || "";
       this.ItemName = ItemNameList.ItemName || "";
-      this.UOM = ItemNameList.UOM || 0;
+      this.UOMId = ItemNameList.UOMId || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;
       this.BatchNo = ItemNameList.BatchNo || 0;
       this.ExpDate = ItemNameList.ExpDate || 0;

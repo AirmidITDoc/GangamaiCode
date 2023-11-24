@@ -33,7 +33,7 @@ export class GoodReceiptnoteService {
       Supplier_Id:'',
       Status:0,
       Status1:0,
-      Status2:0,
+      Status2:[true],
       Status3:0,
       Verify:0,
       start: [new Date().toISOString()],
@@ -50,7 +50,7 @@ export class GoodReceiptnoteService {
       DateOfInvoice:[(new Date()).toISOString()],
       GateEntryNo:[''],
       Status3:[''],
-      
+      PaymentType:['Cash']
  });
   }
   

@@ -10,7 +10,19 @@ app-good-receiptnote {
       height: 220px !important;
       width: 100%;
 
-      
+      .mat-column-ItemName {
+        width: 330px;
+        max-width: 330px;
+        min-width: 330px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 7px;
+        justify-content:left; 
+      }
       
     }
     .table3 {
