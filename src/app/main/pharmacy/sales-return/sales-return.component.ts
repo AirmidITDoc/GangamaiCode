@@ -682,10 +682,10 @@ export class SalesReturnComponent implements OnInit {
       PaymentInsertobj['AdvanceUsedAmount'] = 0;
       PaymentInsertobj['AdvanceId'] = 0;
       PaymentInsertobj['RefundId'] = 0;
-      PaymentInsertobj['TransactionType'] = 4;
+      PaymentInsertobj['TransactionType'] = 5;
       PaymentInsertobj['Remark'] = '',
       PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      PaymentInsertobj['IsCancelled'] = true;
+      PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = "01/01/1900";
       PaymentInsertobj['OPD_IPD_Type'] = 3;
