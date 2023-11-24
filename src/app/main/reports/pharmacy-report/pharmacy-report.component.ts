@@ -218,7 +218,7 @@ sIsLoading: string = '';
         this.reportPrintObj = res[0] as Printsal;
 
         setTimeout(() => {
-          this._PrintPreviewService.PrintView(this.SalesPatientwiseTemplate.nativeElement.innerHTML);
+          this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
         }, 1000);
 
       })
