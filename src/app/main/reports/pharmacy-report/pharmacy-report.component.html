@@ -104,12 +104,12 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;" >
+                                    <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;">
                                         <mat-label>User Name</mat-label>
                                         <mat-select formControlName="UserId" name="UserId" required>
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of UserList" [value]="m">
-                                              {{m.UserId}} | {{m.UserLoginName}} | {{UserName}}
+                                                {{m.UserId}} | {{m.UserLoginName}} | {{UserName}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -120,7 +120,11 @@
                                         Print
                                     </button>
 
-
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="width: 400px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 400px;"
+                                        (click)="viewDailyCollectionPdf()">
+                                        Print New By Vimal
+                                    </button>
 
                                 </div>
 
@@ -212,7 +216,7 @@
                     Bal Amt</td>
             </tr>
 
-            
+
             <!-- <tr *ngFor="let item1 of reportPrintObjListTest;" style="font-size:10px;border-bottom: 1px;">
                 <tr><td>{{item1?.Label}}</td></tr> -->
 
@@ -224,7 +228,8 @@
                 <td style="border-left:1px solid #000;padding:0;height:10px;text-align:center;vertical-align:middle">
                     {{item?.SalesNo}}</td>
 
-                <td style="border-left:1px solid #000;padding:0;height:10px;vertical-align:middle;text-align: left;margin-left: 5px;">
+                <td
+                    style="border-left:1px solid #000;padding:0;height:10px;vertical-align:middle;text-align: left;margin-left: 5px;">
                     {{item?.PatientName}}
                 </td>
                 <td

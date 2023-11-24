@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -225,7 +226,24 @@ sIsLoading: string = '';
     );
   }
 
-
+  viewDailyCollectionPdf(el){
+    
+    this._BrowsSalesBillService.getSalesDailyCollectionNew(
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.accountService.currentUserValue.user.storeId,0
+    ).subscribe(res=>{
+    const dialogRef = this._matDialog.open(PdfviewerComponent, 
+      {   maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+           data : {
+          base64 : res["base64"] as string,
+          title:"Pharma Daily Collection Viewer"
+        }
+    });
+    });
+  }
 
 
   getPrintsalesDailycollection() {

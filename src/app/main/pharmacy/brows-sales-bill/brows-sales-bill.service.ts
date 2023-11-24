@@ -99,6 +99,10 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection ", emp);
   }
 
+  public getSalesDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" + FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+
   public getSalesDetailPatientwise(emp){
     return this._httpClient.post("Generic/GetByProc?procName=RptPharmacyCreditReport_PatientWise ", emp);
   }
