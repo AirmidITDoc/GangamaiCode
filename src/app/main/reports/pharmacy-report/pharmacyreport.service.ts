@@ -32,3 +32,4 @@ export class PharmacyreportService {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList",Id)
   }
 }
+
