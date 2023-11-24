@@ -81,11 +81,20 @@ export class BrowsSalesBillService {
   }
 
 
+  // public getSalesReturnPrint(emp) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
+  // }
+
   public getSalesReturnPrint(emp) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
-  }
+      return this._httpClient.post("Generic/GetByProc?procName=RptSalesReturnReport", emp);
+    }
+  
 
   public getSalesCollectionPrint(emp){
     return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection", emp);
+  }
+
+  public getSalesDailyCollectionPrint(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary ", emp);
   }
 }
