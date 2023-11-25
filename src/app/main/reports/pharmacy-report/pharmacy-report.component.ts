@@ -226,7 +226,7 @@ sIsLoading: string = '';
     );
   }
 
-  viewDailyCollectionPdf(el){
+  viewDailyCollectionPdf(el?: any){
     
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',

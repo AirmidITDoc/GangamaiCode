@@ -29,23 +29,19 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:99%;">
-            <div>
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
                 <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                     <span class="h5" style="font-size: 17px;">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->
                 <!-- SIDEBAR CONTENT -->
-                <div>
                     <div class="nav material2">
-                        <form [formGroup]="_BrowseOPDReturnsService.myFilterform" style="padding: 6px 6px 5px 5px;"
+                        <form [formGroup]="_BrowseOPDReturnsService.myFilterform"
                             fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="start" placeholder="Start date">
@@ -76,23 +72,20 @@
                                     <input name="LastName" formControlName="LastName" matInput>
                                 </mat-form-field>
 
-
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                        matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getBrowseOPDReturnList()"
-                                        matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+                                    <button mat-raised-button (click)="getBrowseOPDReturnList()" class="searchButton" matTooltip="search">
+                                      <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
+                                      Search
                                     </button>
-                                </div>
+                                    <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
+                                      <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                      Clear
+                                    </button>
+                                  </div>
                             </div>
 
                         </form>
                     </div>
-                </div>
-            </div>
         </fuse-sidebar>
         <!-- / SIDEBAR -->
         <!-- CENTER -->

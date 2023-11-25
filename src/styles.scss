@@ -13,18 +13,18 @@
 } 
 //added by prasad
 .mat-row, .mat-footer-row {
-    min-height: 20px;
-    height: 35px;
+    min-height: 42px !important;
+    height: 42px !important;
 }
 
 .mat-table {
     height: 520px !important;
     .mat-row {
         &:hover {
-            background: #7cc0df;
+            background: #d7d7d7;
         }
         &:active {
-            background:#7cc0df;
+            background:#d7d7d7;
         }
     }
    
@@ -78,6 +78,10 @@
 
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
+}
+
+.mat-form-field {
+    font-size: 14px;
 }
 
 // Table Footer Label CSS 
@@ -242,19 +246,20 @@ background: rgba(240, 239, 239, 0.15);
    color: white;
    }
    
-.clearbutton{
-    padding-right: 5px;
-    padding-left: 5px;
-    float:right;
-    color: blue;
-    width: 24%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin: 5px;  
-    font-size:17px;  
-    border:1px solid #808080; 
-    height: 40px;
-
+.clearbutton {
+    // padding-right: 5px;
+    // padding-left: 5px;
+    // float: right;
+    // color: blue;
+    // width: 27%;
+    // margin-top: 20px;
+    // margin-bottom: 20px;
+    // margin: 5px;
+    // font-size: 17px;
+    // border: 1px solid #808080;
+    // height: 40px;
+    background-color: #949494 !important;
+    color: white !important;
 }
 
 
@@ -267,19 +272,22 @@ background: rgba(240, 239, 239, 0.15);
     color:blue;
 }
 
-.searchButton{
-    padding-right: 5px;
-    padding-left: 5px; 
-    float:right; 
-     color: blue;
-    width: 24%; 
-    margin-top: 20px; 
-    margin-bottom: 20px;
-     margin: 5px;   
-     font-size:17px;  
-      border:1px solid #808080;  
-       height: 40px; 
-   
+.searchButton {
+    // padding-right: 5px;
+    // padding-left: 5px;
+    // float: right;
+    // color: blue;
+    // width: 27%;
+    // margin-top: 20px;
+    // margin-bottom: 20px;
+    // margin: 5px;
+    // font-size: 17px;
+    // border: 1px solid #808080;
+    // height: 40px;
+    margin-right: 5px;
+    background-color: #0479b4 !important;
+    color: white !important;
+    
 }
 
 .searchiconbutton{
@@ -290,6 +298,12 @@ background: rgba(240, 239, 239, 0.15);
     margin-right: 6px;
     color:blue;
    
+}
+
+.searchButton, .clearbutton {
+    width: 100px;
+    height: 45px;
+    font-size: 17px;
 }
 
 //spinner start
@@ -602,4 +616,45 @@ legend {
     font-size: 16px;
     letter-spacing: 1.3px;
     color: white;
+}
+
+.mat-tab-label .mat-tab-label-content {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.mat-expansion-panel-header-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color:#a69e9e !important;
+}
+
+/* To change mat form field border color on focus */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+    color: #a69e9e !important;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+    color: red !important;
+}
+
+.table-header-offwhite {
+    background-color: #d7d7d7 !important;
+}
+
+.mat-header-text {
+    color: #2b2a2a !important;
+}
+
+.search-sidebar {
+    width:30%;
+    border-radius:4px;
+    margin-left:12px;
+    background-color: white;
+    height:99%;
+    margin-top: 12px;
 }

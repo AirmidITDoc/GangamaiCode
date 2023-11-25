@@ -27,14 +27,13 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm"
-            style="overflow:auto; width:30%; height: 99%; border-radius:4px; background-color: white; margin-top: 10px;margin-left: 7px;">
+        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
 
             <!-- SIDEBAR CONTENT -->
             <div class="content">
                 <div class="sidebar-content">
 
-                    <div class="card">
+                    <!-- <div class="card"> -->
 
                         <!-- SIDEBAR HEADER -->
                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
@@ -46,7 +45,7 @@
                         <!-- / SIDEBAR HEADER -->
 
                         <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                        <!-- <div class="content py-16 pl-10 p-12" fusePerfectScrollbar> -->
                             <div class="nav material2">
                                 <form [formGroup]="_BrowseOpdPaymentReceiptService.myFilterform">
                                     <div fxLayout="column" fxLayoutAlign="start none">
@@ -87,24 +86,21 @@
                                             <input name="LastName" formControlName="LastName" matInput>
                                         </mat-form-field>
 
-
-                                        <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                                matTooltip="close">
-                                                <mat-icon class="cleariconbutton">close</mat-icon></button>
-
-                                            <button mat-raised-button class="searchButton" (click)="onShow($event)"
-                                                [disabled]="click" matTooltip="search">
-                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+                                            <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
+                                              <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
+                                              Search
                                             </button>
-
-
-                                        </div>
+                                            <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
+                                              <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                              Clear
+                                            </button>
+                                          </div>
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
                 </div>
                 <!-- / SIDEBAR CONTENT -->
             </div>
