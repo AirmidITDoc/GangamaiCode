@@ -91,7 +91,7 @@
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"  style="color: white;">
+                                            <button mat-icon-button (click)="onEdit(row)"  style="color:black;">
                                                 <mat-icon title="Edit Menu">launch</mat-icon>
                                             </button>
                                             <button mat-icon-button (click)="onDeactive(row.GenderId)" color="warn">
@@ -114,7 +114,7 @@
                                         [ngClass]="{'hide':DSGenderMasterList!=null}">
                                     </mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
