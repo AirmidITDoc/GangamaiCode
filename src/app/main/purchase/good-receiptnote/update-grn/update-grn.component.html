@@ -136,13 +136,12 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-radio-group name="Status2" formControlName="Status2" style="width:15%"
-                                            value="Cash" style="padding-top:13px;" formControlName="Status2" #Status2>
-                                            <mat-radio-button value="Credit" [checked]="isChecked"
-                                                class="mr-sm-12">Credit</mat-radio-button>
-
-                                            <mat-radio-button value="Cash" class="mr-sm-12">Cash</mat-radio-button>
-                                        </mat-radio-group>
+                                     
+                                        <mat-radio-group aria-label="Select an option"
+                                        formControlName="PaymentType" style="margin-top: 12px;"  (click)="PaymentTypeChk()">
+                                        <mat-radio-button value="Cash">Cash</mat-radio-button>
+                                        <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                       </mat-radio-group>
 
                                     </div>
 
@@ -381,17 +380,18 @@
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;height: 220px;">
 
-                                            <ng-container matColumnDef="Action" stickyEnd>
+                                          
+
+                                            <ng-container matColumnDef="buttons">
                                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
-                                                    <!-- <button mat-icon-button (click)="onEdit(row)">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                </button> -->
-                                                    <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                   
+                                                    <button mat-icon-button (click)="deleteTableRow(row)"
+                                                        color="warn">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
-                                                    <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
+                                                  
                                                 </mat-cell>
                                             </ng-container>
 
@@ -404,11 +404,11 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="UOM">
+                                            <ng-container matColumnDef="UOMId">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     UOM</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UOM}}
+                                                    {{contact.UOMId}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -585,7 +585,7 @@
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                             </mat-footer-row>
                                             <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                [ngClass]="{'hide':!(dsItemNameList!=null && dsItemNameList.data.length==0)}">
                                             </mat-footer-row>
                                         </mat-table>
 

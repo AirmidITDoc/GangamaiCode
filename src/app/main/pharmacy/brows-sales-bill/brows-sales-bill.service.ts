@@ -29,7 +29,8 @@ export class BrowsSalesBillService {
       SalesNo: '',
       OP_IP_Type: ['3'],
       StoreId: '',
-      IPNo: ''
+      IPNo: '',
+      UserId:'',
 
     })
   }
@@ -81,11 +82,28 @@ export class BrowsSalesBillService {
   }
 
 
+  // public getSalesReturnPrint(emp) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
+  // }
+
   public getSalesReturnPrint(emp) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
+      return this._httpClient.post("Generic/GetByProc?procName=RptSalesReturnReport", emp);
+    }
+  
+
+  public getSalesCollectionSummary(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary", emp);
+  }
+  
+  public getSalesDailyCollection(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection ", emp);
   }
 
-  public getSalesCollectionPrint(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=RptSalesDailyCollection", emp);
+  public getSalesDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
+    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" + FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+
+  public getSalesDetailPatientwise(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=RptPharmacyCreditReport_PatientWise ", emp);
   }
 }

@@ -14,6 +14,7 @@ export class PharmacyreportService {
       return this._formBuilder.group({
         startdate: [(new Date()).toISOString()],
         enddate: [(new Date()).toISOString()],
+        UserId:'',
         RegNo:'',
         FirstName:'',
         LastName:'',
@@ -26,4 +27,9 @@ export class PharmacyreportService {
     // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",{})
   }
+
+  public getUserdetailList(Id){
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList",Id)
+  }
 }
+

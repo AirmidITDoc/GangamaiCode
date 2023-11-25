@@ -743,7 +743,7 @@ OP_IPType:any=2;
       return;
     }
     // debugger
-    console.log(this.Paymentobj)
+    // console.log(this.Paymentobj)
     return;
   }
 
@@ -784,7 +784,7 @@ OP_IPType:any=2;
       this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
       return;
     }
-    console.log(this.Paymentobj)
+    // console.log(this.Paymentobj)
     return;
    
   }
@@ -825,7 +825,7 @@ OP_IPType:any=2;
       this.Paymentobj['CardDate'] = this.dateTimeObj.date;
       return;
     }
-    console.log(this.Paymentobj)
+    // console.log(this.Paymentobj)
     return;
   }
 
@@ -865,7 +865,7 @@ OP_IPType:any=2;
       this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
       return;
     }
-    console.log(this.Paymentobj)
+    // console.log(this.Paymentobj)
     return;
   }
 
@@ -905,7 +905,7 @@ OP_IPType:any=2;
       this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
       return;
     }
-    console.log(this.Paymentobj)
+    // console.log(this.Paymentobj)
     return;
   }
 
@@ -1055,7 +1055,7 @@ OP_IPType:any=2;
     acc[item.SalesId].push(item);
     return acc;
   }, {})
-  console.log(this.SalesIdWiseObj);
+  // console.log(this.SalesIdWiseObj);
 
   for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
     var objreportPrint = this.reportPrintObjItemList[i - 1];
@@ -1183,94 +1183,6 @@ OP_IPType:any=2;
     this.add = false;
   }
 
-  // OnAddUpdate(event) {
-
-  //   this.sIsLoading = 'save';
-  //   // let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-
-  //   if (this.Itemchargeslist.length > 0) {
-  //     this.Itemchargeslist.forEach((element) => {
-  //       if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
-  //         debugger
-  //         this.stockidflag = false;
-  //         // Swal.fire('Item from Present StockID');
-  //         console.log(element);
-  //         debugger
-  //         this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
-  //         this.TotalMRP = this.Qty * this.UnitMRP,
-           
-  //         this.GSTAmount = this.GSTAmount + parseFloat(element.GSTAmount);
-  //         this.NetAmt = parseFloat(this.NetAmt) + (parseFloat(element.NetAmt));
-  //         this.DiscAmt = parseFloat(element.DiscAmt) + this.DiscAmt;
-  //         this.ItemId =element.ItemId;
-  //         this.ItemName=element.ItemName;
-  //         this.BatchNo=element.BatchNo;
-  //         this.StockId=element.StockId; 
-  //         this.BatchExpDate=element.BatchExpDate  || '01/01/1900';
-  //         this.deleteflag=false;
-  //         this.deleteTableRow(event, element);
-          
-  //         // this.Itemchargeslist.push(
-  //         //   {
-
-  //         //     ItemId: this.ItemId,
-  //         //     ItemName: this.ItemName,
-  //         //     BatchNo: this.BatchNo,
-  //         //     BatchExpDate: this.BatchExpDate || '01/01/1900',
-  //         //     Qty: this.Qty + element.Qty,
-  //         //     UnitMRP: this.MRP,
-  //         //     GSTPer: this.GSTPer || 0,
-  //         //     GSTAmount: this.GSTAmount || 0,
-  //         //     TotalMRP: this.TotalMRP,
-  //         //     DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
-  //         //     NetAmt: this.NetAmt,
-  //         //     StockId: this.StockId,
-
-  //         //   });
-  //         // this.saleSelectedDatasource.data = this.Itemchargeslist;
-  //         // this.ItemFormreset();
-
-  //       } 
-  //       // else {
-  //       //   this.stockidflag = true;
-  //       // }
-
-  //     });
-
-  //   }
-    
-  //   if (this.stockidflag == true) {
-  //     this.onAdd();
-  //   }else{
-       
-  //         this.Itemchargeslist.push(
-  //           {
-
-  //             ItemId: this.ItemId,
-  //             ItemName: this.ItemName,
-  //             BatchNo: this.BatchNo,
-  //             BatchExpDate: this.BatchExpDate || '01/01/1900',
-  //             Qty: this.Qty,
-  //             UnitMRP: this.MRP,
-  //             GSTPer: this.GSTPer || 0,
-  //             GSTAmount: this.GSTAmount || 0,
-  //             TotalMRP: this.TotalMRP,
-  //             DiscAmt: this.DiscAmt| 0,
-  //             NetAmt: this.NetAmt,
-  //             StockId: this.StockId,
-
-  //           });
-  //         this.saleSelectedDatasource.data = this.Itemchargeslist;
-  //         this.ItemFormreset();
-
-  //   }
-
-  //   this.itemid.nativeElement.focus();
-  //   this.add = false;
-
-
-  // }
-
   OnAddUpdate(event) {
 
     this.sIsLoading = 'save';
@@ -1366,13 +1278,13 @@ OP_IPType:any=2;
     this.itemid.nativeElement.focus();
     this.add = false;
 
-    if(this.DiscId==1){
-      this.ConShow=true;
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-      this.ItemSubform.get('ConcessionId').enable();
-      this.ItemSubform.updateValueAndValidity();
-    }
+    // if(this.DiscId==1){
+    //   this.ConShow=true;
+    //   this.ItemSubform.get('ConcessionId').reset();
+    //   this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
+    //   this.ItemSubform.get('ConcessionId').enable();
+    //   this.ItemSubform.updateValueAndValidity();
+    // }
   }
 
   getBatch() {
@@ -1453,57 +1365,36 @@ OP_IPType:any=2;
     this.FinalNetAmount = 0;
     this.ItemSubform.reset();
     this.RegId = '';
+    
     this.ItemSubform.get('PatientType').setValue('External');
     this.ItemSubform.get('CashPay').setValue('CashPay');
 
     this.IsOnlineRefNo=false;
-    // this.ItemSubform.get('referanceNo').reset('');
+    this.ItemSubform.get('referanceNo').reset('');
     
     this.ConShow = false;
-    this.ItemSubform.get('ConcessionId').clearValidators();
-    // this.ItemSubform.get('ConcessionId').reset();
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     this.ItemSubform.get('ConcessionId').disable();
   }
 
 
-  // getTotalAmtSum(element) {
-  //   let TotAmt;
-  //   TotAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
-  //   this.FinalNetAmount = TotAmt;
-  //   return TotAmt;
-  // }
-  
-  // getDiscAmtSum(element) {
-  //   let discAmt;
-  //   discAmt = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
-  //    this.FinalDiscAmt =discAmt;
-  //   return discAmt;
-  // }
-
-
   getNetAmtSum(element) {
-   
     this.FinalNetAmount =(element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
-
     this.FinalTotalAmt =  (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
-
     this.FinalDiscAmt =(element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
-   
-     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-
-    // return this.GSTTotal;
+    this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
     return this.FinalNetAmount;
   }
 
   calculateDiscAmt() {
-    debugger
+    console.log("disc");
+    console.log(this._salesService.IndentSearchGroup.get('DiscAmt').value);
+    let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
-      this.DiscId=1;
-     
+      // this.DiscId=1;
       this.ConShow=true;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
@@ -1511,11 +1402,11 @@ OP_IPType:any=2;
       if (this.DiscAmt > PurTotalAmount)
       {
         Swal.fire('Discount greater than Purchase Rate, Please check !');
-         this.ItemFormreset();
-         this.itemid.nativeElement.focus();
-         this.ConShow=false;
-         this.ItemSubform.get('ConcessionId').clearValidators();
-         this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+        this.ItemFormreset();
+        this.itemid.nativeElement.focus();
+        this.ConShow=false;
+        this.ItemSubform.get('ConcessionId').clearValidators();
+        this.ItemSubform.get('ConcessionId').updateValueAndValidity();
       }else{
         this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
         this.add = true;
@@ -1524,8 +1415,11 @@ OP_IPType:any=2;
     }
     else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
       Swal.fire('Check Discount Amount !')
+      this.ConShow=false;
+      this.ItemSubform.get('ConcessionId').clearValidators();
+      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     }
-    if (parseFloat(this.DiscAmt) == 0) {
+    if (parseFloat(this._salesService.IndentSearchGroup.get('DiscAmt').value) == 0) {
       this.add = true;
       this.ConShow = false;
       this.ItemSubform.get('ConcessionId').clearValidators();
@@ -1536,7 +1430,6 @@ OP_IPType:any=2;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
-      this.DiscId=1;
       this.chkdiscper=true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -1576,9 +1469,11 @@ OP_IPType:any=2;
   }
 
   getFinalDiscAmount() {
-    // let Discamt =this.FinalDiscAmt;// this.ItemSubform.get('FinalDiscAmt').value
+    console.log("total disc");
+    let totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value
+    console.log(totDiscAmt);
     console.log(this.FinalDiscAmt);
-    if (this.FinalDiscAmt > 0 ) {
+    if (totDiscAmt > 0 ) {
       this.FinalNetAmount = ((this.FinalNetAmount) - (this.FinalDiscAmt)).toFixed(2);
       this.ConShow = true
       this.ItemSubform.get('ConcessionId').reset();
@@ -1953,7 +1848,7 @@ OP_IPType:any=2;
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
-    // console.log(submitData);
+    console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
         //  console.log(response);
@@ -1961,10 +1856,9 @@ OP_IPType:any=2;
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        //  this.snackBarService.showSuccessSnackBar('Record Saved Successfully', 'success','blue-snackbar');
-         this.getPrint3(response);
-          this.Itemchargeslist = [];
-          this._matDialog.closeAll();
+        this.getPrint3(response);
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
         // Swal.fire({
         //   position: "center",
         //   icon: "success",
@@ -1980,14 +1874,14 @@ OP_IPType:any=2;
         // });
       } else {
         // Swal.fire('Error !', 'Sale data not saved', 'error');
-         this.toastr.error('API error!', 'Error !', {
+         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
       // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-      this.toastr.error('API error!', 'error !', {
+      this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -2128,28 +2022,43 @@ onSavePayOption() {
           "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
           "salesPayment": result.submitDataPay.ipPaymentInsert
         };
-        console.log(submitData);
+        // console.log(submitData);
         this._salesService.InsertCashSales(submitData).subscribe(response => {
           if (response) {
-            //  console.log(response);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Record Saved Successfully",
-              showConfirmButton: false,
-              timer: 1500
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.getPrint3(response);
-                this.Itemchargeslist = [];
-                this._matDialog.closeAll();
-              }
+            this.toastr.success('Record Saved Successfully.', 'Save !', {
+              toastClass: 'tostr-tost custom-toast-success',
             });
+            this.getPrint3(response);
+            this.Itemchargeslist = [];
+            this._matDialog.closeAll();
+
+            //  console.log(response);
+            // Swal.fire({
+            //   position: "center",
+            //   icon: "success",
+            //   title: "Record Saved Successfully",
+            //   showConfirmButton: false,
+            //   timer: 1500
+            // }).then((result) => {
+            //   if (result.isConfirmed) {
+            //     this.getPrint3(response);
+            //     this.Itemchargeslist = [];
+            //     this._matDialog.closeAll();
+            //   }
+            // });
           } else {
-            Swal.fire('Error !', 'Sale data not saved', 'error');
+            this.toastr.error('API Error!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
           }
           this.sIsLoading = '';
+        // });
+      }, error => {
+        // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
         });
+      });
       
         this.ItemFormreset();
         this.patientDetailsFormGrp.reset();
@@ -2164,26 +2073,19 @@ onSavePayOption() {
 
 }
 getPrint3(el) {
-  // debugger
   var D_data = {
     "SalesID": el,// 
     "OP_IP_Type":  this.OP_IPType 
   }
-
   let printContents;
   this.subscriptionArr.push(
     this._salesService.getSalesPrint(D_data).subscribe(res => {
-
       this.reportPrintObjList = res as Printsal[];
-      console.log(this.reportPrintObjList);
-
+      // console.log(this.reportPrintObjList);
       this.reportPrintObj = res[0] as Printsal;
-      // console.log(this.reportPrintObj);
-      // this.getTemplateTax2();
       setTimeout(() => {
         this.print3();
      }, 1000);
-
     })
   );
 }
@@ -2203,7 +2105,7 @@ getTemplateTax2() {
     }
     var strrowslist = "";
     for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-      console.log(this.reportPrintObjList);
+      // console.log(this.reportPrintObjList);
       var objreportPrint = this.reportPrintObjList[i - 1];
       let PackValue = '1200'
       // <div style="display:flex;width:60px;margin-left:20px;">
@@ -2251,7 +2153,7 @@ getTemplateTax2() {
     this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-    console.log(this.printTemplate);
+    // console.log(this.printTemplate);
 
     setTimeout(() => {
        this.print3();
@@ -2685,6 +2587,11 @@ export class IndentList {
   LandedRateandedTotal:any;
   PurchaseRate:any;
   PurTotAmt;any;
+  BalanceAmount:any;
+  PatientName:any;
+  SalesReturnId:any;
+  DiscAmount:any;
+  NetAmount:any;
   /**
    * Constructor
    *
@@ -2721,7 +2628,12 @@ export class IndentList {
       this.SgstPer=IndentList.SgstPer || 0;    
       this.SGSTAmt=IndentList.SGSTAmt || 0;    
       this.IgstPer=IndentList.IgstPer || 0;    
-      this.IGSTAmt=IndentList.IGSTAmt || 0;    
+      this.IGSTAmt=IndentList.IGSTAmt || 0;   
+      this.BalanceAmount =IndentList.BalanceAmount || 0; 
+      this.PatientName=IndentList.PatientName || '';
+      this.SalesReturnId=IndentList.SalesReturnId|| 0;
+      this.NetAmount=IndentList.NetAmount|| 0;
+      this.DiscAmount=IndentList.DiscAmount|| 0;
     }
   }
 }
@@ -2809,10 +2721,21 @@ export class Printsal {
   PayMode:any;
   MRNO:any;
   AdvanceUsedAmount:any;
+  Label:any;
+
+  TotalBillAmount:any;
+  BalAmount:any;
+  CashPay:any;
+  ChequePay:any;
+  CardPay:any;
+  NEFTPay:any;
+  OnlinePay:any;
+  PrintStoreName:any;
+  PatientType:any;
   BillVatAmount:any;
   BillDiscAmount:any;
   BillTotalAmount:any;
-
+  
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
     this.RegNo = Printsal.RegNo || 0;
@@ -2873,10 +2796,19 @@ export class Printsal {
     this.PayMode=Printsal.PayMode || '';
     this.MRNO=Printsal.MRNO || '';
     this.AdvanceUsedAmount=Printsal.PayMode || '';
+    this.Label=Printsal.Label || ';'
+    this.TotalBillAmount=Printsal.PayMode || '';
+    this.CashPay=Printsal.CashPay || '';
+    this.ChequePay=Printsal.ChequePay || '';
+    this.CardPay=Printsal.CardPay || '';
+    this.NEFTPay=Printsal.NEFTPay || '';
+    this.OnlinePay=Printsal.OnlinePay || '';
+    this.PrintStoreName=Printsal.PrintStoreName || '';
+    this.PatientType=Printsal.PatientType || '';
 
-    this.BillTotalAmount=Printsal.BillTotalAmount || '';
     this.BillVatAmount=Printsal.BillVatAmount || '';
     this.BillDiscAmount=Printsal.BillDiscAmount || '';
+    this.BillTotalAmount=Printsal.BillTotalAmount || '';
   }
 }
 
