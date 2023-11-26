@@ -381,7 +381,8 @@
                                                     <mat-label>Disc %</mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="DiscPer"
                                                         autocomplete="off" #disper [(ngModel)]="DiscPer"
-                                                        (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)">
+                                                        (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)"
+                                                        (blur)="onEnterdiscper($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
@@ -389,7 +390,8 @@
                                                     <input matInput placeholder="Placeholder" formControlName="DiscAmt"
                                                         autocomplete="off" [disabled]="chkdiscper" #discamount
                                                         [(ngModel)]="DiscAmt" (keyup)="calculateDiscAmt()"
-                                                        (keydown)="onEnterdiscAmount($event)">
+                                                        (keydown)="onEnterdiscAmount($event)"
+                                                        (blur)="onEnterdiscAmount($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="10%">
@@ -650,7 +652,6 @@
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
-                                                        <div>
                                                             <mat-form-field appearance="outline" style="width:200px"  *ngIf="ConShow">
                                                                 <mat-label>Concession Reason Type</mat-label>
                                                                 <mat-select formControlName="ConcessionId" #ConseId>
@@ -659,7 +660,6 @@
                                                                     </mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
-                                                        </div>
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>GST Amount</mat-label>
@@ -712,7 +712,7 @@
                                                         <button class="next-btn" (click)="onSave()" style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn" (click)="onClose()">Reset</button>
-                                                        <button class="footer-btn" *ngIf="IsOnlineRefNo" (click)="payOnline()">Pay Online</button>
+                                                        <button class="footer-btn" *ngIf="IsOnlineRefNo" (click)="payOnline()">Online</button>
                                                     </div>
 
                                                 </div>

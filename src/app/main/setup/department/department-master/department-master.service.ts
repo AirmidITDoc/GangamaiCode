@@ -38,7 +38,7 @@ export class DepartmentMasterService {
 
     public getDepartmentMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_DepartmentMaster_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_DepartmentMaster_by_Name",
             param
         );
     }

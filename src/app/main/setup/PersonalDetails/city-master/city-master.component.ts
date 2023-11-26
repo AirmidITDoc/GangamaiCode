@@ -53,15 +53,15 @@ export class CityMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.getCityMasterList();
-        this.getStateNameCombobox();
+        // this.getStateNameCombobox();
         this.getCityMasterCombo();
        
 
-        this.stateFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterState();
-            });
+        // this.stateFilterCtrl.valueChanges
+        //     .pipe(takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.filterState();
+        //     });
 
             this.cityFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
@@ -99,50 +99,52 @@ export class CityMasterComponent implements OnInit {
             this.CitycmbList.filter(
                 (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
             )
-        );    this. getStateNameCombobox();
+        );     
     }
     getCityMasterCombo() {
         this._cityService.getCityMasterCombo().subscribe((data) => {
             this.CitycmbList = data;
             this.filteredCity.next(this.CitycmbList.slice());
-        
-            console.log(this.CitycmbList)
+                 console.log(this.CitycmbList)
         });
     }
 
-    private filterState() {
-        if (!this.StatecmbList) {
-            return;
+    onChangeCityList(CityObj) {
+
+      //  debugger
+        if (CityObj) {
+          this._cityService.getStateList(CityObj.CityId).subscribe((data: any) => {
+               this.StatecmbList = data;
+           console.log( this.StatecmbList);
+         
+           this._cityService.myform.get('StateId').setValue(this.StatecmbList[0]);  
+          });
+        
         }
-        // get the search keyword
-        let search = this.stateFilterCtrl.value;
-        if (!search) {
-            this.filteredState.next(this.StatecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredState.next(
-            this.StatecmbList.filter(
-                (bank) => bank.StateName.toLowerCase().indexOf(search) > -1
+      }
+
+      
+    // private filterState() {
+    //     if (!this.StatecmbList) {
+    //         return;
+    //     }
+    //     // get the search keyword
+    //     let search = this.stateFilterCtrl.value;
+    //     if (!search) {
+    //         this.filteredState.next(this.StatecmbList.slice());
+    //         return;
+    //     } else {
+    //         search = search.toLowerCase();
+    //     }
+    //     // filter the banks
+    //     this.filteredState.next(
+    //         this.StatecmbList.filter(
+    //             (bank) => bank.StateName.toLowerCase().indexOf(search) > -1
                
-            )
-        );
-    }
-    getStateNameCombobox() {
-        var vdata={
-            Id:this._cityService.myform.get('CityId').value
-        }
-        console.log(vdata)
-        this._cityService.getStateList(vdata).subscribe((data) => {
-            this.StatecmbList = data;
-            this.filteredState.next(this.StatecmbList.slice());
-            console.log(this.StatecmbList)
-            
-        });
-       
-    }
+    //         )
+    //     );
+    // }
+   
 
     getCityMasterList() {
         var param = {
@@ -182,12 +184,9 @@ export class CityMasterComponent implements OnInit {
             if (!this._cityService.myform.get("CityId").value) {
                 var m_data = {
                     cityMasterInsert: {
-                        cityName: this._cityService.myform
-                            .get("CityName")
-                            .value.trim(),
+                        cityName: this._cityService.myform.get("CityName").value.CityName,
                         stateId:
-                            this._cityService.myform.get("StateId").value
-                                .StateId,
+                            this._cityService.myform.get("StateId").value.StateId,
                         addedBy: 1,
                         isDeleted: Boolean(
                             JSON.parse(
@@ -228,9 +227,7 @@ export class CityMasterComponent implements OnInit {
                 var m_dataUpdate = {
                     cityMasterUpdate: {
                         cityId: this._cityService.myform.get("CityId").value,
-                        cityName: this._cityService.myform
-                            .get("CityName")
-                            .value.trim(),
+                        cityName: this._cityService.myform.get("CityName").value.CityName,
                         stateId:
                             this._cityService.myform.get("StateId").value
                                 .StateId,
@@ -277,13 +274,14 @@ export class CityMasterComponent implements OnInit {
         var m_data = {
             CityId: row.CITYID,
             CityName: row.CITYNAME,
-            //  StateId: row.STATEID,
+            StateId: row.STATEID,
             StateName: row.STATENAME,
             // CountryId: row.COUNTRYID,
             //  CountryName: row.COUNTRYNAME,
             IsDeleted: JSON.stringify(row.ISDELETED),
             UpdatedBy: row.UpdatedBy,
         };
+        console.log(row);
         this._cityService.populateForm(m_data);
     }
 }

@@ -178,7 +178,7 @@
                                                     [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                             </mat-option>
                                             <mat-option *ngFor="let element of filteredCity | async"
-                                                [value]="element">
+                                                [value]="element"  (onSelectionChange)="onChangeCityList(element)">
                                                 {{element.CityName}}
                                             </mat-option>
                                         </mat-select>
@@ -187,7 +187,7 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                             <mat-label>State Name</mat-label>
                                             <mat-select formControlName="StateId" placeholder="Bank" #singleSelect
                                                 required>
@@ -201,7 +201,19 @@
                                                     {{element.StateName}}
                                                 </mat-option>
                                             </mat-select>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>State Name</mat-label>
+                                            <mat-select formControlName="StateId" name="StateId"
+                                             >
+                                              <mat-option></mat-option>
+                                              <mat-option *ngFor="let m of StatecmbList" [value]="m">
+                                                {{m.StateName}}
+                                              </mat-option>
+                                            </mat-select>
+                                          </mat-form-field>
 
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

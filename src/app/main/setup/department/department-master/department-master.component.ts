@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { DepartmentMasterService } from "./department-master.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-department-master",
@@ -29,7 +30,8 @@ export class DepartmentMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _departmentService: DepartmentMasterService) {}
+    constructor(public _departmentService: DepartmentMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getDepartmentMasterList();
@@ -47,9 +49,7 @@ export class DepartmentMasterComponent implements OnInit {
     }
     getDepartmentMasterList() {
         var param = {
-            DepartmentName:
-                this._departmentService.myformSearch
-                    .get("DepartmentNameSearch")
+            DepartmentName:this._departmentService.myformSearch.get("DepartmentNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._departmentService
@@ -89,24 +89,30 @@ export class DepartmentMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getDepartmentMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getDepartmentMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getDepartmentMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Department Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getDepartmentMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Department Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     departmentMasterUpdate: {
@@ -131,24 +137,32 @@ export class DepartmentMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getDepartmentMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getDepartmentMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getDepartmentMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                        
+                                this.toastr.error('Department Master Data not Updated !, Please check API error..', 'Updated !', {
+                                    toastClass: 'tostr-tost custom-toast-error',
+                                  });
+                        
                         }
                         this.getDepartmentMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Department Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

@@ -62,9 +62,7 @@ export class CityMasterService {
     // }
 
     public getStateList(CityId) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",
-        CityId 
-       );
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
     }
     
 
