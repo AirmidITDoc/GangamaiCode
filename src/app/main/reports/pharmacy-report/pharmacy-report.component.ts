@@ -226,7 +226,7 @@ sIsLoading: string = '';
     );
   }
 
-  viewDailyCollectionPdf(el){
+  viewDailyCollectionPdf(){
     
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -234,8 +234,8 @@ sIsLoading: string = '';
       this.accountService.currentUserValue.user.storeId,0
     ).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
-      {   maxWidth: "85vw",
-          height: '750px',
+      {   maxWidth: "95vw",
+          height: '1000px',
           width: '100%',
            data : {
           base64 : res["base64"] as string,
