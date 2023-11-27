@@ -85,13 +85,24 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsDeleted">
+                                    <!-- <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
+                                                class="active-icon red-500 s-16">close</mat-icon>
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="IsDeleted">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-icon *ngIf="!element.IsDeleted"
+                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="element.IsDeleted"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -134,7 +145,7 @@
                                         [ngClass]="{'hide':!(DSDischargeTypeMasterList!=null && DSDischargeTypeMasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
                         </div>

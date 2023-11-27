@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -7,11 +7,15 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { DischargetypeMasterService } from "./dischargetype-master.service";
 import { MatAccordion } from "@angular/material/expansion";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
     selector: "app-dischargetype-master",
     templateUrl: "./dischargetype-master.component.html",
     styleUrls: ["./dischargetype-master.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class DischargetypeMasterComponent implements OnInit {
     step = 0;
@@ -41,6 +45,7 @@ export class DischargetypeMasterComponent implements OnInit {
 
     constructor(
         public _dischargetypeService: DischargetypeMasterService,
+        public toastr : ToastrService,
 
         public _matDialog: MatDialog
     ) {}
@@ -51,14 +56,11 @@ export class DischargetypeMasterComponent implements OnInit {
 
     getdischargetypeMasterList() {
         var m_data = {
-            DischargeTypeName:
-                this._dischargetypeService.myformSearch
-                    .get("DischargeTypeNameSearch")
+            DischargeTypeName:this._dischargetypeService.myformSearch.get("DischargeTypeNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._dischargetypeService
-            .getdischargetypeMasterList(m_data)
-            .subscribe((Menu) => {
+            .getdischargetypeMasterList(m_data).subscribe((Menu) => {
                 this.DSDischargeTypeMasterList.data =
                     Menu as DischargeTypeMaster[];
                 this.DSDischargeTypeMasterList.sort = this.sort;
@@ -128,24 +130,30 @@ export class DischargetypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getdischargetypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getdischargetypeMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getdischargetypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('DischargeType Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getdischargetypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('DischargeType Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     dischargeTypeMasterUpdate: {
@@ -166,24 +174,32 @@ export class DischargetypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getdischargetypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getdischargetypeMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getdischargetypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                           
+                            this.toastr.error('DischargeType Master Data not Updated !, Please check API error..', 'Updated !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                    
                         }
                         this.getdischargetypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('DischargeType Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }
@@ -193,7 +209,7 @@ export class DischargetypeMasterComponent implements OnInit {
         var m_data = {
             DischargeTypeId: row.DischargeTypeId,
             DischargeTypeName: row.DischargeTypeName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._dischargetypeService.populateForm(m_data);

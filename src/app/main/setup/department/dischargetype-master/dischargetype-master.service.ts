@@ -21,7 +21,7 @@ export class DischargetypeMasterService {
         return this._formBuilder.group({
             DischargeTypeId: [""],
             DischargeTypeName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -42,7 +42,7 @@ export class DischargetypeMasterService {
     //get dischargetype Master list
     public getdischargetypeMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_DischargeTypeMaster_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_DischargeTypeMaster_by_Name",
             m_data
         );
     }

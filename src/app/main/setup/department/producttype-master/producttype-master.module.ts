@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ProducttypeMasterComponent } from './producttype-master.component';
 
 
@@ -10,9 +10,11 @@ const router: Routes=[
     component:ProducttypeMasterComponent,
   },
 ];
+
 @NgModule({
   declarations: [ProducttypeMasterComponent],
   imports: [
+    RouterModule.forChild(router),
     CommonModule
   ]
 })
