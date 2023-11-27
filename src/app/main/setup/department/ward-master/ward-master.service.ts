@@ -44,7 +44,7 @@ export class WardMasterService {
 
     public getwardMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_WardMaster_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_WardMaster_by_Name",
             param
         );
     }

@@ -32,10 +32,8 @@ export class GenderMasterService {
         this.createGenderForm();
     }
 
-    public getGenderMasterList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_GenderMaster_by_Name",
-            {}
+    public getGenderMasterList(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_GenderMaster_by_Name",param
         );
     }
 

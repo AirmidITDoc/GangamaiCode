@@ -158,7 +158,11 @@ export class AreaMasterComponent implements OnInit {
                           });
                     }
                     this.getAreaMasterList();
-                });
+                },error => {
+                    this.toastr.error('Area Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var m_dataUpdate = {
                     areaMasterUpdate: {
@@ -201,7 +205,7 @@ export class AreaMasterComponent implements OnInit {
                         }
                         this.getAreaMasterList();
                     },error => {
-                        this.toastr.error('Area Data not saved !, Please check API error..', 'Error !', {
+                        this.toastr.error('Area Data not Updated !, Please check API error..', 'Error !', {
                          toastClass: 'tostr-tost custom-toast-error',
                        });
                      } );
