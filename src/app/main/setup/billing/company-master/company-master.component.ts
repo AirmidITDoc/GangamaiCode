@@ -71,15 +71,11 @@ export class CompanyMasterComponent implements OnInit {
     }
     getCompanyMaster() {
         var param = {
-            CompanyName:
-                this._companyService.myformSearch
-                    .get("CompanyNameSearch")
-                    .value.trim() || "%",
+            CompanyName:this._companyService.myformSearch.get("CompanyNameSearch").value.trim() || "%",
         };
-        this._companyService.getCompanyMaster(param).subscribe(
-            (Menu) => {
+        this._companyService.getCompanyMaster(param).subscribe((Menu) => {
                 this.DSCompanyMasterList.data = Menu as CompanyMaster[];
-                this.isLoading = false;
+               this.isLoading = false;
                 this.DSCompanyMasterList.sort = this.sort;
                 this.DSCompanyMasterList.paginator = this.paginator;
             },

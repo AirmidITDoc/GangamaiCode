@@ -6,6 +6,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ServiceMasterService } from "./service-master.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-service-master",
@@ -50,6 +51,7 @@ export class ServiceMasterComponent implements OnInit {
 
     constructor(
         public _serviceMasterService: ServiceMasterService,
+        public toastr : ToastrService,
 
         public _matDialog: MatDialog
     ) {}
@@ -175,13 +177,37 @@ export class ServiceMasterComponent implements OnInit {
                                 .value,
                     },
                 };
-
                 this._serviceMasterService
                     .serviceMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getServiceMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getGroupMasterList();
+                            //     }
+                            // });
+                        } else {
+                            this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
                         this.getServiceMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+                        this.getServiceMasterList();
+                    
             } else {
                 var m_dataUpdate = {
                     serviceMasterUpdate: {
@@ -266,8 +292,32 @@ export class ServiceMasterComponent implements OnInit {
                     .serviceMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getServiceMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getGroupMasterList();
+                            //     }
+                            // });
+                        } else {
+                            this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
                         this.getServiceMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+                        this.getServiceMasterList();
             }
             this.onClear();
         }
@@ -313,7 +363,7 @@ export class ServiceMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "100vh",
             width: "100%",
             height: "100%",
         });

@@ -7,6 +7,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-company-master-list",
@@ -34,9 +35,12 @@ export class CompanyMasterListComponent implements OnInit {
     public filteredTariff: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
+    getCompanyMaster: any;
 
     constructor(
         public _companyService: CompanyMasterService,
+        public toastr : ToastrService,
+      //  public company : CompanyMasterComponent,
 
         public dialogRef: MatDialogRef<CompanyMasterComponent>
     ) {}
@@ -44,6 +48,7 @@ export class CompanyMasterListComponent implements OnInit {
     ngOnInit(): void {
         this.geCompanytypeNameCombobox();
         this.geTariffNameCombobox();
+        
         //this.geSubgroupNameCombobox();
 
         this.tariffFilterCtrl.valueChanges
@@ -107,9 +112,7 @@ export class CompanyMasterListComponent implements OnInit {
     geCompanytypeNameCombobox() {
         this._companyService.getCompanytypeMasterCombo().subscribe((data) => {
             this.CompanytypecmbList = data;
-            this._companyService.myform
-                .get("CompTypeId")
-                .setValue(this.CompanytypecmbList[0]);
+            this._companyService.myform.get("CompTypeId").setValue(this.CompanytypecmbList[0]);
         });
     }
 
@@ -173,22 +176,30 @@ export class CompanyMasterListComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getCompanyMaster();
+                            // this.getGroupMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Company Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                        this.getCompanyMaster();
+                    },error => {
+                        this.toastr.error('Company Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     companyMasterUpdate: {
@@ -240,22 +251,31 @@ export class CompanyMasterListComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getCompanyMaster();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Company Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                            
                         }
-                    });
+                        this.getCompanyMaster();
+                    },error => {
+                        this.toastr.error('Company Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                       
+                     });
             }
             this.onClose();
         }

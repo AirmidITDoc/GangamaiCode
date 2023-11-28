@@ -94,3 +94,32 @@
     max-width: 100px;
     min-width: 100px;
 }
+.table2{
+    height: 290px;
+    min-height: 290px;
+    max-height: 290px;
+
+    .mat-column-ClassId{
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
+        align-items: left;
+        justify-content:left; 
+      }
+      .mat-column-ClassName{
+        width: 180px;
+        max-width: 180px;
+        min-width: 180px;
+        align-items: left;
+        justify-content:left; 
+      }
+      .mat-column-ClassRate{
+      
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        align-items: left;
+        justify-content:left; 
+      }
+}
+

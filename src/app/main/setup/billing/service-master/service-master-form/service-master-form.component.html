@@ -11,7 +11,7 @@
 </div>
 
 
-<form [formGroup]="_serviceMasterService.myform">
+<form [formGroup]="_serviceMasterService.myform" style="padding-left: 10px;padding-right: 10px;">
     <input type="hidden" name="ServiceId" formControlName="ServiceId">
 
     <br />
@@ -29,7 +29,7 @@
                     {{element.GroupName}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
         <mat-form-field appearance="outline" fxFlex>
             <mat-label>SubGroup Name</mat-label>
@@ -47,25 +47,25 @@
 
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline"  fxFlex>
             <input name="ServiceShortDesc" placeholder="Select ServiceShortDesc" formControlName="ServiceShortDesc"
                 matInput>
             <mat-error>Please enter ServiceShortDesc </mat-error>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline"  fxFlex>
             <input name="ServiceName" placeholder="Select ServiceName" formControlName="ServiceName" matInput required>
             <mat-error>Please enter ServiceName </mat-error>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline"  fxFlex>
             <input name="Price" placeholder="Select Price" formControlName="Price"
                 [ngClass]="{ 'is-invalid': submitted && f.Price.errors }" matInput required>
             <span class="error" *ngIf="f.Price.invalid && f.Price.touched">Pricerequired only Digits</span>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline"fxFlex>
             <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput
                 [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }">
             <span class="error" *ngIf="f.PrintOrder.invalid && f.PrintOrder.touched">PrintOrder required only
@@ -90,23 +90,23 @@
                     {{element.TariffName}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
         <mat-form-field appearance="outline" fxFlex>
             <input matInput [matDatepicker]="picker3" placeholder="Choose a EffectiveDate" name="EffectiveDate"
                 formControlName="EffectiveDate">
             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
             <mat-datepicker #picker3></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field>&nbsp;&nbsp;
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline"  fxFlex>
             <input name="EmgAmt" placeholder="Select EmgAmt" [ngClass]="{ 'is-invalid': submitted && f.EmgAmt.errors }"
                 formControlName="EmgAmt" matInput required>
             <span class="error" *ngIf="f.EmgAmt.invalid && f.EmgAmt.touched">EmgAmt required only Digits</span>
-        </mat-form-field>
+        </mat-form-field>&nbsp;
 
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+        <mat-form-field appearance="outline" fxFlex>
             <input name="EmgPer" placeholder="Select EmgPer" [ngClass]="{ 'is-invalid': submitted && f.EmgPer.errors }"
                 formControlName="EmgPer" matInput required>
             <span class="error" *ngIf="f.EmgPer.invalid && f.EmgPer.touched">EmgPer required only Digits</span>
@@ -125,7 +125,7 @@
 
                 <div fxFlex.gt-sm="50%">
                     <div style="width: 70%;">
-                        <mat-table #table matSort [dataSource]="DSServicedetailList" class="mat-elevation-z8"
+                        <mat-table #table class="table2" matSort [dataSource]="DSServicedetailList" 
                             [@animateStagger]="{value:'50'}" style="overflow:auto;border: rgb(72, 195, 236);">
                             <ng-container matColumnDef="ClassId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -156,7 +156,8 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(DSServicedetailList!=null && DSServicedetailList.data.length==0)}"></mat-footer-row>
                         </mat-table>
-
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                        showFirstLastButtons></mat-paginator> -->
 
 
 
@@ -213,16 +214,20 @@
 
                     </div>
                     <div fxFlex="60%">
+                        
 
-                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                            <mat-select placeholder="Select Tariff Name" name="DoctorId" formControlName="DoctorId"
+                        <mat-form-field appearance="outline" class="mr-sm-12" style="width: 150px;">
+                              <mat-label>Doctor Name</mat-label>
+                            <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId"
                                 required>
-                                <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorId">
-                                    {{ M.FirstName }}
+                                
+                                <mat-option *ngFor="let M of DoctorcmbList" [value]="M">
+                                    {{ M.DoctorName }}
                                 </mat-option>
                             </mat-select>
-                            <mat-error>Please Select Tariff Name </mat-error>
+                            <mat-error>Please Select Doctor Name </mat-error>
                         </mat-form-field>
+                        
                     </div>
 
                 </div>
@@ -247,4 +252,6 @@
 
     </div>
 </div>
+ 
+
 <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
