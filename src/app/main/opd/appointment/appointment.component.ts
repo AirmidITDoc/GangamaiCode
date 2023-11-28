@@ -1958,8 +1958,8 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
     let index = this.images.indexOf(element);
     if (index >= 0) {
       this.images.splice(index, 1);
-      this.pdfDataSource.data = [];
-      this.pdfDataSource.data = this.images;
+      this.imgDataSource.data = [];
+      this.imgDataSource.data = this.images;
     }
     Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
   }

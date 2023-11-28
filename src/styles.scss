@@ -5,6 +5,9 @@
 @import "app/app.theme";
 
 @import "../node_modules/ngx-toastr/toastr.css";
+
+@import "app/main/shared/custom/buttons.scss";
+@import "app/main/shared/custom/table.scss";
 // @import '~font-awesome/css/font-awesome.min.css';
 
 //added by prasad
@@ -245,66 +248,8 @@ background: rgba(240, 239, 239, 0.15);
  ;
    color: white;
    }
-   
-.clearbutton {
-    // padding-right: 5px;
-    // padding-left: 5px;
-    // float: right;
-    // color: blue;
-    // width: 27%;
-    // margin-top: 20px;
-    // margin-bottom: 20px;
-    // margin: 5px;
-    // font-size: 17px;
-    // border: 1px solid #808080;
-    // height: 40px;
-    background-color: #949494 !important;
-    color: white !important;
-}
 
 
-.cleariconbutton{
-    font-size: 32px; 
-    text-align: center;
-    margin-bottom: 10px;
-    margin-right: 6px;
-   
-    color:blue;
-}
-
-.searchButton {
-    // padding-right: 5px;
-    // padding-left: 5px;
-    // float: right;
-    // color: blue;
-    // width: 27%;
-    // margin-top: 20px;
-    // margin-bottom: 20px;
-    // margin: 5px;
-    // font-size: 17px;
-    // border: 1px solid #808080;
-    // height: 40px;
-    margin-right: 5px;
-    background-color: #0479b4 !important;
-    color: white !important;
-    
-}
-
-.searchiconbutton{
-    font-size: 32px; 
-    text-align: center;
-   // margin-top: 5px;
-    margin-bottom: 10px;
-    margin-right: 6px;
-    color:blue;
-   
-}
-
-.searchButton, .clearbutton {
-    width: 100px;
-    height: 45px;
-    font-size: 17px;
-}
 
 //spinner start
    
@@ -642,9 +587,6 @@ legend {
     color: red !important;
 }
 
-.table-header-offwhite {
-    background-color: #d7d7d7 !important;
-}
 
 .mat-header-text {
     color: #2b2a2a !important;
