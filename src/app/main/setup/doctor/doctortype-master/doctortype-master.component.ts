@@ -38,7 +38,7 @@ export class DoctortypeMasterComponent implements OnInit {
         var m = {
             "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value + '%' || '%'
         }
-        this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
+             this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
             this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
             
             this.DSDoctorTypeMasterList.sort = this.sort;

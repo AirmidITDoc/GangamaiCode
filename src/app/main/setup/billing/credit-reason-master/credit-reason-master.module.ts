@@ -12,7 +12,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CreditReasonMasterComponent],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule
