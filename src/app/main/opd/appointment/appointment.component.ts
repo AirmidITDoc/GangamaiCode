@@ -243,8 +243,8 @@ export class AppointmentComponent implements OnInit {
         'buttons'
     ];
     
-    dataSource1 = new MatTableDataSource<DocumentUpload>();
-    
+    pdfDataSource = new MatTableDataSource<DocumentUpload>();
+    imgDataSource = new MatTableDataSource<any>();
       filterReligion: any;
       filterMaritalstatus: any;
       filterArea: any;
@@ -277,12 +277,12 @@ export class AppointmentComponent implements OnInit {
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
-        this.personalFormGroup = this.createPesonalForm();
-        this.personalFormGroup.markAllAsTouched();
+        // this.personalFormGroup = this.createPesonalForm();
+        this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
-        this.VisitFormGroup.markAllAsTouched();
+        this.VisitFormGroup.markAsUntouched();
         this.searchFormGroup = this.createSearchForm();
-        this.searchFormGroup.markAllAsTouched();
+        this.searchFormGroup.markAsUntouched();
 
         if (this._ActRoute.url == "/opd/appointment") {
           
@@ -1667,6 +1667,8 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
         reader['fileName'] = events.target.files[i].name;
         reader.onload = (event: any) => {
           this.images.push({url: event.target.result, name: reader['fileName']});
+          this.imgDataSource.data = [];
+          this.imgDataSource.data = this.images;
           this.imageForm.patchValue({
             imgFileSource: this.images
           });
@@ -1922,6 +1924,11 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
       if(result) {
         this.imgArr.push(result.name);
         this.images.push(result);
+        this.imgDataSource.data = [];
+        this.imgDataSource.data = this.images;
+        console.log(this.images);
+
+        console.log(this.imgDataSource.data);
       }
     });
   }
@@ -1933,7 +1940,7 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
 
     this.isLoading = 'save';
     
-      this.dataSource1.data = [];
+      this.pdfDataSource.data = [];
       this.doclist.push(
         {
           DocumentName:name,// this.imageForm.get('imgFileSource')?.value,
@@ -1941,19 +1948,28 @@ b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
          
         });
       this.isLoading = '';
-      this.dataSource1.data = this.doclist;
+      this.pdfDataSource.data = this.doclist;
       
     }
    
   // }
 
+  deleteImage(element) {
+    let index = this.images.indexOf(element);
+    if (index >= 0) {
+      this.images.splice(index, 1);
+      this.imgDataSource.data = [];
+      this.imgDataSource.data = this.images;
+    }
+    Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
+  }
 
   deleteTableRow(element) {
     let index = this.doclist.indexOf(element);
     if (index >= 0) {
       this.doclist.splice(index, 1);
-      this.dataSource1.data = [];
-      this.dataSource1.data = this.doclist;
+      this.pdfDataSource.data = [];
+      this.pdfDataSource.data = this.doclist;
     }
     Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
   }

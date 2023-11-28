@@ -222,7 +222,9 @@
     // Material 2 style
     &.material2,
     .material2 & {
-
+        form {
+            padding: 15px;
+        }
         .nav-subheader {
             height: 40px;
         }

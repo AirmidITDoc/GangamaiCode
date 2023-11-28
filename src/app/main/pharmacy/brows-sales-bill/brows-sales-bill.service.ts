@@ -100,10 +100,42 @@ export class BrowsSalesBillService {
   }
 
   public getSalesDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
-    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" + FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
+
+  public getSalesDailyCollectionSummaryNew(FromDate,ToDate,StoreId,AddedById){
+    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection_Summary=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+  public getSalesDetailSummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
+    return this._httpClient.get("Pharmacy/view-SalesSummary_Report=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
+  }
+
+
+
+public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
+    return this._httpClient.get("Pharmacy/view-Sales_Report_PatientWise=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
+  }
+
+  public getSalesReturnPatientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
+    return this._httpClient.get("Pharmacy/view-SalesReturn_Patientwise_Report=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
+  }
+
+  public getSalesReturn(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId){
+    return this._httpClient.get("Pharmacy/view-SalesReturnSummary_Report=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&StoreId="+StoreId);
+  }
+
+
+  public getSalesCredit(FromDate,ToDate,SalesFromNumber,SalesToNumber,CreditReasonId,StoreId){
+    return this._httpClient.get("Pharmacy/view-SalesCredit_Report=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&CreditReasonId="+CreditReasonId+"&StoreId="+StoreId);
+  }
+
+
 
   public getSalesDetailPatientwise(emp){
     return this._httpClient.post("Generic/GetByProc?procName=RptPharmacyCreditReport_PatientWise ", emp);
+  }
+
+  public getSalesDetail(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId,AddedById){
+    return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection_Summary=" + "&FromDate="+ FromDate + "&ToDate=" + ToDate+ "&SalesFromNumber=" +SalesFromNumber+"&SalesToNumber=" +SalesToNumber+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 }
