@@ -8,6 +8,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { WardMasterService } from "./ward-master.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-ward-master",
@@ -47,7 +48,8 @@ export class WardMasterComponent implements OnInit {
 
     private _onDestroy = new Subject<void>();
 
-    constructor(public _wardService: WardMasterService) {}
+    constructor(public _wardService: WardMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getwardMasterList();
@@ -121,9 +123,7 @@ export class WardMasterComponent implements OnInit {
 
     getwardMasterList() {
         var param = {
-            WardName:
-                this._wardService.myformSearch
-                    .get("RoomNameSearch")
+            WardName:this._wardService.myformSearch.get("RoomNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._wardService.getwardMasterList(param).subscribe((Menu) => {
@@ -187,20 +187,30 @@ export class WardMasterComponent implements OnInit {
                 this._wardService.wardMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getwardMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          this.getwardMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getwardMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
                     this.getwardMasterList();
-                });
+                },error => {
+                    this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var m_dataUpdate = {
                     wardMasterUpdate: {
@@ -225,24 +235,30 @@ export class WardMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getwardMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getwardMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getwardMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Ward Master Data not Updated !, Please check API error..', 'Updated !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getwardMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Ward Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }
