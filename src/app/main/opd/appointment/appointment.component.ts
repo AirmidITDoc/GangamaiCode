@@ -1837,17 +1837,6 @@ export class AppointmentComponent implements OnInit {
         );
       })
   }
-  buildFormData(formData, data, parentKey) {
-    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File) && !(data instanceof Blob)) {
-      Object.keys(data).forEach(key => {
-        this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-      });
-    } else {
-      const value = data == null ? '' : data;
-
-      formData.append(parentKey, value);
-    }
-  }
   CreateFormData (obj: any, formData: FormData, subKeyStr = '')  {
     for (const i in obj) {
         const value = obj[i]; let subKeyStrTrans = i;
@@ -1867,7 +1856,6 @@ export class AppointmentComponent implements OnInit {
 }
 
   onSubmitImgFiles() {
-    debugger
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.imgDataSource.data.length; i++) {
       let file = new File([
@@ -1880,7 +1868,6 @@ export class AppointmentComponent implements OnInit {
     const formData = new FormData();
     let finalData={Files:data};
     this.CreateFormData(finalData, formData);
-    // this.buildFormData(formData, data,null);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
       if (data) {
         Swal.fire("Document uploaded Successfully  ! ");
