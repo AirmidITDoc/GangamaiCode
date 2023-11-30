@@ -191,13 +191,11 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       };
       this.advanceDataStored.storage = new SearchInforObj(xx);
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
-        const dialogRef = this._matDialog.open(OPBillingComponent, 
-         {  maxWidth: "90%",
-        
-
-        height: '695px !important',
-        
-       });
+        const dialogRef = this._matDialog.open(OPBillingComponent, {
+          maxWidth: "90%",
+          height: '695px !important',
+          panelClass: 'op-billing-dialog'
+        });
        dialogRef.afterClosed().subscribe(result => {
          console.log('The dialog was closed - Insert Action', result);
         

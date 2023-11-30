@@ -193,11 +193,11 @@ app-op-billing{
         font-weight: 400;
         color: #48a348;
     }
-    .mat-card {
-        padding: 5px 5px !important;
-        // width: 50%;
-        overflow: auto;
-    }
+    // .mat-card {
+    //     padding: 5px 5px !important;
+    //     // width: 50%;
+    //     overflow: auto;
+    // }
 
     
     .header-content .mat-form-field-flex {
@@ -411,18 +411,18 @@ app-op-billing{
         padding: 10px !important;
     }
     
-    ::ng-deep .mat-tab-label-active {
-     // background-color: #bec4be!important;
-        opacity: 1!important;
-        color: white;
-    }
+    // ::ng-deep .mat-tab-label-active {
+    //  // background-color: #bec4be!important;
+    //     opacity: 1!important;
+    //     color: white;
+    // }
     
-    .mat-tab-header {
-        margin: 5px 15px;
-        width: fit-content;
+    // .mat-tab-header {
+    //     margin: 5px 15px;
+    //     width: fit-content;
         
-        border-radius: 5px;
-    }
+    //     border-radius: 5px;
+    // }
     .table-actions{
         color:white;
     }
@@ -436,13 +436,13 @@ app-op-billing{
     //     border-radius: 5px;
     // }
     
-    .mat-tab-label {
-        height: 20px !important;
-        min-width: 128px !important;
-        color: black !important;
-        // font-size: 14px;
-        font-weight: 600;
-    }
+    // .mat-tab-label {
+    //     height: 20px !important;
+    //     min-width: 128px !important;
+    //     color: black !important;
+    //     // font-size: 14px;
+    //     font-weight: 600;
+    // }
     
     .mat-paginator-container {
         justify-content: flex-start !important;
@@ -781,6 +781,14 @@ button:disabled {
 //     // color: black !important;
 // }
 
+}
+
+.content-card {
+    padding: 15px;
+}
+
+.content-card-body {
+    padding: 30px 15px!important;
 }
 
 
