@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-prescriptionclassmaster",
@@ -28,32 +31,41 @@ export class PrescriptionclassmasterComponent implements OnInit {
         new MatTableDataSource<PrescriptionClassMaster>();
 
     constructor(
-        public _PrescriptionclassService: PrescriptionclassmasterService
+        public _PrescriptionclassService: PrescriptionclassmasterService,
+        public toastr : ToastrService,
     ) {}
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     ngOnInit(): void {
         this.getPrescriptionclassMasterList();
     }
-    onSearch() {
-        this.getPrescriptionclassMasterList();
-    }
+  
 
     onSearchClear() {
         this._PrescriptionclassService.myformSearch.reset({
             TemplateNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getPrescriptionclassMasterList();
+    }
+   
+    onSearch() {
+        this.getPrescriptionclassMasterList();
     }
     getPrescriptionclassMasterList() {
-        this._PrescriptionclassService
-            .getPrescriptionclassMasterList()
-            .subscribe(
-                (Menu) =>
-                    (this.DSPrescriptionClassMasterList.data =
-                        Menu as PrescriptionClassMaster[])
-            );
+        var vdata = {
+            "TemplateName":this._PrescriptionclassService.myformSearch.get("TemplateNameSearch").value.trim() + "%" || "%",  
+        };
+        this._PrescriptionclassService.getPrescriptionclassMasterList(vdata).subscribe((Menu) =>{
+            this.DSPrescriptionClassMasterList.data = Menu as PrescriptionClassMaster[];
+            this.DSPrescriptionClassMasterList.sort = this.sort;
+            this.DSPrescriptionClassMasterList.paginator = this.paginator;
+            console.log(this.DSPrescriptionClassMasterList);
+        });      
     }
 
+     
     onClear() {
         this._PrescriptionclassService.myForm.reset({ IsDeleted: "false" });
         this._PrescriptionclassService.initializeFormGroup();
@@ -87,24 +99,30 @@ export class PrescriptionclassmasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPrescriptionclassMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getPrescriptionclassMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPrescriptionclassMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Prescription Class Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getPrescriptionclassMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Prescription Class Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     prescriptionTemplateMasterUpdate: {
@@ -133,24 +151,30 @@ export class PrescriptionclassmasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getPrescriptionclassMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getPrescriptionclassMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getPrescriptionclassMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Prescription Class Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getPrescriptionclassMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Prescription Class Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

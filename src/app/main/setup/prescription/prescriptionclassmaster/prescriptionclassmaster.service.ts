@@ -37,10 +37,9 @@ export class PrescriptionclassmasterService {
         this.createPrescriptionclassForm();
     }
 
-    public getPrescriptionclassMasterList() {
+    public getPrescriptionclassMasterList(Param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_M_Prescription_TemplateMasterList_by_Name",
-            { TemplateName: "%" }
+            "Generic/GetByProc?procName=Rtrv_M_Prescription_TemplateMaster_By",Param
         );
     }
 

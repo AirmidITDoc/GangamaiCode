@@ -40,7 +40,7 @@ export class GenericmasterService {
 
     public getGenericMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_GenericMasterList_by_Name",
+            "Generic/GetByProc?procName=Rtrv_M_GenericMaster",
             param
         );
     }

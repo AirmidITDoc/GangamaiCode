@@ -82,7 +82,7 @@ const appRoutes: Routes = [
             ),
     },
     {
-        path: "credit-reason-master",
+        path: "ListCreditReasonMaster",
         loadChildren: () =>
             import("./credit-reason-master/credit-reason-master.module").then(
                 (m) => m.CreditReasonMasterModule

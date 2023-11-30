@@ -38,9 +38,14 @@
                     ">
                             <form [formGroup]="_PrescriptionclassService.myformSearch">
                                 <div class="dialog-content-wrapper">
+
+                                 
+
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Template Name" autocomplete="off"
-                                            name="TemplateNameSearch" formControlName="TemplateNameSearch" />
+                                            name="TemplateNameSearch" formControlName="TemplateNameSearch"
+                                             />
+
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
@@ -55,8 +60,8 @@
                                     </mat-radio-group>
 
                                     <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
+                                        Search<mat-icon>search</mat-icon>
+                                      
                                     </button>
                                 </div>
                             </form>
@@ -101,7 +106,7 @@
 
                                     <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -115,6 +120,19 @@
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
                                     </ng-container>
+
+                                   <!-- <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                    title="Edit Menu">launch</mat-icon></button>
+                                            <button mat-icon-button (click)="onDeactive(row.CityId)"
+                                                color="warn"><mat-icon>delete_outline</mat-icon></button>
+
+                                        </mat-cell>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">

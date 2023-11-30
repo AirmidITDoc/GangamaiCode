@@ -85,27 +85,45 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getDoctorMasterList();
+       this.getDoctorMasterList();
+    }
+    getDoctorMasterList(){
+        var vdata={ 
+        "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim()   || "%",
+        "L_Name": this._doctorService.myform.get('LastName').value || "%",
+        "FlagActive":this._doctorService.myform.get('isActive').value,  
+        "ConsultantDoc_All": this._doctorService.myform.get('IsConsultant').value,
+        "ReferDoc_All": this._doctorService.myform.get('IsRefDoc').value
+        }
+        this._doctorService.getDoctorMasterList(vdata).subscribe((data) =>{
+            this.DSDoctorMasterList.data= data as DoctorMaster[];
+            this.isLoading = false;
+            this.DSDoctorMasterList.sort = this.sort;
+            this.DSDoctorMasterList.paginator = this.paginator;
+            console.log(this.DSDoctorMasterList);
+        },
+                 (error) => (this.isLoading = false)
+         );
     }
 
-    getDoctorMasterList() {
-        var m_data = {
-            F_Name:
-                this._doctorService.myformSearch
-                    .get("DoctorNameSearch")
-                    .value.trim() + "%" || "%",
-            L_Name: "%",
-        };
-        this._doctorService.getDoctorMasterList(m_data).subscribe(
-            (Menu) => {
-                this.DSDoctorMasterList.data = Menu as DoctorMaster[];
-                this.isLoading = false;
-                this.DSDoctorMasterList.sort = this.sort;
-                this.DSDoctorMasterList.paginator = this.paginator;
-            },
-            (error) => (this.isLoading = false)
-        );
-    }
+    // getDoctorMasterList() {
+    //     var m_data = {
+    //         F_Name:
+    //             this._doctorService.myformSearch
+    //                 .get("DoctorNameSearch")
+    //                 .value.trim() + "%" || "%",
+    //         L_Name: "%",
+    //     };
+    //     this._doctorService.getDoctorMasterList(m_data).subscribe(
+    //         (Menu) => {
+    //             this.DSDoctorMasterList.data = Menu as DoctorMaster[];
+    //             this.isLoading = false;
+    //             this.DSDoctorMasterList.sort = this.sort;
+    //             this.DSDoctorMasterList.paginator = this.paginator;
+    //         },
+    //         (error) => (this.isLoading = false)
+    //     );
+    // }
 
     onEdit(row) {
 

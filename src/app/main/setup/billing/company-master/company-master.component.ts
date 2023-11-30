@@ -9,6 +9,7 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-company-master",
@@ -51,11 +52,11 @@ export class CompanyMasterComponent implements OnInit {
 
     constructor(
         public _companyService: CompanyMasterService,
-
+        public toastr : ToastrService,
         public _matDialog: MatDialog
     ) {}
 
-    ngOnInit(): void {
+    ngOnInit():void {
         this.getCompanyMaster();
     }
     onSearch() {
@@ -70,17 +71,17 @@ export class CompanyMasterComponent implements OnInit {
         this.getCompanyMaster();
     }
     getCompanyMaster() {
-        var param = {
-            CompanyName:this._companyService.myformSearch.get("CompanyNameSearch").value.trim() || "%",
+        var vdata={
+            CompanyName:this._companyService.myformSearch.get('CompanyNameSearch').value.trim() || "%" 
         };
-        this._companyService.getCompanyMaster(param).subscribe((Menu) => {
-                this.DSCompanyMasterList.data = Menu as CompanyMaster[];
-               this.isLoading = false;
-                this.DSCompanyMasterList.sort = this.sort;
-                this.DSCompanyMasterList.paginator = this.paginator;
-            },
-            (error) => (this.isLoading = false)
-        );
+        console.log(vdata);
+        this._companyService.getCompanyMasterList(vdata).subscribe((data) => {
+            this.DSCompanyMasterList.data = data as CompanyMaster[];
+            this.DSCompanyMasterList.sort = this.sort;
+             this.DSCompanyMasterList.paginator = this.paginator;
+             console.log(this.DSCompanyMasterList);
+        });
+      
     }
 
     onClear() {
@@ -136,7 +137,72 @@ export class CompanyMasterComponent implements OnInit {
         });
     }
 }
+
+// export class CompanyMaster {
+//     // "CompanyId",
+//     // "CompanyName",
+//     // "TypeName",
+//     // "Address",
+//     // "City",
+//     // "PinNo",
+//     // "PhoneNo",
+//     // "MobileNo",
+//     // "FaxNo",
+//     // "TariffName",
+//     // "AddedBy",
+//     // "IsDeleted",
+//     // "action",
+    
+//     CompanyId: number;
+//    // CompTypeId: number;
+//     CompanyName: string;
+//     TypeName:string;
+//     Address: string;
+//     City: String;
+//     PinNo: String;
+//     PhoneNo: String;
+//     MobileNo: String;
+//     FaxNo: String;
+//     TariffName:any;
+//    // TariffId: number;
+//     IsDeleted: boolean;
+//     AddedBy: number;
+//    // UpdatedBy: number;
+//   //  IsCancelled: boolean;
+//   //  IsCancelledBy: number;
+//   //  IsCancelledDate: Date;
+//     // AddedByName: string;
+//     /**
+//    * Constructor
+//    *
+// export class CompanyMaster {
+//    * @param export class CompanyMaster {
+
+//    */
+//     constructor(CompanyMaster) {
+//         {
+//             this.CompanyId = CompanyMaster.CompanyId || 0;
+//            this.TypeName = CompanyMaster.TypeName || "";
+//             this.CompanyName = CompanyMaster.CompanyName || "";
+//             this.Address = CompanyMaster.Address || "";
+//             this.City = CompanyMaster.City || "";
+//             this.PinNo = CompanyMaster.PinNo || 0;
+//             this.PhoneNo = CompanyMaster.PhoneNo || 0;
+//             this.MobileNo = CompanyMaster.MobileNo || 0;
+//             this.FaxNo = CompanyMaster.FaxNo || 0;
+//            this.TariffName = CompanyMaster.TariffName || "";
+//             this.AddedBy = CompanyMaster.AddedBy || "";
+//             this.IsDeleted = CompanyMaster.IsDeleted || "false";
+//            // this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+//            // this.IsCancelled = CompanyMaster.IsCancelled || "false";
+//            // this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
+//            // this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
+//             // this.AddedByName = CompanyMaster.AddedByName || "";
+//         }
+//     }
+// }
 export class CompanyMaster {
+    
     CompanyId: number;
     CompTypeId: number;
     CompanyName: string;
