@@ -1399,7 +1399,7 @@ OP_IPType:any=2;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (this.DiscAmt > PurTotalAmount)
+      if (parseFloat(this.DiscAmt) >= parseFloat(PurTotalAmount))
       {
         Swal.fire('Discount greater than Purchase Rate, Please check !');
         this.ItemFormreset();
