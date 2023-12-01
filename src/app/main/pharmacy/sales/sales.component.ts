@@ -1399,7 +1399,7 @@ OP_IPType:any=2;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (this.DiscAmt > PurTotalAmount)
+      if (parseFloat(this.DiscAmt) >= parseFloat(PurTotalAmount))
       {
         Swal.fire('Discount greater than Purchase Rate, Please check !');
         this.ItemFormreset();
@@ -1628,7 +1628,16 @@ OP_IPType:any=2;
   }
 
   Paymentobj = {};
+
+  // onCheckBalQty(Params){
+  //   let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+  //   this._IpSearchListService.getchargesList(Query).subscribe(data => {
+  //     this.chargeslist = data as ChargesList[];
+  //   })
+  // }
+
   onSave() {
+
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if((patientTypeValue == 'OP' || patientTypeValue == 'IP')
       && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
