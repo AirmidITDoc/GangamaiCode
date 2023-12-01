@@ -5,6 +5,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { CompanyTypeMasterService } from "./company-type-master.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-company-type-master",
@@ -31,7 +32,8 @@ export class CompanyTypeMasterComponent implements OnInit {
 
     DSCompanyTypeMasterList = new MatTableDataSource<CompanyTypeMaster>();
 
-    constructor(public _companytypeService: CompanyTypeMasterService) {}
+    constructor(public _companytypeService: CompanyTypeMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getCompanytypeMasterList();
@@ -91,24 +93,30 @@ export class CompanyTypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getCompanytypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getCompanytypeMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getCompanytypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Company-Type Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getCompanytypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Company-Type Master Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     companyTypeMasterUpdate: {
@@ -133,24 +141,30 @@ export class CompanyTypeMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getCompanytypeMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getCompanytypeMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getCompanytypeMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Company-Type Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getCompanytypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Company-Type Master Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

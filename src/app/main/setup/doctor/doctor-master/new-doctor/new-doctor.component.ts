@@ -10,6 +10,7 @@ import { NotificationServiceService } from "app/core/notification-service.servic
 import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { MatTableDataSource } from "@angular/material/table";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-new-doctor",
@@ -65,10 +66,12 @@ export class NewDoctorComponent implements OnInit {
         public _doctorService: DoctorMasterService,
         private accountService: AuthenticationService,
         @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr : ToastrService,
         public dialogRef: MatDialogRef<NewDoctorComponent>
     ) { }
 
     ngOnInit(): void {
+        this.getDocDeptList();
 
         if (this.data) {
             this.registerObj = this.data.registerObj;
@@ -117,13 +120,15 @@ export class NewDoctorComponent implements OnInit {
 
 
     getDocDeptList(){
-        debugger
+       // debugger
           var  m_data ={
-                "DoctorId" :this.registerObj.DoctorId
+            'DepartmentId':this._doctorService.myform.get('Departmentid').value
+                //"DoctorId" :this.registerObj.DoctorId
             }
         this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
           this.dataSource.data = data as DepartmenttList[];
           this.DeptList=this.dataSource.data;
+          console.log(this.dataSource);
         },
           error => {
             // this.sIsLoading = '';
@@ -260,7 +265,7 @@ export class NewDoctorComponent implements OnInit {
 
         this._doctorService.getDepartmentCombobox().subscribe((data) => {
             this.DepartmentcmbList = data;
-            console.log(data);
+            //console.log(data);
             this.filteredDepartment.next(this.DepartmentcmbList.slice());
             this._doctorService.myform
                 .get("Departmentid")
@@ -270,7 +275,7 @@ export class NewDoctorComponent implements OnInit {
 
     onSubmit() {
 
-        debugger;
+       // debugger;
         if (this._doctorService.myform.valid) {
             if (!this._doctorService.myform.get("DoctorId").value) {
               
@@ -278,7 +283,7 @@ export class NewDoctorComponent implements OnInit {
 
                 this.dataSource.data.forEach((element) => {
                     let DocInsertObj = {};
-                    DocInsertObj['DepartmentId'] = element.DeptId;
+                    DocInsertObj['DepartmentId'] = element.DeptId
                     DocInsertObj['DoctorId'] = 0;
                     data2.push(DocInsertObj);
                 });
@@ -300,12 +305,12 @@ export class NewDoctorComponent implements OnInit {
                         lastName:
                             this._doctorService.myform
                                 .get("LastName")
-                                .value.trim() || "%",
+                                .value || "%",
                         dateOfBirth: "2023-08-30T06:08:46.971Z",// this._doctorService.myform.get("DateofBirth").value || '01/0/1900',
                         address:
                             this._doctorService.myform
                                 .get("Address")
-                                .value.trim() || "%",
+                                .value || "%",
                         city:
                             this._doctorService.myform
                                 .get("City")
@@ -398,22 +403,27 @@ export class NewDoctorComponent implements OnInit {
                     .subscribe((data) => {
                         // this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Doctor not saved",
-                                "error"
-                            );
+                            this.toastr.error('Doctor Master Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                    },error => {
+                        this.toastr.error('Doctor Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
 
                 // this.notification.success("Record added successfully");
             } else {
@@ -545,22 +555,27 @@ export class NewDoctorComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Doctor Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                    },error => {
+                        this.toastr.error('Doctor Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
 
                 // this.notification.success("Record updated successfully");
             }
@@ -616,7 +631,7 @@ export class NewDoctorComponent implements OnInit {
 
             });
         this.dataSource.data = this.deptlist;
-        console.log(this.deptlist);
+       // console.log(this.deptlist);
     }
 
     deleteTableRow(element) {

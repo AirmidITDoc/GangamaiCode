@@ -9,6 +9,7 @@ import { ServiceMasterService } from "../service-master.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { takeUntil } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-service-master-form",
@@ -26,14 +27,13 @@ export class ServiceMasterFormComponent implements OnInit {
   TariffcmbList:any=[];
 
   butDisabled:boolean = false;
-
   msg:any;
-  DSServicedetailList = new MatTableDataSource<Servicedetail>();
+
+  DSServicedetailList = new MatTableDataSource<NewServicedetail>();
   
   //tariff filter
 public tariffFilterCtrl: FormControl = new FormControl();
 public filteredTariff: ReplaySubject<any> = new ReplaySubject<any>(1);
-
 
   //groupname filter
   public groupnameFilterCtrl: FormControl = new FormControl();
@@ -44,8 +44,10 @@ public subgroupnameFilterCtrl: FormControl = new FormControl();
 public filteredSubgroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 private _onDestroy = new Subject<void>();
+  getServiceMasterList: any;
 
   constructor(public _serviceMasterService: ServiceMasterService,
+    public toastr : ToastrService,
     
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) { }
@@ -92,7 +94,6 @@ private _onDestroy = new Subject<void>();
 
   }
 
-
   private filterGroupname() {
     // debugger;
     if (!this.GroupcmbList) {
@@ -112,7 +113,6 @@ private _onDestroy = new Subject<void>();
       this.GroupcmbList.filter(bank => bank.GroupName.toLowerCase().indexOf(search) > -1)
     );
   }
-
 
   private filterSubgroupname() {
     // debugger;
@@ -152,30 +152,14 @@ private _onDestroy = new Subject<void>();
       this.TariffcmbList.filter(bank => bank.TariffName.toLowerCase().indexOf(search) > -1)
     );
   }
-  getClassList() {
-    this._serviceMasterService.getClassMasterList().subscribe(Menu => {
-      this.DSServicedetailList.data = Menu as Servicedetail[];
-      
-    })
-  }
-
-  get f() { return this._serviceMasterService.myform.controls; }
-
   getGroupNameCombobox(){
     // this._serviceService.getGroupMasterCombo().subscribe(data =>this.GroupcmbList =data);
-    
     this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
       this.GroupcmbList = data;
       this.filteredGroupname.next(this.GroupcmbList.slice());
       this._serviceMasterService.myform.get('GroupId').setValue(this.GroupcmbList[0]);
     });
   }
-
-  getDoctorNameCombobox(){
-    this._serviceMasterService.getDoctorMasterCombo().subscribe(data =>this.DoctorcmbList =data);
-    
-  }
-  
   getSubgroupNameCombobox(){
     // this._serviceService.getSubgroupMasterCombo().subscribe(data =>this.SubGroupcmbList =data);
     
@@ -185,14 +169,34 @@ private _onDestroy = new Subject<void>();
       this._serviceMasterService.myform.get('SubGroupId').setValue(this.SubGroupcmbList[0]);
     });
   }
- 
   getTariffNameCombobox(){
     // this._serviceService.getTariffMasterCombo().subscribe(data =>this.TariffcmbList =data);
     this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
       this.TariffcmbList = data;
       this.filteredTariff.next(this.TariffcmbList.slice());
       this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0]);
+     // console.log( this.TariffcmbList)
     });
+  }
+
+  getClassList() {
+    this._serviceMasterService.getClassMasterList().subscribe(Menu => {
+      this.DSServicedetailList.data = Menu as NewServicedetail[];
+      this.DSServicedetailList.sort = this.sort;
+      this.DSServicedetailList.paginator = this.paginator;
+     // console.log( this.DSServicedetailList);
+      
+    });
+  }
+
+  get f() { return this._serviceMasterService.myform.controls; }
+
+  getDoctorNameCombobox(){
+    this._serviceMasterService.getDoctorMasterCombo().subscribe(data => {
+      this.DoctorcmbList =data;
+      this._serviceMasterService.myform.get('DoctorId').setValue(this.DoctorcmbList[0]);
+     // console.log(this.DoctorcmbList)
+    });  
   }
    
   onSubmit() {
@@ -232,7 +236,31 @@ private _onDestroy = new Subject<void>();
          console.log(m_data);
         this._serviceMasterService.serviceMasterInsert(m_data).subscribe(data => {
           this.msg = data;
-        });
+          if (data) {
+            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+              this.getServiceMasterList();
+            // Swal.fire(
+            //     "Saved !",
+            //     "Record saved Successfully !",
+            //     "success"
+            // ).then((result) => {
+            //     if (result.isConfirmed) {
+            //         this.getGroupMasterList();
+            //     }
+            // });
+        } else {
+            this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+        }
+        this.getServiceMasterList();
+    },error => {
+        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
+         toastClass: 'tostr-tost custom-toast-error',
+       });
+     });
        
       }
       else {
@@ -246,7 +274,7 @@ private _onDestroy = new Subject<void>();
             "CreditedtoDoctor": Boolean(JSON.parse(this._serviceMasterService.myform.get("CreditedtoDoctor").value)),
             "IsPathology":parseInt(this._serviceMasterService.myform.get("IsPathology").value),
             "IsRadiology":parseInt(this._serviceMasterService.myform.get("IsRadiology").value),
-            "IsDeleted":  Boolean(JSON.parse(this._serviceMasterService.myform.get("IsDeleted").value)),
+           // "IsDeleted":  Boolean(JSON.parse(this._serviceMasterService.myform.get("IsDeleted").value)),
             "PrintOrder": this._serviceMasterService.myform.get("PrintOrder").value,
             "IsPackage":parseInt(this._serviceMasterService.myform.get("IsPackage").value),
             "SubGroupId": this._serviceMasterService.myform.get("SubGroupId").value,
@@ -272,13 +300,38 @@ private _onDestroy = new Subject<void>();
 
         }
         this._serviceMasterService.serviceMasterUpdate(m_dataUpdate).subscribe(data => {
-          this.msg = data;
-        });
-       
+          this.msg = data; 
+           if (data) {
+            this.toastr.success('Record updated Successfully.', 'updated !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+              this.getServiceMasterList();
+            // Swal.fire(
+            //     "Updated !",
+            //     "Record updated Successfully !",
+            //     "success"
+            // ).then((result) => {
+            //     if (result.isConfirmed) {
+            //         this.getGroupMasterList();
+            //     }
+            // });
+        } else {
+            this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+        }
+        this.getServiceMasterList();
+    },error => {
+        this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
+         toastClass: 'tostr-tost custom-toast-error',
+       });
+     });
+        this.getServiceMasterList();
       }
       this.onClose();
     }
   }
+ 
   onEdit(row) {
     var m_data = {
       "ServiceId":row.ServiceId,
@@ -329,3 +382,17 @@ private _onDestroy = new Subject<void>();
     
   }
 }
+export class NewServicedetail {
+  ClassName: any;
+  ClassId: number;
+  ClassRate: number;
+
+  constructor(NewServicedetail) {
+      {
+          this.ClassName = NewServicedetail.ClassName || "";
+          this.ClassId = NewServicedetail.ClassId || "";
+          this.ClassRate = NewServicedetail.ClassRate || "";
+      }
+  }
+}
+ 

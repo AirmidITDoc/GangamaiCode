@@ -82,7 +82,7 @@
 
 .table2{
     // height: 600px !important;
-}
+
 .mat-header-row {
 background-color:rgb(18, 87, 134) !important;
 max-width: 100%; 
@@ -100,15 +100,15 @@ display: flex;
 }
 
 .mat-column-DeptId {
-width:90px;
-max-width: 90px;
-min-width: 90px;
+width:120px;
+max-width: 120px;
+min-width: 120px;
 text-align: center;
 }
 .mat-column-DeptName {
- width:320px;
- max-width:320px;
- min-width:320px;
+ width:300px;
+ max-width:300px;
+ min-width:300px;
 text-align: left;
 justify-content:left; 
 }
@@ -121,4 +121,5 @@ min-width: 80px;
 text-align: left;
 justify-content: last baseline;
 
+}
 }

@@ -58,7 +58,7 @@
                                                 <mat-form-field class="mr-sm-12" fxFlex>
                                                     <input matInput placeholder="Search --> Doctor First Name"
                                                         autocomplete="off" name="DoctorNameSearch"
-                                                        formControlName="DoctorNameSearch">
+                                                        formControlName="DoctorNameSearch" >
 
                                                     <button mat-button matSuffix [ngStyle]="{'color':'white'}"
                                                         mat-icon-button aria-label="Clear" (click)="onSearchClear()">
@@ -134,7 +134,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                             fxShow.gt-sm>DateofBirth
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.DateofBirth}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.DateofBirth | date:'MM/dd/yyyy'}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -200,7 +200,7 @@
                                     <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>RegNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.RegNo}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.REGNO}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -299,8 +299,6 @@
 
 
                                 </mat-table>
-
-
 
                                 <mat-card *ngIf="isLoading"
                                     style="display: flex; justify-content: center; align-items: center; background: white;">

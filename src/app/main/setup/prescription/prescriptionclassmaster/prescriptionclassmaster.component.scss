@@ -18,25 +18,45 @@ app-prescriptionclassmaster{
     }
     
     .mat-column-TemplateId {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
     }
     
     .mat-column-TemplateName {
-        width:150px;
-        max-width: 150px;
-        min-width: 150px;
+        width:170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
     .mat-column-TemplateDesc {
-        width:150px;
-        max-width: 150px;
-        min-width: 150px;
+        width:160px;
+        max-width: 160px;
+        min-width: 160px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }   
     .mat-column-AddedByName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
     }
     
     .mat-column-IsDeleted {
@@ -49,9 +69,9 @@ app-prescriptionclassmaster{
     
     .mat-column-action {
         // color: white !important;
-        width:70px;
-        max-width: 70px;
-        min-width: 70px;
+        width:100px;
+        max-width: 100px;
+        min-width: 100px;
         text-align: right;
         justify-content:right;
     }

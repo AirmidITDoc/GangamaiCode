@@ -82,7 +82,13 @@ export class ServiceMasterService {
 
     public getSubgroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_SubGroupMasterForCombo",
+            "Generic/GetByProc?procName=Retrieve_M_SubGroupMasterForCombo",
+            {}
+        );
+    }
+    public getTariffMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo",
             {}
         );
     }
@@ -90,16 +96,11 @@ export class ServiceMasterService {
     public getClassMasterList() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
-            { ClassName: "%" }
+            { }
         );
     }
 
-    public getTariffMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo",
-            {}
-        );
-    }
+ 
 
     public serviceMasterInsert(param) {
         return this._httpClient.post("Billing/ServiceSave", param);

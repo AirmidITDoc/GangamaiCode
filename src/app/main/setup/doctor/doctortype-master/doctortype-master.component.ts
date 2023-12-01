@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-doctortype-master",
@@ -20,41 +21,43 @@ export class DoctortypeMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ["Id", "DoctorType", "action"];
+    displayedColumns: string[] = ["Id", "DoctorType","IsDeleted", "action"];
 
     DSDoctorTypeMasterList = new MatTableDataSource<DoctortypeMaster>();
 
-
-
-    
-    constructor(public _doctortypeService: DoctortypeMasterService) {}
+    constructor(public _doctortypeService: DoctortypeMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
+        this.getDoctortypeMasterList();
+    }
+    onSearch() {
+        this.getDoctortypeMasterList();
+    }
+    onSearchClear() {
+        this._doctortypeService.myformSearch.reset({
+            DoctorTypeSearch: "",
+            IsDeletedSearch: "2",
+        });
         this.getDoctortypeMasterList();
     }
 
     getDoctortypeMasterList() {
         
         var m = {
-            "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value + '%' || '%'
-        }
-        this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
+            DoctorType: this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"
+        };
+       // console.log(m);
+             this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
             this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-            
             this.DSDoctorTypeMasterList.sort = this.sort;
             this.DSDoctorTypeMasterList.paginator = this.paginator;
         });
+       // console.log(this.DSDoctorTypeMasterList);
     }
-    onSearch() {
-        this.getDoctortypeMasterList();
-    }
+  
 
-    onSearchClear() {
-        this._doctortypeService.myformSearch.reset({
-            DoctorTypeSearch: "",
-            IsDeletedSearch: "2",
-        });
-    }
+   
     onClear() {
         this._doctortypeService.myform.reset({ IsDeleted: "false" });
         this._doctortypeService.initializeFormGroup();
@@ -81,8 +84,30 @@ export class DoctortypeMasterComponent implements OnInit {
                     .doctortTypeMasterInsert(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getDoctortypeMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
+                        } else {
+                            this.toastr.error('DoctorType Master Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
                         this.getDoctortypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('DoctorType Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     doctorTypeMasterUpdate: {
@@ -102,8 +127,32 @@ export class DoctortypeMasterComponent implements OnInit {
                     .doctorTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getDoctortypeMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
+                        } else {
+                            this.toastr.error('DoctorType Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
                         this.getDoctortypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('DoctorType Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+                    
+                    
             }
             this.onClear();
         }

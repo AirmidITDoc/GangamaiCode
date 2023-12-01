@@ -40,12 +40,16 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> DoctorType" autocomplete="off"
-                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch" (keyup)="onSearch()" />
+                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch"/>
+
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
+
+                                  
+                                    
 
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
@@ -54,10 +58,11 @@
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
+                                    <button mat-raised-button  fxLayoutAlign="center center" 
+                                     (click)="onSearch()"> Search  <mat-icon>search</mat-icon>
                                     </button>
+                                    
+
                                 </div>
                             </form>
                         </div>
@@ -82,7 +87,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="IsDeleted">
+                                    <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -91,7 +96,7 @@
                                             <mat-icon *ngIf="element.IsDeleted"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
-                                    </ng-container> -->
+                                    </ng-container>
 
 
                                     <ng-container matColumnDef="action" stickyEnd>

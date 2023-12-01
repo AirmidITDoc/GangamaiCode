@@ -207,7 +207,11 @@ export class VillageMasterComponent implements OnInit {
                               });
                         }
                         this.getVillageMasterLists();
-                    } );
+                    } ,error => {
+                        this.toastr.error('Village Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

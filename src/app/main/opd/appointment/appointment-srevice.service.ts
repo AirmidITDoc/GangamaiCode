@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RegInsert } from './appointment.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -170,7 +170,7 @@ export class AppointmentSreviceService {
 
   
 public documentuploadInsert(employee){
-  return this._httpClient.post("File/UploadFile", employee);
+  return this._httpClient.post("InPatient/DocAttachment", employee);
 }
 
   

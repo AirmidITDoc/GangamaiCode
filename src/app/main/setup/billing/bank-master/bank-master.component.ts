@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { BankMasterService } from "./bank-master.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-bank-master",
@@ -31,7 +32,8 @@ export class BankMasterComponent implements OnInit {
 
     DSBankMasterList = new MatTableDataSource<BankMaster>();
 
-    constructor(public _bankService: BankMasterService) {}
+    constructor(public _bankService: BankMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getBankMasterList();
@@ -92,20 +94,30 @@ export class BankMasterComponent implements OnInit {
                 this._bankService.bankMasterInsert(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getBankMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          this.getBankMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getBankMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
                     this.getBankMasterList();
-                });
+                },error => {
+                    this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var m_dataUpdate = {
                     bankMasterUpdate: {
@@ -124,15 +136,19 @@ export class BankMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getBankMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getBankMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getBankMasterList();
+                            //     }
+                            // });
                         } else {
                             Swal.fire(
                                 "Error !",

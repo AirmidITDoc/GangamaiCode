@@ -5,6 +5,7 @@ import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-genericmaster",
@@ -30,7 +31,8 @@ export class GenericmasterComponent implements OnInit {
 
     DSGenericMasterList = new MatTableDataSource<GenericMaster>();
 
-    constructor(public _GenericService: GenericmasterService) {}
+    constructor(public _GenericService: GenericmasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getGenericMasterList();
@@ -47,10 +49,8 @@ export class GenericmasterComponent implements OnInit {
         this.getGenericMasterList();
     }
     getGenericMasterList() {
-        var param = {
-            GenericName:
-                this._GenericService.myformSearch
-                    .get("GenericNameSearch")
+        var param = {       
+        GenericName: this._GenericService.myformSearch.get("GenericNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._GenericService.getGenericMasterList(param).subscribe((Menu) => {
