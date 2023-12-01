@@ -16,6 +16,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule
-  ]
+  ],
+  entryComponents: [CreditReasonMasterComponent],
 })
 export class CreditReasonMasterModule { }
+
+ 

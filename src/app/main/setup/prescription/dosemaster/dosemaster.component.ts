@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 export class DosemasterComponent implements OnInit {
     DoseMasterList: any;
     msg: any;
+    sIsLoading: string = '';
+    isLoading = true;
 
     displayedColumns: string[] = [
         "DoseId",
@@ -49,17 +51,20 @@ export class DosemasterComponent implements OnInit {
     }
 
     getDoseMasterList() {
+        this.sIsLoading = 'loading-data';
         var param = {
-            DoseName:
-                this._DoseService.myformSearch
-                    .get("DoseNameSearch")
+            DoseName:this._DoseService.myformSearch.get("DoseNameSearch")
                     .value.trim() + "%" || "%",
         };
-        this._DoseService
-            .getDoseMasterList(param)
-            .subscribe(
-                (Menu) => (this.DSDoseMasterList.data = Menu as DoseMaster[])
-            );
+        this._DoseService.getDoseMasterList(param).subscribe((Menu) => {
+            this.DSDoseMasterList.data = Menu as DoseMaster[];
+            this.DSDoseMasterList.sort = this.sort;
+            this.DSDoseMasterList.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+        error => {
+          this.sIsLoading = '';
+        });
     }
 
     onClear() {

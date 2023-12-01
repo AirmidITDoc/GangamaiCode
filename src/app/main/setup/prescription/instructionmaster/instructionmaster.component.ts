@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { InstructionmasterService } from "./instructionmaster.service";
 import Swal from "sweetalert2";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-instructionmaster",
@@ -13,7 +16,7 @@ import Swal from "sweetalert2";
 })
 export class InstructionmasterComponent implements OnInit {
     InstructionMasterList: any;
-
+    sIsLoading:string= '';
     msg: any;
 
     displayedColumns: string[] = [
@@ -25,26 +28,14 @@ export class InstructionmasterComponent implements OnInit {
 
     DSInstructionMasterList = new MatTableDataSource<InstructionMaster>();
 
-    constructor(public _InstructionService: InstructionmasterService) {}
+    constructor(public _InstructionService: InstructionmasterService,
+        public toastr : ToastrService,   ) {}
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     ngOnInit(): void {
         this.getInstructionMasterList();
-    }
-
-    getInstructionMasterList() {
-        var param = {
-            InstructionName:
-                this._InstructionService.myformSearch
-                    .get("InstructionNameSearch")
-                    .value.trim() + "%" || "%",
-        };
-        this._InstructionService
-            .getInstructionMasterList(param)
-            .subscribe(
-                (Menu) =>
-                    (this.DSInstructionMasterList.data =
-                        Menu as InstructionMaster[])
-            );
     }
     onSearch() {
         this.getInstructionMasterList();
@@ -57,6 +48,26 @@ export class InstructionmasterComponent implements OnInit {
         });
         this.getInstructionMasterList();
     }
+
+    getInstructionMasterList() {
+        this.sIsLoading = 'loading-data';
+        var param = {
+            InstructionName:this._InstructionService.myformSearch.get("InstructionNameSearch")
+                    .value.trim() + "%" || "%",
+        };
+        this._InstructionService.getInstructionMasterList(param).subscribe((Menu) => {
+            this.DSInstructionMasterList.data = Menu as InstructionMaster[];
+            this.DSInstructionMasterList.sort = this.sort;
+            this.DSInstructionMasterList.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+        error => {
+          this.sIsLoading = '';
+        });
+                  
+           
+    }
+   
     onClear() {
         this._InstructionService.myForm.reset({ IsDeleted: "false" });
         this._InstructionService.initializeFormGroup();

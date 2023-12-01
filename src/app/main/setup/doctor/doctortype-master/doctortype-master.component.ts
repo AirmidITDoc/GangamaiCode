@@ -43,17 +43,22 @@ export class DoctortypeMasterComponent implements OnInit {
     }
 
     getDoctortypeMasterList() {
-        
-        var m = {
-            DoctorType: this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"
-        };
-       // console.log(m);
-             this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
-            this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
-            this.DSDoctorTypeMasterList.sort = this.sort;
-            this.DSDoctorTypeMasterList.paginator = this.paginator;
-        });
-       // console.log(this.DSDoctorTypeMasterList);
+        var vdata={
+            "DoctorType":this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"       
+        }
+        this._doctortypeService.getDoctortypeMasterList(vdata).subscribe((Menu) => {
+             this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
+            });
+        // var m = {
+        //     DoctorType: this._doctortypeService.myformSearch.get('DoctorTypeSearch').value.trim() || "%"
+        // };
+        // console.log(m);
+        //      this._doctortypeService.getDoctortypeMasterList(m).subscribe((Menu) => {
+        //     this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
+        //     this.DSDoctorTypeMasterList.sort = this.sort;
+        //     this.DSDoctorTypeMasterList.paginator = this.paginator;
+        // });
+        // console.log(this.DSDoctorTypeMasterList);
     }
   
 

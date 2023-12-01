@@ -64,6 +64,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur">
+                                <div class="spinner-border text-danger"></div>
+
+                                </div>
                                 <mat-table #table matSort [dataSource]="DSDoseMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="DoseId">
