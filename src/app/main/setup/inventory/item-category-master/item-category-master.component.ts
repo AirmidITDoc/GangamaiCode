@@ -8,6 +8,7 @@ import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-item-category-master",
@@ -40,7 +41,8 @@ export class ItemCategoryMasterComponent implements OnInit {
 
     private _onDestroy = new Subject<void>();
 
-    constructor(public _itemcategoryService: ItemCategoryMasterService) {}
+    constructor(public _itemcategoryService: ItemCategoryMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getitemcategoryMasterList();
@@ -143,24 +145,30 @@ export class ItemCategoryMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getitemcategoryMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getitemcategoryMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getitemcategoryMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Item-Category Master Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getitemcategoryMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Item-Category not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     updateItemCategoryMaster: {
@@ -190,24 +198,30 @@ export class ItemCategoryMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getitemcategoryMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getitemcategoryMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getitemcategoryMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Item-Category Master Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getitemcategoryMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Item-Category not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

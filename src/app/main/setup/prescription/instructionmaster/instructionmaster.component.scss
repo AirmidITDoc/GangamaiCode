@@ -13,15 +13,26 @@ app-instructionmaster {
     }
 
     .mat-column-InstructionId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
     }
 
     .mat-column-InstructionName {
-        width: 400px;
-        max-width: 400px;
-        min-width: 400px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     // .mat-column-AddedByName {
@@ -34,8 +45,8 @@ app-instructionmaster {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        justify-content: left;
     }
 
     .mat-column-action {

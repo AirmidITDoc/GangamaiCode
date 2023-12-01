@@ -39,7 +39,7 @@ export class InstructionmasterService {
 
     public getInstructionMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMasterList_by_Name",
+            "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMaster",
             param
         );
     }

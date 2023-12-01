@@ -13,25 +13,47 @@ app-dosemaster {
     }
 
     .mat-column-DoseId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
     }
 
     .mat-column-DoseName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
     .mat-column-DoseNameInEnglish {
         width: 160px;
         max-width: 160px;
         min-width: 160px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
     .mat-column-DoseQtyPerDay {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
     }
 
     // .mat-column-AddedByName {

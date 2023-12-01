@@ -8,6 +8,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { DrugmasterService } from "./drugmaster.service";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-drugmaster",
@@ -21,6 +22,8 @@ export class DrugmasterComponent implements OnInit {
     GenericmbList: any = [];
     ClassmbList: any = [];
     msg: any;
+    sIsLoading: string = '';
+    isLoading = true;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,7 +50,8 @@ export class DrugmasterComponent implements OnInit {
 
     DSDrugMasterList = new MatTableDataSource<DrugMaster>();
 
-    constructor(public _drugService: DrugmasterService) {}
+    constructor(public _drugService: DrugmasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getDrugMasterList();
@@ -118,16 +122,20 @@ export class DrugmasterComponent implements OnInit {
         );
     }
     getDrugMasterList() {
+        this.sIsLoading = 'loading-data';
         var param = {
-            DrugName:
-                this._drugService.myformSearch
-                    .get("DrugNameSearch")
+            DrugName:this._drugService.myformSearch.get("DrugNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._drugService.getDrugMasterList(param).subscribe((Menu) => {
             this.DSDrugMasterList.data = Menu as DrugMaster[];
             this.DSDrugMasterList.sort = this.sort;
             this.DSDrugMasterList.paginator = this.paginator;
+            this.sIsLoading = '';
+            console.log(this.DSDrugMasterList);
+        },
+        error => {
+          this.sIsLoading = '';
         });
     }
 
@@ -141,6 +149,7 @@ export class DrugmasterComponent implements OnInit {
         this._drugService.getClassMasterCombo().subscribe((data) => {
             this.ClassmbList = data;
             this.filteredClass.next(this.ClassmbList.slice());
+            console.log(this.ClassmbList);
         });
     }
     onClear() {
@@ -173,21 +182,32 @@ export class DrugmasterComponent implements OnInit {
 
                 this._drugService.insertDrugMaster(m_data).subscribe((data) => {
                     this.msg = data;
+                    console.log(this.msg);
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getDrugMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                        this.getDrugMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getDrugMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
-                    }
+                        this.toastr.error('Drug Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
+                        }
                     this.getDrugMasterList();
-                });
+                },error => {
+                    this.toastr.error('Drug Class Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var m_dataUpdate = {
                     updateDrugMaster: {
@@ -213,24 +233,30 @@ export class DrugmasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getDrugMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getDrugMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getDrugMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Drug Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getDrugMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Drug Class Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

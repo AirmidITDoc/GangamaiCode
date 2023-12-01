@@ -13,26 +13,56 @@ app-drugmaster {
     }
 
     .mat-column-DrugId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
     }
 
     .mat-column-DrugName {
         width: 150px;
         max-width: 150px;
         min-width: 150px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-GenericName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ClassName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     // .mat-column-AddedByName {
     //     width: 100px;
