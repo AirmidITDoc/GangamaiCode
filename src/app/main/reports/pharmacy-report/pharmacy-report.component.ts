@@ -187,83 +187,82 @@ export class PharmacyReportComponent implements OnInit {
   }
 
  
-  viewDailyCollectionPdf() {
+  // viewDailyCollectionPdf() {
 
-    var D_data = {
-      "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId": this.accountService.currentUserValue.user.storeId,
-      "AddedById": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
+  //   var D_data = {
+  //     "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //     "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //     "StoreId": this.accountService.currentUserValue.user.storeId,
+  //     "AddedById": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
 
-    }
-    this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
-    this.Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900';
+  //   }
+  //   this.FromDate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
+  //   this.Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900';
    
-    let printContents;
-    this.subscriptionArr.push(
-      this._BrowsSalesBillService.getSalesCollectionSummary(D_data).subscribe(res => {
+  //   let printContents;
+  //   this.subscriptionArr.push(
+  //     this._BrowsSalesBillService.getSalesCollectionSummary(D_data).subscribe(res => {
 
-        this.reportPrintObjList = res as Printsal[];
-        console.log(this.reportPrintObjList);
+  //       this.reportPrintObjList = res as Printsal[];
+  //       console.log(this.reportPrintObjList);
 
-        for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-          debugger
-          var objreportPrint = this.reportPrintObjList[i - 1];
-          let PackValue = '1200'
+  //       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+  //         debugger
+  //         var objreportPrint = this.reportPrintObjList[i - 1];
+  //         let PackValue = '1200'
 
-          if (objreportPrint.Label == 'Sales') {
-            this.SalesBillAmount = (parseFloat(this.SalesBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
-            this.SalesDiscAmount = (parseFloat(this.SalesDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
-            this.SalesNetAmount = (parseFloat(this.SalesNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
-            this.SalesPaidAmount = (parseFloat(this.SalesPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
-            this.SalesBalAmount = (parseFloat(this.SalesBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
-            this.SalesCashAmount = (parseFloat(this.SalesCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+  //         if (objreportPrint.Label == 'Sales') {
+  //           this.SalesBillAmount = (parseFloat(this.SalesBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+  //           this.SalesDiscAmount = (parseFloat(this.SalesDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+  //           this.SalesNetAmount = (parseFloat(this.SalesNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+  //           this.SalesPaidAmount = (parseFloat(this.SalesPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+  //           this.SalesBalAmount = (parseFloat(this.SalesBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+  //           this.SalesCashAmount = (parseFloat(this.SalesCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
 
-          } else if (objreportPrint.Label == 'Sales Return') {
-            this.SalesReturnBillAmount = (parseFloat(this.SalesReturnBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
-            this.SalesReturnDiscAmount = (parseFloat(this.SalesReturnDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
-            this.SalesReturnNetAmount = (parseFloat(this.SalesReturnNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
-            this.SalesReturnPaidAmount = (parseFloat(this.SalesReturnPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
-            this.SalesReturnBalAmount = (parseFloat(this.SalesReturnBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
-            this.SalesReturnCashAmount = (parseFloat(this.SalesReturnCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
-          }
-        }
-        this.TotalBillAmount = ((parseFloat(this.SalesBillAmount) - parseFloat(this.SalesReturnBillAmount))).toFixed(2);
-        this.TotalDiscAmount = ((parseFloat(this.SalesDiscAmount) - parseFloat(this.SalesReturnDiscAmount))).toFixed(2);
-        this.TotalNETAmount = ((parseFloat(this.SalesNetAmount) - parseFloat(this.SalesReturnNetAmount))).toFixed(2);
-        this.TotalPaidAmount = ((parseFloat(this.SalesPaidAmount) - parseFloat(this.SalesReturnPaidAmount))).toFixed(2);
-        this.TotalBalAmount = ((parseFloat(this.SalesBalAmount) - parseFloat(this.SalesReturnBalAmount))).toFixed(2);
-        this.TotalCashAmount = ((parseFloat(this.SalesCashAmount) - parseFloat(this.SalesReturnCashAmount))).toFixed(2);
+  //         } else if (objreportPrint.Label == 'Sales Return') {
+  //           this.SalesReturnBillAmount = (parseFloat(this.SalesReturnBillAmount) + parseFloat(objreportPrint.TotalBillAmount)).toFixed(2);
+  //           this.SalesReturnDiscAmount = (parseFloat(this.SalesReturnDiscAmount) + parseFloat(objreportPrint.DiscAmount)).toFixed(2);
+  //           this.SalesReturnNetAmount = (parseFloat(this.SalesReturnNetAmount) + parseFloat(objreportPrint.NetAmount)).toFixed(2);
+  //           this.SalesReturnPaidAmount = (parseFloat(this.SalesReturnPaidAmount) + parseFloat(objreportPrint.PaidAmount)).toFixed(2);
+  //           this.SalesReturnBalAmount = (parseFloat(this.SalesReturnBalAmount) + parseFloat(objreportPrint.BalAmount)).toFixed(2);
+  //           this.SalesReturnCashAmount = (parseFloat(this.SalesReturnCashAmount) + parseFloat(objreportPrint.CashPay)).toFixed(2);
+  //         }
+  //       }
+  //       this.TotalBillAmount = ((parseFloat(this.SalesBillAmount) - parseFloat(this.SalesReturnBillAmount))).toFixed(2);
+  //       this.TotalDiscAmount = ((parseFloat(this.SalesDiscAmount) - parseFloat(this.SalesReturnDiscAmount))).toFixed(2);
+  //       this.TotalNETAmount = ((parseFloat(this.SalesNetAmount) - parseFloat(this.SalesReturnNetAmount))).toFixed(2);
+  //       this.TotalPaidAmount = ((parseFloat(this.SalesPaidAmount) - parseFloat(this.SalesReturnPaidAmount))).toFixed(2);
+  //       this.TotalBalAmount = ((parseFloat(this.SalesBalAmount) - parseFloat(this.SalesReturnBalAmount))).toFixed(2);
+  //       this.TotalCashAmount = ((parseFloat(this.SalesCashAmount) - parseFloat(this.SalesReturnCashAmount))).toFixed(2);
       
 
-        this.reportPrintObj = res[0] as Printsal;
+  //       this.reportPrintObj = res[0] as Printsal;
 
-        setTimeout(() => {
-          this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
-        }, 1000);
+  //       setTimeout(() => {
+  //         this._PrintPreviewService.PrintView(this.SalescollectiontSummaryemplate.nativeElement.innerHTML);
+  //       }, 1000);
 
-      })
-    );
-  }
-
-  // viewDailyCollectionPdf(){
-    
-  //   this._BrowsSalesBillService.getSalesDailyCollectionNew(
-  //     this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     this.accountService.currentUserValue.user.storeId,0
-  //   ).subscribe(res=>{
-  //   const dialogRef = this._matDialog.open(PdfviewerComponent, 
-  //     {   maxWidth: "95vw",
-  //         height: '1000px',
-  //         width: '100%',
-  //         data: {
-  //           base64: res["base64"] as string,
-  //           title: "Pharma Daily Collection Viewer"
-  //         }
-  //       });
-  //   });
+  //     })
+  //   );
   // }
+
+  viewDailyCollectionPdf(){
+    this._BrowsSalesBillService.getSalesDailyCollectionNew(
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.accountService.currentUserValue.user.storeId,0
+    ).subscribe(res=>{
+    const dialogRef = this._matDialog.open(PdfviewerComponent, 
+      {   maxWidth: "95vw",
+          height: '1000px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pharma Daily Collection Viewer"
+          }
+        });
+    });
+  }
 
   viewDailyCollectionSummaryPdf() {
 
