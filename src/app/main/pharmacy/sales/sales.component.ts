@@ -1393,13 +1393,14 @@ OP_IPType:any=2;
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     let PurTotalAmount = this.PurTotAmt;
     let m_MRPTotal =this.TotalMRP;
+    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
       this.ConShow=true;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (parseFloat(this.DiscAmt) >= parseFloat(PurTotalAmount))
+      if (parseFloat(m_marginamt).toFixed(2) <= parseFloat(PurTotalAmount).toFixed(2))
       {
         Swal.fire('Discount greater than Purchase Rate, Please check !');
         this.ItemFormreset();
