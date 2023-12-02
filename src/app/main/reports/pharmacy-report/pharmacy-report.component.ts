@@ -40,7 +40,7 @@ export class PharmacyReportComponent implements OnInit {
   @ViewChild('SalesReturntemplate') SalesReturntemplate: ElementRef;
   @ViewChild('billTemplate') billTemplate: ElementRef;
 
-  UserList: any = [];
+    UserList: any = [];
   sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -119,7 +119,9 @@ export class PharmacyReportComponent implements OnInit {
     public _BrowsSalesBillService: BrowsSalesBillService,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder
-  ) { }
+  ) { 
+
+  }
 
   // hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
 
@@ -194,7 +196,6 @@ export class PharmacyReportComponent implements OnInit {
 
   
   getPrint() {
-    debugger
     if (this.ReportName == 'Pharmacy Daily Collection') {
       this.viewDailyCollectionPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
@@ -275,6 +276,7 @@ export class PharmacyReportComponent implements OnInit {
   //   );
   // }
 
+
   viewDailyCollectionPdf(){
     debugger
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
@@ -294,7 +296,10 @@ export class PharmacyReportComponent implements OnInit {
     });
   }
 
+
+
   viewDailyCollectionSummaryPdf() {
+
 
     this._BrowsSalesBillService.getSalesDailyCollectionSummaryNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',

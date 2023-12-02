@@ -109,7 +109,7 @@
                                         <mat-select formControlName="UserId" name="UserId" required (selectionChange)="userChk()">
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of UserList" [value]="m">
-                                                {{m.UserId}} | {{m.UserLoginName}} | {{UserName}}
+                                                {{m.UserName}} 
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -139,7 +139,7 @@
                                     <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="width: 50px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
                                         (click)="getPrint()">
-                                        Print
+                                        Show
                                     </button>
 
                                     <!-- <button mat-raised-button class="searchButton" matTooltip="Print"
