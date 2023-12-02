@@ -13,6 +13,7 @@ import { ParamteragewiseService } from "../paramteragewise.service";
 import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-paramteragewiseform",
@@ -50,6 +51,7 @@ export class ParamteragewiseformComponent implements OnInit {
     constructor(
         public _ParameterageService: ParamteragewiseService,
         public dialogRef: MatDialogRef<ParamteragewiseComponent>,
+        public toastr : ToastrService,
         public _matDialog: MatDialog
     ) {}
 
@@ -187,22 +189,27 @@ export class ParamteragewiseformComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Parameter-Age-Wise-Form Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                    },error => {
+                        this.toastr.error('Parameter-Age-Wise-Form not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     updateParameterMasterAgeWise: {
@@ -246,22 +253,27 @@ export class ParamteragewiseformComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Parameter-Age-Wise-Form Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                    },error => {
+                        this.toastr.error('Parameter-Age-Wise-Form not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

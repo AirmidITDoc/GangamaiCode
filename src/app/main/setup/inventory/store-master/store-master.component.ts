@@ -9,6 +9,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-store-master",
@@ -58,7 +59,7 @@ export class StoreMasterComponent implements OnInit {
 
     constructor(
         public _StoreService: StoreMasterService,
-
+        public toastr : ToastrService,
         public _matDialog: MatDialog
     ) {}
 
@@ -182,24 +183,29 @@ export class StoreMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getStoreMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getStoreMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Store Master Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getStoreMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Store not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     updateStoreMaster: {
@@ -259,24 +265,29 @@ export class StoreMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getStoreMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getStoreMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Store Master Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getStoreMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Store not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

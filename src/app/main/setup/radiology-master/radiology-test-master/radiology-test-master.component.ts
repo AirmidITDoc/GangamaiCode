@@ -9,6 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RadiologyTestMasterService } from './radiology-test-master.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-radiology-test-master',
@@ -51,6 +52,7 @@ public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 private _onDestroy = new Subject<void>();
 
   constructor(public _radiologytestService: RadiologyTestMasterService,
+    public toastr : ToastrService,
     private accountService: AuthenticationService
         ) { }
 
@@ -165,9 +167,24 @@ private _onDestroy = new Subject<void>();
           }
         }
         // console.log(m_data);
-        this._radiologytestService.insertRadiologyTestMaster(m_data).subscribe(data =>{ this.msg=data;
+        this._radiologytestService.insertRadiologyTestMaster(m_data).subscribe(data =>{ 
+          this.msg=data;
+          if (data) {
+            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
           this.getRadiologytestMasterList();
-        });
+            }else {
+              this.toastr.error('Radiology Master Data not saved !, Please check API error..', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+          }
+          this.getRadiologytestMasterList();
+      },error => {
+          this.toastr.error('Radiology not saved !, Please check API error..', 'Error !', {
+           toastClass: 'tostr-tost custom-toast-error',
+         });
+       });
         // this.notification.success('Record added successfully')
       }
       else {
@@ -182,9 +199,24 @@ private _onDestroy = new Subject<void>();
             "ServiceId": this._radiologytestService.myform.get("ServiceId").value,
           }
         }
-        this._radiologytestService.updateRadiologyTestMaster(m_dataUpdate).subscribe(data =>{ this.msg=data;
+        this._radiologytestService.updateRadiologyTestMaster(m_dataUpdate).subscribe(data =>{ 
+          this.msg=data;
+          if (data) {
+            this.toastr.success('Record updated Successfully.', 'updated !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
           this.getRadiologytestMasterList();
-        });
+            }else {
+              this.toastr.error('Radiology Master Data not updated !, Please check API error..', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+          }
+          this.getRadiologytestMasterList();
+      },error => {
+          this.toastr.error('Radiology not updated !, Please check API error..', 'Error !', {
+           toastClass: 'tostr-tost custom-toast-error',
+         });
+       });
         // this.notification.success('Record updated successfully')
       }
       this.onClear();
