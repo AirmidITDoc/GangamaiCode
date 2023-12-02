@@ -7,6 +7,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { ItemMasterComponent } from "../item-master.component";
 import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-item-form-master",
@@ -65,7 +66,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     constructor(
         public _itemService: ItemMasterService,
-
+        public toastr : ToastrService,
         public dialogRef: MatDialogRef<ItemMasterComponent>
     ) {}
 
@@ -530,18 +531,27 @@ export class ItemFormMasterComponent implements OnInit {
                     this.msg = data;
 
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
-                });
+                },error => {
+                    this.toastr.error('Item-Form not Saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var data3 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value
@@ -688,22 +698,27 @@ export class ItemFormMasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Item-Form Master Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
-                    });
+                    },error => {
+                        this.toastr.error('Item-Form not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClose();
         }

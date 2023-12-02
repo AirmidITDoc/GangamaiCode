@@ -102,7 +102,7 @@ export class TaxMasterComponent implements OnInit {
                             //     }
                             // });
                         } else {
-                            this.toastr.error('Tax Master Master Data not saved !, Please check API error..', 'Error !', {
+                            this.toastr.error('Tax Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }

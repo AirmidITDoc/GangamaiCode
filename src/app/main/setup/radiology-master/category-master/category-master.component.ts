@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-category-master",
@@ -30,7 +31,8 @@ export class CategoryMasterComponent implements OnInit {
 
     DSCategoryMasterList = new MatTableDataSource<CategoryMaster>();
 
-    constructor(public _categoryService: CategoryMasterService) {}
+    constructor(public _categoryService: CategoryMasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getCategoryMasterList();
@@ -84,8 +86,24 @@ export class CategoryMasterComponent implements OnInit {
                     .insertCategoryMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                        
                         this.getCategoryMasterList();
-                    });
+                            }
+                            else {
+                                this.toastr.error('Category Master Master Data not saved !, Please check API error..', 'Error !', {
+                                    toastClass: 'tostr-tost custom-toast-error',
+                                  });
+                            }    this.getCategoryMasterList();
+
+                    },error => {
+                        this.toastr.error('Category not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     updateCategoryMaster: {
@@ -107,8 +125,22 @@ export class CategoryMasterComponent implements OnInit {
                     .updateCategoryMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
                         this.getCategoryMasterList();
-                    });
+                            }
+                            else {
+                                this.toastr.error('Category Master Data not updated !, Please check API error..', 'Error !', {
+                                    toastClass: 'tostr-tost custom-toast-error',
+                                  });
+                            } this.getCategoryMasterList();
+                    },error => {
+                        this.toastr.error('Category not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }
