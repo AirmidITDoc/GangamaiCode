@@ -94,7 +94,8 @@ export class PharmacyReportComponent implements OnInit {
 
   FromDate: any;
   Todate: any;
- UserId:any=0;
+  UserId:any=0;
+  UserName:any;
   displayedColumns = [
     'ReportName'
     // 'buttons'
@@ -120,7 +121,9 @@ export class PharmacyReportComponent implements OnInit {
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder
   ) { 
-
+    this.UserId= this.accountService.currentUserValue.user.id;
+    this.UserName= this.accountService.currentUserValue.user.userName;
+    
   }
 
   // hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
@@ -154,6 +157,7 @@ export class PharmacyReportComponent implements OnInit {
   getOptionTextUser(option) {
 
     this.UserId = option.UserID;
+    this.UserName=option.UserName;
     return option && option.UserName ? option.UserName : '';
    
   }
@@ -179,20 +183,10 @@ export class PharmacyReportComponent implements OnInit {
       );
 
     });
-
+    // this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserId);
+    this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
   }
 
-
-  // GetUserList() {
-  //   var vdata = {
-  //     UserName: this._BrowsSalesBillService.userForm.get('UserId').value + '%' || 0
-  //   }
-  //   this._PharmacyreportService.getUserdetailList().subscribe(data => {
-  //     this.UserList = data;
-  //     this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
-
-  //   });
-  // }
 
   
   getPrint() {
@@ -279,6 +273,7 @@ export class PharmacyReportComponent implements OnInit {
 
   viewDailyCollectionPdf(){
     debugger
+    // console.log(this.UserId)
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -443,6 +438,7 @@ export class PharmacyReportComponent implements OnInit {
   userChk(option){
     debugger
     this.UserId=option.UserID || 0;
+    this.UserName=option.UserName;
   }
 
   getPrintsalesDailycollection() {

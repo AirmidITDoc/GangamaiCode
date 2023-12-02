@@ -566,7 +566,7 @@
                                                 *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true">
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
-                                                [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                                [ngClass]="{'row-yellow': QtyBalchk ==0}"
                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                 (click)="show($event,contact)"></mat-row>
                                             <!-- (click)="deleteTableRow($event,contact)"  -->
