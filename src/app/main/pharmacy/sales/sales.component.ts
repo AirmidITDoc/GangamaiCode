@@ -1400,9 +1400,9 @@ OP_IPType:any=2;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (parseFloat(m_marginamt).toFixed(2) <= parseFloat(PurTotalAmount).toFixed(2))
+      if (parseFloat(PurTotalAmount) >= parseFloat(m_marginamt))
       {
-        Swal.fire('Discount greater than Purchase Rate, Please check !');
+        Swal.fire('Discount amount greater than Purchase amount, Please check !');
         this.ItemFormreset();
         this.itemid.nativeElement.focus();
         this.ConShow=false;
