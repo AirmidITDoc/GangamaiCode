@@ -15,12 +15,13 @@ import { MatSort } from '@angular/material/sort';
 import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
 import { SalesService } from 'app/main/pharmacy/sales/sales.service';
 import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as converter from 'number-to-words';
 import Swal from 'sweetalert2';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { element } from 'protractor';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -63,8 +64,10 @@ export class PharmacyReportComponent implements OnInit {
   TotalNETAmount: any = 0;
   TotalPaidAmount: any = 0;
   TotalBillAmount: any = 0;
+  filteredOptionsUser: Observable<string[]>;
+  isUserSelected: boolean = false;
 
-
+  optionsUser: any[] = [];
   TotalAmount: any = 0;
   TotalVatAmount: any = 0;
   TotalDiscAmount: any = 0;
@@ -91,7 +94,7 @@ export class PharmacyReportComponent implements OnInit {
 
   FromDate: any;
   Todate: any;
-
+ UserId:any=0;
   displayedColumns = [
     'ReportName'
     // 'buttons'
@@ -145,25 +148,51 @@ export class PharmacyReportComponent implements OnInit {
 
   }
 
-  GetUserList() {
-    var vdata = {
-      UserName: this._BrowsSalesBillService.userForm.get('UserId').value + '%' || this.accountService.currentUserValue.user.storeId
-    }
-    this._PharmacyreportService.getUserdetailList(vdata).subscribe(data => {
-      this.UserList = data;
-      this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
+  
+  getOptionTextUser(option) {
 
-    });
+    this.UserId = option.UserID;
+    return option && option.UserName ? option.UserName : '';
+   
   }
 
-  //   Pharmacy Daily Collection
-  // Pharmacy Daily Collection
-  // Pharmacy Daily Collection Summary
-  // Sales Summary Report
-  // Sales Patient Wise Report
-  // Sales Return Summary Report
-  // Sales Return PatientWise Report
-  // Sales Credit Report
+
+  private _filterUser(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.UserName ? value.UserName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsUser.filter(option => option.UserName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  GetUserList() {
+
+    this._PharmacyreportService.getUserdetailList().subscribe(data => {
+      this.UserList = data;
+      this.optionsUser = this.UserList.slice();
+      this.filteredOptionsUser = this._BrowsSalesBillService.userForm.get('UserId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterUser(value) : this.UserList.slice()),
+      );
+
+    });
+
+  }
+
+
+  // GetUserList() {
+  //   var vdata = {
+  //     UserName: this._BrowsSalesBillService.userForm.get('UserId').value + '%' || 0
+  //   }
+  //   this._PharmacyreportService.getUserdetailList().subscribe(data => {
+  //     this.UserList = data;
+  //     this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
+
+  //   });
+  // }
+
+  
   getPrint() {
     debugger
     if (this.ReportName == 'Pharmacy Daily Collection') {
@@ -247,10 +276,11 @@ export class PharmacyReportComponent implements OnInit {
   // }
 
   viewDailyCollectionPdf(){
+    debugger
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.accountService.currentUserValue.user.storeId,0
+      this.accountService.currentUserValue.user.storeId,this.UserId
     ).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
       {   maxWidth: "95vw",
@@ -269,7 +299,7 @@ export class PharmacyReportComponent implements OnInit {
     this._BrowsSalesBillService.getSalesDailyCollectionSummaryNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.accountService.currentUserValue.user.storeId, 0
+      this.accountService.currentUserValue.user.storeId,this.UserId
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -405,16 +435,19 @@ export class PharmacyReportComponent implements OnInit {
     });
   }
 
-
+  userChk(option){
+    debugger
+    this.UserId=option.UserID || 0;
+  }
 
   getPrintsalesDailycollection() {
-
+  debugger
     var D_data = {
 
       "FromDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId": this.accountService.currentUserValue.user.storeId,
-      "AddedById": 0,//this._BrowsSalesBillService.userForm.get('UserId').value.UserId,
+      "AddedById":  this.UserId
 
     }
     this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900';
