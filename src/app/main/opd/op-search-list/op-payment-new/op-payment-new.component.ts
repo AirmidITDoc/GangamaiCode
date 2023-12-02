@@ -85,7 +85,7 @@ export class OpPaymentNewComponent implements OnInit {
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
-    private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService,
     private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
@@ -734,8 +734,8 @@ export class OpPaymentNewComponent implements OnInit {
     this.Paymentobj['RefundId'] = 0;
     this.Paymentobj['TransactionType'] = 0;
     this.Paymentobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
-    this.Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      this.Paymentobj['IsCancelled'] = 0;
+    this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    this.Paymentobj['IsCancelled'] = 0;
     this.Paymentobj['IsCancelledBy'] = 0;
     this.Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
     this.Paymentobj['CashCounterId'] = 0;
@@ -1006,6 +1006,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
       this.Paymentobj['TransactionType'] = 4;
       this.Paymentobj['OPD_IPD_Type'] = 3;
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
       this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
       this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
 
