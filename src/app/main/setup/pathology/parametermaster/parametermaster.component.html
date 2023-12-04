@@ -11,6 +11,10 @@
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Parameter Master
                 </span>
+                <button mat-raised-button color="pine"  style="margin-left: 1300px;" (click)="onAdd()">Add
+                    <mat-icon>add_to_photos</mat-icon>
+
+                </button>
             </div>
         </div>
         <!-- / APP TITLE -->
@@ -33,7 +37,7 @@
 
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="90%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
 
                         <div fxlayout="row" style="
@@ -70,7 +74,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
 
-                                <mat-table #table matSort [dataSource]="DSParameterList"
+                                <mat-table class="table" matSort [dataSource]="DSParameterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
 
                                     <ng-container matColumnDef="ParameterID">
@@ -198,13 +202,13 @@
                         </div>
                     </div>
 
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
+                    <!-- <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
                         <button mat-raised-button color="pine" (click)="onAdd()">Add
                             <mat-icon>add_to_photos</mat-icon>
 
                         </button>
 
-                    </div>
+                    </div> -->
 
                 </div>
             </div>

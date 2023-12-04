@@ -818,6 +818,7 @@ export class ChargesList {
   ClassId: number;
   ClassName: string;
   ChargesAddedName: string;
+  BalanceQty:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -837,6 +838,7 @@ export class ChargesList {
     this.ClassId = ChargesList.ClassId || 0;
     this.ClassName = ChargesList.ClassName || '';
     this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+    this.BalanceQty=ChargesList.BalanceQty || 0;
   }
 }
 export class AdvanceHeader {

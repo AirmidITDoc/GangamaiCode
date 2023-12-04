@@ -88,6 +88,7 @@ export class ParametermasterComponent implements OnInit {
                 this.isLoading = false;
                 this.DSParameterList.sort = this.sort;
                 this.DSParameterList.paginator = this.paginator;
+                console.log(this.DSParameterList);
             },
             (error) => (this.isLoading = false)
         );
@@ -128,7 +129,7 @@ export class ParametermasterComponent implements OnInit {
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
             IsPrintDisSummary: JSON.stringify(row.IsPrintDisSummary),
-            MethodName: row.MethodName.trim(),
+            MethodName: row.MethodName,
             ParaMultipleRange: row.ParaMultipleRange,
         };
 

@@ -112,7 +112,7 @@ export class UomMasterComponent implements OnInit {
                             //     }
                             // });
                         } else {
-                            this.toastr.error('UOM Master Master Data not saved !, Please check API error..', 'Error !', {
+                            this.toastr.error('UOM   Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
@@ -163,7 +163,7 @@ export class UomMasterComponent implements OnInit {
                             //     }
                             // });
                         } else {
-                            this.toastr.error('UOM Master Master Data not updated !, Please check API error..', 'Error !', {
+                            this.toastr.error('UOM  Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
                               });
                         }
