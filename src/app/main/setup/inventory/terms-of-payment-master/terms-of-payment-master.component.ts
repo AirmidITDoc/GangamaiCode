@@ -62,6 +62,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                     Menu as TermsOfPaymentMaster[];
                 this.DSTermsofPaymentMasterList.sort = this.sort;
                 this.DSTermsofPaymentMasterList.paginator = this.paginator;
+                console.log(this.DSTermsofPaymentMasterList);
             });
     }
 

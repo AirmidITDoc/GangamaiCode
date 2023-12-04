@@ -48,15 +48,14 @@ export class TaxMasterComponent implements OnInit {
     }
     gettaxMasterList() {
         var param = {
-            TaxNature:
-                this._taxmasterService.myformSearch
-                    .get("TaxNatureSearch")
+            TaxNature: this._taxmasterService.myformSearch.get("TaxNatureSearch")
                     .value.trim() + "%" || "%",
         };
         this._taxmasterService.gettaxMasterList(param).subscribe((Menu) => {
             this.DSTaxMasterList.data = Menu as TaxMaster[];
             this.DSTaxMasterList.sort = this.sort;
             this.DSTaxMasterList.paginator = this.paginator;
+            console.log(this.DSTaxMasterList);
         });
     }
 

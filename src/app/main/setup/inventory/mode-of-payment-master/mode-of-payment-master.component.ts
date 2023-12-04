@@ -61,6 +61,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                     Menu as ModeofpaymentMaster[];
                 this.DSModeofpaymentMasterList.sort = this.sort;
                 this.DSModeofpaymentMasterList.paginator = this.paginator;
+                console.log(this.DSModeofpaymentMasterList);
             });
     }
 

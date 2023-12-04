@@ -47,7 +47,7 @@ export class ParamteragewiseService {
 
     public getParameterAgeMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+            "Generic/GetByProc?procName=M_Rtrv_PathParameterRangeWithAge",
             param
         );
     }

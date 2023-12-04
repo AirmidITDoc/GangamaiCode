@@ -19,20 +19,30 @@ app-manufacture-master {
     }
 
     .mat-column-ManufName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 260px;
+        max-width: 260px;
+        min-width: 260px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ManufShortName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 230px;
+        max-width: 230px;
+        min-width: 230px;
     }
 
     .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-IsDeleted {
