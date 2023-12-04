@@ -1120,7 +1120,7 @@ export class SalesComponent implements OnInit {
       this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
 
       // console.log(this.GSTAmount);
-
+      this.getDiscPer();
     }
 
 
@@ -1644,7 +1644,7 @@ export class SalesComponent implements OnInit {
       console.log(SelectQuery);
 
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
-
+       
         this.chargeslist1 = data;
         if (this.chargeslist1.length > 0) {
           if (this.chargeslist1[0].BalanceQty >= element.Qty) {
@@ -1653,8 +1653,9 @@ export class SalesComponent implements OnInit {
 
           }
           else {
+            Swal.fire("Balance Qty is :",this.chargeslist1[0].BalanceQty)
             this.QtyBalchk = 0;
-            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId)
+            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:",)
           }
         }
 
