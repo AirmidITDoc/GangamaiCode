@@ -969,7 +969,7 @@ export class SalesComponent implements OnInit {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
       "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid || 0
     }
-    if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 2) {
+    if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 1) {
       this._salesService.getItemList(m_data).subscribe(data => {
         this.filteredOptions = data;
         if (this.filteredOptions.length == 0) {
@@ -992,7 +992,7 @@ export class SalesComponent implements OnInit {
     this.ItemName = obj.ItemName;
     this.ItemId = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
-
+    this.LandedRate=obj.LandedRate;
     if (this.BalanceQty > 0) {
       this.getBatch();
     }
@@ -1099,6 +1099,7 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
+    debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     // console.log(this.BalanceQty);
     if (Qty > this.BalanceQty) {
@@ -1110,7 +1111,7 @@ export class SalesComponent implements OnInit {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
       //this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
-      this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
+      this.PurTotAmt = (parseInt(Qty) * (this.MRP)).toFixed(2)
 
       // console.log("Purchase rate");
       // console.log(this.PurchaseRate);
@@ -1392,12 +1393,14 @@ export class SalesComponent implements OnInit {
   }
 
   calculateDiscAmt() {
+    debugger
     console.log("disc");
     console.log(this._salesService.IndentSearchGroup.get('DiscAmt').value);
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
-    let PurTotalAmount = this.PurTotAmt;
+    // let PurTotalAmount = this.PurTotAmt;
+    let PurTotalAmount = this.LandedRateandedTotal;
     let m_MRPTotal = this.TotalMRP;
-    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+    let m_marginamt = (parseFloat(this.LandedRateandedTotal) - parseFloat(ItemDiscAmount)).toFixed(2);
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
       this.ConShow = true;
@@ -1433,6 +1436,7 @@ export class SalesComponent implements OnInit {
     }
   }
   getDiscPer() {
+    debugger
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.chkdiscper = true;
@@ -1670,7 +1674,7 @@ export class SalesComponent implements OnInit {
 
   onSave() {
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
-    this.onCheckBalQty();
+    // this.onCheckBalQty();
 
     if (this.QtyBalchk == 1) {
 

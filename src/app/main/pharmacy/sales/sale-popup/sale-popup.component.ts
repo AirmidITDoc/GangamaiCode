@@ -17,7 +17,8 @@ export class SalePopupComponent implements OnInit {
     'BalanceQty',
     'MRP',
     'PurPrice',
-    'ConversionFactor'
+    'ConversionFactor',
+    'LandedRate'
     // 'ItemName',
     // 'ItemCode',
   ];;

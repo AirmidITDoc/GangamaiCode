@@ -55,6 +55,10 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
         <mat-cell *matCellDef="let element"> {{element.ConversionFactor}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="LandedRate">
+        <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.LandedRate}} </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="loading">
         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
             <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
