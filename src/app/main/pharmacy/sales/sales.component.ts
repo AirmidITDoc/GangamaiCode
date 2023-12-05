@@ -1673,8 +1673,7 @@ export class SalesComponent implements OnInit {
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     // this.onCheckBalQty();
 
-    if (this.QtyBalchk == 1) {
-
+    // if (this.QtyBalchk == 1) {
       if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
         && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
         // this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
@@ -1694,7 +1693,7 @@ export class SalesComponent implements OnInit {
       }
 
 
-    }
+    // }
 
 
   }
