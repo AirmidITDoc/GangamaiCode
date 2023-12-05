@@ -1099,9 +1099,7 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
-    debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    // console.log(this.BalanceQty);
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
       this.ItemFormreset();
@@ -1111,7 +1109,7 @@ export class SalesComponent implements OnInit {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
       //this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
       this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
-      this.PurTotAmt = (parseInt(Qty) * (this.MRP)).toFixed(2)
+      this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2)
 
       // console.log("Purchase rate");
       // console.log(this.PurchaseRate);
@@ -1312,7 +1310,7 @@ export class SalesComponent implements OnInit {
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
-      this.Qty = 1;
+      this.Qty = 0;
       this.Bal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
 
@@ -1393,21 +1391,21 @@ export class SalesComponent implements OnInit {
   }
 
   calculateDiscAmt() {
-    debugger
     console.log("disc");
     console.log(this._salesService.IndentSearchGroup.get('DiscAmt').value);
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     // let PurTotalAmount = this.PurTotAmt;
-    let PurTotalAmount = this.LandedRateandedTotal;
-    let m_MRPTotal = this.TotalMRP;
-    let m_marginamt = (parseFloat(this.LandedRateandedTotal) - parseFloat(ItemDiscAmount)).toFixed(2);
+    let LandedTotalAmount = this.LandedRateandedTotal;
+    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+    let v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(m_marginamt));
+
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
       this.ConShow = true;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (parseFloat(PurTotalAmount) >= parseFloat(m_marginamt))
+      if (v_marginamt <= 0)
       {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
         this.ItemFormreset();
@@ -1436,7 +1434,6 @@ export class SalesComponent implements OnInit {
     }
   }
   getDiscPer() {
-    debugger
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.chkdiscper = true;
