@@ -93,6 +93,7 @@ export class SupplierMasterComponent implements OnInit {
                 this.isLoading = false;
                 this.DSSupplierMaster.sort = this.sort;
                 this.DSSupplierMaster.paginator = this.paginator;
+                console.log(this.DSSupplierMaster);
             },
             (error) => (this.isLoading = false)
         );

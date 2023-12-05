@@ -39,7 +39,7 @@ export class PrescriptionclassmasterService {
 
     public getPrescriptionclassMasterList(Param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_Prescription_TemplateMaster_By",Param
+            "Generic/GetByProc?procName=Rtrv_M_Prescription_TemplateMaster_By_Name",Param
         );
     }
 

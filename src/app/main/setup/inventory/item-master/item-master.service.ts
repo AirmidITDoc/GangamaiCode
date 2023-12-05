@@ -130,7 +130,7 @@ export class ItemMasterService {
 
     public getunitofMeasurementMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_UnitOfMeasurmentNameForCombo",
+            "Generic/GetByProc?procName=Rtrv_M_UnitofMeasurementMaster",
             {}
         );
     }

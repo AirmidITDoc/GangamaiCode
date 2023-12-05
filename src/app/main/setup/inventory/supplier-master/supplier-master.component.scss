@@ -1,14 +1,14 @@
 app-supplier-master {
     .mat-header-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
+        width: 2100px;
+        max-width: 2100px;
+        min-width: 2100px;
         font-weight: bold;
     }
     .mat-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
+        width: 2100px;
+        max-width: 2100px;
+        min-width: 2100px;
     }
 
     .mat-column-SupplierId {
@@ -18,41 +18,81 @@ app-supplier-master {
     }
 
     .mat-column-SupplierName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
-    .mat-column-ContactPerson {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+    .mat-column-ContactPerson {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-Address {
-        width: 500px;
-        max-width: 500px;
-        min-width: 500px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-CityName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-Mobile {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
     .mat-column-Phone {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
     .mat-column-Fax {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
     .mat-column-Email {
         width: 200px;
@@ -64,6 +104,16 @@ app-supplier-master {
         width: 160px;
         max-width: 160px;
         min-width: 160px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
 
     .mat-column-PanNo {
@@ -73,9 +123,9 @@ app-supplier-master {
     }
 
     .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-IsDeleted {

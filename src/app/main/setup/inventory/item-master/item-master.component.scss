@@ -12,9 +12,9 @@ app-item-master {
     }
 
     .mat-column-ItemID {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     // .mat-column-ItemShortName {
@@ -23,24 +23,64 @@ app-item-master {
     //     min-width: 200px;
     // }
     .mat-column-ItemName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ItemTypeName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ItemCategoryName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ItemGenericName {
-        width: 270px;
-        max-width: 270px;
-        min-width: 270px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-ItemClassName {
         width: 100px;
@@ -49,9 +89,9 @@ app-item-master {
     }
 
     .mat-column-UnitofMeasurementName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
     }
 
     .mat-column-StockUOMId {
@@ -61,20 +101,20 @@ app-item-master {
     }
 
     .mat-column-ConversionFactor {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
     }
 
     .mat-column-CurrencyName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
     }
     .mat-column-TaxPer {
-        width: 50px;
-        max-width: 50px;
-        min-width: 50px;
+        width: 80px;
+        max-width: 80px;
+        min-width:80px;
     }
 
     .mat-column-IsBatchRequired {
@@ -84,15 +124,15 @@ app-item-master {
     }
 
     .mat-column-MinQty {
-        width: 50px;
-        max-width: 50px;
-        min-width: 50px;
+        width: 80px;
+        max-width: 80px;
+        min-width:80px;
     }
 
     .mat-column-MaxQty {
-        width: 50px;
-        max-width: 50px;
-        min-width: 50px;
+        width: 80px;
+        max-width: 80px;
+        min-width:80px;
     }
 
     .mat-column-ReOrder {
@@ -102,9 +142,9 @@ app-item-master {
     }
 
     .mat-column-IsNursingFlag {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
     }
 
     .mat-column-HSNcode {
@@ -132,9 +172,10 @@ app-item-master {
     }
 
     .mat-column-IsNarcotic {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        margin-left: 10px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
     .mat-column-ManufName {
         width: 100px;
@@ -173,27 +214,27 @@ app-item-master {
     }
 
     .mat-column-IsLASA {
-        width: 50px;
-        max-width: 50px;
-        min-width: 50px;
+        width: 70px;
+        max-width: 70px;
+        min-width:70px;
     }
 
     .mat-column-IsEmgerency {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
     }
 
     .mat-column-AddedByName {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 110px;
+        max-width: 110px;
+        min-width:110px;
     }
 
     .mat-column-IsDeleted {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: center;
         justify-content: center;
     }

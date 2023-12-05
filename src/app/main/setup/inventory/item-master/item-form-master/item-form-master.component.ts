@@ -182,13 +182,10 @@ export class ItemFormMasterComponent implements OnInit {
     getitemunitofmeasureMasterCombo() {
         // this._itemService.getunitofMeasurementMasterCombo().subscribe(data =>this.ItemUomcmbList =data);
 
-        this._itemService
-            .getunitofMeasurementMasterCombo()
-            .subscribe((data) => {
+        this._itemService.getunitofMeasurementMasterCombo().subscribe((data) => {
                 this.ItemUomcmbList = data;
-                this._itemService.myform
-                    .get("PurchaseUOMId")
-                    .setValue(this.ItemUomcmbList[0]);
+                console.log(this.ItemUomcmbList);
+                this._itemService.myform.get("PurchaseUOMId").setValue(this.ItemUomcmbList[0]);
             });
     }
 

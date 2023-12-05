@@ -10,14 +10,18 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Item Master
             </span>
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
+            style="margin-left: 1400px;">Add
+            <mat-icon color="Primary" title=" Add New Item ">add_to_photos</mat-icon>
+        </button>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
                 style="margin-left: 1700px;">Add
                 <mat-icon color="Primary" title=" Add New Item ">add_to_photos</mat-icon>
             </button>
 
-        </div>
+        </div> -->
     </mat-toolbar>
     <!-- / HEADER -->
 
