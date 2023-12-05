@@ -54,7 +54,7 @@ export class GenderMasterComponent implements OnInit {
 
     getGenderMasterList() {
         var Param = {  
-        GenderName:this._GenderService.myformSearch.get("GenderNameSearch").value.trim()  || "%",
+            GenderName:this._GenderService.myformSearch.get("GenderNameSearch").value.trim()  || "%",
         };
         this._GenderService.getGenderMasterList(Param).subscribe((Menu) => {
             this.DSGenderMasterList.data = Menu as GenderMaster[];

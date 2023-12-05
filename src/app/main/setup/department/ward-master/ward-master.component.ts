@@ -123,7 +123,7 @@ export class WardMasterComponent implements OnInit {
 
     getwardMasterList() {
         var param = {
-            WardName:this._wardService.myformSearch.get("RoomNameSearch")
+            RoomName:this._wardService.myformSearch.get("RoomNameSearch")
                     .value.trim() + "%" || "%",
         };
         this._wardService.getwardMasterList(param).subscribe((Menu) => {
@@ -267,7 +267,7 @@ export class WardMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             RoomId: row.RoomId,
-            RoomName: row.WardName,
+            RoomName: row.RoomName,
             LocationId: row.LocationId,
             IsAvailable: JSON.stringify(row.IsAvailible),
             ClassId: row.ClassID,

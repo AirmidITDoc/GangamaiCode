@@ -65,6 +65,7 @@ export class DischargetypeMasterComponent implements OnInit {
                     Menu as DischargeTypeMaster[];
                 this.DSDischargeTypeMasterList.sort = this.sort;
                 this.DSDischargeTypeMasterList.paginator = this.paginator;
+                console.log(this.DSDischargeTypeMasterList);
             });
     }
 

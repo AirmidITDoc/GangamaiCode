@@ -38,7 +38,7 @@ export class LocationMasterService {
 
     public getLocationMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_LocationMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_LocationMaster",
             param
         );
     }

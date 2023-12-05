@@ -31,7 +31,7 @@ export class AreaMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "AreaId",
         "AreaName",
-        //  "CityName",
+        "CityName",
         "AddedBy",
         "IsDeleted",
         "action",
@@ -109,6 +109,7 @@ export class AreaMasterComponent implements OnInit {
             this.DSAreaMasterList.data = Menu as AreaMaster[];
             this.DSAreaMasterList.sort = this.sort;
             this.DSAreaMasterList.paginator = this.paginator;
+            console.log(this.DSAreaMasterList);
         });
     }
 

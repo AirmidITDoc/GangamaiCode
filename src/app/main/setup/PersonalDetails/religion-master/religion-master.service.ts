@@ -36,7 +36,7 @@ export class ReligionMasterService {
 
     public getReligionMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ReligionName_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_ReligionName_by_Name",
             e
         );
     }

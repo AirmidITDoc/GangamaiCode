@@ -1,106 +1,126 @@
 app-service-master {
     .mat-header-row {
-        width: 1800px;
-        max-width: 1800px;
-        min-width: 1800px;
+        width: 1900px;
+        max-width: 1900px;
+        min-width: 1900px;
         font-weight: bold;
     }
     .mat-row {
-        width: 1800px;
-        max-width: 1800px;
-        min-width: 1800px;
+        width: 1900px;
+        max-width: 1900px;
+        min-width: 1900px;
     }
 
     .mat-column-ServiceId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-ServiceName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-ServiceShortDesc {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-GroupName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
     }
     .mat-column-DoctorId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-IsDocEditable {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-TariffId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-SubGroupId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-IsEditable {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-CreditedtoDoctor {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
     }
     .mat-column-IsPathology {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
     .mat-column-IsRadiology {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-PrintOrder {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-EmgAmt {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-EmgPer {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-Price {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
     }
 
     .mat-column-IsDeleted {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
         text-align: center;
         justify-content: center;
     }

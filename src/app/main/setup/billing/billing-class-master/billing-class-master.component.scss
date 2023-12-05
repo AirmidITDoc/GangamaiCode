@@ -22,6 +22,16 @@ app-billing-class-master {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-IsDeleted {

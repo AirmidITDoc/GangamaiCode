@@ -17,8 +17,8 @@ export class RelationshipMasterComponent implements OnInit {
     displayedColumns: string[] = [
         "RelationshipId",
         "RelationshipName",
-        "IsDeleted",
         "AddedBy",
+        "IsDeleted",
         "action",
     ];
 
@@ -59,6 +59,7 @@ export class RelationshipMasterComponent implements OnInit {
                     Menu as RelationshipMaster[];
                 this.DSRelationshipMasterList.sort = this.sort;
                 this.DSRelationshipMasterList.paginator = this.paginator;
+                console.log(this.DSRelationshipMasterList);
             });
     }
 

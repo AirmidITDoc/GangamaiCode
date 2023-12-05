@@ -185,7 +185,11 @@ export class PrefixMasterComponent implements OnInit {
                             // );
                         }
                         this.getPrefixMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Prefix Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
            
             this.onClear();

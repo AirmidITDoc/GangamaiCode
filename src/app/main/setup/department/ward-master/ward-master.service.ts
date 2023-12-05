@@ -26,7 +26,7 @@ export class WardMasterService {
             ClassId: [""],
             ClassName: [""],
             RoomType: ["1"],
-            IsAvailable: ["false"],
+            IsAvailable: ["1"],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -44,7 +44,7 @@ export class WardMasterService {
 
     public getwardMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_WardMaster_by_Name",
+            "Generic/GetByProc?procName=Rtrv_lvwWardDetails",
             param
         );
     }

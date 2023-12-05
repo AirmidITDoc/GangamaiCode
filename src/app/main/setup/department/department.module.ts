@@ -42,7 +42,7 @@ const appRoutes: Routes = [
                 (m) => m.DischargetypeMasterModule
             ),
     },
-    {
+    { 
         path: "vendor-master",
         loadChildren: () => import("./vendor-master/vendor-master.module").then((m) => m.VendorMasterModule),
     },

@@ -184,7 +184,7 @@ private _onDestroy = new Subject<void>();
       this.DSServicedetailList.data = Menu as NewServicedetail[];
       this.DSServicedetailList.sort = this.sort;
       this.DSServicedetailList.paginator = this.paginator;
-     // console.log( this.DSServicedetailList);
+      console.log( this.DSServicedetailList);
       
     });
   }

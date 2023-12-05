@@ -75,7 +75,7 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table #table matSort [dataSource]="DSAreaMasterList"
+                                <mat-table class='table' matSort [dataSource]="DSAreaMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
 
                                     <ng-container matColumnDef="AreaId">
@@ -91,12 +91,12 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="CityName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> City Name
-                                        </mat-header-cell>
+                                    <ng-container matColumnDef="CityName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> City Name</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CityName}}
                                         </mat-cell>
-                                    </ng-container> -->
+                                    </ng-container>
+
 
                                     <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>

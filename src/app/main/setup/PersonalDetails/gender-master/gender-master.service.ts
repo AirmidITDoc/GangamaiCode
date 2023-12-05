@@ -33,7 +33,7 @@ export class GenderMasterService {
     }
 
     public getGenderMasterList(param) {
-        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_GenderMaster_by_Name",param
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DB_GenderMaster",param
         );
     }
 

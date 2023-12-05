@@ -38,7 +38,7 @@ export class CountryMasterService {
 
     public getCountryMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_CountryNameList_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_CountryNameList_by_Name",
             param
         );
     }

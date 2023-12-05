@@ -42,7 +42,7 @@ export class DischargetypeMasterService {
     //get dischargetype Master list
     public getdischargetypeMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_DischargeTypeMaster_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_DischargeTypeMaster",
             m_data
         );
     }

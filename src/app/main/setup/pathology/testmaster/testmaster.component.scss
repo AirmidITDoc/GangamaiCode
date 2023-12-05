@@ -13,25 +13,55 @@ app-testmaster {
     }
 
     .mat-column-TestId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
 
     .mat-column-TestName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-PrintTestName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-CategoryName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-IsSubTest {
         width: 70px;
@@ -50,9 +80,19 @@ app-testmaster {
     }
 
     .mat-column-SuggestionNote {
-        width: 400px;
-        max-width: 400px;
-        min-width: 400px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
 
     .mat-column-FootNote {
@@ -62,20 +102,30 @@ app-testmaster {
     }
 
     .mat-column-ServiceName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .mat-column-IsTemplateTest {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-IsCategoryPrint {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
     }
 
     .mat-column-IsPrintTestName {
@@ -85,17 +135,17 @@ app-testmaster {
     }
 
     .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-IsDeleted {
         width: 70px;
         max-width: 70px;
         min-width: 70px;
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        justify-content: left;
     }
 
     .mat-column-action {

@@ -74,7 +74,7 @@ export class CompanyMasterComponent implements OnInit {
         var vdata={
             CompanyName:this._companyService.myformSearch.get('CompanyNameSearch').value.trim() || "%" 
         };
-        console.log(vdata);
+       // console.log(vdata);
         this._companyService.getCompanyMasterList(vdata).subscribe((data) => {
             this.DSCompanyMasterList.data = data as CompanyMaster[];
             this.DSCompanyMasterList.sort = this.sort;

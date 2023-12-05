@@ -89,6 +89,7 @@ export class ServiceMasterComponent implements OnInit {
                 this.isLoading = false;
                 this.DSServiceMasterList.sort = this.sort;
                 this.DSServiceMasterList.paginator = this.paginator;
+               // console.log(this.DSServiceMasterList);
             },
             (error) => (this.isLoading = false)
         );

@@ -265,7 +265,7 @@ export class NewDoctorComponent implements OnInit {
 
         this._doctorService.getDepartmentCombobox().subscribe((data) => {
             this.DepartmentcmbList = data;
-            //console.log(data);
+            console.log( this.DepartmentcmbList );
             this.filteredDepartment.next(this.DepartmentcmbList.slice());
             this._doctorService.myform
                 .get("Departmentid")
@@ -631,7 +631,7 @@ export class NewDoctorComponent implements OnInit {
 
             });
         this.dataSource.data = this.deptlist;
-       // console.log(this.deptlist);
+       console.log(this.deptlist);
     }
 
     deleteTableRow(element) {

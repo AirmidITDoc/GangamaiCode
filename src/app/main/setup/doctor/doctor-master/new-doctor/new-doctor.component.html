@@ -276,7 +276,7 @@
     <ng-container matColumnDef="DeptId">
       <mat-header-cell *matHeaderCellDef mat-sort-header style="margin-right: 5px;">Dept Id</mat-header-cell>
       <mat-cell *matCellDef="let contact">
-        {{contact.DepartmentId}}
+        {{contact.DeptId}}
       </mat-cell>
     </ng-container>
 
@@ -285,7 +285,7 @@
         Dept Name
       </mat-header-cell>
       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-        {{contact.departmentName}}
+        {{contact.DeptName}}
       </mat-cell>
     </ng-container>
 

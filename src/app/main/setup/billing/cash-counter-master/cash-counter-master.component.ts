@@ -64,6 +64,7 @@ export class CashCounterMasterComponent implements OnInit {
                 this.DSCashCounterMasterList.data = Menu as CashCounterMaster[];
                 this.DSCashCounterMasterList.sort = this.sort;
                 this.DSCashCounterMasterList.paginator = this.paginator;
+                console.log(this.DSCashCounterMasterList);
             });
     }
 

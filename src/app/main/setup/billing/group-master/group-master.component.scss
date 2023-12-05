@@ -17,33 +17,43 @@ app-group-master {
     }
 
     .mat-column-GroupId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
     }
     .mat-column-GroupName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-Isconsolidated {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-IsConsolidatedDR {
         width: 120px;
         max-width: 120px;
         min-width: 120px;
     }
+    .mat-column-IsConsolidatedDR {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+    }
 
     .mat-column-IsActive {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-        text-align: center;
-        justify-content: center;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+        justify-content: left;
     }
 
     .mat-column-action {

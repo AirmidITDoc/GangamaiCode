@@ -82,7 +82,7 @@ export class ServiceMasterService {
 
     public getSubgroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_M_SubGroupMasterForCombo",
+            "Generic/GetByProc?procName=Rtrv_M_SubGroupMasterForCombo ",
             {}
         );
     }

@@ -98,6 +98,7 @@ export class SubGroupMasterComponent implements OnInit {
             this.DSSubGroupMasterList.data = Menu as SubGroupMaster[];
             this.DSSubGroupMasterList.sort = this.sort;
             this.DSSubGroupMasterList.paginator = this.paginator;
+            console.log(this.DSSubGroupMasterList);
         });
     }
 

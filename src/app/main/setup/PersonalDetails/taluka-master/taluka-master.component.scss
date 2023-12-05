@@ -19,21 +19,41 @@ app-taluka-master {
     }
 
     .mat-column-TalukaNAME {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 180px;
+        max-width: 180px;
+        min-width: 180px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-CityNAME {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
     }
 
     .mat-column-AddedBy {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
     }
 
     .mat-column-IsDeleted {
@@ -46,9 +66,9 @@ app-taluka-master {
 
     .mat-column-action {
         // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         text-align: right;
         justify-content: right;
     }

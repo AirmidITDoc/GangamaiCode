@@ -40,7 +40,7 @@ export class TalukaMasterService {
 
     public getTalukaMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_TalukaNameList_by_Name",
+            "Generic/GetByProc?procName=M_Rtrv_TalukaNameList_by_Name",
             param
         );
     }
