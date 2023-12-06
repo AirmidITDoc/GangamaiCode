@@ -113,7 +113,7 @@
                                                                 formControlName="PatientName" [(ngModel)]="PatientName"
                                                                 required (keydown)="onEnterpatientname($event)"
                                                                 #patientname type="text">
-                                                        </mat-form-field>
+                                                        </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">
@@ -122,7 +122,7 @@
                                                                 [(ngModel)]="DoctorName"
                                                                 (keydown)="onEnterDoctorname($event)" #doctorname
                                                                 formControlName="DoctorName">
-                                                        </mat-form-field>
+                                                        </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">

@@ -70,7 +70,7 @@ export class SalesComponent implements OnInit {
   BatchNo: any;
   BatchExpDate: any;
   UnitMRP: any;
-  Qty: any = 1;
+  Qty: any = 0;
   IssQty: any;
   Bal: any;
   StoreName: any;
