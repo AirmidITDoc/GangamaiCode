@@ -1,8 +1,7 @@
 <mat-tab-group style="width: 100%;">
     <mat-tab label="Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-            <mat-toolbar
-                style="height: 50px; justify-content: space-between;width: 100%;">
+            <mat-toolbar style="height: 50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -19,10 +18,10 @@
 
                 <div fxLayout="row" fxLayoutGap="5px" style="margin-left:2% !important; ">
                     <button mat-raised-button (click)="newWorkorder()"
-                      style="background-color: aliceblue;color: brown;margin-left:2% !important">New Work Order
-              
+                        style="background-color: aliceblue;color: brown;margin-left:2% !important">New Work Order
+
                     </button>
-                  </div>
+                </div>
             </mat-toolbar>
 
             <div class="content">
@@ -176,7 +175,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                   
+
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -276,7 +275,7 @@
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                             <mat-label>ItemName</mat-label>
                                             <input type="text" name="ItemID" formControlName="ItemID" #itemid
                                                 placeholder="Item Name " matInput [matAutocomplete]="auto"
@@ -297,67 +296,107 @@
                                                 *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid &&  _WorkOrderService.NewWorkForm.get('ItemID').touched">
                                                 Select ItemName
                                             </mat-error>
+                                        </mat-form-field>&nbsp;&nbsp; -->
+
+                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                            <mat-label>Item Name</mat-label>
+                                            <input name="ItemName" formControlName="ItemName" [(ngModel)]="ItemName" matInput>
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Qty</mat-label>
-                                            <input name="Qty" formControlName="Qty" matInput>
+                                            <input type="number" name="Qty" formControlName="Qty" matInput  #qty required
+                                            (keyup)="calculateTotalAmount()" [(ngModel)]="Qty"  (keydown)="onEnterQty($event)">
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Rate</mat-label>
-                                            <input name="UnitRate" formControlName="UnitRate" matInput>
+                                            <input name="UnitRate" formControlName="UnitRate" matInput  #rate
+                                            [(ngModel)]="Rate"    (keyup)="calculateTotalAmount()" (keydown)="onEnterRate($event)" >
                                         </mat-form-field>&nbsp;&nbsp;
+
+                                      
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Total Amount</mat-label>
-                                            <input name="TotalAmount" formControlName="TotalAmount" matInput>
+                                            <input type="number" name="TotalAmount" formControlName="TotalAmount" matInput
+                                            [(ngModel)]="TotalAmount" readonly >
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Disc %</mat-label>
-                                            <input name="Disc" formControlName="Disc" matInput>
+                                            <input name="Disc" formControlName="Disc" matInput [(ngModel)]="Disc" 
+                                            (keydown)="onEnterDis($event)" type="number"
+                                            (keyup)="calculateDiscperAmount()" >
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Disc Amount</mat-label>
-                                            <input name="DiscAmt" formControlName="DiscAmt" matInput>
+                                            <input name="DiscAmt" formControlName="DiscAmt" matInput  [(ngModel)]="DiscAmt"
+                                            (keyup)="calculateDiscAmount()" readonly>
                                         </mat-form-field>&nbsp;&nbsp;
+                                       
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>GST%</mat-label>
-                                            <input name="GST" formControlName="GST" matInput>
+                                            <input name="GST" formControlName="GST" matInput [(ngModel)]="GST" name="GST" #gst
+                                            (keydown)="onEnterGST($event)" type="number"
+                                            (keyup)="calculateGSTperAmount()">
                                         </mat-form-field>
 
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
-                                            <mat-label>Vat Amount</mat-label>
-                                            <input name="VatAmt" formControlName="VatAmt" matInput>
+                                            <mat-label>GST Amount</mat-label>
+                                            <input name="GSTAmount" formControlName="GSTAmount" matInput [(ngModel)]="GSTAmt">
                                         </mat-form-field>&nbsp;&nbsp;
+
+                                 
 
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Net Amount</mat-label>
-                                            <input name="NetAmount" formControlName="NetAmount" matInput>
+                                            <input name="NetAmount" formControlName="NetAmount" matInput [(ngModel)]="NetAmount">
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <div>
                                             <button mat-raised-button style="width:90px; height: 35px; margin-top: 5px; margin-left: 30px;
-                                        color:white;" color="accent"> <mat-icon>add</mat-icon>&nbsp; Add
+                                        color:white;" color="accent" (click)="OnAdd()"> <mat-icon>add</mat-icon>&nbsp; Add
                                             </button>
                                         </div>
 
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex="40%">
+                                        <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Specification</mat-label>
-                                            <input name="Specification" formControlName="Specification" matInput>
+                                            <input name="Specification" formControlName="Specification" [(ngModel)]="Specification" matInput>
+                                        </mat-form-field>&nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>-- Select Status3 --</mat-label>
+                                            <mat-select formControlName="Status3" name="Status3">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of Status3List" [value]="m">
+                                                    {{m.name}}
+                                                </mat-option>
+                                            </mat-select>
                                         </mat-form-field>
+
+                                        <!-- <mat-form-field class="section-dropdown"
+                                            style="width:25%;">
+                                            <mat-label>-- Select Status3 --</mat-label>
+                                            <mat-select formControlName="Status3" name="Status3"
+                                                (selectionChange)="onChangeStatus3($event)">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of Status3List" [value]="m">
+                                                    {{m.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
                                     </div>
                                 </mat-card>
 
                                 <div>
-                                    <mat-table class="tab2" matSort [dataSource]="" [@animateStagger]="{value:'50'}"
+                                    <mat-table class="tab2" matSort [dataSource]="NewWorkOrderList" [@animateStagger]="{value:'50'}"
                                         style="overflow:auto; width: 100%;">
 
                                         <ng-container matColumnDef="ItemName">
@@ -402,25 +441,25 @@
                                                 {{element.DiscAmt}} </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="Vat">
+                                        <ng-container matColumnDef="GST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Vat % </mat-header-cell>
+                                                GST % </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.Vat}} </mat-cell>
+                                                {{element.GST}} </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="VatAmt">
+                                        <ng-container matColumnDef="GSTAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                VatAmt </mat-header-cell>
+                                                GSTAmt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.VatAmt}} </mat-cell>
+                                                {{element.GSTAmt}} </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="NetAmt">
+                                        <ng-container matColumnDef="NetAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 NetAmt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.NetAmt}} </mat-cell>
+                                                {{element.NetAmount}} </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="Specification">
@@ -470,33 +509,57 @@
 
 
                             </div>
-                            <div>
+                            <div fxLayout="row" style="margin-top: 20px;">
                                 <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 700px;background-color: white;">
-                                    <mat-label>Remark</mat-label>
+                                    style="margin-top: 10px;width:300px;">
+                                    <mat-label style="background-color: white;">Remark</mat-label>
                                     <input type="text" name="Remark" formControlName="Remark" matInput required>
 
                                 </mat-form-field>&nbsp;&nbsp;
                                 <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 300px;background-color: white;">
+                                    style="margin-top: 10px;width: 200px;">
                                     <mat-label>Disc Amount</mat-label>
                                     <input type="text" name="GST Amount" formControlName="GST Amount" matInput required>
 
                                 </mat-form-field>&nbsp;&nbsp;
                                 <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 300px;background-color: white;">
+                                    style="margin-top: 10px;width: 200px;">
                                     <mat-label>Total Amount</mat-label>
                                     <input type="text" name="Total Amount" formControlName="Total Amount" matInput
                                         required>
 
                                 </mat-form-field>&nbsp;&nbsp;
+                                <mat-form-field appearance="outline"
+                                    style="margin-top: 10px;width: 200px;">
+                                    <mat-label>GST Amount</mat-label>
+                                    <input type="text" name="GST Amount" formControlName="VatAmount" matInput required>
+                                </mat-form-field>&nbsp;&nbsp;
+
+                               
+
+                                <mat-form-field appearance="outline"
+                                    style="margin-top: 10px;width: 200px;">
+                                    <mat-label>Net Amount</mat-label>
+                                    <input type="text" name="Total Amount" matInput
+                                        required>
+
+                                </mat-form-field>
+
+                                <div class="footer-navigation-container" fxLayout.gt-xs="row">
+
+                                    <div style="margin-top: 10px; margin-right: 5px; margin-left: 100px;">
+                                        <button class="next-btn" color="accent"
+                                            style="border-radius: 16px; width: 80px;">Save</button>
+                                        <button class="footer-btn" id="btncancel">Close</button>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div fxLayout.gt-xs="row" style="margin-left: 710px;">
+                            <!-- <div fxLayout.gt-xs="row" style="margin-left: 710px;">
                                 <mat-form-field appearance="outline"
                                     style="margin-top: 10px;width: 300px;background-color: white;">
                                     <mat-label>vat Amount</mat-label>
                                     <input type="text" name="GST Amount" formControlName="VatAmount" matInput required>
-
                                 </mat-form-field>&nbsp;&nbsp;
                                 <mat-form-field appearance="outline"
                                     style="margin-top: 10px;width: 300px;background-color: white;">
@@ -514,7 +577,7 @@
                                         <button class="footer-btn" id="btncancel">Close</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
 
 

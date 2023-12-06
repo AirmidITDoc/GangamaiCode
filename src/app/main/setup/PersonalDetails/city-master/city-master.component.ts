@@ -264,7 +264,11 @@ export class CityMasterComponent implements OnInit {
                               });
                         }
                         this.getCityMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('City Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }

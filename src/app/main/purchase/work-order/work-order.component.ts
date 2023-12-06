@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateWorkorderComponent } from './update-workorder/update-workorder.component';
 import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-work-order',
@@ -23,7 +24,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
   animations: fuseAnimations,
 })
 export class WorkOrderComponent implements OnInit {
-  displayedColumns:string[] = [
+  displayedColumns: string[] = [
     'action',
     'WOId',
     'Date',
@@ -32,9 +33,9 @@ export class WorkOrderComponent implements OnInit {
     'WOVatAmount',
     'WODiscAmount',
     'WoNetAmount',
-    'Remark'  
+    'Remark'
   ];
-  displayedColumnsnew:string[] = [
+  displayedColumnsnew: string[] = [
     'action',
     'ItemName',
     'Qty',
@@ -42,46 +43,66 @@ export class WorkOrderComponent implements OnInit {
     'TotalAmount',
     'Disc',
     'DiscAmt',
-    'Vat',
-    'VatAmt',
-    'NetAmt',
-    'Specification'  
+    'GST',
+    'GSTAmt',
+    'NetAmount',
+    'Specification'
   ];
 
- 
+
   sIsLoading: string = '';
   isLoading = true;
-  StoreList:any=[];
-  SupplierList:any=[];
+  StoreList: any = [];
+  SupplierList: any = [];
   filteredOptions: any;
   screenFromString = 'admission-form';
-showAutocomplete = false;
-noOptionFound: boolean = false;
-ItemName:any;
-filteredOptionsItem:any;
-ItemId: any;
-isItemIdSelected:boolean=false;
+  showAutocomplete = false;
+  noOptionFound: boolean = false;
+  ItemName: any;
+  filteredOptionsItem: any;
+  ItemId: any;
+  isItemIdSelected: boolean = false;
 
-  dsWorkOrderList=new MatTableDataSource<WorkOrderList>();
-  
-  
+  Qty: any;
+  NetAmount: any;
+  Rate: any;
+  TotalAmount: any;
+  Disc: any;
+  DiscAmt: any;
+  DisAmount: any;
+  GSTAmt: any;
+  GSTAmount:any;
+  GST: any;
+  WorkOrderlist:any=[];
+  Specification: any;
+  dsWorkOrderList = new MatTableDataSource<WorkOrderList>();
+  NewWorkOrderList = new MatTableDataSource<NewWorkOrderList>();
+
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
-    public _WorkOrderService:WorkOrderService,
+    public _WorkOrderService: WorkOrderService,
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private _loggedService: AuthenticationService,
-    public datePipe:DatePipe,
-    
-  ) { } 
+    public datePipe: DatePipe,
+
+  ) { }
 
   ngOnInit(): void {
     this.gePharStoreList();
     this.getSuppliernameList();
   }
+  Status3List = [
+    { id: 1, name: "GST Before Disc" },
+    { id: 2, name: "GST After Disc" },
+    { id: 3, name: "GST On Pur +FreeQty" },
+    { id: 4, name: "GST OnMRP" },
+    { id: 5, name: "GST After 2Disc" }
+  ];
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -91,7 +112,6 @@ isItemIdSelected:boolean=false;
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
 
   gePharStoreList() {
     var vdata = {
@@ -106,125 +126,305 @@ isItemIdSelected:boolean=false;
     });
   }
   getSuppliernameList() {
-    
- 
     this._WorkOrderService.getSupplierList().subscribe(data => {
       this.SupplierList = data;
       console.log(this.SupplierList);
       this._WorkOrderService.myFormGroup.get('SupplierName').setValue(this.SupplierList[0]);
       this._WorkOrderService.NewWorkForm.get('SupplierName').setValue(this.SupplierList[0]);
     });
-  } 
-
-getWorkOrdersList() {
-  debugger
-  this.sIsLoading = 'loading-data';
-  var m_data = {
-    "ToStoreId": 10003,//this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,
-    "From_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("startdate").value, "MM-dd-yyyy") || '01/01/1900',
-    "To_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("enddate").value, "MM-dd-yyyy") || '01/01/1900',
-    "Supplier_Id":194// this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId  || 0
-    
   }
-  console.log(m_data);
-  this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
-    this.dsWorkOrderList.data = data as WorkOrderList[];
-    this.dsWorkOrderList.sort = this.sort;
-    this.dsWorkOrderList.paginator = this.paginator;
-    console.log(this.dsWorkOrderList.data);
-    this.sIsLoading = '';
-  },
-    error => {
+
+  getWorkOrdersList() {
+    debugger
+    this.sIsLoading = 'loading-data';
+    var m_data = {
+      "ToStoreId": 10003,//this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,
+      "From_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("startdate").value, "MM-dd-yyyy") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("enddate").value, "MM-dd-yyyy") || '01/01/1900',
+      "Supplier_Id": 194// this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId  || 0
+
+    }
+    console.log(m_data);
+    this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
+      this.dsWorkOrderList.data = data as WorkOrderList[];
+      this.dsWorkOrderList.sort = this.sort;
+      this.dsWorkOrderList.paginator = this.paginator;
+      console.log(this.dsWorkOrderList.data);
       this.sIsLoading = '';
-    });
+    },
+      error => {
+        this.sIsLoading = '';
+      });
 
-}
+  }
 
+  // getSearchItemList() {
+  //   var m_data = {
+  //     "ItemName": `${this._WorkOrderService.NewWorkForm.get('ItemID').value}%`
+  //     // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+  //   }
+  //   // console.log(m_data);
+  //   if (this._WorkOrderService.NewWorkForm.get('ItemID').value.length >= 2) {
+  //     this._WorkOrderService.getItemlist(m_data).subscribe(data => {
+  //       this.filteredOptionsItem = data;
+  //       // console.log(this.filteredOptionsItem.data);
+  //       this.filteredOptionsItem = data;
+  //       if (this.filteredOptionsItem.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
+  //   }
+  // }
+  // getOptionItemText(option) {
+  //   this.ItemId = option.ItemID;
+  //   if (!option) return '';
+  //   return option.ItemID + ' ' + option.ItemName ;
+  // }
+  // getSelectedObjItem(obj) {
+  //  // console.log(obj);
 
+  // }  
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('rate') rate: ElementRef;
+  @ViewChild('dis') dis: ElementRef;
+  @ViewChild('gst') gst: ElementRef;
+  @ViewChild('Vat') Vat: ElementRef;
+  @ViewChild('specification') specification: ElementRef;
+  add: boolean = false;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  
+  @ViewChild('Remark1') Remark1: ElementRef;
+  @ViewChild('FinalDiscAmount1') FinalDiscAmount1: ElementRef;
+  
+  @ViewChild('GSTAmount1') GSTAmount1: ElementRef;
+  @ViewChild('FinalTotalAmount1') FinalTotalAmount1: ElementRef;
+  @ViewChild('VatAmount1') VatAmount1 :ElementRef;
+  @ViewChild('FinalNetAmount1') FinalNetAmount1 :ElementRef;
+  
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.rate.nativeElement.focus();
+    }
+  }
+  public onEnterRate(event): void {
+    if (event.which === 13) {
+      this.dis.nativeElement.focus();
+    }
+  }
+  public onEnterDis(event): void {
+    if (event.which === 13) {
+      this.gst.nativeElement.focus();
+    }
+  }
+  public onEnterDiscAmount(event): void {
+    if (event.which === 13) {
+      this.GSTAmount1.nativeElement.focus();
+    }
+  }
+  public onEnterGST(event): void {
+    if (event.which === 13) {
+      this.Vat.nativeElement.focus();
+    }
+  }
+  
+  public onEnterGSTAmount(event): void {
+    if (event.which === 13) {
+      this.FinalTotalAmount1.nativeElement.focus();
+    }
+  }
+  
+  
+  public onEnterTotalAmount(event): void {
+    if (event.which === 13) {
+      this.VatAmount1.nativeElement.focus();
+    }
+  }
+
+  calculateTotalAmount() {
+    debugger
+    if (this.Rate && this.Qty) {
+      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
+      this.NetAmount = this.TotalAmount;
+      // this.calculatePersc();
+    }
+  }
+
+  calculateDiscAmount() {
+    if (this.Disc) {
+      this.NetAmount =  (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
+    }
+  }
+  
+  calculateDiscperAmount(){
+    debugger
+    if (this.Disc) {
+      let dis=this._WorkOrderService.WorkorderItemForm.get('Disc').value
+      this.DiscAmt = (parseFloat(this.Disc) * parseFloat(this.NetAmount) /100).toFixed(2);
+      // this.DiscAmount =  DiscAmt
+      this.NetAmount = this.NetAmount - this.DiscAmt;
+  
+    }
+  }
+  calculateGSTperAmount() {
+  
+    if (this.GST) {
+    
+      this.GSTAmt = ((parseFloat (this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(2);
+      this.NetAmount =(parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+      this._WorkOrderService.WorkorderItemForm.get('NetAmount').setValue(this.NetAmount);
+   
+    }
+  }
  
+  onChangeStatus3(event) {
+    
+    if (event.value.name == 'GST Before Disc') {
 
-getSearchItemList() {
-  var m_data = {
-    "ItemName": `${this._WorkOrderService.NewWorkForm.get('ItemID').value}%`
-    // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+      if (parseFloat(this.GST) > 0) {
+
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+      }
+    }
+    else if (event.value.name == 'GST After Disc') {
+      
+
+      let disc = this._WorkOrderService.NewWorkForm.get('Disc').value
+      if (disc > 0) {
+        this.DisAmount = (disc * parseFloat(this.TotalAmount) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DisAmount)).toFixed(4);
+        if (parseFloat(this.GST) > 0) {
+          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GST)) / 100).toFixed(4);
+          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+        }
+      }
+      else {
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+      }
+    }
+    else if (event.value.name == 'GST On Pur +FreeQty') {
+      if (parseFloat(this.GST) > 0) {
+
+        let TotalQty = parseInt(this.Qty)
+        this.TotalAmount = (parseFloat(this.Rate) * TotalQty).toFixed(2);
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(4);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+      }
+    }
+    else if (event.value.name == 'GST OnMRP') {
+      this.TotalAmount = (parseFloat(this.Rate) * this.Qty).toFixed(2);
+      this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(4);
+      this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+
+    }
+    else if (event.value.name == 'GST After 2Disc') {
+    }
   }
-  // console.log(m_data);
-  if (this._WorkOrderService.NewWorkForm.get('ItemID').value.length >= 2) {
-    this._WorkOrderService.getItemlist(m_data).subscribe(data => {
-      this.filteredOptionsItem = data;
-      // console.log(this.filteredOptionsItem.data);
-      this.filteredOptionsItem = data;
-      if (this.filteredOptionsItem.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
+
+  OnAdd(){
+      this.WorkOrderlist.push(
+        {
+          ItemName:this.ItemName,
+          Qty:this.Qty,
+          Rate:this.Rate,
+          TotalAmount:this.TotalAmount,
+          Disc:this.Disc,
+          DiscAmt:this.DiscAmt,
+          GST:this.GST,
+          GSTAmt:this.GSTAmt,
+          NetAmount:this.NetAmount,
+          Specification:this.Specification
+        });
+      console.log(this.WorkOrderlist);
+      this.NewWorkOrderList.data = this.WorkOrderlist;
+      this.NewWorkOrderList.sort = this.sort;
+      this.NewWorkOrderList.paginator = this.paginator;
+    
+
+  }
+
+  newWorkorder() {
+    //this.chkNewWorkorder=1;
+    const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data: {
+          //    chkNewWorkorder:this.chkNewWorkorder
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+
+
+
+  onEdit(contact) {
+    // this.chkNewWorkorder=2;
+    console.log(contact)
+    this.advanceDataStored.storage = new SearchInforObj(contact);
+    // this._PurchaseOrder.populateForm();
+    const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data: {
+          Obj: contact,
+          //   chkNewWorkorder:this.chkNewWorkorder
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
     });
   }
 }
-getOptionItemText(option) {
-  this.ItemId = option.ItemID;
-  if (!option) return '';
-  return option.ItemID + ' ' + option.ItemName ;
-}
-getSelectedObjItem(obj) {
- // console.log(obj);
+ 
+export class NewWorkOrderList {
+  ItemName: any;
+  Qty: any;
+  Rate: number;
+  TotalAmount: number;
+  Disc: number;
+  DiscAmt: number;
+  GST: number;
+  GSTAmount: number;
+  NetAmount: number;
+  Specification:string;
 
-}   
-
-
-
-
-newWorkorder(){
-  //this.chkNewWorkorder=1;
-  const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
+  constructor(NewWorkOrderList) {
     {
-      maxWidth: "100%",
-      height: '95%',
-      width: '95%',
-      data: {
-    //    chkNewWorkorder:this.chkNewWorkorder
-      }
-    });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
-  });
-}
+      this.ItemName = NewWorkOrderList.ItemName || "";
+      this.Qty = NewWorkOrderList.Qty || 0;
+      this.Rate = NewWorkOrderList.Rate || 0;
+      this.TotalAmount = NewWorkOrderList.TotalAmount || "";
+      this.Disc = NewWorkOrderList.Disc || 0;
+      this.DiscAmt = NewWorkOrderList.DiscAmt || 0;
+      this.GST = NewWorkOrderList.GST || 0;
+      this.GSTAmount = NewWorkOrderList.GSTAmount || 0;
+      this.NetAmount = NewWorkOrderList.NetAmount || 0;
+      this.Specification =NewWorkOrderList.Specification || "";
 
-
-
-onEdit(contact){
- // this.chkNewWorkorder=2;
-  console.log(contact)
-  this.advanceDataStored.storage = new SearchInforObj(contact);
-  // this._PurchaseOrder.populateForm();
-  const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
-    {
-      maxWidth: "100%",
-      height: '95%',
-      width: '95%',
-      data : {
-        Obj : contact,
-     //   chkNewWorkorder:this.chkNewWorkorder
-      }
-    });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
-  });
-}
+    }
+  }
 }
 
 export class WorkOrderList {
   Date: Number;
-  WOId:any;
+  WOId: any;
   WoNo: number;
-  TotalAmt:number;
-  SupplierName:string;
-  DiscAmt:number;
-  VatAmt:number;
-  NetAmt:number;
-  Remark:string;
-  
+  TotalAmt: number;
+  SupplierName: string;
+  DiscAmt: number;
+  VatAmt: number;
+  NetAmt: number;
+  Remark: string;
+
   constructor(WorkOrderList) {
     {
       this.Date = WorkOrderList.Date || 0;
@@ -236,7 +436,7 @@ export class WorkOrderList {
       this.VatAmt = WorkOrderList.VatAmt || 0;
       this.NetAmt = WorkOrderList.NetAmt || 0;
       this.Remark = WorkOrderList.Remark || "";
-       
+
     }
   }
 }

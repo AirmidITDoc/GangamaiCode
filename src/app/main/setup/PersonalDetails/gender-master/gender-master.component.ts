@@ -154,7 +154,11 @@ export class GenderMasterComponent implements OnInit {
                               });
                         }
                         this.getGenderMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Gender Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }

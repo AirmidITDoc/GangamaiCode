@@ -154,7 +154,11 @@ export class CountryMasterComponent implements OnInit {
                               });
                         }
                         this.getCountryMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Country Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }

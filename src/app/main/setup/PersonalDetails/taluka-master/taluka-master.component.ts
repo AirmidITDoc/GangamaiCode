@@ -204,7 +204,11 @@ export class TalukaMasterComponent implements OnInit {
                               });
                         }
                         this.getTalukaMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Taluka Master Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

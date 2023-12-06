@@ -205,7 +205,11 @@ export class StateMasterComponent implements OnInit {
                               });
                         }
                         this.getstateMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('State Master Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }
