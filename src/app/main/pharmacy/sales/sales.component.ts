@@ -70,7 +70,7 @@ export class SalesComponent implements OnInit {
   BatchNo: any;
   BatchExpDate: any;
   UnitMRP: any;
-  Qty: any = 1;
+  Qty: any = 0;
   IssQty: any;
   Bal: any;
   StoreName: any;
@@ -88,7 +88,8 @@ export class SalesComponent implements OnInit {
 
   ConShow: Boolean = false;
   ItemObj: IndentList;
-
+  v_marginamt:any=0;
+  TotalMarginAmt:any=0;
   paidamt: number;
   flagSubmit: boolean;
   balanceamt: number = 0;
@@ -249,7 +250,7 @@ export class SalesComponent implements OnInit {
     'TotalMRP',
     'DiscAmt',
     'NetAmt',
-    // 'StkId',
+    'MarginAmt',
     'buttons'
   ];
 
@@ -1101,7 +1102,6 @@ export class SalesComponent implements OnInit {
   calculateTotalAmt() {
     debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    // console.log(this.BalanceQty);
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
       this.ItemFormreset();
@@ -1110,8 +1110,9 @@ export class SalesComponent implements OnInit {
     if (Qty && this.MRP) {
       this.TotalMRP = (parseInt(Qty) * (this._salesService.IndentSearchGroup.get('MRP').value)).toFixed(2);
       //this.TotalMRP = ((Qty) * (this.MRP)).toFixed(2);
-      this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2)
-      this.PurTotAmt = (parseInt(Qty) * (this.MRP)).toFixed(2)
+      this.LandedRateandedTotal = (parseInt(Qty) * (this.LandedRate)).toFixed(2);
+      this.v_marginamt =(parseFloat( this.TotalMRP )- parseFloat( this.LandedRateandedTotal)).toFixed(2);
+      this.PurTotAmt = (parseInt(Qty) * (this.PurchaseRate)).toFixed(2);
 
       // console.log("Purchase rate");
       // console.log(this.PurchaseRate);
@@ -1177,7 +1178,8 @@ export class SalesComponent implements OnInit {
           IgstPer: this.IgstPer,
           IGSTAmt: this.IGSTAmt,
           PurchaseRate: this.PurchaseRate,
-          PurTotAmt: this.PurTotAmt
+          PurTotAmt: this.PurTotAmt,
+          MarginAmt:this.v_marginamt
 
         });
       this.sIsLoading = '';
@@ -1312,7 +1314,7 @@ export class SalesComponent implements OnInit {
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
-      this.Qty = 1;
+      this.Qty = 0;
       this.Bal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
 
@@ -1354,6 +1356,7 @@ export class SalesComponent implements OnInit {
     this.DiscAmt = 0;
     this.TotalMRP = 0;
     this.NetAmt = 0;
+    this.v_marginamt=0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
     this.filteredOptions = [];
 
@@ -1389,25 +1392,30 @@ export class SalesComponent implements OnInit {
     this.FinalTotalAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
     this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
+    // this.TotalMarginAmt=(element.reduce((sum, { MarginAmt }) => sum += +(MarginAmt || 0), 0)).toFixed(2);
     return this.FinalNetAmount;
+  }
+  getMarginSum(element){
+    this.TotalMarginAmt=(element.reduce((sum, { MarginAmt }) => sum += +(MarginAmt || 0), 0)).toFixed(2);
+    return this.TotalMarginAmt;
   }
 
   calculateDiscAmt() {
-    debugger
     console.log("disc");
     console.log(this._salesService.IndentSearchGroup.get('DiscAmt').value);
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     // let PurTotalAmount = this.PurTotAmt;
-    let PurTotalAmount = this.LandedRateandedTotal;
-    let m_MRPTotal = this.TotalMRP;
-    let m_marginamt = (parseFloat(this.LandedRateandedTotal) - parseFloat(ItemDiscAmount)).toFixed(2);
+    let LandedTotalAmount = this.LandedRateandedTotal;
+    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+    this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(m_marginamt))).toFixed(2);
+
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
       this.ConShow = true;
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (parseFloat(PurTotalAmount) >= parseFloat(m_marginamt))
+      if (this.v_marginamt <= 0)
       {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
         this.ItemFormreset();
@@ -1436,7 +1444,6 @@ export class SalesComponent implements OnInit {
     }
   }
   getDiscPer() {
-    debugger
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
       this.chkdiscper = true;
@@ -1676,8 +1683,7 @@ export class SalesComponent implements OnInit {
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     // this.onCheckBalQty();
 
-    if (this.QtyBalchk == 1) {
-
+    // if (this.QtyBalchk == 1) {
       if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
         && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
         // this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
@@ -1697,7 +1703,7 @@ export class SalesComponent implements OnInit {
       }
 
 
-    }
+    // }
 
 
   }
@@ -2642,6 +2648,7 @@ export class IndentList {
   SalesReturnId: any;
   DiscAmount: any;
   NetAmount: any;
+  MarginAmt:any;
   /**
    * Constructor
    *
@@ -2684,6 +2691,7 @@ export class IndentList {
       this.SalesReturnId = IndentList.SalesReturnId || 0;
       this.NetAmount = IndentList.NetAmount || 0;
       this.DiscAmount = IndentList.DiscAmount || 0;
+      this.MarginAmt=IndentList.MarginAmt || 0;
     }
   }
 }
@@ -2785,6 +2793,8 @@ export class Printsal {
   BillVatAmount: any;
   BillDiscAmount: any;
   BillTotalAmount: any;
+  HospitalMobileNo: any;
+  HospitalEmailId: any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2859,6 +2869,8 @@ export class Printsal {
     this.BillVatAmount = Printsal.BillVatAmount || '';
     this.BillDiscAmount = Printsal.BillDiscAmount || '';
     this.BillTotalAmount = Printsal.BillTotalAmount || '';
+    this.HospitalMobileNo=Printsal.HospitalMobileNo||'';
+    this.HospitalEmailId=Printsal.HospitalEmailId||'';
   }
 }
 

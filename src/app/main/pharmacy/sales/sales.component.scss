@@ -102,8 +102,13 @@ app-sales {
       min-width: 110px;
       text-align: center;
     }
-
-  
+    
+    .mat-column-MarginAmt {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: center;
+    }
     .mat-column-action {
       width: 60px;
       max-width: 60px;
