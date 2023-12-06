@@ -1100,7 +1100,6 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
-    debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1406,8 +1405,8 @@ export class SalesComponent implements OnInit {
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     // let PurTotalAmount = this.PurTotAmt;
     let LandedTotalAmount = this.LandedRateandedTotal;
-    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
-    this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(m_marginamt))).toFixed(2);
+    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+    //this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(m_marginamt))).toFixed(2);
 
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
@@ -1415,7 +1414,7 @@ export class SalesComponent implements OnInit {
       this.ItemSubform.get('ConcessionId').reset();
       this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
       this.ItemSubform.get('ConcessionId').enable();
-      if (this.v_marginamt <= 0)
+      if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount))
       {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
         this.ItemFormreset();
