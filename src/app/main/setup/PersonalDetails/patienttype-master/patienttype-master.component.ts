@@ -162,7 +162,11 @@ export class PatienttypeMasterComponent implements OnInit {
                               });
                         }
                         this.getPatientTypeMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Patient Type Data not Updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }

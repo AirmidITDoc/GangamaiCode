@@ -44,7 +44,7 @@ export class DrugmasterService {
 
     public getDrugMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveDrugList",
+            "Generic/GetByProc?procName=M_RetrieveDrugList",
             param
         );
     }

@@ -1,4 +1,4 @@
-app-unitmaster {
+.table {
     .mat-header-row {
         width: 700px;
         max-width: 700px;
@@ -18,16 +18,16 @@ app-unitmaster {
         min-width: 100px;
     }
 
-    .mat-column-CategoryName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+    .mat-column-UnitName {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
     }
 
     .mat-column-IsDeleted {

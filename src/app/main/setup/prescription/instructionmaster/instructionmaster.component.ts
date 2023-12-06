@@ -96,24 +96,30 @@ export class InstructionmasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_data;
                         if (data) {
-                            Swal.fire(
-                                "Saved !",
-                                "Record saved Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getInstructionMasterList();
-                                }
-                            });
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getInstructionMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getInstructionMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not saved",
-                                "error"
-                            );
+                            this.toastr.error('Instruction Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getInstructionMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Instruction Class Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             } else {
                 var m_dataUpdate = {
                     updateInstructionMaster: {
@@ -138,24 +144,30 @@ export class InstructionmasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getInstructionMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getInstructionMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getInstructionMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error('Instruction Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getInstructionMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Instruction Class Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }

@@ -157,7 +157,11 @@ export class ReligionMasterComponent implements OnInit {
                               });
                         }
                         this.getReligionMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Religion Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
             }
             this.onClear();
         }

@@ -163,7 +163,11 @@ export class RelationshipMasterComponent implements OnInit {
                            }
                         }
                         this.getrelationshipMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('RelationShip Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     } );
                 
             }
             this.onClear();

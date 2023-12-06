@@ -74,21 +74,21 @@ export class CurrentStockComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "ItemName":'%',
-      "IsNarcotic":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      "ish1Drug":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      "isScheduleH":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      "IsHighRisk":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      "IsScheduleX":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      "ItemCategaryId":this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemCategaryId || 1,
-      "StoreId": this._CurrentStockService.SearchGroup.get('StoreId').value.StoreId || 1,
+      // "IsNarcotic":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      // "ish1Drug":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      // "isScheduleH":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      // "IsHighRisk":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      // "IsScheduleX":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
+      // "ItemCategaryId":this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemCategaryId || 1,
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 1,
       //  "From_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       //  "To_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         
     }
-    console.log(vdata);
+   // console.log(vdata);
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
-      console.log(this.dsCurrentStock.data)
+     // console.log(this.dsCurrentStock.data)
       this.dsCurrentStock.sort = this.sort;
       this.dsCurrentStock.paginator = this.paginator;
       this.sIsLoading = '';
@@ -115,7 +115,7 @@ export class CurrentStockComponent implements OnInit {
     this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
       // console.log(this.StoreList);
-      this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
+     this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
     });
   }
 }

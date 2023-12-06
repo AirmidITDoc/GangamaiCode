@@ -63,7 +63,7 @@
                         </div>
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table #table matSort [dataSource]="DSUnitmasterList"
+                                <mat-table class='table' matSort [dataSource]="DSUnitmasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="UnitId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code

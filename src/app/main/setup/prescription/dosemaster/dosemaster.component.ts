@@ -5,6 +5,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-dosemaster",
@@ -33,7 +34,8 @@ export class DosemasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _DoseService: DosemasterService) {}
+    constructor(public _DoseService: DosemasterService,
+        public toastr : ToastrService,) {}
 
     ngOnInit(): void {
         this.getDoseMasterList();
@@ -98,20 +100,30 @@ export class DosemasterComponent implements OnInit {
                 this._DoseService.insertDoseMaster(m_data).subscribe((data) => {
                     this.msg = m_data;
                     if (data) {
-                        Swal.fire(
-                            "Saved !",
-                            "Record saved Successfully !",
-                            "success"
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                this.getDoseMasterList();
-                            }
-                        });
+                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                        this.getDoseMasterList();
+                        // Swal.fire(
+                        //     "Saved !",
+                        //     "Record saved Successfully !",
+                        //     "success"
+                        // ).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         this.getDoseMasterList();
+                        //     }
+                        // });
                     } else {
-                        Swal.fire("Error !", "Appoinment not saved", "error");
+                        this.toastr.error(' Dose Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
                     }
                     this.getDoseMasterList();
-                });
+                },error => {
+                    this.toastr.error('Dose Class Data not saved !, Please check API error..', 'Error !', {
+                     toastClass: 'tostr-tost custom-toast-error',
+                   });
+                 });
             } else {
                 var m_dataUpdate = {
                     updateDoseMaster: {
@@ -138,24 +150,30 @@ export class DosemasterComponent implements OnInit {
                     .subscribe((data) => {
                         this.msg = m_dataUpdate;
                         if (data) {
-                            Swal.fire(
-                                "Updated !",
-                                "Record updated Successfully !",
-                                "success"
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.getDoseMasterList();
-                                }
-                            });
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                            this.getDoseMasterList();
+                            // Swal.fire(
+                            //     "Updated !",
+                            //     "Record updated Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getDoseMasterList();
+                            //     }
+                            // });
                         } else {
-                            Swal.fire(
-                                "Error !",
-                                "Appoinment not updated",
-                                "error"
-                            );
+                            this.toastr.error(' Dose Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
                         }
                         this.getDoseMasterList();
-                    });
+                    },error => {
+                        this.toastr.error('Dose Class Data not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
             }
             this.onClear();
         }
