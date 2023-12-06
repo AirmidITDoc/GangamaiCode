@@ -39,7 +39,7 @@ export class SalesService {
       DiscAmt: [' ', [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$")] ],
       NetAmt:'',
       DiscPer:'',
- 
+      MarginAmt:'0'
       // ItemName:'',
       // start: [(new Date()).toISOString()],
       // end: [(new Date()).toISOString()],
