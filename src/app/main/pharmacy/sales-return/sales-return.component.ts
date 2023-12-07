@@ -53,6 +53,7 @@ export class SalesReturnComponent implements OnInit {
   Qty: any = 0;
   RQty: any = 0;
   FinalTotalAmount: any = 0;
+  vDiscAmount:any =0;
   sIsLoading: any;
   screenFromString = 'payment-form';
   SalesID: any;
@@ -191,8 +192,9 @@ export class SalesReturnComponent implements OnInit {
 
   Returnform() {
     return this._formBuilder.group({
-      NetAmt: '',
-      ReturnAmt: ''
+      NetAmt: 0,
+      ReturnAmt: 0,
+      TotDiscAmount:0
     });
   }
 
@@ -303,26 +305,71 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getCellCalculation(contact, ReturnQty) {
-
     this.RQty = parseInt(ReturnQty);
-    debugger;
     if ((parseInt(this.RQty)) > (parseInt(contact.Qty))) {
       Swal.fire("Return Qty cannot be greater than Qty")
-      contact.ReturnQty = this.RQty
-    }
-    else {
+
+      contact.ReturnQty = parseInt(contact.Qty);
+      this.RQty = parseInt(contact.Qty);
+
       this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
       this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
       this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
       this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
       this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
       this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
-      this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      //this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      
+      this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
       if (parseFloat(contact.LandedPrice) > 0.0) {
         this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
       }
       this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
 
+        contact.SalesNo = contact.SalesNo,
+        contact.SalesDetId = contact.SalesDetId,
+        contact.OP_IP_ID = contact.OP_IP_ID,
+        contact.ItemName = contact.ItemName,
+        contact.BatchNo = contact.BatchNo,
+        contact.UnitMRP = contact.UnitMRP,
+        contact.Qty = contact.Qty,
+        contact.ReturnQty = contact.ReturnQty,
+        contact.TotalAmount = this.TotalAmt,
+        contact.VatPer = contact.VatPer,
+        contact.VatAmount = this.VatAmount,
+        contact.DiscPer = contact.DiscPer,
+        contact.DiscAmount = this.DiscAmt,
+        contact.GrossAmount = this.GrossAmt,
+        contact.LandedPrice = contact.LandedPrice,
+        contact.TotalLandedAmount = this.LandAmt,
+        contact.PurRateWf = contact.PurRateWf,
+        contact.PurTotAmt = this.PurAmt,
+        contact.CGSTPer = contact.CGSTPer,
+        contact.CGSTAmount = this.CGSTAmount,
+        contact.SGSTPer = contact.SGSTPer,
+        contact.SGSTAmount = this.SGSTAmount,
+        contact.IGSTPer = contact.IGSTPer,
+        contact.IGSTAmount = this.IGSTAmount,
+        contact.IsPurRate = contact.IsPurRate,
+        contact.StkID = contact.StkID
+    }
+    else {
+      this.RQty = parseInt(ReturnQty);
+      this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+      this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+      //this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+      
+      this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
+      if (parseFloat(contact.LandedPrice) > 0.0) {
+        this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
+      }
+      this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2);
 
         contact.SalesNo = contact.SalesNo,
         contact.SalesDetId = contact.SalesDetId,
@@ -391,14 +438,18 @@ export class SalesReturnComponent implements OnInit {
   AddItem(contact) {
     this.RQty=parseInt(contact.Qty);
     let Amount = contact.UnitMRP * contact.ReturnQty;
-    this.NetAmt =parseFloat(contact.GrossAmount) + parseFloat(this.NetAmt);
+    this.NetAmt = parseFloat(contact.GrossAmount) + parseFloat(this.NetAmt);
     this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+
     this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+
     this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
     this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
     this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
     this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
-    this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    
+    this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
     if (parseFloat(contact.LandedPrice) > 0.0) {
       this.LandAmt = (parseFloat(contact.LandedPrice) * parseInt(this.RQty)).toFixed(2);
     }
@@ -581,11 +632,11 @@ export class SalesReturnComponent implements OnInit {
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
     salesReturnHeader['OP_IP_Type'] = 2;
-    salesReturnHeader['TotalAmount'] = this.TotalAmt;
+    salesReturnHeader['TotalAmount'] = this.FinalReturnform.get('ReturnAmt').value;
     salesReturnHeader['VatAmount'] = this.VatAmount || 0;
-    salesReturnHeader['DiscAmount'] =this.DiscAmt || 0;
-    salesReturnHeader['NetAmount'] =this.NetAmt || 0;
-    salesReturnHeader['PaidAmount'] = this.NetAmt || 0;
+    salesReturnHeader['DiscAmount'] =this.FinalReturnform.get('TotDiscAmount').value|| 0;
+    salesReturnHeader['NetAmount'] =this.FinalReturnform.get('ReturnAmt').value || 0;
+    salesReturnHeader['PaidAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
     salesReturnHeader['BalanceAmount'] = 0;
     salesReturnHeader['IsSellted'] = 1;
     salesReturnHeader['IsPrint'] = 0,
@@ -615,8 +666,8 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount;
       salesReturnDetailCredit['PurRate'] = element.PurRateWf;
       salesReturnDetailCredit['PurTot'] = element.PurTotAmt;
-      salesReturnDetailCredit['SalesID'] = this.SalesID;
-      salesReturnDetailCredit['SalesDetID'] = this.SalesDetId;
+      salesReturnDetailCredit['SalesID'] = element.SalesId;
+      salesReturnDetailCredit['SalesDetID'] = element.SalesDetId;
       salesReturnDetailCredit['isCashOrCredit'] =0;
       salesReturnDetailCredit['cgstPer'] = element.CGSTPer;
       salesReturnDetailCredit['cgstAmt'] = element.CGSTAmount;
@@ -634,16 +685,15 @@ export class SalesReturnComponent implements OnInit {
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.Qty;
       updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSalesCredit['stkID'] = element.StkID;
-
+      updateCurStkSalesCredit['stkID'] = element.StkID;
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
 
     let Update_SalesReturnQtySalesTblarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
     let Update_SalesReturnQtySalesTbl = {};
-    Update_SalesReturnQtySalesTbl['SalesDetId'] = this.SalesDetId;
-    Update_SalesReturnQtySalesTbl['ReturnQty'] = this.RQty;
+    Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
+    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.Qty;
     Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
   });
 
@@ -664,13 +714,13 @@ export class SalesReturnComponent implements OnInit {
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
       PatientHeaderObj['PatientName'] = this.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] = 2,// this.reportPrintObj.RegNo;
-      PatientHeaderObj['NetPayAmount'] = this.NetAmt;
+      PatientHeaderObj['NetPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
 
-      PaymentInsertobj['BillNo'] = this.SalesID,
+      PaymentInsertobj['BillNo'] = 0,
      // PaymentInsertobj['ReceiptNo'] = '',
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-      PaymentInsertobj['CashPayAmount'] = this.NetAmt;
+      PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
       PaymentInsertobj['ChequePayAmount'] = 0,
       PaymentInsertobj['ChequeNo'] = 0,
       PaymentInsertobj['BankName'] = '',
@@ -751,7 +801,8 @@ export class SalesReturnComponent implements OnInit {
 
   getTotAmtSum(element) {
     this.FinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    // this.NetAmt =(element.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0)).toFixed(2);
+    this.NetAmt = (element.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0)).toFixed(2);
+    this.vDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     return this.FinalTotalAmount;
   }
 

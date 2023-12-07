@@ -184,7 +184,7 @@ export class PharmacyReportComponent implements OnInit {
 
     });
     // this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserId);
-    this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserList[0]);
+    this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserName);
   }
 
 
