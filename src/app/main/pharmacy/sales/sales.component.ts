@@ -1406,7 +1406,7 @@ export class SalesComponent implements OnInit {
     // let PurTotalAmount = this.PurTotAmt;
     let LandedTotalAmount = this.LandedRateandedTotal;
     let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
-    this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(m_marginamt))).toFixed(2);
+    this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
 
     if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
