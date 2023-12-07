@@ -248,6 +248,7 @@ export class SalesComponent implements OnInit {
     'GSTPer',
     'GSTAmount',
     'TotalMRP',
+    'DiscPer',
     'DiscAmt',
     'NetAmt',
     'MarginAmt',

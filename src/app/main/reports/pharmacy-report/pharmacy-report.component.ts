@@ -131,6 +131,11 @@ export class PharmacyReportComponent implements OnInit {
   ngOnInit(): void {
     this.bindReportData();
     this.GetUserList();
+    debugger
+    console.log(this.UserList)
+    const toSelect = this.UserList.find(c => c.UserID == this.UserId);
+    this._BrowsSalesBillService.userForm.get('UserId').setValue(toSelect);
+
   }
 
   bindReportData() {
@@ -173,7 +178,8 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   GetUserList() {
-
+    setTimeout(() => {
+         
     this._PharmacyreportService.getUserdetailList().subscribe(data => {
       this.UserList = data;
       this.optionsUser = this.UserList.slice();
@@ -183,8 +189,8 @@ export class PharmacyReportComponent implements OnInit {
       );
 
     });
-    // this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserId);
-    this._BrowsSalesBillService.userForm.get('UserId').setValue(this.UserName);
+  }, 2000);
+      
   }
 
 

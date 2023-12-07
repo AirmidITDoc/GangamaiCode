@@ -48,9 +48,9 @@ app-sales {
     }
    
     .mat-column-BatchExpDate {
-      width: 140px;
-      max-width: 140px;
-      min-width: 140px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: left;
     }
 
@@ -89,6 +89,15 @@ app-sales {
       min-width: 100px;
       text-align: left;
     }
+    
+
+    .mat-column-DiscPer {
+      width:80px;
+      max-width: 80px;
+      min-width:80px;
+      text-align: left;
+    }
+
     .mat-column-DiscAmt {
       width: 120px;
       max-width:  120px;
