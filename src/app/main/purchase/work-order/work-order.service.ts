@@ -46,7 +46,11 @@ export class WorkOrderService {
       VatAmt:'',
       NetAmount:'',
       Specification:'',
-
+      Remark:[''],
+      FinalTotalAmt:'',
+      FinalDiscAmt:'',
+      FinalGSTAmt:'',
+      FinalNetAmount:''
     })
   }
 
@@ -82,7 +86,9 @@ export class WorkOrderService {
 
   }
 
-
+  initializeFormGroup() {
+    this.createNewWorkForm();
+}
  
 
   public getLoggedStoreList(Param){
@@ -109,4 +115,7 @@ export class WorkOrderService {
   public WorkorderUpdate(Param){
     return this._httpClient.post("Pharmacy/updateWorkorder", Param)
   }
+  populateForm(param) {
+    this.NewWorkForm.patchValue(param);
+}
 }

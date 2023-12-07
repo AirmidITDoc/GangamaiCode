@@ -15,6 +15,7 @@ import { UpdateWorkorderComponent } from './update-workorder/update-workorder.co
 import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { element } from 'protractor';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-work-order',
@@ -36,7 +37,6 @@ export class WorkOrderComponent implements OnInit {
     'Remark'
   ];
   displayedColumnsnew: string[] = [
-    'action',
     'ItemName',
     'Qty',
     'Rate',
@@ -46,7 +46,8 @@ export class WorkOrderComponent implements OnInit {
     'GST',
     'GSTAmt',
     'NetAmount',
-    'Specification'
+    'Specification',
+    'Action'
   ];
 
 
@@ -62,7 +63,7 @@ export class WorkOrderComponent implements OnInit {
   filteredOptionsItem: any;
   ItemId: any;
   isItemIdSelected: boolean = false;
-
+  isLoadings: String = '';
   Qty: any;
   NetAmount: any;
   Rate: any;
@@ -80,7 +81,7 @@ export class WorkOrderComponent implements OnInit {
 
 
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort ,{static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     public _WorkOrderService: WorkOrderService,
@@ -89,12 +90,14 @@ export class WorkOrderComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
+    public toastr : ToastrService,
 
   ) { }
 
   ngOnInit(): void {
     this.gePharStoreList();
     this.getSuppliernameList();
+ 
   }
   Status3List = [
     { id: 1, name: "GST Before Disc" },
@@ -117,7 +120,7 @@ export class WorkOrderComponent implements OnInit {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    console.log(vdata);
+   // console.log(vdata);
     this._WorkOrderService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
       // console.log(this.StoreList);
@@ -128,7 +131,7 @@ export class WorkOrderComponent implements OnInit {
   getSuppliernameList() {
     this._WorkOrderService.getSupplierList().subscribe(data => {
       this.SupplierList = data;
-      console.log(this.SupplierList);
+     // console.log(this.SupplierList);
       this._WorkOrderService.myFormGroup.get('SupplierName').setValue(this.SupplierList[0]);
       this._WorkOrderService.NewWorkForm.get('SupplierName').setValue(this.SupplierList[0]);
     });
@@ -144,12 +147,12 @@ export class WorkOrderComponent implements OnInit {
       "Supplier_Id": 194// this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId  || 0
 
     }
-    console.log(m_data);
+   // console.log(m_data);
     this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
       this.dsWorkOrderList.data = data as WorkOrderList[];
       this.dsWorkOrderList.sort = this.sort;
       this.dsWorkOrderList.paginator = this.paginator;
-      console.log(this.dsWorkOrderList.data);
+     // console.log(this.dsWorkOrderList.data);
       this.sIsLoading = '';
     },
       error => {
@@ -185,7 +188,9 @@ export class WorkOrderComponent implements OnInit {
   // getSelectedObjItem(obj) {
   //  // console.log(obj);
 
-  // }  
+  // } 
+  
+
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('dis') dis: ElementRef;
@@ -197,11 +202,13 @@ export class WorkOrderComponent implements OnInit {
   
   @ViewChild('Remark1') Remark1: ElementRef;
   @ViewChild('FinalDiscAmount1') FinalDiscAmount1: ElementRef;
-  
+
   @ViewChild('GSTAmount1') GSTAmount1: ElementRef;
-  @ViewChild('FinalTotalAmount1') FinalTotalAmount1: ElementRef;
-  @ViewChild('VatAmount1') VatAmount1 :ElementRef;
-  @ViewChild('FinalNetAmount1') FinalNetAmount1 :ElementRef;
+  @ViewChild('VatAmount1') VatAmount1: ElementRef;
+  @ViewChild('FinalGSTAmt') FinalGSTAmt: ElementRef;
+  @ViewChild('FinalTotalAmt') FinalTotalAmt: ElementRef;
+  @ViewChild('FinalDiscAmt') FinalDiscAmt :ElementRef;
+  @ViewChild('FinalNetAmount') FinalNetAmount :ElementRef;
   
   public onEnterQty(event): void {
     if (event.which === 13) {
@@ -231,7 +238,7 @@ export class WorkOrderComponent implements OnInit {
   
   public onEnterGSTAmount(event): void {
     if (event.which === 13) {
-      this.FinalTotalAmount1.nativeElement.focus();
+      this.FinalTotalAmt.nativeElement.focus();
     }
   }
   
@@ -243,7 +250,7 @@ export class WorkOrderComponent implements OnInit {
   }
 
   calculateTotalAmount() {
-    debugger
+   // debugger
     if (this.Rate && this.Qty) {
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
       this.NetAmount = this.TotalAmount;
@@ -251,19 +258,19 @@ export class WorkOrderComponent implements OnInit {
     }
   }
 
-  calculateDiscAmount() {
-    if (this.Disc) {
-      this.NetAmount =  (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
-    }
-  }
+  // calculateDiscAmount() {
+  //   if (this.Disc) {
+  //     this.NetAmount =  (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
+  //   }
+  // }
   
   calculateDiscperAmount(){
-    debugger
+   // debugger
     if (this.Disc) {
       let dis=this._WorkOrderService.WorkorderItemForm.get('Disc').value
-      this.DiscAmt = (parseFloat(this.Disc) * parseFloat(this.NetAmount) /100).toFixed(2);
+      this.DiscAmt = (parseFloat(this.Disc) * parseFloat(this.TotalAmount) /100).toFixed(2);
       // this.DiscAmount =  DiscAmt
-      this.NetAmount = this.NetAmount - this.DiscAmt;
+      this.NetAmount = this.TotalAmount - this.DiscAmt;
   
     }
   }
@@ -271,8 +278,8 @@ export class WorkOrderComponent implements OnInit {
   
     if (this.GST) {
     
-      this.GSTAmt = ((parseFloat (this.TotalAmount) * parseFloat(this.GST)) / 100).toFixed(2);
-      this.NetAmount =(parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+      this.GSTAmt = ((parseFloat (this.NetAmount) * parseFloat(this.GST)) / 100).toFixed(2);
+      this.NetAmount =(parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
       this._WorkOrderService.WorkorderItemForm.get('NetAmount').setValue(this.NetAmount);
    
     }
@@ -324,6 +331,7 @@ export class WorkOrderComponent implements OnInit {
     }
   }
 
+
   OnAdd(){
       this.WorkOrderlist.push(
         {
@@ -338,12 +346,50 @@ export class WorkOrderComponent implements OnInit {
           NetAmount:this.NetAmount,
           Specification:this.Specification
         });
-      console.log(this.WorkOrderlist);
+     // console.log(this.WorkOrderlist);
       this.NewWorkOrderList.data = this.WorkOrderlist;
       this.NewWorkOrderList.sort = this.sort;
       this.NewWorkOrderList.paginator = this.paginator;
-    
+      this.ItemFormreset(); 
+  }
+  deleteTableRow(event, element) {
+    // if (this.key == "Delete") {
+      let index = this.WorkOrderlist.indexOf(element);
+      if (index >= 0) {
+        this.WorkOrderlist.splice(index, 1);
+        this.NewWorkOrderList.data = [];
+        this.NewWorkOrderList.data = this.WorkOrderlist;
+      }
+     // Swal.fire('Success !', 'Service Row Deleted Successfully', 'success');
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
 
+    // }
+  }
+  onEditRow(row){
+    var m_data = {
+      Qty:row.Qty,
+      Rate:row.Rate
+     
+  };
+  this._WorkOrderService.populateForm(m_data);
+
+  }
+  //ts toggle function: 
+  editMode:any;
+  editableColumn:any;
+toggleEdit(index){
+  this.editMode=false;
+  this.editableColumn=index;
+}
+
+  getFinalValues(element) {
+    this.FinalNetAmount = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
+    this.FinalGSTAmt = (element.reduce((sum, { GSTAmt }) => sum += +(GSTAmt || 0), 0)).toFixed(2);
+    return this.FinalNetAmount;
   }
 
   newWorkorder() {
@@ -361,9 +407,6 @@ export class WorkOrderComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
-
-
-
   onEdit(contact) {
     // this.chkNewWorkorder=2;
     console.log(contact)
@@ -383,6 +426,91 @@ export class WorkOrderComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
+  ItemFormreset() {
+       this.ItemName= "";
+        this.Qty= 1;
+        this.Rate= 0;
+        this.TotalAmount= 0;
+        this.Disc= 0;
+        this.DiscAmt= 0;
+        this.GST= 0;
+        this.GSTAmt= 0;
+        this.NetAmount= 0;
+       this.Specification= "";
+       //this.Status3List = [];       
+  }
+
+  
+ 
+ 
+    OnSave() {
+      this.isLoadings = 'submit';
+      let submissionObj = {};
+      let workorderDetailInsertArray = [];
+      let workorderHeaderInsertObj = {};
+      
+    
+      workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
+      workorderHeaderInsertObj['time'] = this.dateTimeObj.time;
+      workorderHeaderInsertObj['storeId'] =  this._loggedService.currentUserValue.user.storeId
+      workorderHeaderInsertObj['supplierID'] = this._WorkOrderService.NewWorkForm.get('SupplierName').value.SupplierId || 0;
+      workorderHeaderInsertObj['totalAmount'] = this.TotalAmount;
+      workorderHeaderInsertObj['discAmount'] = this.DiscAmt;
+      workorderHeaderInsertObj['vatAmount'] = this.GSTAmount;
+      workorderHeaderInsertObj['netAmount'] = this.NetAmount;
+      workorderHeaderInsertObj['isclosed'] = false;
+      workorderHeaderInsertObj['remarks'] = this._WorkOrderService.NewWorkForm.get('Remark').value || '';
+      workorderHeaderInsertObj['addedBy'] = this._loggedService.currentUserValue.user.id,
+      workorderHeaderInsertObj['isCancelled'] =true,
+      workorderHeaderInsertObj['isCancelledBy'] = 0;
+      workorderHeaderInsertObj['woId'] = 0;
+    
+       submissionObj['workorderHeaderInsert'] = workorderHeaderInsertObj;
+     
+       this.NewWorkOrderList.data.forEach((element) => {
+        let workorderDetailInsertObj = {};
+       workorderDetailInsertObj['woId'] = 0;
+       workorderDetailInsertObj['itemName'] = element.ItemName;
+       workorderDetailInsertObj['qty'] = element.Qty;
+       workorderDetailInsertObj['rate'] = element.Rate
+       workorderDetailInsertObj['totalAmount'] = element.TotalAmount;
+       workorderDetailInsertObj['discAmount'] = element.DiscAmt
+       workorderDetailInsertObj['discPer'] = element.Disc
+       workorderDetailInsertObj['vatAmount'] = element.GSTAmount;
+       workorderDetailInsertObj['vatPer'] = element.GSTAmount;
+       workorderDetailInsertObj['netAmount'] =element.GST;
+       workorderDetailInsertObj['remark'] = element.Specification;
+       workorderDetailInsertArray.push(workorderDetailInsertObj);
+       });
+
+       submissionObj['workorderDetailInsert'] = workorderDetailInsertArray;
+       console.log(submissionObj);
+
+       this._WorkOrderService.InsertWorkorderSave(submissionObj).subscribe(response => {
+         console.log(response);
+         if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          //  Swal.fire('Congratulations !', 'New  WorkOrder Saved Successfully  !', 'success').then((result) => {
+          //    if (result.isConfirmed) {
+          //      this._matDialog.closeAll();
+          //    }   
+          //  });
+         } 
+         else {
+          this.toastr.error('New WorkOrder Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+         }
+         this.ItemFormreset(); 
+         this.isLoadings = '';
+       },error => {
+        this.toastr.error('New WorkOrder Data not saved !, Please check API error..', 'Error !', {
+         toastClass: 'tostr-tost custom-toast-error',
+       });
+     });
+    }
 }
  
 export class NewWorkOrderList {
