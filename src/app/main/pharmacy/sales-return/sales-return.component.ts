@@ -714,13 +714,13 @@ export class SalesReturnComponent implements OnInit {
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
       PatientHeaderObj['PatientName'] = this.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] = 2,// this.reportPrintObj.RegNo;
-      PatientHeaderObj['NetPayAmount'] = this.NetAmt;
+      PatientHeaderObj['NetPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
 
       PaymentInsertobj['BillNo'] = 0,
      // PaymentInsertobj['ReceiptNo'] = '',
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-      PaymentInsertobj['CashPayAmount'] = this.NetAmt;
+      PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
       PaymentInsertobj['ChequePayAmount'] = 0,
       PaymentInsertobj['ChequeNo'] = 0,
       PaymentInsertobj['BankName'] = '',
