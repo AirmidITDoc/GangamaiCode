@@ -231,7 +231,7 @@
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType2" [(ngModel)]="selectedPaymnet2"
-                                    (selectionChange)="onPaymentChange(2, $event.value)">
+                                    (selectionChange)="onPaymentChange(2, $event.value)" required>
                                     <mat-option *ngFor="let ele of paymentArr2" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
@@ -306,7 +306,7 @@
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType3" [(ngModel)]="selectedPaymnet3"
-                                    (selectionChange)="onPaymentChange(3, $event.value)">
+                                    (selectionChange)="onPaymentChange(3, $event.value)" required>
                                     <mat-option *ngFor="let ele of paymentArr3" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>
@@ -382,7 +382,7 @@
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType4" [(ngModel)]="selectedPaymnet4"
-                                    (selectionChange)="onPaymentChange(4, $event.value)">
+                                    (selectionChange)="onPaymentChange(4, $event.value)" required>
                                     <mat-option *ngFor="let food of paymentArr4" [value]="food.value">
                                         {{food.viewValue}}
                                     </mat-option>
@@ -453,7 +453,7 @@
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Payment Type</mat-label>
                                 <mat-select formControlName="paymentType5" [(ngModel)]="selectedPaymnet5"
-                                    (selectionChange)="onPaymentChange(5, $event.value)">
+                                    (selectionChange)="onPaymentChange(5, $event.value)" required>
                                     <mat-option *ngFor="let ele of paymentArr5" [value]="ele.value">
                                         {{ele.viewValue}}
                                     </mat-option>

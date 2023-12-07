@@ -100,7 +100,12 @@
     width: 390px;
     max-width: 390px;
     align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
     justify-content:left; 
+
   }
   .mat-column-BatchNo{
     width: 100px;
@@ -134,6 +139,27 @@
     width: 110px;
     max-width: 110px;
     min-width: 110px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-DiscPer{
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-DiscAmt{
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-GrossAmt{
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     align-items: left;
     justify-content:left; 
   }
@@ -252,6 +278,10 @@
     max-width: 250px;
     min-width: 250px;
     align-items: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
     justify-content:left; 
   }
   .mat-column-BatchNo{

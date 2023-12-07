@@ -2130,6 +2130,11 @@ export class SalesComponent implements OnInit {
           this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
         }
+        else{
+          this.toastr.warning('Please check Payment Mode and Amount (Now it is Selected Zero).', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+        }
       }
       else {
         Swal.fire("Plz Check Payment ")
