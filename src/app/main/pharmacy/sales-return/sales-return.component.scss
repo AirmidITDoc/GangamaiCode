@@ -257,10 +257,14 @@ app-sales-return {
         }
 
         .mat-column-BatchExpDate {
-            width: 110px;
-            max-width: 110px;
-            min-width: 110px;
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
             text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
         }
 
         .mat-column-Qty {
