@@ -304,7 +304,7 @@
 
 
                                             <mat-table class="Table2" matSort [dataSource]="dssalesList2"
-                                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                                [@animateStagger]="{value:'50'}" style="overflow: auto;" id="app-table">
 
                                                 <ng-container matColumnDef="ItemName" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Item
@@ -361,11 +361,35 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="DiscPer" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        DiscPer </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.DiscPer}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                
+                                                <ng-container matColumnDef="DiscAmt" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        DiscAmt </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.DiscAmount | currency:"INR":"symbol"}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="GrossAmt" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        GrossAmt </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.GrossAmount | currency:"INR":"symbol"}}
+                                                    </mat-cell>
+                                                </ng-container>
+
                                                 <ng-container matColumnDef="GST" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GST </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.GrossAmount | currency:"INR":"symbol"}}
+                                                        {{contact.VatAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -888,7 +912,7 @@
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 20px;">{{item?.ItemName}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{'-'}}</td>
+                padding: 0;height: 20px;">{{item.Conv}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 20px;">{{item?.BatchNo}}</td>
                 <td style="border: 1px solid black;vertical-align: top;

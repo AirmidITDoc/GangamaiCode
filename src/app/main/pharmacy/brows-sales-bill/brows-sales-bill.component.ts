@@ -70,6 +70,9 @@ export class BrowsSalesBillComponent implements OnInit {
     'Qty',
     'MRP',
     'TotalMRP',
+    'DiscPer',
+    'DiscAmt',
+    'GrossAmt',
     'GST',
     'CGST',
     'SGST',
@@ -335,9 +338,8 @@ export class BrowsSalesBillComponent implements OnInit {
  
 
  getPrint(el) {
+debugger
 
-
-console.log(event);
   var D_data = {
     "SalesID":el.SalesId,// 
     "OP_IP_Type": el.OP_IP_Type

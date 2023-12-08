@@ -1064,7 +1064,6 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getBalanceAmt() {
-    // debugger
     let totalAmountAdded = ((this.amount1 ? parseInt(this.amount1) : 0)
     + (this.amount2 ? parseInt(this.amount2) : 0)
     + (this.amount3 ? parseInt(this.amount3) : 0)
