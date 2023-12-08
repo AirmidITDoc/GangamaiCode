@@ -138,54 +138,58 @@ app-work-order {
     }
 
     .mat-column-Date {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
       align-items: left;
       justify-content: left;
     }
 
     .mat-column-SupplierName {
-      width: 400px;
-      max-width: 400px;
-      min-width: 400px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
       text-align: left;
-      justify-content: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      overflow: hidden !important;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
 
     }
 
     .mat-column-WOTotalAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       align-items: left;
       justify-content: left;
     }
 
     .mat-column-WODiscAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       align-items: left;
       justify-content: left;
     }
 
     .mat-column-WOVatAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       align-items: left;
       justify-content: left;
     }
 
     .mat-column-WoNetAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       align-items: left;
       justify-content: left;
     }
@@ -202,7 +206,8 @@ app-work-order {
       overflow: hidden !important;
       display: inline-flex;
       display: inline;
-      margin-top: 16px;
+      margin-right: 20px;
+      margin-top: 20px;
     }
   }
 
