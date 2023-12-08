@@ -382,6 +382,7 @@ export class WorkOrderComponent implements OnInit {
 toggleEdit(index){
   this.editMode=false;
   this.editableColumn=index;
+ 
 }
 
   getFinalValues(element) {

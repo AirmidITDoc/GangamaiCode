@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 })
 export class CurrentStockComponent implements OnInit {
   displayedColumns = [
-    'action',
+    // 'action',
     'ToStoreName',
     'ItemName',
     'ReceivedQty',
