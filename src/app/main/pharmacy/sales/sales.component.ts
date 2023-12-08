@@ -2796,7 +2796,7 @@ export class Printsal {
   MRNO: any;
   AdvanceUsedAmount: any;
   Label: any;
-
+  ConversionFactor:any;
   TotalBillAmount: any;
   BalAmount: any;
   CashPay: any;
@@ -2887,6 +2887,7 @@ export class Printsal {
     this.BillTotalAmount = Printsal.BillTotalAmount || '';
     this.HospitalMobileNo = Printsal.HospitalMobileNo || '';
     this.HospitalEmailId = Printsal.HospitalEmailId || '';
+    this.ConversionFactor =Printsal.ConversionFactor || '';
   }
 }
 
