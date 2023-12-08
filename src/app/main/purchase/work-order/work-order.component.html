@@ -101,7 +101,7 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button matTooltip="Print">
+                                            <button mat-icon-button matTooltip="Print" (click)="getPrint()">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                             <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
@@ -171,7 +171,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Remark </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Remark}}
+                                            {{contact.WORemark}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -421,35 +421,49 @@
                                                 {{element.ItemName}} </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="Qty">
+                                        <!-- <ng-container matColumnDef="Qty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Qty </mat-header-cell>
                                             <mat-cell *matCellDef="let element;let index = index" fxHide fxShow.gt-sm>
-                                             <!-- {{element.Qty}}   -->
-                                             <mat-form-field floatLabel="never" 
+                                                                                          <mat-form-field floatLabel="never" 
                                              [ngClass]="editMode ? 'no-underline': ''">
                                             <input matInput [value]="element.Qty" [(ngModel)]="Qty" (click)="toggleEdit(index)" 
-                                            [readonly]="editMode && index == editableColumn" (keyup)="calculateTotalAmount()" (keydown)="onEnterQty($event)">
+                                            [readonly]="editMode && index == editableColumn" (keyup)="calculateTotalAmount(element)" (keydown)="onEnterQty($event)">
                                             </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container> -->
+
+                                      
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="element.Qty" (keyup)="getCellCalculation(element,element.Qty)" #Qty type="number">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
+                                        <!-- <ng-container matColumnDef="ReturnQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container> -->
                                       
-                                        
-                                        <ng-container matColumnDef="Rate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Rate </mat-header-cell>
-                                            <mat-cell *matCellDef="let element ;let index = index" fxHide fxShow.gt-sm>
-                                                <mat-form-field floatLabel="never" 
-                                                  [ngClass]="editMode ? 'no-underline': ''">
-                                                  <input matInput [value]="element.Rate" [(ngModel)]="Rate" (click)="toggleEdit(index)" 
-                                                  [readonly]="editMode && index == editableColumn"  (keyup)="calculateTotalAmount()" (keydown)="onEnterRate($event)">
-                                             </mat-form-field>
-                                                <!-- {{element.Rate}} -->
-                                                <!-- <input [(ngModel)]="Rate" (keyup)="calculateTotalAmount()" type=" number"
-                                                (keydown)="onEnterRate($event)" >   -->
+                                        <ng-container matColumnDef="Rate" >
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Rate
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="element.Rate" (keyup)="getRateCalculation(element,element.Rate)" #Rate type="number">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
+
 
                                         <ng-container matColumnDef="TotalAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

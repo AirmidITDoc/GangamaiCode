@@ -16,6 +16,8 @@ import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { Printsal } from 'app/main/pharmacy/sales/sales.component';
 
 @Component({
   selector: 'app-work-order',
@@ -147,12 +149,12 @@ export class WorkOrderComponent implements OnInit {
       "Supplier_Id": 194// this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId  || 0
 
     }
-   // console.log(m_data);
+   console.log(m_data);
     this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
       this.dsWorkOrderList.data = data as WorkOrderList[];
       this.dsWorkOrderList.sort = this.sort;
       this.dsWorkOrderList.paginator = this.paginator;
-     // console.log(this.dsWorkOrderList.data);
+      console.log(this.dsWorkOrderList.data);
       this.sIsLoading = '';
     },
       error => {
@@ -249,14 +251,42 @@ export class WorkOrderComponent implements OnInit {
     }
   }
 
-  calculateTotalAmount() {
-   // debugger
+  // calculateTotalAmount(element) {
+  //   debugger
+  //   element.Rate = parseInt(element.Rate);
+  //   this.Rate = parseInt(element.Rate);
+  //   if (this.Rate && this.Qty) {
+  //     this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
+  //     this.NetAmount = this.TotalAmount;
+  //     // this.calculatePersc();
+  //   }
+  // }
+
+  calculateTotalAmount(){
     if (this.Rate && this.Qty) {
-      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
-      this.NetAmount = this.TotalAmount;
-      // this.calculatePersc();
+          this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
+          this.NetAmount = this.TotalAmount;
+  }
+  }
+  getCellCalculation(element, Qty) {
+ //   this.Qty = parseInt(Qty);
+    element.Qty = parseInt(element.Qty);
+      this.Qty = parseInt(element.Qty);
+
+      if (parseFloat(element.Qty) >0) {
+    
+      element. NetAmount = (parseFloat(element.Rate) * parseInt(this.Qty)).toFixed(2);
+      element.DiscAmt = ((parseFloat(this.NetAmount) * parseFloat(element.Disc)) / 100).toFixed(2);
+      element.GSTAmt = ((parseFloat(element.NetAmount) * (parseFloat(element.GST)) / 100) * parseInt(this.Qty)).toFixed(2);
+      element.TotalAmount = ((parseFloat(element.Rate) * parseInt(this.Qty)) - (parseFloat(this.DiscAmt))).toFixed(2);
     }
   }
+  getRateCalculation(element,Rate){
+    
+  }
+
+ 
+
 
   // calculateDiscAmount() {
   //   if (this.Disc) {
@@ -367,6 +397,13 @@ export class WorkOrderComponent implements OnInit {
 
     // }
   }
+
+
+  getPrint(){
+
+  }
+
+
   onEditRow(row){
     var m_data = {
       Qty:row.Qty,
@@ -512,6 +549,8 @@ toggleEdit(index){
        });
      });
     }
+   
+  
 }
  
 export class NewWorkOrderList {
