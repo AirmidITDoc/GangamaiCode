@@ -300,17 +300,14 @@ export class WorkOrderComponent implements OnInit {
   getPrint(el) {
     
     var m_data = {
-      "ToStoreId": 10003,//this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,
-      "From_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("startdate").value, "MM-dd-yyyy") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("enddate").value, "MM-dd-yyyy") || '01/01/1900',
-      "Supplier_Id": 194// this._WorkOrderService.myFormGroup.get("SupplierName").value.SupplierId  || 0
-
+      "WOID":311
     }
    console.log(m_data);
-    this._WorkOrderService.getWorkOrderList(m_data).subscribe(data => {
+    this._WorkOrderService.getWorkOrderPrint(m_data).subscribe(data => {
         this.reportPrintObjList = data as WorkOrderList[];
         
         this.reportPrintObj = data[0] as WorkOrderList;
+        console.log(this.reportPrintObjList);
         
         setTimeout(() => {
           this.print3();
@@ -670,6 +667,17 @@ export class WorkOrderList {
   WoNetAmount:any;
   WORemark:any;
   StoreId:any;
+  Mobile:any;
+   Phone:any;
+  Address:any;
+  
+  // ItemName:any;
+  // Qty:any;
+  // Rate:any;
+  
+  GST:any;
+   DiscPer:any;
+   
   
 
 

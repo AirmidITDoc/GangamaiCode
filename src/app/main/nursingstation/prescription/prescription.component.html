@@ -237,219 +237,118 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
-
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #PrescriptionTemplate>
-   
-    <div style="display:flex; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
-            Trust)</span>
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Prescription
+
+    <div style=" align-items: center; margin-bottom: 10px;text-align: center;">
+
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center;">jnanayogi shri siddeshwar
+            super speciality hospital
         </h2>
+        <span style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;">(A Unit of Shri
+            Siddeshwar Loka Kalyana Charitable
+            Trust)</span><br>
+        <span style="font-size:11px;font-weight: 500;text-align: center;">Survey No.10/4, Near S-Hyper Mart, Vijayapur
+            586 101 </span><br>
+        <span style="font-size: 11px;font-weight: 500;text-align: center;">Call :-08352-249399 | info@ jsshospitals.com
+            | www.jsshospitals.com
+            | Reg.No :-BIJ00467ALSSh </span><br><br>
+
+
+        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">IP Prescription</span>
+        <hr> <br>
+
     </div>
+    <table>
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 10px;">Reg No. </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.Date | date: 'dd/MM/yyyy'}} </span> </td>
+        </tr>
 
-    <table class="table" style="width: 100%;border-collapse: collapse;">
-        <tbody>
-            <tr>
-                <td colspan="4"
-                    style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
-                    <h3
-                        style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
-                        Shri Siddeshwar Medicals</h3>
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">IP No</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+        </tr>
 
-                    <div>Shri Shivanubhava Samudaya Bhavan Ground Floor, behind Shri
-                        Siddeshwara Temple, Vijayapura, Karnataka 586101</div>
-                    <div>GST No. 29ABCTS6874R1Z8</div>
-                    <div>
-                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
-                        <span>D.L.No. 123456789456123</span>
-                    </div>
-                    <div>
-                        <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
-                        <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
-                    </div>
-                </td>
-                <td colspan="4" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
-                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
-                        <tr>
-                            <td style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px">
-                                Customer Id : {{reportPrintObjList[0]?.RegNo}} <br>
-                                Customer Name: {{reportPrintObjList[0]?.PatientName}} <br>
-                                Age & Gen: - <span style="margin-left: 10px;">Mob:
-                                  </span><br>
-                                Address: {{'-'}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: top;padding:0 10px 10px">
-                                Ref by Doctor : <br>
-                                Doctor Specialty :
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td colspan="2" style="vertical-align: top;border: 1px solid black;padding:0 10px 10px;font-size:10px;">
-                    <b>Unit Code: SSM-001</b>
-                    <div style="display:flex;align-items:center;margin-bottom: 5px;margin-top: 5px;">
-                        <span style="width:100px;display:inline-block;">Bill No</span>
-                        <span style="margin:0 5px">:</span>
- 
-                    </div>
-                    <div style="display:flex;align-items:center;margin-bottom: 5px;">
-                        <span style="width:100px;display:inline-block;">Bill Date & Time</span>
-                        <span style="margin:0 5px">:</span>
-                        <span> </span>
-                    </div>
-                    <div style="display:flex;align-items:center;margin-bottom: 5px;">
-                        <span style="width:100px;display:inline-block;">Bill type</span>
-                        <span style="margin:0 5px">:</span>
-                        <span>Cash / Credit</span>
-                    </div>
-                </td>
-            </tr>
-            <tr style="font-size:12px;">
-                <td
-                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                    RegNo</td>
-                <td
-                    style="border: 1px solid black;width:40%;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                    PatientName</td>
-                <td
-                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Vst_Adm_Date</td>
-                <td
-                    style="border: 1px solid black;width:25%;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    StoreName</td>
-                <td
-                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    IPMedID</td>
-               
-            </tr>
-            <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
-                <!-- <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{indx + 1}}</td> -->
-                 <td style="border: 1px solid black;vertical-align: top;
-                 padding: 0;height: 20px;">{{item?.RegNo}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.PatientName}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.Vst_Adm_Date  | date: 'MM/yyyy'}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.StoreName}}</td>
-                <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 20px;">{{item?.IPMedID}}</td>
-               
-            </tr>
-            <tr>
-                <td colspan="4" style="border: 1px solid black;vertical-align: top;
-                padding: 0 10px 10px;">
-                    <div style="font-weight: 400;">Terms & Conditions</div>
-                    <ul style="margin: 5px 0 0 0;
-                    font-size: 10px;
-                    padding-left: 17px;
-                    font-weight: 400;">
-                        <li>
-                            Exchange NOT accepted after 72 hrs. of Purchase, Bill is
-                            required for Exchange
-                        </li>
-                        <li>
-                            Insulin’s & Vaccines will not be taken back. Fridge Items
-                            will not be taken Back
-                        </li>
-                        <li>
-                            All disputes are subject to Vijayapura jurisdiction only
-                        </li>
-                        <li>
-                            Please check the medicines before leaving the medical
-                        </li>
-                        <li>
-                            Consult your Doctor before consuming the medicines.
-                        </li>
-                    </ul>
-                </td>
-                <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;">
-                    <table style="width: 100%;border-collapse: collapse;">
-                        <tr>
-                            <td
-                                style="vertical-align: top;border-bottom: 1px solid black;border-right: 1px solid black;padding:0 10px 10px; color: #e26d14;text-transform: uppercase; font-size:10px; font-weight: bold; text-align: center;">
-                                For Free Home delivery <br>
-                                Call/Whatsapp <br>
-                                9986397222 / 9986371222
-                            </td>
-                            <td
-                                style="vertical-align: top;border-bottom: 1px solid black;padding:0 10px 10px;font-size:10px;">
-                                CGST 6% : ₹ 0.00 <br>
-                                SGST 6% : ₹ 0.00 <br>
-                                CGST 9% : ₹ 0.00 <br>
-                                SGST 9% : ₹ 0.00
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="vertical-align: top;padding:0 10px 10px;font-size:10px;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <div>
-                                        Mode of Payment : Cash / Credit / UPI <br>
-                                        <!-- UTR No: 2152321523212523 -->
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <span style="opacity: .6;">Payment Date & time:</span> <br>
-                                        {{reportPrintObjList[0]?.Date | date: 'medium'}}
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <!-- <td colspan="2" style="border: 1px solid black;vertical-align: top;
-                padding: 0 10px 10px;width: 300px;font-size:10px;">
-                    <div style="display:flex;align-items: center;">
-                        <span style="width:90px;display:inline-block;">Sub Total</span>
-                        <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.WOTotalAmount}}</span>
-                    </div>
-                    <div style="display:flex;align-items: center;">
-                        <span style="width:90px;display:inline-block;">Discount</span>
-                        <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.WODiscAmount}}</span>
-                    </div>
-                   
-                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
-                        <span style="display:inline-block;">Grand Total</span>
-                        <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.WoNetAmount}}</span>
-                    </div>
-                </td> -->
-            </tr>
-            <tr>
-                <!-- <td colspan="9" style="border: 1px solid black;vertical-align: top;
-                padding: 5px 10px;">
-                    <div style="font-size: 15px;font-weight: bold">
-                        Your Saved Amount: {{reportPrintObjList[0]?.WODiscAmount}}
-                    </div>
-                </td> -->
-                <td rowspan="2" style="border: 1px solid black;vertical-align: bottom;
-                padding: 5px 10px;text-align: center;">
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 10px;">Doctor Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.PatientName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Age/Gender</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+        </tr>
 
-                    <span style="font-size: 11px;opacity:.6;">For Shri Siddeshwar Medicals 24/7</span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="9" style="border: 1px solid black;vertical-align: top;
-                padding: 5px 10px;">
-                    Total Invoice Value in words:
-                </td>
-            </tr>
-            <tr style="font-weight: 500;">
-                <td colspan="5">
-                   
-                </td>
-                <td colspan="5" style="text-align: right;">
-                    Printed on 12/10/2023 12:45 pm
-                </td>
-            </tr>
-        </tbody>
+        <tr>
+            <td></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Ward Name</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}} </span></td>
+        </tr>
     </table>
+
+  
+    <hr>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;text-align: right;">
+        <tr style="font-size:12px;">
+
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                Sr.No</td>
+                <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                RegNo</td>
+            <td
+                style="border: 1px solid black;width:40%;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                PatientName</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Vst_Adm_Date</td>
+            <td
+                style="border: 1px solid black;width:25%;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                StoreName</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                IPMedID</td>
+        </tr>
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;text-align: right;">{{indx + 1}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;text-align: right;">{{item?.RegNo}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.PatientName}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.Vst_Adm_Date  | date: 'MM/yyyy'}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.StoreName}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.IPMedID}}</td>
+        </tr>
+         
+    </table><br>
+    
+        <!-- <span style="vertical-align: top;padding:0 10px 10px;">
+           
+            <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WODiscAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">TaxAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOVatAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">NetAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
+        </span><br>
+        <span style="font-weight: 500;"> Total Amount in words :-</span> -->
+        <hr>
+        <span style="font-weight: 500;">Remark</span><br><br><br><br>
+
+        <div style="display: flex;">
+            <span style="vertical-align: top;padding:0 10px 10px">
+                <span style="font-weight: 500;">ADMIN ADMIN</span>
+                <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
+                
+            </span>
+        </div>
+
 
     <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
         This is Computer generated invoice hence doesn’t require signature
     </div>
 </div>
+
+ 

@@ -206,15 +206,14 @@
                         </div>
                     </div>
                 </div>
-               
+
 
             </div>
         </div>
     </mat-tab>
     <mat-tab label="New Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-            <mat-toolbar
-                style="height: 50px; justify-content:space-between;width: 100%;">
+            <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -300,70 +299,76 @@
 
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Item Name</mat-label>
-                                            <input name="ItemName" formControlName="ItemName" [(ngModel)]="ItemName" matInput >
+                                            <input name="ItemName" formControlName="ItemName" [(ngModel)]="ItemName"
+                                                matInput>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="4%">
                                             <mat-label>Qty</mat-label>
-                                            <input type="number" name="Qty" formControlName="Qty" matInput  #qty required
-                                            (keyup)="calculateTotalAmount()" [(ngModel)]="Qty"  (keydown)="onEnterQty($event)">
+                                            <input type="number" name="Qty" formControlName="Qty" matInput #qty required
+                                                (keyup)="calculateTotalAmount()" [(ngModel)]="Qty"
+                                                (keydown)="onEnterQty($event)">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Rate</mat-label>
-                                            <input name="UnitRate" formControlName="UnitRate" matInput  #rate required
-                                            [(ngModel)]="Rate"    (keyup)="calculateTotalAmount()" (keydown)="onEnterRate($event)" >
+                                            <input name="UnitRate" formControlName="UnitRate" matInput #rate required
+                                                [(ngModel)]="Rate" (keyup)="calculateTotalAmount()"
+                                                (keydown)="onEnterRate($event)">
                                         </mat-form-field>&nbsp;
 
-                                      
+
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Total Amount</mat-label>
-                                            <input type="number" name="TotalAmount" formControlName="TotalAmount" matInput
-                                            [(ngModel)]="TotalAmount" readonly >
+                                            <input type="number" name="TotalAmount" formControlName="TotalAmount"
+                                                matInput [(ngModel)]="TotalAmount" readonly>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="4%">
                                             <mat-label>Disc %</mat-label>
-                                            <input name="Disc" formControlName="Disc" matInput [(ngModel)]="Disc"  required
-                                            (keydown)="onEnterDis($event)" type="number"
-                                            (keyup)="calculateDiscperAmount()" >
+                                            <input name="Disc" formControlName="Disc" matInput [(ngModel)]="Disc"
+                                                required (keydown)="onEnterDis($event)" type="number"
+                                                (keyup)="calculateDiscperAmount()">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Disc Amount</mat-label>
-                                            <input name="DiscAmt" formControlName="DiscAmt" matInput  [(ngModel)]="DiscAmt"
-                                             readonly>
+                                            <input name="DiscAmt" formControlName="DiscAmt" matInput
+                                                [(ngModel)]="DiscAmt" readonly>
                                         </mat-form-field>&nbsp;
-                                       
+
 
                                         <mat-form-field appearance="outline" fxFlex="4%">
                                             <mat-label>GST%</mat-label>
-                                            <input name="GST" formControlName="GST" matInput [(ngModel)]="GST" name="GST" #gst
-                                            (keydown)="onEnterGST($event)" type="number" required
-                                            (keyup)="calculateGSTperAmount()">
+                                            <input name="GST" formControlName="GST" matInput [(ngModel)]="GST"
+                                                name="GST" #gst (keydown)="onEnterGST($event)" type="number" required
+                                                (keyup)="calculateGSTperAmount()">
                                         </mat-form-field>&nbsp;
 
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>GST Amount</mat-label>
-                                            <input name="GSTAmount" formControlName="GSTAmount" matInput [(ngModel)]="GSTAmt" readonly>
+                                            <input name="GSTAmount" formControlName="GSTAmount" matInput
+                                                [(ngModel)]="GSTAmt" readonly>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Net Amount</mat-label>
-                                            <input name="NetAmount" formControlName="NetAmount" matInput [(ngModel)]="NetAmount" readonly>
+                                            <input name="NetAmount" formControlName="NetAmount" matInput
+                                                [(ngModel)]="NetAmount" readonly>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="16%">
                                             <mat-label>Specification</mat-label>
-                                            <input name="Specification" formControlName="Specification" [(ngModel)]="Specification" matInput>
+                                            <input name="Specification" formControlName="Specification"
+                                                [(ngModel)]="Specification" matInput>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>-- Select Status3 --</mat-label>
                                             <mat-select formControlName="Status3" name="Status3" required
-                                            (selectionChange)="onChangeStatus3($event)">
+                                                (selectionChange)="onChangeStatus3($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Status3List" [value]="m">
                                                     {{m.name}}
@@ -373,8 +378,9 @@
 
                                         <div>
                                             <button mat-raised-button style="width:100px; height: 50px; margin-top: 5px; margin-left: 30px;
-                                        color:white;" color="accent" (click)="OnAdd()" [disabled]="_WorkOrderService.NewWorkForm.invalid"> 
-                                        <mat-icon>add</mat-icon>&nbsp; Add
+                                        color:white;" color="accent" (click)="OnAdd()"
+                                                [disabled]="_WorkOrderService.NewWorkForm.invalid">
+                                                <mat-icon>add</mat-icon>&nbsp; Add
                                             </button>
                                         </div>
 
@@ -396,7 +402,7 @@
                                             </mat-select>
                                         </mat-form-field> -->
 
-                                        <!-- <mat-form-field class="section-dropdown"
+                                    <!-- <mat-form-field class="section-dropdown"
                                             style="width:25%;">
                                             <mat-label>-- Select Status3 --</mat-label>
                                             <mat-select formControlName="Status3" name="Status3"
@@ -411,8 +417,8 @@
                                 </mat-card>
 
                                 <div style="margin-bottom: 20px;">
-                                    <mat-table class="tab2" matSort [dataSource]="NewWorkOrderList" [@animateStagger]="{value:'50'}"
-                                        style="overflow:auto; width: 100%;">
+                                    <mat-table class="tab2" matSort [dataSource]="NewWorkOrderList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto; width: 100%;">
 
                                         <ng-container matColumnDef="ItemName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -433,13 +439,15 @@
                                             </mat-cell>
                                         </ng-container> -->
 
-                                      
+
                                         <ng-container matColumnDef="Qty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="element.Qty" (keyup)="getCellCalculation(element,element.Qty)" #Qty type="number">
+                                                    <input matInput [(ngModel)]="element.Qty"
+                                                        (keyup)="getCellCalculation(element,element.Qty)" #Qty
+                                                        type="number">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -453,13 +461,15 @@
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container> -->
-                                      
-                                        <ng-container matColumnDef="Rate" >
+
+                                        <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Rate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="element.Rate" (keyup)="getRateCalculation(element,element.Rate)" #Rate type="number">
+                                                    <input matInput [(ngModel)]="element.Rate"
+                                                        (keyup)="getRateCalculation(element,element.Rate)" #Rate
+                                                        type="number">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -515,7 +525,8 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="Action">
-                                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
+                                            <mat-header-cell *matHeaderCellDef class="table-actions"
+                                                style="color: white;">Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <ng-container class="actions">
@@ -556,46 +567,40 @@
 
                             </div>
 
-                            <span class="net-amt-label"
-                                style="width: 200px;font-weight: bold;margin-left:200px;">
+                            <span class="net-amt-label" style="width: 200px;font-weight: bold;margin-left:200px;">
                                 NetAmount::</span>&nbsp;<span class="net-amt-value"
                                 style="margin-right: 20px;">{{getFinalValues(NewWorkOrderList.data)
                                 | currency:'INR' }}</span>
 
                             <div fxLayout="row" style="margin-top: 10px;">
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width:300px;">
+                                <mat-form-field appearance="outline" style="margin-top: 10px;width:300px;">
                                     <mat-label style="background-color: white;">Remark</mat-label>
-                                    <input type="text" name="Remark" formControlName="Remark" matInput >
+                                    <input type="text" name="Remark" formControlName="Remark" matInput>
 
                                 </mat-form-field>&nbsp;&nbsp;
 
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 200px;">
+                                <mat-form-field appearance="outline" style="margin-top: 10px;width: 200px;">
                                     <mat-label>Disc Amount</mat-label>
-                                    <input type="number" name="FinalDiscAmt" formControlName="FinalDiscAmt" matInput 
-                                     [(ngModel)]="FinalDiscAmt" readonly>
+                                    <input type="number" name="FinalDiscAmt" formControlName="FinalDiscAmt" matInput
+                                        [(ngModel)]="FinalDiscAmt" readonly>
                                 </mat-form-field>&nbsp;&nbsp;
 
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 200px;">
+                                <mat-form-field appearance="outline" style="margin-top: 10px;width: 200px;">
                                     <mat-label>Total Amount</mat-label>
                                     <input type="number" name="FinalTotalAmt" formControlName="FinalTotalAmt" matInput
-                                    [(ngModel)]="FinalTotalAmt" readonly>
+                                        [(ngModel)]="FinalTotalAmt" readonly>
                                 </mat-form-field>&nbsp;&nbsp;
 
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 200px;">
+                                <mat-form-field appearance="outline" style="margin-top: 10px;width: 200px;">
                                     <mat-label>GST Amount</mat-label>
                                     <input type="number" name="FinalGSTAmt" formControlName="FinalGSTAmt" matInput
-                                     [(ngModel)]="FinalGSTAmt" readonly>
+                                        [(ngModel)]="FinalGSTAmt" readonly>
                                 </mat-form-field>&nbsp;&nbsp;
 
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 200px;">
+                                <mat-form-field appearance="outline" style="margin-top: 10px;width: 200px;">
                                     <mat-label>Net Amount</mat-label>
-                                    <input type="number" name="FinalNetAmount"  formControlName="FinalNetAmount" matInput 
-                                    [(ngModel)]="FinalNetAmount"  readonly>
+                                    <input type="number" name="FinalNetAmount" formControlName="FinalNetAmount" matInput
+                                        [(ngModel)]="FinalNetAmount" readonly>
 
                                 </mat-form-field>
 
@@ -650,17 +655,156 @@
 
 
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #WorkorderTemplate>
-   
-    <div style="display:flex; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
-            Trust)</span>
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Work Order
+
+    <div style=" align-items: center; margin-bottom: 10px;text-align: center;">
+
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center;">jnanayogi shri siddeshwar
+            super speciality hospital
         </h2>
+        <span style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;">(A Unit of Shri
+            Siddeshwar Loka Kalyana Charitable
+            Trust)</span><br>
+        <span style="font-size:11px;font-weight: 500;text-align: center;">Survey No.10/4, Near S-Hyper Mart, Vijayapur
+            586 101 </span><br>
+        <span style="font-size: 11px;font-weight: 500;text-align: center;">Call :-08352-249399 | info@ jsshospitals.com
+            | www.jsshospitals.com
+            | Reg.No :-BIJ00467ALSSh </span><br><br>
+
+
+        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">Work Order </span>
+        <hr> <br>
+
     </div>
+    <table>
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 10px;">Supplier Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.SupplierName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Order No</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.WOId}} </span> </td>
+        </tr>
+
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 60px;">Address</span><span style="font-size:11px;">{{reportPrintObjList[0]?.Address}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">Order Date</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.Date | date: 'dd/MM/yyyy'}}</span> </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Phone No</span><span style="font-size:11px;">{{reportPrintObjList[0]?.Phone}}</span> </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Mobile No</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.Mobile}} </span></td>
+        </tr>
+    </table>
+
+    <!-- <div style="display: flex;">
+        <span style="vertical-align: top;padding:0 10px 10px">
+            <span style="font-weight: 500;margin-right: 20px;">Supplier Name</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.SupplierName}} </span>
+            <span style="margin-left: 140px;font-weight: 500; margin-right: 20px;"> Order No</span>
+            <span style="width: 300px;font-size:11px;"> {{reportPrintObjList[0]?.WOId}}</span> <br>
+            <span style="font-weight: 500;margin-right: 70px;">Address</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.Address}} </span><br>
+            <span style="font-weight: 500;margin-right: 70px;">Order No</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.WOId}} </span><br>
+            <span style="font-weight: 500;margin-right: 70px;">Order Date</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.WODate | date: 'medium'}} </span><br>
+            <span style="font-weight: 500;margin-right: 70px;"> Phone No</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.Phone}} </span><br>
+            <span style="font-weight: 500;margin-right: 70px;"> Mobile No</span>
+            <span style="width: 500px;font-size:11px;"> {{reportPrintObjList[0]?.Mobile}} </span>
+
+ 
+             <span style="margin-left: 285px;font-weight: 500;margin-right: 20px;"> Order Date</span>
+            <span style="width: 300px;font-size:11px;"> {{reportPrintObjList[0]?.WODate | date: 'medium'}}</span> <br>
+            <span style="margin-left: 540px;font-weight: 500;margin-right: 20px;"> Phone No</span>
+            <span style="width: 300px;font-size:11px;"> {{reportPrintObjList[0]?.WOId}}</span> <br>
+            <span style="margin-left: 540px;font-weight: 500;margin-right: 20px;">Mobile No</span>
+            <span style="width: 300px;font-size:11px;"> {{reportPrintObjList[0]?.Mobile}}</span> <br> 
+        </span>
+    </div>  -->
+    <hr>
+
+    <table class="table" style="width: 100%;border-collapse: collapse; text-align: right;">
+        <tr style="font-size:12px;">
+
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                Sr.No</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                ItemName</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Qty</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Rate</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                TotalAmt</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Disc%</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Tax%</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                NetAmt</td>
+        </tr>
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{indx + 1}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.ItemName}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.Qty}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.Rate}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WOTotalAmount}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WODiscAmount}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WOVatAmount }}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WoNetAmount}}</td>
+            <!-- <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WoNetAmount}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.WORemark}}</td> -->
+        </tr>
+         
+    </table><br>
+    
+        <span style="vertical-align: top;padding:0 10px 10px;">
+           
+            <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WODiscAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">TaxAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOVatAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">NetAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
+        </span><br>
+        <span style="font-weight: 500;"> Total Amount in words :-</span>
+        <hr>
+        <span style="font-weight: 500;">Remark</span><br><br><br><br>
+
+        <div style="display: flex;">
+            <span style="vertical-align: top;padding:0 10px 10px">
+                <span style="font-weight: 500;">ADMIN ADMIN</span>
+                <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
+                
+            </span>
+        </div>
+        
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
         <tbody>
-            <tr>
+            <!-- <tr>
                 <td colspan="4"
                     style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
                     <h3
@@ -686,7 +830,7 @@
                                 Customer Id : {{reportPrintObjList[0]?.WOId}} <br>
                                 Customer Name: {{reportPrintObjList[0]?.StoreName}} <br>
                                 Age & Gen: - <span style="margin-left: 10px;">Mob:
-                                  </span><br>
+                                </span><br>
                                 Address: {{'-'}}
                             </td>
                         </tr>
@@ -703,7 +847,7 @@
                     <div style="display:flex;align-items:center;margin-bottom: 5px;margin-top: 5px;">
                         <span style="width:100px;display:inline-block;">Bill No</span>
                         <span style="margin:0 5px">:</span>
- 
+
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill Date & Time</span>
@@ -747,7 +891,7 @@
                     WORemark</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    </td>
+                </td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;
@@ -770,8 +914,8 @@
                 padding: 0;height: 20px;">{{item?.WoNetAmount}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 20px;">{{item?.WORemark}}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <td colspan="4" style="border: 1px solid black;vertical-align: top;
                 padding: 0 10px 10px;">
                     <div style="font-weight: 400;">Terms & Conditions</div>
@@ -820,7 +964,7 @@
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
                                         Mode of Payment : Cash / Credit / UPI <br>
-                                        <!-- UTR No: 2152321523212523 -->
+                                        
                                     </div>
                                     <div style="text-align: right;">
                                         <span style="opacity: .6;">Payment Date & time:</span> <br>
@@ -843,15 +987,15 @@
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.WODiscAmount}}</span>
                     </div>
-                   
+
                     <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.WoNetAmount}}</span>
                     </div>
                 </td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <td colspan="9" style="border: 1px solid black;vertical-align: top;
                 padding: 5px 10px;">
                     <div style="font-size: 15px;font-weight: bold">
@@ -872,12 +1016,12 @@
             </tr>
             <tr style="font-weight: 500;">
                 <td colspan="5">
-                   
+
                 </td>
                 <td colspan="5" style="text-align: right;">
                     Printed on 12/10/2023 12:45 pm
                 </td>
-            </tr>
+            </tr> -->
         </tbody>
     </table>
 
