@@ -28,8 +28,8 @@ export class PharmacyreportService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",{})
   }
 
-  public getUserdetailList(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",{})
+  public getUserdetailList(data){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",data)
   }
 }
 

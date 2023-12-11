@@ -50,8 +50,9 @@ export class BrowsSalesBillComponent implements OnInit {
   TotalBalancepay:any=0;
 
   displayedColumns: string[] = [
-    'action2',
-     'action',
+    'action',
+     'action1',
+     'action2',
     'payment',
     'Date',
     'SalesNo',
@@ -80,6 +81,8 @@ export class BrowsSalesBillComponent implements OnInit {
   ]
   displayedColumns3: string[] = [
     'action',
+    'action1',
+    'action2',
     'SalesDate',
     'SalesNo',
     'RegNo',
@@ -378,7 +381,7 @@ debugger
       })
     );
   }
-  viewPdf(el){
+  viewSalesPdf(el){
     
     this._BrowsSalesBillService.getPdfSales(el.SalesId,el.OP_IP_Type).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
@@ -393,6 +396,20 @@ debugger
     });
   }
 
+  ViewSalesRetPdf(el){
+    debugger
+    this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId,el.OP_IP_Type).subscribe(res=>{
+    const dialogRef = this._matDialog.open(PdfviewerComponent, 
+      {   maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+           data : {
+          base64 : res["base64"] as string,
+          title:"Pharma sales bill viewer"
+        }
+    });
+    });
+  }
 
   getPrint3(el) {
     
@@ -897,6 +914,13 @@ printSalesReturn() {
   // </html>`);
   
   popupWin.document.close();
+}
+getWhatsappshare(el){
+
+}
+
+WhatsSalesRetPdf(el){
+
 }
 }
 

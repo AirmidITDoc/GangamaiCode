@@ -228,9 +228,9 @@ export class AppointmentService {
     // this.personalFormGroup.patchValue(employee);
   }
 
-  public documentuploadInsert(employee){
-    return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
-  }
+  // public documentuploadInsert(employee){
+  //   return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
+  // }
 
   
 }
