@@ -60,7 +60,7 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesBillList", Param);
   }
   public getPdfSales(SalesId, OP_IP_Type) {
-    return this._httpClient.get("Pharmacy/view-pharmacy-sale-bill?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
+    return this._httpClient.get("Pharmacy/view-SalesTax_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
   }
 
   public getSalesDetList(Param) {
@@ -82,12 +82,12 @@ export class BrowsSalesBillService {
   }
 
 
-  // public getSalesReturnPrint(emp) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
-  // }
-
   public getSalesReturnPrint(emp) {
-      return this._httpClient.post("Generic/GetByProc?procName=RptSalesReturnReport", emp);
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
+  }
+
+  public getSalesReturnPdf(SalesId,OP_IP_Type) {
+    return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
     }
   
 

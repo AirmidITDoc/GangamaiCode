@@ -137,7 +137,7 @@
                                             <mat-table class="Table1" matSort [dataSource]="dssaleList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                                <ng-container matColumnDef="action2" stickyEnd>
+                                                <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -149,30 +149,30 @@
                                                        
                                                     </mat-cell>
                                                 </ng-container>
-                                                <ng-container matColumnDef="action" stickyEnd>
+                                                <ng-container matColumnDef="action1" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">
+                                                        style="color: white;">Action
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="View As Pdf"
-                                                            (click)="viewPdf(contact)">
+                                                            (click)="viewSalesPdf(contact)">
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
 
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <!-- <ng-container matColumnDef="action" stickyEnd>
+                                                <ng-container matColumnDef="action2" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Print"
-                                                            (click)="getPrint(contact)">
-                                                            <mat-icon>print</mat-icon>
+                                                            (click)="getWhatsappshare(contact)">
+                                                            <mat-icon>wifi</mat-icon>
                                                         </button>
                                                     </mat-cell>
-                                                </ng-container> -->
+                                                </ng-container>
 
                                                 <!-- <ng-container matColumnDef="payment" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
@@ -567,11 +567,38 @@
 
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">Action
+                                                        style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
                                                         <button mat-icon-button matTooltip="Print">
                                                             <mat-icon (click)="getSalesRetPrint(row)">print</mat-icon>
+                                                        </button>
+                                                        
+                                                    </mat-cell>
+                                                </ng-container>
+
+
+                                                
+                                                <ng-container matColumnDef="action1" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">Action
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let row">
+                                                      
+                                                        <button mat-icon-button matTooltip="Print">
+                                                            <mat-icon (click)="ViewSalesRetPdf(row)">visibility</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="action2" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let row">
+                                                      
+                                                        <button mat-icon-button matTooltip="Print">
+                                                            <mat-icon (click)="WhatsSalesRetPdf(row)">Whatsapp</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
