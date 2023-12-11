@@ -27,6 +27,10 @@ import { Printsal } from 'app/main/pharmacy/sales/sales.component';
   animations: fuseAnimations,
 })
 export class WorkOrderComponent implements OnInit {
+  
+  @ViewChild('WorkorderTemplate') WorkorderTemplate:ElementRef;
+
+
   displayedColumns: string[] = [
     'action',
     'WOId',
@@ -52,7 +56,15 @@ export class WorkOrderComponent implements OnInit {
     'Action'
   ];
 
+    
+  reportPrintObjList: WorkOrderList[] = [];
+  printTemplate: any;
+  reportPrintObj: WorkOrderList;
+  reportPrintObjTax: WorkOrderList;
+  subscriptionArr: Subscription[] = [];
 
+
+ 
   sIsLoading: string = '';
   isLoading = true;
   StoreList: any = [];
@@ -141,7 +153,7 @@ export class WorkOrderComponent implements OnInit {
 
   getWorkOrdersList() {
     debugger
-    this.sIsLoading = 'loading-data';
+     this.sIsLoading = 'loading-data';
     var m_data = {
       "ToStoreId": 10003,//this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,
       "From_Dt": this.datePipe.transform(this._WorkOrderService.myFormGroup.get("startdate").value, "MM-dd-yyyy") || '01/01/1900',
@@ -158,7 +170,7 @@ export class WorkOrderComponent implements OnInit {
       this.sIsLoading = '';
     },
       error => {
-        this.sIsLoading = '';
+      this.sIsLoading = '';
       });
 
   }
@@ -285,7 +297,63 @@ export class WorkOrderComponent implements OnInit {
     
   }
 
- 
+  getPrint(el) {
+    
+    var m_data = {
+      "WOID":311
+    }
+   console.log(m_data);
+    this._WorkOrderService.getWorkOrderPrint(m_data).subscribe(data => {
+        this.reportPrintObjList = data as WorkOrderList[];
+        
+        this.reportPrintObj = data[0] as WorkOrderList;
+        console.log(this.reportPrintObjList);
+        
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+      
+      })
+    
+  }
+
+
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.WorkorderTemplate.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
+  }
 
 
   // calculateDiscAmount() {
@@ -398,10 +466,6 @@ export class WorkOrderComponent implements OnInit {
     // }
   }
 
-
-  getPrint(){
-
-  }
 
 
   onEditRow(row){
@@ -565,6 +629,8 @@ export class NewWorkOrderList {
   NetAmount: number;
   Specification:string;
 
+ 
+
   constructor(NewWorkOrderList) {
     {
       this.ItemName = NewWorkOrderList.ItemName || "";
@@ -592,6 +658,28 @@ export class WorkOrderList {
   VatAmt: number;
   NetAmt: number;
   Remark: string;
+  // WOId:any;
+  StoreName:any;
+  WODate:any;
+  WOTotalAmount:any;
+  WOVatAmount:any;
+  WODiscAmount:any;
+  WoNetAmount:any;
+  WORemark:any;
+  StoreId:any;
+  Mobile:any;
+   Phone:any;
+  Address:any;
+  
+  // ItemName:any;
+  // Qty:any;
+  // Rate:any;
+  
+  GST:any;
+   DiscPer:any;
+   
+  
+
 
   constructor(WorkOrderList) {
     {

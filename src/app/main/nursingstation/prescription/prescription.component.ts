@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { PrescriptionService } from './prescription.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-prescription',
@@ -102,6 +103,72 @@ export class PrescriptionComponent implements OnInit {
   onSelect(Parama){
      console.log(Parama.IPMedID);
     this.getPrescriptiondetList(Parama.IPMedID)
+  }
+
+  reportPrintObjList: PrescriptionList[] = [];
+  printTemplate: any;
+  reportPrintObj: PrescriptionList;
+  reportPrintObjTax: PrescriptionList;
+  subscriptionArr: Subscription[] = [];
+  @ViewChild('PrescriptionTemplate') PrescriptionTemplate:ElementRef;
+
+
+  getPrint(){
+    
+    var m_data = {
+      FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
+
+    }
+   console.log(m_data);
+    this._PrescriptionService.getPrecriptionlist(m_data).subscribe(data => {
+        this.reportPrintObjList = data as PrescriptionList[];
+        
+        this.reportPrintObj = data[0] as PrescriptionList;
+        
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+      
+      })
+
+  }
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.PrescriptionTemplate.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
   }
 
 }

@@ -27,7 +27,8 @@ export class WorkOrderService {
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       StoreId:'',
-      SupplierName:''
+      SupplierName:'',
+      Id:'',
     })
   }
   createNewWorkForm(){
@@ -90,7 +91,9 @@ export class WorkOrderService {
     this.createNewWorkForm();
 }
  
-
+public getWorkOrderPrint(Param){
+  return this._httpClient.post("Generic/GetByProc?procName=rptWorkOrderPrint", Param);
+}
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }

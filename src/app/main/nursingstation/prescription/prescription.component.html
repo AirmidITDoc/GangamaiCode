@@ -127,7 +127,7 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print">
+                                            <button mat-icon-button matTooltip="print" (click)="getPrint()">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                         </mat-cell>
@@ -237,3 +237,118 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
+<div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #PrescriptionTemplate>
+
+    <div style=" align-items: center; margin-bottom: 10px;text-align: center;">
+
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center;">jnanayogi shri siddeshwar
+            super speciality hospital
+        </h2>
+        <span style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;">(A Unit of Shri
+            Siddeshwar Loka Kalyana Charitable
+            Trust)</span><br>
+        <span style="font-size:11px;font-weight: 500;text-align: center;">Survey No.10/4, Near S-Hyper Mart, Vijayapur
+            586 101 </span><br>
+        <span style="font-size: 11px;font-weight: 500;text-align: center;">Call :-08352-249399 | info@ jsshospitals.com
+            | www.jsshospitals.com
+            | Reg.No :-BIJ00467ALSSh </span><br><br>
+
+
+        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">IP Prescription</span>
+        <hr> <br>
+
+    </div>
+    <table>
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 10px;">Reg No. </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.Date | date: 'dd/MM/yyyy'}} </span> </td>
+        </tr>
+
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">IP No</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+        </tr>
+
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 10px;">Doctor Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.PatientName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Age/Gender</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Ward Name</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}} </span></td>
+        </tr>
+    </table>
+
+  
+    <hr>
+
+    <table class="table" style="width: 100%;border-collapse: collapse;text-align: right;">
+        <tr style="font-size:12px;">
+
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                Sr.No</td>
+                <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                RegNo</td>
+            <td
+                style="border: 1px solid black;width:40%;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
+                PatientName</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                Vst_Adm_Date</td>
+            <td
+                style="border: 1px solid black;width:25%;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                StoreName</td>
+            <td
+                style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                IPMedID</td>
+        </tr>
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;text-align: right;">{{indx + 1}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;text-align: right;">{{item?.RegNo}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.PatientName}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.Vst_Adm_Date  | date: 'MM/yyyy'}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.StoreName}}</td>
+           <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.IPMedID}}</td>
+        </tr>
+         
+    </table><br>
+    
+        <!-- <span style="vertical-align: top;padding:0 10px 10px;">
+           
+            <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WODiscAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">TaxAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOVatAmount}}</span> <br>
+            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">NetAmount</span>
+            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
+        </span><br>
+        <span style="font-weight: 500;"> Total Amount in words :-</span> -->
+        <hr>
+        <span style="font-weight: 500;">Remark</span><br><br><br><br>
+
+        <div style="display: flex;">
+            <span style="vertical-align: top;padding:0 10px 10px">
+                <span style="font-weight: 500;">ADMIN ADMIN</span>
+                <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
+                
+            </span>
+        </div>
+
+
+    <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
+    </div>
+</div>
+
+ 
