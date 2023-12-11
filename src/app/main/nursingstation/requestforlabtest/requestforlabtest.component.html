@@ -15,8 +15,15 @@
             Lab Request List
         </span>
 
-          <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
-            Request New Test</button>
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:350% !important; ">
+            <button mat-raised-button (click)="Openpopup()" matTooltip="close"
+                style="background-color: aliceblue;color: brown;margin-left:2% !important"> Request New Test
+
+            </button>
+        </div>
+
+          <!-- <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
+            Request New Test</button> -->
         </div>
          
 
@@ -92,17 +99,17 @@
                                 <mat-table class="Tab1" matSort [dataSource]="dsrequestList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;" >
 
-                                    <ng-container matColumnDef="action" stickyEnd>
+                                    <ng-container matColumnDef="action"  >
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print">
+                                            <button mat-icon-button matTooltip="print" (click)="getPrint()">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RegNo" sticky >
+                                    <ng-container matColumnDef="RegNo"   >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm >
@@ -110,7 +117,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PatientName" sticky>
+                                    <ng-container matColumnDef="PatientName" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             PatientName
                                         </mat-header-cell>
@@ -119,7 +126,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Vst_Adm_Date" sticky>
+                                    <ng-container matColumnDef="Vst_Adm_Date" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adm Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -127,7 +134,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Age" sticky>
+                                    <ng-container matColumnDef="Age" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Age
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -135,7 +142,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="WardName" sticky>
+                                    <ng-container matColumnDef="WardName" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Ward Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -143,7 +150,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RequestType" sticky>
+                                    <ng-container matColumnDef="RequestType" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> RequestType
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -151,7 +158,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TariffName" sticky>
+                                    <!-- <ng-container matColumnDef="TariffName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> TariffName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -159,13 +166,13 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CompanyName" sticky>
+                                    <ng-container matColumnDef="CompanyName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CompanyName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                    
 
@@ -198,7 +205,7 @@
                                 <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;" >
 
-                                    <ng-container matColumnDef="ReqDate" sticky>
+                                    <ng-container matColumnDef="ReqDate"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqDate
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -206,7 +213,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ReqTime" sticky>
+                                    <ng-container matColumnDef="ReqTime"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -214,7 +221,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ServiceName" sticky>
+                                    <ng-container matColumnDef="ServiceName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ServiceName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -222,7 +229,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName" sticky>
+                                    <ng-container matColumnDef="AddedByName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedByName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -230,7 +237,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddBilingUser" sticky>
+                                    <ng-container matColumnDef="AddBilingUser"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Add Biling User
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -238,7 +245,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BillDateTime" sticky>
+                                    <ng-container matColumnDef="BillDateTime"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillDateTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -246,7 +253,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsStatus" sticky>
+                                    <ng-container matColumnDef="IsStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsStatus
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -254,7 +261,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PBillNo" sticky>
+                                    <ng-container matColumnDef="PBillNo"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -262,7 +269,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsComplted" sticky>
+                                    <ng-container matColumnDef="IsComplted"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsComplted
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -302,5 +309,96 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #LabRequiestTemplate>
+
+    <div style=" align-items: center; margin-bottom: 10px;text-align: center;">
+
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center;">jnanayogi shri siddeshwar
+            super speciality hospital
+        </h2>
+        <span style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;">(A Unit of Shri
+            Siddeshwar Loka Kalyana Charitable
+            Trust)</span><br>
+        <span style="font-size:11px;font-weight: 500;text-align: center;">Survey No.10/4, Near S-Hyper Mart, Vijayapur
+            586 101 </span><br>
+        <span style="font-size: 11px;font-weight: 500;text-align: center;">Call :-08352-249399 | info@ jsshospitals.com
+            | www.jsshospitals.com
+            | Reg.No :-BIJ00467ALSSh </span><br><br>
+
+
+        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">Pathology Request Test </span>
+        <hr> <br>
+
+    </div>
+    <table>
+        <tr>
+            <td > <span style="font-weight: 500;margin-right: 100px;">Reg No </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:42px;margin-left: 200px;">Req. Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.ReqDate}} </span> </td>
+        </tr>
+
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 11px;margin-left: 200px;">Ward Name</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.RoomName}}</span> </td>
+        </tr>
+
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 60px;">Doctor Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AdmittedDocName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 90px;margin-left: 200px;">Age</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AgeYear}}</span> </td>
+        </tr>
+
+        <tr>
+            <td ><span style="font-weight: 500;margin-right: 55px;">Ref.Doc Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RefDocName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 65px;margin-left: 200px;">Gender</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.GenderName}} </span></td>
+        </tr>
+    </table>
+
+    
+    <hr>
+
+    <table class="table" style="width: 100%;border-collapse: collapse; text-align: center;">
+        <tr style="font-size:12px;">
+
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
+                Sr.No</td>
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
+                Test Name</td>
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+                PBill No</td>
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+                Bill Date</td>
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+                Bill Time</td>
+            <td
+                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+                Price</td>
+           
+        </tr>
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{indx + 1}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.ServiceName}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.PBillNo}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.BillDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.BillTime}}</td>
+            <td style="border: 1px solid black;vertical-align: top;
+            padding: 0;height: 20px;">{{item?.Price}}</td>
+        </tr>
+         
+    </table><br>
+
+    <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
+        This is Computer generated invoice hence doesn’t require signature
     </div>
 </div>

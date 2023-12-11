@@ -28,6 +28,9 @@ export class PrescriptionService {
       
     })  
   }
+  public getPrintPrecriptionlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDPrecriptionPrint",Param)
+  }
 
   public getPrecriptionlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard",Param)

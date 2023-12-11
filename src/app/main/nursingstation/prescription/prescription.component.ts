@@ -115,14 +115,12 @@ export class PrescriptionComponent implements OnInit {
 
   getPrint(){
     
-    var m_data = {
-      FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
-      ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
-      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
-
+    var m_data = {                   
+      'PatientType': 1,
+      'OP_IP_ID ':149
     }
    console.log(m_data);
-    this._PrescriptionService.getPrecriptionlist(m_data).subscribe(data => {
+    this._PrescriptionService.getPrintPrecriptionlist(m_data).subscribe(data => {
         this.reportPrintObjList = data as PrescriptionList[];
         
         this.reportPrintObj = data[0] as PrescriptionList;
@@ -182,6 +180,18 @@ export class PrescriptionList{
   Vst_Adm_Date:any;
   StoreName:any;
   PreNo:any;
+  OPD_IPD_IP:any;
+  AgeYear:any;
+  GenderName:any;
+  VisitDate:any;
+  ConsultantDocName:any;
+  DrugName:any;
+  PrecriptionId:any;
+  TotalQty:any;
+  PDate:any;
+  IPPreId:any;
+  WardName:any;
+  
   
 
   constructor(PrescriptionList) {

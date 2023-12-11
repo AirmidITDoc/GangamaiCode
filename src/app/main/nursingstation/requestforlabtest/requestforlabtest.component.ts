@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { RequestforlabtestService } from './requestforlabtest.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -28,8 +29,8 @@ export class RequestforlabtestComponent implements OnInit {
     'Vst_Adm_Date',
     'WardName',
     'RequestType',
-    'TariffName',
-    'CompanyName'
+    // 'TariffName',
+    // 'CompanyName'
   ]
 
   displayColumns: string[] =[
@@ -74,8 +75,6 @@ export class RequestforlabtestComponent implements OnInit {
       panelClass: 'new-request-dialog'
     })
   }
-
- 
   getRequesttList(){
     var vdata={
       FromDate: this.datePipe.transform(this._RequestforlabtestService.mySearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
@@ -94,9 +93,7 @@ export class RequestforlabtestComponent implements OnInit {
   getRequestdetList(Param){
     var vdata={
       RequestId: Param
-    
     }
-   
     this._RequestforlabtestService.getRequestdetList(vdata).subscribe(data =>{
       this.dsrequestdetList.data = data as RequestdetList[];
       this.dsrequestdetList.sort = this.sort;
@@ -109,6 +106,69 @@ export class RequestforlabtestComponent implements OnInit {
     console.log(Parama.RequestId);
     this.getRequestdetList(Parama.RequestId)
   }
+  
+  reportPrintObjList: RequestList[] = [];
+  printTemplate: any;
+  reportPrintObj: RequestList;
+  reportPrintObjTax: RequestList;
+  subscriptionArr: Subscription[] = [];
+  @ViewChild('LabRequiestTemplate') LabRequiestTemplate:ElementRef;
+
+  getPrint(){
+      var m_data = {
+        // FromDate: this.datePipe.transform(this._RequestforlabtestService.mySearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+        // ToDate: this.datePipe.transform(this._RequestforlabtestService.mySearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+        // Reg_No: this._RequestforlabtestService.mySearchForm.get('RegNo').value || 0
+        'RequestId': 73612
+      }
+     console.log(m_data);
+      this._RequestforlabtestService.getPrintRequesttList(m_data).subscribe(data => {
+          this.reportPrintObjList = data as RequestList[];
+          
+          this.reportPrintObj = data[0] as RequestList;
+          
+          setTimeout(() => {
+            this.print3();
+          }, 1000);
+        
+        })
+  }
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.LabRequiestTemplate.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
+  }
 }
 export class RequestList{
   RegNo :any;
@@ -119,6 +179,15 @@ export class RequestList{
   RequestType:any;
   TariffName:any;
   CompanyName:any;
+  RefDocName:any;
+  GenderName:any;
+  AdmittedDocName:any;
+  Price:any;
+  AgeYear:any;
+  RoomName:any;
+  BillDate:any;
+  BillTime:any;
+  ReqDate:any;
 
   constructor(RequestList) {
     this.RegNo=RequestList.RegNo || 0;

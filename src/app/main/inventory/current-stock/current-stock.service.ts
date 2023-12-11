@@ -15,7 +15,7 @@ export class CurrentStockService {
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
+    this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
   }
 
@@ -29,15 +29,10 @@ export class CurrentStockService {
     });
   }
   
-    IndentID() {
+  createUserForm() {
     return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
+      start: [(new Date()).toISOString()],
+      StoreId:'',
       
     });
   }
@@ -47,5 +42,8 @@ export class CurrentStockService {
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  }
+  public getDayWiseStockList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptStockReportDayWise",Param)
   }
 }

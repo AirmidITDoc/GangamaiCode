@@ -27,7 +27,21 @@ export class CurrentStockComponent implements OnInit {
     'ReceivedQty',
     'IssueQty',
     'BalanceQty',
-    'GenericName'
+    // 'GenericName'
+  ];
+  displayedColumnsDayWise = [
+    // 'action',
+    
+    'BatchNo',
+    'BatchExpDate',
+    //'ToStoreName',
+    'ItemName',
+    'ReceivedQty',
+    'IssueQty',
+    'BalanceQty',
+    'UnitMRP',
+    'LedgerDate'
+    
   ];
 
   sIsLoading: string = '';
@@ -38,6 +52,7 @@ export class CurrentStockComponent implements OnInit {
  
   
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
+  dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
 
   
   @ViewChild(MatSort) sort: MatSort;
@@ -66,29 +81,32 @@ export class CurrentStockComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
- 
-
-  
+  gePharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    // console.log(vdata);
+    this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+      this.Store1List = data;
+      console.log(this.Store1List);
+     this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
+     this._CurrentStockService.userFormGroup.get('StoreId').setValue(this.Store1List[0]);
+    });
+  }
 
   getCurrentStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "ItemName":'%',
-      // "IsNarcotic":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      // "ish1Drug":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      // "isScheduleH":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      // "IsHighRisk":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      // "IsScheduleX":this._CurrentStockService.SearchGroup.get('IsDeleted').value || 0,
-      // "ItemCategaryId":this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemCategaryId || 1,
       "StoreId": this._loggedService.currentUserValue.user.storeId || 1,
       //  "From_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       //  "To_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         
     }
-   // console.log(vdata);
+   console.log(vdata);
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
-     // console.log(this.dsCurrentStock.data)
+     console.log(this.dsCurrentStock.data)
       this.dsCurrentStock.sort = this.sort;
       this.dsCurrentStock.paginator = this.paginator;
       this.sIsLoading = '';
@@ -106,18 +124,25 @@ export class CurrentStockComponent implements OnInit {
     this._CurrentStockService.SearchGroup.get('IsDeleted').reset();
     this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
     
-  }
-  gePharStoreList() {
+  }  
+  getDayWiseStockList() {
+    this.sIsLoading = 'loading-data';
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+     "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
-    // console.log(vdata);
-    this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
-      this.Store1List = data;
-      // console.log(this.StoreList);
-     this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
-    });
-  }
+   console.log(vdata);
+      this._CurrentStockService.getDayWiseStockList(vdata).subscribe(data => {
+      this.dsDaywiseStock.data = data as DayWiseStockList[];
+     console.log(this.dsDaywiseStock.data)
+      this.dsDaywiseStock.sort = this.sort;
+      this.dsDaywiseStock.paginator = this.paginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }  
 }
  
 export class CurrentStockList {
@@ -128,7 +153,6 @@ export class CurrentStockList {
   BalanceQty:number;
   GenericName: string;
   
-
   constructor(CurrentStockList) {
     {
       this.IssueQty = CurrentStockList.IssueQty || 0;
@@ -137,6 +161,37 @@ export class CurrentStockList {
       this.ToStoreName = CurrentStockList.ToStoreName || "";
       this.BalanceQty = CurrentStockList.BalanceQty || 0;
       this.GenericName = CurrentStockList.GenericName || "";
+       
+    }
+  }
+}
+ 
+export class DayWiseStockList {
+ 
+  ItemName:string;
+  ToStoreName:string;
+  IssueQty: Number;
+  BalanceQty:number;
+  ReceivedQty: number;
+  BatchNo: Number;
+  BatchExpDate:number;
+  UnitMRP: number;
+  LedgerDate:any;
+
+ 
+  
+  constructor(DayWiseStockList) {
+    {
+      this.IssueQty = DayWiseStockList.IssueQty || 0;
+      this.ReceivedQty = DayWiseStockList.ReceivedQty || 0;
+      this.ItemName = DayWiseStockList.ItemName || "";
+      this.ToStoreName = DayWiseStockList.ToStoreName || "";
+      this.BalanceQty = DayWiseStockList.BalanceQty || 0;
+      this.BatchNo = DayWiseStockList.BatchNo || 0;
+      this.BatchExpDate = DayWiseStockList.BatchExpDate || 0;
+      this.UnitMRP = DayWiseStockList.UnitMRP || 0;
+      this.LedgerDate = DayWiseStockList.LedgerDate || 0;
+      
        
     }
   }

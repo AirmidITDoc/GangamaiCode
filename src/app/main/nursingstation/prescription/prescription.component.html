@@ -11,8 +11,15 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                  IP Prescription
             </span>
-            <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
-                Add Prescription</button>
+
+            <div fxLayout="row" fxLayoutGap="5px" style="margin-left:360% !important; ">
+                <button mat-raised-button (click)="Openpopup()" matTooltip="close"
+                    style="background-color: aliceblue;color: brown;margin-left:2% !important">Add Prescription
+    
+                </button>
+            </div>
+            <!-- <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
+                Add Prescription</button> -->
         </div>
 
         
@@ -260,30 +267,30 @@
     </div>
     <table>
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 10px;">Reg No. </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
-            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.Date | date: 'dd/MM/yyyy'}} </span> </td>
+            <td > <span style="font-weight: 500;margin-right: 75px;">Reg No. </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:43px;margin-left: 200px;">Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.PDate  | date: 'dd/MM/yyyy'}} </span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
-            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">IP No</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+            <td ><span style="font-weight: 500;margin-right: 38px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 40px;margin-left: 200px;">IP No</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.IPPreId}}</span> </td>
         </tr>
 
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 10px;">Doctor Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.PatientName}} </span> </td>
-            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Age/Gender</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}}</span> </td>
+            <td > <span style="font-weight: 500;margin-right: 35px;">Doctor Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.ConsultantDocName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right: 52px;margin-left: 200px;">Age</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AgeYear}}</span> </td>
         </tr>
 
         <tr>
-            <td></td>
-            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Ward Name</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.RegNo}} </span></td>
+            <td><span style="font-weight: 500;margin-right: 50px;">Ward Name</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.WardName}} </span></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 200px;">Gender</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.GenderName}} </span></td>
         </tr>
     </table>
 
   
     <hr>
 
-    <table class="table" style="width: 100%;border-collapse: collapse;text-align: right;">
+    <table class="table" style="width: 100%;border-collapse: collapse;text-align: center;">
         <tr style="font-size:12px;">
 
             <td
@@ -291,11 +298,11 @@
                 Sr.No</td>
                 <td
                 style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                RegNo</td>
+                Drug name</td>
             <td
                 style="border: 1px solid black;width:40%;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
-                PatientName</td>
-            <td
+                Total Qty</td>
+            <!-- <td
                 style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
                 Vst_Adm_Date</td>
             <td
@@ -303,24 +310,24 @@
                 StoreName</td>
             <td
                 style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                IPMedID</td>
+                IPMedID</td> -->
         </tr>
         <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
             <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;text-align: right;">{{indx + 1}}</td>
+            padding: 0;height: 20px; ">{{indx + 1}}</td>
             <td style="border: 1px solid black;vertical-align: top;
-            padding: 0;height: 20px;text-align: right;">{{item?.RegNo}}</td>
+            padding: 0;height: 20px; ">{{item?.DrugName}}</td>
            <td style="border: 1px solid black;vertical-align: top;
-           padding: 0;height: 20px;text-align: right;">{{item?.PatientName}}</td>
+           padding: 0;height: 20px; ">{{item?.TotalQty}}</td>
+           <!-- <td style="border: 1px solid black;vertical-align: top;
+           padding: 0;height: 20px;text-align: right;">{{item?.Date  | date: 'MM/yyyy'}}</td>
            <td style="border: 1px solid black;vertical-align: top;
-           padding: 0;height: 20px;text-align: right;">{{item?.Vst_Adm_Date  | date: 'MM/yyyy'}}</td>
+           padding: 0;height: 20px;text-align: right;">{{item?.GenericName}}</td>
            <td style="border: 1px solid black;vertical-align: top;
-           padding: 0;height: 20px;text-align: right;">{{item?.StoreName}}</td>
-           <td style="border: 1px solid black;vertical-align: top;
-           padding: 0;height: 20px;text-align: right;">{{item?.IPMedID}}</td>
+           padding: 0;height: 20px;text-align: right;">{{item?.IPMedID}}</td> -->
         </tr>
          
-    </table><br>
+    </table><br><br>
     
         <!-- <span style="vertical-align: top;padding:0 10px 10px;">
            
@@ -334,8 +341,8 @@
             <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
         </span><br>
         <span style="font-weight: 500;"> Total Amount in words :-</span> -->
-        <hr>
-        <span style="font-weight: 500;">Remark</span><br><br><br><br>
+        
+       
 
         <div style="display: flex;">
             <span style="vertical-align: top;padding:0 10px 10px">
@@ -343,7 +350,7 @@
                 <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
                 
             </span>
-        </div>
+        </div><br><br>
 
 
     <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">

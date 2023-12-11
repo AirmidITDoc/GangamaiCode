@@ -10,12 +10,16 @@
         width: 310px;
         max-width: 310px;
         min-width: 310px;
-        align-items: left;
-        white-space: nowrap; 
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; 
+        text-overflow: ellipsis;
         overflow: hidden !important;
-        justify-content:left; 
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        padding-top: 8px;
     }
     .mat-column-Age {
         width: 90px;
@@ -53,16 +57,21 @@
         width: 200px;
         max-width: 200px;
         min-width: 200px;
-        align-items: left;
-        overflow: hidden;
-        text-overflow: ellipsis; 
-        overflow: hidden !important;
-        justify-content:left; 
+        text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-right: 20px;
+         padding-top: 8px;
     }
     .mat-column-action{
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left;
     }
 
@@ -75,15 +84,19 @@
 
 .Tab2 {
     .mat-column-ServiceName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-        align-items: left;
-        white-space: nowrap; 
-        overflow: hidden;
-        text-overflow: ellipsis; 
-        overflow: hidden !important;
-        justify-content:left; 
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+        text-align: left;
+         justify-content: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         overflow: hidden !important;
+         display: inline-flex;
+         display: inline;
+         margin-right: 20px;
+         padding-top: 8px;
         
     }
 

@@ -28,10 +28,13 @@ export class RequestforlabtestService {
     })
 
   }
+  public getPrintRequesttList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rptLabRequestList",Param)
+  }
 
   public getRequesttList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabRequest_Nursing",Param)
-  }
+    return this._httpClient.post("Generic/GetByProc?procName=M_Rtrv_LabRequest_Nursing",Param)
+  }//Rtrv_LabRequest_Nursing
 
   public getRequestdetList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingLabRequestDetails",Param)

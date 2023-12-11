@@ -19,12 +19,17 @@ app-prescription {
             width: 300px;
             max-width: 300px;
             min-width: 300px;
-            align-items: left;
+            text-align: left;
+            justify-content: left;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            justify-content: left;
+            display: inline-flex;
+            display: inline;
+            margin-right: 20px;
+            padding-top: 8px;
+        
         }
 
         .mat-column-Vst_Adm_Date {
