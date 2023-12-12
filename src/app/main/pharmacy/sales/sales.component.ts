@@ -2818,6 +2818,7 @@ export class Printsal {
   BillTotalAmount: any;
   HospitalMobileNo: any;
   HospitalEmailId: any;
+  SalesReturnNo:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -2895,6 +2896,7 @@ export class Printsal {
     this.HospitalMobileNo = Printsal.HospitalMobileNo || '';
     this.HospitalEmailId = Printsal.HospitalEmailId || '';
     this.ConversionFactor =Printsal.ConversionFactor || '';
+    this.SalesReturnNo =Printsal.SalesReturnNo||0
   }
 }
 
