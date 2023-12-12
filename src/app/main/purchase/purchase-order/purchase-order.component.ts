@@ -12,7 +12,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { IndentList } from 'app/main/pharmacy/sales/sales.component';
 import { MatSelect } from '@angular/material/select';
@@ -203,6 +203,12 @@ PaymentList = [
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
+  @ViewChild('PurchaseOrderTemplate') PurchaseOrderTemplate:ElementRef;
+  reportPrintObjList: PurchaseOrder[] = [];
+  printTemplate: any;
+  reportPrintObj: PurchaseOrder;
+  reportPrintObjTax: PurchaseOrder;
+  subscriptionArr: Subscription[] = [];
 
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -219,33 +225,16 @@ PaymentList = [
 
     // this.OnReset();
     // this.getItemNameList();
-    this.getStoreSearchCombo();
+   // this.getStoreSearchCombo();
     this.getFromStoreSearch();
     this.getSupplierSearchCombo();
-    this.getToStoreSearchList();
+   // this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
-    this.gePharStoreList();
-    this.getPurchaseOrderList();
+   // this.gePharStoreList();
+    //this.getPurchaseOrderList();
   }
 
-  getOptionText(option) {
-
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-
-  }
-
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
-    }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
-  }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -267,9 +256,10 @@ PaymentList = [
       "IsVerify": 0,//this._IndentID.IndentSearchGroup.get("Status").value || 1,
       "Supplier_Id":  this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
+    console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      console.log(data)
+      console.log(this.dsPurchaseOrder);
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -295,27 +285,46 @@ PaymentList = [
       });
   }
 
-  focusNextService() {
-    // this.renderer.selectRootElement('#myInput').focus();
-  }
+    // getOptionText(option) {
+
+  //   if (!option)
+  //     return '';
+  //   return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+
+  // }
+
+  // deleteTableRow(element) {
+  //   let index = this.chargeslist.indexOf(element);
+  //   if (index >= 0) {
+  //     this.chargeslist.splice(index, 1);
+  //     this.dsItemNameList.data = [];
+  //     this.dsItemNameList.data = this.chargeslist;
+  //   }
+  //   Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+  // }
 
 
-  getPharItemList() {
-    var m_data = {
-      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-      "StoreId": this._PurchaseOrder.PurchaseStoreform.get('StoreId').value.storeid || 0
-    }
-    if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) {
-      this._PurchaseOrder.getItemList(m_data).subscribe(data => {
-        this.filteredOptions = data;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
+  // focusNextService() {
+  //   // this.renderer.selectRootElement('#myInput').focus();
+  // }
+
+
+  // getPharItemList() {
+  //   var m_data = {
+  //     "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
+  //     "StoreId": this._PurchaseOrder.PurchaseStoreform.get('StoreId').value.storeid || 0
+  //   }
+  //   if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) {
+  //     this._PurchaseOrder.getItemList(m_data).subscribe(data => {
+  //       this.filteredOptions = data;
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
+  //   }
+  // }
 
 
   //   getSelectedObj(obj) {
@@ -331,226 +340,226 @@ PaymentList = [
 
   disableSelect = new FormControl(false);
 
-  OnSave() {
+  // OnSave() {
     
-    // if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
-    let purchaseHeaderInsertObj = {};
-    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
-    purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
-    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
-    purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
-    purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
-    purchaseHeaderInsertObj['taxAmount'] = 0;
-    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
-    purchaseHeaderInsertObj['octriAmount'] = 0;
-    purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
-    purchaseHeaderInsertObj['isclosed'] = false;
-    purchaseHeaderInsertObj['isVerified'] = false;
-    purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
-    purchaseHeaderInsertObj['taxID'] = 0;
+  //   // if(!this._PurchaseOrder.PurchaseStoreform.get("purchaseId").value) {
+  //   let purchaseHeaderInsertObj = {};
+  //   purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+  //   purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
+  //   purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+  //   purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+  //   purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
+  //   purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
+  //   purchaseHeaderInsertObj['taxAmount'] = 0;
+  //   purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+  //   purchaseHeaderInsertObj['octriAmount'] = 0;
+  //   purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
+  //   purchaseHeaderInsertObj['isclosed'] = false;
+  //   purchaseHeaderInsertObj['isVerified'] = false;
+  //   purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
+  //   purchaseHeaderInsertObj['taxID'] = 0;
     
-    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
-    purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
-    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
-    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
-    purchaseHeaderInsertObj['roundVal'] = 0;
-    purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
-    purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
-    purchaseHeaderInsertObj['totIGSTAmt'] = this.IGSTAmount;
-    purchaseHeaderInsertObj['transportChanges'] = 0;
-    purchaseHeaderInsertObj['handlingCharges'] = 0;
-    purchaseHeaderInsertObj['freightCharges'] = 0;
-    purchaseHeaderInsertObj['purchaseId'] = 0;
+  //   purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
+  //   purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+  //   purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
+  //   purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+  //   purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
+  //   purchaseHeaderInsertObj['roundVal'] = 0;
+  //   purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
+  //   purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
+  //   purchaseHeaderInsertObj['totIGSTAmt'] = this.IGSTAmount;
+  //   purchaseHeaderInsertObj['transportChanges'] = 0;
+  //   purchaseHeaderInsertObj['handlingCharges'] = 0;
+  //   purchaseHeaderInsertObj['freightCharges'] = 0;
+  //   purchaseHeaderInsertObj['purchaseId'] = 0;
 
-    let InsertpurchaseDetailObj = [];
-    this.dsItemNameList.data.forEach((element) => {
-      let purchaseDetailInsertObj = {};
-      purchaseDetailInsertObj['purchaseId'] = 0;
-      purchaseDetailInsertObj['itemId'] = element.ItemID;
-      purchaseDetailInsertObj['uomId'] = element.UOMID;
-      purchaseDetailInsertObj['qty'] = element.Qty;
-      purchaseDetailInsertObj['rate'] = element.Rate;
-      purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
-      purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
-      purchaseDetailInsertObj['mrp'] = element.MRP;
-      purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
-      InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-    });
-
-    let submitData = {
-      "purchaseHeaderInsert": purchaseHeaderInsertObj,
-      "purchaseDetailInsert": InsertpurchaseDetailObj,
-    };
-    console.log(submitData);
-    this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            let m = response;
-            // this._matDialog.closeAll();
-            this.OnReset();
-
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Purchase not saved', 'error');
-      }
-      // this.isLoading = '';
-    });
-  // }
-  // else{
-
-  //   let updatePurchaseOrderHeaderObj = {};
-  //   updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
-  //   updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
-  //   updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-  //   updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
-  //   updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
-  //   updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
-  //   updatePurchaseOrderHeaderObj['taxAmount'] = 0;
-  //   updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
-  //   updatePurchaseOrderHeaderObj['octriAmount'] = 0;
-  //   updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
-  //   updatePurchaseOrderHeaderObj['isclosed'] = false;
-  //   updatePurchaseOrderHeaderObj['isVerified'] = false;
-  //   updatePurchaseOrderHeaderObj['remarks'] = "";
-  //   updatePurchaseOrderHeaderObj['taxID'] = 0;
-    
-  //   updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-  //   updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
-  //   updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
-  //   updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
-  //   updatePurchaseOrderHeaderObj['roundVal'] = 0;
-  //   updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
-  //   updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
-  //   updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
-  //   updatePurchaseOrderHeaderObj['transportChanges'] = 0;
-  //   updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
-  //   updatePurchaseOrderHeaderObj['freightCharges'] = 0;
-  //   updatePurchaseOrderHeaderObj['purchaseId'] = 0;
-
-    
-  //   let delete_PurchaseDetailsObj = {};
-  //   delete_PurchaseDetailsObj['purchaseID'] = 0;
-
-  //   let update_POVerify_StatusObjarray = [];
+  //   let InsertpurchaseDetailObj = [];
   //   this.dsItemNameList.data.forEach((element) => {
-  //     let update_POVerify_StatusObj = {};
-  //     update_POVerify_StatusObj['purchaseId'] = 0;
-  //     update_POVerify_StatusObj['itemId'] = element.ItemID;
-  //     update_POVerify_StatusObj['uomId'] = element.UOMID;
-  //     update_POVerify_StatusObj['qty'] = element.Qty;
-  //     update_POVerify_StatusObj['rate'] = element.Rate;
-  //     update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
+  //     let purchaseDetailInsertObj = {};
+  //     purchaseDetailInsertObj['purchaseId'] = 0;
+  //     purchaseDetailInsertObj['itemId'] = element.ItemID;
+  //     purchaseDetailInsertObj['uomId'] = element.UOMID;
+  //     purchaseDetailInsertObj['qty'] = element.Qty;
+  //     purchaseDetailInsertObj['rate'] = element.Rate;
+  //     purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
+  //     purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+  //     purchaseDetailInsertObj['discPer'] = element.DiscPer;
+  //     purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+  //     purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+  //     purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+  //     purchaseDetailInsertObj['mrp'] = element.MRP;
+  //     purchaseDetailInsertObj['specification'] = element.Specification;
+  //     purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
+  //     purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
+  //     purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
+  //     purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
+  //     purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
+  //     purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
+  //     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
   //   });
 
   //   let submitData = {
-  //     "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
-  //      "delete_PurchaseDetails": delete_PurchaseDetailsObj,
-  //     "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
+  //     "purchaseHeaderInsert": purchaseHeaderInsertObj,
+  //     "purchaseDetailInsert": InsertpurchaseDetailObj,
   //   };
   //   console.log(submitData);
-  //   this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
+  //   this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
   //     if (response) {
-  //       Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+  //       Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
   //         if (result.isConfirmed) {
   //           let m = response;
   //           // this._matDialog.closeAll();
-  //           // this.OnReset()
+  //           this.OnReset();
+
   //         }
   //       });
   //     } else {
-  //       Swal.fire('Error !', 'Purchase not Updated', 'error');
+  //       Swal.fire('Error !', 'Purchase not saved', 'error');
   //     }
   //     // this.isLoading = '';
   //   });
-  // }
-  }
+  // // }
+  // // else{
 
-  calculateTotalAmount() {
-    if (this.Rate && this.Qty) {
-      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
-      this.NetAmount = this.TotalAmount;
-      // this.calculatePersc();
-    }
-  }
-
-  getTotalNet(element) {
-    let NetAmt;
-    this.FinalNetAmount =(element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-    return this.FinalNetAmount;
-  }
-
-  getTotalGST(element) {
-
-    this.GSTAmount = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
-    return this.GSTAmount;
-
-    this.CGSTAmount = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0);
-
-
-    this.SGSTAmount = element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0);
-
-
-    this.IGSTAmount = element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0);
-
-
-  }
-
-  getTotalDisc(element) {
-
-    this.DiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
-    return this.DiscAmount;
-  }
-
-  getTotalAmt(element) {
-
-    this.FinalTotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
-    return this.FinalTotalAmt;
-  }
-
-  calculateDiscperAmount() {
+  // //   let updatePurchaseOrderHeaderObj = {};
+  // //   updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
+  // //   updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
+  // //   updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+  // //   updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+  // //   updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
+  // //   updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
+  // //   updatePurchaseOrderHeaderObj['taxAmount'] = 0;
+  // //   updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+  // //   updatePurchaseOrderHeaderObj['octriAmount'] = 0;
+  // //   updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
+  // //   updatePurchaseOrderHeaderObj['isclosed'] = false;
+  // //   updatePurchaseOrderHeaderObj['isVerified'] = false;
+  // //   updatePurchaseOrderHeaderObj['remarks'] = "";
+  // //   updatePurchaseOrderHeaderObj['taxID'] = 0;
     
-    if (this.Dis) {
-      let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
-      // this.DiscAmount =  DiscAmt
-      this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(4);
+  // //   updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+  // //   updatePurchaseOrderHeaderObj['paymentTermId'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentTerm').value.value || '';
+  // //   updatePurchaseOrderHeaderObj['modeofPayment'] = '',//this._PurchaseOrder.PurchaseSearchGroup.get('PaymentMode').value || '';
+  // //   updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
+  // //   updatePurchaseOrderHeaderObj['roundVal'] = 0;
+  // //   updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
+  // //   updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
+  // //   updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
+  // //   updatePurchaseOrderHeaderObj['transportChanges'] = 0;
+  // //   updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
+  // //   updatePurchaseOrderHeaderObj['freightCharges'] = 0;
+  // //   updatePurchaseOrderHeaderObj['purchaseId'] = 0;
 
-    }
+    
+  // //   let delete_PurchaseDetailsObj = {};
+  // //   delete_PurchaseDetailsObj['purchaseID'] = 0;
 
-  }
+  // //   let update_POVerify_StatusObjarray = [];
+  // //   this.dsItemNameList.data.forEach((element) => {
+  // //     let update_POVerify_StatusObj = {};
+  // //     update_POVerify_StatusObj['purchaseId'] = 0;
+  // //     update_POVerify_StatusObj['itemId'] = element.ItemID;
+  // //     update_POVerify_StatusObj['uomId'] = element.UOMID;
+  // //     update_POVerify_StatusObj['qty'] = element.Qty;
+  // //     update_POVerify_StatusObj['rate'] = element.Rate;
+  // //     update_POVerify_StatusObjarray.push(update_POVerify_StatusObj);
+  // //   });
 
-  calculateDiscAmount() {
-    if (this.Dis) {
-      this.NetAmount =(parseFloat(this.NetAmount) - parseFloat(this.DiscAmount));
-      // this.DiscAmount;
-      // this.calculatePersc();
-    }
-  }
+  // //   let submitData = {
+  // //     "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
+  // //      "delete_PurchaseDetails": delete_PurchaseDetailsObj,
+  // //     "update_POVerify_StatusObj": update_POVerify_StatusObjarray,
+  // //   };
+  // //   console.log(submitData);
+  // //   this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
+  // //     if (response) {
+  // //       Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+  // //         if (result.isConfirmed) {
+  // //           let m = response;
+  // //           // this._matDialog.closeAll();
+  // //           // this.OnReset()
+  // //         }
+  // //       });
+  // //     } else {
+  // //       Swal.fire('Error !', 'Purchase not Updated', 'error');
+  // //     }
+  // //     // this.isLoading = '';
+  // //   });
+  // // }
+  // }
 
-  calculateGSTperAmount() {
+  // calculateTotalAmount() {
+  //   if (this.Rate && this.Qty) {
+  //     this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
+  //     this.NetAmount = this.TotalAmount;
+  //     // this.calculatePersc();
+  //   }
+  // }
 
-    if (this.GSTPer) {
+  // getTotalNet(element) {
+  //   let NetAmt;
+  //   this.FinalNetAmount =(element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+  //   return this.FinalNetAmount;
+  // }
 
-      this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-      this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-      this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+  // getTotalGST(element) {
 
-    }
-  }
+  //   this.GSTAmount = element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0);
+  //   return this.GSTAmount;
+
+  //   this.CGSTAmount = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0);
+
+
+  //   this.SGSTAmount = element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0);
+
+
+  //   this.IGSTAmount = element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0);
+
+
+  // }
+
+  // getTotalDisc(element) {
+
+  //   this.DiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+  //   return this.DiscAmount;
+  // }
+
+  // getTotalAmt(element) {
+
+  //   this.FinalTotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+  //   return this.FinalTotalAmt;
+  // }
+
+  // calculateDiscperAmount() {
+    
+  //   if (this.Dis) {
+  //     let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
+  //     this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
+  //     // this.DiscAmount =  DiscAmt
+  //     this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(4);
+
+  //   }
+
+  // }
+
+  // calculateDiscAmount() {
+  //   if (this.Dis) {
+  //     this.NetAmount =(parseFloat(this.NetAmount) - parseFloat(this.DiscAmount));
+  //     // this.DiscAmount;
+  //     // this.calculatePersc();
+  //   }
+  // }
+
+  // calculateGSTperAmount() {
+
+  //   if (this.GSTPer) {
+
+  //     this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+  //     this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+  //     this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+
+  //   }
+  // }
 
   // calculateGSTAmount(){
   //   if (this.GSTAmt) {
@@ -562,14 +571,14 @@ PaymentList = [
   //   }
   // }
 
-  calculatePersc() {
-    if (this.Dis) {
-      this.Dis = Math.round(this.TotalAmount * parseInt(this.DiscAmount)) / 100;
-      this.NetAmount = this.TotalAmount - this.Dis;
-      this._PurchaseOrder.userFormGroup.get('calculateDiscAmount').disable();
-    }
+  // calculatePersc() {
+  //   if (this.Dis) {
+  //     this.Dis = Math.round(this.TotalAmount * parseInt(this.DiscAmount)) / 100;
+  //     this.NetAmount = this.TotalAmount - this.Dis;
+  //     this._PurchaseOrder.userFormGroup.get('calculateDiscAmount').disable();
+  //   }
 
-  }
+  // }
 
   highlight(contact) {
     this.selectedRowIndex = contact.ItemID;
@@ -583,33 +592,33 @@ PaymentList = [
     this.dsItemNameList.data = [];
   }
 
-  delete(elm) {
-    this.dsItemNameList.data = this.dsItemNameList.data
-      .filter(i => i !== elm)
-      .map((i, idx) => (i.position = (idx + 1), i));
-  }
+  // delete(elm) {
+  //   this.dsItemNameList.data = this.dsItemNameList.data
+  //     .filter(i => i !== elm)
+  //     .map((i, idx) => (i.position = (idx + 1), i));
+  // }
 
   toggleDisable() {
     this.disableTextbox = !this.disableTextbox;
   }
 
-  onScroll() {
-    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    // this.nextPage$.next();
-  }
+  // onScroll() {
+  //   //Note: This is called multiple times after the scroll has reached the 80% threshold position.
+  //   // this.nextPage$.next();
+  // }
 
-  getToStoreSearchList() {
+  // getToStoreSearchList() {
 
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    console.log(vdata);
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.ToStoreList = data;
-      console.log(this.ToStoreList);
-      this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').setValue(this.Store1List[0]);
-    });
-  }
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   console.log(vdata);
+  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.ToStoreList = data;
+  //    /// console.log(this.ToStoreList);
+  //     this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+  //   });
+  // }
 
   // getSupplierSearchList() {
   //   this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
@@ -645,28 +654,28 @@ PaymentList = [
     });
   }
 
-  getStoreSearchCombo() {
-    // this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
-    //   this.ToStoreList = data;
-    //   console.log(data);
-    //   this.optionsPayment = this.ToStoreList.slice();
-    //   this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
-    //     startWith(''),
-    //     map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
-    //   );
+  // getStoreSearchCombo() {
+  //   // this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+  //   //   this.ToStoreList = data;
+  //   //   console.log(data);
+  //   //   this.optionsPayment = this.ToStoreList.slice();
+  //   //   this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
+  //   //     startWith(''),
+  //   //     map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
+  //   //   );
 
-    // });
+  //   // });
 
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
-    });
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.StoreList = data;
+  //     this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+  //     this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
+  //   });
 
-  }
+  // }
 
   // getItemNameSearchCombo() {
   //   var Param = {
@@ -721,148 +730,148 @@ PaymentList = [
   }
 
 
-  getItemNameList() {
+  // getItemNameList() {
     
-    var Param = {
+  //   var Param = {
 
-      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
-      "StoreId": this._PurchaseOrder.userFormGroup.get("StoreId").value.StoreId || 0
-    }
-    // console.log(Param);
-    this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
-      this.filteredOptions = data;
-      // console.log( this.filteredOptions )
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-
-
-
-  @ViewChild('SupplierId') SupplierId: MatSelect;
-  @ViewChild('Freight1') Freight1: ElementRef;
-
-  @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
-  @ViewChild('PaymentMode') PaymentMode: MatSelect;
-
-  @ViewChild('Paymentterm') Paymentterm: MatSelect;
-
-  @ViewChild('TaxNature1') TaxNature1: MatSelect;
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('rate') rate: ElementRef;
-  @ViewChild('dis') dis: ElementRef;
-  @ViewChild('gst') gst: ElementRef;
-  @ViewChild('mrp') mrp: ElementRef;
-  @ViewChild('specification') specification: ElementRef;
-  add: boolean = false;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-
-  @ViewChild('Warranty') Warranty: MatSelect;
-  @ViewChild('Schedule') Schedule: MatSelect;
-
-  @ViewChild('OtherTax') OtherTax: ElementRef;
-  @ViewChild('Remark') Remark: ElementRef;
-
-  public onEnterSupplier(event): void {
-    if (event.which === 13) {
-
-      // if (this.Freight) this.Freight.focus();
-      this.Freight1.nativeElement.focus();
-    }
-  }
+  //     "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
+  //     "StoreId": this._PurchaseOrder.userFormGroup.get("StoreId").value.StoreId || 0
+  //   }
+  //   // console.log(Param);
+  //   this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
+  //     this.filteredOptions = data;
+  //     // console.log( this.filteredOptions )
+  //     if (this.filteredOptions.length == 0) {
+  //       this.noOptionFound = true;
+  //     } else {
+  //       this.noOptionFound = false;
+  //     }
+  //   });
+  // }
 
 
-  public onEnterFreight(event): void {
-    if (event.which === 13) {
-      this.DeliveryDate1.nativeElement.focus();
-      // if (this.DeliveryDate) this.DeliveryDate.focus();
-    }
-  }
-  public onEnterDeliveryDate(event): void {
-    if (event.which === 13) {
 
-      if (this.Paymentterm) this.Paymentterm.focus();
-    }
-  }
-  public onEnterPaymentMode(event): void {
-    if (event.which === 13) {
-      // this.Paymentterm.nativeElement.focus();
-      if (this.TaxNature1) this.TaxNature1.focus();
-    }
-  }
-  public onEnterTaxNature(event): void {
-    if (event.which === 13) {
+  // @ViewChild('SupplierId') SupplierId: MatSelect;
+  // @ViewChild('Freight1') Freight1: ElementRef;
 
-      this.itemid.nativeElement.focus();
-    }
-  }
+  // @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
+  // @ViewChild('PaymentMode') PaymentMode: MatSelect;
 
-  public onEnterPaymentTerm(event): void {
-    if (event.which === 13) {
+  // @ViewChild('Paymentterm') Paymentterm: MatSelect;
 
-      if (this.PaymentMode) this.PaymentMode.focus();
-    }
-  }
-  public onEnterItemName(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-    }
-  }
-  public onEnterQty(event): void {
-    if (event.which === 13) {
-      this.rate.nativeElement.focus();
-    }
-  }
-  public onEnterRate(event): void {
-    if (event.which === 13) {
-      this.dis.nativeElement.focus();
-    }
-  }
-  public onEnterDis(event): void {
-    if (event.which === 13) {
-      this.gst.nativeElement.focus();
-    }
-  }
-  public onEnterGST(event): void {
-    if (event.which === 13) {
-      this.mrp.nativeElement.focus();
-    }
-  }
-  public onEnterMRP(event): void {
-    if (event.which === 13) {
-      this.specification.nativeElement.focus();
-    }
-  }
-  public onEnterSpecification(event): void {
+  // @ViewChild('TaxNature1') TaxNature1: MatSelect;
+  // @ViewChild('itemid') itemid: ElementRef;
+  // @ViewChild('qty') qty: ElementRef;
+  // @ViewChild('rate') rate: ElementRef;
+  // @ViewChild('dis') dis: ElementRef;
+  // @ViewChild('gst') gst: ElementRef;
+  // @ViewChild('mrp') mrp: ElementRef;
+  // @ViewChild('specification') specification: ElementRef;
+  // add: boolean = false;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+  // @ViewChild('Warranty') Warranty: MatSelect;
+  // @ViewChild('Schedule') Schedule: MatSelect;
+
+  // @ViewChild('OtherTax') OtherTax: ElementRef;
+  // @ViewChild('Remark') Remark: ElementRef;
+
+  // public onEnterSupplier(event): void {
+  //   if (event.which === 13) {
+
+  //     // if (this.Freight) this.Freight.focus();
+  //     this.Freight1.nativeElement.focus();
+  //   }
+  // }
+
+
+  // public onEnterFreight(event): void {
+  //   if (event.which === 13) {
+  //     this.DeliveryDate1.nativeElement.focus();
+  //     // if (this.DeliveryDate) this.DeliveryDate.focus();
+  //   }
+  // }
+  // public onEnterDeliveryDate(event): void {
+  //   if (event.which === 13) {
+
+  //     if (this.Paymentterm) this.Paymentterm.focus();
+  //   }
+  // }
+  // public onEnterPaymentMode(event): void {
+  //   if (event.which === 13) {
+  //     // this.Paymentterm.nativeElement.focus();
+  //     if (this.TaxNature1) this.TaxNature1.focus();
+  //   }
+  // }
+  // public onEnterTaxNature(event): void {
+  //   if (event.which === 13) {
+
+  //     this.itemid.nativeElement.focus();
+  //   }
+  // }
+
+  // public onEnterPaymentTerm(event): void {
+  //   if (event.which === 13) {
+
+  //     if (this.PaymentMode) this.PaymentMode.focus();
+  //   }
+  // }
+  // public onEnterItemName(event): void {
+  //   if (event.which === 13) {
+  //     this.qty.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterQty(event): void {
+  //   if (event.which === 13) {
+  //     this.rate.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterRate(event): void {
+  //   if (event.which === 13) {
+  //     this.dis.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterDis(event): void {
+  //   if (event.which === 13) {
+  //     this.gst.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterGST(event): void {
+  //   if (event.which === 13) {
+  //     this.mrp.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterMRP(event): void {
+  //   if (event.which === 13) {
+  //     this.specification.nativeElement.focus();
+  //   }
+  // }
+  // public onEnterSpecification(event): void {
     
-    if (event.which === 13) {
-      this.add = true;
-      this.addbutton.focus();
-    }
-  }
+  //   if (event.which === 13) {
+  //     this.add = true;
+  //     this.addbutton.focus();
+  //   }
+  // }
 
-  public onEnterWarranty(event): void {
-    if (event.which === 13) {
+  // public onEnterWarranty(event): void {
+  //   if (event.which === 13) {
 
-      if (this.Schedule) this.Schedule.focus();
-    }
-  }
+  //     if (this.Schedule) this.Schedule.focus();
+  //   }
+  // }
 
-  public onEnterSchedule(event): void {
-    if (event.which === 13) {
-      this.OtherTax.nativeElement.focus();
-    }
-  }
+  // public onEnterSchedule(event): void {
+  //   if (event.which === 13) {
+  //     this.OtherTax.nativeElement.focus();
+  //   }
+  // }
 
-  public onEnterOtherTax(event): void {
-    if (event.which === 13) {
-      this.Remark.nativeElement.focus();
-    }
-  }
+  // public onEnterOtherTax(event): void {
+  //   if (event.which === 13) {
+  //     this.Remark.nativeElement.focus();
+  //   }
+  // }
   // public onEnterRemark(event): void {
   //   if (event.which === 13) {
   //     this.specification.nativeElement.focus();
@@ -870,107 +879,105 @@ PaymentList = [
   // }
 
 
-  gePharStoreList() {
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
-    });
-  }
+  // gePharStoreList() {
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.StoreList = data;
+  //     this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+  //     this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value;
+  //   });
+  // }
 
-  getSelectedObj(obj) {
-    // this.accountService
-    this.ItemID = obj.ItemId;
-    this.ItemName = obj.ItemName;
-    this.Qty = 1; //obj.BalanceQty;
+  // getSelectedObj(obj) {
+  //   // this.accountService
+  //   this.ItemID = obj.ItemId;
+  //   this.ItemName = obj.ItemName;
+  //   this.Qty = 1; //obj.BalanceQty;
 
-    if (this.Qty > 0) {
-      this.UOM = obj.UOM;
-      this.Rate = obj.PurchaseRate;
-      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
-      this.NetAmount = this.TotalAmount;
-      this.VatPercentage = obj.VatPercentage;
-      // this.CGSTPer =onj.CGSTPer;
-      this.GSTPer = obj.GSTPer;
-      this.GSTAmount = 0;
-      // this.NetAmount = obj.NetAmount;
-      // this.MRP = obj.MRP;
-      this.Specification = obj.Specification;
-    }
-    this.qty.nativeElement.focus();
-  }
-
-
+  //   if (this.Qty > 0) {
+  //     this.UOM = obj.UOM;
+  //     this.Rate = obj.PurchaseRate;
+  //     this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
+  //     this.NetAmount = this.TotalAmount;
+  //     this.VatPercentage = obj.VatPercentage;
+  //     // this.CGSTPer =onj.CGSTPer;
+  //     this.GSTPer = obj.GSTPer;
+  //     this.GSTAmount = 0;
+  //     // this.NetAmount = obj.NetAmount;
+  //     // this.MRP = obj.MRP;
+  //     this.Specification = obj.Specification;
+  //   }
+  //   this.qty.nativeElement.focus();
+  // }
 
 
-  onAdd() {
-    this.dsItemNameList.data = [];
-    this.chargeslist.push(
-      {
-        ItemID: this.ItemID,
-        ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
-        Qty: this.Qty || 0,
-        UOM: this.UOM,
-        Rate: this.Rate || 0,
-        TotalAmount: this.TotalAmount,
-        Dis: this.Dis || 0,
-        DiscAmount: this.DiscAmt,
-        VatAmount: this.VatAmount,
-        VatPer: this.VatPer,
-        CGSTPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
-        SGSTPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IGSTPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        GST: this.GSTPer || 0,
-        GSTAmount: this.GSTAmt || 0,
-        NetAmount: this.NetAmount,
-        MRP: this.MRP || 0,
-        Specification: this.Specification || '',
+  // onAdd() {
+  //   this.dsItemNameList.data = [];
+  //   this.chargeslist.push(
+  //     {
+  //       ItemID: this.ItemID,
+  //       ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
+  //       Qty: this.Qty || 0,
+  //       UOM: this.UOM,
+  //       Rate: this.Rate || 0,
+  //       TotalAmount: this.TotalAmount,
+  //       Dis: this.Dis || 0,
+  //       DiscAmount: this.DiscAmt,
+  //       VatAmount: this.VatAmount,
+  //       VatPer: this.VatPer,
+  //       CGSTPer: this.CgstPer,
+  //       CGSTAmt: this.CGSTAmt,
+  //       SGSTPer: this.SgstPer,
+  //       SGSTAmt: this.SGSTAmt,
+  //       IGSTPer: this.IgstPer,
+  //       IGSTAmt: this.IGSTAmt,
+  //       GST: this.GSTPer || 0,
+  //       GSTAmount: this.GSTAmt || 0,
+  //       NetAmount: this.NetAmount,
+  //       MRP: this.MRP || 0,
+  //       Specification: this.Specification || '',
 
 
 
-      });
+  //     });
 
-    this.dsItemNameList.data = this.chargeslist;
-    // this.ResetItem();
-    this._PurchaseOrder.userFormGroup.reset();
-    this.itemid.nativeElement.focus();
-    this.add = false;
-  }
+  //   this.dsItemNameList.data = this.chargeslist;
+  //   // this.ResetItem();
+  //   this._PurchaseOrder.userFormGroup.reset();
+  //   this.itemid.nativeElement.focus();
+  //   this.add = false;
+  // }
 
-  onChangeDiscountMode(event) {
+  // onChangeDiscountMode(event) {
     
-    if (event.value == 'true') {
+  //   if (event.value == 'true') {
 
-      if (parseFloat(this.GSTPer) > 0) {
+  //     if (parseFloat(this.GSTPer) > 0) {
 
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-      }
-    }
-    else if (event.value == 'false') {
+  //       this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+  //       this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+  //     }
+  //   }
+  //   else if (event.value == 'false') {
       
-      // if (parseFloat(this.GSTPer) > 0) {
-      let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      if (disc > 0) {
-        this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(4);
-        if (parseFloat(this.GSTPer) > 0) {
-          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-        }
-      } 
-      else {
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-      }
-    }
-  }
+  //     // if (parseFloat(this.GSTPer) > 0) {
+  //     let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
+  //     if (disc > 0) {
+  //       this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(4);
+  //       this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(4);
+  //       if (parseFloat(this.GSTPer) > 0) {
+  //         this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+  //         this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+  //       }
+  //     } 
+  //     else {
+  //       this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
+  //       this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+  //     }
+  //   }
+  // }
 
   newPurchaseorder(){
     this.chkNewGRN=1;
@@ -1010,12 +1017,70 @@ PaymentList = [
     });
   }
 
-  onVerify(){
+      
 
+
+  getPrint(el) {
+    
+    var m_data = {
+      "PurchaseID":10                   
+    }
+   console.log(m_data);
+    this._PurchaseOrder.getPrintPurchaseOrdert(m_data).subscribe(data => {
+        this.reportPrintObjList = data as PurchaseOrder[];
+        
+        this.reportPrintObj = data[0] as PurchaseOrder;
+        console.log(this.reportPrintObjList);
+        
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+      
+      })
+    
   }
 
 
+  print3() {
+    let popupWin, printContents;
+   
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.PurchaseOrderTemplate.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+    
+    popupWin.document.close();
+  }
 
+  onVerify(){
+
+  }
   onClose() { }
   onClear() { }
 }
@@ -1147,12 +1212,25 @@ export class PurchaseOrder {
   TotalAmount: number;
   PurchaseId: any;
   FromStoreId: boolean;
+  ItemTotalAmount:any;
+  ItemDiscAmount:any;
+  DiscPer:any;
+  Address:any;
+  Phone:any;
+  Fax:any;
+  Email:any;
+  GSTNo:any;
+  ItemName:any;
+  UnitofMeasurementName:any;
+  Qty:any;
+  Rate:any;
+  CGSTPer:any;
+  SGSTPer:any;
+  IGSTPer:any;
+  GrandTotalAmount:any;
+  VatAmount:any;
 
-  /**
-   * Constructor
-   *
-   * @param PurchaseOrder
-   */
+  
   constructor(PurchaseOrder) {
     {
       this.PurchaseNo = PurchaseOrder.PurchaseNo || 0;

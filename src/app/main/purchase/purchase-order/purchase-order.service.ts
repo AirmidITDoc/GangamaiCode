@@ -40,7 +40,7 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
       purchaseId:[''],
       Freight:[''],
-      StoreId:[''],
+      FromStoreId:[''],
       SupplierId:[''],
       PaymentMode:[''],
       PaymentTerm:[''],
@@ -135,6 +135,9 @@ public InsertPurchaseUpdate(Param){
 
 public getPurchaseOrderDetail(Param){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForPurchasepdate",Param);
+}
+public getPrintPurchaseOrdert(Param){
+  return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
 }
 
 populateForm(employee) {

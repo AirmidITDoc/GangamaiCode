@@ -38,10 +38,20 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                        <mat-form-field appearance="outline" fxFlex="25%">
-                                            <!-- <mat-label>MEDICAL RECORD</mat-label> -->
+                                        <!-- <mat-form-field appearance="outline" fxFlex="25%">
+                                           
                                             <mat-select formControlName="StoreId" name="StoreId"
                                                 [disabled]="disableSelect.value">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of StoreList" [value]="m">
+                                                    {{m.StoreName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-label>From Store</mat-label>
+                                            <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of StoreList" [value]="m">
                                                     {{m.StoreName}}
@@ -209,7 +219,7 @@
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="Qty" name="Qty" #qty required type="number"
                                                 (keyup)="calculateTotalAmount()" (keydown)="onEnterQty($event)"
-                                                formControlName="Qty" id="Qty">
+                                                formControlName="Qty" id="Qty" required>
                                         </mat-form-field>&nbsp;
 
 
@@ -274,11 +284,9 @@
                                         </mat-form-field>&nbsp;&nbsp;
 
 
-                                        <div matTooltip="Select Item name to enable this button!!"
-                                            [matTooltipDisabled]="!_PurchaseOrder.userFormGroup.invalid"
-                                            [matTooltipPosition]="'above'">
+                                        <div matTooltip="Select Item name to enable this button!!">
                                             <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                class="add-btn" [disabled]="!add" (click)="onAdd($event)">
+                                                class="add-btn" [disabled]="_PurchaseOrder.userFormGroup.invalid" (click)="onAdd($event)">
                                                 <mat-icon> add </mat-icon>
                                                 Add
                                             </button>

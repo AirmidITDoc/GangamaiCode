@@ -3,36 +3,36 @@ app-purchase-order {
 
   
     .table1 {
-      height: 300px !important;
+      height: 290px !important;
       width: 100%;
     }
 
     .table2 {
-      height: 180px !important;
+      height: 290px !important;
       width:100%;
 
-      .mat-header-row {
-        width:200;
-        //max-width: 1600px;
-        min-width: 1000px;
-        min-height: 30px;
-        background-color: blue;
-      }
+      // .mat-header-row {
+      //   width:1400px;
+      //   //max-width: 1600px;
+      //   min-width: 1000px;
+      //   min-height: 30px;
+      //   background-color: blue;
+      // }
     
-      .mat-row {
-        width: 100%;
-        //max-width: 1600px;
-        min-width: 1000px;
-        min-height: 30px;
+      // .mat-row {
+      //   width: 100%;
+      //   //max-width: 1600px;
+      //   min-width: 1000px;
+      //   min-height: 30px;
        
-      }
+      // }
   
       
 
       .mat-column-ItemName {
-        width: 760px;
-        max-width: 760px;
-        min-width: 760px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
         text-align: left;
         white-space: nowrap; 
         overflow: hidden;
@@ -107,21 +107,21 @@ app-purchase-order {
       grid-template-columns: auto 1fr;
       grid-template-rows: auto;
     }
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-      background-color: blue;
-    }
+    // .mat-header-row {
+    //   width:1400px;
+    //   //max-width: 1600px;
+    //   min-width: 1400px;
+    //   min-height: 30px;
+    //   background-color: blue;
+    // }
   
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
+    // .mat-row {
+    //   width: 100%;
+    //   //max-width: 1600px;
+    //   min-width: 1400px;
+    //   min-height: 30px;
      
-    }
+    // }
   
     .mat-column-FromStoreId {
       width: 110px;
@@ -162,9 +162,9 @@ app-purchase-order {
     }
 
     .mat-column-StoreName {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
       text-align: left;
       text-align: left;
       white-space: nowrap; 
@@ -175,29 +175,33 @@ app-purchase-order {
     }
 
     .mat-column-SupplierName {
-      width: 400px;
-      max-width: 400px;
-      min-width: 400px;
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
       text-align: left;
-      text-align: left;
-      white-space: nowrap; 
+      justify-content: left;
+      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; 
+      text-overflow: ellipsis;
       overflow: hidden !important;
+      display: inline-flex;
+      display: inline;
+      margin-right: 20px;
+      margin-top: 20px;
      
     }
 
     .mat-column-TotalAmount {
-      width: 140px;
-      max-width: 140px;
-      min-width: 140px;
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
       text-align: center;
     }
 
     .mat-column-Action {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
       text-align: left;
     }
 
@@ -293,4 +297,16 @@ app-purchase-order {
 // }
 
 }
+
+.header1{
+  border: 1px solid black;
+  width: 500px;
+  height: 70px;
+  background-color:red;
+  border-bottom-left-radius: 15px;
+
+}
+ 
+ 
+ 
 

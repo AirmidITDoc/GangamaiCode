@@ -131,7 +131,6 @@ app-update-purchaseorder {
       overflow: hidden;
       text-overflow: ellipsis; 
       overflow: hidden !important;
-     
     }
 
     .mat-column-SupplierName {
@@ -162,15 +161,19 @@ app-update-purchaseorder {
     }
 
     .mat-column-ItemName {
-      width: 460px;
-      max-width: 460px;
-      min-width: 460px;
+      width: 250px;
+      max-width: 250px;
+      min-width: 250px;
       text-align: left;
-      white-space: nowrap; 
+      justify-content: left;
+      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; 
+      text-overflow: ellipsis;
       overflow: hidden !important;
-      justify-content:left; 
+      display: inline-flex;
+      display: inline;
+      margin-right: 20px;
+      padding-top: 8px;
     }
     
     .mat-column-Qty {
