@@ -53,8 +53,8 @@ export class BrowsSalesBillComponent implements OnInit {
 
   displayedColumns: string[] = [
     'action',
-     'action1',
-     'action2',
+    //  'action1',
+    //  'action2',
     'payment',
     'Date',
     'SalesNo',
@@ -83,8 +83,8 @@ export class BrowsSalesBillComponent implements OnInit {
   ]
   displayedColumns3: string[] = [
     'action',
-    'action1',
-    'action2',
+    // 'action1',
+    // 'action2',
     'SalesDate',
     'SalesNo',
     'RegNo',

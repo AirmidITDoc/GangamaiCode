@@ -146,10 +146,17 @@
                                                             (click)="getPrint2(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
-                                                       
+                                                        <button mat-icon-button matTooltip="View As Pdf"
+                                                            (click)="viewSalesPdf(contact)">
+                                                            <mat-icon>visibility</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                        (click)="getWhatsappshare(contact)">
+                                                        <img width="100" height="30" src="assets/images/logos/WhatsApp.jpg">
+                                                    </button>
                                                     </mat-cell>
                                                 </ng-container>
-                                                <ng-container matColumnDef="action1" stickyEnd>
+                                                <!-- <ng-container matColumnDef="action1" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Action
                                                     </mat-header-cell>
@@ -172,7 +179,7 @@
                                                             <img src="F:\AirmidHIMS\GangamaiCode\src\assets\images\whatsapp-3d-icon-01.jpg" style="height:50px;width: 50px;"/>
                                                         </button>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <!-- <ng-container matColumnDef="payment" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
@@ -187,7 +194,7 @@
 
                                                 <ng-container matColumnDef="payment" sticky>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">Payment
+                                                        style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-icon *ngIf="contact.PaidType=='Credit' "
@@ -574,12 +581,21 @@
                                                             <mat-icon (click)="getSalesRetPrint(row)">print</mat-icon>
                                                         </button>
                                                         
+                                                        <button mat-icon-button matTooltip="View Bill in PDF">
+                                                            <mat-icon (click)="ViewSalesRetPdf(row)">visibility</mat-icon>
+                                                        </button>
+
+                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                        (click)="getWhatsappshare(contact)">
+                                                        <img width="100" height="30" src="assets/images/logos/WhatsApp.jpg">
+                                                    </button>
+
                                                     </mat-cell>
                                                 </ng-container>
 
 
                                                 
-                                                <ng-container matColumnDef="action1" stickyEnd>
+                                                <!-- <ng-container matColumnDef="action1" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Action
                                                     </mat-header-cell>
@@ -601,7 +617,7 @@
                                                             <mat-icon (click)="WhatsSalesRetPdf(row)">Whatsapp</mat-icon>
                                                         </button>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="SalesDate" sticky>
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
@@ -1361,7 +1377,7 @@
                     <table style="width: 100%;font-size:10px;">
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
-                            Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill
+                            Bill No: {{reportPrintObjList[0]?.SalesReturnNo}} <span style="margin-left: 10px;">Bill
                                 Date:{{reportPrintObjList[0]?.Date}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
