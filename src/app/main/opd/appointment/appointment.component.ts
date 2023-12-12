@@ -1837,38 +1837,40 @@ export class AppointmentComponent implements OnInit {
         );
       })
   }
-  CreateFormData (obj: any, formData: FormData, subKeyStr = '')  {
+  CreateFormData(obj: any, formData: FormData, subKeyStr = '') {
     for (const i in obj) {
-        const value = obj[i]; let subKeyStrTrans = i;
-        if (subKeyStr) {
-            if (i.indexOf(' ') > -1 || !isNaN(parseInt(i)))
-                subKeyStrTrans = subKeyStr + '[' + i + ']';
-            else
-                subKeyStrTrans = subKeyStr + '.' + i;
-        }
-        if (typeof (value) === 'object' && !(value instanceof Date) && !(value instanceof File)) {
-            this.CreateFormData(value, formData, subKeyStrTrans);
-        }
-        else {
-            formData.append(subKeyStrTrans, value ?? '');
-        }
+      const value = obj[i]; let subKeyStrTrans = i;
+      if (subKeyStr) {
+        if (i.indexOf(' ') > -1 || !isNaN(parseInt(i)))
+          subKeyStrTrans = subKeyStr + '[' + i + ']';
+        else
+          subKeyStrTrans = subKeyStr + '.' + i;
+      }
+      if (typeof (value) === 'object' && !(value instanceof Date) && !(value instanceof File)) {
+        this.CreateFormData(value, formData, subKeyStrTrans);
+      }
+      else {
+        formData.append(subKeyStrTrans, value ?? '');
+      }
     }
-}
+  }
 
   onSubmitImgFiles() {
+    debugger
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.imgDataSource.data.length; i++) {
       let file = new File([
         new Blob([this.imgDataSource.data[i].url])
-      ], this.imgDataSource.data[i].name,{type:'image/jpeg'});
+      ], this.imgDataSource.data[i].name, { type: 'image/jpeg' });
       data.push({
-        Id:"0",OPD_IPD_ID: 1, OPD_IPD_Type: 2, DocFile: file,FileName:this.imgDataSource.data[i].name
+        Id: "0", OPD_IPD_ID: 1, OPD_IPD_Type: 2, DocFile: file, FileName: this.imgDataSource.data[i].name
       });
     }
     const formData = new FormData();
-    let finalData={Files:data};
+    let finalData = { Files: data };
     this.CreateFormData(finalData, formData);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
+      console.log(data)
       if (data) {
         Swal.fire("Document uploaded Successfully  ! ");
       }

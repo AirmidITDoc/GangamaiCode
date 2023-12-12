@@ -150,6 +150,8 @@ export class SalesComponent implements OnInit {
   // payment code
   DiscId: any;
 
+  DiffNetRoundAmt:any=0;
+  roundoffAmt: any;
 
   patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
@@ -351,8 +353,8 @@ export class SalesComponent implements OnInit {
       referenceNo5: [],
 
       paidAmountController: [],
-      balanceAmountController: []
-
+      balanceAmountController: [],
+      roundoffAmt: []
       // paymentType6: [],
       // amount6: [],
       // bankName6: [],
@@ -947,7 +949,8 @@ export class SalesComponent implements OnInit {
       BalanceAmt: '',
       CashPay: ['CashPay'],
       referanceNo: '',
-      RegID: ''
+      RegID: '',
+      roundoffAmt: '',
       // Credit: [0]
     });
   }
@@ -1166,6 +1169,7 @@ export class SalesComponent implements OnInit {
           DiscPer: this._salesService.IndentSearchGroup.get('DiscPer').value || 0,
           DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
+          RoundNetAmt:Math.round(this.NetAmt),
           StockId: this.StockId,
           VatPer: this.VatPer,
           VatAmount: this.GSTAmount,
@@ -1392,7 +1396,9 @@ export class SalesComponent implements OnInit {
     this.FinalTotalAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
     this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-    // this.TotalMarginAmt=(element.reduce((sum, { MarginAmt }) => sum += +(MarginAmt || 0), 0)).toFixed(2);
+    this.roundoffAmt= (element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+
+    this.DiffNetRoundAmt= (parseFloat( this.FinalNetAmount) - parseFloat(this.roundoffAmt)).toFixed(2);
     return this.FinalNetAmount;
   }
   getMarginSum(element) {
@@ -2762,6 +2768,7 @@ export class Printsal {
   TotalAmount: any;
   GrossAmount: any;
   NetAmount: any;
+  RoundNetAmt: any;
   VatPer: any;
   VatAmount: any;
   DiscAmount: any;
@@ -2830,7 +2837,7 @@ export class Printsal {
     this.TotalAmount = Printsal.TotalAmount || "";
     this.GrossAmount = Printsal.GrossAmount || "";
     this.NetAmount = Printsal.NetAmount || "";
-
+    this.RoundNetAmt =Printsal.RoundNetAmt || "";
     this.VatPer = Printsal.VatPer || '';
     this.VatAmount = Printsal.VatAmount || 0;
     this.DiscAmount = Printsal.DiscAmount || "";

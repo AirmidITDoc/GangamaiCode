@@ -103,13 +103,16 @@ export class BrowsSalesBillService {
     return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 
-  public getSalesDailyCollectionSummaryNew(FromDate,ToDate,StoreId,AddedById){
+  public getSalesDailyCollectionSummary(FromDate,ToDate,StoreId,AddedById){
     return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection_Summary?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
-  public getSalesDetailSummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
-    return this._httpClient.get("Pharmacy/view-SalesSummary_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
-  }
 
+  public getSalesDailyCollectionSummaryDayuserwise(FromDate,ToDate,StoreId,AddedById){
+    return this._httpClient.get("Pharmacy/view-PharCollectionSummaryDayanduserwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+  public getSalesDetailSummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
+    return this._httpClient.get("Pharmacy/view-PharCollectionSummaryDayanduserwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
+  }
 
 
 public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId){
