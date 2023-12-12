@@ -16,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ItemNameList, PurchaseItemList, PurchaseOrder } from '../purchase-order.component';
 import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -25,6 +26,24 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
   animations: fuseAnimations,
 })
 export class UpdatePurchaseorderComponent implements OnInit {
+
+  displayedColumns2 = [
+ 
+    // 'ItemID',
+    'ItemName',
+    'Qty',
+    'UOM',
+    'Rate',
+    'TotalAmount',
+    'Dis',
+    'DiscAmount',
+    'GST',
+    'GSTAmount',
+    'NetAmount',
+    'MRP',
+    'Specification',
+    'Action',
+  ];
 
   sIsLoading: string = '';
   isLoading = true;
@@ -93,6 +112,20 @@ export class UpdatePurchaseorderComponent implements OnInit {
   registerObj = new ItemNameList({});
   ItemObj: IndentList;
 
+  ItemName: any;
+  UOM: any;
+  BalanceQty: any;
+  Rate: any;
+  TotalAmount: any;
+  Dis: any = 0;
+  GST: any = 0;
+  NetAmount: any;
+  Specification: string;
+  renderer: any;
+  disableTextbox: boolean;
+  DiscAmount: any = 0;
+  GSTAmount: any = 0;
+
 
   
   FreightList = [
@@ -122,8 +155,6 @@ PaymentModeList = [
   {id: 5, name: "ECS"}
 ];
 
-
-
 TaxNatureList = [
   { id: 1, name: "EXCISE DUTY 10.3 PERCENT CST13.5 PER" },
   { id: 2, name: "INCLUSIVE" },
@@ -145,41 +176,8 @@ PaymentList = [
   dsItemNameList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
-
-  displayedColumns2 = [
-    'Action',
-    // 'ItemID',
-    'ItemName',
-    'Qty',
-    'UOM',
-    'Rate',
-    'TotalAmount',
-    'Dis',
-    'DiscAmount',
-    'GST',
-    'GSTAmount',
-    'NetAmount',
-    'MRP',
-    'Specification',
-  ];
-
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  ItemName: any;
-  UOM: any;
-  BalanceQty: any;
-  Rate: any;
-  TotalAmount: any;
-  Dis: any = 0;
-  GST: any = 0;
-  NetAmount: any;
-  Specification: string;
-  renderer: any;
-  disableTextbox: boolean;
-  DiscAmount: any = 0;
-  GSTAmount: any = 0;
 
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
@@ -194,6 +192,7 @@ PaymentList = [
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr : ToastrService,
     private accountService: AuthenticationService,
 
 
@@ -208,11 +207,11 @@ PaymentList = [
          this.setDropdownObjs1();
     }
     
-    this.getTostoreSearchCombo();
-    this.getFromStoreSearchList();
+    // this.getTostoreSearchCombo();
+    // this.getFromStoreSearchList();
    
     this.getSupplierSearchCombo();
-    this.getToStoreSearchList();
+    // this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
@@ -222,8 +221,6 @@ PaymentList = [
 
   
   setDropdownObjs1() {
-   
- 
     const toSelectPaymentTerm = this.PaymentList.find(c => c.id == this.registerObj.PaymentTermId);
     this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').setValue(toSelectPaymentTerm);
 
@@ -243,24 +240,6 @@ PaymentList = [
     
   }
 
-  getOptionText(option) {
-
-    if (!option)
-      return '';
-    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
-
-  }
-
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
-    }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
-  }
-
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -270,8 +249,102 @@ PaymentList = [
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  
+  gePharStoreList() {
+    var vdata = {
+      Id: this.accountService.currentUserValue.user.storeId
+    }
+    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').setValue(this.StoreList[0]);
+     // this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
+    });
+  }
+
+  getSupplierSearchCombo() {
+  
+    this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
+      this.SupplierList = data;
+      //console.log(data);
+      this.optionsMarital = this.SupplierList.slice();
+      this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+      );
+
+      if (this.data) {
+        
+        const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+        this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(ddValue);
+      }
+
+    });
+  }
 
 
+  onAdd(event) {
+    
+    this.dsItemNameList.data = [];
+
+    if (this.chargeslist.length ==0){
+      this.chargeslist=this.dsTempItemNameList.data
+    }
+    this.chargeslist.push(
+      {
+        ItemID: this.ItemID,
+        ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
+        Qty: this.Qty || 0,
+        UOM: this.UOM || 0,
+        Rate: (this.Rate).toFixed(4) || 0,
+        TotalAmount: this.TotalAmount || 0,
+        Dis: this.Dis || 0,
+        DiscAmount: this.DiscAmt || 0,
+        VatAmount: this.VatAmount|| 0,
+        VatPer: this.DiscAmt|| 0,
+        CGSTPer: this.CgstPer,
+        CGSTAmt: this.CGSTAmt ||0,
+        SGSTPer: this.SgstPer,
+        SGSTAmt: this.SGSTAmt,
+        IGSTPer: this.IgstPer,
+        IGSTAmt: this.IGSTAmt,
+        GST: this.GSTPer || 0,
+        GSTAmount: this.GSTAmt|| 0,
+        NetAmount: this.NetAmount,
+        MRP: this.MRP || 0,
+        Specification: this.Specification || '',
+
+      });
+     
+
+    this.dsItemNameList.data = this.chargeslist;
+    this._PurchaseOrder.userFormGroup.reset();
+    this.itemid.nativeElement.focus();
+    this.add = false;
+    
+  }
+
+  
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsItemNameList.data = [];
+      this.dsItemNameList.data = this.chargeslist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  getOptionText(option) {
+
+    if (!option)
+      return '';
+    return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+
+  }
+
+   
   getOldPurchaseOrder(el) {
 debugger
     var Param = {
@@ -313,18 +386,60 @@ debugger
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-      "StoreId": this._PurchaseOrder.PurchaseStoreform.get('StoreId').value.storeid || 0
+      "StoreId":this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').value.storeid 
     }
-    if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) {
+    console.log(m_data);
+    // if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) 
       this._PurchaseOrder.getItemList(m_data).subscribe(data => {
         this.filteredOptions = data;
+        console.log( this.filteredOptions )
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
       });
+    
+  }
+  
+  getItemNameList() {
+    
+    var Param = {
+
+      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
+      "StoreId": this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').value.storeid  || 0
     }
+     console.log(Param);
+    this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
+      this.filteredOptions = data;
+       console.log( this.filteredOptions )
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+  getSelectedObj(obj) {
+    this.accountService
+    this.ItemID = obj.ItemId;
+    this.ItemName = obj.ItemName;
+    this.Qty = 1; //obj.BalanceQty;
+
+    if (this.Qty > 0) {
+      this.UOM = obj.UOM;
+      this.Rate = obj.PurchaseRate;
+      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
+      this.NetAmount = this.TotalAmount;
+      this.VatPercentage = obj.VatPercentage;
+      // this.CGSTPer =onj.CGSTPer;
+      this.GSTPer = obj.GSTPer;
+      this.GSTAmount = 0;
+      // this.NetAmount = obj.NetAmount;
+       this.MRP = obj.UnitMRP;
+      this.Specification = obj.Specification;
+    }
+    this.qty.nativeElement.focus();
   }
 
 
@@ -490,19 +605,28 @@ debugger
     console.log(submitData);
     this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            let m = response;
-            // this._matDialog.closeAll();
-            this.OnReset();
-
-          }
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
+        // Swal.fire('Save Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+        //   if (result.isConfirmed) {
+        //     let m = response;
+        //     // this._matDialog.closeAll();
+        //     this.OnReset();
+
+        //   }
+        // });
       } else {
-        Swal.fire('Error !', 'Purchase not saved', 'error');
+        this.toastr.error('New Purchase  Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       // this.isLoading = '';
-    });
+    },error => {
+      this.toastr.error('New Purchase Order Data not saved !, Please check API error..', 'Error !', {
+       toastClass: 'tostr-tost custom-toast-error',
+     });
+   });
   // }
   // else{
 
@@ -680,24 +804,33 @@ debugger
   toggleDisable() {
     this.disableTextbox = !this.disableTextbox;
   }
+    // getFromStoreSearchList() {
+  //   var data = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
+  //     this.FromStoreList = data;
+  //     this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+  //   });
+  // }
 
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
     // this.nextPage$.next();
   }
 
-  getToStoreSearchList() {
+  // getToStoreSearchList() {
 
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    console.log(vdata);
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.ToStoreList = data;
-      console.log(this.ToStoreList);
-      this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').setValue(this.Store1List[0]);
-    });
-  }
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   console.log(vdata);
+  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.ToStoreList = data;
+  //     console.log(this.ToStoreList);
+  //     this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+  //   });
+  // }
 
 
   getOptionTextSupplier(option) {
@@ -715,43 +848,25 @@ debugger
 
   }
 
-  getSupplierSearchCombo() {
-  
-    this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
-      this.SupplierList = data;
-      console.log(data);
-      this.optionsMarital = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
+ 
 
-      if (this.data) {
-        
-        const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
-        this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(ddValue);
-      }
+  // getTostoreSearchCombo() {
+  //   this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
+  //     this.ToStoreList = data;
+  //     console.log(data);
+  //     this.optionsPayment = this.ToStoreList.slice();
+  //     this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
+  //     );
 
-    });
-  }
-
-  getTostoreSearchCombo() {
-    this._PurchaseOrder.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-      console.log(data);
-      this.optionsPayment = this.ToStoreList.slice();
-      this.filteredoptionsPayment = this._PurchaseOrder.PurchaseSearchGroup.get('ToStoreId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterPayment(value) : this.ToStoreList.slice()),
-      );
-
-      // if (this.data) {
-      //   
-      //   const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
-      //   this._PurchaseOrder.PurchaseStoreform.get('ToStoreId').setValue(ddValue);
-      // }
-    });
-  }
+  //     // if (this.data) {
+  //     //   
+  //     //   const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+  //     //   this._PurchaseOrder.PurchaseStoreform.get('ToStoreId').setValue(ddValue);
+  //     // }
+  //   });
+  // }
 
   // getItemNameSearchCombo() {
   //   var Param = {
@@ -793,35 +908,9 @@ debugger
     }
   }
 
-  getFromStoreSearchList() {
-    var data = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
-      this.FromStoreList = data;
-      this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-    });
-  }
 
 
-  getItemNameList() {
-    
-    var Param = {
 
-      "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
-      "StoreId": this._PurchaseOrder.userFormGroup.get("StoreId").value.StoreId || 0
-    }
-    // console.log(Param);
-    this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
-      this.filteredOptions = data;
-      // console.log( this.filteredOptions )
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
 
 
 
@@ -953,82 +1042,13 @@ debugger
   }
 
 
-  gePharStoreList() {
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
-    });
-  }
 
-  getSelectedObj(obj) {
-    this.accountService
-    this.ItemID = obj.ItemId;
-    this.ItemName = obj.ItemName;
-    this.Qty = 1; //obj.BalanceQty;
-
-    if (this.Qty > 0) {
-      this.UOM = obj.UOM;
-      this.Rate = obj.PurchaseRate;
-      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
-      this.NetAmount = this.TotalAmount;
-      this.VatPercentage = obj.VatPercentage;
-      // this.CGSTPer =onj.CGSTPer;
-      this.GSTPer = obj.GSTPer;
-      this.GSTAmount = 0;
-      // this.NetAmount = obj.NetAmount;
-      // this.MRP = obj.MRP;
-      this.Specification = obj.Specification;
-    }
-    this.qty.nativeElement.focus();
-  }
+ 
 
 
 
 
-  onAdd(event) {
-    
-    this.dsItemNameList.data = [];
 
-    if (this.chargeslist.length ==0){
-      this.chargeslist=this.dsTempItemNameList.data
-    }
-    this.chargeslist.push(
-      {
-        ItemID: this.ItemID,
-        ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
-        Qty: this.Qty || 0,
-        UOM: this.UOM || 0,
-        Rate: (this.Rate).toFixed(4) || 0,
-        TotalAmount: this.TotalAmount || 0,
-        Dis: this.Dis || 0,
-        DiscAmount: this.DiscAmt || 0,
-        VatAmount: this.VatAmount|| 0,
-        VatPer: this.DiscAmt|| 0,
-        CGSTPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt ||0,
-        SGSTPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IGSTPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        GST: this.GSTPer || 0,
-        GSTAmount: this.GSTAmt|| 0,
-        NetAmount: this.NetAmount,
-        MRP: this.MRP || 0,
-        Specification: this.Specification || '',
-
-      });
-     
-
-    this.dsItemNameList.data = this.chargeslist;
-    this._PurchaseOrder.userFormGroup.reset();
-    this.itemid.nativeElement.focus();
-    this.add = false;
-    
-  }
 
   onChangeDiscountMode(event) {
     
