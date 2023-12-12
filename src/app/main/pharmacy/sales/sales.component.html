@@ -743,7 +743,13 @@
                                                                 [(ngModel)]="BalAmount" placeholder="0" type="number">
                                                         </mat-form-field>&nbsp;
 
+                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                            <mat-label>Round off Amount</mat-label>
+                                                            <input matInput formControlName="roundoffAmt"
+                                                                [(ngModel)]="roundoffAmt" readonly>
+                                                        </mat-form-field> &nbsp;
 
+                                                        <label>{{DiffNetRoundAmt}}</label>
                                                         <!-- <div style="float:right;">
                                                             <mat-radio-group aria-label="Select an option" formControlName="CashPay"
                                                                 style="margin-top: 12px;">
@@ -1218,6 +1224,7 @@
                                                     <input matInput formControlName="balanceAmountController"
                                                         [(ngModel)]="balanceAmt" readonly>
                                                 </mat-form-field>
+                                               
                                             </div>
                                         </div>
 

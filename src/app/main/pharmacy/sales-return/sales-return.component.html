@@ -832,7 +832,7 @@
                     <table style="width: 100%;font-size:10px;">
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
-                            Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill
+                            Bill No: {{reportPrintObjList[0]?.SalesReturnNo}} <span style="margin-left: 10px;">Bill
                                 Date:{{reportPrintObjList[0]?.Date}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
@@ -883,7 +883,7 @@
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.ItemName}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
-                padding: 0;height: 15px;">{{'-'}}</td>
+                padding: 0;height: 15px;">{{item?.ConversionFactor}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
                 padding: 0;height: 15px;">{{item?.BatchNo}}</td>
                 <td style="border: 1px solid black;vertical-align: top;
@@ -931,7 +931,7 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Total GST</span>
                         <span style="margin:0 5px">:</span>
-                        <span style="margin:0 5px">₹ {{reportPrintObjList[0]?.BillVatAmount}}</span>
+                        <span >₹ {{reportPrintObjList[0]?.BillVatAmount}}</span>
                     </div>
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Round off</span>

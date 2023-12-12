@@ -216,9 +216,9 @@ export class PharmacyReportComponent implements OnInit {
     } else if (this.ReportName == 'Sales Credit Report') {
       this.viewgetSalesCreditReportPdf();
     }
-    // else if (this.ReportName == 9) {
-    //   this.viewgetSalesCreditReportPdf();
-    // }
+    else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
+      this.viewgetPharCollsummDayuserwiseReportPdf();
+    }
   }
 
 
@@ -248,7 +248,28 @@ export class PharmacyReportComponent implements OnInit {
   viewDailyCollectionSummaryPdf() {
 
 
-    this._BrowsSalesBillService.getSalesDailyCollectionSummaryNew(
+    this._BrowsSalesBillService.getSalesDailyCollectionSummary(
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this._loggedUser.currentUserValue.user.storeId,0
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pharma Daily Collection Summary Viewer"
+          }
+        });
+    });
+  }
+
+  viewgetPharCollsummDayuserwiseReportPdf() {
+
+
+    this._BrowsSalesBillService.getSalesDailyCollectionSummaryDayuserwise(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this._loggedUser.currentUserValue.user.storeId,0
