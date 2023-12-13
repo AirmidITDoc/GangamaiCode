@@ -526,18 +526,27 @@ debugger
     console.log(submitData);
     this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            let m = response;
-            // this._matDialog.closeAll();
-            // this.OnReset()
-          }
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
+        // Swal.fire('Update Purchase Order!', 'Record Generated Successfully !', 'success').then((result) => {
+        //   if (result.isConfirmed) {
+        //     let m = response;
+        //     // this._matDialog.closeAll();
+        //     // this.OnReset()
+        //   }
+        // });
       } else {
-        Swal.fire('Error !', 'Purchase not Updated', 'error');
+        this.toastr.error('New Purchase  Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       // this.isLoading = '';
-    });
+    },error => {
+      this.toastr.error('New Purchase Order Data not Updated !, Please check API error..', 'Error !', {
+       toastClass: 'tostr-tost custom-toast-error',
+     });
+   });
   }
   
   OnSavenew() {

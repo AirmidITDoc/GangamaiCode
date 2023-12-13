@@ -2,18 +2,31 @@
 
 app-good-receiptnote {
     .table1 {
-      height: 280px !important;
+      height: 290px !important;
       width: 100%;
+
+      .mat-header-row {
+        width: 100%;
+        min-width: 1700px;  
+        min-height: 30px; 
+        background-color: blue;
+      }
+  
+      .mat-row {
+      width: 100%;
+      min-width: 1700px;  
+      min-height: 30px; 
+      }
     }
 
     .table2 {
-      height: 220px !important;
+      height: 290px !important;
       width: 100%;
 
       .mat-column-ItemName {
-        width: 330px;
-        max-width: 330px;
-        min-width: 330px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
         text-align: left;
         white-space: nowrap; 
         overflow: hidden;
@@ -21,6 +34,19 @@ app-good-receiptnote {
         overflow: hidden !important;
       justify-content:left; 
       }
+      .mat-header-row {
+        width: 100%;
+        min-width: 1400px;  
+        min-height: 30px; 
+        background-color: blue;
+      }
+  
+      .mat-row {
+      width: 100%;
+      min-width: 1400px;  
+      min-height: 30px; 
+      }
+    
       
     }
     .table3 {
@@ -39,14 +65,14 @@ app-good-receiptnote {
   
     .mat-header-row {
       width: 100%;
-      min-width: 1800px;  
+      min-width: 1700px;  
       min-height: 30px; 
       background-color: blue;
     }
 
     .mat-row {
     width: 100%;
-    min-width: 1800px;  
+    min-width: 1700px;  
     min-height: 30px; 
     }
   
@@ -65,16 +91,16 @@ app-good-receiptnote {
     }
   
     .mat-column-InvoiceNo {
-      width: 170px;
-      max-width: 170px;
-      min-width: 170px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: left;
     }
     
     .mat-column-SupplierName {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
+      width: 200px;
+      max-width: 200px;
+      min-width: 200px;
       text-align: left;
       white-space: nowrap; 
       overflow: hidden;
@@ -182,9 +208,9 @@ app-good-receiptnote {
   }
  
   .mat-column-BatchExpDate {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
     text-align: left;
   }
   .mat-column-ReceiveQty {
@@ -255,9 +281,9 @@ app-good-receiptnote {
     text-align: left;
   }
    .mat-column-ItemName {
-    width: 230px;
-    max-width: 230px;
-    min-width: 230px;
+    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -306,9 +332,9 @@ app-good-receiptnote {
     text-align: left;
   }
   .mat-column-MRP {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
     text-align: left;
   }
   .mat-column-Rate {

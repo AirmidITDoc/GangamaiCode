@@ -248,7 +248,7 @@
                                                                     style="color: white;">Action
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let row">
-                                                                    <button mat-icon-button (click)="getPrint()">
+                                                                    <button mat-icon-button (click)="getPrint(row)">
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onEdit(row)">
@@ -478,11 +478,11 @@
     <hr>
 
     <table class="table6" style="width: 100%;  text-align: right;border-spacing: 1px;border-collapse: separate;border-color: gray;">
-        <tr style="font-size:12px;">
+        <tr style="font-size:15px;">
 
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px; 
-                 background-color: red; border-top-left-radius: 10px;color: white;">
+                 background-color: red; border-top-left-radius: 20px;color: white;">
                 Sr.No</td>
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;
@@ -508,53 +508,147 @@
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 background-color: red;color: white;">
-                Disc%</td>
+                Disc</td>
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 background-color: red;color: white;">
-                CGST </td>
-            <td
+                GST </td>
+            <!-- <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 background-color: red;color: white;">
                 SGST</td>
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 background-color: red;color: white;">
-                IGST</td>
+                IGST</td> -->
             <td
                 style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-               background-color: red; border-top-right-radius: 10px;color: white;">
+               background-color: red; border-top-right-radius: 20px;color: white;">
                 Net Amount</td>
         </tr>
-        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:11px;">
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;border-bottom-left-radius: 10px;">{{indx + 1}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{indx + 1}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;text-align:left;
             padding: 15px;height: 20px;">{{item?.ItemName}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.UnitofMeasurementName}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.Qty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.Rate}}</td>
+            padding: 15px;height: 20px;">{{item?.Rate.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.ItemTotalAmount}}</td>
+            padding: 15px;height: 20px;">{{item?.ItemTotalAmount.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.DiscPer }}</td>
+            padding: 15px;height: 20px;">{{item?.DiscAmount.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.CGSTPer}}</td>
+            padding: 15px;height: 20px;">{{item?.VatAmount}}</td>
+            <!-- <td style="border: 1px solid gray;vertical-align: top;
+              padding: 15px;height: 20px;">{{item?.SGSTAmt}}<br>({{item?.SGSTPer}}%)</td>
             <td style="border: 1px solid gray;vertical-align: top;
-              padding: 15px;height: 20px;">{{item?.SGST}}</td>
+                padding: 15px;height: 20px;">{{item?.IGSTAmt}}<br>({{item?.IGSTPer}}%)</td> -->
             <td style="border: 1px solid gray;vertical-align: top;
-                padding: 15px;height: 20px;">{{item?.IGST}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;border-bottom-right-radius: 10px;">{{item?.GrandTotalAmount}}</td>
+            padding: 15px;height: 20px;">{{item?.GrandTotalAmount.toFixed(2)}}</td>
        
         </tr>
+        <tr style="height:20px;">
+            <!-- <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;background-color: red;color: white;"></td> -->
+            <td colspan="3" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;background-color: red;color: white;font-weight:bold;">Total</td>
+            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalUnit}}</td> -->
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalQty}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalRate.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalAmt.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TOtalDiscPer.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalGSTAmt.toFixed(2)}}</td>
+            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{reportPrintObjList[0]?.SGSTAmt}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{reportPrintObjList[0]?.IGSTAmt}}</td> -->
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalNetAmt.toFixed(2)}}</td>
+            
+        </tr>
+        <tr style="height: 5px;">
+           <td colspan="5" rowspan="2"  style="border: 1px solid gray;
+           padding: 15px;text-align: left;vertical-align: top;">
+             <div style="font-weight: 400;margin-right: 20px;">Terms & Conditions </div>
+             <ul style="margin: 5px 0 0 0; font-size: 11px; padding-left: 17px; font-weight: 400;">
+                 <li>
+                     Exchange NOT accepted after 72 hrs. of Purchase, Bill is
+                     required for Exchange
+                 </li>
+                 <li>
+                     Insulin’s & Vaccines will not be taken back. Fridge Items
+                     will not be taken Back
+                 </li>
+                 <li>
+                     All disputes are subject to Vijayapura jurisdiction only
+                 </li>
+                 <li>
+                     Please check the medicines before leaving the medical
+                 </li>
+                 <li>
+                     Consult your Doctor before consuming the medicines.
+                 </li>
+             </ul>
+            </td>
 
-    </table><br>
+            <td colspan="2"  style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;">Sub Total</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;text-align: right;">{{TotalNetAmt.toFixed(2)}}</td> 
+        </tr>
+        <tr>
+            <!-- <td colspan="7"></td> -->
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">Discount</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{TOtalDiscPer.toFixed(2)}}</td> 
+         </tr>
+         <tr>
+            <td colspan="5" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;font-weight: 500;">Remark</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">GST</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt.toFixed(2)}}</td> 
+         </tr>
+         <!-- <tr>
+            <td colspan="5" rowspan="2" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;font-weight: 500;">Remark</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">SGST</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.SGSTAmt}}</td> 
+         </tr> -->
+         <!-- <tr>
+            <td colspan="7"></td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">GST</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.GSTAmt}}</td> 
+         </tr> -->
+         <tr>
+            <td colspan="5" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
+             padding: 15px;background-color: red;color: white; ">Total</td>
+             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
+             padding: 15px;height: 20px;background-color: red;color: white;border-bottom-right-radius: 20px;">
+             {{TotalNetAmt.toFixed(2)}}</td> 
+         </tr>
 
-    <div style="display: flex;">
+    </table><hr><br>
+
+    <!-- <div style="display: flex;">
         <div style="font-weight: 400;margin-right: 20px;">Terms & Conditions </div>
         <ul style="margin: 5px 0 0 0; font-size: 10px; padding-left: 17px; font-weight: 400;">
             <li>
@@ -588,15 +682,15 @@
             <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.GrandTotalAmount}}</span> <br>
         </span>
     
-    </div>
+    </div> -->
 
-   <br>
+   <!-- <br>
     <span style="font-weight: 500;"> Total Amount in words :-</span>
     <hr>
     <div style="display: flex;">
         <span style="font-weight: 500;">Remark</span>
         
-    </div><br><br>
+    </div><br><br> -->
 
     <div style="display: flex;">
             <span style="font-weight: 500;">ADMIN ADMIN</span>
