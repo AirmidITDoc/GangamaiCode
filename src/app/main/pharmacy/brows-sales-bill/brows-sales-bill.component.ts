@@ -947,9 +947,11 @@ getWhatsappshare(el){
         Id:"0",OPD_IPD_ID: 1, OPD_IPD_Type: 2, DocFile: file,FileName:this.imgDataSource.data[i].name
       });
     }
+
     const formData = new FormData();
     let finalData={Files:data};
     this.CreateFormData(finalData, formData);
+    console.log(formData);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
       console.log(data)
       if (data) {

@@ -19,9 +19,7 @@ app-good-receiptnote {
         overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
-        display: inline-block;
-        margin-top: 7px;
-        justify-content:left; 
+      justify-content:left; 
       }
       
     }
@@ -140,13 +138,13 @@ app-good-receiptnote {
       width: 140px;
       max-width: 140px;
       min-width: 140px;
-      text-align: left;
+      text-align: center;
     }
  
     .mat-column-ReceivedBy {
-      width: 90px;
-      max-width: 90px;
-      min-width: 90px;
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
       text-align: left;
     }
   
@@ -162,7 +160,7 @@ app-good-receiptnote {
      margin-bottom: 48px;
     }
 
-   .mat-column-Action {
+   .mat-column-Action1 {
     width: 150px;
     max-width: 150px;
     min-width: 150px;

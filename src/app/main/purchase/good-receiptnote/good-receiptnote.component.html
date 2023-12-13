@@ -70,7 +70,7 @@
 
                                                         <mat-form-field appearance="outline" fxFlex="25%">
                                                             <mat-label>To Store</mat-label>
-                                                            <input matAutocompletePosition="below" type="text" (keyup)="getGRNList()"
+                                                            <input matAutocompletePosition="below"  (keyup)="getGRNList()"
                                                                 placeholder="Select Payment" matInput
                                                                 formControlName="ToStoreId"
                                                                 [matAutocomplete]="autoTostore">
@@ -328,7 +328,7 @@
                                                             </ng-container>
 
                                                             <!-- stickyEnd -->
-                                                            <ng-container matColumnDef="action" stickyEnd>
+                                                            <ng-container matColumnDef="Action1" stickyEnd>
                                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                                     style="color: white;">Action
                                                                 </mat-header-cell>
@@ -422,7 +422,7 @@
                                                                     fxShow.gt-sm>
                                                                     BatchExpDate</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.BatchExpDate}}
+                                                                    {{contact.BatchExpDate  | date:'short'}}
                                                                 </mat-cell>
                                                             </ng-container>
 

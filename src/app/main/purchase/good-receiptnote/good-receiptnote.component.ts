@@ -81,7 +81,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     'Cash_CreditType',
     'ReceivedBy',
     'IsClosed',
-    'action',
+    'Action1',
   ];
 
   displayedColumns1 = [
@@ -239,7 +239,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     // this.chargeslist=this.chargeslist;
     this.chargeslist.push(
       {
-        ItemID:this.ItemID,
+        ItemId:this.ItemID,
         ItemName: this._GRNService.userFormGroup.get('ItemName').value.ItemName || '',
         UOM: this.UOM,
         HSNCode: this.HSNCode,
@@ -305,14 +305,18 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   }
   getGRNList() {
+
+   
     // this.sIsLoading = 'loading-data';
+    console.log(this._GRNService.GRNSearchGroup.get('ToStoreId').value)
+    debugger
     var Param = {
 
-      "ToStoreId": this._GRNService.GRNSearchGroup.get('ToStoreId').value.Storeid || 0,
+      "ToStoreId":  this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
       "From_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
-      "Supplier_Id": this._GRNService.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
+      "Supplier_Id":this._GRNService.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
     }
     console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
@@ -1010,6 +1014,7 @@ debugger
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
+    this.getGRNList();
   }
 
   onEdit(contact) {
@@ -1173,7 +1178,8 @@ export class GrnItemList {
 }
 
 export class ItemNameList {
-  Action: string;
+  // Action: string;
+  
   ItemName: string;
   UOMId: number;
   HSNCode: number;
@@ -1186,7 +1192,7 @@ export class ItemNameList {
   TotalAmount: number;
   Disc: number;
   DisAmount: number;
-  GST: number;
+  GSTNo: number;
   GSTAmount: number;
   CGST: number;
   CGSTAmount: number;
@@ -1197,6 +1203,7 @@ export class ItemNameList {
   NetAmount: number;
   position: number;
   ItemID: any;
+  ItemId:any;
   VatPer: any;
   VatAmt: any;
   MRP_Strip: any;
@@ -1214,6 +1221,8 @@ export class ItemNameList {
   TotalDiscAmount: any;
   ReceivedBy: any;
   Remark: any;
+  StoreId:any;
+
   /**
    * Constructor
    *
@@ -1221,7 +1230,7 @@ export class ItemNameList {
    */
   constructor(ItemNameList) {
     {
-      this.Action = ItemNameList.Action || "";
+      
       this.ItemName = ItemNameList.ItemName || "";
       this.UOMId = ItemNameList.UOMId || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;
@@ -1234,7 +1243,7 @@ export class ItemNameList {
       this.TotalAmount = ItemNameList.TotalAmount || 0;
       this.Disc = ItemNameList.Disc || 0;
       this.DisAmount = ItemNameList.DisAmount || 0;
-      this.GST = ItemNameList.GST || 0;
+      this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
       this.CGST = ItemNameList.CGST || 0;
       this.CGSTAmount = ItemNameList.CGSTAmount || 0;
@@ -1244,6 +1253,7 @@ export class ItemNameList {
       this.IGSTAmount = ItemNameList.IGSTAmount || 0;
       this.NetAmount = ItemNameList.NetAmount || 0;
       this.ItemID = ItemNameList.ItemID || 0;
+      this.ItemId = ItemNameList.ItemId || 0;
       this.VatPer = ItemNameList.VatPer || 0;
       this.VatAmt = ItemNameList.VatAmt || 0;
       this.MRP_Strip = ItemNameList.MRP_Strip || 0;
@@ -1261,6 +1271,7 @@ export class ItemNameList {
       this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
+      this.StoreId = ItemNameList.StoreId || 0;
     }
   }
 }

@@ -7,7 +7,7 @@
                     style="color: white;">
                     Update GRN List
                     <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                        style="margin-left: 1300px;">
+                        style="margin-left: 1400px;">
                         <mat-icon>close</mat-icon>
                     </button>
                 </span>
@@ -91,7 +91,7 @@
                                                     (click)="_GRNList.GRNFirstForm.get('Supplier_Id').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autoSupllier="matAutocomplete"
-                                                [displayWith]="getOptionTextSupplier">
+                                                [displayWith]="getOptionTextSupplier"  (optionSelected)='getSelectedObjSupp($event.option.value)'>
                                                 <mat-option *ngFor="let option of filteredoptionsSupplier | async"
                                                     [value]="option">
                                                     {{option.SupplierName}}
@@ -109,11 +109,11 @@
 
                                         <mat-form-field appearance="outline" style="width:15%">
                                             <mat-label>Invoice Date</mat-label>
-                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker"
+                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker1"
                                                 [readonly]="true" formControlName="DateOfInvoice" #DateOfInvoice
                                                 (keydown)="onEnterDateOfInvoice($event)">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width:15%">
@@ -124,8 +124,7 @@
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                                        <mat-form-field class="section-dropdown"
-                                            style="width:25%;">
+                                        <mat-form-field class="section-dropdown" style="width:25%;">
                                             <mat-label>-- Select Status3 --</mat-label>
                                             <mat-select formControlName="Status3" name="Status3"
                                                 (selectionChange)="onChangeStatus3($event)">
@@ -136,12 +135,12 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                     
-                                        <mat-radio-group aria-label="Select an option"
-                                        formControlName="PaymentType" style="margin-top: 12px;"  (click)="PaymentTypeChk()">
-                                        <mat-radio-button value="Cash">Cash</mat-radio-button>
-                                        <mat-radio-button value="Credit">Credit</mat-radio-button>
-                                       </mat-radio-group>
+
+                                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType"
+                                            style="margin-top: 12px;" (click)="PaymentTypeChk()">
+                                            <mat-radio-button value="Cash">Cash</mat-radio-button>
+                                            <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                        </mat-radio-group>
 
                                     </div>
 
@@ -223,13 +222,31 @@
                                                     (keydown.enter)="focusNextService()">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="7%">
+                                            <!-- <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>Exp. Date</mat-label>
                                                 <input matInput [(ngModel)]="ExpDate" name="ExpDate"
-                                                    formControlName="ExpDate" id="ExpDate"
+                                                    placeholder="MM/YYYY" formControlName="ExpDate" id="ExpDate"
                                                     (keydown)="onEnterExpDate($event)" #expdate
                                                     (keydown.enter)="focusNextService()" required>
+                                            </mat-form-field> -->
+
+                                            <!-- <mat-calendar [selected]="date" startView="multi-year" formControlName="ExpDate"
+                                            (yearSelected)="chosenYearHandler($event)"
+                                            (monthSelected)="chosenMonthHandler($event)"></mat-calendar>
+ -->
+
+                                            <mat-form-field appearance="outline" fxFlex="7%">
+                                                <mat-label>Month/Year</mat-label>
+                                                <input matInput [matDatepicker]="dp" [formControl]="date"  (keydown)="onEnterExpDate($event)" #expdate
+                                                (keydown.enter)="focusNextService()" required>
+                                                <!-- <mat-hint>MM/YYYY</mat-hint> -->
+                                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                                <mat-datepicker #dp startView="multi-year"
+                                                    (monthSelected)="setMonthAndYear($event, dp)"
+                                                    panelClass="example-month-picker">
+                                                </mat-datepicker>
                                             </mat-form-field>
+
 
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>Qty</mat-label>
@@ -352,7 +369,7 @@
 
                                             <div matTooltip="Select All Value to enable this button!!"
                                                 [matTooltipPosition]="'above'">
-                                                <button mat-raised-button fxLayoutAlign="center center"  #addbutton 
+                                                <button mat-raised-button fxLayoutAlign="center center" #addbutton
                                                     (click)="onAdd()" [disabled]="!add"
                                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; ">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
@@ -380,18 +397,17 @@
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;height: 220px;">
 
-                                          
+
 
                                             <ng-container matColumnDef="buttons">
                                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
-                                                   
-                                                    <button mat-icon-button (click)="deleteTableRow(row)"
-                                                        color="warn">
+
+                                                    <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
-                                                  
+
                                                 </mat-cell>
                                             </ng-container>
 
@@ -492,21 +508,15 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="GST">
+                                            <ng-container matColumnDef="GSTNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    GST</mat-header-cell>
+                                                    GSTNo</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CGST}}
+                                                    {{contact.GSTNo}}
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="GSTAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    GSTAmt</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CGSTAmount}}
-                                                </mat-cell>
-                                            </ng-container>
+                                          
 
                                             <ng-container matColumnDef="CGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -643,13 +653,13 @@
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Remark</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
+                                        <input matInput placeholder="Placeholder" formControlName="Remark" #Remark type="text"
                                             [(ngModel)]="registerObj.Remark" (keydown)="onEnterRemark($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Received By</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="ReceivedBy"
+                                        <input matInput placeholder="Placeholder" formControlName="ReceivedBy" type="text"
                                             #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
                                             (keydown)="onEnterReceivedBy($event)">
                                     </mat-form-field>
@@ -657,14 +667,14 @@
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Debit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="DebitAmount"
-                                            #DebitAmount [(ngModel)]="registerObj.DebitNote"
+                                            #DebitAmount [(ngModel)]="registerObj.DebitNote" type="number"
                                             (keydown)="onEnterDebitAmount($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Credit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="CreditAmount"
-                                            #CreditAmount [(ngModel)]="registerObj.CreditNote"
+                                            #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
                                             (keydown)="onEnterCreditAmount($event)">
                                     </mat-form-field>
 
