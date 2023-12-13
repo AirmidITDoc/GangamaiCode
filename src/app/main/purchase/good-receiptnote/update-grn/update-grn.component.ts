@@ -248,10 +248,15 @@ debugger
 
       });
 
+    // this.dsItemNameList.data = this.chargeslist
+    // this._GRNList.userFormGroup.reset();
+    // this.add=false;
+    // this.itemname.nativeElement.focus();
+    
     this.dsItemNameList.data = this.chargeslist
     this._GRNList.userFormGroup.reset();
-    this.add=false;
-    this.itemname.nativeElement.focus();
+    this.ItemID.nativeElement.focus();
+    this.add=false; 
   }
 
   
@@ -463,29 +468,54 @@ debugger
 
 
 
-  getSelectedObj(obj) {
-    debugger
-    this.accountService
+  // getSelectedObj(obj) {
+  //   debugger
+  //   this.accountService
     
-    this.ItemID = obj.ItemID;
+  //   this.ItemID = obj.ItemID;
+  //   this.ItemName = obj.ItemName;
+  //   this.Qty = obj.BalanceQty;
+
+  //   if (this.Qty > 0) {
+  //     this.UOM = obj.UOMId;
+  //     this.Rate = obj.PurchaseRate;
+  //     this.TotalAmount = (parseInt(obj.BalanceQty) * parseFloat(this.Rate)).toFixed(2);
+  //     this.NetAmount = this.TotalAmount;
+  //     this.VatPercentage = obj.VatPercentage;
+  //     // this.CGSTPer =onj.CGSTPer;
+  //     this.GSTPer = obj.GSTPer;
+  //     this.GSTAmount = 0;
+  //     // this.NetAmount = obj.NetAmount;
+  //     // this.MRP = obj.MRP;
+  //     this.Specification = obj.Specification;
+  //   }
+  //   // this.qty.nativeElement.focus();
+  // }
+  getSelectedObj(obj) {
+    this.accountService
+    this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
-    this.Qty = obj.BalanceQty;
+    this.Qty = 1; //obj.BalanceQty;
 
     if (this.Qty > 0) {
-      this.UOM = obj.UOMId;
+      this.UOM = obj.UOM;
       this.Rate = obj.PurchaseRate;
-      this.TotalAmount = (parseInt(obj.BalanceQty) * parseFloat(this.Rate)).toFixed(2);
+      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
       this.NetAmount = this.TotalAmount;
       this.VatPercentage = obj.VatPercentage;
       // this.CGSTPer =onj.CGSTPer;
       this.GSTPer = obj.GSTPer;
       this.GSTAmount = 0;
       // this.NetAmount = obj.NetAmount;
-      // this.MRP = obj.MRP;
+       this.MRP = obj.UnitMRP;
       this.Specification = obj.Specification;
     }
-    // this.qty.nativeElement.focus();
+    this.qty.nativeElement.focus();
   }
+
+
+
+
   private _filterStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
@@ -517,6 +547,7 @@ debugger
     if (this._GRNList.userFormGroup.get('ItemName').value.length >= 1) {
       this._GRNList.getItemNameList(m_data).subscribe(data => {
         this.filteredOptions = data;
+        console.log( this.filteredOptions )
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -624,7 +655,7 @@ debugger
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
         grnSaveObj['storeId'] = this._GRNList.GRNFirstForm.get('StoreId').value.storeid || 0;
-        grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
+        grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
         grnSaveObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
         grnSaveObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;

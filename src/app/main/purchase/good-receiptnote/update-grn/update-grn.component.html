@@ -83,12 +83,12 @@
                                             <mat-label>Supplier Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 (keydown)="onEnterSupplier($event)" placeholder="Select Supplier"
-                                                matInput formControlName="Supplier_Id" [matAutocomplete]="autoSupllier">
+                                                matInput formControlName="SupplierId" [matAutocomplete]="autoSupllier">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_GRNList.GRNFirstForm.get('Supplier_Id').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                    (click)="_GRNList.GRNFirstForm.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_GRNList.GRNFirstForm.get('Supplier_Id').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                    (click)="_GRNList.GRNFirstForm.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autoSupllier="matAutocomplete"
                                                 [displayWith]="getOptionTextSupplier">
@@ -353,7 +353,7 @@
                                             <div matTooltip="Select All Value to enable this button!!"
                                                 [matTooltipPosition]="'above'">
                                                 <button mat-raised-button fxLayoutAlign="center center"  #addbutton 
-                                                    (click)="onAdd()" [disabled]="!add"
+                                                    (click)="onAdd()" [disabled]="_GRNList.userFormGroup.invalid"
                                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; ">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>

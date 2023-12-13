@@ -64,7 +64,7 @@
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Supplier" matInput
                                                 (keydown)="onEnterSupplier($event)" formControlName="SupplierId"
-                                                [matAutocomplete]="autoMarital">
+                                                [matAutocomplete]="autoMarital" >
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
