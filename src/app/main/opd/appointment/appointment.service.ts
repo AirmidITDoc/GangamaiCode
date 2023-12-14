@@ -223,7 +223,7 @@ export class AppointmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
   }
 
-
+ 
   populateFormpersonal(employee) {
     // this.personalFormGroup.patchValue(employee);
   }

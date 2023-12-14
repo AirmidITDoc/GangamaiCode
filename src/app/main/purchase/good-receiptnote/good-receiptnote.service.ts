@@ -30,7 +30,7 @@ export class GoodReceiptnoteService {
       ToStoreId: '',
       FromStoreId:'',
       StoreId:'',
-      Supplier_Id:'',
+      SupplierId:'',
       Status:0,
       Status1:0,
       Status2:[true],
@@ -44,7 +44,7 @@ export class GoodReceiptnoteService {
 
   getGRNfirstForm() {
     return this._formBuilder.group({
-      Supplier_Id:[''],
+      SupplierId:[''],
       StoreId:[''],
       InvoiceNo:[''],
       DateOfInvoice:[(new Date()).toISOString()],

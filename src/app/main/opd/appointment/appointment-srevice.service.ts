@@ -297,17 +297,29 @@ public documentdownloadInsert(employee){
   }
   //registration list 
   public getRegistrationList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
+  public getDocPatientRegList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
   //registration list 
   public getPhoneAppointmentList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+  }
+  getuploadeddocumentsList(query){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
 
   public UpdateQueryByStatement(query) {
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
   }
+
+  public getdeleteddocument(query) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
+  }
+
+  
 
   // public getDeptwiseDoctorMaster(){
   //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
