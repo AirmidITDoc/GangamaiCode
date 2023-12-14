@@ -500,7 +500,7 @@ debugger
       this.SupplierList = data;
       console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNList.GRNFirstForm.get('Supplier_Id').valueChanges.pipe(
+      this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('Supplier_Id').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
@@ -508,7 +508,6 @@ debugger
         
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.GRNFirstForm.get('Supplier_Id').setValue(ddValue);
-        this.SupplierId =this.registerObj.SupplierId;
       }
     });
   }
@@ -707,7 +706,7 @@ debugger
         grnSaveObj['storeId'] = this._GRNList.GRNFirstForm.get('StoreId').value.storeid || 0;
         grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || this.SupplierId;
         grnSaveObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
-        grnSaveObj['deliveryNo'] = 0,
+        grnSaveObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
         grnSaveObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;
         grnSaveObj['cash_CreditType'] =  this.PaymentType,
         grnSaveObj['grnType'] = 0;
@@ -831,10 +830,10 @@ debugger
     let updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
-    updateGRNHeaderObj['storeId'] = this.StoreId || 0;
-    updateGRNHeaderObj['supplierID'] =this.SupplierId || 0;
+    updateGRNHeaderObj['storeId'] = this._GRNList.GRNFirstForm.get('StoreId').value.Storeid || 0;
+    updateGRNHeaderObj['supplierID'] = this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
     updateGRNHeaderObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
-    updateGRNHeaderObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
+    updateGRNHeaderObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
       updateGRNHeaderObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;
     updateGRNHeaderObj['cash_CreditType'] =  this.PaymentType,
       updateGRNHeaderObj['grnType'] = 0;

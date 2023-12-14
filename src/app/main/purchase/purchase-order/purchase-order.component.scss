@@ -5,11 +5,145 @@ app-purchase-order {
     .table1 {
       height: 290px !important;
       width: 100%;
+
+      .mat-column-SupplierName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 20px;
+       
+      }
+      .mat-column-TotalAmount {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: center;
+      }
+      .mat-column-Action {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+      }
+      .mat-column-PurchaseDate {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+      }
+      .mat-column-PurchaseTime {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+      }
+      .mat-column-StoreName {
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        text-align: left;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+      }
+      
+    .mat-column-PurchaseNo {
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
+      text-align: left;
+    }
+ 
     }
 
     .table2 {
       height: 290px !important;
       width:100%;
+
+      .mat-column-ItemName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+      }
+      .mat-column-Qty {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-Rate {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+      }
+      .mat-column-DiscPer {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-DiscAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-VatPer {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-GSTAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-TotalAmount {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+      }
+      .mat-column-MRP {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-GrandTotalAmount {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+      }
+      .mat-column-PurchaseId {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+      }
+     
+  
 
       // .mat-header-row {
       //   width:1400px;
@@ -28,18 +162,6 @@ app-purchase-order {
       // }
   
       
-
-      .mat-column-ItemName {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
-        text-align: left;
-        white-space: nowrap; 
-        overflow: hidden;
-        text-overflow: ellipsis; 
-        overflow: hidden !important;
-        justify-content:left; 
-      }
     }
 
     .table3 {
@@ -107,6 +229,7 @@ app-purchase-order {
       grid-template-columns: auto 1fr;
       grid-template-rows: auto;
     }
+ 
     // .mat-header-row {
     //   width:1400px;
     //   //max-width: 1600px;
@@ -123,174 +246,11 @@ app-purchase-order {
      
     // }
   
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
   
-    }
 
-    .mat-column-PurchaseNo {
-      width: 140px;
-      max-width: 140px;
-      min-width: 140px;
-      text-align: left;
-  
-    }
 
-    .mat-column-Qty {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-  
-    }
-  
-    .mat-column-PurchaseDate {
-      width: 140px;
-      max-width: 140px;
-      min-width: 140px;
-      text-align: left;
-    }
-  
-    .mat-column-PurchaseTime {
-      width: 140px;
-      max-width: 140px;
-      min-width: 140px;
-      text-align: left;
-    }
 
-    .mat-column-StoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-      text-align: left;
-      white-space: nowrap; 
-      overflow: hidden;
-      text-overflow: ellipsis; 
-      overflow: hidden !important;
-     
-    }
-
-    .mat-column-SupplierName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-      justify-content: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      overflow: hidden !important;
-      display: inline-flex;
-      display: inline;
-      margin-right: 20px;
-      margin-top: 20px;
-     
-    }
-
-    .mat-column-TotalAmount {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: center;
-    }
-
-    .mat-column-Action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-
-    .mat-column-ItemName {
-      width: 360px;
-      max-width: 360px;
-      min-width: 360px;
-      text-align: left;
-      white-space: nowrap; 
-      overflow: hidden;
-      text-overflow: ellipsis; 
-      overflow: hidden !important;
-      justify-content:left; 
-    }
-    
-    .mat-column-Qty {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-      
-    }
-    
-    .mat-column-UOM {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-    .mat-column-Rate {
-      width: 130px;
-      max-width: 130px;
-      min-width: 130px;
-      text-align: left;
-    }
-    .mat-column-TotalAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-
-    .mat-column-Dis {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-    .mat-column-DiscAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-
-    .mat-column-GST {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-  
-    .mat-column-GSTAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-    .mat-column-NetAmount {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-    .mat-column-MRP {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
-
-    .mat-column-Specification {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
  
-
 // .table-row:selected {
 
 //   background-color: rebeccapurple;

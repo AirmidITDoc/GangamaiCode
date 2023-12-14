@@ -17,6 +17,7 @@ import { ItemNameList, PurchaseItemList, PurchaseOrder } from '../purchase-order
 import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -136,7 +137,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
     // {id: 5, name: "England"}
   ];
 
-
+  Status3List = [
+    { id: 1, name: "GST Before Disc" },
+    { id: 2, name: "GST After Disc" }
+  ];
 
 DeliveryDateList = [
   { id: 1, name: "1 WEEK" },
@@ -222,14 +226,14 @@ PaymentList = [
   
   setDropdownObjs1() {
     const toSelectPaymentTerm = this.PaymentList.find(c => c.id == this.registerObj.PaymentTermId);
-    this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').setValue(toSelectPaymentTerm);
+    this._PurchaseOrder.userFormGroup.get('PaymentTerm').setValue(toSelectPaymentTerm);
 
 
     const toSelect = this.PaymentModeList.find(c => c.id == this.registerObj.ModeOfPayment);
-    this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').setValue(toSelect);
+    this._PurchaseOrder.userFormGroup.get('PaymentMode').setValue(toSelect);
 
     const toSelectCity = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNature);
-    this._PurchaseOrder.PurchaseStoreform.get('TaxNature').setValue(toSelectCity);
+    this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectCity);
 
     // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -256,7 +260,7 @@ PaymentList = [
     }
     this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').setValue(this.StoreList[0]);
+      this._PurchaseOrder.userFormGroup.get('FromStoreId').setValue(this.StoreList[0]);
      // this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value.StoreName;
     });
   }
@@ -267,7 +271,7 @@ PaymentList = [
       this.SupplierList = data;
       //console.log(data);
       this.optionsMarital = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').valueChanges.pipe(
+      this.filteredoptionsSupplier = this._PurchaseOrder.userFormGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
@@ -275,13 +279,75 @@ PaymentList = [
       if (this.data) {
         
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
-        this._PurchaseOrder.PurchaseStoreform.get('SupplierId').setValue(ddValue);
+        this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
       }
+      
 
     });
   }
+   
 
+  onChangeDiscountMode(event) {
+    
+    if (event.value.name == 'GST Before Disc') {
 
+      if (parseFloat(this.GSTPer) > 0) {
+
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+      }
+    }
+    else if (event.value.name == 'GST After Disc') {
+      
+      // if (parseFloat(this.GSTPer) > 0) {
+      let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
+      if (disc > 0) {
+        this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(2);
+        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(2);
+        if (parseFloat(this.GSTPer) > 0) {
+          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+        }
+      } 
+      else {
+        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
+      }
+    }
+    // this. onChangeDiscountModeTable(event ,element);
+  }
+
+  // onChangeDiscountModeTable(event ,element) {
+  //   this.GSTPer=element.GST;
+    
+  //   if (event.value.name == 'GST Before Disc') {
+
+  //     if (parseFloat(element.GST) > 0) {
+
+  //       element.GSTAmount = ((parseFloat(element.TotalAmount) * parseFloat(element.GST)) / 100).toFixed(2);
+  //       element.NetAmount = (parseFloat(element.TotalAmount) + parseFloat(element.GSTAmount)).toFixed(2);
+  //     }
+  //   }
+  //   else if (event.value.name == 'GST After Disc') {
+      
+  //     // if (parseFloat(this.GSTPer) > 0) {
+  //       this.Dis=element.Dis;
+  //     let disc = this.Dis;
+  //     if (disc > 0) {
+  //       element.DiscAmount = (disc * parseFloat(element.TotalAmount) / 100).toFixed(2);
+  //       element.NetAmount = (parseFloat(element.TotalAmount) - parseFloat(element.DiscAmount)).toFixed(2);
+  //       if (parseFloat(element.GST) > 0) {
+  //         element.GSTAmount = ((parseFloat(element.NetAmount) * parseFloat(element.GST)) / 100).toFixed(2);
+  //         element.NetAmount = (parseFloat(element.NetAmount) + parseFloat( element.GSTAmount)).toFixed(2);
+  //       }
+  //     } 
+  //     else {
+  //       element.GSTAmount= ((parseFloat(element.TotalAmount) * parseFloat(element.GST)) / 100).toFixed(2);
+  //       element.NetAmount = (parseFloat(element.TotalAmount) + parseFloat( element.GSTAmount)).toFixed(2);
+  //     }
+  //   }
+  // }
+ 
   onAdd(event) {
     
     this.dsItemNameList.data = [];
@@ -295,12 +361,12 @@ PaymentList = [
         ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
         Qty: this.Qty || 0,
         UOM: this.UOM || 0,
-        Rate: (this.Rate).toFixed(4) || 0,
-        TotalAmount: this.TotalAmount || 0,
+        Rate: (this.Rate).toFixed(2) || 0,
+        TotalAmount: parseInt(this.TotalAmount).toFixed(2)  || 0,
         Dis: this.Dis || 0,
-        DiscAmount: this.DiscAmt || 0,
-        VatAmount: this.VatAmount|| 0,
-        VatPer: this.DiscAmt|| 0,
+        DiscAmount: parseInt(this.DiscAmt).toFixed(2)  || 0,
+        VatAmount: parseInt(this.GSTAmt).toFixed(2) || 0,
+        VatPer: this.GSTPer|| 0,
         CGSTPer: this.CgstPer,
         CGSTAmt: this.CGSTAmt ||0,
         SGSTPer: this.SgstPer,
@@ -309,7 +375,7 @@ PaymentList = [
         IGSTAmt: this.IGSTAmt,
         GST: this.GSTPer || 0,
         GSTAmount: this.GSTAmt|| 0,
-        NetAmount: this.NetAmount,
+        NetAmount: parseInt(this.NetAmount).toFixed(2) || 0,
         MRP: this.MRP || 0,
         Specification: this.Specification || '',
 
@@ -317,9 +383,11 @@ PaymentList = [
      
 
     this.dsItemNameList.data = this.chargeslist;
-    this._PurchaseOrder.userFormGroup.reset();
+    //this._PurchaseOrder.userFormGroup.reset();
+    
     this.itemid.nativeElement.focus();
     this.add = false;
+    this.ItemFormreset();
     
   }
 
@@ -357,6 +425,7 @@ debugger
       this.dsItemNameList.sort = this.sort;
       this.dsItemNameList.paginator = this.paginator;
       this.sIsLoading = '';
+      console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -386,7 +455,7 @@ debugger
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%`,
-      "StoreId":this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').value.storeid 
+      "StoreId":this._PurchaseOrder.userFormGroup.get('FromStoreId').value.storeid 
     }
     console.log(m_data);
     // if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) 
@@ -407,7 +476,7 @@ debugger
     var Param = {
 
       "ItemName": `${this._PurchaseOrder.userFormGroup.get('ItemName').value}%` || '%',
-      "StoreId": this._PurchaseOrder.PurchaseStoreform.get('FromStoreId').value.storeid  || 0
+      "StoreId": this._PurchaseOrder.userFormGroup.get('FromStoreId').value.storeid  || 0
     }
      console.log(Param);
     this._PurchaseOrder.getItemNameList(Param).subscribe(data => {
@@ -462,11 +531,11 @@ debugger
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
     updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+    updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
     updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
     updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
     updatePurchaseOrderHeaderObj['taxAmount'] = 0;
-    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value.id || 0;
+    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.userFormGroup.get('Freight').value.id || 0;
     updatePurchaseOrderHeaderObj['octriAmount'] = 0;
     updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
     updatePurchaseOrderHeaderObj['isclosed'] = false;
@@ -475,13 +544,13 @@ debugger
     updatePurchaseOrderHeaderObj['taxID'] = 0;
     
     updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
-    updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+    updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.userFormGroup.get('PaymentTerm').value.id || '';
+    updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.userFormGroup.get('PaymentMode').value.id || '';
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
     updatePurchaseOrderHeaderObj['roundVal'] = 0;
-    updatePurchaseOrderHeaderObj['totCGSTAmt'] = this.GSTAmount;
-    updatePurchaseOrderHeaderObj['totSGSTAmt'] = this.SGSTAmount;
-    updatePurchaseOrderHeaderObj['totIGSTAmt'] = this.IGSTAmount;
+    updatePurchaseOrderHeaderObj['totCGSTAmt'] = 0;//this.GSTAmount || 0;
+    updatePurchaseOrderHeaderObj['totSGSTAmt'] =  0;
+    updatePurchaseOrderHeaderObj['totIGSTAmt'] = 0;
     updatePurchaseOrderHeaderObj['transportChanges'] = 0;
     updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
     updatePurchaseOrderHeaderObj['freightCharges'] = 0;
@@ -556,11 +625,11 @@ debugger
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
     purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.PurchaseStoreform.get('SupplierId').value.SupplierId || 0;
+    purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
     purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
     purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
     purchaseHeaderInsertObj['taxAmount'] = 0;
-    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.PurchaseStoreform.get('Freight').value || 0;
+    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.userFormGroup.get('Freight').value || 0;
     purchaseHeaderInsertObj['octriAmount'] = 0;
     purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
     purchaseHeaderInsertObj['isclosed'] = false;
@@ -570,13 +639,13 @@ debugger
     
     purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
     purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentTerm').value.id || '';
-    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.PurchaseStoreform.get('PaymentMode').value.id || '';
+    purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.userFormGroup.get('PaymentTerm').value.id || '';
+    purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.userFormGroup.get('PaymentMode').value.id || '';
     purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
     purchaseHeaderInsertObj['roundVal'] = 0;
-    purchaseHeaderInsertObj['totCGSTAmt'] = this.GSTAmount;
-    purchaseHeaderInsertObj['totSGSTAmt'] = this.SGSTAmount;
-    purchaseHeaderInsertObj['totIGSTAmt'] = this.IGSTAmount;
+    purchaseHeaderInsertObj['totCGSTAmt'] = 0;
+    purchaseHeaderInsertObj['totSGSTAmt'] = 0;
+    purchaseHeaderInsertObj['totIGSTAmt'] = 0;
     purchaseHeaderInsertObj['transportChanges'] = 0;
     purchaseHeaderInsertObj['handlingCharges'] = 0;
     purchaseHeaderInsertObj['freightCharges'] = 0;
@@ -592,18 +661,18 @@ debugger
       purchaseDetailInsertObj['rate'] = element.Rate;
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+      purchaseDetailInsertObj['discPer'] = element.Dis;
+      purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
+      purchaseDetailInsertObj['vatPer'] = element.GST;;
       purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
       purchaseDetailInsertObj['mrp'] = element.MRP;
       purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
+      purchaseDetailInsertObj['cgstPer'] = 0;
+      purchaseDetailInsertObj['cgstAmt'] = 0;
+      purchaseDetailInsertObj['sgstPer'] = 0;
+      purchaseDetailInsertObj['sgstAmt'] = 0;
+      purchaseDetailInsertObj['igstPer'] = 0;
+      purchaseDetailInsertObj['igstAmt'] = 0;
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
     });
 
@@ -798,11 +867,30 @@ debugger
 
   OnReset() {
     this._PurchaseOrder.PurchaseSearchGroup.reset();
-    this._PurchaseOrder.userFormGroup.reset();
-    this._PurchaseOrder.PurchaseStoreform.reset();
+    //this._PurchaseOrder.userFormGroup.reset();
+    // this._PurchaseOrder.PurchaseStoreform.reset();
     this._PurchaseOrder.FinalPurchaseform.reset();
     this.dsItemNameList.data = [];
+    this.ItemFormreset();
+    
   }
+  ItemNames:any;
+  ItemFormreset() {
+     this.ItemNames= "";
+     this.ItemID= 0;
+     this.Qty= 0;
+     this.UOM = 0 ;
+     this.Rate= 0;
+     this.TotalAmount= 0;
+     this.Dis= 0;
+     this.DiscAmt= 0;
+     this.GSTPer= 0;
+     this.GSTAmt= 0;
+     this.NetAmount= 0;
+     this.MRP= 0;
+    this.Specification= "";
+    // this.Status3List = [];       
+}
 
   delete(elm) {
     this.dsItemNameList.data = this.dsItemNameList.data
@@ -1059,34 +1147,7 @@ debugger
 
 
 
-  onChangeDiscountMode(event) {
-    
-    if (event.value == 'true') {
-
-      if (parseFloat(this.GSTPer) > 0) {
-
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-      }
-    }
-    else if (event.value == 'false') {
-      
-      // if (parseFloat(this.GSTPer) > 0) {
-      let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      if (disc > 0) {
-        this.DiscAmt = (disc * parseFloat(this.TotalAmount) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DiscAmt)).toFixed(4);
-        if (parseFloat(this.GSTPer) > 0) {
-          this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-          this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-        }
-      } 
-      else {
-        this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-        this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(4);
-      }
-    }
-  }
+ 
 
   onEdit(contact){
 

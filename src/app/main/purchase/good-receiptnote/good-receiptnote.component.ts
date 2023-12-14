@@ -316,7 +316,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       "From_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
-      "Supplier_Id":this._GRNService.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
+      "Supplier_Id": this._GRNService.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
     }
     console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
@@ -507,7 +507,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.SupplierList = data;
       console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('Supplier_Id').valueChanges.pipe(
+      this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
@@ -679,7 +679,7 @@ debugger
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
     grnSaveObj['storeId'] = this._GRNService.GRNFirstForm.get('StoreId').value.storeid || 0;
-    grnSaveObj['supplierID'] = this._GRNService.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
+    grnSaveObj['supplierID'] = this._GRNService.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
     grnSaveObj['invoiceNo'] = this._GRNService.GRNFirstForm.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0,//this._GRNService.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
       grnSaveObj['gateEntryNo'] = this._GRNService.GRNFirstForm.get('GateEntryNo').value || 0;
