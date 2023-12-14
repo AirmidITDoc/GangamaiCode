@@ -38,7 +38,7 @@ export class OpPaymentNewComponent implements OnInit {
   selectedPaymnet4: string = '';
   selectedPaymnet5: string = '';
 
-  netPayAmt: number = 0;
+  netPayAmt: any = 0;
   nowDate: Date;
   amount1: any;
   amount2: any;
@@ -137,9 +137,9 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 2;
       this.IsCreditflag=true;
     }else if (this.PatientHeaderObj.FromName == "Phar-SalesPay") {
-      this.netPayAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = this.cashAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
-      this.paidAmt = Math.round(this.advanceData.NetPayAmount); // parseInt(this.advanceData.NetPayAmount);
+      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt =this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = this.advanceData.PatientName;
       this.selectedPaymnet1 = 'cash';
@@ -1064,18 +1064,18 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getBalanceAmt() {
-    let totalAmountAdded = ((this.amount1 ? parseInt(this.amount1) : 0)
-    + (this.amount2 ? parseInt(this.amount2) : 0)
-    + (this.amount3 ? parseInt(this.amount3) : 0)
-    + (this.amount4 ? parseInt(this.amount4) : 0)
-    + (this.amount5 ? parseInt(this.amount5) : 0));
+    let totalAmountAdded: any = ((this.amount1 ? parseFloat(this.amount1) : 0)
+    + (this.amount2 ? parseFloat(this.amount2) : 0)
+    + (this.amount3 ? parseFloat(this.amount3) : 0)
+    + (this.amount4 ? parseFloat(this.amount4) : 0)
+    + (this.amount5 ? parseFloat(this.amount5) : 0));
     if((this.netPayAmt - totalAmountAdded) < 0) {
       this.snackBarService.showErrorSnackBar('Amout should be less than Balance amount', 'Done');
       this.isSaveDisabled = true;
       return;
     }
     
-    this.balanceAmt = this.netPayAmt - totalAmountAdded;
+    this.balanceAmt = this.netPayAmt - parseFloat(totalAmountAdded);
     if(this.balanceAmt > 0) {
       this.isSaveDisabled = true;
       return;
