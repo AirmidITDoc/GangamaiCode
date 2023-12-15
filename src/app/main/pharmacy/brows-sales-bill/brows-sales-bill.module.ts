@@ -90,7 +90,8 @@ const routes: Routes = [
     MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
+    
         
   ],
   providers: [
