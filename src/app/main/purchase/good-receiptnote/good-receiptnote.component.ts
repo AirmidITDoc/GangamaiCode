@@ -77,7 +77,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     'RoundingAmt',
     'DebitNote',
     'CreditNote',
-    'InvDate',
+   // 'InvDate',
     'Cash_CreditType',
     'ReceivedBy',
     'IsClosed',
@@ -308,21 +308,22 @@ export class GoodReceiptnoteComponent implements OnInit {
 
    
     // this.sIsLoading = 'loading-data';
-    console.log(this._GRNService.GRNSearchGroup.get('ToStoreId').value)
-    debugger
+   // console.log(this._GRNService.GRNSearchGroup.get('ToStoreId').value)
+    //debugger
     var Param = {
 
       "ToStoreId":  this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
       "From_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
-      "Supplier_Id": this._GRNService.GRNSearchGroup.get('Supplier_Id').value.SupplierId || 0,
+      "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
     console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
+      console.log(this.dsGRNList);
       this.sIsLoading = '';
     },
       error => {

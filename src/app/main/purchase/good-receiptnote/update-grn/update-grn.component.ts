@@ -500,66 +500,41 @@ debugger
       this.SupplierList = data;
       console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('Supplier_Id').valueChanges.pipe(
+      this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
       if (this.data) {
         
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
-        this._GRNList.GRNFirstForm.get('Supplier_Id').setValue(ddValue);
+        this._GRNList.GRNFirstForm.get('SupplierId').setValue(this.SupplierList[0]);
       }
     });
   }
 
-
-
-
-
-  // getSelectedObj(obj) {
-  //   debugger
-  //   this.accountService
-    
-  //   this.ItemID = obj.ItemID;
-  //   this.ItemName = obj.ItemName;
-  //   this.Qty = obj.BalanceQty;
-
-  //   if (this.Qty > 0) {
-  //     this.UOM = obj.UOMId;
-  //     this.Rate = obj.PurchaseRate;
-  //     this.TotalAmount = (parseInt(obj.BalanceQty) * parseFloat(this.Rate)).toFixed(2);
-  //     this.NetAmount = this.TotalAmount;
-  //     this.VatPercentage = obj.VatPercentage;
-  //     // this.CGSTPer =onj.CGSTPer;
-  //     this.GSTPer = obj.GSTPer;
-  //     this.GSTAmount = 0;
-  //     // this.NetAmount = obj.NetAmount;
-  //     // this.MRP = obj.MRP;
-  //     this.Specification = obj.Specification;
-  //   }
-  //   // this.qty.nativeElement.focus();
-  // }
   getSelectedObj(obj) {
+    //debugger
     this.accountService
-    this.ItemID = obj.ItemId;
+    this.ItemID = obj.ItemID;
     this.ItemName = obj.ItemName;
-    this.Qty = 1; //obj.BalanceQty;
+    this.Qty = obj.BalanceQty;
 
     if (this.Qty > 0) {
-      this.UOM = obj.UOM;
+      this.UOM = obj.UOMId;
       this.Rate = obj.PurchaseRate;
-      this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
+      this.TotalAmount = (parseInt(obj.BalanceQty) * parseFloat(this.Rate)).toFixed(2);
       this.NetAmount = this.TotalAmount;
       this.VatPercentage = obj.VatPercentage;
       // this.CGSTPer =onj.CGSTPer;
       this.GSTPer = obj.GSTPer;
       this.GSTAmount = 0;
       // this.NetAmount = obj.NetAmount;
-       this.MRP = obj.UnitMRP;
+      // this.MRP = obj.MRP;
       this.Specification = obj.Specification;
     }
-    this.qty.nativeElement.focus();
+    // this.qty.nativeElement.focus();
   }
+ 
 
 
 
@@ -704,7 +679,7 @@ debugger
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
         grnSaveObj['storeId'] = this._GRNList.GRNFirstForm.get('StoreId').value.storeid || 0;
-        grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || this.SupplierId;
+        grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('SupplierId').value.SupplierId || this.SupplierId;
         grnSaveObj['invoiceNo'] = this._GRNList.GRNFirstForm.get('InvoiceNo').value || 0;
         grnSaveObj['deliveryNo'] = 0,//this._GRNList.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
         grnSaveObj['gateEntryNo'] = this._GRNList.GRNFirstForm.get('GateEntryNo').value || 0;

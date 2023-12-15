@@ -152,9 +152,11 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
   }
   public getVerifyPurchaseOrdert(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Update_Purchase_Verify_Status_1", Param);
+    return this._httpClient.post("Pharmacy/VerifyPurchaseOrde", Param)
   }
 
+
+  
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
   }

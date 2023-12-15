@@ -153,7 +153,7 @@ export class PurchaseOrderComponent implements OnInit {
   dsItemNameList = new MatTableDataSource<ItemNameList>();
 
   displayedColumns = [
-    
+    'Status',
     'PurchaseNo',
     'PurchaseDate',
     'PurchaseTime',
@@ -227,7 +227,7 @@ export class PurchaseOrderComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    public toastr : ToastrService,
+    public toastr: ToastrService,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
 
@@ -298,30 +298,56 @@ export class PurchaseOrderComponent implements OnInit {
       });
   }
 
-  onVerify(el) {
+  onVerify(row) {
     var Param = {
-      'PurchaseID': el.PurchaseID,
-      'ISVerified': this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
+      "update_POVerify_Status": {
+      "purchaseID": row.PurchaseID,
+      "isVerified": true,
+      "isVerifiedId":1, 
+      "verifiedDateTime":  "2023-12-15T08:51:49.380Z"    
     }
+  }
     console.log(Param)
     this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
-      this.dsPurchaseOrder.data = data as PurchaseOrder [];
+      this.msg = data;
+      console.log(this.msg);
       if(data){
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        
+       
       }
- 
-     
-    },
       error => {
         this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
+      }
       });
 
   }
+  msg:any;
+  // onVerify(el) {
+
+  //   var m_data = {
+  //     'PurchaseID': el.PurchaseID,
+  //     'ISVerified': Boolean(JSON.parse(this._PurchaseOrder.PurchaseSearchGroup.get("Status").value))
+  //   }
+  //   this._PurchaseOrder.getVerifyPurchaseOrdert(m_data)
+  //     .subscribe((data) => {
+  //       this.msg = data;
+  //       if (data) {
+  //         this.toastr.success('Record Verified Successfully.', 'Verified !', {
+  //           toastClass: 'tostr-tost custom-toast-success',
+  //         });
+
+  //       } else {
+  //         this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
+  //           toastClass: 'tostr-tost custom-toast-error',
+  //         });
+  //       }
+  //     });
+  // }
+
 
   // getOptionText(option) {
 

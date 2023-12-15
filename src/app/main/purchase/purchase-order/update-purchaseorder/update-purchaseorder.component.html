@@ -7,7 +7,7 @@
                     style="color: white;">
                     Purchase Order List
                     <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                        style="margin-left: 1400px;">
+                        style="margin-left: 1450px;">
                         <mat-icon>close</mat-icon>
                     </button>
                 </span>
@@ -115,7 +115,7 @@
 
                                         <mat-form-field class="section-dropdown" style="width: 25%;">
                                             <mat-label>-- Select PaymentTerm --</mat-label>
-                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm"
+                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm" 
                                                 (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of PaymentList" [value]="m">
@@ -174,7 +174,7 @@
                                         
                                           <mat-form-field class="section-dropdown" style="width: 20%;">
                                             <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3" required
+                                            <mat-select formControlName="Status3" name="Status3" required 
                                                 (selectionChange)="onChangeDiscountMode($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Status3List" [value]="m">
@@ -224,7 +224,7 @@
                                         <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
                                             <input type="text" name="ItemName" formControlName="ItemName" #itemid
                                                 placeholder="Item Name (enter 2 char) " matInput [(ngModel)]="ItemNames"
-                                                [matAutocomplete]="auto" (input)="getPharItemList()">
+                                                [matAutocomplete]="auto" (input)="getPharItemList()"  (keydown)="onEnterItemName($event)">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_PurchaseOrder.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -248,14 +248,14 @@
                                             <mat-label>UOM</mat-label>
                                             <input matInput [(ngModel)]="UOM" name="UOM"
                                                 [disabled]="disableSelect.value" formControlName="UOM" placeholder="UOM"
-                                                id="UOM" type="number">
+                                                id="UOM" type="number" (keydown)="onEnterunit($event)">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="Qty" name="Qty" #qty required type="number"
                                                 (keyup)="calculateTotalAmount()" (keydown)="onEnterQty($event)"
-                                                formControlName="Qty" id="Qty" required>
+                                                formControlName="Qty" id="Qty"  required>
                                                 <mat-error
                                                 *ngIf="_PurchaseOrder.userFormGroup.get('Qty').hasError('required')">
                                                 Required field cannot be left blank
@@ -279,7 +279,7 @@
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput [(ngModel)]="TotalAmount" name="TotalAmount" readonly
-                                                formControlName="TotalAmount" required>
+                                                formControlName="TotalAmount"  required>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -291,7 +291,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Disc Amt</mat-label>
-                                            <input matInput [(ngModel)]="DiscAmt" name="DiscAmount"
+                                            <input matInput [(ngModel)]="DiscAmt" name="DiscAmount"  
                                                 (keyup)="calculateDiscAmount()" formControlName="DiscAmount" readonly>
                                         </mat-form-field>&nbsp;
 
@@ -304,7 +304,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>GST Amt</mat-label>
-                                            <input matInput [(ngModel)]="GSTAmt" name="GSTAmount"
+                                            <input matInput [(ngModel)]="GSTAmt" name="GSTAmount"   
                                                 formControlName="GSTAmount">
                                         </mat-form-field>&nbsp;
 

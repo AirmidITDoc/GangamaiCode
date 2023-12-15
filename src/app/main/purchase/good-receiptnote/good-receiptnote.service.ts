@@ -32,7 +32,7 @@ export class GoodReceiptnoteService {
       StoreId:'',
       SupplierId:'',
       Status:0,
-      Status1:0,
+      Status1:['0'],
       Status2:[true],
       Status3:0,
       Verify:0,
