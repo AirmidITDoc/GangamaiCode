@@ -2069,7 +2069,8 @@ export class AppointmentComponent implements OnInit {
    
     this.FimeName=element.name;
 
-    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName="+this.FimeName +"";
+    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName="+ "'"+this.FimeName+"'" +" ";
+   console.log(query);
     this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
       if (resData) {
         Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
