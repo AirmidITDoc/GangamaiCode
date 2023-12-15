@@ -52,6 +52,7 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                      </mat-form-field>&nbsp;&nbsp;&nbsp; -->
+
                                         <mat-form-field appearance="outline" fxFlex="25%">
                                             <mat-select formControlName="StoreId" name="StoreId">
                                                 <mat-option></mat-option>
@@ -61,25 +62,7 @@
                                             </mat-select>
                                         </mat-form-field>
 
-
-                                        <mat-radio-group name="Status" formControlName="Status" fxFlex="70%"
-                                            value="before">
-                                            <mat-radio-button value="after" style="padding-top:13px;"
-                                                [checked]="isChecked" class="mr-sm-12">Direct
-                                                Purchase</mat-radio-button>
-                                            <mat-radio-button value="before" class="mr-sm-12">Purchase
-                                                Orders</mat-radio-button>
-                                        </mat-radio-group>
-
-                                        <span style="color: black;font-weight: bold;color: black;">
-                                            <app-common-date [screenFrom]="screenFromString"
-                                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                                        </span>
-                                    </div>
-
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-                                        <mat-form-field appearance="outline" style="width:35%">
+                                        <mat-form-field appearance="outline"  fxFlex="25%"  >
                                             <mat-label>Supplier Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 (keydown)="onEnterSupplier($event)" placeholder="Select Supplier"
@@ -91,23 +74,35 @@
                                                     (click)="_GRNList.GRNFirstForm.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autoSupllier="matAutocomplete"
-                                                [displayWith]="getOptionTextSupplier"  (optionSelected)='getSelectedObjSupp($event.option.value)'>
+                                                [displayWith]="getOptionTextSupplier">
                                                 <mat-option *ngFor="let option of filteredoptionsSupplier | async"
                                                     [value]="option">
                                                     {{option.SupplierName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+                                        <mat-radio-group name="Status" formControlName="Status" fxFlex="60%"
+                                        value="before">
+                                        <mat-radio-button value="after" style="padding-top:13px;"
+                                            [checked]="isChecked" class="mr-sm-12">Direct
+                                            Purchase</mat-radio-button>
+                                        <mat-radio-button value="before" class="mr-sm-12">Purchase
+                                            Orders</mat-radio-button>
+                                         </mat-radio-group>
 
-                                        <mat-form-field appearance="outline" style="width:15%">
-                                            <mat-label>Invoice No</mat-label>
-                                            <input matInput placeholder="Placeholder" [(ngModel)]="InvoiceNo"
-                                                formControlName="InvoiceNo" #GateEntryNo1
-                                                (keydown)="onEnterInvoiceNo($event)">
-                                        </mat-form-field>
+                                      
 
-                                        <mat-form-field appearance="outline" style="width:15%">
+                                        <span style="color: black;font-weight: bold;color: black;">
+                                            <app-common-date [screenFrom]="screenFromString"
+                                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                        </span>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+ 
+                                        <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Invoice Date</mat-label>
                                             <input name="DateOfInvoice" matInput [matDatepicker]="picker1"
                                                 [readonly]="true" formControlName="DateOfInvoice" #DateOfInvoice
@@ -116,7 +111,14 @@
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" style="width:15%">
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Invoice No</mat-label>
+                                            <input matInput placeholder="Placeholder" [(ngModel)]="InvoiceNo"
+                                                formControlName="InvoiceNo" #GateEntryNo1
+                                                (keydown)="onEnterInvoiceNo($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
                                             <mat-label>Gate Entry No</mat-label>
                                             <input matInput placeholder="Placeholder"
                                                 [(ngModel)]="registerObj.GrnNumber" formControlName="GateEntryNo"
@@ -124,24 +126,26 @@
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                                        <mat-form-field class="section-dropdown" style="width:25%;">
+                                        <mat-form-field class="section-dropdown" fxFlex="25%" >
                                             <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3"
+                                            <mat-select formControlName="Status3" name="Status3" 
                                                 (selectionChange)="onChangeStatus3($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Status3List" [value]="m">
                                                     {{m.name}}
                                                 </mat-option>
                                             </mat-select>
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp; 
+                                        
 
-
-                                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType"
-                                            style="margin-top: 12px;" (click)="PaymentTypeChk()">
-                                            <mat-radio-button value="Cash">Cash</mat-radio-button>
-                                            <mat-radio-button value="Credit">Credit</mat-radio-button>
+                                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxFlex="10%"
+                                        style="margin-top: 20px;" (click)="PaymentTypeChk()" style="float: right;">
+                                        <mat-radio-button value="Cash">Cash</mat-radio-button>
+                                        <mat-radio-button value="Credit">Credit</mat-radio-button>
                                         </mat-radio-group>
 
+
+                                       
                                     </div>
 
                                 </form>
