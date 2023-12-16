@@ -100,7 +100,8 @@
                                         </mat-form-field> -->
                                         <mat-form-field >
                                             <mat-label>DeliveryDate</mat-label>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="start" style="margin-top: 14px;">
+                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="start" 
+                                            [(ngModel)]="registerObj.DeliveryDate" style="margin-top: 14px;">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>&nbsp;&nbsp;
@@ -246,7 +247,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>UOM</mat-label>
-                                            <input matInput [(ngModel)]="UOM" name="UOM"
+                                            <input matInput [(ngModel)]="UOM" name="UOM" 
                                                 [disabled]="disableSelect.value" formControlName="UOM" placeholder="UOM"
                                                 id="UOM" type="number" (keydown)="onEnterunit($event)">
                                         </mat-form-field>&nbsp;

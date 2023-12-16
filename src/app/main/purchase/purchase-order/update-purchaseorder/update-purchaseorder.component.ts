@@ -234,8 +234,11 @@ PaymentList = [
     const toSelect = this.PaymentModeList.find(c => c.id == this.registerObj.ModeOfPayment);
     this._PurchaseOrder.userFormGroup.get('PaymentMode').setValue(toSelect);
 
-    const toSelectCity = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNature);
-    this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectCity);
+    const toSelectTaxNature = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNatureId);
+    this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectTaxNature);
+
+    const toSelectStatus3 = this.TaxNatureList.find(c => c.id == this.registerObj.Status3Id);
+    this._PurchaseOrder.userFormGroup.get('Status3').setValue(toSelectStatus3);
 
     // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -316,7 +319,7 @@ PaymentList = [
         this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
       }
     }
-     //this.onChangeDiscountModeTable(event ,contact:any);
+    
   }
   
 

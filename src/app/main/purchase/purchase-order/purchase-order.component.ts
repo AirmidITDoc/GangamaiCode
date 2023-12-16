@@ -297,7 +297,8 @@ export class PurchaseOrderComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
+  msg:any;
+  isEditMode = true;
   onVerify(row) {
     var Param = {
       "update_POVerify_Status": {
@@ -315,38 +316,20 @@ export class PurchaseOrderComponent implements OnInit {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-       
+        this.isEditMode = false;
       }
-      error => {
+      
+      },error => {
         this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      }
       });
-
   }
-  msg:any;
-  // onVerify(el) {
+ 
+  
+  
 
-  //   var m_data = {
-  //     'PurchaseID': el.PurchaseID,
-  //     'ISVerified': Boolean(JSON.parse(this._PurchaseOrder.PurchaseSearchGroup.get("Status").value))
-  //   }
-  //   this._PurchaseOrder.getVerifyPurchaseOrdert(m_data)
-  //     .subscribe((data) => {
-  //       this.msg = data;
-  //       if (data) {
-  //         this.toastr.success('Record Verified Successfully.', 'Verified !', {
-  //           toastClass: 'tostr-tost custom-toast-success',
-  //         });
-
-  //       } else {
-  //         this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
-  //           toastClass: 'tostr-tost custom-toast-error',
-  //         });
-  //       }
-  //     });
-  // }
+ 
 
 
   // getOptionText(option) {
@@ -1199,7 +1182,8 @@ export class ItemNameList {
   FreightAmount: any;
   DeliveryDate: any;
   ModeOfPayment: any;
-  TaxNature: any;
+  TaxNatureId: any;
+  Status3Id:any;
   Warranty: any;
   Remark: any;
   Schedule: any;
@@ -1210,6 +1194,7 @@ export class ItemNameList {
   WOTotalAmount: any;
   WoNetAmount: any;
   WOVatAmount: any;
+  
 
   /**
    * Constructor
@@ -1244,7 +1229,8 @@ export class ItemNameList {
       this.PaymentTermId = ItemNameList.PaymentTermId || 0;
       this.DeliveryDate = ItemNameList.DeliveryDate || '';
       this.ModeOfPayment = ItemNameList.ModeOfPayment || '';
-      this.TaxNature = ItemNameList.TaxNature || '';
+      this.TaxNatureId = ItemNameList.TaxNatureId || '';
+      this.Status3Id = ItemNameList.Status3Id || '';
       this.Warranty = ItemNameList.Warranty || '';
       this.Remark = ItemNameList.Remark || '';
       this.Schedule = ItemNameList.Schedule || '';

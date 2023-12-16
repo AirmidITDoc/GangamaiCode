@@ -128,7 +128,7 @@
                                                         </mat-form-field>
 
                                                         <mat-radio-group name="Status" formControlName="Status" fxFlex="30%" value="0" 
-                                                        style="padding-top: 12px;">
+                                                        style="padding-top: 12px;"  >
                                                         <mat-label >Status:</mat-label>&nbsp;
                                                             <mat-radio-button value="1" class="mr-sm-12" (keyup)="getPurchaseOrderList()">Verify
                                                               </mat-radio-button>
@@ -190,15 +190,30 @@
                                                             </ng-container> -->
  
 
-                                                              <ng-container matColumnDef="Status">
+                                                              <!-- <ng-container matColumnDef="Status">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Verify
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm>
-                                                                    <mat-icon *ngIf="contact.Verify" style="font-size: 70px;width: 25px !important; 
+                                                                    <mat-icon *ngIf="contact.Status" style="font-size: 70px;width: 25px !important; 
                                                                     height:25px !important;border-radius:100%;" class="verify-icon green-600 s-16">circle</mat-icon>
 
-                                                                    <mat-icon *ngIf="!contact.Pending"  style="font-size: 70px;width: 25px !important; 
+                                                                    <mat-icon *ngIf="!contact.Status"  style="font-size: 70px;width: 25px !important; 
                                                                     height:25px !important;border-radius:100%;" class="pending-icon red-500 s-16">circle</mat-icon>
+                                                                    
+                                                                </mat-cell>
+                                                            </ng-container> -->
+                                                            <ng-container matColumnDef="Status">
+                                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                                    style="color: white;">Verify</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <mat-icon
+                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                        *ngIf="contact.Status=='1' || contact.Status=='1'"
+                                                                        matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                    <mat-icon
+                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                        *ngIf="!contact.Status=='0' " matTooltip="Pending"
+                                                                        class=" orange-600 s-16">circle</mat-icon>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -265,8 +280,8 @@
                                                                     <button mat-icon-button (click)="getPrint(row)">
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button (click)="onEdit(row)">
-                                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                    <button mat-icon-button (click)="onEdit(row)" [disabled]="!isEditMode">
+                                                                        <mat-icon title="Edit Menu">edit</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onVerify(row)">
                                                                         <mat-icon 
@@ -298,6 +313,7 @@
                                                                     style="display: none;">
                                                                 </mat-header-cell>
                                                             </ng-container>
+                                                            
 
                                                             <ng-container matColumnDef="noData">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">
@@ -318,7 +334,7 @@
                                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                             </mat-footer-row>
                                                             <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                                [ngClass]="{'hide':!(dsPurchaseOrder!=null && dsPurchaseOrder.data.length==0)}">
                                                             </mat-footer-row>
                                                         </mat-table>
 
@@ -469,7 +485,7 @@
                                                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                                     </mat-footer-row>
                                                                     <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                                        [ngClass]="{'hide':!(dsPurchaseItemList!=null && dsPurchaseItemList.data.length==0)}">
                                                                     </mat-footer-row>
                                                                 </mat-table>
 

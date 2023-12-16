@@ -87,8 +87,9 @@ export class GoodReceiptnoteService {
       Remark:[''],
       ReceivedBy:[''],
       DebitAmount:[''],
-      CreditAmount:[''],
+      CreditAmount:['true'],
       DiscAmount:[''],
+      VatAmount:[''],
       NetPayamt:[''],
       OtherCharges:[''],
       RoundingAmt:[''],
@@ -108,7 +109,9 @@ export class GoodReceiptnoteService {
     });
   }
 
- 
+  // public getGRNItemList(Param) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
+  // }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
   }
@@ -149,7 +152,12 @@ export class GoodReceiptnoteService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  
+  public getPrintGRNList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
+  }
+  public getVerifyGRN(Param) {
+    return this._httpClient.post("Pharmacy/VerifyGRN", Param)
+  }
 }
 
 

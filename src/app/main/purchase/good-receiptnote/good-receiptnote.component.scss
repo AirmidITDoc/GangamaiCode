@@ -5,6 +5,13 @@ app-good-receiptnote {
       height: 290px !important;
       width: 100%;
 
+      .mat-column-Status {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+        text-align: left;
+      }
+
       .mat-column-GrnNumber {
         width: 90px;
         max-width: 90px;
@@ -114,24 +121,24 @@ app-good-receiptnote {
         text-align: left;
       }
       .mat-column-Action1 {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
         text-align: left;
     }
 
-      // .mat-header-row {
-      //   width: 100%;
-      //   min-width: 1700px;  
-      //   min-height: 30px; 
-      //   background-color: blue;
-      // }
+      .mat-header-row {
+        width: 100%;
+        min-width: 1650px;  
+         
+        background-color: blue;
+      }
   
-      // .mat-row {
-      // width: 100%;
-      // min-width: 1700px;  
-      // min-height: 30px; 
-      // }
+      .mat-row {
+      width: 100%;
+      min-width: 1650px;  
+      
+      }
     }
 
     .table2 {
@@ -422,6 +429,10 @@ app-good-receiptnote {
    // border: 1px solid rgb(247, 97, 97);
     color:  white;
    
+}
+.disabled-icon {
+  opacity: 0.5; /* Reduce opacity to indicate disabled state */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
 }
 
 button:disabled {
