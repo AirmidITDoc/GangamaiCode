@@ -20,7 +20,7 @@ export class PdfviewerComponent implements OnInit {
       this.base64 = this.data.base64 as string;
       // console.log(this.base64);
       this.title = this.data.title as string;
-      // console.log(this.title);
+      console.log(this.data);
     }
   }
   onClose() {

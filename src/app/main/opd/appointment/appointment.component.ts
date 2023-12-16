@@ -171,7 +171,7 @@ export class AppointmentComponent implements OnInit {
   doclist: any = [];
   Filename: any;
   noOptionFound: boolean = false;
-
+  noOptionFound1: boolean = false;
   RegNo: any = 0;
   // Document Upload
   personalFormGroup: FormGroup;
@@ -277,6 +277,7 @@ export class AppointmentComponent implements OnInit {
 
   ) {
     this.getVisitList();
+   
   }
 
   ngOnInit(): void {
@@ -320,6 +321,8 @@ export class AppointmentComponent implements OnInit {
     this.getDoctor2List();
     this.getPurposeList();
 
+    this.getSearchList();
+    this.getSearchDocuploadPatientList();
 
     this.hospitalFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -330,36 +333,7 @@ export class AppointmentComponent implements OnInit {
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-    this.searchFormGroup.get('RegId').valueChanges
-      .pipe(
-        startWith(""),
-        map((value: any) => {
-          // Filter the options
-          if (value.length >= 2) {
-            this.getSearchList(value);
-          } else {
-            let valueString = value && value.FirstName ? value.FirstName : value
-            this.filterRegList(valueString);
-          }
-        })
-      )
-      .subscribe();
-
-
-    this.personalFormGroup.get('RegId').valueChanges
-      .pipe(
-        startWith(""),
-        map((value: any) => {
-          // Filter the options
-          if (value.length >= 2) {
-            this.getSearchDocuploadPatientList(value);
-          } else {
-            let valueString = value && value.FirstName ? value.FirstName : value
-            this.filterDocRegList(valueString);
-          }
-        })
-      )
-      .subscribe();
+   
   }
 
   public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
@@ -966,6 +940,7 @@ export class AppointmentComponent implements OnInit {
   isDepartmentSelected: boolean = false;
   isCitySelected: boolean = false;
   isRegIdSelected: boolean = false;
+  isRegIdSelected1: boolean = false;
   isRefDoctorSelected: boolean = false;
   isPurposeSelected: boolean = false;
 
@@ -1048,53 +1023,40 @@ export class AppointmentComponent implements OnInit {
  
   } */
 
-  getSearchList(value?: string) {
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-    // if (this.searchFormGroup.get('RegId').value.length >= 1) {
-    this._opappointmentService.getRegistrationList(m_data).subscribe((resData: any) => {
-      this.options = resData;
-      this.filterRegList(value);
+  getSearchList() {
+   
+  var m_data = {
+    "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+  }
+  
+    this._opappointmentService.getRegistrationList(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
     });
-    // }
-
+  
   }
 
-  filterRegList(value: string) {
-    this.PatientListfilteredOptions = this.options.filter(option =>
-      option.FirstName.toLowerCase().startsWith(value.toLowerCase())
-    );
-    if (this.PatientListfilteredOptions.length < 4) {
-      this.height = this.PatientListfilteredOptions.length * 50 + "px";
-    } else {
-      this.height = "200px";
-    }
-  }
-
-  getSearchDocuploadPatientList(value?: string) {
-    debugger
+ 
+  getSearchDocuploadPatientList() {
+  debugger
     var m_data = {
       "Keyword": `${this.personalFormGroup.get('RegId').value}%`
     }
-    this._opappointmentService.getDocPatientRegList(m_data).subscribe((resData: any) => {
-      this.options1 = resData;
-      this.filterDocRegList(value);
-    });
-    // }
-
+    
+      this._opappointmentService.getDocPatientRegList(m_data).subscribe(data => {
+        this.filteredOptions = data;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound1 = true;
+        } else {
+          this.noOptionFound1 = false;
+        }
+      });
   }
 
-  filterDocRegList(value: string) {
-    this.PatientDocfilteredOptions = this.options1.filter(option =>
-      option.FirstName.toLowerCase().startsWith(value.toLowerCase())
-    );
-    if (this.PatientDocfilteredOptions.length < 4) {
-      this.height = this.PatientDocfilteredOptions.length * 50 + "px";
-    } else {
-      this.height = "200px";
-    }
-  }
 
 
   getPatientOptionText(option) {

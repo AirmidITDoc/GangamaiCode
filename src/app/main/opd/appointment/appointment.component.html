@@ -342,7 +342,7 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="18px" fxLayoutAlign="center center">
-                  <mat-form-field appearance="outline" disabled="isRegSearchDisabled">
+                  <!-- <mat-form-field appearance="outline" disabled="isRegSearchDisabled">
                     <mat-label>RegNo / First Name / Last Name / Mobile No </mat-label>
                     <input type="text" name="RegId" formControlName="RegId" matInput [matAutocomplete]="auto"
                       (input)="getSearchList()">
@@ -362,9 +362,30 @@
                     <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
                       Required field cannot be left blank
                     </mat-error>
+                  </mat-form-field> -->
+
+
+                  <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
+                    <input type="text" name="RegId" formControlName="RegId" placeholder="Item Name (enter 2 char) "
+                      matInput [matAutocomplete]="auto" (input)="getSearchList()">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                      (optionSelected)='getSelectedObj($event.option.value)'>
+                      <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                        {{option.MobileNo}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
+                      Required field cannot be left blank
+                    </mat-error> -->
                   </mat-form-field>
 
-               
 
                   <mat-form-field appearance="outline" disabled="isRegSearchDisabled">
                     <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
@@ -406,7 +427,7 @@
                   </mat-expansion-panel-header>
                   <form [formGroup]="personalFormGroup">
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
-                   
+
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Prefix</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
@@ -544,7 +565,7 @@
                           enter Address </mat-error>
                       </mat-form-field>
 
-                     
+
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Area Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput
@@ -857,7 +878,7 @@
         <form [formGroup]="personalFormGroup">
           <div fxLayout="row" style="width: 100%;">
 
-            <mat-form-field appearance="outline" style="width: 25%;">
+            <!-- <mat-form-field appearance="outline" style="width: 25%;">
               <mat-label>RegNo / First Name / Last Name / Mobile No </mat-label>
               <input type="text" name="RegId" formControlName="RegId" matInput [matAutocomplete]="auto1"
                 (input)="getSearchDocuploadPatientList()">
@@ -877,12 +898,36 @@
               <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
                 Required field cannot be left blank
               </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <!-- </div> -->
-            <span style="margin-left: 20px;font-size: medium;font-weight: bold;color: blue;">RegId:{{RegId}} | Patient
-              Name : {{PatientName}} | VisitId: {{VisitId}} </span>
+
           </div>
+
+
+
+          <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
+            <input type="text" name="RegId" formControlName="RegId"  placeholder="Item Name (enter 2 char) "
+              matInput [matAutocomplete]="auto1" (input)="getSearchDocuploadPatientList()">
+            <span matSuffix style="display: flex;">
+              <mat-icon class="mat-icon-close"
+                (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">close</mat-icon>
+              <mat-icon class="mat-icon-close"
+                (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">search</mat-icon>
+            </span>
+            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getPatientOptionText"
+              (optionSelected)='getPatientSelectedObj($event.option.value)'>
+              <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                {{option.MobileNo}}
+              </mat-option>
+            </mat-autocomplete>
+            <!-- <mat-error *ngIf="personalFormGroup.get('ItemId').hasError('required')">
+              Required field cannot be left blank
+            </mat-error> -->
+          </mat-form-field>
+          <span style="margin-left: 20px;font-size: medium;font-weight: bold;color: blue;">RegId:{{RegId}} | Patient
+            Name : {{PatientName}} | VisitId: {{VisitId}} </span>
         </form>
 
 
