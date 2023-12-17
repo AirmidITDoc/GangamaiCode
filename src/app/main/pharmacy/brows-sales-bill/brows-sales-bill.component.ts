@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowsSalesBillService } from './brows-sales-bill.service';
@@ -18,6 +18,7 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AppointmentSreviceService } from 'app/main/opd/appointment/appointment-srevice.service';
 import { PatientDocument } from 'app/main/opd/appointment/appointment.component';
+import { E } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -50,6 +51,10 @@ export class BrowsSalesBillComponent implements OnInit {
   TotalNeftpay:any=0;
   TotalPatTmpay:any=0;
   TotalBalancepay:any=0;
+  Filepath:any;
+  loadingRow: number | null = null
+  IsLoading:boolean=false;
+    
 
   displayedColumns: string[] = [
     'action',
@@ -937,31 +942,49 @@ CreateFormData (obj: any, formData: FormData, subKeyStr = '')  {
   }
 }
 
+
 getWhatsappshare(el){
-      let data: PatientDocument[] = [];
-    for (let i = 0; i < this.imgDataSource.data.length; i++) {
-      let file = new File([
-        new Blob([this.imgDataSource.data[i].url])
-      ], this.imgDataSource.data[i].name,{type:'image/jpeg'});
-      data.push({
-        Id:"0",OPD_IPD_ID: 1, OPD_IPD_Type: 2, DocFile: file,FileName:this.imgDataSource.data[i].name
-      });
-    }
+  debugger
+  // this.IsLoading=true;
+  // setTimeout(() => {
+  //   this.IsLoading=false;
+  // }, 4000);
 
-    const formData = new FormData();
-    let finalData={Files:data};
-    this.CreateFormData(finalData, formData);
-    console.log(formData);
-    this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-      console.log(data)
-      if (data) {
-        Swal.fire("Document uploaded Successfully  ! ");
-      }
+  var m_data = {
+          "insertWhatsappsmsInfo": {
+            "mobileNumber": 0,
+            "smsString": 'PatientDetail'|| '',
+            "isSent": 0,
+            "smsType": 'bulk',
+            "smsFlag":0,
+            "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "tranNo": el.SalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "templateId":0,
+            "smSurl": "info@gmail.com",
+            "filePath":this.Filepath || '',
+            "smsOutGoingID":0           
 
-    });
+          }
   }
+        console.log(m_data);
+        this._BrowsSalesBillService.InsertWhatsappSms(m_data).subscribe(response => {
+          if (response) {
+            Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                this._matDialog.closeAll();
 
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+          }
 
+        });
+        this.IsLoading=false;
+}
+
+    
+    
 WhatsSalesRetPdf(el){
 
 }

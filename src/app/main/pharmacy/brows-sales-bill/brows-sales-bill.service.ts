@@ -81,6 +81,10 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
   }
 
+  public InsertWhatsappSms(emp){
+    return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
+  }
+
 
   public getSalesReturnPrint(emp) {
     return this._httpClient.post("Generic/GetByProc?procName=rptSalesReturnPrint", emp);
@@ -101,6 +105,10 @@ export class BrowsSalesBillService {
 
   public getSalesDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
     return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
+  }
+
+  public getPurchaseOrder(PurchaseID){
+    return this._httpClient.get("Pharmacy/view-PurchaseOrder_Report?PurchaseID=" +  PurchaseID);
   }
 
   public getSalesDailyCollectionSummary(FromDate,ToDate,StoreId,AddedById){

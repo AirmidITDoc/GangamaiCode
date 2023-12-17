@@ -188,6 +188,7 @@ PaymentList = [
   filteredoptionsPayment: Observable<string[]>;
 
   constructor(
+  
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -198,6 +199,7 @@ PaymentList = [
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr : ToastrService,
     private accountService: AuthenticationService,
+  
 
 
   ) { }
@@ -232,8 +234,11 @@ PaymentList = [
     const toSelect = this.PaymentModeList.find(c => c.id == this.registerObj.ModeOfPayment);
     this._PurchaseOrder.userFormGroup.get('PaymentMode').setValue(toSelect);
 
-    const toSelectCity = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNature);
-    this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectCity);
+    const toSelectTaxNature = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNatureId);
+    this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectTaxNature);
+
+    const toSelectStatus3 = this.TaxNatureList.find(c => c.id == this.registerObj.Status3Id);
+    this._PurchaseOrder.userFormGroup.get('Status3').setValue(toSelectStatus3);
 
     // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
@@ -288,7 +293,7 @@ PaymentList = [
    
 
   onChangeDiscountMode(event) {
-    
+    //debugger
     if (event.value.name == 'GST Before Disc') {
 
       if (parseFloat(this.GSTPer) > 0) {
@@ -314,36 +319,38 @@ PaymentList = [
         this.NetAmount = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmt)).toFixed(2);
       }
     }
-    // this. onChangeDiscountModeTable(event ,element);
+    
   }
+  
 
-  // onChangeDiscountModeTable(event ,element) {
-  //   this.GSTPer=element.GST;
+  // onChangeDiscountModeTable(event,contact:any) {
+  //   debugger
+  //  this.GSTPer=parseFloat(contact.GST);
     
   //   if (event.value.name == 'GST Before Disc') {
 
-  //     if (parseFloat(element.GST) > 0) {
+  //     if (parseFloat(contact.GST) > 0) {
 
-  //       element.GSTAmount = ((parseFloat(element.TotalAmount) * parseFloat(element.GST)) / 100).toFixed(2);
-  //       element.NetAmount = (parseFloat(element.TotalAmount) + parseFloat(element.GSTAmount)).toFixed(2);
+  //       contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+  //       contact.NetAmount = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount)).toFixed(2);
   //     }
   //   }
   //   else if (event.value.name == 'GST After Disc') {
       
   //     // if (parseFloat(this.GSTPer) > 0) {
-  //       this.Dis=element.Dis;
+  //      this.Dis=parseFloat(contact.Dis);
   //     let disc = this.Dis;
   //     if (disc > 0) {
-  //       element.DiscAmount = (disc * parseFloat(element.TotalAmount) / 100).toFixed(2);
-  //       element.NetAmount = (parseFloat(element.TotalAmount) - parseFloat(element.DiscAmount)).toFixed(2);
-  //       if (parseFloat(element.GST) > 0) {
-  //         element.GSTAmount = ((parseFloat(element.NetAmount) * parseFloat(element.GST)) / 100).toFixed(2);
-  //         element.NetAmount = (parseFloat(element.NetAmount) + parseFloat( element.GSTAmount)).toFixed(2);
+  //       contact.DiscAmount = (disc * parseFloat(contact.TotalAmount) / 100).toFixed(2);
+  //       contact.NetAmount = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+  //       if (parseFloat(this.GSTPer) > 0) {
+  //         contact.GSTAmount = ((parseFloat(contact.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+  //         contact.NetAmount = (parseFloat(contact.NetAmount) + parseFloat( contact.GSTAmount)).toFixed(2);
   //       }
   //     } 
   //     else {
-  //       element.GSTAmount= ((parseFloat(element.TotalAmount) * parseFloat(element.GST)) / 100).toFixed(2);
-  //       element.NetAmount = (parseFloat(element.TotalAmount) + parseFloat( element.GSTAmount)).toFixed(2);
+  //       contact.GSTAmount= ((parseFloat(contact.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+  //       contact.NetAmount = (parseFloat(contact.TotalAmount) + parseFloat( contact.GSTAmount)).toFixed(2);
   //     }
   //   }
   // }
@@ -867,11 +874,12 @@ debugger
 
   OnReset() {
     this._PurchaseOrder.PurchaseSearchGroup.reset();
-    //this._PurchaseOrder.userFormGroup.reset();
-    // this._PurchaseOrder.PurchaseStoreform.reset();
+    this._PurchaseOrder.userFormGroup.reset();
+    //this._PurchaseOrder.PurchaseStoreform.reset();
     this._PurchaseOrder.FinalPurchaseform.reset();
     this.dsItemNameList.data = [];
     this.ItemFormreset();
+ 
     
   }
   ItemNames:any;
@@ -891,6 +899,7 @@ debugger
     this.Specification= "";
     // this.Status3List = [];       
 }
+ 
 
   delete(elm) {
     this.dsItemNameList.data = this.dsItemNameList.data
@@ -1077,36 +1086,48 @@ debugger
   }
   public onEnterItemName(event): void {
     if (event.which === 13) {
+     // if(this.ItemName) this.ItemName.focus();
+      this.UOM.nativeElement.focus();
+    }
+  }
+  public onEnterunit(event): void {
+    if (event.which === 13) {
+      //if(this.UOM) this.UOM.focus();
       this.qty.nativeElement.focus();
     }
   }
   public onEnterQty(event): void {
     if (event.which === 13) {
+      //if(this.Qty) this.Qty.focus();
       this.rate.nativeElement.focus();
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
-      this.dis.nativeElement.focus();
+      //if(this.Rate) this.Rate.focus();
+     this.dis.nativeElement.focus();
     }
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
+      //if(this.Dis) this.Dis.focus();
       this.gst.nativeElement.focus();
     }
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
+    //  if(this.GSTPer) this.GSTPer.focus();
       this.mrp.nativeElement.focus();
     }
   }
   public onEnterMRP(event): void {
     if (event.which === 13) {
+      //if(this.MRP) this.MRP.focus();
       this.specification.nativeElement.focus();
     }
   }
   public onEnterSpecification(event): void {
-    debugger
+   // debugger
     if (event.which === 13) {
      
       // setTimeout(() => {
@@ -1122,19 +1143,22 @@ debugger
   public onEnterWarranty(event): void {
     if (event.which === 13) {
 
-      if (this.Schedule) this.Schedule.focus();
+      //if (this.Warranty) this.Warranty.focus();
+      this.OtherTax.nativeElement.focus();
     }
   }
 
   public onEnterSchedule(event): void {
     if (event.which === 13) {
+      //if (this.Schedule) this.Schedule.focus();
       this.OtherTax.nativeElement.focus();
     }
   }
 
   public onEnterOtherTax(event): void {
     if (event.which === 13) {
-      this.Remark.nativeElement.focus();
+      if (this.OtherTax) this.Schedule.focus();
+     // this.Remark.nativeElement.focus();
     }
   }
 
