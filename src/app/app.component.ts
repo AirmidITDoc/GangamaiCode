@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfigService } from './core/services/config.service';
 import { SpinnerService } from './core/services/spinner.service';
 // import { NgxSpinnerService } from 'ngx-spinner';
-//import { Idle } from 'idlejs/dist';
+import { Idle } from 'idlejs/dist';
 import { Router } from '@angular/router';
 
 @Component({
@@ -54,16 +54,16 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translateService
      */
 
-    // idle = new Idle().whenNotInteractive().within(5).do(() => {
-    //     this.url = this.router.url;
-    //     // console.log('this.url==', this.url);
-    //     if (this.url !== '/auth/login') {
-    //       alert('You are being timed out due to inactivity. Please Log-In again.');
-    //       this.dialogRef ? this.dialogRef.closeAll() : '';
-    //       this.router.navigate(['auth/login'], { replaceUrl: true });
-    //     //   this.logoutService();
-    //     }
-    //   }).start();
+    idle = new Idle().whenNotInteractive().within(5).do(() => {
+        this.url = this.router.url;
+        // console.log('this.url==', this.url);
+        if (this.url !== '/auth/login') {
+          alert('You are being timed out due to inactivity. Please Log-In again.');
+          this.dialogRef ? this.dialogRef.closeAll() : '';
+          this.router.navigate(['auth/login'], { replaceUrl: true });
+        //   this.logoutService();
+        }
+      }).start();
 
     constructor(
         @Inject(DOCUMENT) private document: any,
