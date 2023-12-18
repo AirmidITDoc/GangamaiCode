@@ -1189,7 +1189,8 @@ export class ItemNameList {
   Schedule: any;
   OtherTax: any;
   WorkId: any;
-
+  Remarks: any;
+Worrenty:any;
   WODiscAmount: any;
   WOTotalAmount: any;
   WoNetAmount: any;
