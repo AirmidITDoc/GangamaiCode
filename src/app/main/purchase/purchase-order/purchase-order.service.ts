@@ -69,7 +69,7 @@ export class PurchaseOrderService {
       purchaseId: [''],
       Freight: [''],
       FromStoreId: [''],
-      start: [new Date().toISOString()],
+      DeliveryDate: [new Date().toISOString()],
       Status3: [''],
       SupplierId: [''],
       PaymentMode: [''],

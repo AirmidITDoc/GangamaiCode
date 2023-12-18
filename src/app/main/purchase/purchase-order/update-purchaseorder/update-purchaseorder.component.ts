@@ -209,20 +209,19 @@ PaymentList = [
     if (this.data.chkNewGRN==2) {
       
       this.registerObj=this.data.Obj;
+     // this.Remark = this.registerObj.Remarks;
       this.getOldPurchaseOrder( this.registerObj.PurchaseID);    
          this.setDropdownObjs1();
+ 
     }
     
     // this.getTostoreSearchCombo();
     // this.getFromStoreSearchList();
-   
     this.getSupplierSearchCombo();
     // this.getToStoreSearchList();
     // this.getItemNameSearchCombo();
     // this.getItemNameList();
     this.gePharStoreList();
-
- 
   }
 
   
@@ -284,7 +283,7 @@ PaymentList = [
       if (this.data) {
         
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
-        this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
+       // this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
       }
       
 
@@ -354,7 +353,8 @@ PaymentList = [
   //     }
   //   }
   // }
- 
+  GrandTotalAmount:any;
+  UnitofMeasurementName:any;
   onAdd(event) {
     
     this.dsItemNameList.data = [];
@@ -367,22 +367,23 @@ PaymentList = [
         ItemID: this.ItemID,
         ItemName: this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemName || '',
         Qty: this.Qty || 0,
-        UOM: this.UOM || 0,
-        Rate: (this.Rate).toFixed(2) || 0,
-        TotalAmount: parseInt(this.TotalAmount).toFixed(2)  || 0,
-        Dis: this.Dis || 0,
+        UOMID: this.UOM || 0,
+        Rate: this.Rate || 0,
+        TotalAmount:parseInt(this.TotalAmount).toFixed(2) || 0,
+        DiscPer: this.Dis || 0,
         DiscAmount: parseInt(this.DiscAmt).toFixed(2)  || 0,
-        VatAmount: parseInt(this.GSTAmt).toFixed(2) || 0,
+        VatAmount: this.GSTAmt || 0,
         VatPer: this.GSTPer|| 0,
-        CGSTPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt ||0,
-        SGSTPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IGSTPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
+
+        // CGSTPer: this.CgstPer,
+        // CGSTAmt: this.CGSTAmt ||0,
+        // SGSTPer: this.SgstPer,
+        // SGSTAmt: this.SGSTAmt,
+        // IGSTPer: this.IgstPer,
+        // IGSTAmt: this.IGSTAmt,
         GST: this.GSTPer || 0,
-        GSTAmount: this.GSTAmt|| 0,
-        NetAmount: parseInt(this.NetAmount).toFixed(2) || 0,
+        GSTAmount: this.GSTAmt || 0,
+        GrandTotalAmount:parseInt(this.NetAmount).toFixed(2)   || 0,
         MRP: this.MRP || 0,
         Specification: this.Specification || '',
 
@@ -421,7 +422,7 @@ PaymentList = [
 
    
   getOldPurchaseOrder(el) {
-debugger
+//debugger
     var Param = {
       "purchaseID": el,
      
@@ -457,6 +458,7 @@ debugger
   focusNextService() {
     // this.renderer.selectRootElement('#myInput').focus();
   }
+  
 
 
   getPharItemList() {
@@ -573,30 +575,31 @@ debugger
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemID;
-      purchaseDetailInsertObj['uomId'] = element.UOM;
+      purchaseDetailInsertObj['uomId'] = element.UOMID;
       purchaseDetailInsertObj['qty'] = element.Qty;
       purchaseDetailInsertObj['rate'] = element.Rate;
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
       purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+      purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
+      purchaseDetailInsertObj['vatPer'] = element.GST;;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount;
       purchaseDetailInsertObj['mrp'] = element.MRP;
       purchaseDetailInsertObj['specification'] = element.Specification;
-      purchaseDetailInsertObj['cgstPer'] = element.CGSTPer;
-      purchaseDetailInsertObj['cgstAmt'] = element.CGSTAmt;
-      purchaseDetailInsertObj['sgstPer'] = element.SGSTPer;
-      purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
-      purchaseDetailInsertObj['igstPer'] = element.IGSTPer;
-      purchaseDetailInsertObj['igstAmt'] = element.IGSTAmt;
+      purchaseDetailInsertObj['cgstPer'] = 0;
+      purchaseDetailInsertObj['cgstAmt'] = 0;
+      purchaseDetailInsertObj['sgstPer'] = 0;
+      purchaseDetailInsertObj['sgstAmt'] = 0;
+      purchaseDetailInsertObj['igstPer'] = 0;
+      purchaseDetailInsertObj['igstAmt'] = 0;
+      
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
     });
 
 
     let submitData = {
       "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
-       "delete_PurchaseDetails": delete_PurchaseDetailsObj,
+      "delete_PurchaseDetails": delete_PurchaseDetailsObj,
       "purchaseDetailInsert": InsertpurchaseDetailObj,
     };
     console.log(submitData);
@@ -663,15 +666,15 @@ debugger
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemID;
-      purchaseDetailInsertObj['uomId'] = element.UOM;
+      purchaseDetailInsertObj['uomId'] = element.UOMID;
       purchaseDetailInsertObj['qty'] = element.Qty;
       purchaseDetailInsertObj['rate'] = element.Rate;
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-      purchaseDetailInsertObj['discPer'] = element.Dis;
-      purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
-      purchaseDetailInsertObj['vatPer'] = element.GST;;
-      purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+      purchaseDetailInsertObj['discPer'] = element.DiscPer;
+      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
+      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+      purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount;
       purchaseDetailInsertObj['mrp'] = element.MRP;
       purchaseDetailInsertObj['specification'] = element.Specification;
       purchaseDetailInsertObj['cgstPer'] = 0;
@@ -791,7 +794,7 @@ debugger
 
   getTotalNet(element) {
     let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    this.FinalNetAmount = element.reduce((sum, { GrandTotalAmount }) => sum += +(GrandTotalAmount || 0), 0);
     return this.FinalNetAmount;
   }
 
@@ -873,7 +876,7 @@ debugger
   }
 
   OnReset() {
-    this._PurchaseOrder.PurchaseSearchGroup.reset();
+    //this._PurchaseOrder.PurchaseSearchGroup.reset();
     this._PurchaseOrder.userFormGroup.reset();
     //this._PurchaseOrder.PurchaseStoreform.reset();
     this._PurchaseOrder.FinalPurchaseform.reset();
@@ -1025,12 +1028,13 @@ debugger
 
   @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
   @ViewChild('PaymentMode') PaymentMode: MatSelect;
-
+  @ViewChild('Status3') Status3: MatSelect;
   @ViewChild('Paymentterm') Paymentterm: MatSelect;
 
   @ViewChild('TaxNature1') TaxNature1: MatSelect;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
+  // @ViewChild('uom') uomid: ElementRef;
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('dis') dis: ElementRef;
   @ViewChild('gst') gst: ElementRef;
