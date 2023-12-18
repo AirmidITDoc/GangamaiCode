@@ -402,6 +402,8 @@ debugger
         }
     });
     });
+
+    
   }
 
   ViewSalesRetPdf(el){
@@ -942,9 +944,11 @@ CreateFormData (obj: any, formData: FormData, subKeyStr = '')  {
   }
 }
 
-
+loadingarry:any=[];
 getWhatsappshare(el){
   debugger
+  // el.button.disbled=true;
+  // el.button.img.hidde=false;
   // this.IsLoading=true;
   // setTimeout(() => {
   //   this.IsLoading=false;
@@ -981,6 +985,7 @@ getWhatsappshare(el){
 
         });
         this.IsLoading=false;
+        el.button.disbled=false;
 }
 
     
