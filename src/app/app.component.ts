@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translateService
      */
 
-    idle = new Idle().whenNotInteractive().within(5).do(() => {
+    idle = new Idle().whenNotInteractive().within(10).do(() => {
         this.url = this.router.url;
         // console.log('this.url==', this.url);
         if (this.url !== '/auth/login') {
