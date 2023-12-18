@@ -521,7 +521,7 @@ debugger
       if (this.data) {
         
         const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
-        this._GRNList.GRNFirstForm.get('SupplierId').setValue(this.SupplierList[0]);
+        //this._GRNList.GRNFirstForm.get('SupplierId').setValue(this.SupplierList[0]);
       }
     });
   }
@@ -671,7 +671,7 @@ debugger
    this.renderer.selectRootElement('#myInput').focus();
   }
   OnReset() {
-    this._GRNList.GRNSearchGroup.reset();
+   // this._GRNList.GRNSearchGroup.reset();
     this._GRNList.userFormGroup.reset();
     this.dsItemNameList.data = [];
   }
@@ -717,7 +717,7 @@ debugger
   }
 
   OnSavenew() {
-    console.log(this.SupplierId)
+    //console.log(this.supplierID)
     debugger
         let grnSaveObj = {};
         grnSaveObj['grnDate'] = this.dateTimeObj.date;
@@ -797,26 +797,21 @@ debugger
     
         });
     
-        // let updateItemMasterGSTPerObjarray = [];
-        // this.dsItemNameList.data.forEach((element) => {
-    
-        //   console.log(element);
-    
-        //   let updateItemMasterGSTPerObj = {};
-        //   // updateItemMasterGSTPerObj['grnDetID'] = 0;
-        //   // updateItemMasterGSTPerObj['grnId'] = 0;
-        //   updateItemMasterGSTPerObj['itemId'] = element.ItemID;
-        //   updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
-        //   updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
-        //   updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
-        //   updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode;
-        //   updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
-        // });
+        let updateItemMasterGSTPerObjarray = [];
+        this.dsItemNameList.data.forEach((element) => {
+          let updateItemMasterGSTPerObj = {};
+          updateItemMasterGSTPerObj['itemId'] = element.ItemId;
+          updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
+          updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
+          updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
+          updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode;
+          updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
+        });
     
         let submitData = {
           "grnSave": grnSaveObj,
           "grnDetailSave": SavegrnDetailObj,
-         // "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
+          "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
         };
     
         console.log(submitData);

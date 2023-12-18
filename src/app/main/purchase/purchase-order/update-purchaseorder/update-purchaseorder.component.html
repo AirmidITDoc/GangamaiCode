@@ -64,7 +64,7 @@
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Supplier" matInput
                                                 (keydown)="onEnterSupplier($event)" formControlName="SupplierId"
-                                                [matAutocomplete]="autoMarital" >
+                                                [matAutocomplete]="autoMarital" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_PurchaseOrder.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -98,13 +98,22 @@
                                                 [(ngModel)]="registerObj.DeliveryDate" type="text"
                                                 formControlName="DeliveryDate" (keydown)="onEnterDeliveryDate($event)">
                                         </mat-form-field> -->
-                                        <mat-form-field >
+                                        <!-- <mat-form-field  appearance="outline" fxFlex="15%">
                                             <mat-label>DeliveryDate</mat-label>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="start" 
-                                            [(ngModel)]="registerObj.DeliveryDate" style="margin-top: 14px;">
+                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="DeliveryDate" 
+                                            [(ngModel)]="registerObj.DeliveryDate" #DeliveryDate>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>&nbsp;&nbsp; -->
+
+                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                            <mat-label>DeliveryDate</mat-label>
+                                            <input name="DeliveryDate" matInput [matDatepicker]="picker1"  [(ngModel)]="registerObj.DeliveryDate"
+                                             formControlName="DeliveryDate" #DeliveryDate>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>&nbsp;&nbsp;
+
 
                                         <app-common-date [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)">
@@ -392,7 +401,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     U.O.M</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UOM}}
+                                                    {{contact.UOMID}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -400,7 +409,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate}}
+                                                    {{contact.Rate.toFixed(2)}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -408,7 +417,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount}}
+                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -416,7 +425,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Disc(%)</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Dis}}
+                                                    {{contact.DiscPer}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -424,7 +433,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Dics. Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DiscAmount}}
+                                                    {{contact.DiscAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -432,7 +441,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST(%)</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GST}}
+                                                    {{contact.VatPer}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -440,7 +449,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GSTAmount}}
+                                                    {{contact.VatAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -448,7 +457,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.NetAmount}}
+                                                    {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -456,7 +465,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP}}
+                                                    {{contact.MRP.toFixed(2)}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -516,14 +525,14 @@
                                 <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Remark</mat-label>
                                     <input matInput placeholder="Remark" formControlName="Remark" #Remark
-                                        [(ngModel)]="registerObj.Remark">
+                                        [(ngModel)]="registerObj.Remarks" >
                                 </mat-form-field>&nbsp;&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="15%">
                                     <mat-label>Guarantee/ Warranty</mat-label>
                                     <input matInput placeholder="Guarantee/ Warranty" #Warranty required
-                                        [(ngModel)]="registerObj.Warranty" (keydown)="onEnterWarranty($event)"
-                                        [(ngModel)]="registerObj.Warranty" formControlName="Warranty">
+                                        [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWarranty($event)"
+                                        formControlName="Warranty">
                                         <mat-error
                                         *ngIf="_PurchaseOrder.FinalPurchaseform.get('Warranty').hasError('required')">
                                         Required field cannot be left blank

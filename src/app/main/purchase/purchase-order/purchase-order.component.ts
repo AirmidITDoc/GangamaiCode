@@ -268,10 +268,10 @@ export class PurchaseOrderComponent implements OnInit {
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    console.log(Param);
+   // console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      console.log(this.dsPurchaseOrder);
+    // console.log(this.dsPurchaseOrder);
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -291,14 +291,14 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseItemList.sort = this.sort;
       this.dsPurchaseItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      //console.log(this.dsPurchaseItemList);
+      console.log(this.dsPurchaseItemList);
     },
       error => {
         this.sIsLoading = '';
       });
   }
   msg:any;
-  isEditMode = true;
+ 
   onVerify(row) {
     var Param = {
       "update_POVerify_Status": {
@@ -311,12 +311,12 @@ export class PurchaseOrderComponent implements OnInit {
     console.log(Param)
     this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
       this.msg = data;
-      console.log(this.msg);
+     // console.log(this.msg);
       if(data){
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.isEditMode = false;
+        
       }
       
       },error => {
@@ -771,7 +771,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
-      console.log(data)
+     // console.log(data)
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
@@ -1078,7 +1078,7 @@ export class PurchaseOrderComponent implements OnInit {
     var m_data = {
       "PurchaseID": el.PurchaseID
     }
-    console.log(m_data);
+    //console.log(m_data);
     this._PurchaseOrder.getPrintPurchaseOrdert(m_data).subscribe(data => {
       this.reportPrintObjList = data as PurchaseOrder[];
       // debugger
@@ -1096,7 +1096,7 @@ export class PurchaseOrderComponent implements OnInit {
         //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
         //   console.log(this.TotalQty)
 
-        console.log(this.reportPrintObjList);
+       // console.log(this.reportPrintObjList);
 
         setTimeout(() => {
           this.print3();
@@ -1194,6 +1194,7 @@ export class ItemNameList {
   WOTotalAmount: any;
   WoNetAmount: any;
   WOVatAmount: any;
+  GrandTotalAmount:any;
   
 
   /**
@@ -1294,7 +1295,7 @@ export class PurchaseOrder {
   CGSTPer: any;
   SGSTPer: any;
   IGSTPer: any;
-  GrandTotalAmount: any;
+  GrandTotalAmount:number;
   VatAmount: any;
   CGSTAmt: any;
   SGSTAmt: any;
@@ -1314,6 +1315,7 @@ export class PurchaseOrder {
       this.TotalAmount = PurchaseOrder.TotalAmount || "";
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
+      this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";
     }
   }
 }

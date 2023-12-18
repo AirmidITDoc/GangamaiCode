@@ -204,17 +204,17 @@
 
                                                             <ng-container matColumnDef="Status">
                                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                                    style="color: white;">Verify</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
-                                                                    <mat-icon
-                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                                        *ngIf="contact.Status"
-                                                                        matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
-                                                                    <mat-icon
-                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                                        *ngIf="!contact.Status" matTooltip="Pending"
-                                                                        class=" red-600 s-16">circle</mat-icon>
-                                                                </mat-cell>
+                                                                style="color: white;">Verify</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                <mat-icon
+                                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                    *ngIf="contact.IsVerified"  
+                                                                    matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                    *ngIf="!contact.IsVerified" matTooltip="Pending"
+                                                                    class=" red-600 s-16">circle</mat-icon>
+                                                            </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="GrnNumber">
@@ -363,14 +363,19 @@
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
-                                                                        <mat-icon title="Edit Menu">edit</mat-icon>
+                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==1"  
+                                                                        [disabled]="row.disabled"  class="disabled-icon"> edit</mat-icon>
+                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==0"  > edit</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onVerify(row)" matTooltip="Verify">
-                                                                        <mat-icon title="Verify Menu">verified_user</mat-icon>
+                                                                        <mat-icon   *ngIf="row.IsVerified==1"   [disabled]="row.disabled"  class="disabled-icon"
+                                                                        title="verify Menu">verified_user</mat-icon>
+                                                                        <mat-icon title="verify Menu"  *ngIf="row.IsVerified==0"> verified_user</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button>
-                                                                        <mat-icon  title="Email Menu" [disabled]="row.disabled"  matTooltip="Email"
-                                                                        class="disabled-icon">mail</mat-icon>
+                                                                        <mat-icon  *ngIf="row.IsVerified==0" [disabled]="row.disabled"  class="disabled-icon"
+                                                                            title="Email Menu">mail</mat-icon>
+                                                                            <mat-icon *ngIf="row.IsVerified==1" title="Email Menu">mail</mat-icon>
                                                                     </button>
                                                                 </mat-cell>
                                                             </ng-container>
