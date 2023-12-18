@@ -277,7 +277,7 @@ export class AppointmentComponent implements OnInit {
 
   ) {
     this.getVisitList();
-   
+
   }
 
   ngOnInit(): void {
@@ -333,7 +333,7 @@ export class AppointmentComponent implements OnInit {
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-   
+
   }
 
   public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
@@ -1024,11 +1024,11 @@ export class AppointmentComponent implements OnInit {
   } */
 
   getSearchList() {
-   
-  var m_data = {
-    "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-  }
-  
+
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+
     this._opappointmentService.getRegistrationList(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
@@ -1037,24 +1037,24 @@ export class AppointmentComponent implements OnInit {
         this.noOptionFound = false;
       }
     });
-  
+
   }
 
- 
+
   getSearchDocuploadPatientList() {
-  debugger
+    debugger
     var m_data = {
       "Keyword": `${this.personalFormGroup.get('RegId').value}%`
     }
-    
-      this._opappointmentService.getDocPatientRegList(m_data).subscribe(data => {
-        this.filteredOptions = data;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound1 = true;
-        } else {
-          this.noOptionFound1 = false;
-        }
-      });
+
+    this._opappointmentService.getDocPatientRegList(m_data).subscribe(data => {
+      this.filteredOptions = data;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound1 = true;
+      } else {
+        this.noOptionFound1 = false;
+      }
+    });
   }
 
 
@@ -1709,34 +1709,32 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-  
+
 
   onImageFileChange(events: any) {
 
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        debugger
         this.imgArr.push(events.target.files[i].name);
-        reader['fileName'] = events.target.files[i].name;
-        reader.onload = (event: any) => {
-          console.log(this.imgArr);
-          this.images.push({ url: event.target.result, name: reader['fileName'] });
-          // this.images.push({ url: event.target.result, name: this.imgArr });
-          this.imgDataSource.data = [];
-          debugger
-          this.imgDataSource.data = this.images;
-          this.imageForm.patchValue({
-            imgFileSource: this.images
-          });
-        }
-        console.log(this.images);
-        reader.readAsDataURL(events.target.files[i]);
+        this.readFile(events.target.files[i], events.target.files[i].name);
       }
       this.attachment.nativeElement.value = '';
     }
   }
+  readFile(f: File, name: string) {
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.images.push({ url: event.target.result, name: name });
+      this.imgDataSource.data = [];
+      this.imgDataSource.data = this.images;
+      this.imageForm.patchValue({
+        imgFileSource: this.images
+      });
+    }
+    reader.readAsDataURL(f);
+  }
+
 
   onSubmitImgFiles() {
     debugger
@@ -1777,7 +1775,7 @@ export class AppointmentComponent implements OnInit {
 
   onDocFileChange(events: any) {
     debugger
-  
+
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -2028,15 +2026,15 @@ export class AppointmentComponent implements OnInit {
       this.imgDataSource.data = [];
       this.imgDataSource.data = this.images;
     }
-   
-    this.FimeName=element.name;
 
-    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName="+ "'"+this.FimeName+"'" +" ";
-   console.log(query);
+    this.FimeName = element.name;
+
+    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
+    console.log(query);
     this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
       if (resData) {
         Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
-       
+
       }
       setTimeout(() => {
       }, 1000);
