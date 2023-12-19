@@ -49,8 +49,9 @@ export class GoodReceiptnoteService {
       InvoiceNo:[''],
       DateOfInvoice:[(new Date()).toISOString()],
       GateEntryNo:[''],
+      GRNType:['true'],
       Status3:[''],
-      PaymentType:['Cash']
+      PaymentType:['true']
  });
   }
   

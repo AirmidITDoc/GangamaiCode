@@ -258,7 +258,7 @@
                                                                     fxShow.gt-sm>
                                                                     TotalAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalAmount.toFixed(2)}}
+                                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -267,7 +267,7 @@
                                                                     fxShow.gt-sm>
                                                                     DiscAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalDiscAmount.toFixed(2)}}
+                                                                    {{contact.TotalDiscAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -276,7 +276,7 @@
                                                                     fxShow.gt-sm>
                                                                     GSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalVATAmount.toFixed(2)}}
+                                                                    {{contact.TotalVATAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -285,7 +285,7 @@
                                                                     fxShow.gt-sm>
                                                                     NetAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.NetAmount.toFixed(2)}}
+                                                                    {{contact.NetAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 

@@ -322,12 +322,12 @@ export class GoodReceiptnoteComponent implements OnInit {
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
       "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    console.log(Param);
+   // console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
-      console.log(this.dsGRNList);
+     // console.log(this.dsGRNList);
       this.sIsLoading = '';
     },
       error => {
@@ -510,7 +510,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     this._GRNService.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      console.log(data);
+     // console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -591,7 +591,7 @@ debugger
     }
     this._GRNService.getGrnItemList(Param).subscribe(data => {
       this.dsGrnItemList.data = data as GrnItemList[];
-      console.log(data)
+      //console.log(data)
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -628,7 +628,7 @@ debugger
   getSupplierSearchList1() {
     this._GRNService.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      console.log(this.SupplierList);
+      //console.log(this.SupplierList);
     });
   }
 
@@ -650,7 +650,7 @@ debugger
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
       "StoreId": 1//this._IndentID.IndentSearchGroup.get("Status").value.Status
     }
-    console.log(Param);
+   // console.log(Param);
     this._GRNService.getItemNameList(Param).subscribe(data => {
       this.filteredOptions = data;
       console.log(this.filteredOptions)
@@ -1334,6 +1334,18 @@ export class ItemNameList {
   Remark: any;
   StoreId:any;
   totalVATAmount:any;
+  ConversionFactor:any;
+  ReceiveQty: any;
+  CGSTAmt: number;
+  CGSTPer: number;
+  SGSTAmt: number;
+  SGSTPer: number;
+  IGSTPer: number;
+  IGSTAmt: number;
+  HSNcode: any;
+  VatAmount: number;
+  VatPercentage: number;
+  id: number;
 
   /**
    * Constructor
