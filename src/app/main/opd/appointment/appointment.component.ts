@@ -1074,6 +1074,7 @@ export class AppointmentComponent implements OnInit {
 
 
   getdocumentList(VisitId) {
+    this.images = [];
     let query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=0";
     this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
       if (resData.length > 0) {
@@ -1081,14 +1082,12 @@ export class AppointmentComponent implements OnInit {
         for (let i = 0; i < resData.length; i++) {
           this.images.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
         }
-        this.imgDataSource.data = [];
         this.imgDataSource.data = this.images;
         this.imgDataSource.data.forEach((currentValue, index) => {
           if (currentValue.Id > 0) {
             this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
-              debugger
               if (resFile.file)
-                currentValue.url = resFile.file;
+                currentValue.url ='data:image/jpg;base64,'+ resFile.file;
             });
           }
         });
@@ -1097,7 +1096,6 @@ export class AppointmentComponent implements OnInit {
       }, 1000);
     });
 
-    console.log(this.imgDataSource.data);
   }
 
 
@@ -1712,7 +1710,7 @@ export class AppointmentComponent implements OnInit {
 
 
   onImageFileChange(events: any) {
-
+    this.images = [];
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -1726,7 +1724,6 @@ export class AppointmentComponent implements OnInit {
     var reader = new FileReader();
     reader.onload = (event: any) => {
       this.images.push({ url: event.target.result, name: name, Id: 0 });
-      this.imgDataSource.data = [];
       this.imgDataSource.data = this.images;
       this.imageForm.patchValue({
         imgFileSource: this.images
@@ -1755,10 +1752,6 @@ export class AppointmentComponent implements OnInit {
       let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
         type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
       });
-
-      // let file = new File([
-      //   new Blob([this.imgDataSource.data[i].url])
-      // ], this.imgDataSource.data[i].name, { type: 'image/jpeg' });
       data.push({
         Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
       });
@@ -1767,20 +1760,10 @@ export class AppointmentComponent implements OnInit {
     let finalData = { Files: data };
     this.CreateFormData(finalData, formData);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-      console.log(data)
       if (data) {
         Swal.fire("Images uploaded Successfully  ! ");
       }
-
     });
-    this.imgDataSource.data = [];
-    //clear Images afetr upload
-    let l = this.images.length;
-    for (let i = 0; i < l; i++) {
-      this.images.splice(i, 1);
-    }
-
-
   }
 
 
@@ -2004,11 +1987,7 @@ export class AppointmentComponent implements OnInit {
       if (result) {
         this.imgArr.push(result.name);
         this.images.push(result);
-        this.imgDataSource.data = [];
         this.imgDataSource.data = this.images;
-        console.log(this.images);
-
-        console.log(this.imgDataSource.data);
       }
     });
   }
@@ -2035,11 +2014,9 @@ export class AppointmentComponent implements OnInit {
   // }
 
   deleteImage(element) {
-    debugger
     let index = this.images.indexOf(element);
     if (index >= 0) {
       this.images.splice(index, 1);
-      this.imgDataSource.data = [];
       this.imgDataSource.data = this.images;
     }
 

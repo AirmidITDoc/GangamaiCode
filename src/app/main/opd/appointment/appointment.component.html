@@ -1000,10 +1000,7 @@
                       Document Path
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact">
-                      <img [src]="contact.url" width="150px" height="80px" *ngIf="contact.Id==0; else ApiImg" />
-                      <ng-template #ApiImg>
-                        <img src="{{'data:image/jpg;base64,' +contact.url}}" width="150px" height="80px" />
-                      </ng-template>
+                      <img [src]="contact.url" width="150px" height="80px" />
                     </mat-cell>
                   </ng-container>
 
