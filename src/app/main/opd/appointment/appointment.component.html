@@ -907,8 +907,8 @@
 
 
           <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
-            <input type="text" name="RegId" formControlName="RegId"  placeholder="Item Name (enter 2 char) "
-              matInput [matAutocomplete]="auto1" (input)="getSearchDocuploadPatientList()">
+            <input type="text" name="RegId" formControlName="RegId" placeholder="Item Name (enter 2 char) " matInput
+              [matAutocomplete]="auto1" (input)="getSearchDocuploadPatientList()">
             <span matSuffix style="display: flex;">
               <mat-icon class="mat-icon-close"
                 (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">close</mat-icon>
@@ -1000,7 +1000,10 @@
                       Document Path
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact">
-                      {{contact.url}}
+                      <img [src]="contact.url" width="150px" height="80px" *ngIf="contact.Id==0; else ApiImg" />
+                      <ng-template #ApiImg>
+                        <img src="{{'data:image/jpg;base64,' +contact.url}}" width="150px" height="80px" />
+                      </ng-template>
                     </mat-cell>
                   </ng-container>
 

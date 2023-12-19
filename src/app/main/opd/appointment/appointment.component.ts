@@ -1065,12 +1065,6 @@ export class AppointmentComponent implements OnInit {
   }
 
   getPatientSelectedObj(obj) {
-    debugger
-    // if (this.VisitId = obj.VisitId) {
-    //   Swal.fire("Documents Already Uploaded");
-    //   this.getdocumentList(this.VisitId);
-    // }
-    // this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.VisitId = obj.VisitId;
@@ -1080,18 +1074,24 @@ export class AppointmentComponent implements OnInit {
 
 
   getdocumentList(VisitId) {
-    debugger
     let query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=0";
     this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
       if (resData.length > 0) {
         Swal.fire("Documents Already Uploaded");
         for (let i = 0; i < resData.length; i++) {
-
-          this.images.push({ url: resData[i].FilePath, name: resData[i].FileName });
-          this.imgDataSource.data = [];
-          this.imgDataSource.data = this.images;
-
+          this.images.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
         }
+        this.imgDataSource.data = [];
+        this.imgDataSource.data = this.images;
+        this.imgDataSource.data.forEach((currentValue, index) => {
+          if (currentValue.Id > 0) {
+            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
+              debugger
+              if (resFile.file)
+                currentValue.url = resFile.file;
+            });
+          }
+        });
       }
       setTimeout(() => {
       }, 1000);
@@ -1725,7 +1725,7 @@ export class AppointmentComponent implements OnInit {
   readFile(f: File, name: string) {
     var reader = new FileReader();
     reader.onload = (event: any) => {
-      this.images.push({ url: event.target.result, name: name });
+      this.images.push({ url: event.target.result, name: name, Id: 0 });
       this.imgDataSource.data = [];
       this.imgDataSource.data = this.images;
       this.imageForm.patchValue({
@@ -1734,15 +1734,31 @@ export class AppointmentComponent implements OnInit {
     }
     reader.readAsDataURL(f);
   }
+  dataURItoBlob(dataURI) {
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+      byteString = atob(dataURI.split(',')[1]);
+    else
+      byteString = unescape(dataURI.split(',')[1]);
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], { type: mimeString });
+  }
 
 
   onSubmitImgFiles() {
-    debugger
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.imgDataSource.data.length; i++) {
-      let file = new File([
-        new Blob([this.imgDataSource.data[i].url])
-      ], this.imgDataSource.data[i].name, { type: 'image/jpeg' });
+      let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+        type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+      });
+
+      // let file = new File([
+      //   new Blob([this.imgDataSource.data[i].url])
+      // ], this.imgDataSource.data[i].name, { type: 'image/jpeg' });
       data.push({
         Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
       });
