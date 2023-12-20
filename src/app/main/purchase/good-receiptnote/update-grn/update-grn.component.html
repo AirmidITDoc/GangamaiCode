@@ -53,7 +53,7 @@
                                         </mat-autocomplete>
                                      </mat-form-field>&nbsp;&nbsp;&nbsp; -->
 
-                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-select formControlName="StoreId" name="StoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of StoreList" [value]="m">
@@ -62,11 +62,12 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline"  fxFlex="25%"  >
+                                        <mat-form-field appearance="outline" fxFlex="18%">
                                             <mat-label>Supplier Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"  [(ngModel)]="registerObj.SupplierId"
-                                                (keydown)="onEnterSupplier($event)" placeholder="Select Supplier"
-                                                matInput formControlName="SupplierId" [matAutocomplete]="autoSupllier">
+                                            <input matAutocompletePosition="below" type="text"
+                                                [(ngModel)]="registerObj.SupplierId" (keydown)="onEnterSupplier($event)"
+                                                placeholder="Select Supplier" matInput formControlName="SupplierId"
+                                                [matAutocomplete]="autoSupllier">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_GRNList.GRNFirstForm.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -82,91 +83,74 @@
                                             </mat-autocomplete>
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                        <mat-radio-group name="GRNType" formControlName="GRNType" fxFlex="60%"
-                                        value="before">
-                                        <mat-radio-button value="true" style="padding-top:13px;"
-                                            [checked]="isChecked" class="mr-sm-12">Direct
-                                            Purchase</mat-radio-button>
-                                        <mat-radio-button value="false" class="mr-sm-12">Purchase
-                                            Orders</mat-radio-button>
-                                         </mat-radio-group>
+
+                                        <div layout="row" layout-xs="column">
+                                            <div>
+                                                <mat-radio-group name="GRNType" formControlName="GRNType" value="true">
+                                                    <mat-radio-button value="true" style="margin-bottom: 8px;"
+                                                        [checked]="isChecked" class="mr-sm-12">Direct
+                                                        Purchase</mat-radio-button>
+                                                    <mat-radio-button value="false" class="mr-sm-12">Purchase
+                                                        Orders</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div>
+                                                <mat-radio-group aria-label="Select an option"
+                                                    formControlName="PaymentType" (click)="PaymentTypeChk()">
+                                                    <mat-radio-button value="true">Cash</mat-radio-button>
+                                                    <mat-radio-button value="false">Credit</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
 
                                       
-
-                                        <span style="color: black;font-weight: bold;color: black;">
-                                            <app-common-date [screenFrom]="screenFromString"
-                                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                                        </span>
-                                    </div>
-
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
- 
-                                        <mat-form-field appearance="outline" fxFlex="15%">
-                                            <mat-label>Invoice Date</mat-label>
-                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker1"
-                                                [readonly]="true" formControlName="DateOfInvoice" #DateOfInvoice
-                                                (keydown)="onEnterDateOfInvoice($event)">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
+                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                            <mat-label>InvoiceDate</mat-label>
+                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker"
+                                                 formControlName="DateOfInvoice" #DateOfInvoice >
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>
+                                        
 
-                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Invoice No</mat-label>
                                             <input matInput placeholder="Placeholder" [(ngModel)]="InvoiceNo"
                                                 formControlName="InvoiceNo" #GateEntryNo1
                                                 (keydown)="onEnterInvoiceNo($event)">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Gate Entry No</mat-label>
                                             <input matInput placeholder="Placeholder"
                                                 [(ngModel)]="registerObj.GrnNumber" formControlName="GateEntryNo"
                                                 #GateEntryNo1 (keydown)="onEnterGateEntryNo($event)">
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </mat-form-field>
 
-
-                                        <!-- <mat-form-field class="section-dropdown" fxFlex="25%" >
+                                        <mat-form-field appearance="outline" style="width: 14%;">
                                             <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3" 
-                                                (selectionChange)="onChangeStatus3($event)">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of Status3List" [value]="m">
-                                                    {{m.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;  -->
-
-                                        <mat-form-field appearance="outline" style="width: 20%;">
-                                            <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3" required 
+                                            <mat-select formControlName="Status3" name="Status3" required
                                                 (selectionChange)="onChangeDiscountMode($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Status3List" [value]="m">
                                                     {{m.name}}
                                                 </mat-option>
                                             </mat-select>
-                                           
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        
 
-                                        <mat-radio-group aria-label="Select an option" formControlName="PaymentType" fxFlex="10%"
-                                        style="margin-top: 20px;" (click)="PaymentTypeChk()" style="float: right;">
-                                        <mat-radio-button value="true">Cash</mat-radio-button>
-                                        <mat-radio-button value="false">Credit</mat-radio-button>
-                                        </mat-radio-group>
+                                        </mat-form-field>&nbsp;&nbsp;
 
-
-                                       
+                                        <span style="color: black;font-weight: bold;color: black;">
+                                            <app-common-date [screenFrom]="screenFromString"
+                                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                        </span>
                                     </div>
-
                                 </form>
 
                                 <div fxLayout="column" fxLayoutAlign="start none">
 
                                     <form [formGroup]="_GRNList.userFormGroup" style="padding: 6px 6px 5px 5px;">
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        
+
                                             <!-- <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
                                                 <input type="text" name="ItemName" formControlName="ItemName" #itemid
                                                     placeholder="Item Name (enter 2 char) " matInput
@@ -193,8 +177,9 @@
 
                                             <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
                                                 <input type="text" name="ItemName" formControlName="ItemName" #itemid
-                                                    placeholder="Item Name (enter 2 char) " matInput 
-                                                    [matAutocomplete]="auto" (input)="getGRNItemList()"  (keydown)="onEnteritemid($event)">
+                                                    placeholder="Item Name (enter 2 char) " matInput
+                                                    [matAutocomplete]="auto" (input)="getGRNItemList()"
+                                                    (keydown)="onEnteritemid($event)">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="_GRNList.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -224,8 +209,8 @@
                                                 <mat-label>HSN Code</mat-label>
                                                 <input matInput [(ngModel)]="HSNCode" name="HSNCode" type="number"
                                                     formControlName="HSNCode" id="HSNCode" #hsncode
-                                                    (keydown)="onEnterHSNCode($event)" >
-                                                    <mat-error
+                                                    (keydown)="onEnterHSNCode($event)">
+                                                <mat-error
                                                     *ngIf="_GRNList.userFormGroup.get('HSNCode').hasError('required')">
                                                     Required field cannot be left blank
                                                 </mat-error>
@@ -236,8 +221,19 @@
                                                 <input matInput [(ngModel)]="BatchNo" name="BatchNo"
                                                     formControlName="BatchNo" id="BatchNo" #batchno
                                                     (keydown)="onEnterBatchNo($event)" required>
-                                                    <mat-error
+                                                <mat-error
                                                     *ngIf="_GRNList.userFormGroup.get('BatchNo').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="7%">
+                                                <mat-label>ConversionFactor</mat-label>
+                                                <input matInput [(ngModel)]="ConversionFactor" name="ConversionFactor"
+                                                    formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
+                                                    (keydown)="onEnterConversionFactor($event)" >
+                                                <mat-error
+                                                    *ngIf="_GRNList.userFormGroup.get('ConversionFactor').hasError('required')">
                                                     Required field cannot be left blank
                                                 </mat-error>
                                             </mat-form-field>
@@ -257,8 +253,8 @@
 
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>Month/Year</mat-label>
-                                                <input matInput [matDatepicker]="dp" [formControl]="date"  (keydown)="onEnterExpDate($event)" #expdate
-                                                 required>
+                                                <input matInput [matDatepicker]="dp" [formControl]="date"
+                                                    (keydown)="onEnterExpDate($event)" #expdate required>
                                                 <!-- <mat-hint>MM/YYYY</mat-hint> -->
                                                 <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                                                 <mat-datepicker #dp startView="multi-year"
@@ -272,29 +268,31 @@
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="Qty" name="Qty" required
                                                     (keyup)="calculateTotalAmount()" formControlName="Qty" type="number"
-                                                    id="Qty" (keydown)="onEnterQty($event)" #qty >
+                                                    id="Qty" (keydown)="onEnterQty($event)" #qty>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>Free Qty </mat-label>
                                                 <input matInput [(ngModel)]="FreeQty" name="FreeQty" type="number"
                                                     formControlName="FreeQty" id="FreeQty"
-                                                    (keydown)="onEnterFreeQty($event)" #freeqty >
+                                                    (keydown)="onEnterFreeQty($event)" #freeqty>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>MRP</mat-label>
                                                 <input matInput [(ngModel)]="MRP" name="MRP" type="number" required
                                                     (keyup)="calculateTotalAmount()" formControlName="MRP" id="MRP"
-                                                    (keydown)="onEnterMRP($event)" #mrp required >
+                                                    (keydown)="onEnterMRP($event)" #mrp required>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>Rate </mat-label>
                                                 <input matInput [(ngModel)]="Rate" name="Rate" type="number"
                                                     (keyup)="calculateTotalAmount()" formControlName="Rate" id="Rate"
-                                                    (keydown)="onEnterRate($event)" #rate required >
-                                                    <mat-error
+                                                    (keydown)="onEnterRate($event)" (keyup)="calculateCGSTAmount()" 
+                                                    (keyup)="calculateSGSTAmount()" (keyup)="TotalGSTPer()"
+                                                    (keyup)="TotalGSTAmount()" #rate required>
+                                                <mat-error
                                                     *ngIf="_GRNList.userFormGroup.get('Rate').hasError('required')">
                                                     Required field cannot be left blank
                                                 </mat-error>
@@ -315,7 +313,7 @@
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="Disc" name="Disc" type="number"
                                                     (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
-                                                    (keydown)="onEnterDisc($event)" #disc >
+                                                    (keydown)="onEnterDisc($event)" #disc>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
@@ -325,57 +323,61 @@
                                                     readonly>
                                             </mat-form-field>&nbsp;
 
-                                          
+
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>CGST </mat-label>
                                                 <input matInput [(ngModel)]="CGST" name="CGST" type="number"
-                                                    (keyup)="calculateCGSTAmount()"   formControlName="CGST" id="CGST"
-                                                    (keydown)="onEnterCGST($event)" #cgst (keyup)="TotalGSTPer()" required >
+                                                    (keyup)="calculateCGSTAmount()" formControlName="CGST" id="CGST"
+                                                    (keydown)="onEnterCGST($event)" #cgst (keyup)="TotalGSTPer()"
+                                                    (keyup)="TotalGSTAmount()" required>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>CGST Amount</mat-label>
                                                 <input matInput [(ngModel)]="CGSTAmount" required name="CGSTAmount"
-                                                    formControlName="CGSTAmount" id="CGSTAmount"   readonly>
+                                                    formControlName="CGSTAmount" id="CGSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>SGST </mat-label>
                                                 <input matInput [(ngModel)]="SGST" name="SGST" type="number"
-                                                    (keyup)="calculateSGSTAmount()"   formControlName="SGST" id="SGST"
-                                                    (keydown)="onEnterSGST($event)" #sgst (keyup)="TotalGSTPer()" required >
+                                                    (keyup)="calculateSGSTAmount()" formControlName="SGST" id="SGST"
+                                                    (keydown)="onEnterSGST($event)" #sgst (keyup)="TotalGSTPer()"
+                                                    (keyup)="TotalGSTAmount()"  required>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>SGST Amount</mat-label>
                                                 <input matInput [(ngModel)]="SGSTAmount" required name="SGSTAmount"
-                                                    formControlName="SGSTAmount" id="SGSTAmount"   readonly>
+                                                    formControlName="SGSTAmount" id="SGSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>IGST</mat-label>
                                                 <input matInput [(ngModel)]="IGST" name="IGST" type="number"
-                                                    (keyup)="calculateIGSTAmount()"  (keyup)="TotalGSTPer()"  formControlName="IGST" id="IGST"
-                                                    (keydown)="onEnterIGST($event)"  #igst required>
+                                                    (keyup)="calculateIGSTAmount()" (keyup)="TotalGSTPer()"
+                                                    formControlName="IGST" id="IGST" (keydown)="onEnterIGST($event)"
+                                                    #igst >
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>IGST Amount</mat-label>
-                                                <input matInput [(ngModel)]="IGSTAmount" name="IGSTAmount"  
-                                                    formControlName="IGSTAmount" id="IGSTAmount" readonly>
+                                                <input matInput [(ngModel)]="IGSTAmount" name="IGSTAmount"
+                                                    formControlName="IGSTAmount" id="IGSTAmount" (keyup)="TotalGSTAmount()" readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>GST </mat-label>
                                                 <input matInput [(ngModel)]="GST" name="GST" type="number"
-                                                    (keyup)="calculateGSTperAmount()" (keyup)="TotalGSTPer()"   formControlName="GST" id="GST"
-                                                    (keydown)="onEnterGST($event)" #gst required readonly >
+                                                    (keyup)="calculateGSTperAmount()" (keyup)="TotalGSTPer()"
+                                                    formControlName="GST" id="GST" (keydown)="onEnterGST($event)" #gst
+                                                    required readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>GST Amount</mat-label>
                                                 <input matInput [(ngModel)]="GSTAmount" required name="GSTAmount"
-                                                    formControlName="GSTAmount" id="GSTAmount"  readonly>
+                                                    formControlName="GSTAmount" id="GSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
 
@@ -413,7 +415,7 @@
 
 
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;height: 220px;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
 
 
@@ -677,17 +679,18 @@
 
                                     <mat-form-field appearance="outline" fxFlex="11%">
                                         <mat-label>Remark</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="Remark" #Remark type="text"
-                                            [(ngModel)]="registerObj.Remark" (keydown)="onEnterRemark($event)"  (keydown.enter)="focusNextService()">
+                                        <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
+                                            type="text" [(ngModel)]="registerObj.Remark"
+                                            (keydown)="onEnterRemark($event)" (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="11%">
                                         <mat-label>Received By</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="ReceivedBy" type="text"
-                                            #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
-                                            (keydown)="onEnterReceivedBy($event)" required  (keydown.enter)="focusNextService()">
-                                            <mat-error
-                                            *ngIf="_GRNList.GRNFinalForm.get('ReceivedBy').hasError('required')">
+                                        <input matInput placeholder="Placeholder" formControlName="ReceivedBy"
+                                            type="text" #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
+                                            (keydown)="onEnterReceivedBy($event)" required
+                                            (keydown.enter)="focusNextService()">
+                                        <mat-error *ngIf="_GRNList.GRNFinalForm.get('ReceivedBy').hasError('required')">
                                             Required field cannot be left blank
                                         </mat-error>
                                     </mat-form-field>
@@ -696,14 +699,15 @@
                                         <mat-label>Debit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="DebitAmount"
                                             #DebitAmount [(ngModel)]="registerObj.DebitNote" type="number"
-                                            (keydown)="onEnterDebitAmount($event)"  (keydown.enter)="focusNextService()">
+                                            (keydown)="onEnterDebitAmount($event)" (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Credit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="CreditAmount"
                                             #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
-                                            (keydown)="onEnterCreditAmount($event)"  (keydown.enter)="focusNextService()">
+                                            (keydown)="onEnterCreditAmount($event)"
+                                            (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="9%">
@@ -711,7 +715,7 @@
                                         <input matInput placeholder="Placeholder" formControlName="DiscAmount"
                                             [(ngModel)]="FinalDisAmount" #DiscAmount
                                             [(ngModel)]="registerObj.TotalDiscAmount"
-                                            (keydown)="onEnterDiscAmount($event)"  >
+                                            (keydown)="onEnterDiscAmount($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="9%">
@@ -732,17 +736,19 @@
                                         <mat-label>Other Charges</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="OtherCharges"
                                             #OtherCharges [(ngModel)]="registerObj.OtherCharge"
-                                            (keydown)="onEnterOtherCharges($event)"  (keydown.enter)="focusNextService()">
+                                            (keydown)="onEnterOtherCharges($event)"
+                                            (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Rounding Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                            #RoundingAmt [(ngModel)]="registerObj.RoundingAmt"  (keydown.enter)="focusNextService()">
+                                            #RoundingAmt [(ngModel)]="registerObj.RoundingAmt"
+                                            (keydown.enter)="focusNextService()">
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    <button class="next-btn" style="border-radius: 14px;height:2%"
-                                        (click)="OnSave()" [disabled]="_GRNList.GRNFinalForm.invalid">Save</button>
+                                    <button class="next-btn" style="border-radius: 14px;height:2%" (click)="OnSave()"
+                                        [disabled]="_GRNList.GRNFinalForm.invalid">Save</button>
                                     <button class="footer-btn" style="border-radius: 14px;height:2%"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
 

@@ -620,7 +620,7 @@
     </div>
 </div>
 
-<!-- <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #GRNListTemplate>
+ <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #GRNListTemplate>
 
 
 
@@ -660,11 +660,11 @@
     </div>
     <table>
         <tr>
-            <td> <span style="font-weight: 500;margin-right: 82px;">PO No.</span>
-                <span style="font-size:11px; ">{{reportPrintObjList[0]?.PurchaseNo}} </span>
+            <td> <span style="font-weight: 500;margin-right: 72px;">GRN No.</span>
+                <span style="font-size:11px; ">{{reportPrintObjList[0]?.GrnNumber}} </span>
             </td>
-            <td><span style="font-weight: 500;margin-right:34px;margin-left: 300px;">PO Date</span>
-                <span style="font-size:11px;"> {{reportPrintObjList[0]?.PurchaseDate | date: 'dd/MM/yyyy'}} </span>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 300px;">GRN Date</span>
+                <span style="font-size:11px;"> {{reportPrintObjList[0]?.GRNDate | date: 'dd/MM/yyyy'}} </span>
             </td>
         </tr>
 
@@ -673,16 +673,16 @@
                 <span style="font-size:11px;">{{reportPrintObjList[0]?.SupplierName}}</span>
             </td>
             <td><span style="font-weight: 500;margin-right: 73px;margin-left: 300px;">Fax</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Fax}}</span>
+                <span style="font-size:11px;"> </span>
             </td>
         </tr>
 
         <tr>
             <td><span style="font-weight: 500;margin-right: 75px;">Address</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Address}}</span>
+                <span style="font-size:11px;"> </span>
             </td>
             <td><span style="font-weight: 500;margin-right: 38px;margin-left: 300px;">Email Id</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Email}}</span>
+                <span style="font-size:11px;"> </span>
             </td>
         </tr>
 
@@ -691,7 +691,7 @@
                 <span style="font-size:11px;">{{reportPrintObjList[0]?.GSTNo}}</span>'
             </td>
             <td><span style="font-weight: 500;margin-right: 25px;margin-left: 300px;">Phone No</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.Phone}} </span>
+                <span style="font-size:11px;">  </span>
             </td>
         </tr>
     </table>
@@ -741,18 +741,18 @@
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.UnitofMeasurementName}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.Qty}}</td>
+            padding: 15px;height: 20px;">{{item?.TotalQty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.Rate.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.ItemTotalAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.TotalAmount.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.DiscAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.TotalDiscAmount.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.VatAmount}}</td>
+            padding: 15px;height: 20px;">{{item?.TotalVATAmount}}</td>
             
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.GrandTotalAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.GrandTotalAount.toFixed(2)}}</td>
 
         </tr>
         <tr style="height:20px;">
@@ -850,4 +850,4 @@
 
 
 
-</div> -->
+</div> 

@@ -67,9 +67,7 @@ export class PurchaseOrderService {
       MRP: [''],
       Specification: [''],
       purchaseId: [''],
-      Freight: [''],
       FromStoreId: [''],
-      DeliveryDate: [new Date().toISOString()],
       Status3: [''],
       SupplierId: [''],
       PaymentMode: [''],
@@ -84,6 +82,8 @@ export class PurchaseOrderService {
     return this._formBuilder.group({
 
       // PaymentTerm: [''],
+      DeliveryDate: [new Date()],
+      Freight: [''],
       Warranty: [''],
       Schedule: [''],
       OtherTax: [''],
@@ -152,9 +152,8 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
   }
   public getVerifyPurchaseOrdert(Param) {
-    return this._httpClient.post("Pharmacy/VerifyPurchaseOrde", Param)
+    return this._httpClient.post("Pharmacy/VerifyPurchaseOrder", Param)
   }
-
 
   
   populateForm(employee) {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +50,7 @@ export class GoodReceiptnoteService {
       DateOfInvoice:[(new Date()).toISOString()],
       GateEntryNo:[''],
       GRNType:['true'],
-      Status3:[''],
+      Status3:['',Validators.required],
       PaymentType:['true']
  });
   }
@@ -61,6 +61,7 @@ export class GoodReceiptnoteService {
       UOM:[''],
       HSNCode:[''],
       BatchNo:[''],
+      ConversionFactor:[''],
       Qty:[''],
       ExpDate:[''],
       MRP:[''],
@@ -154,11 +155,12 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   public getPrintGRNList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
+    return this._httpClient.post("Generic/GetByProc?procName=rptPrintGRN", Param);
   }
   public getVerifyGRN(Param) {
     return this._httpClient.post("Pharmacy/VerifyGRN", Param)
-  }
+  } 
+
 }
 
 

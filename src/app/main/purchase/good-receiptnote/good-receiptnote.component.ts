@@ -694,7 +694,7 @@ debugger
   getPrint(el) {
 
     var m_data = {
-      "PurchaseID": el.PurchaseID
+      "GRNID": el.GRNID
     }
     console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
@@ -702,12 +702,12 @@ debugger
       // debugger
       for (let i = 0; i < 10; i++) {
         this.reportPrintObj = data[0] as GRNList;
-        this.TotalAmt += data[i].ItemTotalAmount
-        this.TotalQty += data[i].Qty
+        this.TotalAmt += data[i].TotalAmount
+        this.TotalQty += data[i].TotalQty
         this.TotalRate += data[i].Rate
-        this.TOtalDiscPer += data[i].DiscAmount
-        this.TotalGSTAmt += data[i].VatAmount
-        this.TotalNetAmt += data[i].GrandTotalAmount
+        this.TOtalDiscPer += data[i].TotalDiscAmount
+        this.TotalGSTAmt += data[i].TotalVATAmount
+        this.TotalNetAmt += data[i].GrandTotalAount
 
         // console.log(this.TotalAmt);
         // console.log(this.reportPrintObjList[i]["Qty"]);
@@ -1215,6 +1215,7 @@ export class GRNList {
   Cash_CreditType: string;
   ReceivedBy: any;
   IsClosed: any;
+  GSTNo:any;
 
   /**
    * Constructor
@@ -1238,6 +1239,7 @@ export class GRNList {
       this.Cash_CreditType = GRNList.Cash_CreditType || "";
       this.ReceivedBy = GRNList.ReceivedBy || 0;
       this.IsClosed = GRNList.IsClosed || 0;
+      this.GSTNo = GRNList.GSTNo || 0;
     }
   }
 }
@@ -1346,6 +1348,7 @@ export class ItemNameList {
   VatAmount: number;
   VatPercentage: number;
   id: number;
+  tranProcessId: number;
 
   /**
    * Constructor

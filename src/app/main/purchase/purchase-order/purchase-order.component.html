@@ -60,7 +60,7 @@
                                                             <mat-label>Enter a date range</mat-label>
                                                             <mat-date-range-input [rangePicker]="picker">
                                                                 <input matStartDate formControlName="start"
-                                                                    placeholder="Start date">
+                                                                    placeholder="Start date" >
                                                                 <input matEndDate formControlName="end"
                                                                     placeholder="End date"
                                                                     (dateChange)="getPurchaseOrderList()">
@@ -268,7 +268,7 @@
                                                                     fxShow.gt-sm>
                                                                     Total Amt </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalAmount}}
+                                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -391,7 +391,7 @@
                                                                             Rate </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.Rate.toFixed(2)}}
+                                                                            {{contact.Rate | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -411,7 +411,7 @@
                                                                             DiscAmount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.DiscAmount.toFixed(2)}}
+                                                                            {{contact.DiscAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -425,13 +425,23 @@
                                                                         </mat-cell>
                                                                     </ng-container>
 
+                                                                    <ng-container matColumnDef="VatAmount">
+                                                                        <mat-header-cell *matHeaderCellDef
+                                                                            mat-sort-header fxShow.gt-sm>
+                                                                            GSTAmount </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let contact"
+                                                                            fxShow.gt-sm>
+                                                                            {{contact.VatAmount | number:'1.2-2'}}
+                                                                        </mat-cell>
+                                                                    </ng-container>
+
                                                                     <ng-container matColumnDef="TotalAmount">
                                                                         <mat-header-cell *matHeaderCellDef
                                                                             mat-sort-header fxShow.gt-sm>
                                                                             TotalAmount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.TotalAmount.toFixed(2)}}
+                                                                            {{contact.TotalAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -441,7 +451,7 @@
                                                                             MRP </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.MRP.toFixed(2)}}
+                                                                            {{contact.MRP | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -451,7 +461,7 @@
                                                                             Net Amount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.GrandTotalAmount.toFixed(2)}}
+                                                                            {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 

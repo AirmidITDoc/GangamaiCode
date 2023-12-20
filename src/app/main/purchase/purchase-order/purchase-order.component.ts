@@ -171,6 +171,7 @@ export class PurchaseOrderComponent implements OnInit {
     'DiscPer',
     'DiscAmount',
     'VatPer',
+    'VatAmount',
     'TotalAmount',
     'MRP',
     'GrandTotalAmount',
@@ -291,45 +292,37 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseItemList.sort = this.sort;
       this.dsPurchaseItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsPurchaseItemList);
+      //console.log(this.dsPurchaseItemList);
     },
       error => {
         this.sIsLoading = '';
       });
   }
   msg:any;
- 
   onVerify(row) {
     var Param = {
       "update_POVerify_Status": {
       "purchaseID": row.PurchaseID,
       "isVerified": true,
-      "isVerifiedId":1, 
-      "verifiedDateTime":  "2023-12-15T08:51:49.380Z"    
+      "isVerifiedId":1 //this._PurchaseOrder.PurchaseSearchGroup.get('Status').value, 
     }
   }
     console.log(Param)
     this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
       this.msg = data;
-     // console.log(this.msg);
       if(data){
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
-        });
-        
+        }); 
       }
-      
-      },error => {
-        this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
+       else {
+        this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
+      }
       });
   }
- 
-  
-  
 
- 
 
 
   // getOptionText(option) {
@@ -1040,14 +1033,13 @@ export class PurchaseOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
+    
   }
-
-
-
+ 
   onEdit(contact) {
     this.chkNewGRN = 2;
     console.log(contact)
-    this.advanceDataStored.storage = new SearchInforObj(contact);
+   this.advanceDataStored.storage = new SearchInforObj(contact);
     // this._PurchaseOrder.populateForm();
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
       {
@@ -1190,12 +1182,13 @@ export class ItemNameList {
   OtherTax: any;
   WorkId: any;
   Remarks: any;
-Worrenty:any;
+  Worrenty:any;
   WODiscAmount: any;
   WOTotalAmount: any;
   WoNetAmount: any;
   WOVatAmount: any;
   GrandTotalAmount:any;
+  taxID: number;
   
 
   /**
@@ -1231,8 +1224,8 @@ Worrenty:any;
       this.PaymentTermId = ItemNameList.PaymentTermId || 0;
       this.DeliveryDate = ItemNameList.DeliveryDate || '';
       this.ModeOfPayment = ItemNameList.ModeOfPayment || '';
-      this.TaxNatureId = ItemNameList.TaxNatureId || '';
-      this.Status3Id = ItemNameList.Status3Id || '';
+      this.TaxNatureId = ItemNameList.TaxNatureId || 0;
+      this.Status3Id = ItemNameList.Status3Id ||  0;
       this.Warranty = ItemNameList.Warranty || '';
       this.Remark = ItemNameList.Remark || '';
       this.Schedule = ItemNameList.Schedule || '';

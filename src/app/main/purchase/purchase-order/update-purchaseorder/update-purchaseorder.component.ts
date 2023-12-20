@@ -210,7 +210,7 @@ PaymentList = [
       
       this.registerObj=this.data.Obj;
      // this.Remark = this.registerObj.Remarks;
-      this.getOldPurchaseOrder( this.registerObj.PurchaseID);    
+        this.getOldPurchaseOrder(this.registerObj.PurchaseID);    
          this.setDropdownObjs1();
  
     }
@@ -236,9 +236,11 @@ PaymentList = [
     const toSelectTaxNature = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNatureId);
     this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectTaxNature);
 
-    const toSelectStatus3 = this.TaxNatureList.find(c => c.id == this.registerObj.Status3Id);
+    const toSelectStatus3 = this.Status3List.find(c => c.id == this.registerObj.Status3Id);
     this._PurchaseOrder.userFormGroup.get('Status3').setValue(toSelectStatus3);
 
+    
+    // this.Status3List(this.userFormGroup.get('TaxNature').value.id);
     // this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     
     // this.onChangeCityList(this.personalFormGroup.get('CityId').value);
@@ -282,7 +284,8 @@ PaymentList = [
 
       if (this.data) {
         
-        const ddValue = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+        const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+        this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
        // this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
       }
       
@@ -422,7 +425,7 @@ PaymentList = [
 
    
   getOldPurchaseOrder(el) {
-//debugger
+debugger
     var Param = {
       "purchaseID": el,
      
@@ -433,7 +436,7 @@ PaymentList = [
       this.dsItemNameList.sort = this.sort;
       this.dsItemNameList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsItemNameList);
+     console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -502,21 +505,21 @@ PaymentList = [
     this.accountService
     this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
-    this.Qty = 1; //obj.BalanceQty;
+    this.Qty = 0; //obj.BalanceQty;
 
-    if (this.Qty > 0) {
+    // if (this.Qty > 0) {
       this.UOM = obj.UOM;
-      this.Rate = obj.PurchaseRate;
+      this.Rate = obj.PurchaseRate || 0;
       this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(4);
-      this.NetAmount = this.TotalAmount;
-      this.VatPercentage = obj.VatPercentage;
+      this.NetAmount = this.TotalAmount ||0;
+      this.VatPercentage = obj.VatPercentage ||0;
       // this.CGSTPer =onj.CGSTPer;
-      this.GSTPer = obj.GSTPer;
+      this.GSTPer = obj.GSTPer || 0
       this.GSTAmount = 0;
       // this.NetAmount = obj.NetAmount;
-       this.MRP = obj.UnitMRP;
-      this.Specification = obj.Specification;
-    }
+       this.MRP = obj.UnitMRP ||0;
+      this.Specification = obj.Specification ||'';
+    // }
     this.qty.nativeElement.focus();
   }
 
@@ -544,7 +547,7 @@ PaymentList = [
     updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
     updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
     updatePurchaseOrderHeaderObj['taxAmount'] = 0;
-    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.userFormGroup.get('Freight').value.id || 0;
+    updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value.id || 0;
     updatePurchaseOrderHeaderObj['octriAmount'] = 0;
     updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
     updatePurchaseOrderHeaderObj['isclosed'] = false;
@@ -615,6 +618,8 @@ PaymentList = [
         //     // this.OnReset()
         //   }
         // });
+        this._matDialog.closeAll();
+         this.OnReset()
       } else {
         this.toastr.error('New Purchase  Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -639,13 +644,13 @@ PaymentList = [
     purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
     purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
     purchaseHeaderInsertObj['taxAmount'] = 0;
-    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.userFormGroup.get('Freight').value || 0;
+    purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     purchaseHeaderInsertObj['octriAmount'] = 0;
     purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
     purchaseHeaderInsertObj['isclosed'] = false;
     purchaseHeaderInsertObj['isVerified'] = false;
     purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
-    purchaseHeaderInsertObj['taxID'] = 0;
+    purchaseHeaderInsertObj['taxID'] = this._PurchaseOrder.userFormGroup.get('TaxNature').value.id || 0;;
     
     purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
     purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
@@ -672,8 +677,8 @@ PaymentList = [
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
       purchaseDetailInsertObj['discPer'] = element.DiscPer;
-      purchaseDetailInsertObj['vatAmount'] = element.vatAmount;
-      purchaseDetailInsertObj['vatPer'] = element.vatPer;;
+      purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
+      purchaseDetailInsertObj['vatPer'] = element.GST;;
       purchaseDetailInsertObj['grandTotalAmount'] = element.GrandTotalAmount;
       purchaseDetailInsertObj['mrp'] = element.MRP;
       purchaseDetailInsertObj['specification'] = element.Specification;
@@ -704,6 +709,8 @@ PaymentList = [
 
         //   }
         // });
+        this._matDialog.closeAll();
+        this.OnReset()
       } else {
         this.toastr.error('New Purchase  Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -786,7 +793,7 @@ PaymentList = [
   }
   calculateTotalAmount() {
     if (this.Rate && this.Qty) {
-      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
+      this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
       this.NetAmount = this.TotalAmount;
       // this.calculatePersc();
     }
@@ -825,9 +832,9 @@ PaymentList = [
     
     if (this.Dis) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(4);
+      this.DiscAmt = ((disc * parseFloat(this.NetAmount)) / 100).toFixed(2);
       // this.DiscAmount =  DiscAmt
-      this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(4);
+      this.NetAmount = (parseFloat(this.NetAmount) - parseFloat(this.DiscAmt)).toFixed(2);
 
     }
 
@@ -845,8 +852,8 @@ PaymentList = [
 
     if (this.GSTPer) {
 
-      this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(4);
-      this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(4);
+      this.GSTAmt = ((parseFloat(this.NetAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+      this.NetAmount = (parseFloat(this.NetAmount) + parseFloat(this.GSTAmt)).toFixed(2);
       this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
 
     }
@@ -1034,8 +1041,9 @@ PaymentList = [
   @ViewChild('TaxNature1') TaxNature1: MatSelect;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
-  // @ViewChild('uom') uomid: ElementRef;
+   @ViewChild('uom') uom: ElementRef;
   @ViewChild('rate') rate: ElementRef;
+  @ViewChild('totalamt') totalamt: ElementRef;
   @ViewChild('dis') dis: ElementRef;
   @ViewChild('gst') gst: ElementRef;
   @ViewChild('mrp') mrp: ElementRef;
@@ -1043,7 +1051,7 @@ PaymentList = [
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
-  @ViewChild('Warranty') Warranty: MatSelect;
+  @ViewChild('Warranty') Warranty: ElementRef;
   @ViewChild('Schedule') Schedule: MatSelect;
 
   @ViewChild('OtherTax') OtherTax: ElementRef;
@@ -1057,13 +1065,6 @@ PaymentList = [
     }
   }
 
-
-  public onEnterFreight(event): void {
-    if (event.which === 13) {
-      this.DeliveryDate1.nativeElement.focus();
-      // if (this.DeliveryDate) this.DeliveryDate.focus();
-    }
-  }
   public onEnterDeliveryDate(event): void {
     if (event.which === 13) {
 
@@ -1091,7 +1092,7 @@ PaymentList = [
   public onEnterItemName(event): void {
     if (event.which === 13) {
      // if(this.ItemName) this.ItemName.focus();
-      this.UOM.nativeElement.focus();
+      this.uom.nativeElement.focus();
     }
   }
   public onEnterunit(event): void {
@@ -1107,6 +1108,12 @@ PaymentList = [
     }
   }
   public onEnterRate(event): void {
+    if (event.which === 13) {
+      //if(this.Rate) this.Rate.focus();
+     this.dis.nativeElement.focus();
+    }
+  }
+  public onEnterTotal(event): void {
     if (event.which === 13) {
       //if(this.Rate) this.Rate.focus();
      this.dis.nativeElement.focus();
@@ -1140,10 +1147,19 @@ PaymentList = [
   
       // }, 300);
     }
-
-   
   }
-
+  public onEnterFreight(event): void {
+    if (event.which === 13) {
+      this.Remark.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
+    }
+  }
+  public onEnterRemark(event): void {
+    if (event.which === 13) {
+      this.Warranty.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
+    }
+  }
   public onEnterWarranty(event): void {
     if (event.which === 13) {
 
