@@ -52,6 +52,7 @@ export const MY_FORMATS = {
   ],
 })
 export class UpdateGRNComponent implements OnInit {
+  
   sIsLoading: string = '';
   isLoading = true;
   ToStoreList: any = [];
@@ -95,6 +96,7 @@ PaymentType:any;
   displayedColumns2 = [
    
     'ItemName',
+    'ConversionFactor',
     'UOMId',
     'HSNCode',
     'BatchNo',
@@ -184,6 +186,7 @@ PaymentType:any;
     private accountService: AuthenticationService,
     private snackBarService: SnackBarService,
     public toastr : ToastrService,
+  
   ) { }
 
   ngOnInit(): void {
@@ -286,6 +289,7 @@ PaymentType:any;
       {
         ItemId:this._GRNList.userFormGroup.get('ItemName').value.ItemID || 0,
         ItemName: this._GRNList.userFormGroup.get('ItemName').value.ItemName || '',
+        ConversionFactor: this.ConversionFactor || 0,
         UOMId: this.UOM,
         HSNcode: this.HSNCode,
         BatchNo: this.BatchNo,
@@ -806,8 +810,8 @@ PaymentType:any;
           grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
           grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
           grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
-          grnDetailSaveObj['discPercentage'] = element.Disc || 0;
-          grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
+          grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
+          grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
           grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
           grnDetailSaveObj['landedRate'] = 0;//this.CgstAmt;
           grnDetailSaveObj['netAmount'] = element.NetAmount;
@@ -923,21 +927,21 @@ PaymentType:any;
       grnDetailSaveObj['grnId'] = this.registerObj.GRNID;
       grnDetailSaveObj['itemId'] = element.ItemId || element.ItemID;
       grnDetailSaveObj['uomId'] = element.UOMId;
-      grnDetailSaveObj['receiveQty'] = element.ReceiveQty;
+      grnDetailSaveObj['receiveQty'] = element.ReceiveQty || 0;
       grnDetailSaveObj['freeQty'] = element.FreeQty;
-      grnDetailSaveObj['mrp'] = element.MRP;
-      grnDetailSaveObj['rate'] = element.Rate;
-      grnDetailSaveObj['totalAmount'] = element.TotalAmount;
+      grnDetailSaveObj['mrp'] = element.MRP || 0;
+      grnDetailSaveObj['rate'] = element.Rate || 0;
+      grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
       grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
-      grnDetailSaveObj['vatPercentage'] = element.VatPercentage;;
-      grnDetailSaveObj['vatAmount'] = element.VatAmount;
-      grnDetailSaveObj['discPercentage'] = element.Disc;
-      grnDetailSaveObj['discAmount'] = element.DisAmount;
+      grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
+      grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
+      grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
+      grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
       grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
       grnDetailSaveObj['landedRate'] = 0;//this.CgstAmt;
-      grnDetailSaveObj['netAmount'] = element.NetAmount;
-      grnDetailSaveObj['grossAmount'] = element.NetAmount;
-      grnDetailSaveObj['totalQty'] = element.ReceiveQty;
+      grnDetailSaveObj['netAmount'] = element.NetAmount || 0; 
+      grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
+      grnDetailSaveObj['totalQty'] = element.ReceiveQty || 0;
       grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
       grnDetailSaveObj['batchNo'] = element.BatchNo;
       grnDetailSaveObj['batchExpDate'] =this.datePipe.transform(this.date.value, "yyyy-MM")||this.date.value;

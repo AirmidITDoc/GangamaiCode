@@ -28,6 +28,13 @@ app-update-grn {
     min-width: 50px;
     text-align: left;
   }
+  .mat-column-ConversionFactor {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+    margin-right: 5px;
+  }
   .mat-column-HSNCode {
     width: 80px;
     max-width: 80px;
@@ -152,16 +159,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:1800px;
-      max-width: 1800px;
-      min-width:1800px;
+      width:1900px;
+      max-width: 1900px;
+      min-width:1900px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 1800px;
-    min-width: 1800px;  
+    width: 1900px;
+    min-width: 1900px;  
     // min-height: 30px; 
     }
     }

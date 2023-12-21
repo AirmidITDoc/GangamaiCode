@@ -47,7 +47,7 @@ export class GoodReceiptnoteService {
       SupplierId:[''],
       StoreId:[''],
       InvoiceNo:[''],
-      DateOfInvoice:[(new Date()).toISOString()],
+      DateOfInvoice:[(new Date())],
       GateEntryNo:[''],
       GRNType:['true'],
       Status3:['',Validators.required],

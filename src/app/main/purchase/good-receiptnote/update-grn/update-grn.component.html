@@ -106,7 +106,7 @@
                                       
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>InvoiceDate</mat-label>
-                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker"
+                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker" 
                                                  formControlName="DateOfInvoice" #DateOfInvoice >
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
@@ -313,7 +313,7 @@
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="Disc" name="Disc" type="number"
                                                     (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
-                                                    (keydown)="onEnterDisc($event)" #disc>
+                                                    (keydown)="onEnterDisc($event)" #disc required>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
@@ -437,6 +437,15 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.ItemName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="ConversionFactor">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ConversionFactor
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.ConversionFactor}}
                                                 </mat-cell>
                                             </ng-container>
 

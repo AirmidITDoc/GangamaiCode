@@ -327,7 +327,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
-     // console.log(this.dsGRNList);
+      console.log(this.dsGRNList);
       this.sIsLoading = '';
     },
       error => {
@@ -595,7 +595,7 @@ debugger
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      // console.log(this.dsGrnItemList.data)
+       console.log(this.dsGrnItemList.data)
     },
       error => {
         this.sIsLoading = '';
@@ -707,7 +707,7 @@ debugger
         this.TotalRate += data[i].Rate
         this.TOtalDiscPer += data[i].TotalDiscAmount
         this.TotalGSTAmt += data[i].TotalVATAmount
-        this.TotalNetAmt += data[i].GrandTotalAount
+        this.TotalNetAmt += data[i].NetPayble
 
         // console.log(this.TotalAmt);
         // console.log(this.reportPrintObjList[i]["Qty"]);
@@ -1349,6 +1349,10 @@ export class ItemNameList {
   VatPercentage: number;
   id: number;
   tranProcessId: number;
+  discPercentage: number;
+  discAmount: number;
+  DiscPercentage: number;
+  DiscAmount: number;
 
   /**
    * Constructor
