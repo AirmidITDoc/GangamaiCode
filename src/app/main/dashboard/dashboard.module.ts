@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FuseWidgetModule } from '@fuse/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -22,7 +22,31 @@ import { MatIconModule } from '@angular/material/icon';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
 import { MatCardModule } from '@angular/material/card';
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
-import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
+import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component'; 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRippleModule } from '@angular/material/core'; 
+import { MatInputModule } from '@angular/material/input'; 
+import { MatSortModule } from '@angular/material/sort'; 
+import { RouterModule, Routes } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+ 
+
+ 
+ 
 
 
 @NgModule({
@@ -35,6 +59,7 @@ import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashbo
     CommonModule,
     CommonModule,
     DashboardRoutingModule,
+    MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatMenuModule,
@@ -52,6 +77,8 @@ import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashbo
     MatRadioModule,
     MatPaginatorModule,
     MatCardModule,
+    MatToolbarModule,
+    
   ],
   providers: [
     DatePipe

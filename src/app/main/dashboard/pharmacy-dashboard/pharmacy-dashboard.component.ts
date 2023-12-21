@@ -32,7 +32,8 @@ export class PharmacyDashboardComponent implements OnInit {
     })
   }
 
-
+Totalamount:any = '26,24,940';
+GrossAmount:any = '24,24,990';
   getPharDashboardSalesSummary(){
     let reqParam = {
       FromDate: '10/01/2023',
@@ -43,6 +44,18 @@ export class PharmacyDashboardComponent implements OnInit {
       this.PharDashSalSummary = data as PharDashSummary [];
     });
   }
+  chartData: any[] = [
+    { data: [40, 60, 20, 50], label: 'Net Sales' }
+  ];
+  chartLabels: string[] = ['January', 'February', 'March', 'April'];
+  chartOptions: any = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
 
 }
 
