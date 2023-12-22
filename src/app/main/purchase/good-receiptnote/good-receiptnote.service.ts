@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -47,10 +47,11 @@ export class GoodReceiptnoteService {
       SupplierId:[''],
       StoreId:[''],
       InvoiceNo:[''],
-      DateOfInvoice:[(new Date()).toISOString()],
+      DateOfInvoice:[(new Date())],
       GateEntryNo:[''],
-      Status3:[''],
-      PaymentType:['Cash']
+      GRNType:['true'],
+      Status3:['',Validators.required],
+      PaymentType:['true']
  });
   }
   
@@ -60,6 +61,7 @@ export class GoodReceiptnoteService {
       UOM:[''],
       HSNCode:[''],
       BatchNo:[''],
+      ConversionFactor:[''],
       Qty:[''],
       ExpDate:[''],
       MRP:[''],
@@ -87,8 +89,9 @@ export class GoodReceiptnoteService {
       Remark:[''],
       ReceivedBy:[''],
       DebitAmount:[''],
-      CreditAmount:[''],
+      CreditAmount:['true'],
       DiscAmount:[''],
+      VatAmount:[''],
       NetPayamt:[''],
       OtherCharges:[''],
       RoundingAmt:[''],
@@ -108,7 +111,9 @@ export class GoodReceiptnoteService {
     });
   }
 
- 
+  // public getGRNItemList(Param) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
+  // }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
   }
@@ -149,7 +154,13 @@ export class GoodReceiptnoteService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  
+  public getPrintGRNList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptPrintGRN", Param);
+  }
+  public getVerifyGRN(Param) {
+    return this._httpClient.post("Pharmacy/VerifyGRN", Param)
+  } 
+
 }
 
 

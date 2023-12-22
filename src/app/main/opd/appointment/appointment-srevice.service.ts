@@ -310,6 +310,9 @@ public documentdownloadInsert(employee){
   getuploadeddocumentsList(query){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
+  getfile(Id){
+    return this._httpClient.get("InPatient/get-file?Id="+Id)
+  }
 
   public UpdateQueryByStatement(query) {
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})

@@ -1420,9 +1420,8 @@ showTable: boolean = false
     this.FinalTotalAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
     this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-    this.roundoffAmt= (element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
-
-    this.DiffNetRoundAmt= (parseFloat( this.FinalNetAmount) - parseFloat(this.roundoffAmt)).toFixed(2);
+    this.roundoffAmt= Math.round(this.FinalNetAmount); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+    this.DiffNetRoundAmt= (parseFloat(this.roundoffAmt) - parseFloat(this.FinalNetAmount)).toFixed(2);
     return this.FinalNetAmount;
   }
   getMarginSum(element) {
@@ -1758,11 +1757,11 @@ showTable: boolean = false
       SalesInsert['oP_IP_Type'] = 1;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     }
-    SalesInsert['totalAmount'] = this.FinalTotalAmt
-    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value;
-    SalesInsert['discAmount'] = this.FinalDiscAmt;
-    SalesInsert['netAmount'] = NetAmt;
-    SalesInsert['paidAmount'] = NetAmt;
+    SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value ||0; //this.FinalTotalAmt
+    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
+    SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    SalesInsert['netAmount'] = this.ItemSubform.get('FinalNetAmount').value || 0;
+    SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value; // NetAmt;
     SalesInsert['balanceAmount'] = 0;
     SalesInsert['concessionReasonID'] = ConcessionId || 0;
     SalesInsert['concessionAuthorizationId'] = 0;
@@ -1771,7 +1770,7 @@ showTable: boolean = false
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -1816,7 +1815,6 @@ showTable: boolean = false
       salesDetailInsert['isPurRate'] = 0;
       salesDetailInsert['stkID'] = element.StockId;
       salesDetailInsertarr.push(salesDetailInsert);
-
     });
 
     let updateCurStkSalestarr = [];
@@ -1825,8 +1823,7 @@ showTable: boolean = false
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
       updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSales['stkID'] = element.StockId;
-
+      updateCurStkSales['stkID'] = element.StockId;
       updateCurStkSalestarr.push(updateCurStkSales);
     });
 
@@ -1852,80 +1849,76 @@ showTable: boolean = false
       PaymentInsertobj['TransactionType'] = 4;
       PaymentInsertobj['Remark'] = ""
       PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        PaymentInsertobj['IsCancelled'] = 0;
+      PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
       PaymentInsertobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-
-
     } else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
-
       PaymentInsertobj['BillNo'] = 0,
-        PaymentInsertobj['ReceiptNo'] = '',
-        PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+      PaymentInsertobj['ReceiptNo'] = '',
+      PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-      PaymentInsertobj['CashPayAmount'] = NetAmt;
+      PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
       PaymentInsertobj['ChequePayAmount'] = 0,
-        PaymentInsertobj['ChequeNo'] = 0,
-        PaymentInsertobj['BankName'] = '',
-        PaymentInsertobj['ChequeDate'] = '01/01/1900',
-        PaymentInsertobj['CardPayAmount'] = 0,
-        PaymentInsertobj['CardNo'] = '',
-        PaymentInsertobj['CardBankName'] = '',
-        PaymentInsertobj['CardDate'] = '01/01/1900',
-        PaymentInsertobj['AdvanceUsedAmount'] = 0;
+      PaymentInsertobj['ChequeNo'] = 0,
+      PaymentInsertobj['BankName'] = '',
+      PaymentInsertobj['ChequeDate'] = '01/01/1900',
+      PaymentInsertobj['CardPayAmount'] = 0,
+      PaymentInsertobj['CardNo'] = '',
+      PaymentInsertobj['CardBankName'] = '',
+      PaymentInsertobj['CardDate'] = '01/01/1900',
+      PaymentInsertobj['AdvanceUsedAmount'] = 0;
       PaymentInsertobj['AdvanceId'] = 0;
       PaymentInsertobj['RefundId'] = 0;
       PaymentInsertobj['TransactionType'] = 4;
       PaymentInsertobj['Remark'] = '',
-        PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        PaymentInsertobj['IsCancelled'] = 0;
+      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-        PaymentInsertobj['OPD_IPD_Type'] = 3;
+      PaymentInsertobj['OPD_IPD_Type'] = 3;
       PaymentInsertobj['NEFTPayAmount'] = 0,
-        PaymentInsertobj['NEFTNo'] = '',
-        PaymentInsertobj['NEFTBankMaster'] = '',
-        PaymentInsertobj['NEFTDate'] = '01/01/1900',
-        PaymentInsertobj['PayTMAmount'] = 0,
-        PaymentInsertobj['PayTMTranNo'] = '',
-        PaymentInsertobj['PayTMDate'] = '01/01/1900'
+      PaymentInsertobj['NEFTNo'] = '',
+      PaymentInsertobj['NEFTBankMaster'] = '',
+      PaymentInsertobj['NEFTDate'] = '01/01/1900',
+      PaymentInsertobj['PayTMAmount'] = 0,
+      PaymentInsertobj['PayTMTranNo'] = '',
+      PaymentInsertobj['PayTMDate'] = '01/01/1900'
     } else if (this.ItemSubform.get('CashPay').value == 'Online') {
       // let Paymentobj = {};
       PaymentInsertobj['BillNo'] = 0,
-        PaymentInsertobj['ReceiptNo'] = '',
-        PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
+      PaymentInsertobj['ReceiptNo'] = '',
+      PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['CashPayAmount'] = 0;
       PaymentInsertobj['ChequePayAmount'] = 0,
-        PaymentInsertobj['ChequeNo'] = 0,
-        PaymentInsertobj['BankName'] = '',
-        PaymentInsertobj['ChequeDate'] = '01/01/1900',
-        PaymentInsertobj['CardPayAmount'] = 0,
-        PaymentInsertobj['CardNo'] = '',
-        PaymentInsertobj['CardBankName'] = '',
-        PaymentInsertobj['CardDate'] = '01/01/1900',
-        PaymentInsertobj['AdvanceUsedAmount'] = 0;
+      PaymentInsertobj['ChequeNo'] = 0,
+      PaymentInsertobj['BankName'] = '',
+      PaymentInsertobj['ChequeDate'] = '01/01/1900',
+      PaymentInsertobj['CardPayAmount'] = 0,
+      PaymentInsertobj['CardNo'] = '',
+      PaymentInsertobj['CardBankName'] = '',
+      PaymentInsertobj['CardDate'] = '01/01/1900',
+      PaymentInsertobj['AdvanceUsedAmount'] = 0;
       PaymentInsertobj['AdvanceId'] = 0;
       PaymentInsertobj['RefundId'] = 0;
       PaymentInsertobj['TransactionType'] = 4;
       PaymentInsertobj['Remark'] = '',
-        PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        PaymentInsertobj['IsCancelled'] = 0;
+      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-        PaymentInsertobj['OPD_IPD_Type'] = 3;
+      PaymentInsertobj['OPD_IPD_Type'] = 3;
       PaymentInsertobj['NEFTPayAmount'] = 0;
       PaymentInsertobj['NEFTNo'] = '',
-        PaymentInsertobj['NEFTBankMaster'] = '',
-        PaymentInsertobj['NEFTDate'] = "01/01/1900",
-        PaymentInsertobj['PayTMAmount'] = NetAmt,
-        PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value || 0,
-        PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
-
+      PaymentInsertobj['NEFTBankMaster'] = '',
+      PaymentInsertobj['NEFTDate'] = "01/01/1900",
+      PaymentInsertobj['PayTMAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt,
+      PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value || 0,
+      PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
     }
 
     let submitData = {
@@ -1989,7 +1982,7 @@ showTable: boolean = false
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
-    PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('FinalNetAmount').value;
+    PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         // maxWidth: "100vw",
@@ -2008,9 +2001,13 @@ showTable: boolean = false
         let cardpay = result.submitDataPay.ipPaymentInsert.CardPayAmount;
         let Neftpay = result.submitDataPay.ipPaymentInsert.NEFTPayAmount;
         let onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
+<<<<<<< HEAD
         
         if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) {
+=======
+>>>>>>> 53e54cea4ec166106b74648bd43afaddc6de10b8
 
+        if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) {
           let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
           let ConcessionId = 0;
           if (this.ItemSubform.get('ConcessionId').value)
@@ -2030,11 +2027,11 @@ showTable: boolean = false
             SalesInsert['oP_IP_Type'] = 1;
             SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
           }
-          SalesInsert['totalAmount'] = this.FinalTotalAmt
-          SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value;
-          SalesInsert['discAmount'] = this.FinalDiscAmt;
-          SalesInsert['netAmount'] = NetAmt;
-          SalesInsert['paidAmount'] = NetAmt;
+          SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
+          SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
+          SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+          SalesInsert['netAmount'] = this.ItemSubform.get('FinalNetAmount').value || 0;
+          SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value || 0; // NetAmt;
           SalesInsert['balanceAmount'] = 0;
           SalesInsert['concessionReasonID'] = ConcessionId || 0;
           SalesInsert['concessionAuthorizationId'] = 0;
@@ -2043,7 +2040,7 @@ showTable: boolean = false
           SalesInsert['isFree'] = 0;
           SalesInsert['unitID'] = 1;
           SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-            SalesInsert['externalPatientName'] = this.PatientName || '';
+          SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
           SalesInsert['isPrescription'] = 0;
@@ -2182,7 +2179,6 @@ showTable: boolean = false
     this.subscriptionArr.push(
       this._salesService.getSalesPrint(D_data).subscribe(res => {
         this.reportPrintObjList = res as Printsal[];
-        // console.log(this.reportPrintObjList);
         this.reportPrintObj = res[0] as Printsal;
         setTimeout(() => {
           this.print3();
@@ -3235,6 +3231,7 @@ export class Printsal {
   HospitalMobileNo: any;
   HospitalEmailId: any;
   SalesReturnNo:any;
+  RoundOff:any;
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -3312,7 +3309,8 @@ export class Printsal {
     this.HospitalMobileNo = Printsal.HospitalMobileNo || '';
     this.HospitalEmailId = Printsal.HospitalEmailId || '';
     this.ConversionFactor =Printsal.ConversionFactor || '';
-    this.SalesReturnNo =Printsal.SalesReturnNo||0
+    this.SalesReturnNo =Printsal.SalesReturnNo||0;
+    this.RoundOff =Printsal.RoundOff||0;
   }
 }
 

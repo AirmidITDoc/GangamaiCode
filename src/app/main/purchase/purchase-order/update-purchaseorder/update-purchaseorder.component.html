@@ -49,7 +49,7 @@
                                             </mat-select>
                                         </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                        <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>From Store</mat-label>
                                             <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
@@ -59,12 +59,12 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-form-field appearance="outline" fxFlex="18%">
                                             <mat-label>Supplier Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Supplier" matInput
                                                 (keydown)="onEnterSupplier($event)" formControlName="SupplierId"
-                                                [matAutocomplete]="autoMarital" >
+                                                [matAutocomplete]="autoMarital" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_PurchaseOrder.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -84,36 +84,7 @@
                                          </mat-error>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="20%">
-                                            <mat-label>Freight</mat-label>
-                                            <input matInput placeholder="Freight" #Freight1
-                                                [(ngModel)]="registerObj.FreightAmount" type="text"
-                                                formControlName="Freight" (keydown)="onEnterFreight($event)">
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-                                        <!-- <mat-form-field appearance="outline" style="width: 25%;">
-                                            <mat-label>DeliveryDate</mat-label>
-                                            <input matInput placeholder="DeliveryDate" #DeliveryDate1
-                                                [(ngModel)]="registerObj.DeliveryDate" type="text"
-                                                formControlName="DeliveryDate" (keydown)="onEnterDeliveryDate($event)">
-                                        </mat-form-field> -->
-                                        <mat-form-field >
-                                            <mat-label>DeliveryDate</mat-label>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="start" style="margin-top: 14px;">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
-                                        </mat-form-field>&nbsp;&nbsp;
-
-                                        <app-common-date [screenFrom]="screenFromString"
-                                            (dateTimeEventEmitter)="getDateTime($event)">
-                                        </app-common-date>
-                                    </div>
-
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-
-                                        <mat-form-field class="section-dropdown" style="width: 25%;">
+                                        <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select PaymentTerm --</mat-label>
                                             <mat-select formControlName="PaymentTerm" name="PaymentTerm" 
                                                 (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
@@ -128,18 +99,7 @@
                                           </mat-error>
                                         </mat-form-field>
 
-                                        <!-- <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
-                                        <mat-label>-- Select DeliveryDate --</mat-label>
-                                        <mat-select formControlName="DeliveryDate" name="DeliveryDate">
-                                          <mat-option></mat-option>
-                                          <mat-option *ngFor="let m of DeliveryDateList" [value]="m">
-                                            {{m.name}}
-                                          </mat-option>
-                                        </mat-select>
-                                      </mat-form-field> -->
-
-
-                                        <mat-form-field class="section-dropdown" style="width: 25%;">
+                                        <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select PaymentMode --</mat-label>
                                             <mat-select formControlName="PaymentMode" name="PaymentMode"
                                                 (keydown)="onEnterPaymentMode($event)" #PaymentMode>
@@ -154,11 +114,9 @@
                                           </mat-error>
                                         </mat-form-field>
 
-
-
-                                        <mat-form-field class="section-dropdown" style="width: 20%;">
+                                        <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select TaxNature --</mat-label>
-                                            <mat-select formControlName="TaxNature" name="TaxNature"
+                                            <mat-select formControlName="TaxNature" name="TaxNature"  
                                                 (keydown)="onEnterTaxNature($event)" #TaxNature1>
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of TaxNatureList" [value]="m">
@@ -172,7 +130,7 @@
                                         </mat-form-field>
 
                                         
-                                          <mat-form-field class="section-dropdown" style="width: 20%;">
+                                        <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select Status3 --</mat-label>
                                             <mat-select formControlName="Status3" name="Status3" required 
                                                 (selectionChange)="onChangeDiscountMode($event)">
@@ -187,6 +145,55 @@
                                           </mat-error>
                                         </mat-form-field>
 
+
+                                      
+
+                                        <!-- <mat-form-field appearance="outline" style="width: 25%;">
+                                            <mat-label>DeliveryDate</mat-label>
+                                            <input matInput placeholder="DeliveryDate" #DeliveryDate1
+                                                [(ngModel)]="registerObj.DeliveryDate" type="text"
+                                                formControlName="DeliveryDate" (keydown)="onEnterDeliveryDate($event)">
+                                        </mat-form-field> -->
+                                        <!-- <mat-form-field  appearance="outline" fxFlex="15%">
+                                            <mat-label>DeliveryDate</mat-label>
+                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="DeliveryDate" 
+                                            [(ngModel)]="registerObj.DeliveryDate" #DeliveryDate>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>&nbsp;&nbsp; -->
+
+                                      
+
+
+                                        <app-common-date [screenFrom]="screenFromString"
+                                            (dateTimeEventEmitter)="getDateTime($event)">
+                                        </app-common-date>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+
+                                       
+
+
+                                        <!-- <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
+                                        <mat-label>-- Select DeliveryDate --</mat-label>
+                                        <mat-select formControlName="DeliveryDate" name="DeliveryDate">
+                                          <mat-option></mat-option>
+                                          <mat-option *ngFor="let m of DeliveryDateList" [value]="m">
+                                            {{m.name}}
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field> -->
+
+                                     
+                                       
+
+
+
+                                        
+
+                                        
                                     </div>
                                 </form>
                             </div>
@@ -246,9 +253,9 @@
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>UOM</mat-label>
-                                            <input matInput [(ngModel)]="UOM" name="UOM"
+                                            <input matInput [(ngModel)]="UOM" name="UOM" 
                                                 [disabled]="disableSelect.value" formControlName="UOM" placeholder="UOM"
-                                                id="UOM" type="number" (keydown)="onEnterunit($event)">
+                                                id="UOM" type="number" (keydown)="onEnterunit($event)" required>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -279,7 +286,7 @@
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput [(ngModel)]="TotalAmount" name="TotalAmount" readonly
-                                                formControlName="TotalAmount"  required>
+                                             formControlName="TotalAmount"   >
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -324,9 +331,8 @@
                                             <mat-label>Specification</mat-label>
                                             <input matInput placeholder="Specification" #specification
                                                 [(ngModel)]="Specification" type="text" formControlName="Specification"
-                                                (keydown)="onEnterSpecification($event)">
+                                                (keydown)="onEnterSpecification($event)" required>
                                         </mat-form-field>&nbsp;&nbsp;
-
 
                                         <div matTooltip="Select Item name to enable this button!!">
                                             <button mat-raised-button fxLayoutAlign="center center" #addbutton
@@ -391,7 +397,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     U.O.M</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UOM}}
+                                                    {{contact.UOMID}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -399,7 +405,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate}}
+                                                    {{contact.Rate | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -407,7 +413,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount}}
+                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -415,7 +421,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Disc(%)</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Dis}}
+                                                    {{contact.DiscPer}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -423,7 +429,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Dics. Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DiscAmount}}
+                                                    {{contact.DiscAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -431,7 +437,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST(%)</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GST}}
+                                                    {{contact.VatPer}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -439,7 +445,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GSTAmount}}
+                                                    {{contact.VatAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -447,7 +453,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.NetAmount}}
+                                                    {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -455,7 +461,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP}}
+                                                    {{contact.MRP | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -512,24 +518,41 @@
                                     <mat-radio-button value="false" class="mr-sm-12">After Disc &
                                         Tax</mat-radio-button>
                                 </mat-radio-group> -->
-                                <mat-form-field appearance="outline" fxFlex="25%">
-                                    <mat-label>Remark</mat-label>
-                                    <input matInput placeholder="Remark" formControlName="Remark" #Remark
-                                        [(ngModel)]="registerObj.Remark">
+                                <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-label>DeliveryDate</mat-label>
+                                    <input name="DeliveryDate" matInput [matDatepicker]="picker1" 
+                                     formControlName="DeliveryDate" #DeliveryDate>
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>&nbsp;&nbsp;
 
-                                <mat-form-field appearance="outline" fxFlex="15%">
+                                <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-label>Freight</mat-label>
+                                    <input matInput placeholder="Freight" #Freight1
+                                        [(ngModel)]="registerObj.FreightAmount" type="text"
+                                        formControlName="Freight" (keydown)="onEnterFreight($event)">
+                                </mat-form-field>&nbsp;&nbsp;
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>Remark</mat-label>
+                                    <input matInput placeholder="Remark" formControlName="Remark" #Remark
+                                        [(ngModel)]="registerObj.Remarks" >
+                                </mat-form-field>&nbsp;&nbsp;
+
+                               
+
+                                <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Guarantee/ Warranty</mat-label>
                                     <input matInput placeholder="Guarantee/ Warranty" #Warranty required
-                                        [(ngModel)]="registerObj.Warranty" (keydown)="onEnterWarranty($event)"
-                                        [(ngModel)]="registerObj.Warranty" formControlName="Warranty">
+                                        [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWarranty($event)"
+                                        formControlName="Warranty">
                                         <mat-error
                                         *ngIf="_PurchaseOrder.FinalPurchaseform.get('Warranty').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25%">
+                                <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Schedule </mat-label>
                                     <mat-select formControlName="Schedule" name="Schedule" #Schedule required
                                         [(ngModel)]="registerObj.Schedule" (keydown)="onEnterSchedule($event)">
@@ -543,15 +566,61 @@
                                 </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="15%">
+                                <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Other Tax</mat-label>
                                     <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax
-                                        [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
+                                    [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
                                 </mat-form-field>
+
+                                <div layout="row" layout-xs="column">
+                                    <div  style="margin-top: 10px;" >
+                                        <span class="net-amt-mat-label"
+                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width:100px;">Total
+                                        Amount: </span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="margin-left:15px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalAmt(dsItemNameList.data)
+                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+                                        <span class="net-amt-mat-label"
+                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
+                                        Disc Amt:
+                                    </span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="margin-left:10px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalDisc(dsItemNameList.data)
+                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                    <div  style="margin-top: 10px;">
+                                        <span class="net-amt-mat-label"
+                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
+                                        GST Amt:
+                                    </span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="margin-left:10px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalGST(dsItemNameList.data)
+                                        |
+                                        currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+                                    <span class="net-amt-mat-label"
+                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
+                                        Net Amt:
+                                    </span>&nbsp;
+                                    <span class="net-amt-value"
+                                        style="margin-left:15px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalNet(dsItemNameList.data)
+                                        |
+                                        currency:'INR' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="net-amt" >
+                                    <button  class="next-btn" style="border-radius: 16px;margin-left: 35px; margin-top: 15px;"
+                                    [disabled]="_PurchaseOrder.FinalPurchaseform.invalid"  (click)="OnSave()">Save</button>
+                                    <button class="footer-btn" style="border-radius: 16px;"
+                                        (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                </div>
+    
 
                             </div>
 
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                            <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                                 <span class="net-amt-mat-label"
                                     style="font-weight:bold;margin-left:20px;padding-top: 10px;width:100px;">Total
@@ -560,12 +629,7 @@
                                     style="margin-left:10px;font-weight:bolder;color: blue;padding-top: 10px;width: 150px;">{{getTotalAmt(dsItemNameList.data)
                                     | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                                <mat-label>Total Disc Amt:</mat-label>
-                                <input matInput [(ngModel)]="Dis" name="Dis"
-                                    (keyup)="calculateDiscperAmount()" formControlName="Dis"
-                                    id="Dis">
-                            </mat-form-field>&nbsp; -->
+                                
 
                                 <span class="net-amt-mat-label"
                                     style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
@@ -599,10 +663,10 @@
                                     <button class="footer-btn" style="border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                 </div>
-                                <!-- [disabled]="_PurchaseOrder.FinalPurchaseform.invalid" -->
-                            </div>
+                               
+                            </div> -->
                         </form>
-
+                                <!-- [disabled]="_PurchaseOrder.FinalPurchaseform.invalid" -->
 
                     </div>
                 </div>

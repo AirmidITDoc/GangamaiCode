@@ -277,7 +277,7 @@ export class AppointmentComponent implements OnInit {
 
   ) {
     this.getVisitList();
-   
+
   }
 
   ngOnInit(): void {
@@ -333,7 +333,7 @@ export class AppointmentComponent implements OnInit {
     this.FirstName.markAsTouched();
     this.AreaId.markAsTouched();
 
-   
+
   }
 
   public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
@@ -1024,11 +1024,11 @@ export class AppointmentComponent implements OnInit {
   } */
 
   getSearchList() {
-   
-  var m_data = {
-    "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-  }
-  
+
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+
     this._opappointmentService.getRegistrationList(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
@@ -1037,24 +1037,24 @@ export class AppointmentComponent implements OnInit {
         this.noOptionFound = false;
       }
     });
-  
+
   }
 
- 
+
   getSearchDocuploadPatientList() {
-  debugger
+    debugger
     var m_data = {
       "Keyword": `${this.personalFormGroup.get('RegId').value}%`
     }
-    
-      this._opappointmentService.getDocPatientRegList(m_data).subscribe(data => {
-        this.filteredOptions = data;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound1 = true;
-        } else {
-          this.noOptionFound1 = false;
-        }
-      });
+
+    this._opappointmentService.getDocPatientRegList(m_data).subscribe(data => {
+      this.filteredOptions = data;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound1 = true;
+      } else {
+        this.noOptionFound1 = false;
+      }
+    });
   }
 
 
@@ -1065,12 +1065,6 @@ export class AppointmentComponent implements OnInit {
   }
 
   getPatientSelectedObj(obj) {
-    debugger
-    // if (this.VisitId = obj.VisitId) {
-    //   Swal.fire("Documents Already Uploaded");
-    //   this.getdocumentList(this.VisitId);
-    // }
-    // this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.VisitId = obj.VisitId;
@@ -1080,24 +1074,28 @@ export class AppointmentComponent implements OnInit {
 
 
   getdocumentList(VisitId) {
-    debugger
+    this.images = [];
     let query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=0";
     this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
       if (resData.length > 0) {
         Swal.fire("Documents Already Uploaded");
         for (let i = 0; i < resData.length; i++) {
-
-          this.images.push({ url: resData[i].FilePath, name: resData[i].FileName });
-          this.imgDataSource.data = [];
-          this.imgDataSource.data = this.images;
-
+          this.images.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
         }
+        this.imgDataSource.data = this.images;
+        this.imgDataSource.data.forEach((currentValue, index) => {
+          if (currentValue.Id > 0) {
+            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
+              if (resFile.file)
+                currentValue.url ='data:image/jpg;base64,'+ resFile.file;
+            });
+          }
+        });
       }
       setTimeout(() => {
       }, 1000);
     });
 
-    console.log(this.imgDataSource.data);
   }
 
 
@@ -1709,42 +1707,51 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-  
+
 
   onImageFileChange(events: any) {
-
+    this.images = [];
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        debugger
         this.imgArr.push(events.target.files[i].name);
-        reader['fileName'] = events.target.files[i].name;
-        reader.onload = (event: any) => {
-          console.log(this.imgArr);
-          this.images.push({ url: event.target.result, name: reader['fileName'] });
-          // this.images.push({ url: event.target.result, name: this.imgArr });
-          this.imgDataSource.data = [];
-          debugger
-          this.imgDataSource.data = this.images;
-          this.imageForm.patchValue({
-            imgFileSource: this.images
-          });
-        }
-        console.log(this.images);
-        reader.readAsDataURL(events.target.files[i]);
+        this.readFile(events.target.files[i], events.target.files[i].name);
       }
       this.attachment.nativeElement.value = '';
     }
   }
+  readFile(f: File, name: string) {
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.images.push({ url: event.target.result, name: name, Id: 0 });
+      this.imgDataSource.data = this.images;
+      this.imageForm.patchValue({
+        imgFileSource: this.images
+      });
+    }
+    reader.readAsDataURL(f);
+  }
+  dataURItoBlob(dataURI) {
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+      byteString = atob(dataURI.split(',')[1]);
+    else
+      byteString = unescape(dataURI.split(',')[1]);
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], { type: mimeString });
+  }
+
 
   onSubmitImgFiles() {
-    debugger
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.imgDataSource.data.length; i++) {
-      let file = new File([
-        new Blob([this.imgDataSource.data[i].url])
-      ], this.imgDataSource.data[i].name, { type: 'image/jpeg' });
+      let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+        type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+      });
       data.push({
         Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
       });
@@ -1753,20 +1760,10 @@ export class AppointmentComponent implements OnInit {
     let finalData = { Files: data };
     this.CreateFormData(finalData, formData);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-      console.log(data)
       if (data) {
         Swal.fire("Images uploaded Successfully  ! ");
       }
-
     });
-    this.imgDataSource.data = [];
-    //clear Images afetr upload
-    let l = this.images.length;
-    for (let i = 0; i < l; i++) {
-      this.images.splice(i, 1);
-    }
-
-
   }
 
 
@@ -1777,7 +1774,7 @@ export class AppointmentComponent implements OnInit {
 
   onDocFileChange(events: any) {
     debugger
-  
+
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -1990,11 +1987,7 @@ export class AppointmentComponent implements OnInit {
       if (result) {
         this.imgArr.push(result.name);
         this.images.push(result);
-        this.imgDataSource.data = [];
         this.imgDataSource.data = this.images;
-        console.log(this.images);
-
-        console.log(this.imgDataSource.data);
       }
     });
   }
@@ -2021,22 +2014,20 @@ export class AppointmentComponent implements OnInit {
   // }
 
   deleteImage(element) {
-    debugger
     let index = this.images.indexOf(element);
     if (index >= 0) {
       this.images.splice(index, 1);
-      this.imgDataSource.data = [];
       this.imgDataSource.data = this.images;
     }
-   
-    this.FimeName=element.name;
 
-    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName="+ "'"+this.FimeName+"'" +" ";
-   console.log(query);
+    this.FimeName = element.name;
+
+    let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
+    console.log(query);
     this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
       if (resData) {
         Swal.fire('Success !', 'Document Row Deleted Successfully', 'success');
-       
+
       }
       setTimeout(() => {
       }, 1000);

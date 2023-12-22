@@ -60,7 +60,7 @@
                                                             <mat-label>Enter a date range</mat-label>
                                                             <mat-date-range-input [rangePicker]="picker">
                                                                 <input matStartDate formControlName="start"
-                                                                    placeholder="Start date">
+                                                                    placeholder="Start date" >
                                                                 <input matEndDate formControlName="end"
                                                                     placeholder="End date"
                                                                     (dateChange)="getPurchaseOrderList()">
@@ -128,7 +128,7 @@
                                                         </mat-form-field>
 
                                                         <mat-radio-group name="Status" formControlName="Status" fxFlex="30%" value="0" 
-                                                        style="padding-top: 12px;">
+                                                        style="padding-top: 12px;"  >
                                                         <mat-label >Status:</mat-label>&nbsp;
                                                             <mat-radio-button value="1" class="mr-sm-12" (keyup)="getPurchaseOrderList()">Verify
                                                               </mat-radio-button>
@@ -190,15 +190,30 @@
                                                             </ng-container> -->
  
 
-                                                              <ng-container matColumnDef="Status">
+                                                              <!-- <ng-container matColumnDef="Status">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Verify
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm>
-                                                                    <mat-icon *ngIf="contact.Verify" style="font-size: 70px;width: 25px !important; 
+                                                                    <mat-icon *ngIf="contact.Status" style="font-size: 70px;width: 25px !important; 
                                                                     height:25px !important;border-radius:100%;" class="verify-icon green-600 s-16">circle</mat-icon>
 
-                                                                    <mat-icon *ngIf="!contact.Pending"  style="font-size: 70px;width: 25px !important; 
+                                                                    <mat-icon *ngIf="!contact.Status"  style="font-size: 70px;width: 25px !important; 
                                                                     height:25px !important;border-radius:100%;" class="pending-icon red-500 s-16">circle</mat-icon>
+                                                                    
+                                                                </mat-cell>
+                                                            </ng-container> -->
+                                                            <ng-container matColumnDef="Status">
+                                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                                    style="color: white;">Verify</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <mat-icon
+                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                        *ngIf="contact.IsVerified"  
+                                                                        matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                    <mat-icon
+                                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                        *ngIf="!contact.IsVerified" matTooltip="Pending"
+                                                                        class=" red-600 s-16">circle</mat-icon>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -253,7 +268,7 @@
                                                                     fxShow.gt-sm>
                                                                     Total Amt </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalAmount}}
+                                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -266,15 +281,19 @@
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onEdit(row)">
-                                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==1"  
+                                                                         [disabled]="row.disabled"  class="disabled-icon"> edit</mat-icon>
+                                                                         <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==0"  > edit</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon 
-                                                                            title="verify Menu">notification_important</mat-icon>
+                                                                        <mat-icon   *ngIf="row.IsVerified==1"   [disabled]="row.disabled"  class="disabled-icon"
+                                                                            title="verify Menu">verified_user</mat-icon>
+                                                                            <mat-icon title="verify Menu"  *ngIf="row.IsVerified==0"> verified_user</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button>
-                                                                        <mat-icon [disabled]="row.disabled"  class="disabled-icon"
+                                                                        <mat-icon  *ngIf="row.IsVerified==0" [disabled]="row.disabled"  class="disabled-icon"
                                                                             title="Email Menu">mail</mat-icon>
+                                                                            <mat-icon *ngIf="row.IsVerified==1" title="Email Menu">mail</mat-icon>
                                                                     </button>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -298,6 +317,7 @@
                                                                     style="display: none;">
                                                                 </mat-header-cell>
                                                             </ng-container>
+                                                            
 
                                                             <ng-container matColumnDef="noData">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">
@@ -318,7 +338,7 @@
                                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                             </mat-footer-row>
                                                             <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                                [ngClass]="{'hide':!(dsPurchaseOrder!=null && dsPurchaseOrder.data.length==0)}">
                                                             </mat-footer-row>
                                                         </mat-table>
 
@@ -371,7 +391,7 @@
                                                                             Rate </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.Rate.toFixed(2)}}
+                                                                            {{contact.Rate | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -391,7 +411,7 @@
                                                                             DiscAmount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.DiscAmount.toFixed(2)}}
+                                                                            {{contact.DiscAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -405,13 +425,23 @@
                                                                         </mat-cell>
                                                                     </ng-container>
 
+                                                                    <ng-container matColumnDef="VatAmount">
+                                                                        <mat-header-cell *matHeaderCellDef
+                                                                            mat-sort-header fxShow.gt-sm>
+                                                                            GSTAmount </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let contact"
+                                                                            fxShow.gt-sm>
+                                                                            {{contact.VatAmount | number:'1.2-2'}}
+                                                                        </mat-cell>
+                                                                    </ng-container>
+
                                                                     <ng-container matColumnDef="TotalAmount">
                                                                         <mat-header-cell *matHeaderCellDef
                                                                             mat-sort-header fxShow.gt-sm>
                                                                             TotalAmount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.TotalAmount.toFixed(2)}}
+                                                                            {{contact.TotalAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -421,7 +451,7 @@
                                                                             MRP </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.MRP.toFixed(2)}}
+                                                                            {{contact.MRP | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -431,7 +461,7 @@
                                                                             Net Amount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.GrandTotalAmount.toFixed(2)}}
+                                                                            {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -469,7 +499,7 @@
                                                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                                     </mat-footer-row>
                                                                     <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                                        [ngClass]="{'hide':!(dsPurchaseItemList!=null && dsPurchaseItemList.data.length==0)}">
                                                                     </mat-footer-row>
                                                                 </mat-table>
 

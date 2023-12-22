@@ -202,6 +202,21 @@
                                                             [dataSource]="dsGRNList" [@animateStagger]="{value:'50'}"
                                                             style="overflow: auto;width:100%;">
 
+                                                            <ng-container matColumnDef="Status">
+                                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                                style="color: white;">Verify</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                <mat-icon
+                                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                    *ngIf="contact.IsVerified"  
+                                                                    matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                                    *ngIf="!contact.IsVerified" matTooltip="Pending"
+                                                                    class=" red-600 s-16">circle</mat-icon>
+                                                            </mat-cell>
+                                                            </ng-container>
+
                                                             <ng-container matColumnDef="GrnNumber">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
@@ -243,7 +258,7 @@
                                                                     fxShow.gt-sm>
                                                                     TotalAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalAmount.toFixed(2)}}
+                                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -252,7 +267,7 @@
                                                                     fxShow.gt-sm>
                                                                     DiscAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalDiscAmount.toFixed(2)}}
+                                                                    {{contact.TotalDiscAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -261,7 +276,7 @@
                                                                     fxShow.gt-sm>
                                                                     GSTAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalVATAmount.toFixed(2)}}
+                                                                    {{contact.TotalVATAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -270,7 +285,7 @@
                                                                     fxShow.gt-sm>
                                                                     NetAmt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.NetAmount.toFixed(2)}}
+                                                                    {{contact.NetAmount | number:'1.2-2'}}
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -344,14 +359,23 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let row">
                                                                     <button mat-icon-button matTooltip="print"
-                                                                        (click)="getPrint(row,m)">
+                                                                        (click)="getPrint(row)">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button (click)="onEdit(row)">
-                                                                        <mat-icon title="Edit Menu">launch</mat-icon>
+                                                                    <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
+                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==1"  
+                                                                        [disabled]="row.disabled"  class="disabled-icon"> edit</mat-icon>
+                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==0"  > edit</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon title="Verify Menu">notification_important</mat-icon>
+                                                                    <button mat-icon-button (click)="onVerify(row)" matTooltip="Verify">
+                                                                        <mat-icon   *ngIf="row.IsVerified==1"   [disabled]="row.disabled"  class="disabled-icon"
+                                                                        title="verify Menu">verified_user</mat-icon>
+                                                                        <mat-icon title="verify Menu"  *ngIf="row.IsVerified==0"> verified_user</mat-icon>
+                                                                    </button>
+                                                                    <button mat-icon-button>
+                                                                        <mat-icon  *ngIf="row.IsVerified==0" [disabled]="row.disabled"  class="disabled-icon"
+                                                                            title="Email Menu">mail</mat-icon>
+                                                                            <mat-icon *ngIf="row.IsVerified==1" title="Email Menu">mail</mat-icon>
                                                                     </button>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -360,7 +384,7 @@
                                                                     style="display: none;">
                                                                 </mat-header-cell>
                                                             </ng-container>
-
+<!-- 
                                                             <ng-container matColumnDef="noData">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                                     <mat-spinner style="float:left;"
@@ -368,6 +392,11 @@
                                                                     </mat-spinner>
                                                                     <span *ngIf="isLoadingStr=='no-data'">No data
                                                                         found...</span>
+                                                                </mat-footer-cell>
+                                                            </ng-container> -->
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    no data found...
                                                                 </mat-footer-cell>
                                                             </ng-container>
 
@@ -381,10 +410,11 @@
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                                 (click)="getGrnItemDetailList(contact)"></mat-row>
                                                             <mat-footer-row *matFooterRowDef="['loading']"
-                                                                [ngClass]="{'hide':dsGRNList!=null}"></mat-footer-row>
+                                                                [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
                                                             <mat-footer-row *matFooterRowDef="['noData']"
                                                                 [ngClass]="{'hide':!(dsGRNList!=null && dsGRNList.data.length==0)}"></mat-footer-row>
                                                         </mat-table>
+                                                   
                                                         <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]"
                                                             [pageSize]="12" showFirstLastButtons>
                                                         </mat-paginator>
@@ -541,13 +571,19 @@
                                                                 </mat-header-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="noData">
+                                                            <!-- <ng-container matColumnDef="noData">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                                     <mat-spinner style="float:left;"
                                                                         *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                                     </mat-spinner>
                                                                     <span *ngIf="isLoadingStr=='no-data'">No data
                                                                         found...</span>
+                                                                </mat-footer-cell>
+                                                            </ng-container> -->
+
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    no data found...
                                                                 </mat-footer-cell>
                                                             </ng-container>
 
@@ -583,3 +619,232 @@
 
     </div>
 </div>
+
+ <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #GRNListTemplate>
+
+    <div style=" align-items: center; margin-bottom: 10px;text-align: center; ">
+        <div style="border: 1px solid black;width: 1000px;height: 50px; background-color: red;border-top-right-radius: 110px;
+        margin-top: 0px;border-top-left-radius: 110px;padding: 6px ;">
+            <h2
+                style="text-transform: uppercase;font-weight: 1000;margin:0;text-align: center;color: white;padding-top: 6px;">
+                jnanayogi shri siddeshwar
+                super speciality hospital
+            </h2>
+        </div>
+        <div style="display: flex;">
+            <div
+                style="border: 1px solid transparent;width: 700px;height: 50px; background-color: black;border-bottom-right-radius: 110px;">
+                <span
+                    style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;color: white;">(A
+                    Unit of Shri
+                    Siddeshwar Loka Kalyana Charitable
+                    Trust)</span><br>
+                <span style="font-size:11px;font-weight: 500;text-align: center;color: white;">Survey No.10/4, Near
+                    S-Hyper Mart, Vijayapur
+                    586 101 </span><br>
+                <span style="font-size: 11px;font-weight: 500;text-align: center;color: white;">Call :-08352-249399 |
+                    info@ jsshospitals.com
+                    | www.jsshospitals.com
+                    | Reg.No :-BIJ00467ALSSh </span>
+
+            </div>
+            <span
+                style="font-size: 20px; text-transform: uppercase;font-weight: 500;margin-top: 20px;margin-left: 60px;
+                color:black">Good receipt note </span>
+        </div>
+        <hr>
+
+    </div>
+    <table>
+        <tr>
+            <td> <span style="font-weight: 500;margin-right: 70px;">GRN No.</span>
+                <span style="font-size:11px; ">{{reportPrintObjList[0]?.GrnNumber}} </span>
+            </td>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 300px;">GRN Date</span>
+                <span style="font-size:11px;"> {{reportPrintObjList[0]?.GRNDate | date: 'dd/MM/yyyy'}} </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span style="font-weight: 500;margin-right: 25px;">Supplier Name</span>
+                <span style="font-size:11px;">{{reportPrintObjList[0]?.SupplierName}}</span>
+            </td>
+            <td><span style="font-weight: 500;margin-right: 73px;margin-left: 300px;">Fax</span>
+                <span style="font-size:11px;"> </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span style="font-weight: 500;margin-right: 75px;">Address</span>
+                <span style="font-size:11px;"> </span>
+            </td>
+            <td><span style="font-weight: 500;margin-right: 38px;margin-left: 300px;">Email Id</span>
+                <span style="font-size:11px;"> </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span style="font-weight: 500;margin-right: 75px;">GST No.</span>
+                <span style="font-size:11px;">{{reportPrintObjList[0]?.GSTNo}}</span>'
+            </td>
+            <td><span style="font-weight: 500;margin-right: 25px;margin-left: 300px;">Phone No</span>
+                <span style="font-size:11px;">  </span>
+            </td>
+        </tr>
+    </table>
+
+
+    <hr>
+
+    <table class="table6"
+        style="width: 100%;  text-align: right;border-spacing: 1px;border-collapse: separate;border-color: gray;">
+        <tr style="font-size:15px;">
+
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px; 
+                 background-color: red; border-top-left-radius: 20px;color: white;">
+                Sr.No</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;
+                background-color: red;color: white;">
+
+                Item Name</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                Unit</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                Qty</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                Rate</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                Total Amount</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                Disc</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                background-color: red;color: white;">
+                GST </td>
+          
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+               background-color: red; border-top-right-radius: 20px;color: white;">
+                Net Amount</td>
+        </tr>
+        <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:11px;">
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{indx + 1}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;text-align:left;
+            padding: 15px;height: 20px;">{{item?.ItemName}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.UnitofMeasurementName}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.TotalQty}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.Rate.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.TotalAmount.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.TotalDiscAmount.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.TotalVATAmount}}</td>
+            
+            <td style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;">{{item?.NetPayble.toFixed(2)}}</td>
+
+        </tr>
+        <tr style="height:20px;">
+            
+            <td colspan="3" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;background-color: red;color: white;font-weight:bold;">Total</td>
+            
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalQty}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalRate.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalAmt.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TOtalDiscPer.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalGSTAmt.toFixed(2)}}</td>
+            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
+            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalNetAmt.toFixed(2)}}</td>
+
+        </tr>
+        <tr style="height: 5px;">
+            <td colspan="5" rowspan="2" style="border: 1px solid gray;
+           padding: 15px;text-align: left;vertical-align: top;">
+                <div style="font-weight: 400;margin-right: 20px;">Terms & Conditions </div>
+                <ul style="margin: 5px 0 0 0; font-size: 11px; padding-left: 17px; font-weight: 400;">
+                    <li>
+                        Exchange NOT accepted after 72 hrs. of Purchase, Bill is
+                        required for Exchange
+                    </li>
+                    <li>
+                        Insulin’s & Vaccines will not be taken back. Fridge Items
+                        will not be taken Back
+                    </li>
+                    <li>
+                        All disputes are subject to Vijayapura jurisdiction only
+                    </li>
+                    <li>
+                        Please check the medicines before leaving the medical
+                    </li>
+                    <li>
+                        Consult your Doctor before consuming the medicines.
+                    </li>
+                </ul>
+            </td>
+
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;">Sub Total</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;height: 20px;text-align: right;">{{TotalNetAmt.toFixed(2)}}</td>
+        </tr>
+        <tr> 
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">Discount</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{TOtalDiscPer.toFixed(2)}}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;font-weight: 500;">Remark</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;">GST</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt.toFixed(2)}}</td>
+        </tr>
+       
+        <tr>
+            <td colspan="5" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
+             padding: 15px;background-color: red;color: white; ">Total</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
+             padding: 15px;height: 20px;background-color: red;color: white;border-bottom-right-radius: 20px;">
+                {{TotalNetAmt.toFixed(2)}}</td>
+        </tr>
+
+    </table>
+    <hr><br>
+
+    <div style="display: flex;">
+        <span style="font-weight: 500;">ADMIN ADMIN</span>
+        <span style="margin-left: 650px; font-weight: 500;">Authorized Signature</span>
+    </div><br>
+
+
+    <div style="border: 1px solid black;width: 1000px;height: 30px; background-color: red;border-bottom-right-radius: 110px;
+    margin-top: 0px;border-bottom-left-radius: 110px;padding: 6px ;">
+        <div style="font-style: italic; opacity:1;text-align: center;font-size: 15px; margin-top: 8px; color: white;">
+            This is Computer generated invoice hence doesn’t require signature
+        </div>
+    </div>
+
+
+
+
+
+
+</div> 

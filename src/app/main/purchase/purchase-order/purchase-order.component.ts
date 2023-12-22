@@ -171,6 +171,7 @@ export class PurchaseOrderComponent implements OnInit {
     'DiscPer',
     'DiscAmount',
     'VatPer',
+    'VatAmount',
     'TotalAmount',
     'MRP',
     'GrandTotalAmount',
@@ -268,10 +269,10 @@ export class PurchaseOrderComponent implements OnInit {
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    console.log(Param);
+   // console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      console.log(this.dsPurchaseOrder);
+    // console.log(this.dsPurchaseOrder);
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -297,56 +298,31 @@ export class PurchaseOrderComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
+  msg:any;
   onVerify(row) {
     var Param = {
       "update_POVerify_Status": {
       "purchaseID": row.PurchaseID,
       "isVerified": true,
-      "isVerifiedId":1, 
-      "verifiedDateTime":  "2023-12-15T08:51:49.380Z"    
+      "isVerifiedId":1 //this._PurchaseOrder.PurchaseSearchGroup.get('Status').value, 
     }
   }
     console.log(Param)
     this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
       this.msg = data;
-      console.log(this.msg);
       if(data){
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
-        });
-       
+        }); 
       }
-      error => {
-        this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
+       else {
+        this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       });
-
   }
-  msg:any;
-  // onVerify(el) {
 
-  //   var m_data = {
-  //     'PurchaseID': el.PurchaseID,
-  //     'ISVerified': Boolean(JSON.parse(this._PurchaseOrder.PurchaseSearchGroup.get("Status").value))
-  //   }
-  //   this._PurchaseOrder.getVerifyPurchaseOrdert(m_data)
-  //     .subscribe((data) => {
-  //       this.msg = data;
-  //       if (data) {
-  //         this.toastr.success('Record Verified Successfully.', 'Verified !', {
-  //           toastClass: 'tostr-tost custom-toast-success',
-  //         });
-
-  //       } else {
-  //         this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
-  //           toastClass: 'tostr-tost custom-toast-error',
-  //         });
-  //       }
-  //     });
-  // }
 
 
   // getOptionText(option) {
@@ -788,7 +764,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
-      console.log(data)
+     // console.log(data)
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
@@ -1057,14 +1033,13 @@ export class PurchaseOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
+    
   }
-
-
-
+ 
   onEdit(contact) {
     this.chkNewGRN = 2;
     console.log(contact)
-    this.advanceDataStored.storage = new SearchInforObj(contact);
+   this.advanceDataStored.storage = new SearchInforObj(contact);
     // this._PurchaseOrder.populateForm();
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
       {
@@ -1095,7 +1070,7 @@ export class PurchaseOrderComponent implements OnInit {
     var m_data = {
       "PurchaseID": el.PurchaseID
     }
-    console.log(m_data);
+    //console.log(m_data);
     this._PurchaseOrder.getPrintPurchaseOrdert(m_data).subscribe(data => {
       this.reportPrintObjList = data as PurchaseOrder[];
       // debugger
@@ -1113,7 +1088,7 @@ export class PurchaseOrderComponent implements OnInit {
         //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
         //   console.log(this.TotalQty)
 
-        console.log(this.reportPrintObjList);
+       // console.log(this.reportPrintObjList);
 
         setTimeout(() => {
           this.print3();
@@ -1199,17 +1174,22 @@ export class ItemNameList {
   FreightAmount: any;
   DeliveryDate: any;
   ModeOfPayment: any;
-  TaxNature: any;
+  TaxNatureId: any;
+  Status3Id:any;
   Warranty: any;
   Remark: any;
   Schedule: any;
   OtherTax: any;
   WorkId: any;
-
+  Remarks: any;
+  Worrenty:any;
   WODiscAmount: any;
   WOTotalAmount: any;
   WoNetAmount: any;
   WOVatAmount: any;
+  GrandTotalAmount:any;
+  taxID: number;
+  
 
   /**
    * Constructor
@@ -1244,7 +1224,8 @@ export class ItemNameList {
       this.PaymentTermId = ItemNameList.PaymentTermId || 0;
       this.DeliveryDate = ItemNameList.DeliveryDate || '';
       this.ModeOfPayment = ItemNameList.ModeOfPayment || '';
-      this.TaxNature = ItemNameList.TaxNature || '';
+      this.TaxNatureId = ItemNameList.TaxNatureId || 0;
+      this.Status3Id = ItemNameList.Status3Id ||  0;
       this.Warranty = ItemNameList.Warranty || '';
       this.Remark = ItemNameList.Remark || '';
       this.Schedule = ItemNameList.Schedule || '';
@@ -1308,7 +1289,7 @@ export class PurchaseOrder {
   CGSTPer: any;
   SGSTPer: any;
   IGSTPer: any;
-  GrandTotalAmount: any;
+  GrandTotalAmount:number;
   VatAmount: any;
   CGSTAmt: any;
   SGSTAmt: any;
@@ -1328,6 +1309,7 @@ export class PurchaseOrder {
       this.TotalAmount = PurchaseOrder.TotalAmount || "";
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
+      this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";
     }
   }
 }

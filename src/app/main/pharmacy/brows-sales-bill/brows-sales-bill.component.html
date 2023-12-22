@@ -1196,8 +1196,8 @@
                 padding: 0;height: 10px;">{{'-'}}</td>
                 <td style="border-left: 1px solid black;
                 padding: 0;height: 10px;">{{item?.ItemName}}</td>
-                <td style="border-left: 1px solid black;text-align: center;
-                padding: 0;height: 10px;">{{item?.ConversionFactor}}</td>
+                <td style="border-left: 1px solid black;
+                padding: 0;height: 10px;">{{'-'}}</td>
                 <td style="border-left: 1px solid black;
                 padding: 0;height: 10px;">{{item?.BatchNo}}</td>
                 <td style="border-left: 1px solid black;
@@ -1248,15 +1248,15 @@
                         <span>₹ {{reportPrintObjList[0]?.CGSTAmt + reportPrintObjList[0]?.SGSTAmt +
                             reportPrintObjList[0]?.IGSTAmt}}</span>
                     </div>
-                    <div style="display:flex;align-items: center;">
+                    <div style="display:flex;align-items: center;background-color: yellow">
                         <span style="width:90px;display:inline-block;">Round off</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.RoundOff}}</span>
                     </div>
                     <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
                     </div>
                 </td>
             </tr>
@@ -1280,10 +1280,10 @@
                 </td>
             </tr> -->
             <tr style="font-size: 10px;">
-                <td colspan="5">
+                <td colspan="3">
                     Billed By: {{reportPrintObjList[0]?.UserName}}
                 </td>
-                <td colspan="5" style="text-align: right;">
+                <td colspan="10" style="text-align: right;">
                     This is Computer generated invoice hence doesn’t require signature
                 </td>
             </tr>

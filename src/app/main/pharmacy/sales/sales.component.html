@@ -655,31 +655,16 @@
                                                         style="width: 200px;font-weight: bold;">No of
                                                         Items:</span>&nbsp;<span class="net-amt-value"
                                                         style="margin-right: 200px;">{{saleSelectedDatasource.data.length}}</span>
-                                                    <!-- <span class="net-amt-label"
-                                                        style="width: 200px;font-weight: bold;margin-left: 600px;">
-                                                        GSTAmount</span>&nbsp;<span class="net-amt-value"
-                                                        style="margin-right: 250px;">{{getGSTSum(saleSelectedDatasource.data)
-                                                        | currency:'INR' }}
-                                                    </span> -->
-                                                    <!-- <span class="net-amt-value"
-                                                    style="margin-right: 250px;">{{getTotalAmtSum(saleSelectedDatasource.data)
-                                                    | currency:'INR' }}
-                                                      </span>
-                                                     <span class="net-amt-value"
-                                                      style="margin-right: 250px;">{{getDiscAmtSum(saleSelectedDatasource.data)
-                                                      | currency:'INR' }}
-                                                       </span> -->
+                                                  <span class="net-amt-label"
+                                                        style="width: 200px;font-weight: bold;color: red;">
+                                                        Total :</span>&nbsp;<span class="net-amt-value"
+                                                        style="margin-right: 10px;">{{getMarginSum(saleSelectedDatasource.data)
+                                                        | currency:'INR' }}</span>
                                                     <span class="net-amt-label"
                                                         style="width: 200px;font-weight: bold;margin-left:500px;">
                                                         NetAmount::</span>&nbsp;<span class="net-amt-value"
                                                         style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
                                                         | currency:'INR' }}</span>
-                                                    <span class="net-amt-label"
-                                                        style="width: 200px;font-weight: bold;margin-left:50px;color: red;">
-                                                        Total :</span>&nbsp;<span class="net-amt-value"
-                                                        style="margin-right: 20px;">{{getMarginSum(saleSelectedDatasource.data)
-                                                        | currency:'INR' }}</span>
-
                                                 </div>
                                             </div>
                                             <div class="row row-container" style="width: 100%;">
@@ -752,12 +737,12 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
-                                                            <mat-label>Round off Amount</mat-label>
+                                                            <mat-label>Net Amount(Round off)</mat-label>
                                                             <input matInput formControlName="roundoffAmt"
                                                                 [(ngModel)]="roundoffAmt" readonly>
                                                         </mat-form-field> &nbsp;
 
-                                                        <label>{{DiffNetRoundAmt}}</label>
+                                                        <!-- <label>{{DiffNetRoundAmt}}</label> -->
                                                         <!-- <div style="float:right;">
                                                             <mat-radio-group aria-label="Select an option" formControlName="CashPay"
                                                                 style="margin-top: 12px;">
@@ -1529,12 +1514,12 @@
                     <div style="display:flex;align-items: center;">
                         <span style="width:90px;display:inline-block;">Round off</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ 0.00</span>
+                        <span>₹ {{reportPrintObjList[0]?.RoundOff}}</span>
                     </div>
                     <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
                     </div>
                 </td>
             </tr>
