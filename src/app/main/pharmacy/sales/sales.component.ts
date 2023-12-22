@@ -1137,6 +1137,7 @@ showTable: boolean = false
   calculateTotalAmt() {
 
     debugger
+    
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -2325,17 +2326,50 @@ showTable: boolean = false
   }
 
 
+  onCheckBalQty1(contact) {
+    this.StoreId =  this._loggedService.currentUserValue.user.storeId
+    // contact.data.forEach((element) => {
+      
+      let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
+          
+      console.log(SelectQuery);
+    
+      this._salesService.getchargesList(SelectQuery).subscribe(data => {
+
+        this.chargeslist1 = data;
+        if (this.chargeslist1.length > 0) {
+          debugger
+          if (this.chargeslist1[0].BalanceQty >= contact.Qty) {
+            
+            this.QtyBalchk = 1;
+
+          }
+          else {
+            Swal.fire("Balance Qty is :", this.chargeslist1[0].BalanceQty)
+            this.QtyBalchk = 0;
+            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", contact.ItemId + "Balance Qty:",)
+          }
+        }
+
+      },
+        (error) => {
+          Swal.fire("No Item Found!!")
+        });
+
+    // });
+  }
+
+
  getCellCalculation(contact,Qty) {
-      // onCheckBalQty();
+      //  this.onCheckBalQty1(contact);
 
       debugger
-      // if ((parseInt(Qty)) < (parseInt(contact.BalanceQty))) {
+      if (this.QtyBalchk==1) {
 
         if (parseInt(Qty) > 0) {
       
         this.RQty = parseInt(contact.Qty);
-  debugger
-                
+                  
         if (this.RQty && contact.UnitMRP) {
           this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
           this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
@@ -2373,6 +2407,7 @@ showTable: boolean = false
 
       }
     }
+  }
     this.ItemFormreset();
 
       // else{
@@ -2547,28 +2582,30 @@ showTable: boolean = false
      
     
  }
-
-
-
-  onAddDraftList(contact){
-    debugger
-  let strSql ="Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
-    console.log(strSql);
-   this._salesService.getchargesList(strSql).subscribe(data => {
-   this.tempDatasource.data = data as any;
-  console.log(this.tempDatasource.data );
+ onAddDraftList(contact){
   debugger
-   if(this.tempDatasource.data.length >= 1){
+let strSql ="Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
+  console.log(strSql);
+ this._salesService.getchargesList(strSql).subscribe(data => {
+ this.tempDatasource.data = data as any;
+console.log(this.tempDatasource.data );
+debugger
+ if(this.tempDatasource.data.length >= 1){
+  
+  this.tempDatasource.data.forEach((element) => {
+   
+  this.DraftQty= element.QtyPerDay
+  
+      this.onAddDraftListTosale(element,this.DraftQty);
     
-    this.tempDatasource.data.forEach((element) => {
-    this.onAddDraftListTosale(element,element.QtyPerDay);
-      
-    });
-  }
-      });
-
-    
+  });
 }
+    });
+
+  
+}
+
+
 
 onAddDraftListTosale(contact,DraftQty){
   this.QtyBalchk =0;
@@ -2589,13 +2626,28 @@ onAddDraftListTosale(contact,DraftQty){
    
       this.Itemchargeslist1=  draftdata;
       
-      
+      this.Itemchargeslist1.forEach((element) => {
+        console.log(element)
+        debugger
+        if(this.QtyBalchk !=1){
+     if(DraftQty <= element.BalanceQty){
+      this.QtyBalchk = 1;
+      this.getFinalCalculation(element,DraftQty);
+    }
+    else {
+      Swal.fire("Balance Qty is :",element.BalanceQty)
+      this.QtyBalchk = 0;
+      Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:",element.BalanceQty)
+    }
+  }
+      });
+
+   
     });
   
   }
   
    }
-   
 
   getFinalCalculation(contact,DraftQty) {
  
