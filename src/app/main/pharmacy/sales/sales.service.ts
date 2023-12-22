@@ -95,8 +95,12 @@ export class SalesService {
     return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
   }
 
-  public InsertCreditSales(employee){
-    return this._httpClient.post("Pharmacy/SalesSaveWithCredit", employee)
+  public InsertCreditSales  (employee){
+    return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
+  }
+
+  public InsertSalesDraftBill(employee){
+    return this._httpClient.post("Pharmacy/SalesSaveDraftBill", employee)
   }
 
   public getTemplate(query) {
@@ -110,8 +114,16 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
   }
 
+  public getDraftList (emp){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SalesDraftBillList",emp);
+  }
+
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
 
+
+ public getDraftBillItem(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
+  }
 }

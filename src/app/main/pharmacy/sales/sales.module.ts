@@ -36,6 +36,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { SalesComponent } from './sales.component';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 const routes: Routes = [
   { 
@@ -86,6 +88,7 @@ const routes: Routes = [
     MatBadgeModule,
     MatSelectModule,
     MatSelectModule,
+    MatSidenavModule,
     MatChipsModule,
     MatTooltipModule
   ],

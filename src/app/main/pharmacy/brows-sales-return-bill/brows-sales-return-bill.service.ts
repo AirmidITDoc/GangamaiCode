@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class BrowsSalesReturnBillService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  MaterialReturnFrDept :FormGroup;
 
 
   constructor(
@@ -16,7 +16,7 @@ export class BrowsSalesReturnBillService {
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.MaterialReturnFrDept= this.IndentSearchFrom();
   }
 
   IndentSearchFrom() {
@@ -41,13 +41,13 @@ export class BrowsSalesReturnBillService {
     });
   }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getIssuetodeptlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
   }
 
 
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getItemdetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IssueItemList",Param);
   }
 
   public getStoreFromList(){
@@ -56,6 +56,10 @@ export class BrowsSalesReturnBillService {
 
   public getToList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
+  }
+
+  public getLoggedStoreList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
   
 }

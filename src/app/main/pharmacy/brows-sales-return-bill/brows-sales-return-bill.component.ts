@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-brows-sales-return-bill',
   templateUrl: './brows-sales-return-bill.component.html',
@@ -27,34 +28,38 @@ export class BrowsSalesReturnBillComponent implements OnInit {
 
   labelPosition: 'before' | 'after' = 'after';
   
-  dsIndentID = new MatTableDataSource<IndentID>();
+  DsIssuetodept = new MatTableDataSource<Issuetodept>();
 
-  dsIndentList = new MatTableDataSource<IndentList>();
+  dsItemList = new MatTableDataSource<ItemList>();
 
   displayedColumns = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
+    'IssueNo',
+    'IssueDate',
     'FromStoreName',
     'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
+    'NetAmount',
+    'Remark',
+    'Receivedby',
     'action',
   ];
 
   displayedColumns1 = [
    'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
+   'BatchNo',
+   'BatchExpDate',
+   'IssueQty',
+   'PerUnitLandedRate',
+   'LandedTotalAmount',
+   'VatPercentage'
   ];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _IndentID: BrowsSalesReturnBillService,
+    public _SalesReturn: BrowsSalesReturnBillService,
     public _matDialog: MatDialog,
+    private _loggedService: AuthenticationService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
@@ -63,7 +68,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIndentStoreList();
-    this.getIndentID() 
+    this.getIssueTodept() 
   }
   
   toggleSidebar(name): void {
@@ -77,33 +82,23 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
-
-  getIndentID() {
+ 
+  getIssueTodept() {
     // this.sIsLoading = 'loading-data';
     var Param = {
       
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+      "FromStoreId":2,// this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,// this._SalesReturn.MaterialReturnFrDept.get('FromStoreId').value.StoreId || 1,
+      "ToStoreId ":10017,//this._SalesReturn.MaterialReturnFrDept.get('ToStoreId').value.StoreId || 1,
+
+       "From_Dt":  this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "To_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "IsVerify ": 0//this._SalesReturn.MaterialReturnFrDept.get("Status").value || 1,
     }
-      this._IndentID.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
+      this._SalesReturn.getIssuetodeptlist(Param).subscribe(data => {
+      this.DsIssuetodept.data = data as Issuetodept[];
+     
+      this.DsIssuetodept.sort = this.sort;
+      this.DsIssuetodept.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {
@@ -111,15 +106,15 @@ export class BrowsSalesReturnBillComponent implements OnInit {
       });
   }
 
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
+  getItemList(Params){
+    
     var Param = {
-      "IndentId": Params.IndentId
+      "IssueId": Params.IssueId
     }
-      this._IndentID.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
+      this._SalesReturn.getItemdetailList(Param).subscribe(data => {
+      this.dsItemList.data = data as ItemList[];
+      this.dsItemList.sort = this.sort;
+      this.dsItemList.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {
@@ -130,71 +125,72 @@ export class BrowsSalesReturnBillComponent implements OnInit {
 
   
 onclickrow(contact){
-Swal.fire("Row selected :" + contact)
+// Swal.fire("Row selected :" + contact)
 }
   getIndentStoreList(){
-    debugger
-   
-        this._IndentID.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+   var vdata={
+          Id : this._loggedService.currentUserValue.user.storeId
+     }
+     this._SalesReturn.getLoggedStoreList(vdata).subscribe(data => {
+     this.Store1List = data;
+     this._SalesReturn.MaterialReturnFrDept.get('FromStoreId').setValue(this.Store1List[0]);
+          
         });
-
-       }
+  
+      }
 
   onClear(){
     
   }
 }
 
-export class IndentList {
+export class ItemList {
   ItemName: string;
-  Qty: number;
-  IssQty:number;
+  IssueQty: number;
   Bal:number;
   StoreId:any;
   StoreName:any;
   /**
    * Constructor
    *
-   * @param IndentList
+   * @param ItemList
    */
-  constructor(IndentList) {
+  constructor(ItemList) {
     {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
+      this.ItemName = ItemList.ItemName || "";
+      this.IssueQty = ItemList.IssueQty || 0;
+      this.Bal = ItemList.Bal|| 0;
+      this.StoreId = ItemList.StoreId || 0;
+      this.StoreName =ItemList.StoreName || '';
     }
   }
 }
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
+
+export class Issuetodept {
+  IssueNo: any;
+  IssueDate: any;
+  FromStoreName: any;
+  ToStoreName: any;
+  NetAmount: any;
+  Remark: any;
+  Receivedby:any;
+  FromStoreId: any;
   
   /**
    * Constructor
    *
-   * @param IndentID
+   * @param Issuetodept
    */
-  constructor(IndentID) {
+  constructor(Issuetodept) {
     {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      this.IssueNo = Issuetodept.IssueNo || 0;
+      this.IssueDate = Issuetodept.IssueDate || '';
+      this.FromStoreName = Issuetodept.FromStoreName || "";
+      this.ToStoreName = Issuetodept.ToStoreName || "";
+      this.NetAmount = Issuetodept.NetAmount || 0;
+      this.Remark = Issuetodept.Remark || "";
+      this.Receivedby = Issuetodept.Receivedby || "";
+      
     }
   }
 }

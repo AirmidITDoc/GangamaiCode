@@ -32,6 +32,7 @@ import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/pay
 import { ToastrService } from 'ngx-toastr';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-sales',
@@ -64,7 +65,7 @@ export class SalesComponent implements OnInit {
   ItemId: any;
   BalanceQty: any;
   Itemchargeslist: any = [];
-
+  Itemchargeslist1: any = [];
   ConcessionReasonList: any = [];
 
   BatchNo: any;
@@ -85,8 +86,10 @@ export class SalesComponent implements OnInit {
   FinalTotalAmt: any;
   FinalNetAmount: any = 0;
   FinalGSTAmt: any = 0;
-
+  BalQty: any = 0;
   ConShow: Boolean = false;
+  add1: Boolean = false;
+
   ItemObj: IndentList;
   v_marginamt: any = 0;
   TotalMarginAmt: any = 0;
@@ -135,12 +138,17 @@ export class SalesComponent implements OnInit {
 
   GSTAmount: any;
   QtyBalchk: any = 0;
-
+  DraftQty: any = 0;
+  RQty: any = 0;
+  @ViewChild('drawer') public drawer: MatDrawer;
 
   dsIndentList = new MatTableDataSource<IndentList>();
   datasource = new MatTableDataSource<IndentList>();
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
+  tempDatasource = new MatTableDataSource<IndentList>();
   chargeslist = new MatTableDataSource<IndentList>();
+
+  dataSource1 = new MatTableDataSource<DraftSale>();
 
   // vSalesDetails: any = [];
   vSalesDetails: Printsal[] = [];
@@ -221,7 +229,13 @@ export class SalesComponent implements OnInit {
   IsCreditflag: boolean = false
   OP_IP_Id: any = 0;
   OP_IPType: any = 2;
+  drafttable: boolean = false
+BalancechkFlag:any=0;
+SalesDraftId:any=0;
+v_PaidbyPatient:any=0;
+v_PaidbacktoPatient:any=0;
 
+showTable: boolean = false
 
   displayedColumns = [
     'FromStoreId',
@@ -254,6 +268,15 @@ export class SalesComponent implements OnInit {
     'DiscAmt',
     'NetAmt',
     'MarginAmt',
+    'buttons'
+  ];
+
+
+  
+  DraftSaleDisplayedCol = [
+    'DSalesId',
+    'RegID',
+    
     'buttons'
   ];
 
@@ -294,7 +317,7 @@ export class SalesComponent implements OnInit {
     this.getBalanceAmt();
     // this.Paymentobj['TransactionType'] = 0;
     this.IsCreditflag = false
-
+    this.showTable = false;
   }
 
   ngOnInit(): void {
@@ -315,10 +338,14 @@ export class SalesComponent implements OnInit {
     this.getBankNameList2();
     this.getBankNameList3();
     this.getBankNameList4();
-
+    this.getDraftorderList();
 
 
   }
+
+ 
+
+
 
   createForm() {
     return this.formBuilder.group({
@@ -354,7 +381,7 @@ export class SalesComponent implements OnInit {
 
       paidAmountController: [],
       balanceAmountController: [],
-      roundoffAmt: []
+      // roundoffAmt: ''
       // paymentType6: [],
       // amount6: [],
       // bankName6: [],
@@ -364,7 +391,7 @@ export class SalesComponent implements OnInit {
   }
 
   OtherPayment() {
-    // debugger
+    // 
     this.amount1 = this.FinalNetAmount;
     this.paidAmt = this.FinalNetAmount;
     this.isPaymentSelected = true;
@@ -376,7 +403,7 @@ export class SalesComponent implements OnInit {
   }
 
   getBalanceAmt() {
-    // debugger
+    // 
     this.balanceAmt = parseInt(this.FinalNetAmount) - ((this.amount1 ? parseInt(this.amount1) : 0)
       + (this.amount2 ? parseInt(this.amount2) : 0)
       + (this.amount3 ? parseInt(this.amount3) : 0)
@@ -425,7 +452,7 @@ export class SalesComponent implements OnInit {
   }
 
   onPaymentChange(rowId: number, value: string) {
-    // debugger
+    // 
     switch (rowId) {
       case 1:
         this.paymentArr2 = this.opService.getPaymentArr();
@@ -750,13 +777,13 @@ export class SalesComponent implements OnInit {
       this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
       return;
     }
-    // debugger
+    // 
     // console.log(this.Paymentobj)
     return;
   }
 
   getChequeObj(type: string) {
-    // debugger
+    // 
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
@@ -950,7 +977,11 @@ export class SalesComponent implements OnInit {
       CashPay: ['CashPay'],
       referanceNo: '',
       RegID: '',
-      roundoffAmt: '',
+      PaidbyPatient:'',
+      PaidbacktoPatient:'',
+      roundoffAmt:'0'
+     
+
       // Credit: [0]
     });
   }
@@ -972,7 +1003,7 @@ export class SalesComponent implements OnInit {
   getPharItemList() {
     var m_data = {
       "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
-      "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid || 0
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }
     if (this._salesService.IndentSearchGroup.get('ItemId').value.length >= 1) {
       this._salesService.getItemList(m_data).subscribe(data => {
@@ -1049,7 +1080,7 @@ export class SalesComponent implements OnInit {
   SalesIdWiseObj: any = {};
 
   getTopSalesDetailsprint() {
-    // debugger
+    // 
     var strrowslist = "";
     let onlySalesId = [];
     this.reportPrintObjItemList.forEach(ele => onlySalesId.push(ele.SalesId));
@@ -1104,6 +1135,8 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
+
+    debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1119,7 +1152,7 @@ export class SalesComponent implements OnInit {
 
       // console.log("Purchase rate");
       // console.log(this.PurchaseRate);
-      this.GSTAmount = (((this.UnitMRP) * (this.VatPer) / 100) * parseInt(Qty)).toFixed(2);
+      this.GSTAmount = (((this.UnitMRP) * (this.GSTPer) / 100) * parseInt(Qty)).toFixed(2);
       this.CGSTAmt = (((this.UnitMRP) * (this.CgstPer) / 100) * parseInt(Qty)).toFixed(2);
       this.SGSTAmt = (((this.UnitMRP) * (this.SgstPer) / 100) * parseInt(Qty)).toFixed(2);
       this.IGSTAmt = (((this.UnitMRP) * (this.IgstPer) / 100) * parseInt(Qty)).toFixed(2);
@@ -1183,8 +1216,9 @@ export class SalesComponent implements OnInit {
           IGSTAmt: this.IGSTAmt,
           PurchaseRate: this.PurchaseRate,
           PurTotAmt: this.PurTotAmt,
-          MarginAmt: this.v_marginamt
-
+          MarginAmt: this.v_marginamt,
+          BalanceQty:this.BalQty,
+          SalesDraftId:1
         });
       this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -1201,11 +1235,11 @@ export class SalesComponent implements OnInit {
     // if (this.Itemchargeslist.length > 0) {
     //   this.Itemchargeslist.forEach((element) => {
     //     if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
-    //       // debugger
+    //       // 
     //       this.stockidflag = false;
     //       // Swal.fire('Item from Present StockID');
     //       console.log(element);
-    //       // debugger
+    //       // 
     //       this.Qty= parseInt(this.Qty) + parseInt(element.Qty);
     //       this.TotalMRP = this.Qty * this.UnitMRP,
 
@@ -1392,11 +1426,14 @@ export class SalesComponent implements OnInit {
 
 
   getNetAmtSum(element) {
+
+    
     this.FinalNetAmount = (element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0)).toFixed(2);
     this.FinalTotalAmt = (element.reduce((sum, { TotalMRP }) => sum += +(TotalMRP || 0), 0)).toFixed(2);
     this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
     this.FinalGSTAmt = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-    this.roundoffAmt= Math.round(this.FinalNetAmount); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+    this.roundoffAmt=  Math.round(this.ItemSubform.get("FinalNetAmount").value)// Math.round(this.FinalNetAmount); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+   
     this.DiffNetRoundAmt= (parseFloat(this.roundoffAmt) - parseFloat(this.FinalNetAmount)).toFixed(2);
     return this.FinalNetAmount;
   }
@@ -1576,7 +1613,7 @@ export class SalesComponent implements OnInit {
 
   }
   // OtherPayment(){
-  //   // debugger
+  //   // 
   //     this.amount1=this.FinalNetAmount;
   //     this.paidAmt = this.FinalNetAmount;
   //     this.isPaymentSelected=true;
@@ -1653,10 +1690,10 @@ export class SalesComponent implements OnInit {
   onCheckBalQty() {
 
     this.saleSelectedDatasource.data.forEach((element) => {
-      debugger
+      
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + element.ItemId + ""
       // and LandedRate = " & dgvSales.Item(10, J).Value & " and PurUnitRateWF = " & dgvSales.Item(13, J).Value & ""
-      debugger
+      
       console.log(SelectQuery);
 
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
@@ -1664,7 +1701,7 @@ export class SalesComponent implements OnInit {
         this.chargeslist1 = data;
         if (this.chargeslist1.length > 0) {
           if (this.chargeslist1[0].BalanceQty >= element.Qty) {
-            debugger
+            
             this.QtyBalchk = 1;
 
           }
@@ -1953,6 +1990,7 @@ export class SalesComponent implements OnInit {
     // }
   }
   onSavePayOption() {
+    
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -2158,7 +2196,7 @@ export class SalesComponent implements OnInit {
   }
 
   getTemplateTax2() {
-    // debugger
+    // 
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._salesService.getTemplate(query).subscribe((resData: any) => {
 
@@ -2267,6 +2305,82 @@ export class SalesComponent implements OnInit {
     popupWin.document.close();
   }
 
+  getDiscountCellCal(contact,DiscPer){
+    debugger
+    if (DiscPer > 0) {
+      
+      let DiscAmt = ((contact.TotalMRP * (DiscPer)) / 100).toFixed(2);
+      let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+
+      contact.DiscAmt= DiscAmt || 0,
+      contact.NetAmt= NetAmt
+    } else {
+      let DiscAmt = 0;
+      let NetAmt =  (parseFloat(contact.TotalMRP)).toFixed(2);
+
+      contact.DiscAmt= DiscAmt || 0,
+      contact.NetAmt= NetAmt 
+    }
+
+  }
+
+
+ getCellCalculation(contact,Qty) {
+      // onCheckBalQty();
+
+      debugger
+      // if ((parseInt(Qty)) < (parseInt(contact.BalanceQty))) {
+
+        if (parseInt(Qty) > 0) {
+      
+        this.RQty = parseInt(contact.Qty);
+  debugger
+                
+        if (this.RQty && contact.UnitMRP) {
+          this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+          this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+          this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+          this.PurTotAmt = (parseInt( this.RQty) * (contact.PurchaseRate)).toFixed(2);
+          this.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
+          this.CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+          this.SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+          this.IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+          this.NetAmt= (parseFloat(this.NetAmt) + parseFloat(this.GSTAmount)).toFixed(2);
+          
+          if (contact.DiscPer > 0) {
+           
+            this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+            this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+            
+          } 
+         
+          
+          contact.GSTAmount=this.GSTAmount || 0,
+          contact.TotalMRP= this.TotalMRP || 0,
+          contact.DiscAmt= this.DiscAmt || 0,
+          contact.NetAmt= this.NetAmt,
+          contact.RoundNetAmt=Math.round(this.NetAmt),
+          contact.StockId= this.StockId,
+          contact.VatAmount= this.GSTAmount,
+          contact.LandedRateandedTotal= this.LandedRateandedTotal,
+          contact.CGSTAmt= this.CGSTAmt,
+          contact.SGSTAmt= this.SGSTAmt,
+          contact.IGSTAmt= this.IGSTAmt,
+          contact.PurchaseRate= this.PurchaseRate,
+          contact.PurTotAmt= this.PurTotAmt,
+          contact.MarginAmt= this.v_marginamt
+
+
+      }
+    }
+    this.ItemFormreset();
+
+      // else{
+      //   Swal.fire("Qty is Greater than BalanceQty !");
+      // }
+      
+    }
+  
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2373,7 +2487,7 @@ export class SalesComponent implements OnInit {
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
     // console.log(submitData);
-    // debugger
+    // 
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
         Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
@@ -2399,6 +2513,273 @@ export class SalesComponent implements OnInit {
 
   }
 
+  OnEnableDraftAdd(){
+    if(this.drafttable==false){
+    this.drafttable=true;
+    this.saleSelectedDatasource.data=[];
+    }
+    else{
+      this.drafttable=false;
+    }
+ }
+
+ 
+ getDraftorderList() {
+ 
+   this.chargeslist1 = [];
+   this.dataSource1.data = [];
+
+   let currentDate =new Date();
+   var m = {
+  
+     "FromDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
+     "ToDate":  this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
+         }
+        console.log(m)
+   this._salesService.getDraftList(m).subscribe(data => {
+     this.chargeslist1 = data as ChargesList[];
+     this.dataSource1.data = this.chargeslist1;
+      
+   },
+     (error) => {
+       
+     });
+     
+    
+ }
+
+
+
+  onAddDraftList(contact){
+    debugger
+  let strSql ="Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
+    console.log(strSql);
+   this._salesService.getchargesList(strSql).subscribe(data => {
+   this.tempDatasource.data = data as any;
+  console.log(this.tempDatasource.data );
+  debugger
+   if(this.tempDatasource.data.length >= 1){
+    
+    this.tempDatasource.data.forEach((element) => {
+    this.onAddDraftListTosale(element,element.QtyPerDay);
+      
+    });
+  }
+      });
+
+    
+}
+
+onAddDraftListTosale(contact,DraftQty){
+  this.QtyBalchk =0;
+    this.PatientName= this.dataSource1.data[0]["PatientName"];
+    this.MobileNo= this.dataSource1.data[0]["MobileNo"];
+    this.DoctorName= this.dataSource1.data[0]["AdmDoctorName"];
+  
+  this.saleSelectedDatasource.data =[];
+  if(this.tempDatasource.data.length > 0){
+    
+   var m_data = {
+      "ItemId": contact.ItemId,
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+     }
+    
+    this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+      console.log(draftdata)
+   
+      this.Itemchargeslist1=  draftdata;
+      
+      
+    });
+  
+  }
+  
+   }
+   
+
+  getFinalCalculation(contact,DraftQty) {
+ 
+      // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
+    debugger
+      this.RQty = parseInt(DraftQty);
+
+              
+      if (this.RQty && contact.UnitMRP) {
+        this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+        this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+        this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+        this.PurTotAmt = (parseInt( this.RQty) * (contact.PurchaseRate)).toFixed(2);
+        this.GSTAmount = (((contact.UnitMRP) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.NetAmt= (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
+        debugger
+        if (contact.DiscPer > 0) {
+         
+          this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+          this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+          
+        } 
+    
+        
+        // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
+          // this.saleSelectedDatasource.data = [];
+         
+          this.Itemchargeslist.push(
+            {
+              ItemId: contact.ItemId,
+              ItemName: contact.ItemName,
+              BatchNo: contact.BatchNo,
+              BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd"),
+              Qty:DraftQty,
+              UnitMRP: contact.UnitMRP,
+              GSTPer: contact.VatPercentage || 0,
+              GSTAmount: this.GSTAmount || 0,
+              TotalMRP: this.TotalMRP,
+              DiscPer:contact.DiscPer || 0,
+              DiscAmt:  this.DiscAmt || 0,
+              NetAmt: this.NetAmt || 0,
+              RoundNetAmt:Math.round(this.NetAmt),
+              StockId:  contact.StockId,
+              VatPer:  contact.VatPer,
+              VatAmount: this.GSTAmount,
+              LandedRate:  contact.LandedRate,
+              LandedRateandedTotal: this.LandedRateandedTotal,
+              CgstPer:  contact.CgstPer,
+              CGSTAmt: this.CGSTAmt,
+              SgstPer:  contact.SgstPer,
+              SGSTAmt: this.SGSTAmt,
+              IgstPer: contact.IgstPer,
+              IGSTAmt: this.IGSTAmt,
+              PurchaseRate: contact.PurchaseRate,
+              PurTotAmt: this.PurTotAmt,
+              MarginAmt: this.v_marginamt,
+              BalanceQty:contact.BalQty,
+              SalesDraftId:0
+            });
+          this.sIsLoading = '';
+          this.saleSelectedDatasource.data = this.Itemchargeslist;
+          this.ItemFormreset();
+        }
+
+
+    }
+  // }
+  // }
+
+  onSaveDraftBill() {
+    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('ConcessionId').value)
+      ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+
+    let SalesInsert = {};
+    SalesInsert['Date'] = this.dateTimeObj.date;
+    SalesInsert['time'] = this.dateTimeObj.time;
+
+    if (this.ItemSubform.get('PatientType').value == 'External') {
+      SalesInsert['oP_IP_Type'] = 2;
+      SalesInsert['oP_IP_ID'] = 0;
+    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+      SalesInsert['oP_IP_Type'] = 0;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+      SalesInsert['oP_IP_Type'] = 1;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    }
+    SalesInsert['totalAmount'] = this.FinalTotalAmt
+    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value;
+    SalesInsert['discAmount'] = this.FinalDiscAmt;
+    SalesInsert['netAmount'] = NetAmt;
+    SalesInsert['paidAmount'] = NetAmt;
+    SalesInsert['balanceAmount'] = 0;
+    SalesInsert['concessionReasonID'] = ConcessionId || 0;
+    SalesInsert['concessionAuthorizationId'] = 0;
+    SalesInsert['isSellted'] = 0;
+    SalesInsert['isPrint'] = 0;
+    SalesInsert['unitID'] = 1;
+    SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
+    SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['doctorName'] = this.DoctorName || '';
+    SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
+    SalesInsert['isPrescription'] = 0;
+    SalesInsert['creditReason'] = '';
+    SalesInsert['creditReasonID'] = 0;
+    SalesInsert['wardId'] = 0;
+    SalesInsert['bedId'] = 0;
+    SalesInsert['discper_H'] = 0;
+    SalesInsert['DsalesId'] = 0;
+   
+    let salesDetailInsertarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      
+      let salesDetailInsert = {};
+      salesDetailInsert['DsalesID'] = 0;
+      salesDetailInsert['itemId'] = element.ItemId;
+      salesDetailInsert['batchNo'] = element.BatchNo;
+      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsert['unitMRP'] = element.UnitMRP;
+      salesDetailInsert['qty'] = element.Qty;
+      salesDetailInsert['totalAmount'] = element.TotalMRP;
+      salesDetailInsert['vatPer'] = element.VatPer;
+      salesDetailInsert['vatAmount'] = element.VatAmount;
+      salesDetailInsert['discPer'] = element.DiscPer;
+      salesDetailInsert['discAmount'] = element.DiscAmt;
+      salesDetailInsert['grossAmount'] = element.NetAmt;
+      salesDetailInsert['landedPrice'] = element.LandedRate;
+      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsert['purRateWf'] = element.PurchaseRate;
+      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
+    
+      salesDetailInsertarr.push(salesDetailInsert);
+
+    });
+    
+
+    let submitData = {
+      "salesDraftbillInsert": SalesInsert,
+      "salesDraftbillDetailInsert": salesDetailInsertarr
+    
+    };
+    console.log(submitData);
+    this._salesService.InsertSalesDraftBill(submitData).subscribe(response => {
+      if (response) {
+       
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+       
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
+
+      //  this.onAddDraftList(response);
+      this.getDraftorderList();
+      
+      }else {
+       
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+      this.sIsLoading = '';
+    }, error => {
+      // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
+
+    this.ItemFormreset();
+    this.patientDetailsFormGrp.reset();
+    this.Formreset();
+    this.ItemSubform.get('ConcessionId').reset();
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
+    }
+
+    add:Boolean = false;
   @ViewChild('discamt') discamt: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('mobileno') mobileno: ElementRef;
@@ -2407,7 +2788,6 @@ export class SalesComponent implements OnInit {
   @ViewChild('patientname') patientname: ElementRef;
   @ViewChild('address') address: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
-  add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
   public onEnterqty(event): void {
@@ -2417,7 +2797,7 @@ export class SalesComponent implements OnInit {
     }
   }
   public onEnterdiscper(event): void {
-    debugger
+    
     if (event.which === 13) {
       this.discamount.nativeElement.focus();
     }
@@ -2430,8 +2810,10 @@ export class SalesComponent implements OnInit {
     }
   }
   public onEntermobileno(event): void {
+    
     if ((this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('MobileNo').value.length == 10)) {
       this.getTopSalesDetailsList(this.MobileNo);
+      
     }
   }
   public onEnterdiscAmount(event): void {
@@ -2469,7 +2851,7 @@ export class SalesComponent implements OnInit {
     );
   }
   getTemplate() {
-    // debugger
+    // 
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._salesService.getTemplate(query).subscribe((resData: any) => {
 
@@ -2577,6 +2959,8 @@ export class SalesComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
+
+
   getSearchList() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
@@ -2595,13 +2979,23 @@ export class SalesComponent implements OnInit {
       });
     }
   }
+  
   getSelectedObjReg(obj) {
+    
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
+
+
+    // this.getDraftorderList(obj);
   }
+
+  CalPaidbackAmt(){
+    this.v_PaidbacktoPatient= (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
+  }
+
   payOnline() {
     const matDialog = this._matDialog.open(PaymentModeComponent, {
       data: { finalAmount: this.FinalNetAmount },
@@ -2627,6 +3021,7 @@ export class IndentList {
   BatchNo: string;
   BatchExpDate: any;
   BalanceQty: any;
+  QtyPerDay:any;
   UnitMRP: any;
   Qty: number;
   IssueQty: number;
@@ -2677,6 +3072,7 @@ export class IndentList {
       this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
       this.IssueQty = IndentList.IssueQty || 0;
+      this.QtyPerDay=IndentList.QtyPerDay || 0;
       this.Bal = IndentList.Bal || 0;
       this.StoreId = IndentList.StoreId || 0;
       this.StoreName = IndentList.StoreName || '';
@@ -2732,6 +3128,40 @@ export class IndentID {
       this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
       this.IndentId = IndentID.IndentId || "";
       this.FromStoreId = IndentID.FromStoreId || "";
+    }
+  }
+}
+
+export class DraftSale {
+  DSalesId:any;
+  PatientName:any;
+  RegID:any;
+  Time:any;
+  NetAmount:any;
+  OP_IP_ID:any;
+  OP_IP_Type:any;
+  WardId:any;
+  BedId:any;
+  IsPrescription:any;
+
+  /**
+   * Constructor
+   *
+   * @param DraftSale
+   */
+  constructor(DraftSale) {
+    {
+      this.DSalesId = DraftSale.DSalesId || 0;
+      this.PatientName = DraftSale.PatientName || 0;
+      this.RegID = DraftSale.RegID || "";
+      this.Time = DraftSale.Time || "";
+      this.NetAmount = DraftSale.NetAmount || 0;
+      this.OP_IP_ID = DraftSale.OP_IP_ID || "";
+      this.OP_IP_Type = DraftSale.OP_IP_Type || "";
+      this.WardId = DraftSale.WardId || "";
+      this.BedId = DraftSale.BedId || "";
+      this.IsPrescription = DraftSale.IsPrescription || "";
+    
     }
   }
 }
@@ -2895,3 +3325,17 @@ export class Printsal {
 function Consructur() {
   throw new Error('Function not implemented.');
 }
+
+
+
+// Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=11531 Order by ItemId 
+
+// sp_helptext Retrieve_ItemName_BatchPOP_BalanceQty
+//     exec Retrieve_ItemName_BatchPOP_BalanceQty 23,0
+
+//     sp_helptext rtrv_SalesDraftBillList
+
+//   select * from T_SalesDraftHeader order by 1 desc
+//    select * from T_SalesDraftDet order by 1 desc
+  
+//   exec rtrv_SalesDraftBillList '12/01/2023','12/12/2023'
