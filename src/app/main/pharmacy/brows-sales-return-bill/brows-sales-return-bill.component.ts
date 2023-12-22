@@ -133,7 +133,7 @@ onclickrow(contact){
      }
      this._SalesReturn.getLoggedStoreList(vdata).subscribe(data => {
      this.Store1List = data;
-     this._SalesReturn.materialReturnFrDept.get('FromStoreId').setValue(this.Store1List[0]);
+     this._SalesReturn.MaterialReturnFrDept.get('FromStoreId').setValue(this.Store1List[0]);
           
         });
   

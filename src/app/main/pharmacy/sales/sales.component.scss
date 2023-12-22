@@ -118,6 +118,9 @@ app-sales {
       min-width: 110px;
       text-align: center;
     }
+
+    
+
     .mat-column-action {
       width: 60px;
       max-width: 60px;
@@ -138,6 +141,39 @@ app-sales {
   }
 
   
+.mat-draftsaletable{
+
+  .mat-header-row {
+     // width:200;
+     min-width:200px;
+     height: 10px; 
+     background-color: blue;
+  }
+ 
+   .mat-row {
+     width: 100%;
+     //max-width: 1600px;
+     min-width: 200px;
+     min-height: 20px;
+    
+   }
+
+
+  .mat-column-DSalesId {
+    width:100px;
+    max-width:100px;
+    min-width:100px;
+    text-align: left;
+  }
+  
+  .mat-column-RegID {
+    width: 100px;
+    max-width:100px;
+    min-width: 100px;
+    text-align: 100px;
+  }
+}
+
 
 .patient-details mat-error {
   margin-top: 10px;
@@ -250,4 +286,6 @@ background-color: #7bd3ff  !important;
     min-width: 400px;
     width: 400px;
   }
+
+  
 }
