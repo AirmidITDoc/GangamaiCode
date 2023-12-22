@@ -43,7 +43,8 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
- 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+// import { Component } from '@angular/core';
 
  
  
@@ -58,6 +59,8 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [
     CommonModule,
     CommonModule,
+    MatProgressBarModule,
+    // Component,
     DashboardRoutingModule,
     MatInputModule,
     MatButtonModule,
