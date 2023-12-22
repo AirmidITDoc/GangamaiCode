@@ -146,7 +146,7 @@
                                                         style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <!-- <button mat-icon-button matTooltip="Print2"
+                                                        <button mat-icon-button matTooltip="Print2"
                                                             (click)="getPrint2(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
@@ -158,7 +158,7 @@
                                                             (click)="getWhatsappshare(contact)">
                                                             <img width="100" height="30"
                                                                 src="assets/images/logos/WhatsApp.jpg">
-                                                        </button> -->
+                                                        </button>
                                                        
                                                         <!-- <button type="submit" (click)="getWhatsappshare(contact)"
                                                             [disabled]="IsLoading" #id1
@@ -169,8 +169,8 @@
                                                            
                                                             WhatsApp
                                                         </button> -->
-                                                        <mat-spinner *ngIf="isDeleting" [diameter]="25" ></mat-spinner>
-                                                        <button *ngIf="!isDeleting" mat-raised-button (click)="deleteRecord(data.id)">Delete</button>
+                                                        <!-- <mat-spinner *ngIf="isDeleting" [diameter]="25" ></mat-spinner>
+                                                        <button *ngIf="!isDeleting" mat-raised-button (click)="deleteRecord(data.id)">Delete</button> -->
                                                     </mat-cell>
                                                 </ng-container>
 
