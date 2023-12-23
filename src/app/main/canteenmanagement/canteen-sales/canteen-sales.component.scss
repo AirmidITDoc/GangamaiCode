@@ -1,0 +1,30 @@
+.table1{
+    .mat-column-ItemName {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        text-align: left;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content:left; 
+      }
+       .mat-column-Code {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-Price {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }  
+}
+.table2{
+    height: 300px;
+}
