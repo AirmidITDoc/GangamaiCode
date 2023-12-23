@@ -498,7 +498,8 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" (keyup)="getCellCalculation(contact,contact.Qty)" type="number">
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number" readonly>
+                                                        <!-- (keyup)="getCellCalculation(contact,contact.Qty)"  -->
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -554,7 +555,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" type="number">
+                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" type="number" readonly>
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -676,7 +677,7 @@
                                                         style="margin-right: 8px; width: 80px;"
                                                         [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">DraftBill</button>
                                                         <!-- class="cdk-visually-hidden" -->
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Total Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalTotalAmt"
                                                                 name="FinalTotalAmt" formControlName="FinalTotalAmt"
@@ -693,7 +694,7 @@
                                                         </mat-form-field>&nbsp;
 
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Discount Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalDiscAmt"
                                                                 name="FinalDiscAmt" formControlName="FinalDiscAmt"
@@ -712,7 +713,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>GST Amount</mat-label>
                                                             <input matInput name="FinalGSTAmt"
                                                                 formControlName="FinalGSTAmt" [(ngModel)]="FinalGSTAmt"
@@ -721,7 +722,7 @@
                                                                 type="number">
                                                         </mat-form-field>&nbsp;
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Net Amount</mat-label>
                                                             <input matInput [(ngModel)]="FinalNetAmount"
                                                                 formControlName="FinalNetAmount" name="FinalNetAmount"
@@ -729,29 +730,30 @@
                                                                 style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field>&nbsp;
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="7%">
                                                             <mat-label>Balance Amount</mat-label>
                                                             <input matInput name="BalanceAmt"
                                                                 formControlName="BalanceAmt" type="number"
                                                                 [(ngModel)]="BalAmount" placeholder="0" type="number">
                                                         </mat-form-field>&nbsp;
 
-                                                        <mat-form-field appearance="outline" style="width: 100px;height:50px;background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,75,121,1) 3%, rgba(0,249,255,0.7259278711484594) 100%);">
-                                                            <!-- <mat-label>Net Amount (Round off)</mat-label> -->
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
+                                                            <mat-label>Net Amount (Round off)</mat-label>
                                                             <input matInput formControlName="roundoffAmt"
-                                                                [(ngModel)]="roundoffAmt" readonly>
+                                                                [(ngModel)]="roundoffAmt" readonly
+                                                                style="font-weight:bold;font-size: 15px;text-align: right;">
                                                         </mat-form-field> &nbsp;
 
                                                         <!-- <mark style="height:auto;color: #e26d14;background-color: rgb(152, 87, 212);">{{roundoffAmt}}</mark> -->
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label> Paid By Patient</mat-label>
                                                             <input matInput formControlName="PaidbyPatient" (keyup)="CalPaidbackAmt()"
                                                                 [(ngModel)]="v_PaidbyPatient">
                                                         </mat-form-field> &nbsp;
 
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                        <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label> Paid Back To Patient</mat-label>
                                                             <input matInput formControlName="PaidbacktoPatient"
                                                                 [(ngModel)]="v_PaidbacktoPatient" readonly>
