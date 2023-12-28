@@ -199,7 +199,7 @@ export class OpPaymentNewComponent implements OnInit {
     return this.formBuilder.group({
       paymentType1: [],
       amount1: [this.netPayAmt],
-      referenceNumber1: [],
+      referenceNo1: [],
       bankName1: [],
       regDate1: [(new Date()).toISOString()],
       
@@ -241,12 +241,12 @@ export class OpPaymentNewComponent implements OnInit {
   onChangePaymnt(event: any) {
     let value = event.value;
     if (value != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNumber1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else {
-      this.patientDetailsFormGrp.get('referenceNumber1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();

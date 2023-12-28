@@ -50,10 +50,10 @@
                                         <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
                                             <mat-form-field appearance="outline" style="width:400px;" #myInput>
-                                                <input type="text" name="SrvcName" formControlName="SrvcName"
-                                                    placeholder="Service Name" matInput [matAutocomplete]="auto"
+                                                <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
+                                                    placeholder="Service Name" matInput [matAutocomplete]="auto"  (keydown)="onEnterservice($event)"
                                                     (input)="getServiceListCombobox()" required
-                                                    (keydown.enter)="focusNextPrice()" id="myInput">
+                                                    id="myInput">
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
@@ -76,9 +76,9 @@
 
                                             <mat-form-field appearance="outline" #Price style="width:100px;">
                                                 <mat-label>Price</mat-label>
-                                                <input matInput [(ngModel)]="b_price" name="bPrice"
-                                                    (keyup)="calculateTotalAmt()" formControlName="price" required
-                                                    type="number" id="Price" (keydown.enter)="focusNextQty()">
+                                                <input matInput [(ngModel)]="b_price" name="bPrice" #price
+                                                    formControlName="price" required
+                                                    type="number" id="Price">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
@@ -88,7 +88,7 @@
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty"
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
-                                                    (keydown.enter)="focusNextDiscperc()" id="qty">
+                                                    (keydown)="onEnterqty($event)" id="qty">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
                                                     Qty is required</mat-error>
@@ -127,22 +127,22 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" #DiscPer>
+                                            <mat-form-field appearance="outline" style="width:100px;" >
                                                 <mat-label>Disc %</mat-label>
-                                                <input matInput [(ngModel)]="b_ChargeDiscPer" name="b_ChargeDiscPer"
+                                                <input matInput [(ngModel)]="b_ChargeDiscPer" name="b_ChargeDiscPer" #disper 
                                                     (keyup)="calculatePersc()" formControlName="ChargeDiscPer"
-                                                    type="number" (keydown.enter)="focusNextDiscAmt()" id="DiscPer">
+                                                    type="number" (keydown)="onEnterdiscper($event)">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeDiscPer').invalid && registeredForm.get('ChargeDiscPer').touched">
                                                     Percentage is Number</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" #DiscAmt>
+                                            <mat-form-field appearance="outline" style="width:100px;" >
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount"
+                                                <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount" #discamt
                                                     formControlName="ChargeDiscAmount" type="number"
                                                     (keyup)="calculatechargesDiscamt()"
-                                                    (keydown.enter)="focusNextbtnAdd()" id="DiscAmt">
+                                                    (keydown)="onEnterdiscAmount($event)" id="DiscAmt">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeDiscAmount').invalid && registeredForm.get('ChargeDiscAmount').touched">
                                                     Discount Amount Schod me Less than Tptal Amount TotalAmount is
@@ -161,12 +161,19 @@
                                             <div matTooltip="Select doctor name to enable this button!!"
                                                 [matTooltipDisabled]="!registeredForm.invalid"
                                                 [matTooltipPosition]="'above'">
-                                                <button mat-raised-button fxLayoutAlign="center center"
+                                                <!-- <button mat-raised-button fxLayoutAlign="center center"
                                                     (click)="onAddCharges()" [disabled]="registeredForm.invalid"
                                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; "
                                                     (keydown.enter)="focusNextService()">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>
+ -->
+
+                                                <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                                class="add-btn" [disabled]="!add" (click)="onAddCharges()">
+                                                <mat-icon> add </mat-icon>
+                                                Add
+                                            </button>
 
                                             </div>
 
@@ -525,7 +532,5 @@
 
 
         </div>
-        //
-        TempDesign
-
+        
      

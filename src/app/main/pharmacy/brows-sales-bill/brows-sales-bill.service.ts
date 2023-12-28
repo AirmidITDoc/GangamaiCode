@@ -149,4 +149,8 @@ public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,
   public getSalesDetail(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId,AddedById){
     return this._httpClient.get("Pharmacy/view-pharmacy-daily-collection_Summary=" + "&FromDate="+ FromDate + "&ToDate=" + ToDate+ "&SalesFromNumber=" +SalesFromNumber+"&SalesToNumber=" +SalesToNumber+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
+
+  public getSalesCashBook(FromDate,ToDate,PaymentMode,StoreId){
+    return this._httpClient.get("Pharmacy/view-PharSalesCashBookReport?FromDate=" + FromDate + "&ToDate=" + ToDate + "&PaymentMode=" + PaymentMode + "&StoreId="+StoreId);
+  }
 }

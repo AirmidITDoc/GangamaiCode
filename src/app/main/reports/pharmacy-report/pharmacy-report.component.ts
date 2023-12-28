@@ -191,6 +191,9 @@ export class PharmacyReportComponent implements OnInit {
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
       this.viewgetPharCollsummDayuserwiseReportPdf();
     }
+    else if (this.ReportName == 'Sales Cash Book Report') {
+      this.viewgetSalesCashBookReportPdf();
+    }
     // else if (this.ReportName == 'Purchase Order') {
     //   this.viewgetPurchaseorderReportPdf();
     // }
@@ -358,6 +361,29 @@ export class PharmacyReportComponent implements OnInit {
           data: {
             base64: res["base64"] as string,
             title: "Sales Credit Viewer"
+          }
+        });
+    });
+  }
+
+  
+
+  viewgetSalesCashBookReportPdf() {
+debugger
+let paymode='Cash'
+    this._BrowsSalesBillService.getSalesCashBook(
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',paymode,
+      this._loggedUser.currentUserValue.user.storeId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Sales Cash Book"
           }
         });
     });

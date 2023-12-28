@@ -24,9 +24,9 @@ app-opd-search-list {
     min-width: 60px;
 }
 .mat-column-PatientOldNew {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
      justify-content:left; 
 }
@@ -53,29 +53,29 @@ app-opd-search-list {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+   
     justify-content:left; 
 }
 .mat-column-DVisitDate {
-    width:80px;
-    max-width:80px;
-    min-width: 80px;
+    width:100px;
+    max-width:100px;
+    min-width: 100px;
     text-align:center;
     justify-content:center;
 }
 .mat-column-VisitTime {
-    width:80px;
-    max-width: 80px;
-    min-width: 80px;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align:center;
     justify-content:center;
 
 }
 
 .mat-column-PatientType {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
+    width:110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align:center;
     justify-content:center;
 }
@@ -97,7 +97,7 @@ app-opd-search-list {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+   
     // margin-right: 10px;   
     justify-content:left; 
 }
@@ -110,7 +110,7 @@ app-opd-search-list {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+   
     // margin-right: 10px;   
     justify-content:left; 
 }
@@ -124,7 +124,7 @@ app-opd-search-list {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+   
     justify-content:left; 
 }
 

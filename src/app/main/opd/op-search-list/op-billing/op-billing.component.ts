@@ -147,7 +147,7 @@ export class OPBillingComponent implements OnInit {
   private nextPage$ = new Subject();
   noOptionFound: boolean = false;
   SrvcName: any;
-
+  add: Boolean = false;
   Paymentdata: any;
 
   //doctorone filter
@@ -195,26 +195,6 @@ export class OPBillingComponent implements OnInit {
       .subscribe(() => {
         this.filterDoctor();
       });
-  }
-
-  // KeyEnter Press to next Input Field
-  focusNextPrice() {
-    this.renderer.selectRootElement('#Price').focus();
-  }
-  focusNextQty() {
-    this.renderer.selectRootElement('#qty').focus();
-  }
-  focusNextDiscperc() {
-    this.renderer.selectRootElement('#DiscPer').focus();
-  }
-  focusNextDiscAmt() {
-    this.renderer.selectRootElement('#DiscAmt').focus();
-  }
-  focusNextbtnAdd() {
-    this.renderer.selectRootElement('#btnAdd').focus();
-  }
-  focusNextService() {
-    this.renderer.selectRootElement('#myInput').focus();
   }
 
 
@@ -336,7 +316,8 @@ export class OPBillingComponent implements OnInit {
       this.registeredForm.get('DoctorID').updateValueAndValidity();
       this.registeredForm.get('DoctorID').disable();
     }
-  }
+
+      }
 
   getNetAmtSum(element) {
     let netAmt;
@@ -668,6 +649,7 @@ export class OPBillingComponent implements OnInit {
     this.onClearServiceAddList();
     this.getTotalNetAmount();
     this.isDoctor = false;
+    this.add = false;
   }
 
   onScroll() {
@@ -962,6 +944,48 @@ export class OPBillingComponent implements OnInit {
           FromName: "OP-Bill"
         }
       });
+  }
+
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('price') price: ElementRef;
+  @ViewChild('disper') disper: ElementRef;
+  @ViewChild('discamt') discamt: ElementRef;
+  @ViewChild('doctorname') doctorname: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  
+  
+  onEnterservice(event): void {
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+      // this.calculateTotalAmt()
+    }
+  }
+
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      this.disper.nativeElement.focus();
+      // this.calculateTotalAmt()
+    }
+  }
+  public onEnterdiscper(event): void {
+    debugger
+    if (event.which === 13) {
+      // this.discamt.nativeElement.focus();
+      this.addbutton.focus();
+    }
+  }
+
+  public onEnterdiscAmount(event): void {
+    if (event.which === 13) {
+      this.addbutton.focus();
+    }
+  }
+
+  public onEnterDoctorname(event): void {
+    if (event.which === 13) {
+      // this.address.nativeElement.focus();
+    }
   }
 
 }

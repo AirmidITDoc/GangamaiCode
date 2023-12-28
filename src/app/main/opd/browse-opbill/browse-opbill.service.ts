@@ -50,4 +50,9 @@ export class BrowseOPBillService {
  public InsertOPBillingsettlement(emp){
   return this._httpClient.post("OutPatient/OpSettlement", emp);
  }
+
+ public getOpBillReceipt(BillNo){
+  return this._httpClient.get("OutPatient/view-Op-BillReceipt=" + "&BillNo="+BillNo);
+}
+
 }

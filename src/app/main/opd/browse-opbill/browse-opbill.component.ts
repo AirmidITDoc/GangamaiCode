@@ -19,6 +19,7 @@ import { PrintPreviewService } from 'app/main/shared/services/print-preview.serv
 import { DomSanitizer } from '@angular/platform-browser';
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 
@@ -299,6 +300,23 @@ onShow(event: MouseEvent) {
 }
 
 
+viewgetOPBillReportPdf(contact) {
+
+  this._BrowseOPDBillsService.getOpBillReceipt(
+ contact.BillNo
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pharma Sales Summary Viewer"
+        }
+      });
+  });
+}
 onClear() {
   this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
   this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
