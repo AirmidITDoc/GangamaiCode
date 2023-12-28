@@ -7,15 +7,15 @@ app-browse-refund-list {
 
 .mat-header-row {
     width: 100%;
-    max-width: 1230px;
-    min-width: 1230px;  
+    max-width: 1400px;
+    min-width: 1400px;  
      min-height: 30px;     
 }
 
 .mat-row {
     width: 100%;
-    max-width: 1230px;
-    min-width: 1230px;
+    max-width: 1400px;
+    min-width: 1400px;
     min-height: 30px;       
 }
 .mat-column-RefundId {
@@ -37,22 +37,26 @@ app-browse-refund-list {
 }
 
 .mat-column-PatientName {
-    width: 480px;
-    max-width: 480px;
-    min-width: 480px;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    // display: inline-block;
-    justify-content:left; 
+    
+    width: 320px;
+    max-width:320px;
+    min-width:320px;
     text-align: left;
+    justify-content: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+    display: inline-flex;
+    display: inline;
+    margin-right: 20px;
+    padding-top: 8px;
 }
 
 .mat-column-RefundAmount {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
     text-align:center;
     justify-content:center;
   
