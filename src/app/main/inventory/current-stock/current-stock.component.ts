@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { CurrentStockService } from './current-stock.service';
@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-current-stock',
@@ -30,17 +31,23 @@ export class CurrentStockComponent implements OnInit {
     // 'GenericName'
   ];
   displayedColumnsDayWise = [
-    // 'action',
-    
     'BatchNo',
     'BatchExpDate',
-    //'ToStoreName',
     'ItemName',
     'ReceivedQty',
     'IssueQty',
     'BalanceQty',
     'UnitMRP',
     'LedgerDate'
+    
+  ];
+  displayedColumnsItemWise = [
+    'Action',
+    'ItemName',
+    'ConversionFactor',
+    'Current_BalQty',
+    'Received_Qty',
+    'Sales_Qty',
     
   ];
 
@@ -53,6 +60,7 @@ export class CurrentStockComponent implements OnInit {
   
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
+  dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
 
   
   @ViewChild(MatSort) sort: MatSort;
@@ -88,9 +96,10 @@ export class CurrentStockComponent implements OnInit {
     // console.log(vdata);
     this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
-      console.log(this.Store1List);
+     // console.log(this.Store1List);
      this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
      this._CurrentStockService.userFormGroup.get('StoreId').setValue(this.Store1List[0]);
+     this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(this.Store1List[0]);
     });
   }
 
@@ -103,10 +112,10 @@ export class CurrentStockComponent implements OnInit {
       //  "To_Dt": this.datePipe.transform(this._CurrentStockService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         
     }
-   console.log(vdata);
+  // console.log(vdata);
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
-     console.log(this.dsCurrentStock.data)
+    // console.log(this.dsCurrentStock.data)
       this.dsCurrentStock.sort = this.sort;
       this.dsCurrentStock.paginator = this.paginator;
       this.sIsLoading = '';
@@ -131,10 +140,10 @@ export class CurrentStockComponent implements OnInit {
      "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
-   console.log(vdata);
+  // console.log(vdata);
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(data => {
       this.dsDaywiseStock.data = data as DayWiseStockList[];
-     console.log(this.dsDaywiseStock.data)
+    // console.log(this.dsDaywiseStock.data)
       this.dsDaywiseStock.sort = this.sort;
       this.dsDaywiseStock.paginator = this.paginator;
       this.sIsLoading = '';
@@ -142,7 +151,106 @@ export class CurrentStockComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
-  }  
+  } 
+  
+  getItemWiseStockList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+    }
+   console.log(vdata);
+      this._CurrentStockService.getItemWiseStockList(vdata).subscribe(data => {
+      this.dsItemwiseStock.data = data as ItemWiseStockList[];
+     console.log(this.dsItemwiseStock.data)
+      this.dsItemwiseStock.sort = this.sort;
+      this.dsItemwiseStock.paginator = this.paginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
+  reportPrintObjList: ItemWiseStockList[] = [];
+  printTemplate: any;
+  reportPrintObj: ItemWiseStockList;
+  reportPrintObjTax: ItemWiseStockList;
+  subscriptionArr: Subscription[] = [];
+ 
+  getPrint(el) {
+
+    var vdata = {
+      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+     }
+    console.log(vdata);
+    this._CurrentStockService.getItemWiseStockList(vdata).subscribe(data => {
+      this.reportPrintObjList = data as ItemWiseStockList[];
+      // debugger
+      // for (let i = 0; i < 10; i++) {
+      //   this.reportPrintObj = data[0] as ItemWiseStockList;
+      //   this.TotalAmt += data[i].TotalAmount
+      //   this.TotalQty += data[i].TotalQty
+      //   this.TotalRate += data[i].Rate
+      //   this.TOtalDiscPer += data[i].TotalDiscAmount
+      //   this.TotalGSTAmt += data[i].TotalVATAmount
+      //   this.TotalNetAmt += data[i].NetPayble
+
+        // console.log(this.TotalAmt);
+        // console.log(this.reportPrintObjList[i]["Qty"]);
+        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
+        //   console.log(this.TotalQty)
+
+        console.log(this.reportPrintObjList);
+
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+     // }
+    })
+
+  }    
+    
+    print3() {
+      let popupWin, printContents;
+  
+      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+      popupWin.document.write(` <html>
+      <head><style type="text/css">`);
+      popupWin.document.write(`
+        </style>
+        <style type="text/css" media="print">
+      @page { size: portrait; }
+    </style>
+            <title></title>
+        </head>
+      `);
+      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.ItemWiseStockTemplate.nativeElement.innerHTML}</body>
+      <script>
+        var css = '@page { size: portrait; }',
+        head = document.head || document.getElementsByTagName('head')[0],
+        style = document.createElement('style');
+        style.type = 'text/css';
+        style.media = 'print';
+    
+        if (style.styleSheet){
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+        head.appendChild(style);
+      </script>
+      </html>`);
+      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+      // </html>`);
+  
+      popupWin.document.close();
+    }
+  
 }
  
 export class CurrentStockList {
@@ -177,9 +285,6 @@ export class DayWiseStockList {
   BatchExpDate:number;
   UnitMRP: number;
   LedgerDate:any;
-
- 
-  
   constructor(DayWiseStockList) {
     {
       this.IssueQty = DayWiseStockList.IssueQty || 0;
@@ -190,9 +295,32 @@ export class DayWiseStockList {
       this.BatchNo = DayWiseStockList.BatchNo || 0;
       this.BatchExpDate = DayWiseStockList.BatchExpDate || 0;
       this.UnitMRP = DayWiseStockList.UnitMRP || 0;
-      this.LedgerDate = DayWiseStockList.LedgerDate || 0;
-      
-       
+      this.LedgerDate = DayWiseStockList.LedgerDate || 0;  
+    }
+  }
+}
+export class ItemWiseStockList {
+ 
+  ItemName:string;
+  ToStoreName:string;
+  IssueQty: Number;
+  BalanceQty:number;
+  ReceivedQty: number;
+  BatchNo: Number;
+  BatchExpDate:number;
+  UnitMRP: number;
+  LedgerDate:any;
+  constructor(ItemWiseStockList) {
+    {
+      this.IssueQty = ItemWiseStockList.IssueQty || 0;
+      this.ReceivedQty = ItemWiseStockList.ReceivedQty || 0;
+      this.ItemName = ItemWiseStockList.ItemName || "";
+      this.ToStoreName = ItemWiseStockList.ToStoreName || "";
+      this.BalanceQty = ItemWiseStockList.BalanceQty || 0;
+      this.BatchNo = ItemWiseStockList.BatchNo || 0;
+      this.BatchExpDate = ItemWiseStockList.BatchExpDate || 0;
+      this.UnitMRP = ItemWiseStockList.UnitMRP || 0;
+      this.LedgerDate = ItemWiseStockList.LedgerDate || 0; 
     }
   }
 }

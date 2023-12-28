@@ -1,12 +1,13 @@
 @import "src/@fuse/scss/fuse";
 
 
-app-browse-opbill{
 
+app-browse-opbill{
+ 
 .mat-header-row {
    
    max-width: 100%; 
-     min-width: 1580px; 
+     min-width: 1400px; 
      min-height: 20px;  
      width: 100%; 
     
@@ -15,20 +16,26 @@ app-browse-opbill{
 .mat-row {
     max-width: 100%;
     min-height: 25px;  
-    min-width: 1580px; 
+    min-width: 1400px; 
     display: flex;      
 }
 
 .mat-column-BillDate {
+<<<<<<< HEAD
     width:100px;
     max-width: 100px;
     min-width: 100px;
+=======
+    width:90px;
+     max-width:90px;
+     min-width:90px;
+>>>>>>> 9ec9f691be04bc2f73df52ebe34bf94c751102ac
     text-align: left;
 }
 .mat-column-BillNo {
-     width:100px;
-     max-width:100px;
-     min-width:100px;
+    width:80px;
+    max-width:80px;
+    min-width:80px;
     text-align: left;
     justify-content:left; 
 }
@@ -48,22 +55,25 @@ app-browse-opbill{
 }
 .mat-column-PatientName {
    
-    width: 300px;
-    max-width:300px;
-    min-width:300px;
+    width: 220px;
+    max-width:220px;
+    min-width:220px;
     text-align: left;
-    white-space: nowrap; 
+    justify-content: left;
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     overflow: hidden !important;
-     
-    justify-content:left; 
+    display: inline-flex;
+    display: inline;
+    margin-right: 20px;
+    margin-top: 20px;
 }
 
 .mat-column-TotalAmt {
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
     text-align: left;
     
      justify-content:left;
@@ -97,16 +107,16 @@ app-browse-opbill{
     text-align: right;
 }
 .mat-column-ConcessionAmt {
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-    text-align:left;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
     justify-content:left;
 }
 .mat-column-NetPayableAmt{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
     text-align: left;
     justify-content:left;
 }

@@ -20,15 +20,15 @@ app-browse-ipadvance{
 }
 
 .mat-column-RegNo {
-    width:120px;
-    max-width: 120px;
-    min-width: 120px;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
 }
 .mat-column-PatientName {
-    width: 300px;
-    max-width: 300px;
-    min-width: 300px;
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
     justify-content:flex-start;
     margin-right: 12px;
     text-align: left;
@@ -37,61 +37,70 @@ app-browse-ipadvance{
     text-overflow: ellipsis; 
     overflow: hidden !important;
     display: inline-block;
-    margin-top: 7px; 
+    padding-top: 7px; 
     justify-content:left; 
 }
 .mat-column-Date {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: center;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
 }
 
 .mat-column-AdvanceNo {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    justify-content:flex-start;
-}
-.mat-column-AdvanceAmount {
     width: 110px;
     max-width: 110px;
     min-width: 110px;
-    justify-content:center;
+    justify-content:flex-start;
+}
+.mat-column-AdvanceAmount {
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
+    justify-content:left;
 }
 .mat-column-CashPayAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
+    width: 140px;
+    max-width:140px;
+    min-width:140px;
     // text-align: center;
-    justify-content:center;
+    justify-content:left;
 }
 .mat-column-ChequePayAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
+    width: 150px;
+    max-width:150px;
+    min-width:150px;
     // text-align: center;
-    justify-content:center;
+    justify-content:left;
 }
 .mat-column-CardPayAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
-    justify-content:center;
+    width: 140px;
+    max-width:140px;
+    min-width:140px;
+    justify-content:left;
 }
 
 .mat-column-UserName{
-    width: 200px;
-    max-width:200px;
-    min-width:200px;
+    width: 160px;
+    max-width:160px;
+    min-width:160px;
     justify-content:flex-start;
+    margin-right: 12px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    padding-top: 7px; 
+    justify-content:left; 
 }
 .mat-column-buttons {
     width:120px;
     max-width: 120px;
     min-width: 120px;
-    text-align: center;
-    justify-content:center;
+    text-align: left;
+    justify-content:left;
 }
 
 .mat-icon-button {

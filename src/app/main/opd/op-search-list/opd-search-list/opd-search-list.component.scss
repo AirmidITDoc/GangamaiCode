@@ -39,15 +39,15 @@ app-opd-search-list {
      justify-content:left; 
 }
 .mat-column-RegNoWithPrefix {
-    width:80px;
-    max-width: 80px;
-    min-width: 80px;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align:left;
 }
 .mat-column-PatientName {
-    width:260px;
-    max-width: 260px;
-    min-width: 260px;
+    width:250px;
+    max-width: 250px;
+    min-width: 250px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -55,6 +55,7 @@ app-opd-search-list {
     overflow: hidden !important;
    
     justify-content:left; 
+    padding-top: 8px;
 }
 .mat-column-DVisitDate {
     width:100px;
@@ -64,18 +65,18 @@ app-opd-search-list {
     justify-content:center;
 }
 .mat-column-VisitTime {
-    width:100px;
-    max-width: 100px;
-    min-width: 100px;
+    width:90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align:center;
     justify-content:center;
 
 }
 
 .mat-column-PatientType {
-    width:110px;
-    max-width: 110px;
-    min-width: 110px;
+    width:105px;
+    max-width: 105px;
+    min-width: 105px;
     text-align:center;
     justify-content:center;
 }
@@ -89,9 +90,9 @@ app-opd-search-list {
     
 
 .mat-column-Doctorname {
-    width: 240px;
-    max-width: 240px;
-    min-width: 240px;
+    width: 220px;
+    max-width: 220px;
+    min-width: 220px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -100,11 +101,12 @@ app-opd-search-list {
    
     // margin-right: 10px;   
     justify-content:left; 
+    padding-top: 8px;
 }
 .mat-column-RefDocName {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
@@ -113,6 +115,7 @@ app-opd-search-list {
    
     // margin-right: 10px;   
     justify-content:left; 
+    padding-top: 8px;
 }
 
 .mat-column-HospitalName {
@@ -126,6 +129,7 @@ app-opd-search-list {
     overflow: hidden !important;
    
     justify-content:left; 
+    padding-top: 8px;
 }
 
 .highlight{

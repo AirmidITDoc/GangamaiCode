@@ -109,7 +109,7 @@
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                    <ng-container matColumnDef="RegNo" sticky>
+                                    <ng-container matColumnDef="RegNo"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
@@ -124,7 +124,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PatientName" sticky>
+                                    <ng-container matColumnDef="PatientName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Patient
                                             Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -187,7 +187,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="buttons" stickyEnd>
+                                    <ng-container matColumnDef="buttons"  >
                                         <mat-header-cell *matHeaderCellDef class="table-actions"
                                             style="color: white;">Action
                                         </mat-header-cell>

@@ -9,6 +9,7 @@ export class CurrentStockService {
 
   userFormGroup: FormGroup;
   SearchGroup :FormGroup;
+  ItemWiseFrom:FormGroup;
 
 
   constructor(
@@ -17,6 +18,7 @@ export class CurrentStockService {
   ) { 
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
+    this.ItemWiseFrom = this.createItemWiseFrom();
   }
 
   createSearchFrom() {
@@ -36,6 +38,13 @@ export class CurrentStockService {
       
     });
   }
+  createItemWiseFrom(){
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      StoreId:'',
+    })
+  }
  
   public getCurrentStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
@@ -45,5 +54,8 @@ export class CurrentStockService {
   }
   public getDayWiseStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rptStockReportDayWise",Param)
+  }
+  public getItemWiseStockList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport",Param)
   }
 }
