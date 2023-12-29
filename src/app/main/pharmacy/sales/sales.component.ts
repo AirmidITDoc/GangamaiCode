@@ -1859,7 +1859,7 @@ showTable: boolean = false
       this.getUpiObj('upi');
 
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.date;
+      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['AdvanceUsedAmount'] = 0;
       PaymentInsertobj['AdvanceId'] = 0;
       PaymentInsertobj['RefundId'] = 0;
@@ -1869,8 +1869,6 @@ showTable: boolean = false
       PaymentInsertobj['IsCancelled'] = 0;
       PaymentInsertobj['IsCancelledBy'] = 0;
       PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
-      PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
       PaymentInsertobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
     } else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
@@ -1949,36 +1947,23 @@ showTable: boolean = false
     console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-        //  console.log(response);
-        //  this._toastr.showSuccess('Record Saved Successfully');
+       
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.getPrint3(response);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: "Record Saved Successfully",
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // }).then((result) => {
-        //   if (result.isConfirmed) {
-        //     this.getPrint3(response);
-        //     this.Itemchargeslist = [];
-        //     this._matDialog.closeAll();
-        //   }
-        // });
+      
       } else {
-        // Swal.fire('Error !', 'Sale data not saved', 'error');
+      
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
-      // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+      
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
@@ -1994,7 +1979,7 @@ showTable: boolean = false
     // }
   }
   onSavePayOption() {
-    
+    debugger
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -2010,10 +1995,12 @@ showTable: boolean = false
           FromName: "Phar-SalesPay"
         }
       });
-debugger
+
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-
+      debugger
+      if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
+    {
       if (result?.IsSubmitFlag == true) {
         let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
         let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
@@ -2180,10 +2167,15 @@ debugger
       else {
         Swal.fire("Plz Check Payment ")
       }
+    }
+      else{
+        Swal.fire("Plzc hk Payment Date !");
+      }
     })
 
-
   }
+ 
+  
   getPrint3(el) {
     var D_data = {
       "SalesID": el,// 
@@ -2264,8 +2256,7 @@ debugger
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      // console.log(this.printTemplate);
-
+      
       setTimeout(() => {
         this.print3();
       }, 1000);
