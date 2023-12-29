@@ -1187,7 +1187,7 @@ debugger
       registrationSave['middleName'] = this.registerObj.MiddleName || '';
       registrationSave['lastName'] = this.registerObj.LastName;
       registrationSave['address'] = this.registerObj.Address || '';
-      registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
+      registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
       registrationSave['pinNo'] = '';
       registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
         registrationSave['age'] = this.registerObj.AgeYear;
@@ -1274,7 +1274,7 @@ debugger
       registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
       registrationUpdate['lastName'] = this.registerObj.LastName;
       registrationUpdate['address'] = this.registerObj.Address;
-      registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityName;
+      registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId;
       registrationUpdate['pinNo'] = '';
       registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"); //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
       registrationUpdate['age'] = this.registerObj.AgeYear || 0; //this.registerObj.Age;

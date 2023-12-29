@@ -690,8 +690,8 @@ export class OpPaymentNewComponent implements OnInit {
   
     this.Paymentobj['BillNo'] = this.PatientHeaderObj.billNo;
     this.Paymentobj['ReceiptNo'] = '';
-    this.Paymentobj['PaymentDate'] = ""; //this.dateTimeObj.date;
-    this.Paymentobj['PaymentTime'] = "";//this.dateTimeObj.date;
+    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+    this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
     // if (this.patientDetailsFormGrp.get("paymentType1").value == "cash") {
     //   Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
     // } else {
@@ -1008,7 +1008,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['OPD_IPD_Type'] = 3;
       this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
       this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
+      this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
 
       const ipPaymentInsert = new PharPaymentInsert(this.Paymentobj);
       submitDataPay = {
@@ -1035,7 +1035,7 @@ export class OpPaymentNewComponent implements OnInit {
         this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
 
         this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-        this.Paymentobj['PaymentTime'] = this.dateTimeObj.date;
+        this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
 
         const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
         submitDataPay = {

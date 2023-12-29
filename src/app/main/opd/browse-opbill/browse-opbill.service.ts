@@ -52,7 +52,7 @@ export class BrowseOPBillService {
  }
 
  public getOpBillReceipt(BillNo){
-  return this._httpClient.get("OutPatient/view-Op-BillReceipt=" + "&BillNo="+BillNo);
+  return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
 }
 
 }

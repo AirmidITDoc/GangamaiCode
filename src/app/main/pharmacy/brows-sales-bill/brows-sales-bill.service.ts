@@ -31,6 +31,7 @@ export class BrowsSalesBillService {
       StoreId: '',
       IPNo: '',
       UserId:'',
+      PaymentMode:''
 
     })
   }
