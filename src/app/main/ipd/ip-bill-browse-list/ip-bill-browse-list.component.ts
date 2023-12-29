@@ -24,6 +24,7 @@ import { Advheaderdetail, UpdateBill } from 'app/main/opd/op-search-list/op-adva
 import { Router } from '@angular/router';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -975,7 +976,23 @@ export class IPBillBrowseListComponent implements OnInit {
     });
   }
   
+viewgetIPBillReportPdf(contact) {
 
+//   this._IpBillBrowseListService.getSalesDetailSummary(
+//  contact.BillNo
+//   ).subscribe(res => {
+//     const dialogRef = this._matDialog.open(PdfviewerComponent,
+//       {
+//         maxWidth: "85vw",
+//         height: '750px',
+//         width: '100%',
+//         data: {
+//           base64: res["base64"] as string,
+//           title: "Pharma Sales Summary Viewer"
+//         }
+//       });
+//   });
+}
 
   getFinalbillwardwiseTemplate() {
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=35';

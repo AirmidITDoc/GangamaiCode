@@ -31,5 +31,9 @@ export class PharmacyreportService {
   public getUserdetailList(data){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",data)
   }
+
+  public getPaymentModeList(){
+    return this._httpClient.post("Generic/GetByProc?procName=M_Rtrv_PaymentModeList",{})
+  }
 }
 

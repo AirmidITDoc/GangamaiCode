@@ -17,7 +17,7 @@ const appRoutes: Routes = [
     loadChildren : () =>import("./brows-sales-bill/brows-sales-bill.module").then((m)=>m.BrowsSalesBillModule),
   },
   {
-    path:"browsesalesreturnbill",
+    path:"matrialreceivedfrommainstore",
     loadChildren : () =>import("./brows-sales-return-bill/brows-sales-return-bill.module").then((m)=>m.BrowsSalesReturnBillModule),
   },
   {

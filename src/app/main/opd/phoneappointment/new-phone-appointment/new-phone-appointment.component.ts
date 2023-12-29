@@ -298,6 +298,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     var m_data = {
       "phoneAppointmentInsert": {
         "phoneAppId": 0,
+        "RegNo":'',
         "appDate": this.dateTimeObj.date,// this.personalFormGroup.get('AppointmentDate').date.value || "2021-03-31",
         "appTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
         "firstName": this.personalFormGroup.get('FirstName').value || '',

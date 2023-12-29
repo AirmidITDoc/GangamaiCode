@@ -346,11 +346,11 @@
                                             style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
 
-                                                <mat-form-field appearance="outline"
+                                                <mat-form-field appearance="outline" class="itemclass"
                                                     style="width:40%;margin-left:20px;">
                                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid
                                                         placeholder="Item Name (enter 2 char) " matInput
-                                                        [matAutocomplete]="auto" (input)="getPharItemList()">
+                                                        [matAutocomplete]="auto" (input)="getPharItemList()" (keydown)="Colorchange()">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="_salesService.IndentSearchGroup.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -622,8 +622,7 @@
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
                                                 [ngClass]="{'row-yellow': QtyBalchk ==0}"
-                                                [@animate]="{value:'*',params:{y:'100%'}}"
-                                                (click)="show($event,contact)"></mat-row>
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                             <!-- (click)="deleteTableRow($event,contact)"  -->
                                             <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                                  (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
@@ -672,10 +671,9 @@
                                                 <!-- <div class="som"> -->
                                                 <div class=" amount-section" style="width: 100%;">
                                                     <div fxLayout="row">
-
+                                                        <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
                                                         <button class="next-btn" (click)="onSaveDraftBill()"
-                                                        style="margin-right: 8px; width: 80px;"
-                                                        [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">DraftBill</button>
+                                                        style="margin-right: 8px; width: 80px;" [disabled]="ItemSubform.invalid">DraftBill</button>
                                                         <!-- class="cdk-visually-hidden" -->
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Total Amount</mat-label>

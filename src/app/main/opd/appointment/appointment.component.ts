@@ -1178,8 +1178,8 @@ export class AppointmentComponent implements OnInit {
       let registrationSave = {};
       let visitSave = {};
       let tokenNumberWithDoctorWiseInsert = {};
-
-      registrationSave['regId'] = 0;
+debugger
+      registrationSave['regID'] = 0;
       registrationSave['regDate'] = this.dateTimeObj.date //this.registerObj.RegDate;
       registrationSave['regTime'] = this.dateTimeObj.time;
       registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
@@ -1205,8 +1205,8 @@ export class AppointmentComponent implements OnInit {
       registrationSave['isCharity'] = false;
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      // registrationSave['Aadharcardno'] =this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
-      // registrationSave['Pancardno'] =this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['Aadharcardno'] =this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationSave['Pancardno'] =this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
 
       submissionObj['registrationSave'] = registrationSave;
@@ -1235,7 +1235,7 @@ export class AppointmentComponent implements OnInit {
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.dateTimeObj.date;// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-      //  visitSave['IsMark'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+       visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
 
       submissionObj['visitSave'] = visitSave;
 
@@ -1267,9 +1267,9 @@ export class AppointmentComponent implements OnInit {
       let visitUpdate = {};
 
       let tokenNumberWithDoctorWiseUpdate = {};
-
+debugger
       registrationUpdate['regId'] = this.registerObj.RegId;
-      registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationUpdate['PrefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationUpdate['firstName'] = this.registerObj.FirstName;
       registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
       registrationUpdate['lastName'] = this.registerObj.LastName;

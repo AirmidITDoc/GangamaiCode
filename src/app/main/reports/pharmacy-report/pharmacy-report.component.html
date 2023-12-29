@@ -33,7 +33,7 @@
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                     <div fxlayout="column" style="width: 50%;">
                         <!-- style="width: 100%;" -->
-                        <div fxFlex.gt-sm="100%" style="width: 70%;">
+                        <div fxFlex.gt-sm="100%" style="width: 90%;">
 
                             <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                 style="overflow: auto;width:100%;height: 300px;">
@@ -117,8 +117,8 @@
                                     </mat-form-field>
  -->
 
-
-                                    <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="60%">
+                                    <div  *ngIf="FlagUserSelected" style="margin-left: 20px;">                                 
+                                          <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
                                         <mat-label>User</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
                                            formControlName="UserId" [matAutocomplete]="autoUser">
@@ -135,8 +135,27 @@
                                           </mat-option>
                                         </mat-autocomplete>
                                       </mat-form-field>
-                
-                                    
+                                    </div>
+                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 20px;">     
+                                      <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
+                                        <mat-label>PayemntMode</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
+                                           formControlName="PaymentMode" [matAutocomplete]="autoPayment">
+                                        <span matSuffix style="display: flex;">
+                                          <mat-icon class="mat-icon-close"
+                                            (click)="_BrowsSalesBillService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">close</mat-icon>
+                                          <mat-icon class="mat-icon-close"
+                                            (click)="_BrowsSalesBillService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoPayment="matAutocomplete" [displayWith]="getOptionTextPaymentMode">
+                                          <mat-option *ngFor="let option of filteredOptionsPaymentmode | async" [value]="option"
+                                            (onSelectionChange)="PaymentModeChk(option)">
+                                            {{option.PaymentMode}}
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                      </mat-form-field>
+                                    </div>
+
 
                                     <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="width: 50px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"

@@ -287,5 +287,15 @@ background-color: #7bd3ff  !important;
     width: 400px;
   }
 
-  
+  .itemclass{
+  .mat-option-text:hover {
+    background: rgb(156, 33, 149);
+    // color:black;
+  }
+
+  .mat-option.mat-active {
+    background:cyan;
+    color: rgb(215 4 4 / 87%);
+}
+}
 }

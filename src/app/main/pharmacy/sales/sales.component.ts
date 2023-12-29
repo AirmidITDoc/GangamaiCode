@@ -1384,6 +1384,10 @@ showTable: boolean = false
     // this.renderer.selectRootElement('#myInput').focus();
   }
 
+  Colorchange(){
+    
+  }
+
   ItemFormreset() {
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
@@ -1444,8 +1448,7 @@ showTable: boolean = false
   }
 
   calculateDiscAmt() {
-    console.log("disc");
-    console.log(this._salesService.IndentSearchGroup.get('DiscAmt').value);
+ debugger
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     // let PurTotalAmount = this.PurTotAmt;
     let LandedTotalAmount = this.LandedRateandedTotal;
@@ -2841,6 +2844,7 @@ onAddDraftListTosale(contact,DraftQty){
   @ViewChild('address') address: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
 
   public onEnterqty(event): void {
     if (event.which === 13) {
