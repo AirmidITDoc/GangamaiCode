@@ -2010,8 +2010,10 @@ showTable: boolean = false
           FromName: "Phar-SalesPay"
         }
       });
-
+debugger
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+
       if (result?.IsSubmitFlag == true) {
         let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
         let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
