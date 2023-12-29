@@ -1,126 +1,130 @@
 app-pharmacy-clearence {
     .table1 {
-      height: 600px !important;
-      width: 1700px;
-    }
-
-    .table2 {
-      height: 600px !important;
-      width: 2000px;
-    }
-  
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
-  
-    .mat-row {
+      height: 700px !important;
       width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
-     
-    }
-  
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-
-    }
-
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-  
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
-  
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
-
-
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-
-    .mat-column-ItemName {
-      width: 290px;
-      max-width: 290px;
-      min-width: 290px;
-      text-align: left;
-    }
-    
-    .mat-column-Qty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-  
-    .mat-column-IssQty {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 150px;
-      max-width: 150px;
-      min-width: 150px;
-      text-align: left;
-    }
-    .mat-column-action {
+      // max-width: 1400px;
+      // min-width: 1400px;
+       
+    .mat-column-IssueTrackerId {
       width: 100px;
       max-width: 100px;
       min-width: 100px;
-      text-align: center;
-      justify-content: center;
+      text-align: left;
+    }
+    .mat-column-IssueRaisedDate {
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
+      text-align: left;
+      justify-content: left;
   
     }
-    .mat-tab-group {
-  margin-bottom: 48px;
+    .mat-column-IssueRaisedTime {
+      width: 155px;
+      max-width: 155px;
+      min-width: 155px;
+      text-align: left;
+      justify-content: left;
+  
+    }
+    .mat-column-IssueSummary {
+       width: 230px;
+        max-width: 230px;
+        min-width: 230px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        margin-right: 10px;
+        justify-content: left;
+  
+    }
+    .mat-column-IssueDescription {
+      width: 280px;
+      max-width: 280px;
+      min-width: 280px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 20px;
+      margin-right: 10px;
+      justify-content: left;
+  
+    }
+    .mat-column-UploadImagePath {
+      width: 180px;
+        max-width: 180px;
+        min-width: 180px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        margin-right: 10px;
+        justify-content: left;
+  
+    }
+    .mat-column-ImageName {
+      width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-block;
+        margin-top: 20px;
+        justify-content: left;
+  
+    }
+    .mat-column-IssueStatus {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+      justify-content: left;
+  
+    }
+    .mat-column-IssueAssigned {
+      width: 140px;
+      max-width: 140px;
+      min-width: 140px;
+      text-align: left;
+      justify-content: left;
+  
+    }
+    .mat-column-AddedBy {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+      justify-content: left;
+  
+    }
+    .mat-column-AddedDatetime {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+      justify-content: left;
+  
+    }
+    }
+
+  
+   
+  
     
 }
-
-// .table-row:selected {
-
-//   background-color: rebeccapurple;
-// }
-
-}
-
+ 
 
   

@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PharmacyClearenceComponent } from '../pharmacy-clearence/pharmacy-clearence.component';
+import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 const routes: Routes = [
   { 
@@ -46,6 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PharmacyClearenceComponent,
+    NewIssueTrackerComponent,
     
     
     

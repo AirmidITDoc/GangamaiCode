@@ -7,9 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
+import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 @Component({
   selector: 'app-pharmacy-clearence',
@@ -20,51 +18,41 @@ import Swal from 'sweetalert2';
   
 })
 export class PharmacyClearenceComponent implements OnInit {
-
+  displayedColumns = [
+   // 'IssueTrackerId',
+    'IssueRaisedDate',
+    'IssueRaisedTime',
+    'IssueSummary',
+    'IssueDescription',
+    'UploadImagePath',
+    'ImageName',
+    'IssueStatus',
+    'IssueAssigned',
+    'AddedBy',
+    'AddedDatetime',
+    'Action'
+  ];
+ 
   sIsLoading: string = '';
   isLoading = true;
   Store1List:any=[];
   screenFromString = 'admission-form';
 
-  labelPosition: 'before' | 'after' = 'after';
   
-  dsIndentID = new MatTableDataSource<IndentID>();
-
-  dsIndentList = new MatTableDataSource<IndentList>();
-
-  displayedColumns = [
-    'FromStoreId',
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
-  ];
-
-  displayedColumns1 = [
-   'ItemName',
-   'Qty',
-   'IssQty',
-   'Bal',
-  ];
+  dsIssueTracker = new MatTableDataSource<_IssueTrackerList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public _IndentID: PharmacyClearenceService,
+    public _IssueTracker: PharmacyClearenceService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
-    
   ) { }
 
   ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIndentID() 
+    this.getIssuTrackerList();
   }
   
   toggleSidebar(name): void {
@@ -78,124 +66,61 @@ export class PharmacyClearenceComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  newCreateUser(): void {
-    // const dialogRef = this._matDialog.open(RoleTemplateMasterComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '50%',
-    //     width: '100%',
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   //  this.getPhoneAppointList();
-    // });
-  }
+  getIssuTrackerList() {
+    this.sIsLoading = 'loading-data';
+     this._IssueTracker.getIssuTrackerList().subscribe(data => {
+     this.dsIssueTracker.data = data as _IssueTrackerList[];
+     console.log(this.dsIssueTracker.data)
+     this.dsIssueTracker.sort = this.sort;
+     this.dsIssueTracker.paginator = this.paginator;
+     this.sIsLoading = '';
+   },
+     error => {
+       this.sIsLoading = '';
+     });
+ }
 
-  getIndentID() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
-    }
-      this._IndentID.getIndentID(Param).subscribe(data => {
-      this.dsIndentID.data = data as IndentID[];
-      console.log(this.dsIndentID.data)
-      this.dsIndentID.sort = this.sort;
-      this.dsIndentID.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
+  OpenPopUp(){
+    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
+      {
+        maxWidth: "75vw",
+        height: '70%',
+        width: '100%',
       });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+       
+    });
   }
 
-  getIndentList(Params){
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      "IndentId": Params.IndentId
-    }
-      this._IndentID.getIndentList(Param).subscribe(data => {
-      this.dsIndentList.data = data as IndentList[];
-      this.dsIndentList.sort = this.sort;
-      this.dsIndentList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-
-  
-onclickrow(contact){
-Swal.fire("Row selected :" + contact)
 }
-  getIndentStoreList(){
-    debugger
+
+export class _IssueTrackerList {
+ // IssueTrackerId: Number;
+  IssueRaisedDate: number;
+  IssueRaisedTime:number;
+  IssueSummary:string;
+  IssueDescription:string;
+  UploadImagePath: any;
+  ImageName:any;
+  IssueStatus:any;
+  IssueAssigned: any;
+  AddedBy:any;
+  AddedDatetime:any;
    
-        this._IndentID.getStoreFromList().subscribe(data => {
-          this.Store1List = data;
-          // this._IndentID.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
-
-       }
-
-  onClear(){
-    
-  }
-}
-
-export class IndentList {
-  ItemName: string;
-  Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
+  constructor(_IssueTrackerList) {
     {
-      this.ItemName = IndentList.ItemName || "";
-      this.Qty = IndentList.Qty || 0;
-      this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
-      this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
-    }
-  }
-}
-export class IndentID {
-  IndentNo: Number;
-  IndentDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  Addedby:number;
-  IsInchargeVerify: string;
-  IndentId:any;
-  FromStoreId:boolean;
-  
-  /**
-   * Constructor
-   *
-   * @param IndentID
-   */
-  constructor(IndentID) {
-    {
-      this.IndentNo = IndentID.IndentNo || 0;
-      this.IndentDate = IndentID.IndentDate || 0;
-      this.FromStoreName = IndentID.FromStoreName || "";
-      this.ToStoreName = IndentID.ToStoreName || "";
-      this.Addedby = IndentID.Addedby || 0;
-      this.IsInchargeVerify = IndentID.IsInchargeVerify || "";
-      this.IndentId = IndentID.IndentId || "";
-      this.FromStoreId = IndentID.FromStoreId || "";
+      //this.IssueTrackerId = _IssueTrackerList.IssueTrackerId || 0;
+      this.IssueRaisedDate = _IssueTrackerList.IssueRaisedDate || 0;
+      this.IssueRaisedTime = _IssueTrackerList.IssueRaisedTime || 0;
+      this.IssueSummary = _IssueTrackerList.IssueSummary || "";
+      this.IssueDescription = _IssueTrackerList.IssueDescription || "";
+      this.UploadImagePath = _IssueTrackerList.UploadImagePath || "";
+      this.ImageName = _IssueTrackerList.ImageName || "";
+      this.IssueStatus = _IssueTrackerList.IssueStatus || "";
+      this.IssueAssigned = _IssueTrackerList.IssueAssigned || "";
+      this.AddedBy = _IssueTrackerList.AddedBy || 0;
+      this.AddedDatetime = _IssueTrackerList.AddedDatetime || 0;
     }
   }
 }

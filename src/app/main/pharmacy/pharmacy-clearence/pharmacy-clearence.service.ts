@@ -8,54 +8,37 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class PharmacyClearenceService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.userFormGroup = this.CreateNewIssueFrom(); 
   }
 
-  IndentSearchFrom() {
+  CreateNewIssueFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
+      IssueSummary:'',
+      IssueDescription:'',
+      IssueStatus:'',
+      ImageName:'',
+      ImagePath:'',
+      ImageUpload:'',
+      IssueRaised:'',
+      IssueAssigned:'',
+
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
   }
   
-    IndentID() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      
-    });
-  }
+   
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getIssuTrackerList(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",{});
   }
 
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
-  }
-
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
-  }
+ 
   
 }
