@@ -42,7 +42,7 @@ export class CurrentStockComponent implements OnInit {
     
   ];
   displayedColumnsItemWise = [
-    'Action',
+   // 'Action',
     'ItemName',
     'ConversionFactor',
     'Current_BalQty',
@@ -84,6 +84,7 @@ export class CurrentStockComponent implements OnInit {
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
+ 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
@@ -156,8 +157,8 @@ export class CurrentStockComponent implements OnInit {
   getItemWiseStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
    console.log(vdata);
@@ -179,37 +180,22 @@ export class CurrentStockComponent implements OnInit {
   reportPrintObjTax: ItemWiseStockList;
   subscriptionArr: Subscription[] = [];
  
-  getPrint(el) {
+  getPrint() {
 
     var vdata = {
-      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
      }
     console.log(vdata);
-    this._CurrentStockService.getItemWiseStockList(vdata).subscribe(data => {
+    this._CurrentStockService.getItemWiseStockListPrint(vdata).subscribe(data => {
       this.reportPrintObjList = data as ItemWiseStockList[];
-      // debugger
-      // for (let i = 0; i < 10; i++) {
-      //   this.reportPrintObj = data[0] as ItemWiseStockList;
-      //   this.TotalAmt += data[i].TotalAmount
-      //   this.TotalQty += data[i].TotalQty
-      //   this.TotalRate += data[i].Rate
-      //   this.TOtalDiscPer += data[i].TotalDiscAmount
-      //   this.TotalGSTAmt += data[i].TotalVATAmount
-      //   this.TotalNetAmt += data[i].NetPayble
-
-        // console.log(this.TotalAmt);
-        // console.log(this.reportPrintObjList[i]["Qty"]);
-        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
-        //   console.log(this.TotalQty)
-
+    
         console.log(this.reportPrintObjList);
 
         setTimeout(() => {
           this.print3();
         }, 1000);
-     // }
     })
 
   }    
