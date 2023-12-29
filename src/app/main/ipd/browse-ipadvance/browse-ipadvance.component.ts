@@ -11,6 +11,7 @@ import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.componen
 import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
 import * as converter from 'number-to-words';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -189,6 +190,26 @@ export class BrowseIPAdvanceComponent implements OnInit {
     }
     popupWin.document.close();
   }
+
+  
+viewgetIPAdvanceReportPdf(contact) {
+
+  this._advanceService.getIPAdvanceReceipt(
+ contact.AdvanceDetailID
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pharma Sales Summary Viewer"
+        }
+      });
+  });
+}
+
 
   getViewAdvance(contact)
 {

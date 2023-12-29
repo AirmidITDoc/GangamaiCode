@@ -113,7 +113,7 @@ export class RegistrationComponent implements OnInit {
   newRegistration() {
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
-        maxWidth: "85vw",
+        maxWidth: "95vw",
           height: '550px',
           width: '100%',
       });
@@ -129,7 +129,7 @@ onEdit(row){
     this._registrationService.populateFormpersonal(row);
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 
-      {   maxWidth: "85vw",
+      {   maxWidth: "95vw",
           height: '550px',
           width: '100%',
            data : {

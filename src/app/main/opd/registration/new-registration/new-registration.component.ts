@@ -322,6 +322,7 @@ validateadhaarcard( input: any){
   }
 
   getPrefixList() {
+    debugger
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       this.optionsPrefix = this.PrefixList.slice();

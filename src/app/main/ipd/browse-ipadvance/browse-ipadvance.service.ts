@@ -36,4 +36,8 @@ export class BrowseIPAdvanceService {
   public getAdvanceBrowsePrint(AdvanceDetailID) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDAdvancePrint", AdvanceDetailID)
   }  
+
+  public getIPAdvanceReceipt(AdvanceDetailID){
+    return this._httpClient.get("InPatient/view-IP-AdvanceReceipt="+AdvanceDetailID);
+  }
 }
