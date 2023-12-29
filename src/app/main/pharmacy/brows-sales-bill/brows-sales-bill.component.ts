@@ -54,7 +54,7 @@ export class BrowsSalesBillComponent implements OnInit {
   Filepath:any;
   loadingRow: number | null = null
   IsLoading:boolean=false;
-    
+  UTRNO:any;
 
   displayedColumns: string[] = [
     'action',
@@ -140,7 +140,7 @@ export class BrowsSalesBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.getSalesList();
+    this.getSalesList();
     this.getSalesReturnList()
     this.gePharStoreList();
     this.gePharStoreList1();
@@ -379,8 +379,19 @@ debugger
 
         this.reportPrintObjList = res as Printsal[];
         console.log(this.reportPrintObjList);
+          this.reportPrintObj = res[0] as Printsal;
+       
+        if(this.reportPrintObj.ChequePayAmount !=0){
+          this.UTRNO = this.reportPrintObj.ChequeNo;
+        }else if(this.reportPrintObj.CardPayAmount !=0){
+          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.ChequeNo;
+        }else if(this.reportPrintObj.NEFTPayAmount !=0){
+          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.NEFTNo;
+        }else if(this.reportPrintObj.PayTMAmount !=0){
+          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.PayTMTranNo;
+        }
 
-        this.reportPrintObj = res[0] as Printsal;
+
         console.log(this.reportPrintObj);
         setTimeout(() => {
           this.print3();
