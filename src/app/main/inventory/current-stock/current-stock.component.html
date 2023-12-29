@@ -284,11 +284,11 @@
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
 
-                                        <mat-form-field>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
                                                 formControlName="start">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
@@ -514,20 +514,22 @@
                         <div>
                             <div class="nav material2">
 
-                                <form [formGroup]="_CurrentStockService.ItemWiseFrom"
-                                    style="padding: 10px 6px 5px 5px;" fusePerfectScrollbar>
+                                <form [formGroup]="_CurrentStockService.ItemWiseFrom" style="padding: 10px 6px 5px 5px;"
+                                    fusePerfectScrollbar>
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
 
                                         <mat-form-field appearance="outline" style="margin-left: 2%;">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date">
+                                                <input matStartDate formControlName="start1" placeholder="Start date" required>
+                                                <input matEndDate formControlName="end1" placeholder="End date" required>
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
                                         </mat-form-field>
+
+
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>From Store</mat-label>
@@ -548,8 +550,12 @@
                                             <button mat-raised-button class="searchButton"
                                                 (click)="getItemWiseStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
-                                            </button>&nbsp; 
-                                            
+                                            </button>&nbsp;&nbsp;&nbsp;
+                                            <button mat-raised-button matTooltip="Print"
+                                                style="font-weight: bold;font-size: medium;" (click)="getPrint()"
+                                                [disabled]="_CurrentStockService.ItemWiseFrom.invalid">Print
+                                            </button>
+
                                         </div>
 
 
@@ -562,7 +568,7 @@
                     </div>
                 </fuse-sidebar>
 
-                 <div class="center p-12 pb-56" fxFlexAlign="start center">
+                <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                     <div class="content-card" style="border-radius:4px; ">
 
@@ -581,16 +587,7 @@
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemwiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                            <ng-container matColumnDef="Action">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Action </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact">
-                                                        <button mat-icon-button matTooltip="Print2"
-                                                            (click)="getPrint(contact)">
-                                                            <mat-icon>print3</mat-icon>
-                                                        </button>
-                                                        </mat-cell>
-                                            </ng-container>
+
 
                                             <ng-container matColumnDef="ConversionFactor">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -652,7 +649,7 @@
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumnsItemWise;"
                                                 class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                 appHighlight></mat-row>
+                                                appHighlight></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                             </mat-footer-row>
@@ -672,7 +669,7 @@
 
 
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </mat-tab>
@@ -680,101 +677,31 @@
 </mat-tab-group>
 
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #ItemWiseStockTemplate>
-    <div class="watermark" style="position:absolute;
-        top: 50%;
-        left: 50%;
-        opacity: 0.1;
-        z-index: 99;
-        color: black;
-        font-size: 70px;
-        transform: translate(-50%,-50%) rotate(-45deg);
-        white-space: nowrap;
-        pointer-events: none;">Shri Siddeshwar Medicals</div>
-    <div style="display:flex; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
-            Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
-            (Item Wise Stock)</h4> 
-    </div>
+
+    <div style="text-align: center;margin-bottom: 10px;">
+
+        <h3 style="text-transform: uppercase;font-weight: 500; color: #e26d14;margin: 0;">
+            Shri Siddeshwar Medicals</h3>
+        <span style="font-weight: 500;"> Shivanubhava Samudaya Bhavan Ground Floor, <br>
+            behind Shri Siddeshwara Temple, Vijayapura, Karnataka 586101</span>
+        <div>
+            <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
+            <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
+        </div>
+    </div><br>
+
+    <div style="text-align: center;">
+        <h3 style="text-transform: uppercase;font-weight: 500;margin: 0; background-color: lightgray;">
+            Item Wise Sales</h3>
+    </div><br>
+
+
+
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
         <tbody>
-            <tr>
-                <td colspan="3"
-                style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
-                <h3
-                    style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
-                    Shri Siddeshwar Medicals</h3>
 
-                 <div>Shri Shivanubhava Samudaya Bhavan Ground Floor, behind Shri
-                    Siddeshwara Temple, Vijayapura, Karnataka 586101</div> 
-                <!-- <div>GST No. 29ABCTS6874R1Z8</div> -->
-                <!-- <div>
-                    <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
-                    <span>D.L.No. 123456789456123</span>
-                </div> -->
-                <div>
-                    <a href="tel:08352259399" style="margin-right: 20px;">Ph.: 08352259399</a>
-                    <a href="mailto:info@jsshospitals.com">info@jsshospitals.com</a>
-                </div>
-                
-                <!-- <h3
-                    style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
-                    {{reportPrintObjList[0]?.StoreName}}</h3>
-
-                <div>{{reportPrintObjList[0]?.StoreAddress}}</div> -->
-                <!-- <div>GST No. 29ABCTS6874R1Z8</div>
-                <div>
-                    <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
-                    <span>D.L.No. 123456789456123</span>
-                </div> -->
-                <!-- <div>
-                    <a href="tel:08352259399"
-                        style="margin-right: 20px;">{{reportPrintObjList[0]?.HospitalMobileNo}}</a>
-                    <a href="mailto:info@jsshospitals.com">{{reportPrintObjList[0]?.HospitalEmailId}}</a>
-                </div> -->
-                </td>
-                <td colspan="3" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
-                    <table style="width: 100%;border-collapse: collapse;font-size:10px;">
-                        <!-- <tr> -->
-                        <td style="vertical-align: top;padding:0 10px 10px">
-                            Customer Id : {{'-'}} <br>
-                            Customer Name: {{'-'}} <br>
-                            Age & Gen: - <span style="margin-left: 10px;">Mob:
-                                {{'-'}}</span><br>
-                            Doctor Name: {{'-'}}
-                        </td>
-                        <!-- </tr> -->
-                    </table>
-                </td>
-                <!-- <td>
-                </td> -->
-              
-            </tr>
-
-            <tr>
-                <td colspan="3"
-                    style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
-                    <div>GST No. {{'-'}}</div>
-                    <div>
-                        <span style="margin-right: 20px;">D.L.No. {{'-'}}</span>
-                        <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
-                    </div>
-                </td>
-                <td colspan="3" style="border: 1px solid black;width: 33.33%;vertical-align: top; padding: 0;">
-                    <table style="width: 100%;font-size:10px;">
-                        <!-- <tr> -->
-                        <td style="vertical-align: top;padding:0 10px 10px">
-                            Bill No: {{'-'}} <span style="margin-left: 10px;">Bill
-                                Date:{{'-'}}</span><br>
-                            Mode of Payment : {{'-'}} <br>
-                        </td>
-                        <!-- </tr> -->
-                    </table>
-                </td>
-            </tr>
-
-             <tr style="font-size:12px;">
+            <tr style="font-size:12px;">
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
                     Sr No.</td>
@@ -783,17 +710,17 @@
                     Product Name</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Conversion Factor</td>
-                <td
-                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Current BalQty</td>
+                    Package</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
                     Received Qty</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Sales Qty</td> 
-            </tr> 
+                    Sales Qty</td>
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                    Current BalQty</td>
+            </tr>
             <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;  text-align: right;
                 padding: 10px;height: 20px;">{{indx + 1}}</td>
@@ -802,12 +729,12 @@
                 <td style="border: 1px solid black;vertical-align: top;text-align: right;
                 padding: 10px;height: 20px;">{{item?.ConversionFactor}}</td>
                 <td style="border: 1px solid black;vertical-align: top; text-align: right;
-                padding: 10px;height: 20px;">{{item?.Current_BalQty}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
                 padding: 10px;height: 20px;">{{item?.Received_Qty}}</td>
                 <td style="border: 1px solid black;vertical-align: top; text-align: right;
                 padding: 10px;height: 20px;">{{item?.Sales_Qty}}</td>
-            </tr> 
+                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                padding: 10px;height: 20px;">{{item?.Current_BalQty}}</td>
+            </tr>
             <tr>
                 <td colspan="6" style="border: 1px solid black;vertical-align: top;
                 padding: 0 10px 10px;">
@@ -835,16 +762,8 @@
                         </li>
                     </ul>
                 </td>
-            </tr> 
-            <tr style="font-weight: 500;">
-                <td colspan="3">
-                    Billed By: {{"-"}}
-                </td>
-                <td colspan="3" style="text-align: right;">
-                    Printed on 12/10/2023 12:45 pm
-                </td>
             </tr>
-         
+          
         </tbody>
     </table>
 

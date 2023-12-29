@@ -23,8 +23,8 @@ export class CurrentStockService {
 
   createSearchFrom() {
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      // start: [(new Date()).toISOString()],
+      // end: [(new Date()).toISOString()],
       StoreId:'',
       ItemCategory:'',
       IsDeleted:['2']
@@ -40,8 +40,8 @@ export class CurrentStockService {
   }
   createItemWiseFrom(){
     return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      start1: [(new Date()).toISOString()],
+      end1: [(new Date()).toISOString()],
       StoreId:'',
     })
   }
@@ -57,5 +57,8 @@ export class CurrentStockService {
   }
   public getItemWiseStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport",Param)
+  }
+  public getItemWiseStockListPrint(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
   }
 }
