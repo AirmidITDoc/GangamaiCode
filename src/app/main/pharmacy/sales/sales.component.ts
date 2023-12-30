@@ -274,9 +274,8 @@ showTable: boolean = false
 
   
   DraftSaleDisplayedCol = [
-    'DSalesId',
+    // 'DSalesId',
     'RegID',
-    
     'buttons'
   ];
 
@@ -2873,6 +2872,11 @@ onAddDraftListTosale(contact,DraftQty){
     }
   }
 
+  public onF6Reset(event): void {
+    if (event.which === 117) {
+      this.onClose();
+    }
+  }
 
   getPrint(el) {
     var D_data = {
