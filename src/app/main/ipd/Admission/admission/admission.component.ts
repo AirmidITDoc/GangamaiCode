@@ -1215,7 +1215,7 @@ export class AdmissionComponent implements OnInit {
 
 
  OnSaveAdmission() {
-    
+    debugger
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1250,8 +1250,8 @@ export class AdmissionComponent implements OnInit {
       regInsert['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       regInsert['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       regInsert['IsSeniorCitizen'] = 1;//this.personalFormGroup.get('IsSeniorCitizen').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-      // regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
-      // regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
+      regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
+      regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
 
       submissionObj['regInsert'] = regInsert;
 
@@ -1296,7 +1296,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['AprovAmount'] = 0;
       admissionNewInsert['CompDOD'] = this.dateTimeObj.date;
       admissionNewInsert['IsPackagePatient'] = 0;
-
+      admissionNewInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
 
@@ -1323,7 +1323,7 @@ export class AdmissionComponent implements OnInit {
 
     }
     else {
-
+debugger
       this.isLoading = 'submit';
       let submissionObj = {};
       let admissionInsert = {};
@@ -1334,7 +1334,7 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['admissionTime'] = this.dateTimeObj.time;
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
-      admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+    //  admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID ? this.hospitalFormGroup.get('refDoctorId').value.DoctorID : 0;
 
@@ -1370,9 +1370,10 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
 
       admissionInsert['CompDOD'] = this.dateTimeObj.date;
-      admissionInsert['IsPackagePatient'] = 0;
-      submissionObj['admissionInsert'] = admissionInsert;
-      submissionObj['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+      admissionInsert['IsOpToIPConv'] = 0;
+      admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
+      admissionInsert['admissionInsert'] = admissionInsert;
+      admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
 
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {

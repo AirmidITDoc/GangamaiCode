@@ -136,7 +136,7 @@
                                                     <div>
                                                         <span style="color: black;font-weight: bold;color: black;">
                                                             <app-common-date [screenFrom]="screenFromString" style="float:right"
-                                                              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                                              (dateTimeEventEmitter)="getDateTime($event)" [isAutoChangeTime]="true"></app-common-date>
                                                           </span>
                                       
                                                     </div>
@@ -498,8 +498,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" type="number" readonly>
-                                                        <!-- (keyup)="getCellCalculation(contact,contact.Qty)"  -->
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" readonly>
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -791,7 +790,7 @@
                                                             style="margin-right: 8px; width: 80px;"
                                                             [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
                                                         <button class="footer-btn"
-                                                            (click)="onClose()">Reset</button>&nbsp;
+                                                            (click)="onClose()" (keydown.enter)="onF6Reset($event)">Reset</button>&nbsp;
                                                         <button class="footer-btn" *ngIf="IsOnlineRefNo"
                                                             (click)="payOnline()">Online</button>
                                                     </div>
@@ -1260,16 +1259,16 @@
                             [@animateStagger]="{value:'50'}"
                             style="overflow:auto; height:400px !important;border-radius:2px;margin-top: 10px;" class="mat-draftsaletable">
                 
-                            <ng-container matColumnDef="DSalesId">
+                            <!-- <ng-container matColumnDef="DSalesId">
                                 <mat-header-cell *matHeaderCellDef
                                     mat-sort-header>DSalesId</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     {{contact.DSalesId}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
                 
                             <ng-container matColumnDef="RegID">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegID
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.RegID}}

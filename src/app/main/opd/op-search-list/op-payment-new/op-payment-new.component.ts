@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-op-payment-new',
@@ -15,7 +16,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
   styleUrls: ['./op-payment-new.component.scss']
 })
 export class OpPaymentNewComponent implements OnInit {
-
+  currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
   paymentArr2: any[] = this.opService.getPaymentArr();
@@ -86,6 +87,7 @@ export class OpPaymentNewComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,
     private _loggedService: AuthenticationService,
+    public datePipe: DatePipe,
     private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
@@ -690,8 +692,8 @@ export class OpPaymentNewComponent implements OnInit {
   
     this.Paymentobj['BillNo'] = this.PatientHeaderObj.billNo;
     this.Paymentobj['ReceiptNo'] = '';
-    this.Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-    this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+    this.Paymentobj['PaymentDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
+    this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
     // if (this.patientDetailsFormGrp.get("paymentType1").value == "cash") {
     //   Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
     // } else {
