@@ -1,27 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DashboardService {
+  UseFrom: FormGroup;
+  constructor(public _httpClient: HttpClient,
+    private _formBuilder: FormBuilder
+  ) { this.UseFrom = this.createUseFrom() }
 
-  constructor(public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder) { }
-
-  public getDailyDashboardSummary()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=rptDailyDashboardSummary",{})
+  createUseFrom() {
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+    });
   }
 
-  public getOPDashChart(params)
-  {
+  public getDailyDashboardSummary() {
+    return this._httpClient.post("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
+  }
+
+  public getOPDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOP_DepartmentChart_Range", params)
   }
 
-  public getIPDashChart(params)
-  {
+  public getIPDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIP_DepartmentChart_Range", params)
   }
 
@@ -35,7 +41,7 @@ export class DashboardService {
 
   // Pharmacy Dashboard Summary
   public getPharDashboardSalesSummary(params) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharDashboardSalesSummary", params)
+    return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
 
 
