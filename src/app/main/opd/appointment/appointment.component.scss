@@ -2,7 +2,9 @@
 
 
 app-appointment{
-
+.auto-height-table mat-row{
+  height: auto !important;
+}
 .mat-header-row {
     width: 100%;
     min-width: 1500px;  
