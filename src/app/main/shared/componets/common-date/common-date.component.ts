@@ -36,7 +36,7 @@ export class CommonDateComponent implements OnInit {
         let splitDate = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
         this.eventEmitForParent(splitDate[0], splitDate[1]);
       }
-    }, 1000 * 60);
+    }, 1000);
   }
 
   ngOnInit() {
