@@ -997,6 +997,7 @@ showTable: boolean = false
 
 
   getDateTime(dateTimeObj) {
+    debugger
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -2947,6 +2948,7 @@ onAddDraftListTosale(contact,DraftQty){
   }
 
   public onF6Reset(event): void {
+    debugger;
     if (event.which === 117) {
       this.onClose();
     }
@@ -2973,83 +2975,10 @@ onAddDraftListTosale(contact,DraftQty){
         }else if(this.reportPrintObj.PayTMAmount !=0){
           this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.PayTMTranNo;
         }
-        this.getTemplate();
-
       })
     );
   }
-  getTemplate() {
-    // 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
-    this._salesService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
-      // ;
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        // console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
-        // <div style="display:flex;width:60px;margin-left:20px;">
-        //     <div>`+ i + `</div> 
-        // </div>
-
-        var strabc = `<hr style="border-color:white" >
-        <div style="display:flex;margin:8px 0">
-        <div style="display:flex;width:40px;margin-left:20px;">
-            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-        </div>
-      
-        <div style="display:flex;width:90px;text-align:center;">
-        <div>`+ objreportPrint.HSNcode + `</div> 
-        </div>
-        <div style="display:flex;width:90px;text-align:center;">
-        <div>`+ objreportPrint.ManufShortName + `</div> 
-        </div>
-        <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
-            <div>`+ objreportPrint.ItemName + `</div> 
-        </div>
-
-        <div style="display:flex;width:60px;text-align:left;margin-left:10px;">
-            <div>`+ objreportPrint.Qty + `</div> 
-        </div>
-        <div style="display:flex;width:90px;text-align:center;">
-        <div>`+ objreportPrint.BatchNo + `</div> 
-         </div>
-        <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
-        <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
-        </div>
-        <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
-        <div>`+ objreportPrint.UnitMRP + `</div> 
-        </div>
-        <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
-            <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
-        </div>
-        </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      // console.log(this.printTemplate);
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-
-
-  }
+ 
 
   print() {
 

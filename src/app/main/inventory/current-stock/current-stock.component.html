@@ -134,7 +134,7 @@
                                         </div>
 
                                         <mat-table #table class="table1" matSort [dataSource]="dsCurrentStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
                                             <ng-container matColumnDef="ToStoreName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -214,7 +214,7 @@
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                                 class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                (click)="getIndentList(contact)" appHighlight></mat-row>
+                                                appHighlight></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                             </mat-footer-row>
@@ -339,7 +339,7 @@
                                         </div>
 
                                         <mat-table #table class="table2" matSort [dataSource]="dsDaywiseStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
                                             <!-- <ng-container matColumnDef="ToStoreName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -455,7 +455,7 @@
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumnsDayWise;"
                                                 class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                (click)="getIndentList(contact)" appHighlight></mat-row>
+                                               appHighlight></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                             </mat-footer-row>
@@ -585,7 +585,7 @@
                                         </div>
 
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemwiseStock"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
 
 
@@ -735,39 +735,6 @@
                 <td style="border: 1px solid black;vertical-align: top; text-align: right;
                 padding: 10px;height: 20px;">{{item?.Current_BalQty}}</td>
             </tr>
-            <tr>
-                <td colspan="6" style="border: 1px solid black;vertical-align: top;
-                padding: 0 10px 10px;">
-                    <div style="font-weight: 400;">Terms & Conditions</div>
-                    <ul style="margin: 5px 0 0 0;
-                    font-size: 10px;
-                    padding-left: 17px;
-                    font-weight: 400;">
-                        <li>
-                            Exchange NOT accepted after 72 hrs. of Purchase, Bill is
-                            required for Exchange
-                        </li>
-                        <li>
-                            Insulin’s & Vaccines will not be taken back. Fridge Items
-                            will not be taken Back
-                        </li>
-                        <li>
-                            All disputes are subject to Vijayapura jurisdiction only
-                        </li>
-                        <li>
-                            Please check the medicines before leaving the medical
-                        </li>
-                        <li>
-                            Consult your Doctor before consuming the medicines.
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-          
         </tbody>
     </table>
-
-    <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
-        This is Computer generated invoice hence doesn’t require signature
-    </div>
 </div>

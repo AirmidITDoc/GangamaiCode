@@ -3,6 +3,8 @@ import { DashboardService } from '../dashboard.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { ChartOptions } from 'chart.js';
+import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pharmacy-dashboard',
@@ -12,52 +14,44 @@ import { ChartOptions } from 'chart.js';
   animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
-  // SearchForm: FormGroup;
-  // PharDashSalSummary=[];
-  // constructor(
-  //   public _pharService:DashboardService,
-  //   private _formBuilder: FormBuilder
-  // ) {
-  //   this.SearchForm=this.SearchFilter();
-  //  }
-  name:any;
-  SubPlease:any;
-  progressValue= '75%';
-  progressValue1= '40%';
-  progressValue2= '12%';
+
+  displayedColumns = [
+    'StoreName',
+    'CollectionAmount',
+    'RefundAmount',
+    'NetAmount',
+  ];
+
+  name: any;
+  SubPlease: any;
+  progressValue = '75%';
+  progressValue1 = '40%';
+  progressValue2 = '12%';
+
+  Totalamount: any = '26,24,940';
+  GrossAmount: any = '24,24,990';
+  TotalCustomers: any = '2,624';
+  AverageOrderValue: any = '490.5';
+  NewCustomers: any = '1,312';
+  RepeatCustomers: any = '1,312';
+  Cash: any = '2,26,241';
+  Online: any = '76,241';
+  Cheque: any = '22,241';
+  
+  sIsLoading: string = '';
+  isLoading = true;
+
+  dsPharmacyDashboard = new MatTableDataSource<PharDashSummary>();
+  
+
+  constructor(
+    public _DashboardService : DashboardService,
+    public datePipe: DatePipe,
+    ) { }
   ngOnInit(): void {
-   
-    //this.getPharDashboardSalesSummary();
+   this.getPharDashboardSalesSummary()
   }
 
-  // SearchFilter():FormGroup{
-  //   return this._formBuilder.group({
-  //     startdate: [(new Date()).toISOString()],
-  //     enddate: [(new Date()).toISOString()],
-  //     // StoreId :'',
-  //   })
-  // }
-
-Totalamount:any = '26,24,940';
-GrossAmount:any = '24,24,990';
-TotalCustomers:any = '2,624';
-AverageOrderValue :any = '490.5';
-NewCustomers : any = '1,312';
-RepeatCustomers : any = '1,312';
-Cash: any = '2,26,241';
-Online: any = '76,241';
-Cheque: any = '22,241';
- 
-  // getPharDashboardSalesSummary(){
-  //   let reqParam = {
-  //     FromDate: '10/01/2023',
-  //     ToDate:'10/18/2023'
-  //   }
-  //   this._pharService.getPharDashboardSalesSummary(reqParam).subscribe(data => {
-  //     console.log(data);
-  //     this.PharDashSalSummary = data as PharDashSummary [];
-  //   });
-  // }
 
   chartData: any[] = [
     { data: [40, 60, 20, 50], label: 'Net Sales' }
@@ -91,23 +85,69 @@ Cheque: any = '22,241';
     legend: {
       position: 'right',
       align: 'end'
-    
+
     }
   };
-  
- 
+  public pieChartData1: number[] = [1312, 1312,2546,2154]; // The data for the chart
+  public pieChartLabels1: string[] = ['SS MEDICALS', 'Civil Store','IPD STORE','SSM-04 Muddebihal']; // The labels for the chart
+  public pieChartType1: string = 'doughnut'; // Set the chart type to doughnut
+  public pieChartOptions1: ChartOptions = {
+    legend: {
+      position: 'right',
+      align: 'end'
+
+    }
+  };
+  PharmacyDashboard: PharDashSummary[] = [];
+  getPharDashboardSalesSummary() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+     "FromDate":this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '12/25/2023' ,
+     "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+     }
+   console.log(vdata);
+      this._DashboardService.getPharDashboardSalesSummary(vdata).subscribe(data => {
+      this.dsPharmacyDashboard.data = data as PharDashSummary[];
+      this.PharmacyDashboard = data as PharDashSummary[];
+       
+     console.log(this.dsPharmacyDashboard.data)
+     this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  getTotalCollectionAmt(contact) {
+    let TotalCollectionAmt=0;
+    TotalCollectionAmt = contact.reduce((sum, { CollectionAmount }) => sum += +(CollectionAmount || 0), 0);
+   // this.IGSTFinalAmount = IGSTAmt;
+    return TotalCollectionAmt;
+  }
+  getTotalRefunAmt(contact) {
+    let TotalRefundAmt=0;
+    TotalRefundAmt = contact.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
+   // this.IGSTFinalAmount = IGSTAmt;
+    return TotalRefundAmt;
+  }
+  getTotalNetAmt(contact) {
+    let TotalNetAmt=0;
+    TotalNetAmt = contact.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+   // this.IGSTFinalAmount = IGSTAmt;
+    return TotalNetAmt;
+  }
+
 }
 
 export class PharDashSummary {
   StoreName: number;
-  TotalSales: String;
-  TotalDisc: number;
-  TotalNetSales: String;
+  CollectionAmount:  any;
+  RefundAmount: number;
+  NetAmount:  any;
 
   constructor(PharDashSummary) {
-    this.StoreName = PharDashSummary.StoreName || '';
-    this.TotalSales = PharDashSummary.TotalSales || 0;
-    this.TotalDisc = PharDashSummary.TotalDisc || 0;
-    this.TotalNetSales = PharDashSummary.TotalNetSales || 0;
+    this.StoreName = PharDashSummary.StoreName || 0;
+    this.CollectionAmount = PharDashSummary.CollectionAmount || 0;
+    this.RefundAmount = PharDashSummary.RefundAmount || 0;
+    this.NetAmount = PharDashSummary.NetAmount || 0;
   }
 }
