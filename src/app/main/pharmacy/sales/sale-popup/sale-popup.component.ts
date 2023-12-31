@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -26,13 +26,31 @@ export class SalePopupComponent implements OnInit {
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
+
+  
   
   constructor(
     private dialogRef: MatDialogRef<SalePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public salesService: SalesService,
   ) {
-    console.log(data);
+    
+
+   }
+
+  // const ESCAPE_KEYCODE = 27;
+
+@HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+        this. close();
+    }
+}
+
+
+
+
+  close(){
+    this.dialogRef.close();
   }
 
   highlight(row: any) {
@@ -134,4 +152,8 @@ export class SalesList {
       // this.StoreName =IndentList.StoreName || '';
     }
   }
+}
+
+function onKeydownHandler(event: Event, KeyboardEvent: { new(type: string, eventInitDict?: KeyboardEventInit): KeyboardEvent; prototype: KeyboardEvent; readonly DOM_KEY_LOCATION_STANDARD: 0; readonly DOM_KEY_LOCATION_LEFT: 1; readonly DOM_KEY_LOCATION_RIGHT: 2; readonly DOM_KEY_LOCATION_NUMPAD: 3; }) {
+  throw new Error('Function not implemented.');
 }
