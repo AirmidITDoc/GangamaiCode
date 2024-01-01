@@ -32,7 +32,7 @@ export class OpPaymentNewComponent implements OnInit {
   };
 
   PatientHeaderObj: any;
-
+  UpiFlag:boolean=true;
   selectedPaymnet1: string = '';
   selectedPaymnet2: string = '';
   selectedPaymnet3: string = '';
@@ -397,7 +397,13 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onPaymentChange(rowId: number, value: string) {
-    // debugger
+    debugger
+
+    if(rowId==2){
+      this.UpiFlag=false;
+      this.patientDetailsFormGrp.get('bankName2').clearValidators();
+      this.patientDetailsFormGrp.get('bankName2').setValue('');
+    }
     switch (rowId) {
       case 1:
         this.paymentArr2 = this.opService.getPaymentArr();
@@ -939,6 +945,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getUpiObj(type: string) {
+    debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount1;
       this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;

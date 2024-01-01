@@ -984,7 +984,7 @@
                     </div> -->
               </div>
               <div style="margin-top: 10px;">
-                <mat-table #table matSort [dataSource]="imgDataSource" class="table2" [@animateStagger]="{value:'50'}">
+                <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table" [@animateStagger]="{value:'50'}">
 
                   <ng-container matColumnDef="DocumentName">
                     <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
@@ -1063,7 +1063,7 @@
                 </div>
               </div>
               <div style="margin-top: 10px;">
-                <mat-table #table matSort [dataSource]="pdfDataSource" class="table2" [@animateStagger]="{value:'50'}">
+                <mat-table #table matSort [dataSource]="pdfDataSource" class="table2 auto-height-table" [@animateStagger]="{value:'50'}">
 
                   <ng-container matColumnDef="DocumentName">
                     <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BrowsSalesBillService } from './brows-sales-bill.service';
@@ -55,6 +55,7 @@ export class BrowsSalesBillComponent implements OnInit {
   loadingRow: number | null = null
   IsLoading:boolean=false;
   UTRNO:any;
+  rowid:any=[];
 
   displayedColumns: string[] = [
     'action',
@@ -303,11 +304,6 @@ export class BrowsSalesBillComponent implements OnInit {
     })
   }
 
-  onSelect(Parama){
-    //console.log(Parama);
-   this.getSalesDetList(Parama)
- }
-
   getSalesReturnList(){
     var vdata={
       F_Name : this._BrowsSalesBillService.formReturn.get('F_Name').value || '%'  ,                            
@@ -366,6 +362,36 @@ debugger
     })
   );
 }
+
+
+@HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+ debugger
+ 
+
+if (event.keyCode === 114) {
+  // this. selectRow(event,this.dssaleList1.data);
+  this. getWhatsappshare(this.rowid);
+}
+}
+
+// private selectRow($event, dataSource) {
+//   debugger
+//   // if ($event.checked) {
+//     console.log(dataSource.name);
+//     let id=dataSource.selectedData;
+//     this. getWhatsappshare(this.rowid);
+//   }
+// }
+
+
+
+onSelect(Parama){
+
+ this.getSalesDetList(Parama)
+ this.rowid=Parama;
+}
+
+
   getPrint2(el) {
     
     var D_data = {
@@ -381,15 +407,15 @@ debugger
         console.log(this.reportPrintObjList);
           this.reportPrintObj = res[0] as Printsal;
        
-        if(this.reportPrintObj.ChequePayAmount !=0){
-          this.UTRNO = this.reportPrintObj.ChequeNo;
-        }else if(this.reportPrintObj.CardPayAmount !=0){
-          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.ChequeNo;
-        }else if(this.reportPrintObj.NEFTPayAmount !=0){
-          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.NEFTNo;
-        }else if(this.reportPrintObj.PayTMAmount !=0){
-          this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.PayTMTranNo;
-        }
+        // if(this.reportPrintObj.ChequePayAmount !=0){
+        //   this.UTRNO = this.reportPrintObj.ChequeNo;
+        // }else if(this.reportPrintObj.CardPayAmount !=0){
+        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.ChequeNo;
+        // }else if(this.reportPrintObj.NEFTPayAmount !=0){
+        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.NEFTNo;
+        // }else if(this.reportPrintObj.PayTMAmount !=0){
+        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.PayTMTranNo;
+        // }
 
 
         console.log(this.reportPrintObj);
@@ -967,13 +993,13 @@ getWhatsappshare(el){
 
   var m_data = {
           "insertWhatsappsmsInfo": {
-            "mobileNumber": 0,
-            "smsString": 'PatientDetail'|| '',
+            "mobileNumber": el.RegNo,
+            "smsString": 'Phar Sales Bill '|| '',
             "isSent": 0,
-            "smsType": 'bulk',
+            "smsType": 'WhatsApp',
             "smsFlag":0,
-            "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "tranNo": el.SalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "smsDate": this.currentDate,
+            "tranNo": el.SalesNo, 
             "templateId":0,
             "smSurl": "info@gmail.com",
             "filePath":this.Filepath || '',

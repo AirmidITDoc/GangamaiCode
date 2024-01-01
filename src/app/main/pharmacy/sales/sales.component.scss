@@ -1,9 +1,12 @@
      
-.mat-row, .mat-footer-row {
-  min-height: 28px;
-  height: 30px;
-}
+
 app-sales {
+
+  .mat-row, .mat-footer-row {
+    min-height: 35px;
+    height: 35px;
+  }
+
       .mat-header-row {
       // width:200;
       min-width: 1000px;

@@ -124,4 +124,8 @@ export class SalesService {
  public getDraftBillItem(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
   }
+  public InsertWhatsappSms(emp){
+    return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
+  }
+
 }
