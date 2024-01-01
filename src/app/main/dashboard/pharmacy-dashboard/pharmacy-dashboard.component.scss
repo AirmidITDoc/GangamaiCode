@@ -65,5 +65,26 @@
   }
   }
   
+ 
+  @media (min-width: 426px) {
+    .dashboard-project{
+      font-size: 14px;
+    }
+  }
+  
+  @media (min-width: 601px) {
+    .dashboard-project{
+      font-size: 16px;
+    }
+  }
+  
+  // @media (min-width: 1025px) {
+  //   .dashboard-project { 
+  //     font-size: 18px;
+  //   }
+  // }
+  
+  
+  
   
    
