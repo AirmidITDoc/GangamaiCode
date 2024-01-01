@@ -2475,7 +2475,6 @@ loadingarry:any=[];
   }
 
   tblCalucation(contact,Qty){
-    if (parseInt(contact.Qty) > 0) {
       this.RQty = parseInt(contact.Qty);
       if (this.RQty && contact.UnitMRP) {
         this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
@@ -2494,10 +2493,10 @@ loadingarry:any=[];
           this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
         }
 
-          contact.GSTAmount = this.GSTAmount || 0,
-          contact.TotalMRP = this.TotalMRP || 0,
+          contact.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
+          contact.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);  //this.TotalMRP || 0,
           contact.DiscAmt = this.DiscAmt || 0,
-          contact.NetAmt = this.NetAmt,
+          contact.NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2); //this.NetAmt,
           contact.RoundNetAmt = Math.round(this.NetAmt),
           contact.StockId = this.StockId,
           contact.VatAmount = this.GSTAmount,
@@ -2509,8 +2508,8 @@ loadingarry:any=[];
           contact.PurTotAmt = this.PurTotAmt,
           contact.MarginAmt = this.v_marginamt
       }
-    }
   }
+
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
