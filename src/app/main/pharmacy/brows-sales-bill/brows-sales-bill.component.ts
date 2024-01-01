@@ -967,13 +967,13 @@ getWhatsappshare(el){
 
   var m_data = {
           "insertWhatsappsmsInfo": {
-            "mobileNumber": 0,
-            "smsString": 'PatientDetail'|| '',
+            "mobileNumber": el.RegNo,
+            "smsString": 'Phar Sales Bill '|| '',
             "isSent": 0,
-            "smsType": 'bulk',
+            "smsType": 'WhatsApp',
             "smsFlag":0,
-            "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "tranNo": el.SalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "smsDate": this.currentDate,
+            "tranNo": el.SalesNo, 
             "templateId":0,
             "smSurl": "info@gmail.com",
             "filePath":this.Filepath || '',

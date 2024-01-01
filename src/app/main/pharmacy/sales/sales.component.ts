@@ -2850,10 +2850,9 @@ onAddDraftListTosale(contact,DraftQty){
     }
   }
   public onEntermobileno(event): void {
-    
     if ((this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('MobileNo').value.length == 10)) {
       this.getTopSalesDetailsList(this.MobileNo);
-      
+      this.patientname.nativeElement.focus();
     }
   }
   public onEnterdiscAmount(event): void {
