@@ -15,237 +15,563 @@
                 </span>
             </div>
 
-            <mat-card style="width: 35%; height: 75px;padding: 5px;">
-                <mat-form-field appearance="outline" style="width:98%;height: 30px;margin: 5px;">
+            <mat-card style="width: 16.5%; height: 75px;padding: 5px;color: black;">
+                <!-- <mat-form-field appearance="outline" style="width:98%;height: 30px;margin: 5px;">
                     <input type="text" name="ItemID" formControlName="ItemID" placeholder=" Start Typing Here to Search"
                         style="color: white;" matInput required>
                     <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close">close</mat-icon>
                         <mat-icon class="mat-icon-close">search</mat-icon>
                     </span>
-                </mat-form-field>
+                </mat-form-field> -->
+                <form [formGroup]="_DashboardService.UseFrom">
+                    <mat-form-field appearance="outline" style="padding: 5px;">
+                        <mat-label style="color: black;">Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate formControlName="start"  style="color: black;"
+                                placeholder="Start date" >
+                            <input matEndDate formControlName="end" placeholder="End date"
+                            style="color: black;"  (dateChange)="getPharDashboardSalesSummary()">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </form>
             </mat-card>
 
         </mat-toolbar>
 
-        <div fxLayout="row" fxLayout="column" fxLayoutGap="5px">
-            <div fxLayout="row" style=" padding: 10px;">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
 
-                <mat-card style="padding:10px; width: 500px;height: 320px;margin-left: 40px;margin-top: 30px;">
-                    <div style="display: flex;padding-top: 10px;">
-                        <span style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 210px;">Net
-                            Sales
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                        <span
-                            style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;float: right;">
-                            <mat-icon>carrow_upward</mat-icon>11.3%</span>
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="5px">
+                    <div fxLayout="row" style=" padding: 10px;">
+                        <mat-card style="padding:10px; width: 650px;height: 440px;margin-left: 40px;margin-top: 8px;">
+                             <div matColumnDef="loading" diameter="30" style="height: 420px; width: 630px;"
+                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                            class="backgroundBlur">
+                            <div style="margin-left: 250px;"  class="spinner-border text-danger"></div>
+
+                             </div>
+                        <table class="table" style="width: 100%;border-collapse: collapse;">
+                            <tbody>
+                                <tr  style="font-size:12px;">
+                                    <td colspan="4"
+                                        style="background-color: rgb(37, 174, 192); font-weight:bold;text-align:left;padding:10px;font-size: 18px;color: white;">
+                                        Statistics</td> 
+                                </tr>
+                                <tr  style="font-size:12px;">
+                                    <td colspan="2"
+                                        style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
+                                         Collection</td> 
+                                        <td colspan="2"
+                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;padding-left: 20px;">
+                                         {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td> 
+                                </tr>
+                                <tr  style="font-size:12px;">
+                                    <td colspan="2"
+                                        style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
+                                        Refund</td> 
+                                        <td colspan="2"
+                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;padding-left: 20px;">
+                                         {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td> 
+                                </tr>
+                                <tr  style="font-size:12px; background-color:#2a6392;color: white;">
+                                    <td colspan="2"
+                                        style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
+                                        Net</td> 
+                                        <td colspan="2"
+                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
+                                         {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR' }}</td> 
+                                </tr>
+                                <tr  style="font-size:12px;">
+                                    <td colspan="4"
+                                        style="background-color: white;text-align:left;padding:10px;">
+                                        </td> 
+                                </tr>
+                                <tr style="font-size:12px;background-color:#2a6392;color: white;font-size: 15px;">
+                                    <td
+                                        style="font-weight:bold;text-align:left;padding:10px;">
+                                        StoreName</td>
+                                    <td
+                                        style="font-weight:bold;text-align:left;padding:10px;">
+                                        Collection Amount</td>
+                                    <td
+                                        style="font-weight:bold;text-align:left;padding:10px;">
+                                        Refund Amount</td>
+                                    <td
+                                        style="font-weight:bold;text-align:left;padding:10px;">
+                                        Net Amount</td>
+                                </tr><br>
+                                <tr *ngFor="let item of PharmacyDashboard; let indx = index;" style="font-size:13px;
+                                border: 1px solid black;">
+                                    
+                                    <td style="padding: 10px;background-color: lightgray;
+                                    text-align: left;color: black;" class="StoreName">{{item?.StoreName}}</td>
+                                    <td style="padding: 10px;background-color: lightgray;
+                                    text-align: left;color: black;">{{item?.CollectionAmount | number:'1.2-2' }}</td>
+                                    <td style="padding: 10px;background-color: lightgray;
+                                    text-align: left;color: black;">{{item?.RefundAmount | number:'1.2-2'}}</td>
+                                    <td style="padding: 10px;background-color: lightgray;
+                                    text-align: left;color: black;">{{item?.NetAmount | number:'1.2-2'}}</td>
+                                </tr><br>
+                               
+                              
+                            </tbody>
+                        </table>
+                        </mat-card>
+
+
+                        <mat-card style="padding:10px; width: 750px;height: 440px;margin-left: 50px;margin-top: 8px;">
+                            <div style="display: flex;padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 400px;">Stores
+
+                                    <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                                <span
+                                    style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;">
+                                    <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                            </div>
+
+                            <div style="display: flex;padding: 20px 0px 8px 20px;">
+
+                                <div flexLayout="row">
+                                   
+                                    <!-- <span style="font-size: 25px;font-weight:bold;margin-top: 50px;margin-bottom: 20px;">
+                                        SSM-04 Muddebihal
+                                    </span>
+                                    <span style="font-size: 25px;font-weight:bold;margin-top: 50px ;margin-bottom: 20px;margin-left: 250px;">
+                                        SS MEDICALS
+                                     </span> -->
+                                    
+                                </div>
+                                 
+                               
+                               
+                            </div>
+
+                            <div style="display: flex;">
+                                <div style="display: block ;  width: 560px; height: 500px; ">
+                                    <canvas baseChart [data]="pieChartData1" [chartType]="pieChartType1"
+                                        [labels]="pieChartLabels1" [options]="pieChartOptions1"></canvas>
+                                </div>
+
+                                <div style="margin-left: 5px;" fxLayout="column">
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
+                                        Net Amount</span>
+                                    <span style="font-weight: bold;font-size: 22px;margin-top:6px">
+                                        {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR' }}
+                                    </span>
+                                    
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
+                                        Collection</span>
+                                    <span style="font-weight: bold;font-size: 22px;margin-top: 6px;">
+                                        {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}
+                                    </span>
+                                
+                               
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
+                                        Refund</span>
+                                    <span style="font-weight: bold;font-size: 22px;margin-top: 6px;">
+                                        {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}
+                                    </span>
+                                
+                                </div>
+                               
+                               
+                            </div>
+
+                        </mat-card>
+                    
                     </div>
-                    <!-- <hr style="color: rgb(208, 216, 223);"> -->
+                    <!-- <div fxLayout="row" style=" padding: 10px;">
+                        <form [formGroup]="_DashboardService.UseFrom" >
+                        <mat-card style="padding:10px; width: 720px;height: 260px;margin-left: 40px;margin-top: 8px;">
 
-                    <div style="display: flex;">
-                        <span style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
-                            <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
-                        </span>
-                        <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
-                            <mat-icon style="font-size: 15px;margin-left: 5px;color: gray;">&#8377;</mat-icon>{{GrossAmount}}
-                        </span>
-                    </div>
+                            <mat-toolbar class="accent" style="height:60px; justify-content: space-between;width: 100%;">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                   
+                                    <span class="mat-display-1 my-0 my-sm-12 welcome-message"
+                                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                                        Statistics
+                                    </span>
+                                </div>
+                               
+                                <mat-form-field appearance="outline" style="margin-top: 4px;">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date" 
+                                         (dateChange)="getPharDashboardSalesSummary()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
 
-                    <div style="display: block;height:150px ;">
-                        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                            [chartType]="'line'">
-                        </canvas>
-                    </div>
+                            </mat-toolbar>
+                            <div style="margin-top: 10px;" >
+                                <div fxLayout="column" style="background-color: lightgray;width: 100%;height: 50px;" >
+                                    <div style="display: flex;">
+                                     <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                        style="font-weight: bold;font-size: 20px; margin-right: 215px;padding: 15px;">
+                                        Total Collection Amount</span>
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                    style="font-size: 25px;font-weight:bold;color: blue;padding: 15px;">
+                                            {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}
+                                    </span>
+                                 </div>
 
-                </mat-card>
+                                </div>
+                                <div fxLayout="column" style="background-color: lightgray;width: 100%;height: 50px;margin-top: 8px;" >
+                                    <div style="display: flex;">
+                                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                       style="font-weight: bold;font-size: 20px; margin-right: 240px;padding: 15px;">
+                                       Total Refund Amount</span>
+                                       <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                       style="font-size: 25px;font-weight:bold;color: blue;padding: 15px;">
+                                               {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}
+                                       </span>
+                                </div>
 
-                <mat-card style="padding:10px; width: 400px;height: 320px;margin-left: 30px;margin-top: 30px;">
-                    <div style="padding-top: 10px;">
-                        <span style="font-size: 30px; font-weight:400px;;padding-left:8px;padding-top: 20px">Stock
-                            Value<mat-icon style="color: gray;">circle_information</mat-icon>
-                        </span><br><br>
-                        <!-- <hr style="color: rgb(208, 216, 223);"> -->
-                    </div>
-                    <span style="font-size: 15px;font-weight:200px;margin-left: 40px;color: gray;">
-                        Purcjase Rate (excl gst) </span><br>
-                    <span style="font-weight: bold;font-size: 18px; margin-left: 40px;">
-                        <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
-                    </span><br>
+                               </div>
+                               <div fxLayout="column" style="background-color: lightgray;width: 100%;height: 50px;margin-top: 8px;" >
+                                <div style="display: flex;">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                   style="font-weight: bold;font-size: 20px; margin-right: 265px;padding: 15px;">
+                                   Total Net Amount</span>
+                                   <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                                   style="font-size: 25px;font-weight:bold;color: blue;padding: 15px;">
+                                           {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR'}}
+                                   </span>
+                            </div>
+                           </div>
+                               
+                            </div><br>
+                        </mat-card>
+                       </form>
 
-                    <div style="float: right;margin-top: 50px;color: gray;">
-                        <span style="font-size: 15px;font-weight:200px;">MRP (incl gst) </span><br>
-                        <span style="font-weight:200px;font-size: 18px; margin-right: 15px;">
-                            <mat-icon style="font-weight:200px;">&#8377;</mat-icon>{{Totalamount}}
-                        </span><br><br>
-
-                        <span style="font-size: 15px;font-weight:200px;">Sale Rate (incl gst) </span><br>
-                        <span style="font-weight:200px;font-size: 18px; margin-right: 15px;">
-                            <mat-icon style="font-weight:200px;">&#8377;</mat-icon>{{Totalamount}}
-                        </span>
-                    </div>
+                        <mat-card style="padding:10px; width: 780px;height: 260px;margin-left: 60px;margin-top: 8px;">
 
 
+                            <div matColumnDef="loading" diameter="10" style="height: 220px; width: 750px;"
+                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                            class="backgroundBlur">
+                            <div class="spinner-border text-danger"></div>
 
-                </mat-card>
+                             </div>
+                            <mat-table class="table1" matSort [dataSource]="dsPharmacyDashboard"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
-                <mat-card style="padding:10px; width: 600px;height: 320px;margin-left: 30px;margin-top: 30px;">
-                    <div style="display: flex;padding-top: 10px;">
-                        <span
-                            style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 300px;">Customers
+                                <ng-container matColumnDef="StoreName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        style="color: white;">
+                                        Store Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                        {{contact.StoreName}}
+                                    </mat-cell>
+                                </ng-container>
 
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                        <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;">
-                            <mat-icon>carrow_upward</mat-icon>11.3%</span>
-                    </div>
+                                <ng-container matColumnDef="CollectionAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        style="color: white;">
+                                        CollectionAmount </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.CollectionAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
 
-                    <div style="display: flex;padding: 20px 0px 8px 20px;">
-                        <div style="margin-right: 300px;">
-                            <span style="font-size: 15px;font-weight:100px;color: gray;">Total Customers</span><br>
-                            <span style="font-weight: bold;font-size: 25px;margin-top: 50px;"> {{TotalCustomers}}
-                            </span>
-                        </div>
-                        <div>
-                            <span style="font-size: 15px;font-weight:100px;color: gray;">Avg Order Value</span><br>
-                            <span style="font-size: 25px;font-weight:bold;margin-top: 50px;">
-                                <mat-icon
-                                    style="font-size: 25px;font-weight: bold;">&#8377;</mat-icon>{{AverageOrderValue}}
-                            </span>
-                        </div>
-                    </div>
+                                <ng-container matColumnDef="RefundAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        style="color: white;">
+                                        RefundAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.RefundAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
 
-                    <div style="display: flex;">
-                        <div style="display: block ;  width: 400px; height: 300px; ">
-                            <canvas baseChart [data]="pieChartData" [chartType]="pieChartType" [labels]="pieChartLabels"
-                                [options]="pieChartOptions"></canvas>
-                        </div>
-                        <div fxLayout="column" style="margin-left: 30px;">
-                            <span style="font-size: 15px;font-weight:100px;color: gray;">New Customers</span>
-                            <span style="font-weight: 300px;font-size: 25px;margin-top: 10px;"> {{NewCustomers}}
+                                <ng-container matColumnDef="NetAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        style="color: white;">
+                                        NetAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.NetAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsPharmacyDashboard!=null && dsPharmacyDashboard.data.length==0)}">
+                                </mat-footer-row>
+
+                            </mat-table>
+                        </mat-card>
+                    </div> -->
+
+
+
+
+                    <div fxLayout="row" style=" padding: 10px;">
+
+                        <mat-card style="padding:10px; width: 500px;height: 320px;margin-left: 40px;margin-top: 8px;">
+                            <div style="display: flex;padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 210px;">Net
+                                    Sales
+                                    <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                                <span
+                                    style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;float: right;">
+                                    <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                            </div>
+                            <!-- <hr style="color: rgb(208, 216, 223);"> -->
+
+                            <div style="display: flex;">
+                                <span style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
+                                    <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount }}
+                                </span>
+                                <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
+                                    <mat-icon
+                                        style="font-size: 15px;margin-left: 5px;color: gray;">&#8377;</mat-icon>{{GrossAmount}}
+                                </span>
+                            </div>
+
+                            <div style="display: block;height:150px ;">
+                                <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                                    [chartType]="'line'">
+                                </canvas>
+                            </div>
+
+                        </mat-card>
+
+                        <mat-card style="padding:10px; width: 400px;height: 320px;margin-left: 30px;margin-top: 8px;">
+                            <div style="padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;padding-top: 20px">Stock
+                                    Value<mat-icon style="color: gray;">circle_information</mat-icon>
+                                </span><br><br>
+                                <!-- <hr style="color: rgb(208, 216, 223);"> -->
+                            </div>
+                            <span style="font-size: 15px;font-weight:200px;margin-left: 40px;color: gray;">
+                                Purcjase Rate (excl gst) </span><br>
+                            <span style="font-weight: bold;font-size: 18px; margin-left: 40px;">
+                                <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
                             </span><br>
 
+                            <div style="float: right;margin-top: 50px;color: gray;">
+                                <span style="font-size: 15px;font-weight:200px;">MRP (incl gst) </span><br>
+                                <span style="font-weight:200px;font-size: 18px; margin-right: 15px;">
+                                    <mat-icon style="font-weight:200px;">&#8377;</mat-icon>{{Totalamount}}
+                                </span><br><br>
 
-                            <span style="font-size: 15px;font-weight:100px;color: gray;">Repeat Customers</span>
-                            <span style="font-weight: 300px;font-size: 25px;margin-top: 10px;"> {{RepeatCustomers}}
-                            </span>
-                        </div>
+                                <span style="font-size: 15px;font-weight:200px;">Sale Rate (incl gst) </span><br>
+                                <span style="font-weight:200px;font-size: 18px; margin-right: 15px;">
+                                    <mat-icon style="font-weight:200px;">&#8377;</mat-icon>{{Totalamount}}
+                                </span>
+                            </div>
+
+
+
+                        </mat-card>
+
+                        <mat-card style="padding:10px; width: 600px;height: 320px;margin-left: 30px;margin-top: 8px;">
+                            <div style="display: flex;padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 300px;">Customers
+
+                                    <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                                <span
+                                    style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;">
+                                    <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                            </div>
+
+                            <div style="display: flex;padding: 20px 0px 8px 20px;">
+                                <div style="margin-right: 300px;">
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;">Total
+                                        Customers</span><br>
+                                    <span style="font-weight: bold;font-size: 25px;margin-top: 50px;">
+                                        {{TotalCustomers}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;">Avg Order
+                                        Value</span><br>
+                                    <span style="font-size: 25px;font-weight:bold;margin-top: 50px;">
+                                        <mat-icon
+                                            style="font-size: 25px;font-weight: bold;">&#8377;</mat-icon>{{AverageOrderValue}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;">
+                                <div style="display: block ;  width: 400px; height: 300px; ">
+                                    <canvas baseChart [data]="pieChartData" [chartType]="pieChartType"
+                                        [labels]="pieChartLabels" [options]="pieChartOptions"></canvas>
+                                </div>
+                                <div fxLayout="column" style="margin-left: 30px;">
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;">New Customers</span>
+                                    <span style="font-weight: 300px;font-size: 25px;margin-top: 10px;"> {{NewCustomers}}
+                                    </span><br>
+
+
+                                    <span style="font-size: 15px;font-weight:100px;color: gray;">Repeat Customers</span>
+                                    <span style="font-weight: 300px;font-size: 25px;margin-top: 10px;">
+                                        {{RepeatCustomers}}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </mat-card>
+
+                    </div>
+                    <div fxLayout="row" style="padding: 15px;">
+                        <mat-card style="padding:10px; width: 500px;height: 320px;margin-left: 40px;margin-top: 8px;">
+                            <div style="display: flex; padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 140px;">Net
+                                    Purchase
+                                    <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                                <span
+                                    style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;float: right;">
+                                    <mat-icon>carrow_downward</mat-icon>11.3%</span>
+                            </div>
+                            <!-- <hr style="color: rgb(208, 216, 223);"> -->
+
+                            <div style="display: flex;">
+                                <span style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
+                                    <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
+                                </span>
+                                <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
+                                    <mat-icon
+                                        style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{GrossAmount}}
+                                </span>
+                            </div>
+
+                            <div style="display: block;height:150px ;">
+                                <canvas baseChart [datasets]="chartData1" [labels]="chartLabels1"
+                                    [options]="chartOptions1" [chartType]="'line'">
+                                </canvas>
+                            </div>
+
+                        </mat-card>
+
+                        <mat-card
+                            style="padding:10px; width: 1025px;height: 320px;margin-left: 30px;margin-top: 8px;margin-left: 30px;">
+                            <div style="display: flex;padding-top: 10px;">
+                                <span
+                                    style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 180px;">Cash-In-Hand
+                                    <mat-icon style="color: gray;">circle_information</mat-icon></span>
+
+                                <span
+                                    style="font-size:22px; font-weight:bold;color: rgb(245, 78, 134);margin-right: 250px;">Add
+                                    Opening Balance</span>
+                                <span
+                                    style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;">
+                                    <mat-icon>carrow_downward</mat-icon>11.3%</span>
+                            </div>
+
+                            <div style="display: flex;margin-top: 20px; padding-left: 20px;">
+                                <div style="margin-right: 150px;">
+                                    <span
+                                        style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
+                                        <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+                                    <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
+                                        <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{GrossAmount}}
+                                    </span>
+                                </div>
+                                {{progressValue}}
+                                <div fxLayout="column" style="margin-left: 10px;">
+                                    <mat-progress-bar mode="determinate" value="75"></mat-progress-bar>
+                                    <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
+                                        CASH <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cash}}</span>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div style="display: flex;margin-top: 20px;padding-left: 20px;">
+                                <div fxLayout="column" style=" margin-right: 280px">
+                                    <span
+                                        style="font-weight: 200px;font-size: 18px; margin-right: 15px;margin-bottom: 10px;color: gray;">
+                                        Total Payment In</span>
+                                    <span style="font-size: 15px;font-weight:200px;">
+                                        <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+
+                                </div>
+                                {{progressValue1}}
+                                <div fxLayout="column" style="margin-left: 10px;">
+                                    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+                                    <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
+                                        ONLINE <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}</span>
+                                </div>
+                            </div><br>
+
+                            <div style="display: flex;margin-top: 20px;padding-left: 20px;">
+                                <div fxLayout="column" style="margin-right: 10px;">
+                                    <span style="font-weight: 100px;font-size: 18px; margin-right: 15px;color: gray;">
+                                        Total Payment Out</span>
+                                    <span style="margin-top:10px;;font-size: 15px;font-weight:100px;">
+                                        <mat-icon
+                                            style="font-size: 15px;margin-left: 5px; ">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+                                </div>
+
+                                <div class="vertical-line"></div>
+
+                                <div fxLayout="column" style="margin-left: 10px; margin-right: 70px">
+                                    <span style="font-weight: 100px;font-size: 18px; margin-right: 15px;color: gray;">
+                                        Expenses (excl gst)</span>
+                                    <span style="margin-top:10px;;font-size: 15px;font-weight:bold;">
+                                        <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+                                </div>
+                                {{progressValue2}}
+                                <div fxLayout="column" style="margin-left: 10px;">
+                                    <mat-progress-bar mode="determinate" value="12"></mat-progress-bar>
+                                    <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
+                                        CHEQUE <mat-icon
+                                            style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </mat-card>
+
                     </div>
 
-                </mat-card>
 
+                </div>
             </div>
-            <div fxLayout="row" style="padding: 15px;">
-                <mat-card style="padding:10px; width: 500px;height: 320px;margin-left: 40px;margin-top: 10px;">
-                    <div style="display: flex; padding-top: 10px;">
-                        <span style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 140px;">Net
-                            Purchase
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                        <span
-                            style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;float: right;">
-                            <mat-icon>carrow_downward</mat-icon>11.3%</span>
-                    </div>
-                    <!-- <hr style="color: rgb(208, 216, 223);"> -->
-
-                    <div style="display: flex;">
-                        <span style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
-                            <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
-                        </span>
-                        <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
-                            <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{GrossAmount}}
-                        </span>
-                    </div>
-
-                    <div style="display: block;height:150px ;">
-                        <canvas baseChart [datasets]="chartData1" [labels]="chartLabels1" [options]="chartOptions1"
-                            [chartType]="'line'">
-                        </canvas>
-                    </div>
-
-                </mat-card>
-
-                <mat-card
-                    style="padding:10px; width: 1025px;height: 320px;margin-left: 30px;margin-top: 10px;margin-left: 30px;">
-                    <div style="display: flex;padding-top: 10px;">
-                        <span
-                            style="font-size: 30px; font-weight:400px;;padding-left:8px;margin-right: 180px;">Cash-In-Hand
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-
-                        <span style="font-size:22px; font-weight:bold;color: rgb(245, 78, 134);margin-right: 250px;">Add
-                            Opening Balance</span>
-                        <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);padding-right:8px;">
-                            <mat-icon>carrow_downward</mat-icon>11.3%</span>
-                    </div>
-
-                    <div style="display: flex;margin-top: 20px; padding-left: 20px;">
-                        <div style="margin-right: 150px;">
-                        <span style="margin-top: 10px;font-weight: bold;font-size: 25px; margin-right: 15px;">
-                            <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
-                        </span>
-                        <span style="margin-top: 10px;;font-size: 15px;font-weight:200px;color: gray;">from
-                            <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{GrossAmount}}
-                        </span>
-                    </div>
-                    {{progressValue}}
-                    <div fxLayout="column" style="margin-left: 10px;"> 
-                    <mat-progress-bar mode="determinate" value="75" ></mat-progress-bar>
-                    <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
-                        CASH <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cash}}</span>
-                    </div>
-                    </div>
-                    <br>
-
-                    <div style="display: flex;margin-top: 20px;padding-left: 20px;">
-                        <div fxLayout="column" style=" margin-right: 280px">
-                            <span style="font-weight: 200px;font-size: 18px; margin-right: 15px;margin-bottom: 10px;color: gray;">
-                                Total Payment In</span>
-                            <span style="font-size: 15px;font-weight:200px;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-
-                        </div>
-                        {{progressValue1}}
-                        <div fxLayout="column" style="margin-left: 10px;"> 
-                        <mat-progress-bar mode="determinate" value="40" ></mat-progress-bar>
-                        <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
-                            ONLINE <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}</span>
-                        </div>
-                    </div><br>
-
-                    <div style="display: flex;margin-top: 20px;padding-left: 20px;">
-                        <div fxLayout="column" style="margin-right: 10px;">
-                            <span style="font-weight: 100px;font-size: 18px; margin-right: 15px;color: gray;">
-                                Total Payment Out</span>
-                            <span style="margin-top:10px;;font-size: 15px;font-weight:100px;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px; ">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-                        </div>
-
-                        <div class="vertical-line"></div>
-                        
-                        <div fxLayout="column" style="margin-left: 10px; margin-right: 70px">
-                            <span style="font-weight: 100px;font-size: 18px; margin-right: 15px;color: gray;">
-                                Expenses (excl gst)</span>
-                            <span style="margin-top:10px;;font-size: 15px;font-weight:bold;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-                        </div>
-                        {{progressValue2}}
-                        <div fxLayout="column" style="margin-left: 10px;">
-                        <mat-progress-bar mode="determinate" value="12" ></mat-progress-bar>
-                        <span style="font-weight: 100px;font-size: 18px; margin-left: 300px;color: gray;">
-                            CHEQUE <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
-                        </div>
-                    </div>
-                    
-
-
-
-
-                </mat-card>
-
-            </div>
-
-
         </div>
+
 
 
 

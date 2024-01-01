@@ -262,7 +262,7 @@
                                     </mat-error>
                                 </mat-form-field> -->
 
-                                <mat-form-field appearance="outline"  fxFlex="16%">
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                       formControlName="bankName2" [matAutocomplete]="autoBank2" required>

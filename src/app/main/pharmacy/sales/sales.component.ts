@@ -132,7 +132,7 @@ export class SalesComponent implements OnInit {
   printTemplate: any;
   reportPrintObjList: Printsal[] = [];
   SalesIDObjList: Printsal[] = [];
-
+  Filepath:any;
   reportItemPrintObj: Printsal;
   reportPrintObjItemList: Printsal[] = [];
 
@@ -140,6 +140,7 @@ export class SalesComponent implements OnInit {
   QtyBalchk: any = 0;
   DraftQty: any = 0;
   RQty: any = 0;
+  GSalesNo:any=0;
   @ViewChild('drawer') public drawer: MatDrawer;
 
   dsIndentList = new MatTableDataSource<IndentList>();
@@ -234,7 +235,8 @@ BalancechkFlag:any=0;
 SalesDraftId:any=0;
 v_PaidbyPatient:any=0;
 v_PaidbacktoPatient:any=0;
-
+loadingRow: number | null = null
+IsLoading:boolean=false;
 showTable: boolean = false
 
   displayedColumns = [
@@ -1130,6 +1132,72 @@ showTable: boolean = false
     return groupDiv;
   }
 
+// to handel functio keys
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.keyCode === 116) {
+        this.Formreset();
+    }
+
+    if (event.keyCode === 115) {
+      this. onSave();
+  }
+  
+if (event.keyCode === 114) {
+  
+  this. onSave();
+  debugger
+  if(this.GSalesNo !=0){
+  this. getWhatsappshare();
+  }
+}
+
+}
+
+
+loadingarry:any=[];
+getWhatsappshare(){
+  debugger
+  // el.button.disbled=true;
+  // el.button.img.hidde=false;
+  // this.IsLoading=true;
+  // setTimeout(() => {
+  //   this.IsLoading=false;
+  // }, 4000);
+
+  var m_data = {
+          "insertWhatsappsmsInfo": {
+            "mobileNumber": 0,
+            "smsString": 'PatientDetail'|| '',
+            "isSent": 0,
+            "smsType": 'bulk',
+            "smsFlag":0,
+            "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "tranNo": this.GSalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "templateId":0,
+            "smSurl": "info@gmail.com",
+            "filePath":this.Filepath || '',
+            "smsOutGoingID":0           
+
+          }
+  }
+        console.log(m_data);
+        this._salesService.InsertWhatsappSms(m_data).subscribe(response => {
+          if (response) {
+            Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                this._matDialog.closeAll();
+
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+          }
+
+        });
+        this.IsLoading=false;
+        // el.button.disbled=false;
+}
+
 
   onClear() {
 
@@ -1427,6 +1495,8 @@ showTable: boolean = false
     this.ItemSubform.get('ConcessionId').clearValidators();
     this.ItemSubform.get('ConcessionId').updateValueAndValidity();
     this.ItemSubform.get('ConcessionId').disable();
+
+    this.saleSelectedDatasource.data=[];
   }
 
 
@@ -1956,6 +2026,8 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        debugger
+        this.GSalesNo=response;
         this.getPrint3(response);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
@@ -2122,6 +2194,7 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
               this.toastr.success('Record Saved Successfully.', 'Save !', {
                 toastClass: 'tostr-tost custom-toast-success',
               });
+              this.GSalesNo=response;
               this.getPrint3(response);
               this.Itemchargeslist = [];
               this._matDialog.closeAll();
@@ -2514,6 +2587,7 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       if (response) {
         Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
+            this.GSalesNo=response;
             this.getPrint3(response);
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
