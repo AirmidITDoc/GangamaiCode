@@ -362,8 +362,7 @@
                                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                                         <mat-option *ngFor="let option of filteredOptions"
                                                             [value]="option">
-                                                            {{option.ItemId}} | {{option.ItemName}}
-                                                            |{{option.BalanceQty}}
+                                                          {{option.ItemName}}|{{option.BalanceQty}} |{{option.UnitMRP}}
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                     <mat-error
@@ -390,7 +389,7 @@
                                                     <mat-label>Qty</mat-label>
                                                     <input matInput #Quantity formControlName="Qty" required #qty
                                                         autocomplete="off" [(ngModel)]="Qty"
-                                                        (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)">
+                                                        (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)" type="text" onlyNumber (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
@@ -417,7 +416,7 @@
                                                     <input matInput placeholder="Placeholder" formControlName="DiscPer"
                                                         autocomplete="off" #disper [(ngModel)]="DiscPer"
                                                         (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)"
-                                                        (blur)="onEnterdiscper($event)">
+                                                        (blur)="onEnterdiscper($event)" onlyNumber (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
@@ -498,7 +497,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" readonly>
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)" readonly>
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -554,7 +553,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" type="number" readonly>
+                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)" readonly>
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
