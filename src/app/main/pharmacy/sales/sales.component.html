@@ -89,7 +89,7 @@
 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'"
-                                                            style="margin-right:10px;">
+                                                            style="margin-right:10px;" fxFlex="12%">
                                                             <mat-label>Mobile Number</mat-label>
                                                             <input name="MobileNo" formControlName="MobileNo"
                                                                 placeholder="Mobile Number" matInput required
@@ -395,7 +395,7 @@
                                                         (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)" type="text" onlyNumber (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="5%">
+                                                <mat-form-field appearance="outline" fxFlex="6%">
                                                     <mat-label>MRP </mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="MRP"
                                                         [(ngModel)]="MRP" required readonly type="number">
@@ -414,7 +414,7 @@
                                                 </mat-form-field>
                  -->
 
-                                                <mat-form-field appearance="outline" fxFlex="7%">
+                                                <mat-form-field appearance="outline" fxFlex="6%">
                                                     <mat-label>Disc %</mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="DiscPer"
                                                         autocomplete="off" #disper [(ngModel)]="DiscPer"
