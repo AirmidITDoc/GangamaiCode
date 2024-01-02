@@ -21,11 +21,10 @@
     transform: scaleX(-1);
   }
   .table1{
-    height:240px ;
-    min-height: 240px;
-    max-height: 240px;
-    width: 500px;
-    border: 1px solid lightgray;
+    height:340px ;
+    min-height: 340px;
+    max-height: 340px;
+    
 
     .mat-column-StoreName {
       width: 180px;
@@ -64,6 +63,9 @@
       justify-content: left;
   }
   }
+   
+ 
+ 
   
  
   @media (min-width: 426px) {
