@@ -500,7 +500,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)" readonly>
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -556,7 +556,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)" readonly>
+                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>

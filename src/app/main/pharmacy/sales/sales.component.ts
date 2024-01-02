@@ -1145,7 +1145,7 @@ showTable: boolean = false
 
 // to handel functio keys
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 116) {
+    if (event.keyCode === 117) {
         this.Formreset();
     }
 
@@ -1844,8 +1844,10 @@ loadingarry:any=[];
   onCashOnlinePaySave() {
     debugger
     let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    console.log(this.dateTimeObj.date)
-    // if(CurrDate == this.dateTimeObj.date){
+    console.log(CurrDate)
+    let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
+    console.log(dateobj)
+    if(CurrDate == dateobj){
     
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -2069,7 +2071,7 @@ loadingarry:any=[];
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
-    // }
+    }
   }
   onSavePayOption() {
     let PatientHeaderObj = {};
@@ -2397,7 +2399,42 @@ loadingarry:any=[];
   }
 
 
-  ValidationOfBalanceQty(contact) {
+  // ValidationOfBalanceQty(contact) {
+  //   if (contact.Qty !== 0 || contact.Qty == '') {
+  //     console.log(contact.Qty);
+  //     this.BalChkList = [];
+  //     this.StoreId = this._loggedService.currentUserValue.user.storeId
+  //     let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
+  //     // console.log(SelectQuery);
+  //     this._salesService.getchargesList(SelectQuery).subscribe(data => {
+  //       this.BalChkList = data;
+  //       // console.log(this.BalChkList);
+  //       if (this.BalChkList.length > 0) {
+  //         if (this.BalChkList[0].BalanceQty >= contact.Qty) {
+  //           // this.QtyBalchk = 1;
+  //           // console.log('222222')
+  //           this.tblCalucation(contact,contact.Qty)
+  //         }
+  //         else {
+  //           // this.QtyBalchk = 1;
+  //           Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
+  //           contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
+  //           // console.log('222222  : ' + contact.Qty)
+  //           this.tblCalucation(contact,contact.Qty)
+  //         }
+  //       }
+  //     },
+  //       (error) => {
+  //         Swal.fire("No Item Found!!")
+  //       });
+  //   }
+  //   else {
+  //     Swal.fire("Please enter Qty!!")
+  //   }
+  // }
+
+
+  getCellCalculation(contact, Qty) {
     if (contact.Qty !== 0 || contact.Qty == '') {
       console.log(contact.Qty);
       this.BalChkList = [];
@@ -2406,18 +2443,18 @@ loadingarry:any=[];
       console.log(SelectQuery);
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
         this.BalChkList = data;
-        console.log(this.BalChkList);
+        // console.log(this.BalChkList);
         if (this.BalChkList.length > 0) {
           if (this.BalChkList[0].BalanceQty >= contact.Qty) {
             this.QtyBalchk = 1;
-            console.log('222222')
+            // console.log('222222')
             this.tblCalucation(contact,contact.Qty)
           }
           else {
             this.QtyBalchk = 1;
             Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
             contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-            console.log('222222  : ' + contact.Qty)
+            // console.log('222222  : ' + contact.Qty)
             this.tblCalucation(contact,contact.Qty)
           }
         }
@@ -2429,49 +2466,6 @@ loadingarry:any=[];
     else {
       Swal.fire("Please enter Qty!!")
     }
-  }
-
-
-  getCellCalculation(contact, Qty) {
-    this.ValidationOfBalanceQty(contact);
-    // if (this.QtyBalchk == 1) {
-    //   // this.tblCalucation(contact,contact.Qty)
-    //   // if (parseInt(Qty) > 0) {
-    //   //   this.RQty = parseInt(contact.Qty);
-    //   //   if (this.RQty && contact.UnitMRP) {
-    //   //     this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
-    //   //     this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-    //   //     this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
-    //   //     this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
-          
-    //   //     this.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    //   //     this.CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    //   //     this.SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    //   //     this.IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    //   //     this.NetAmt = (parseFloat(this.TotalMRP) - parseFloat(this.DiscAmt)).toFixed(2);
-          
-    //   //     if (contact.DiscPer > 0) {
-    //   //       this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
-    //   //       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
-    //   //     }
-
-    //   //       contact.GSTAmount = this.GSTAmount || 0,
-    //   //       contact.TotalMRP = this.TotalMRP || 0,
-    //   //       contact.DiscAmt = this.DiscAmt || 0,
-    //   //       contact.NetAmt = this.NetAmt,
-    //   //       contact.RoundNetAmt = Math.round(this.NetAmt),
-    //   //       contact.StockId = this.StockId,
-    //   //       contact.VatAmount = this.GSTAmount,
-    //   //       contact.LandedRateandedTotal = this.LandedRateandedTotal,
-    //   //       contact.CGSTAmt = this.CGSTAmt,
-    //   //       contact.SGSTAmt = this.SGSTAmt,
-    //   //       contact.IGSTAmt = this.IGSTAmt,
-    //   //       contact.PurchaseRate = this.PurchaseRate,
-    //   //       contact.PurTotAmt = this.PurTotAmt,
-    //   //       contact.MarginAmt = this.v_marginamt
-    //   //   }
-    //   // }
-    // }
     this.ItemFormreset();
   }
 
