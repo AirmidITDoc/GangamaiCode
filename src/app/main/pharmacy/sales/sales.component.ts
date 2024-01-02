@@ -66,6 +66,7 @@ export class SalesComponent implements OnInit {
   BalanceQty: any;
   Itemchargeslist: any = [];
   Itemchargeslist1: any = [];
+  BalChkList: any = [];
   ConcessionReasonList: any = [];
 
   BatchNo: any;
@@ -280,6 +281,16 @@ showTable: boolean = false
     'RegID',
     'buttons'
   ];
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -969,12 +980,12 @@ showTable: boolean = false
       Remark: [''],
       FinalAmount: '',
       BalAmount: '',
-      FinalDiscPer: '',
-      FinalDiscAmt: '',
-      FinalTotalAmt: '',
-      FinalNetAmount: '',
-      FinalGSTAmt: '',
-      BalanceAmt: '',
+      FinalDiscPer: 0,
+      FinalDiscAmt: 0,
+      FinalTotalAmt: 0,
+      FinalNetAmount: 0,
+      FinalGSTAmt: 0,
+      BalanceAmt: 0,
       CashPay: ['CashPay'],
       referanceNo: '',
       RegID: '',
@@ -997,7 +1008,7 @@ showTable: boolean = false
 
 
   getDateTime(dateTimeObj) {
-    debugger
+    
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -1134,7 +1145,7 @@ showTable: boolean = false
 
 // to handel functio keys
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 116) {
+    if (event.keyCode === 117) {
         this.Formreset();
     }
 
@@ -1155,57 +1166,44 @@ if (event.keyCode === 114) {
 
 
 loadingarry:any=[];
-getWhatsappshare(){
-  debugger
-  // el.button.disbled=true;
-  // el.button.img.hidde=false;
-  // this.IsLoading=true;
-  // setTimeout(() => {
-  //   this.IsLoading=false;
-  // }, 4000);
-
-  var m_data = {
-          "insertWhatsappsmsInfo": {
-            "mobileNumber": 0,
-            "smsString": 'PatientDetail'|| '',
-            "isSent": 0,
-            "smsType": 'bulk',
-            "smsFlag":0,
-            "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "tranNo": this.GSalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "templateId":0,
-            "smSurl": "info@gmail.com",
-            "filePath":this.Filepath || '',
-            "smsOutGoingID":0           
-
+  getWhatsappshare() {
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 0,
+        "smsString": 'PatientDetail' || '',
+        "isSent": 0,
+        "smsType": 'bulk',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+        "tranNo": this.GSalesNo, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+      }
+    }
+    console.log(m_data);
+    this._salesService.InsertWhatsappSms(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
           }
-  }
-        console.log(m_data);
-        this._salesService.InsertWhatsappSms(m_data).subscribe(response => {
-          if (response) {
-            Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._matDialog.closeAll();
-
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-          }
-
         });
-        this.IsLoading=false;
-        // el.button.disbled=false;
-}
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    // el.button.disbled=false;
+  }
 
 
   onClear() {
 
   }
   calculateTotalAmt() {
-
-    debugger
-    
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1252,55 +1250,29 @@ getWhatsappshare(){
 
 
   }
-  onAdd() {
-    this.sIsLoading = 'save';
-    let Qty = this._salesService.IndentSearchGroup.get('Qty').value
-    if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
-      this.saleSelectedDatasource.data = [];
-      this.Itemchargeslist.push(
-        {
-          ItemId: this.ItemId,
-          ItemName: this.ItemName,
-          BatchNo: this.BatchNo,
-          BatchExpDate: this.BatchExpDate || '01/01/1900',
-          Qty: this.Qty,
-          UnitMRP: this.MRP,
-          GSTPer: this.GSTPer || 0,
-          GSTAmount: this.GSTAmount || 0,
-          TotalMRP: this.TotalMRP,
-          DiscPer: this._salesService.IndentSearchGroup.get('DiscPer').value || 0,
-          DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
-          NetAmt: this.NetAmt,
-          RoundNetAmt:Math.round(this.NetAmt),
-          StockId: this.StockId,
-          VatPer: this.VatPer,
-          VatAmount: this.GSTAmount,
-          LandedRate: this.LandedRate,
-          LandedRateandedTotal: this.LandedRateandedTotal,
-          CgstPer: this.CgstPer,
-          CGSTAmt: this.CGSTAmt,
-          SgstPer: this.SgstPer,
-          SGSTAmt: this.SGSTAmt,
-          IgstPer: this.IgstPer,
-          IGSTAmt: this.IGSTAmt,
-          PurchaseRate: this.PurchaseRate,
-          PurTotAmt: this.PurTotAmt,
-          MarginAmt: this.v_marginamt,
-          BalanceQty:this.BalQty,
-          SalesDraftId:1
-        });
-      this.sIsLoading = '';
-      this.saleSelectedDatasource.data = this.Itemchargeslist;
-      this.ItemFormreset();
-    }
-    this.itemid.nativeElement.focus();
-    this.add = false;
-  }
-
+ 
   OnAddUpdate(event) {
-
     this.sIsLoading = 'save';
-
+    if (this.Itemchargeslist.length > 0) {
+      this.Itemchargeslist.forEach((element) => {
+        // console.log(element.StockId)  
+        // console.log(this.StockId)
+        // Swal.fire(element.StockId +'Added Item ' + this.StockId);
+        if (element.StockId == this.StockId) {
+          // Swal.fire('Selected Item already added in the list');
+          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          this.ItemFormreset();
+        } else {
+          this.onAdd();
+        }
+      });
+    }
+    else {
+      // Swal.fire('Else Condition');
+      this.onAdd();
+    }
     // if (this.Itemchargeslist.length > 0) {
     //   this.Itemchargeslist.forEach((element) => {
     //     if (element.StockId.toString().toLowerCase().search(this.StockId) !== -1) {
@@ -1353,9 +1325,59 @@ getWhatsappshare(){
 
     // }
 
-    if (this.stockidflag == true) {
-      this.onAdd();
-    } else {
+    // if (this.stockidflag == true) {
+    //   this.onAdd();
+    // } else {
+    //   this.Itemchargeslist.push(
+    //     {
+    //       ItemId: this.ItemId,
+    //       ItemName: this.ItemName,
+    //       BatchNo: this.BatchNo,
+    //       BatchExpDate: this.BatchExpDate || '01/01/1900',
+    //       Qty: this.Qty,
+    //       UnitMRP: this.MRP,
+    //       GSTPer: this.GSTPer || 0,
+    //       GSTAmount: this.GSTAmount || 0,
+    //       TotalMRP: this.TotalMRP,
+    //       DiscAmt: this.DiscAmt | 0,
+    //       NetAmt: this.NetAmt,
+    //       StockId: this.StockId,
+    //       VatPer: this.VatPer,
+    //       VatAmount: this.GSTAmount,
+    //       LandedRate: this.LandedRate,
+    //       LandedRateandedTotal: this.LandedRateandedTotal,
+    //       CgstPer: this.CgstPer,
+    //       CGSTAmt: this.CGSTAmt,
+    //       SgstPer: this.SgstPer,
+    //       SGSTAmt: this.SGSTAmt,
+    //       IgstPer: this.IgstPer,
+    //       IGSTAmt: this.IGSTAmt,
+    //       PurchaseRate: this.PurchaseRate,
+    //       PurTotAmt: this.PurTotAmt
+    //     });
+    //   this.saleSelectedDatasource.data = this.Itemchargeslist;
+    //   // console.log(this.saleSelectedDatasource.data);
+    //   this.ItemFormreset();
+
+    // }
+    // // console.log(this.saleSelectedDatasource.data);
+    // this.itemid.nativeElement.focus();
+    // this.add = false;
+
+    // if(this.DiscId==1){
+    //   this.ConShow=true;
+    //   this.ItemSubform.get('ConcessionId').reset();
+    //   this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
+    //   this.ItemSubform.get('ConcessionId').enable();
+    //   this.ItemSubform.updateValueAndValidity();
+    // }
+  }
+
+  onAdd() {
+    this.sIsLoading = 'save';
+    let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+    if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
+      this.saleSelectedDatasource.data = [];
       this.Itemchargeslist.push(
         {
           ItemId: this.ItemId,
@@ -1367,8 +1389,10 @@ getWhatsappshare(){
           GSTPer: this.GSTPer || 0,
           GSTAmount: this.GSTAmount || 0,
           TotalMRP: this.TotalMRP,
-          DiscAmt: this.DiscAmt | 0,
+          DiscPer: this._salesService.IndentSearchGroup.get('DiscPer').value || 0,
+          DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
           NetAmt: this.NetAmt,
+          RoundNetAmt:Math.round(this.NetAmt),
           StockId: this.StockId,
           VatPer: this.VatPer,
           VatAmount: this.GSTAmount,
@@ -1381,25 +1405,19 @@ getWhatsappshare(){
           IgstPer: this.IgstPer,
           IGSTAmt: this.IGSTAmt,
           PurchaseRate: this.PurchaseRate,
-          PurTotAmt: this.PurTotAmt
+          PurTotAmt: this.PurTotAmt,
+          MarginAmt: this.v_marginamt,
+          BalanceQty:this.BalQty,
+          SalesDraftId:1
         });
+      this.sIsLoading = '';
       this.saleSelectedDatasource.data = this.Itemchargeslist;
-      // console.log(this.saleSelectedDatasource.data);
       this.ItemFormreset();
-
     }
-    // console.log(this.saleSelectedDatasource.data);
     this.itemid.nativeElement.focus();
     this.add = false;
-
-    // if(this.DiscId==1){
-    //   this.ConShow=true;
-    //   this.ItemSubform.get('ConcessionId').reset();
-    //   this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-    //   this.ItemSubform.get('ConcessionId').enable();
-    //   this.ItemSubform.updateValueAndValidity();
-    // }
   }
+
 
   getBatch() {
     this.Quantity.nativeElement.focus();
@@ -1421,7 +1439,7 @@ getWhatsappshare(){
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
-      this.Qty = 0;
+      this.Qty = '';
       this.Bal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
 
@@ -1460,7 +1478,7 @@ getWhatsappshare(){
     this.BatchNo = "";
     this.BatchExpDate = "01/01/1900"
     this.MRP = 0;
-    this.Qty = 1;
+    this.Qty = '';
     this.Bal = 0;
     this.GSTPer = 0;
     this.DiscPer = 0;
@@ -1518,7 +1536,6 @@ getWhatsappshare(){
   }
 
   calculateDiscAmt() {
- debugger
     let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
     // let PurTotalAmount = this.PurTotAmt;
     let LandedTotalAmount = this.LandedRateandedTotal;
@@ -1825,10 +1842,12 @@ getWhatsappshare(){
 
 
   onCashOnlinePaySave() {
-debugger
-
-let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    if(CurrDate == this.dateTimeObj.date){
+    debugger
+    let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+    console.log(CurrDate)
+    let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
+    console.log(dateobj)
+    if(CurrDate == dateobj){
     
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -2026,7 +2045,6 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        debugger
         this.GSalesNo=response;
         this.getPrint3(response);
         this.Itemchargeslist = [];
@@ -2056,9 +2074,7 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
     }
   }
   onSavePayOption() {
-    debugger
     let PatientHeaderObj = {};
-   
     PatientHeaderObj['Date'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
@@ -2074,7 +2090,6 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      debugger
       if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
     {
       if (result?.IsSubmitFlag == true) {
@@ -2367,9 +2382,7 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
   }
 
   getDiscountCellCal(contact,DiscPer){
-    debugger
     if (DiscPer > 0) {
-      
       let DiscAmt = ((contact.TotalMRP * (DiscPer)) / 100).toFixed(2);
       let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
@@ -2386,96 +2399,112 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
   }
 
 
-  onCheckBalQty1(contact) {
-    this.StoreId =  this._loggedService.currentUserValue.user.storeId
-    // contact.data.forEach((element) => {
-      
-      let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
-          
+  // ValidationOfBalanceQty(contact) {
+  //   if (contact.Qty !== 0 || contact.Qty == '') {
+  //     console.log(contact.Qty);
+  //     this.BalChkList = [];
+  //     this.StoreId = this._loggedService.currentUserValue.user.storeId
+  //     let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
+  //     // console.log(SelectQuery);
+  //     this._salesService.getchargesList(SelectQuery).subscribe(data => {
+  //       this.BalChkList = data;
+  //       // console.log(this.BalChkList);
+  //       if (this.BalChkList.length > 0) {
+  //         if (this.BalChkList[0].BalanceQty >= contact.Qty) {
+  //           // this.QtyBalchk = 1;
+  //           // console.log('222222')
+  //           this.tblCalucation(contact,contact.Qty)
+  //         }
+  //         else {
+  //           // this.QtyBalchk = 1;
+  //           Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
+  //           contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
+  //           // console.log('222222  : ' + contact.Qty)
+  //           this.tblCalucation(contact,contact.Qty)
+  //         }
+  //       }
+  //     },
+  //       (error) => {
+  //         Swal.fire("No Item Found!!")
+  //       });
+  //   }
+  //   else {
+  //     Swal.fire("Please enter Qty!!")
+  //   }
+  // }
+
+
+  getCellCalculation(contact, Qty) {
+    if (contact.Qty !== 0 || contact.Qty == '') {
+      console.log(contact.Qty);
+      this.BalChkList = [];
+      this.StoreId = this._loggedService.currentUserValue.user.storeId
+      let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
       console.log(SelectQuery);
-    
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
-
-        this.chargeslist1 = data;
-        if (this.chargeslist1.length > 0) {
-          debugger
-          if (this.chargeslist1[0].BalanceQty >= contact.Qty) {
-            
+        this.BalChkList = data;
+        // console.log(this.BalChkList);
+        if (this.BalChkList.length > 0) {
+          if (this.BalChkList[0].BalanceQty >= contact.Qty) {
             this.QtyBalchk = 1;
-
+            // console.log('222222')
+            this.tblCalucation(contact,contact.Qty)
           }
           else {
-            Swal.fire("Balance Qty is :", this.chargeslist1[0].BalanceQty)
-            this.QtyBalchk = 0;
-            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", contact.ItemId + "Balance Qty:",)
+            this.QtyBalchk = 1;
+            Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
+            contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
+            // console.log('222222  : ' + contact.Qty)
+            this.tblCalucation(contact,contact.Qty)
           }
         }
-
       },
         (error) => {
           Swal.fire("No Item Found!!")
         });
-
-    // });
-  }
-
-
- getCellCalculation(contact,Qty) {
-      //  this.onCheckBalQty1(contact);
-
-      debugger
-      if (this.QtyBalchk==1) {
-
-        if (parseInt(Qty) > 0) {
-      
-        this.RQty = parseInt(contact.Qty);
-                  
-        if (this.RQty && contact.UnitMRP) {
-          this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
-          this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-          this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
-          this.PurTotAmt = (parseInt( this.RQty) * (contact.PurchaseRate)).toFixed(2);
-          this.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
-          this.CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-          this.SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-          this.IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-          this.NetAmt= (parseFloat(this.NetAmt) + parseFloat(this.GSTAmount)).toFixed(2);
-          
-          if (contact.DiscPer > 0) {
-           
-            this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
-            this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
-            
-          } 
-         
-          
-          contact.GSTAmount=this.GSTAmount || 0,
-          contact.TotalMRP= this.TotalMRP || 0,
-          contact.DiscAmt= this.DiscAmt || 0,
-          contact.NetAmt= this.NetAmt,
-          contact.RoundNetAmt=Math.round(this.NetAmt),
-          contact.StockId= this.StockId,
-          contact.VatAmount= this.GSTAmount,
-          contact.LandedRateandedTotal= this.LandedRateandedTotal,
-          contact.CGSTAmt= this.CGSTAmt,
-          contact.SGSTAmt= this.SGSTAmt,
-          contact.IGSTAmt= this.IGSTAmt,
-          contact.PurchaseRate= this.PurchaseRate,
-          contact.PurTotAmt= this.PurTotAmt,
-          contact.MarginAmt= this.v_marginamt
-
-
-      }
     }
-  }
+    else {
+      Swal.fire("Please enter Qty!!")
+    }
     this.ItemFormreset();
+  }
 
-      // else{
-      //   Swal.fire("Qty is Greater than BalanceQty !");
-      // }
-      
-    }
-  
+  tblCalucation(contact,Qty){
+      this.RQty = parseInt(contact.Qty);
+      if (this.RQty && contact.UnitMRP) {
+        this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+        this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+        this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+        this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
+        
+        this.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        this.NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
+        
+        if (contact.DiscPer > 0) {
+          this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+          this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+        }
+
+          contact.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
+          contact.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);  //this.TotalMRP || 0,
+          contact.DiscAmt = this.DiscAmt || 0,
+          contact.NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2); //this.NetAmt,
+          contact.RoundNetAmt = Math.round(this.NetAmt),
+          contact.StockId = this.StockId,
+          contact.VatAmount = this.GSTAmount,
+          contact.LandedRateandedTotal = this.LandedRateandedTotal,
+          contact.CGSTAmt = this.CGSTAmt,
+          contact.SGSTAmt = this.SGSTAmt,
+          contact.IGSTAmt = this.IGSTAmt,
+          contact.PurchaseRate = this.PurchaseRate,
+          contact.PurTotAmt = this.PurTotAmt,
+          contact.MarginAmt = this.v_marginamt
+      }
+  }
+
   onCreditpaySave() {
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2643,80 +2672,68 @@ let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
      
     
  }
- onAddDraftList(contact){
-  debugger
-let strSql ="Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
-  console.log(strSql);
- this._salesService.getchargesList(strSql).subscribe(data => {
- this.tempDatasource.data = data as any;
-console.log(this.tempDatasource.data );
-debugger
- if(this.tempDatasource.data.length >= 1){
-  
-  this.tempDatasource.data.forEach((element) => {
-   
-  this.DraftQty= element.QtyPerDay
-  
-      this.onAddDraftListTosale(element,this.DraftQty);
-    
-  });
-}
+  onAddDraftList(contact) {
+    let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
+    console.log(strSql);
+    this._salesService.getchargesList(strSql).subscribe(data => {
+      this.tempDatasource.data = data as any;
+      console.log(this.tempDatasource.data);
+      if (this.tempDatasource.data.length >= 1) {
+        this.tempDatasource.data.forEach((element) => {
+          this.DraftQty = element.QtyPerDay
+          this.onAddDraftListTosale(element, this.DraftQty);
+        });
+      }
     });
-
-  
-}
-
-
-
-onAddDraftListTosale(contact,DraftQty){
-  this.QtyBalchk =0;
-    this.PatientName= this.dataSource1.data[0]["PatientName"];
-    this.MobileNo= this.dataSource1.data[0]["MobileNo"];
-    this.DoctorName= this.dataSource1.data[0]["AdmDoctorName"];
-  
-  this.saleSelectedDatasource.data =[];
-  if(this.tempDatasource.data.length > 0){
-    
-   var m_data = {
-      "ItemId": contact.ItemId,
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
-     }
-    
-    this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-      console.log(draftdata)
-   
-      this.Itemchargeslist1=  draftdata;
-      
-      this.Itemchargeslist1.forEach((element) => {
-        console.log(element)
-        debugger
-        if(this.QtyBalchk !=1){
-     if(DraftQty <= element.BalanceQty){
-      this.QtyBalchk = 1;
-      this.getFinalCalculation(element,DraftQty);
-    }
-    else {
-      Swal.fire("Balance Qty is :",element.BalanceQty)
-      this.QtyBalchk = 0;
-      Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:",element.BalanceQty)
-    }
   }
+
+
+
+  onAddDraftListTosale(contact, DraftQty) {
+    this.QtyBalchk = 0;
+    this.PatientName = this.dataSource1.data[0]["PatientName"];
+    this.MobileNo = this.dataSource1.data[0]["MobileNo"];
+    this.DoctorName = this.dataSource1.data[0]["AdmDoctorName"];
+
+    this.saleSelectedDatasource.data = [];
+    if (this.tempDatasource.data.length > 0) {
+
+      var m_data = {
+        "ItemId": contact.ItemId,
+        "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      }
+
+      this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+        console.log(draftdata)
+
+        this.Itemchargeslist1 = draftdata;
+
+        this.Itemchargeslist1.forEach((element) => {
+          console.log(element)
+          if (this.QtyBalchk != 1) {
+            if (DraftQty <= element.BalanceQty) {
+              this.QtyBalchk = 1;
+              this.getFinalCalculation(element, DraftQty);
+            }
+            else {
+              Swal.fire("Balance Qty is :", element.BalanceQty)
+              this.QtyBalchk = 0;
+              Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:", element.BalanceQty)
+            }
+          }
+        });
+
+
       });
 
-   
-    });
-  
+    }
+
   }
-  
-   }
 
   getFinalCalculation(contact,DraftQty) {
  
       // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
-    debugger
       this.RQty = parseInt(DraftQty);
-
-              
       if (this.RQty && contact.UnitMRP) {
         this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
         this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
