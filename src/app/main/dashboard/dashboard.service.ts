@@ -43,6 +43,9 @@ export class DashboardService {
   public getPharDashboardSalesSummary(params) {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
+  public getPharDashboardPeichart(params) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
+  }
 
 
 }
