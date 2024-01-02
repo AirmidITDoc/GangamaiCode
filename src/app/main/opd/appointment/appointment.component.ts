@@ -35,6 +35,7 @@ import { ExcelDownloadService } from "app/main/shared/services/excel-download.se
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatSelect } from "@angular/material/select";
 import { AnyCnameRecord } from "dns";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 
 
 export class DocData {
@@ -1087,15 +1088,30 @@ export class AppointmentComponent implements OnInit {
           if (currentValue.Id > 0) {
             this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
               if (resFile.file)
-                currentValue.url ='data:image/jpg;base64,'+ resFile.file;
+                currentValue.url = 'data:image/jpg;base64,' + resFile.file;
             });
           }
         });
       }
-      setTimeout(() => {
-      }, 1000);
     });
-
+    this.docs = [];
+    query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=1";
+    this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
+      if (resData.length > 0) {
+        for (let i = 0; i < resData.length; i++) {
+          this.docs.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
+        }
+        this.pdfDataSource.data = this.docs;
+        this.pdfDataSource.data.forEach((currentValue, index) => {
+          if (currentValue.Id > 0) {
+            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
+              if (resFile.file)
+                currentValue.url = 'data:application/pdf;base64,' + resFile.file;
+            });
+          }
+        });
+      }
+    });
   }
 
 
@@ -1178,7 +1194,7 @@ export class AppointmentComponent implements OnInit {
       let registrationSave = {};
       let visitSave = {};
       let tokenNumberWithDoctorWiseInsert = {};
-debugger
+      debugger
       registrationSave['regID'] = 0;
       registrationSave['regDate'] = this.dateTimeObj.date //this.registerObj.RegDate;
       registrationSave['regTime'] = this.dateTimeObj.time;
@@ -1205,8 +1221,8 @@ debugger
       registrationSave['isCharity'] = false;
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      registrationSave['Aadharcardno'] =this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
-      registrationSave['Pancardno'] =this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['Aadharcardno'] = this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationSave['Pancardno'] = this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
 
       submissionObj['registrationSave'] = registrationSave;
@@ -1235,9 +1251,9 @@ debugger
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.dateTimeObj.date;// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-       visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+      visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
 
-      submissionObj['visitSave'] = visitSave;
+        submissionObj['visitSave'] = visitSave;
 
       tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
       submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
@@ -1267,7 +1283,7 @@ debugger
       let visitUpdate = {};
 
       let tokenNumberWithDoctorWiseUpdate = {};
-debugger
+      debugger
       registrationUpdate['regId'] = this.registerObj.RegId;
       registrationUpdate['PrefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationUpdate['firstName'] = this.registerObj.FirstName;
@@ -1731,6 +1747,17 @@ debugger
     }
     reader.readAsDataURL(f);
   }
+  readDoc(f: File, name: string) {
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.docs.push({ url: event.target.result, name: name, Id: 0 });
+      this.pdfDataSource.data = this.docs;
+      this.docsForm.patchValue({
+        pdfDataSource: this.docs
+      });
+    }
+    reader.readAsDataURL(f);
+  }
   dataURItoBlob(dataURI) {
     var byteString;
     if (dataURI.split(',')[0].indexOf('base64') >= 0)
@@ -1773,39 +1800,34 @@ debugger
 
 
   onDocFileChange(events: any) {
-    debugger
-
+    this.docs = [];
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        debugger
         this.docArr.push(events.target.files[i].name);
-        reader['fileName'] = events.target.files[i].name;
-        reader.onload = (event: any) => {
-          console.log(this.docArr);
-          // this.images.push({ url: event.target.result, name: reader['fileName'] });
-          this.docs.push({ DocumentPath: event.target.result, DocumentName: this.docArr });
-          this.pdfDataSource.data = [];
-          this.pdfDataSource.data = this.docs;
-          this.docsForm.patchValue({
-            pdfDataSource: this.docs
-          });
-        }
-        console.log(this.docs);
-        reader.readAsDataURL(events.target.files[i]);
+        this.readDoc(events.target.files[i], events.target.files[i].name);
       }
       this.attachment.nativeElement.value = '';
     }
   }
-
+  viewPdf(data: any) {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "95vw",
+        height: '1000px',
+        width: '100%',
+        data: {
+          base64: data.url.split('application/pdf;base64,')[1] as string,
+          title: "Appointment Document"
+        }
+      });
+  }
   onSubmitDocFiles() {
-    debugger
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.pdfDataSource.data.length; i++) {
-      let file = new File([
-        new Blob([this.pdfDataSource.data[i].DocumentPath])
-      ], this.pdfDataSource.data[i].DocumentName, { type: 'image/jpeg' });
+      let file = new File([this.dataURItoBlob(this.pdfDataSource.data[i].url)], this.pdfDataSource.data[i].name, {
+        type: "'application/pdf'"
+      });
       data.push({
         Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.pdfDataSource.data[i].name
       });
@@ -1814,18 +1836,10 @@ debugger
     let finalData = { Files: data };
     this.CreateFormData(finalData, formData);
     this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-      console.log(data)
       if (data) {
         Swal.fire("Document uploaded Successfully  ! ");
       }
-
     });
-    this.pdfDataSource.data = [];
-    //clear doc afetr upload
-    let l = this.docs.length;
-    for (let i = 0; i < l; i++) {
-      this.docs.splice(i, 1);
-    }
   }
   getHospitalList1() {
     this._opappointmentService.getHospitalCombo().subscribe(data => {

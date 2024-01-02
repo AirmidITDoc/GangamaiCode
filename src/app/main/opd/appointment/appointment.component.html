@@ -964,24 +964,6 @@
                       Images</button>
                   </div>
                 </div>
-                <!-- <div class="gallery1">
-                      <div class="gallery__item1" fxLayout="row wrap" fxLayoutGap="15px grid">
-                        <ng-container *ngFor="let elem of images; let i=index">
-                          <div class="view-image-box position-relative">
-                            <img [src]="elem.url" (click)="onViewImage(elem.url, 'img')">
-                            <button class="clear-icon" mat-icon-button (click)="deleteImage(elem, i)" color="warn">
-                              <mat-icon>highlight_off</mat-icon>
-                            </button>
-                          </div>
-                        </ng-container>
-
-                      </div>
-                      <div class="gallery__item1" fxLayout="row wrap" fxLayoutGap="15px grid">
-                        <ng-container *ngFor="let elem of imgArr">
-                          <div fxFlex="10%" class="file-name">{{elem}}</div>
-                        </ng-container>
-                      </div>
-                    </div> -->
               </div>
               <div style="margin-top: 10px;">
                 <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table" [@animateStagger]="{value:'50'}">
@@ -1070,16 +1052,17 @@
                       Document Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact">
-                      {{contact.DocumentName}}
+                      {{contact.name}}
                     </mat-cell>
                   </ng-container>
-
                   <ng-container matColumnDef="DocumentPath">
                     <mat-header-cell *matHeaderCellDef>
-                      Document Path
+                      Document 
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact">
-                      {{contact.DocumentPath}}
+                      <button mat-icon-button (click)="viewPdf(contact)" color="warn">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
                     </mat-cell>
                   </ng-container>
 
@@ -1109,8 +1092,7 @@
                   <mat-header-row class="table-header-offwhite upload-table-header"
                     *matHeaderRowDef="displayedColumns1;">
                   </mat-header-row>
-                  <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                    (click)="onViewImage(contact, 'pdf')"></mat-row>
+                  <mat-row *matRowDef="let contact; columns: displayedColumns1;"></mat-row>
                   <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':pdfDataSource!=null}">
                   </mat-footer-row> -->
                   <mat-footer-row *matFooterRowDef="['noData']"
