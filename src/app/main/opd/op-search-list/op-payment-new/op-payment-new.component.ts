@@ -193,7 +193,6 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -1017,7 +1016,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['OPD_IPD_Type'] = 3;
       this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
       this.Paymentobj['PaymentDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+      this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss')
 
       const ipPaymentInsert = new PharPaymentInsert(this.Paymentobj);
       submitDataPay = {
@@ -1044,7 +1043,7 @@ export class OpPaymentNewComponent implements OnInit {
         this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
 
         this.Paymentobj['PaymentDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-        this.Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+        this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss');
 
         const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
         submitDataPay = {

@@ -38,7 +38,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
 import { OPSearhlistService } from './op-searhlist.service';
 import { OPBillingComponent } from './op-billing/op-billing.component';
-import { SharedModule } from 'app/main/shared/shared.module';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { OPCasepaperComponent } from './op-casepaper/op-casepaper.component';
 import { ViewCasepaperComponent } from './op-casepaper/view-casepaper/view-casepaper.component';
@@ -50,6 +49,7 @@ import { MatTreeModule } from '@angular/material/tree';
 // import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { OpPaymentNewComponent } from './op-payment-new/op-payment-new.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 

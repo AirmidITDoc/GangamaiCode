@@ -136,7 +136,7 @@ export class SalesComponent implements OnInit {
   Filepath:any;
   reportItemPrintObj: Printsal;
   reportPrintObjItemList: Printsal[] = [];
-
+  DiscOld: any = 0.0;
   GSTAmount: any;
   QtyBalchk: any = 0;
   DraftQty: any = 0;
@@ -159,7 +159,7 @@ export class SalesComponent implements OnInit {
   OP_IP_Type: any;
   // payment code
   DiscId: any;
-
+DraftID:any;
   DiffNetRoundAmt:any=0;
   roundoffAmt: any;
 
@@ -1156,7 +1156,7 @@ showTable: boolean = false
 if (event.keyCode === 114) {
   
   this. onSave();
-  debugger
+  
   if(this.GSalesNo !=0){
   this. getWhatsappshare();
   }
@@ -1517,6 +1517,10 @@ loadingarry:any=[];
     this.saleSelectedDatasource.data=[];
   }
 
+  getGSTAmtSum(element) {
+    this.FinalDiscAmt = (element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0)).toFixed(2);
+    return this.FinalGSTAmt;
+  }
 
   getNetAmtSum(element) {
 
@@ -1811,7 +1815,34 @@ loadingarry:any=[];
     });
   }
 
+  DeleteDraft(){
+
+    
+    let Query = "delete T_SalesDraftHeader where DSalesId=" + this.DraftID+ "";
+    this._salesService.getDelDrat(Query).subscribe(data => {
+      if(data){
+      this.getDraftorderList();
+      }
+    });
+  }
+
+
   onSave() {
+
+    // Swal.fire({
+    //   title: 'Do You want to Delete Draft Entry !',
+    //   // showDenyButton: true,
+    //   showCancelButton: true,
+    //   confirmButtonText: 'OK',
+
+    // }).then((result) => {
+
+    //   if (result.isConfirmed) {
+    //     this.DeleteDraft();
+     
+
+
+    
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     // this.onCheckBalQty();
 
@@ -1834,7 +1865,9 @@ loadingarry:any=[];
       this.onSavePayOption()
     }
 
+//  }
 
+    // });
     // }
 
 
@@ -1842,11 +1875,11 @@ loadingarry:any=[];
 
 
   onCashOnlinePaySave() {
-    debugger
+    
     let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    console.log(CurrDate)
+    // console.log(CurrDate)
     let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
-    console.log(dateobj)
+    // console.log(dateobj)
     if(CurrDate == dateobj){
     
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -2074,6 +2107,8 @@ loadingarry:any=[];
     }
   }
   onSavePayOption() {
+
+ 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -2090,8 +2125,12 @@ loadingarry:any=[];
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
-    {
+      let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+      let dateobj=this.datePipe.transform( result.submitDataPay.ipPaymentInsert.PaymentDate, 'MM/dd/yyyy')
+      
+      if(CurrDate == dateobj){
+    //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
+    // {
       if (result?.IsSubmitFlag == true) {
         let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
         let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
@@ -2243,15 +2282,13 @@ loadingarry:any=[];
           });
         }
       }
-      else {
-        Swal.fire("Plz Check Payment ")
-      }
+    
     }
-      else{
-        Swal.fire("Plzc hk Payment Date !");
-      }
+      // else{
+      //   Swal.fire("Plzc hk Payment Date !");
+      // }
     })
-
+  
   }
  
   
@@ -2382,8 +2419,13 @@ loadingarry:any=[];
   }
 
   getDiscountCellCal(contact,DiscPer){
+
+// let DiscOld=DiscPer;
+    let DiscAmt;
+    let TotalMRP=contact.TotalMRP;
+
     if (DiscPer > 0) {
-      let DiscAmt = ((contact.TotalMRP * (DiscPer)) / 100).toFixed(2);
+      DiscAmt = ((contact.TotalMRP * (DiscPer)) / 100).toFixed(2);
       let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
       contact.DiscAmt= DiscAmt || 0,
@@ -2395,6 +2437,26 @@ loadingarry:any=[];
       contact.DiscAmt= DiscAmt || 0,
       contact.NetAmt= NetAmt 
     }
+
+
+    let ItemDiscAmount = DiscAmt// this._salesService.IndentSearchGroup.get('DiscAmt').value;
+    // let PurTotalAmount = this.PurTotAmt;
+    let LandedTotalAmount =(parseInt(contact.Qty) * (contact.LandedRate)).toFixed(2);
+    // this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+    let m_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+    let v_marginamt = ((parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
+
+    if (parseFloat(DiscAmt) > 0 && (parseFloat(DiscAmt)) < parseFloat(TotalMRP)) {
+      
+      if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
+        Swal.fire('Discount amount greater than Purchase amount, Please check !');
+        contact.DiscPer=this.DiscOld;
+      } else {
+        // this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
+      }
+    }
+   
+    
 
   }
 
@@ -2435,6 +2497,7 @@ loadingarry:any=[];
 
 
   getCellCalculation(contact, Qty) {
+    
     if (contact.Qty !== 0 || contact.Qty == '') {
       console.log(contact.Qty);
       this.BalChkList = [];
@@ -2466,33 +2529,41 @@ loadingarry:any=[];
     else {
       Swal.fire("Please enter Qty!!")
     }
+
+    this.DiscOld=contact.DiscPer;
     this.ItemFormreset();
   }
 
   tblCalucation(contact,Qty){
+
+    
+    let TotalMRP;
+
+
       this.RQty = parseInt(contact.Qty);
       if (this.RQty && contact.UnitMRP) {
-        this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+        TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
         this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-        this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+        let v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
         this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
-        
+        let NetAmt 
+        let DiscAmt
         this.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-        this.NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
-        
+        NetAmt = (parseFloat(TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
+      
         if (contact.DiscPer > 0) {
-          this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
-          this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+          DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+          NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
         }
 
           contact.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
           contact.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);  //this.TotalMRP || 0,
           contact.DiscAmt = this.DiscAmt || 0,
-          contact.NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2); //this.NetAmt,
-          contact.RoundNetAmt = Math.round(this.NetAmt),
+          contact.NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
+          contact.RoundNetAmt = Math.round(NetAmt),
           contact.StockId = this.StockId,
           contact.VatAmount = this.GSTAmount,
           contact.LandedRateandedTotal = this.LandedRateandedTotal,
@@ -2501,8 +2572,9 @@ loadingarry:any=[];
           contact.IGSTAmt = this.IGSTAmt,
           contact.PurchaseRate = this.PurchaseRate,
           contact.PurTotAmt = this.PurTotAmt,
-          contact.MarginAmt = this.v_marginamt
+          contact.MarginAmt = v_marginamt
       }
+      this.ItemFormreset();
   }
 
   onCreditpaySave() {
@@ -2673,15 +2745,22 @@ loadingarry:any=[];
     
  }
   onAddDraftList(contact) {
+    
+    this.DraftID=contact.DSalesId;
+    this.saleSelectedDatasource.data = [];
+    this.Itemchargeslist1=[];
+    this.Itemchargeslist=[];
+
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
     console.log(strSql);
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
-      console.log(this.tempDatasource.data);
+      // console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = element.QtyPerDay
-          this.onAddDraftListTosale(element, this.DraftQty);
+          
+          this.onAddDraftListTosale(element,this.DraftQty);
         });
       }
     });
@@ -2689,14 +2768,16 @@ loadingarry:any=[];
 
 
 
-  onAddDraftListTosale(contact, DraftQty) {
+  onAddDraftListTosale(contact,DraftQty) {
+
+    this.Itemchargeslist1=[];
     this.QtyBalchk = 0;
     this.PatientName = this.dataSource1.data[0]["PatientName"];
     this.MobileNo = this.dataSource1.data[0]["MobileNo"];
     this.DoctorName = this.dataSource1.data[0]["AdmDoctorName"];
 
-    this.saleSelectedDatasource.data = [];
-    if (this.tempDatasource.data.length > 0) {
+  
+    // if (this.tempDatasource.data.length > 0) {
 
       var m_data = {
         "ItemId": contact.ItemId,
@@ -2705,15 +2786,20 @@ loadingarry:any=[];
 
       this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
         console.log(draftdata)
-
-        this.Itemchargeslist1 = draftdata;
-
+        this.Itemchargeslist1=draftdata as any;
+        let ItemID;
         this.Itemchargeslist1.forEach((element) => {
+        
           console.log(element)
+          if(ItemID !=element.ItemId){
+            this.QtyBalchk =0;
+          }
           if (this.QtyBalchk != 1) {
             if (DraftQty <= element.BalanceQty) {
+              
               this.QtyBalchk = 1;
-              this.getFinalCalculation(element, DraftQty);
+              this.getFinalCalculation(element,DraftQty);
+              ItemID=element.ItemId;
             }
             else {
               Swal.fire("Balance Qty is :", element.BalanceQty)
@@ -2726,7 +2812,7 @@ loadingarry:any=[];
 
       });
 
-    }
+    // }
 
   }
 
@@ -2744,7 +2830,7 @@ loadingarry:any=[];
         this.SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.NetAmt= (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
-        debugger
+        
         if (contact.DiscPer > 0) {
          
           this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
@@ -2755,7 +2841,7 @@ loadingarry:any=[];
         
         // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
           // this.saleSelectedDatasource.data = [];
-         
+         debugger
           this.Itemchargeslist.push(
             {
               ItemId: contact.ItemId,
@@ -2767,7 +2853,7 @@ loadingarry:any=[];
               GSTPer: contact.VatPercentage || 0,
               GSTAmount: this.GSTAmount || 0,
               TotalMRP: this.TotalMRP,
-              DiscPer:contact.DiscPer || 0,
+              DiscPer: contact.DiscPer || 0,
               DiscAmt:  this.DiscAmt || 0,
               NetAmt: this.NetAmt || 0,
               RoundNetAmt:Math.round(this.NetAmt),
@@ -2789,11 +2875,12 @@ loadingarry:any=[];
               SalesDraftId:0
             });
           this.sIsLoading = '';
+          
           this.saleSelectedDatasource.data = this.Itemchargeslist;
           this.ItemFormreset();
         }
 
-
+        // this.Itemchargeslist=[];
     }
   // }
   // }
@@ -2819,7 +2906,7 @@ loadingarry:any=[];
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     }
     SalesInsert['totalAmount'] = this.FinalTotalAmt
-    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value;
+    SalesInsert['vatAmount'] = this.FinalGSTAmt || 0;//this.ItemSubform.get('FinalGSTAmt').value;
     SalesInsert['discAmount'] = this.FinalDiscAmt;
     SalesInsert['netAmount'] = NetAmt;
     SalesInsert['paidAmount'] = NetAmt;
@@ -2964,7 +3051,7 @@ loadingarry:any=[];
   }
 
   public onF6Reset(event): void {
-    debugger;
+    ;
     if (event.which === 117) {
       this.onClose();
     }
@@ -3070,6 +3157,8 @@ loadingarry:any=[];
   }
 
   payOnline() {
+
+    
     const matDialog = this._matDialog.open(PaymentModeComponent, {
       data: { finalAmount: this.FinalNetAmount },
       // height: '380px',
@@ -3320,6 +3409,7 @@ export class Printsal {
   HospitalEmailId: any;
   SalesReturnNo:any;
   RoundOff:any;
+  
 
   Consructur(Printsal) {
     this.PatientName = Printsal.PatientName || '';
@@ -3406,16 +3496,3 @@ function Consructur() {
   throw new Error('Function not implemented.');
 }
 
-
-
-// Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=11531 Order by ItemId 
-
-// sp_helptext Retrieve_ItemName_BatchPOP_BalanceQty
-//     exec Retrieve_ItemName_BatchPOP_BalanceQty 23,0
-
-//     sp_helptext rtrv_SalesDraftBillList
-
-//   select * from T_SalesDraftHeader order by 1 desc
-//    select * from T_SalesDraftDet order by 1 desc
-  
-//   exec rtrv_SalesDraftBillList '12/01/2023','12/12/2023'
