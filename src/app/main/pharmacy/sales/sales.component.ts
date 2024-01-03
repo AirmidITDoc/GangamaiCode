@@ -1156,7 +1156,7 @@ showTable: boolean = false
 if (event.keyCode === 114) {
   
   this. onSave();
-  debugger
+  
   if(this.GSalesNo !=0){
   this. getWhatsappshare();
   }
@@ -1815,7 +1815,34 @@ loadingarry:any=[];
     });
   }
 
+  DeleteDraft(){
+
+    
+    let Query = "delete T_SalesDraftHeader where DSalesId=" + this.DraftID+ "";
+    this._salesService.getDelDrat(Query).subscribe(data => {
+      if(data){
+      this.getDraftorderList();
+      }
+    });
+  }
+
+
   onSave() {
+
+    // Swal.fire({
+    //   title: 'Do You want to Delete Draft Entry !',
+    //   // showDenyButton: true,
+    //   showCancelButton: true,
+    //   confirmButtonText: 'OK',
+
+    // }).then((result) => {
+
+    //   if (result.isConfirmed) {
+    //     this.DeleteDraft();
+     
+
+
+    
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     // this.onCheckBalQty();
 
@@ -1838,7 +1865,9 @@ loadingarry:any=[];
       this.onSavePayOption()
     }
 
+//  }
 
+    // });
     // }
 
 
@@ -1846,7 +1875,7 @@ loadingarry:any=[];
 
 
   onCashOnlinePaySave() {
-    debugger
+    
     let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
     // console.log(CurrDate)
     let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
@@ -2078,7 +2107,7 @@ loadingarry:any=[];
     }
   }
   onSavePayOption() {
-debugger
+
  
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
@@ -2418,7 +2447,7 @@ debugger
     let v_marginamt = ((parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
 
     if (parseFloat(DiscAmt) > 0 && (parseFloat(DiscAmt)) < parseFloat(TotalMRP)) {
-      debugger
+      
       if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
         contact.DiscPer=this.DiscOld;
@@ -2468,7 +2497,7 @@ debugger
 
 
   getCellCalculation(contact, Qty) {
-    debugger
+    
     if (contact.Qty !== 0 || contact.Qty == '') {
       console.log(contact.Qty);
       this.BalChkList = [];
@@ -2507,7 +2536,7 @@ debugger
 
   tblCalucation(contact,Qty){
 
-    debugger
+    
     let TotalMRP;
 
 
@@ -2716,7 +2745,7 @@ debugger
     
  }
   onAddDraftList(contact) {
-    debugger
+    
     this.DraftID=contact.DSalesId;
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1=[];
@@ -2730,7 +2759,7 @@ debugger
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = element.QtyPerDay
-          debugger
+          
           this.onAddDraftListTosale(element,this.DraftQty);
         });
       }
@@ -2740,7 +2769,7 @@ debugger
 
 
   onAddDraftListTosale(contact,DraftQty) {
-debugger
+
     this.Itemchargeslist1=[];
     this.QtyBalchk = 0;
     this.PatientName = this.dataSource1.data[0]["PatientName"];
@@ -2767,7 +2796,7 @@ debugger
           }
           if (this.QtyBalchk != 1) {
             if (DraftQty <= element.BalanceQty) {
-              debugger
+              
               this.QtyBalchk = 1;
               this.getFinalCalculation(element,DraftQty);
               ItemID=element.ItemId;
@@ -2801,7 +2830,7 @@ debugger
         this.SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
         this.NetAmt= (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
-        debugger
+        
         if (contact.DiscPer > 0) {
          
           this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
@@ -2812,7 +2841,7 @@ debugger
         
         // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
           // this.saleSelectedDatasource.data = [];
-         
+         debugger
           this.Itemchargeslist.push(
             {
               ItemId: contact.ItemId,
@@ -2824,7 +2853,7 @@ debugger
               GSTPer: contact.VatPercentage || 0,
               GSTAmount: this.GSTAmount || 0,
               TotalMRP: this.TotalMRP,
-              DiscPer:contact.DiscPer || 0,
+              DiscPer: contact.DiscPer || 0,
               DiscAmt:  this.DiscAmt || 0,
               NetAmt: this.NetAmt || 0,
               RoundNetAmt:Math.round(this.NetAmt),
@@ -2846,7 +2875,7 @@ debugger
               SalesDraftId:0
             });
           this.sIsLoading = '';
-          debugger
+          
           this.saleSelectedDatasource.data = this.Itemchargeslist;
           this.ItemFormreset();
         }
@@ -3022,7 +3051,7 @@ debugger
   }
 
   public onF6Reset(event): void {
-    debugger;
+    ;
     if (event.which === 117) {
       this.onClose();
     }
@@ -3129,7 +3158,7 @@ debugger
 
   payOnline() {
 
-    debugger
+    
     const matDialog = this._matDialog.open(PaymentModeComponent, {
       data: { finalAmount: this.FinalNetAmount },
       // height: '380px',
@@ -3467,16 +3496,3 @@ function Consructur() {
   throw new Error('Function not implemented.');
 }
 
-
-
-// Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=11531 Order by ItemId 
-
-// sp_helptext Retrieve_ItemName_BatchPOP_BalanceQty
-//     exec Retrieve_ItemName_BatchPOP_BalanceQty 23,0
-
-//     sp_helptext rtrv_SalesDraftBillList
-
-//   select * from T_SalesDraftHeader order by 1 desc
-//    select * from T_SalesDraftDet order by 1 desc
-  
-//   exec rtrv_SalesDraftBillList '12/01/2023','12/12/2023'
