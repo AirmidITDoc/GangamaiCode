@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { Label } from 'ng2-charts';
 import Chart from 'chart.js';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-pharmacy-dashboard',
@@ -43,6 +44,11 @@ export class PharmacyDashboardComponent implements OnInit {
   
   sIsLoading: string = '';
   isLoading = true;
+  PharmacyDashboard: PharDashSummary[] = [];
+   
+  pieChartData2:any;
+  labelData:any[]=[];
+  PiechartData5:any[]=[];
 
   dsPharmacyDashboard = new MatTableDataSource<PharDashSummary>();
   maindata: any;
@@ -105,10 +111,7 @@ export class PharmacyDashboardComponent implements OnInit {
 
     }
   };
-  
-  pieChartData2:any;
-  labelData:any[]=[];
-  PiechartData5:any[]=[];
+ 
  
   fetchChartData() {
     this.sIsLoading = 'loading-data';
@@ -121,11 +124,10 @@ export class PharmacyDashboardComponent implements OnInit {
       this.pieChartData2 = data;
       console.log(this.pieChartData2);
        if(this.pieChartData2 != null){
-        for(let i=0; i<this.pieChartData2.length;i++){
-         //console.log(this.pieChartData2[i]);
-         this.labelData.push(this.pieChartData2[i].StoreName);
-         this.PiechartData5.push(this.pieChartData2[i].CollectionAmount);
-        }
+        this.pieChartData2.forEach((element) => {
+          this.labelData.push(element.StoreName);
+          this.PiechartData5.push(element.CollectionAmount);
+        }); 
         this.RenderChart(this.labelData,this.PiechartData5);
        } this.sIsLoading = '';
        console.log(this.PiechartData5);
@@ -137,6 +139,8 @@ export class PharmacyDashboardComponent implements OnInit {
   }
 
   RenderChart(labelData:any,PiechartData5:any){
+     
+           
     const mychart = new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
@@ -152,8 +156,8 @@ export class PharmacyDashboardComponent implements OnInit {
             ],
             data: PiechartData5,
           },
-          
         ],
+       
       },
       options: {
         plugins: {
@@ -176,22 +180,7 @@ export class PharmacyDashboardComponent implements OnInit {
     
   }
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  PharmacyDashboard: PharDashSummary[] = [];
+  
   getPharDashboardSalesSummary() {
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -244,3 +233,4 @@ export class PharDashSummary {
     this.NetAmount = PharDashSummary.NetAmount || 0;
   }
 }
+

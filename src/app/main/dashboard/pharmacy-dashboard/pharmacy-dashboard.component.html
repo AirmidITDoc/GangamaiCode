@@ -1,8 +1,8 @@
 <div class="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
 
     <!-- CENTER -->
-    <div class="center" fusePerfectScrollbar>
-        <div class="header h-100 accent pb-0 p-12" fxLayout="row"  fxFlex="100%" fxLayoutAlign="space-between start">
+    <div class="center">
+        <div class="header h-100 accent pb-0 p-12" fxLayout="row" fxFlex="100%" fxLayoutAlign="space-between start">
 
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -14,10 +14,10 @@
                     Pharmacy Dashboard
                 </span>
             </div>
-            <mat-card class="h-80  p-2" fxLayout="row" fxFlex="260px" style=" color: black;">
+            <mat-card class="h-80  p-2" fxLayout="row" fxFlex="270px" style=" color: black;">
 
                 <form [formGroup]="_DashboardService.UseFrom">
-                    <mat-form-field appearance="outline" class="p-2.5" fxFlex="240px">
+                    <mat-form-field appearance="outline" class="p-2.5" fxFlex="250px">
                         <mat-label style="color: black;">Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate formControlName="start" style="color: black;" placeholder="Start date">
@@ -32,6 +32,7 @@
 
 
         </div>
+
         <!-- <div fxLayout="row"  >
         <mat-toolbar class="accent" style="height:100px; justify-content: space-between;width: 100%;">
             <div fxLayout="row" fxLayoutAlign="start center">
@@ -115,7 +116,7 @@
                                         {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR' }}</td>
                                 </tr>
                                 <tr style="font-size:12px;">
-                                    <td colspan="4" style="background-color: white;text-align:left;padding:10px;">
+                                    <td colspan="4" style="background-color: white;text-align:left;padding:8px;">
                                     </td>
                                 </tr>
                                 <tr style="font-size:12px;background-color:#2a6392;color: white;font-size: 15px;">
@@ -148,59 +149,25 @@
                 </mat-card>
             </div>
 
+
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card class="h-460">
-                    <div fxLayout="column" fxLayoutAlign="space-between">
-                        <div class="pt-10" fxLayout="row" fxLayoutAlign="space-between center">
-                            <span style="font-size: 30px; font-weight:400px;">Stores
-
+                <mat-card >
+                    <mat-card-content>
+                        <div fxLayout="column" fxLayoutAlign="space-between">
+                            <span style="font-size: 30px; font-weight:400px;margin-bottom: 25px;">Stores
                                 <mat-icon style="color: gray;">circle_information</mat-icon></span>
-
-                        </div>
-
-                        <div>
-                            <div matColumnDef="loading" diameter="30" fxFlex="348px" style="height: 349px; border-radius: 600px;
-                                margin-top: 35px; margin-left: 210px;"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                <div style="margin-left:130px;" class="spinner-border text-danger ml-130"></div>
-
-                            </div>
-                            <div fxFlex="100%" fxLayoutAlign="space-between center">
-                                <canvas id="doughnutChart"></canvas>
+                            <div>
+                                <div class="Spinner" matColumnDef="loading" diameter="30" fxFlex="347px" style="height: 346px; border-radius: 600px;
+                                    margin-top: 35px; margin-left: 210px;"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <div style="margin-left:130px;" class="spinner-border text-danger ml-130"></div>
+                                </div>
                             </div>
                         </div>
-                        <!-- <div style="display: block ;  width: 560px; height: 500px; ">
-                                    <canvas baseChart [data]="pieChartData1" [chartType]="pieChartType1"
-                                        [labels]="pieChartLabels1" [options]="pieChartOptions1"></canvas>
-                                </div> -->
-
-                        <!-- <div style="margin-left: 5px;" fxLayout="column">
-                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
-                                        Net Amount</span>
-                                    <span style="font-weight: bold;font-size: 22px;margin-top:6px">
-                                        {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR' }}
-                                    </span>
-                                    
-                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
-                                        Collection</span>
-                                    <span style="font-weight: bold;font-size: 22px;margin-top: 6px;">
-                                        {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}
-                                    </span>
-                                
-                               
-                                    <span style="font-size: 15px;font-weight:100px;color: gray;margin-top: 6px;">Total
-                                        Refund</span>
-                                    <span style="font-weight: bold;font-size: 22px;margin-top: 6px;">
-                                        {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}
-                                    </span>
-                                
-                                </div> -->
-
-                    </div>
+                        <canvas id="doughnutChart" style="width: 100%;"></canvas>
+                    </mat-card-content>
                 </mat-card>
             </div>
-
-
 
         </div>
 
@@ -308,6 +275,8 @@
 
                     </div>
 
+
+
                 </mat-card>
             </div>
         </div>
@@ -342,8 +311,8 @@
                 </mat-card>
             </div>
 
-            <div fxFlex="57%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card class="h-340 p-10">
+            <div class="MatcardContent" fxFlex="57%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-bottom: 10px;">
+                <mat-card class=" h-340 p-10">
 
                     <div fxLayout="row" fxLayoutAlign="space-between start">
                         <span style="font-size: 30px; font-weight:400px;">Cash-In-Hand
@@ -367,37 +336,37 @@
                             {{progressValue}}
                             <span><mat-progress-bar mode="determinate" value="75"
                                     fxFlex="200px"></mat-progress-bar></span>
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:10px;">
+                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:8px;">
                                 CASH <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Cash}}</span>
                         </div>
                     </div>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 10px;">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 0px;">
                         <div>
-                        <span style="font-weight: 200px;font-size: 18px;color: gray;">
-                            Total Payment In</span><br>
-                        <span style="font-size: 15px;font-weight:200px;">
-                            <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
-                        </span>
-                    </div>
+                            <span style="font-weight: 200px;font-size: 18px;color: gray;">
+                                Total Payment In</span><br>
+                            <span style="font-size: 15px;font-weight:200px;">
+                                <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
+                            </span>
+                        </div>
 
                         <div fxLayout="column" fxLayoutAlign="space-between end">
                             {{progressValue1}}
                             <span> <mat-progress-bar mode="determinate" value="40"
                                     fxFlex="200px"></mat-progress-bar></span>
 
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:10px;">
+                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:8px;">
                                 ONLINE <mat-icon
                                     style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}</span>
                         </div>
                     </div>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 10px;">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 5px;">
                         <div fxLayout="column" style="margin-right: 10px;">
                             <span style="font-weight: 100px;font-size: 18px;color: gray;">
-                                Total Payment Out</span>
+                                Total Payment <br>Out</span>
                             <span style="margin-top:6px;;font-size: 15px;font-weight:100px;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px; ">&#8377;</mat-icon>{{Totalamount}}
+                                <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
                             </span>
                         </div>
 
@@ -407,23 +376,24 @@
                             <span style="font-weight: 100px;font-size: 18px;color: gray;">
                                 Expenses (excl gst)</span>
                             <span style="margin-top:6px;;font-size: 15px;font-weight:bold;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
+                                <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
                             </span>
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="space-between end">
-                                {{progressValue2}}
-                              <span> <mat-progress-bar mode="determinate" value="12" fxFlex="200px"></mat-progress-bar></span> 
-                            
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top: 10px;">
+                            {{progressValue2}}
+                            <span> <mat-progress-bar mode="determinate" value="12"
+                                    fxFlex="200px"></mat-progress-bar></span>
+
+                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top: 8px;">
                                 CHEQUE <mat-icon
                                     style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
                         </div>
                     </div>
-            
 
 
-            <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 25px;">
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 25px;">
 
                         <span style="font-weight: bold;font-size: 25px;">
                             <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
@@ -446,7 +416,7 @@
 
 
 
-            <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
+                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
                         <div fxLayout="column" fxLayoutAlign="space-between start">
                             <span style="font-weight: 200px;font-size: 18px;color: gray;">
                                 Total Payment In</span>
@@ -468,7 +438,7 @@
                     </div> -->
 
 
-            <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
+                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
                         <div fxLayout="column" style="margin-right: 10px;">
                             <span style="font-weight: 100px;font-size: 18px;color: gray;">
                                 Total Payment Out</span>
@@ -498,14 +468,14 @@
                         </div>
                     </div> -->
 
-            </mat-card>
+                </mat-card>
 
+            </div>
         </div>
+
+
+
     </div>
-
-
-
-</div>
 
 
 
