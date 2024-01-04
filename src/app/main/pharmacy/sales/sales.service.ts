@@ -121,6 +121,10 @@ export class SalesService {
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+
+  public getDelDrat(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
  public getDraftBillItem(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
   }
