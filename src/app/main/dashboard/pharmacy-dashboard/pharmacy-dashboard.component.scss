@@ -14,7 +14,7 @@
     background: #cdcdd4;
   }
   .mat-progress-bar {
-    height: 25px;
+    height: 22px;
     width: 500px;
     background-color: rgb(245, 20, 136);
     color: red;
@@ -68,15 +68,15 @@
  
   
  
-  @media (min-width: 426px) {
-    .dashboard-project{
-      font-size: 14px;
+  @media (max-width: 480px) {
+    .MatcardContent{
+       font-size: 12px;
     }
   }
   
-  @media (min-width: 601px) {
-    .dashboard-project{
-      font-size: 16px;
+  @media (max-width: 480px) {
+    .Spinner{
+      margin-left: 10px;
     }
   }
   
