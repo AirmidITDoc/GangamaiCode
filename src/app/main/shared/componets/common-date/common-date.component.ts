@@ -76,7 +76,8 @@ export class CommonDateComponent implements OnInit {
     }
     this.dateForm.get('timeController').setValue(this.now);
     setTimeout(() => {
-      this.eventEmitForParent(this.dateTimeString[0], this.dateTimeString[1]);
+      if ((this?.dateTimeString??[]).length > 0)
+        this.eventEmitForParent(this.dateTimeString[0], this.dateTimeString.length > 1 ? this.dateTimeString[1] : "");
     }, 2);
   }
 
