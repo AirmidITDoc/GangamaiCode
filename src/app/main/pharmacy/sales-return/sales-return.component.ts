@@ -627,7 +627,7 @@ export class SalesReturnComponent implements OnInit {
   onCashOnlinePaySave() {
 
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] = this.dateTimeObj.date;
+    salesReturnHeader['Date'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
     salesReturnHeader['Time'] = this.dateTimeObj.time;
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
