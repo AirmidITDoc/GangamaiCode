@@ -33,14 +33,14 @@ export class CanteenSalesComponent implements OnInit {
 
   sIsLoading: string;
   isItemIdSelected:boolean=false;
-  chargeslist: any;
+  chargeslist: any = [];
 
   dsItemTable1= new MatTableDataSource<ItemTable1List>();
   dsItemDetTable2 = new MatTableDataSource<ItemDetTable2List>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
- 
+  
    
   constructor(
     public  _CanteenmanagementService:CanteenmanagementService,
@@ -68,18 +68,44 @@ export class CanteenSalesComponent implements OnInit {
         this.sIsLoading = '';
       });
   } 
+
+  // getItemDetailList(row) {
+  //  console.log(row);
+  //  this.sIsLoading = 'save';
+  //  this.dsItemDetTable2.data = [];
+  //  let duplicateItem = this.chargeslist.filter((con, index) => con.ItemID === row.ItemID);
+  //  if (duplicateItem && duplicateItem.length == 0) {
+  //   this.chargeslist.push(
+  //     {
+  //       ItemID: row.ItemID,
+  //       ItemName: row.ItemName,
+  //       Price: row.price || 0
+  //     });
+  //  }
+
+  //   this.chargeslist.push(
+  //     {
+  //       ItemID: row.ItemID,
+  //       ItemName: row.ItemName,
+  //       Price: row.price || 0
+  //     });
+  // this.sIsLoading = '';
+  //  console.log(this.chargeslist);
+  // this.dsItemDetTable2.data = this.chargeslist;
+  // }
+
   getItemDetailList(row) {
+    console.log(row);
     this.sIsLoading = 'save';
     this.dsItemDetTable2.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
-      let duplicateItem = this.chargeslist.filter((ele, index) => ele.Id === row.ItemID);
+      let duplicateItem = this.chargeslist.filter((con, index) => con.ItemID === row.ItemID);
       if (duplicateItem && duplicateItem.length == 0) {
         this.addChargList(row);
         return;
       }
       this.sIsLoading = '';
       this.dsItemDetTable2.data = this.chargeslist;
- 
     } else if (this.chargeslist && this.chargeslist.length == 0) {
       this.addChargList(row);
     }
@@ -90,13 +116,28 @@ export class CanteenSalesComponent implements OnInit {
       {
         ItemID: row.ItemID,
         ItemName: row.ItemName,
-        price: row.price || 0
+        Price: row.price || 0
       });
     this.sIsLoading = '';
      console.log(this.chargeslist);
     this.dsItemDetTable2.data = this.chargeslist;
-    
   }
+ RQty:any=0;
+  calculateTotalAmt(contact,Qty) {
+      this.RQty = parseInt(Qty);
+      const total = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);
+       contact.Amount = total;
+      console.log(contact.Price);
+      console.log(this.RQty);
+      console.log(total);
+    }
+  // getCGSTAmt(element) {
+  //   let CGSTAmt;
+  //   CGSTAmt = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0); this.CGSTAmount
+  //   this.CGSTFinalAmount = CGSTAmt;
+  //   return CGSTAmt;
+  // }
+  
 }
 export class ItemTable1List {
  
