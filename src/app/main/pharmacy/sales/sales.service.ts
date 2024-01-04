@@ -121,11 +121,18 @@ export class SalesService {
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+
+  public getDelDrat(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
  public getDraftBillItem(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
   }
   public InsertWhatsappSms(emp){
     return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
   }
+  // public getDelDrat(query) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  // }
 
 }
