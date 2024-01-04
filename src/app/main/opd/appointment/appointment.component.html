@@ -483,6 +483,19 @@
                           Alphabets</mat-error>
                       </mat-form-field>
 
+                      <div class="row mt-3 d-flex justify-content-center">
+                        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8">
+                          <div class="upload-file d-flex justify-content-center align-items-center">
+                            <img class="responsive" [src]="sanitizeImagePreview" *ngIf="sanitizeImagePreview" />
+                            <input #fileInput type="file" accept="image/*" (change)="onImageChange($event)" />
+                            <div class="d-flex flex-column justify-content-center align-items-center upload-file-zone" *ngIf="!sanitizeImagePreview">
+                              <span class="lla-no-pic-grey lla-no-pic"> </span>
+                              <span class="upload-text coms-m-t-5">Add Picture</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Gender</mat-label>
                         <mat-select formControlName="GenderId">
@@ -966,7 +979,8 @@
                 </div>
               </div>
               <div style="margin-top: 10px;">
-                <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table" [@animateStagger]="{value:'50'}">
+                <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table"
+                  [@animateStagger]="{value:'50'}">
 
                   <ng-container matColumnDef="DocumentName">
                     <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
@@ -1045,7 +1059,8 @@
                 </div>
               </div>
               <div style="margin-top: 10px;">
-                <mat-table #table matSort [dataSource]="pdfDataSource" class="table2 auto-height-table" [@animateStagger]="{value:'50'}">
+                <mat-table #table matSort [dataSource]="pdfDataSource" class="table2 auto-height-table"
+                  [@animateStagger]="{value:'50'}">
 
                   <ng-container matColumnDef="DocumentName">
                     <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
@@ -1057,7 +1072,7 @@
                   </ng-container>
                   <ng-container matColumnDef="DocumentPath">
                     <mat-header-cell *matHeaderCellDef>
-                      Document 
+                      Document
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact">
                       <button mat-icon-button (click)="viewPdf(contact)" color="warn">

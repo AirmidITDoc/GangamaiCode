@@ -36,6 +36,8 @@ import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatSelect } from "@angular/material/select";
 import { AnyCnameRecord } from "dns";
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
+import { ImageCroppedEvent } from "ngx-image-cropper";
 
 
 export class DocData {
@@ -258,7 +260,7 @@ export class AppointmentComponent implements OnInit {
   filterHospital: any;
 
   public height: string;
-
+  sanitizeImagePreview;
   constructor(
     public _AppointmentSreviceService: AppointmentSreviceService,
     public _opappointmentService: AppointmentSreviceService,
@@ -280,7 +282,13 @@ export class AppointmentComponent implements OnInit {
     this.getVisitList();
 
   }
-
+  onImageChange(event) {
+    if (!event.target.files.length) return;
+    const file = event.target.files[0];
+    this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
+      (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64)
+    );
+  }
   ngOnInit(): void {
 
     this.personalFormGroup = this.createPesonalForm();

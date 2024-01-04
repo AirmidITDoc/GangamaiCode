@@ -62,6 +62,7 @@
     "ngx-color-picker": "8.2.0",
     "ngx-cookie-service": "2.3.0",
     "ngx-extended-pdf-viewer": "10.5.0",
+    "ngx-image-cropper": "5.0.1",
     "ngx-mat-select-search": "3.3.1",
     "ngx-spinner": "11.0.2",
     "ngx-toastr": "11.1.0",
