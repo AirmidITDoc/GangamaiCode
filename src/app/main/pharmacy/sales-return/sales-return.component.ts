@@ -719,12 +719,7 @@ export class SalesReturnComponent implements OnInit {
       PaymentInsertobj['BillNo'] = 0,
      // PaymentInsertobj['ReceiptNo'] = '',
       PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-      PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
-      PaymentInsertobj['ChequePayAmount'] = 0,
-      PaymentInsertobj['ChequeNo'] = 0,
-      PaymentInsertobj['BankName'] = '',
-      PaymentInsertobj['ChequeDate'] = "01/01/1900";
+      PaymentInsertobj['PaymentTime'] =  this.dateTimeObj.time; //this.datePipe.transform(this.currentDate, 'hh:mm:ss'); 
       PaymentInsertobj['CardPayAmount'] = 0,
       PaymentInsertobj['CardNo'] = '',
       PaymentInsertobj['CardBankName'] = '',
