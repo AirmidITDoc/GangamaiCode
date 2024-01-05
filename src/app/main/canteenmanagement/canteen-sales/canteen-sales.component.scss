@@ -28,3 +28,54 @@
 .table2{
     height: 300px;
 }
+
+.table4{
+  height: 320px;
+  min-height: 320px;
+  max-height: 320px;
+  width: 100%;
+  .mat-column-CustomerName {
+      width: 250px;
+      max-width: 250px;
+      min-width: 250px;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 20px;
+      justify-content:left; 
+      margin-right: 15px;
+    }
+     .mat-column-PBillNo {
+      width: 130px;
+      max-width: 130px;
+      min-width: 130px;
+      text-align: left;
+    }
+    .mat-column-BDate {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }  
+    .mat-column-NetAmount {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    } 
+    .mat-column-PaidAmount {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    } 
+    .mat-column-BalanceAmount {
+      width: 170px;
+      max-width: 170px;
+      min-width: 170px;
+      text-align: left;
+    } 
+}

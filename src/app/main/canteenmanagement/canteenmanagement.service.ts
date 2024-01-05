@@ -7,12 +7,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CanteenmanagementService {
   userFormGroup:FormGroup;
+  BillListFrom:FormGroup;
 
   constructor(
    public  _frombuilder:FormBuilder,
    public  _httpClient:HttpClient
   )
-   {this.userFormGroup = this.createUseFrom() }
+   {this.userFormGroup = this.createUseFrom(),
+  this.BillListFrom =this.createBillListFrom()}
 
    createUseFrom() {
     return this._frombuilder.group({
@@ -30,7 +32,17 @@ export class CanteenmanagementService {
 
     })
    }
+   createBillListFrom(){
+    return this._frombuilder.group({
+      startdate: [new Date().toISOString()],
+      enddate: [new Date().toISOString()],
+
+    })
+   }
    public getItemTable1List(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenItemList_by_Name",Param);
+  }
+  public getBillList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_CanteenBillList",Param);
   }
 }

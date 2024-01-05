@@ -1888,7 +1888,7 @@ loadingarry:any=[];
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
     let SalesInsert = {};
-    SalesInsert['Date'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
+    SalesInsert['Date'] = this.dateTimeObj.date;
     SalesInsert['time'] = this.dateTimeObj.time;
 
     if (this.ItemSubform.get('PatientType').value == 'External') {
@@ -2001,7 +2001,7 @@ loadingarry:any=[];
     // } else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
       PaymentInsertobj['BillNo'] = 0,
       PaymentInsertobj['ReceiptNo'] = '',
-      PaymentInsertobj['PaymentDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
+      PaymentInsertobj['PaymentDate'] =   this.dateTimeObj.date;
       PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
       PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
       PaymentInsertobj['ChequePayAmount'] = 0,
@@ -2110,7 +2110,7 @@ loadingarry:any=[];
 
  
     let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
+    PatientHeaderObj['Date'] =  this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
@@ -2145,7 +2145,7 @@ loadingarry:any=[];
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
           let SalesInsert = {};
-          SalesInsert['Date'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.dateTimeObj.date;
+          SalesInsert['Date'] =  this.dateTimeObj.date;
           SalesInsert['time'] = this.dateTimeObj.time;
 
           if (this.ItemSubform.get('PatientType').value == 'External') {
