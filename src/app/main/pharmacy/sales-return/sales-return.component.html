@@ -12,9 +12,8 @@
                     Sales Return : {{vStoreName}}
                 </span>
                 <span style="margin-left: 800px;">
-                <app-common-date [screenFrom]="screenFromString"
-                (dateTimeEventEmitter)="getDateTime($event)">
-                 </app-common-date></span>
+                    <app-common-date [screenFrom]="screenFromString" style="float:right;padding-bottom:50px;"
+                    (dateTimeEventEmitter)="getDateTime($event)" ></app-common-date></span>
                 <!-- <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
             </div>
         </div>
