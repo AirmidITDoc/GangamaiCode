@@ -358,7 +358,7 @@
                                                             (click)="_salesService.IndentSearchGroup.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                                     </span>
                                                     <mat-autocomplete #auto="matAutocomplete"
-                                                        [displayWith]="getOptionText"
+                                                        [displayWith]="getOptionText" class="sale-auto-complete"
                                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                                         <mat-option *ngFor="let option of filteredOptions"
                                                             [value]="option">
