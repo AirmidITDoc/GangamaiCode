@@ -71,7 +71,7 @@ snackmessage:any;
 
 isPrefixSelected: boolean = false;
 optionsPrefix: any[] = [];
-
+currentDate = new Date();
 
 isDisabled: boolean = false;
   IsSave:any;
@@ -126,14 +126,7 @@ isDisabled: boolean = false;
    this.personalFormGroup = this.createPesonalForm();
    this.searchFormGroup = this.createSearchForm();
    
-   if(this.data){
-      
-    this.registerObj=this.data.registerObj;
-    this.RegId= this.registerObj.RegId;
-      this.isDisabled=true
-      // this.Prefix=this.data.registerObj.PrefixID;
-     this.setDropdownObjs1();
-  }
+ 
  
     this.getPrefixList();
     this.getMaritalStatusList();
@@ -145,23 +138,32 @@ isDisabled: boolean = false;
     this.getDoctor2List();
     
    
-    this.religionFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterReligion();
-      });
+    // this.religionFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     this.filterReligion();
+    //   });
 
-    this.maritalstatusFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterMaritalstatus();
-      });
+    // this.maritalstatusFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     this.filterMaritalstatus();
+    //   });
 
-    this.areaFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterArea();
-      });
+    // this.areaFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     this.filterArea();
+    //   });
+
+      if(this.data){
+      debugger
+        this.registerObj=this.data.registerObj;
+        this.RegId= this.registerObj.RegId;
+          this.isDisabled=true
+          // this.Prefix=this.data.registerObj.PrefixID;
+         this.setDropdownObjs1();
+      }
 
     }
 
@@ -334,6 +336,7 @@ validateadhaarcard( input: any){
     });
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);  
   }
+
 
 
   getCityList() {
@@ -524,7 +527,7 @@ validateadhaarcard( input: any){
 
 
   setDropdownObjs1() {
-   
+   debugger
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
@@ -566,8 +569,8 @@ validateadhaarcard( input: any){
       var m_data = {
         "opdRegistrationSave": {
           "RegID": 0,
-          "RegDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-          "RegTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+          "RegDate": this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',// this.dateTimeObj.date,//
+          "RegTime": this.datePipe.transform(this.currentDate,'hh:mm:ss'),// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
           "MiddleName": this.registerObj.MiddleName || "",

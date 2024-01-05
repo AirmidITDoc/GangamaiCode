@@ -47,7 +47,7 @@
                                         <div class="patient-sub">
                                             <div class="patient-info-1-111" fxLayout="row"
                                                 fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 375px;">
+                                                <div class="flex-item" style="width: 575px;">
                                                     <h3 class="labels-h3">Patient Name</h3>
                                                 </div>
                                                 <div class="flex-item-middle">
@@ -59,7 +59,7 @@
                                             </div>
                                             <div class="patient-info-1-2" fxLayout="row"
                                                 fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 375px;">
+                                                <div class="flex-item" style="width: 275px;">
                                                     <h3 class="labels-h3">Patient Category</h3>
                                                 </div>
                                                 <div class="flex-item-middle">
@@ -194,26 +194,26 @@
 
                                     <ng-container matColumnDef="AdvanceAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Advance Amount </mat-header-cell>
+                                            Advance Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.AdvanceAmount | currency:'INR'}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="UsedAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Used Amount </mat-header-cell>
+                                            Used Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.UsedAmount | currency:'INR'}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="BalanceAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Balance Amount </mat-header-cell>
+                                            Balance Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.BalanceAmount | currency:'INR'}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="RefundAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Refund Amount </mat-header-cell>
+                                            Refund Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.RefundAmount | currency:'INR'}} </mat-cell>
                                     </ng-container>

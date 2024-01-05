@@ -84,9 +84,9 @@
                                                     Price is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" #qty>
+                                            <mat-form-field appearance="outline" style="width:100px;" >
                                                 <mat-label>Qty</mat-label>
-                                                <input matInput [(ngModel)]="b_qty" name="bQty"
+                                                <input matInput [(ngModel)]="b_qty" name="bQty" #qty
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
                                                     (keydown)="onEnterqty($event)" id="qty">
                                                 <mat-error
@@ -499,7 +499,7 @@
 
                                             <mat-form-field appearance="outline" style="width: 250px;">
                                                 <mat-label>Cash Counter</mat-label>
-                                                <mat-select formControlName="CashCounterId" required>
+                                                <mat-select formControlName="CashCounterId">
                                                     <mat-option *ngFor="let m of CashCounterList" [value]="m">
                                                         {{m.CashCounterName}}
                                                     </mat-option>

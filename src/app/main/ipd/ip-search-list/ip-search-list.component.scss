@@ -49,8 +49,7 @@ app-ip-search-list{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    
+   
     justify-content:left; 
 }
 .mat-column-PatientType{
@@ -101,9 +100,7 @@ app-ip-search-list{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 20px;   
+    
     justify-content:left; 
 }
 .mat-column-RefDocName {
@@ -115,9 +112,6 @@ app-ip-search-list{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 20px;   
     justify-content:left; 
 }
 .mat-column-CompanyName {
@@ -129,9 +123,6 @@ app-ip-search-list{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    margin-right: 20px;   
     justify-content:left; 
 }
 

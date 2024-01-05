@@ -170,9 +170,9 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value ||1,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 2,
       }
       console.log(D_data);
       setTimeout(() => {
