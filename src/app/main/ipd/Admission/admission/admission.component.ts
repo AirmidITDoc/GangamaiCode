@@ -36,6 +36,8 @@ import { MatSelect } from '@angular/material/select';
 })
 export class AdmissionComponent implements OnInit {
 
+
+  currentDate=new Date();
   reportPrintObj: Admission;
   searchFormGroup: FormGroup;
   isLoadings = false;
@@ -1223,8 +1225,8 @@ export class AdmissionComponent implements OnInit {
       let regInsert = {};
       let admissionNewInsert = {};
       regInsert['RegId'] = 0;
-      regInsert['regDate'] = this.dateTimeObj.date; //this.registerObj.RegDate;
-      regInsert['regTime'] = this.dateTimeObj.time;
+      regInsert['regDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900', //this.registerObj.RegDate;
+      regInsert['regTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',
       regInsert['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       regInsert['firstName'] = this.registerObj.FirstName || '';
       regInsert['middleName'] = this.registerObj.MiddleName || '';
@@ -1257,8 +1259,8 @@ export class AdmissionComponent implements OnInit {
 
       admissionNewInsert['admissionID'] = 0;
       admissionNewInsert['regId'] = 0; //this.registerObj.RegId;
-      admissionNewInsert['admissionDate'] = this.dateTimeObj.date;
-      admissionNewInsert['admissionTime'] = this.dateTimeObj.time;
+      admissionNewInsert['admissionDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
+      admissionNewInsert['admissionTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',
 
       admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
@@ -1294,7 +1296,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['SubTpaComId'] = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
       admissionNewInsert['PolicyNo'] = 0;
       admissionNewInsert['AprovAmount'] = 0;
-      admissionNewInsert['CompDOD'] = this.dateTimeObj.date;
+      admissionNewInsert['CompDOD'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       admissionNewInsert['IsPackagePatient'] = 0;
       admissionNewInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       submissionObj['admissionNewInsert'] = admissionNewInsert;
@@ -1330,8 +1332,8 @@ debugger
 
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
-      admissionInsert['admissionDate'] = this.dateTimeObj.date;
-      admissionInsert['admissionTime'] = this.dateTimeObj.time;
+      admissionInsert['admissionDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
+      admissionInsert['admissionTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
     //  admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
@@ -1369,7 +1371,7 @@ debugger
       admissionInsert['PolicyNo'] = 0; //this.hospitalFormGroup.get('PolicyNo').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
       admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
 
-      admissionInsert['CompDOD'] = this.dateTimeObj.date;
+      admissionInsert['CompDOD'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       admissionInsert['IsOpToIPConv'] = 0;
       admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       admissionInsert['admissionInsert'] = admissionInsert;

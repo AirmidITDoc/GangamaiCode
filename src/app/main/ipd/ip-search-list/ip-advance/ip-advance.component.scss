@@ -14,7 +14,7 @@ app-ip-advance{
     
     .mat-header-row {
         width: 100%;
-        //max-width: 1490px;
+        //max-width: 14110px;
         min-width: 1340px;   
         min-height: 55px;
     }
@@ -26,21 +26,21 @@ app-ip-advance{
         // text-align:center;
     }
     .mat-column-Date {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
         text-align:left;
     }
     .mat-column-AdvanceNo {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         justify-content:center;
     }
     .mat-column-AdvanceAmount {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
         text-align: center;
     }
     .mat-column-UsedAmount {
@@ -50,9 +50,9 @@ app-ip-advance{
         text-align: center;
     }
     .mat-column-BalanceAmount {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
         text-align: center;
     }
     .mat-column-RefundAmount {
@@ -86,9 +86,9 @@ app-ip-advance{
         text-align: center;
     }   
     .mat-column-PayTMPay {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         text-align: center;
     }   
     .mat-column-UserName {

@@ -57,6 +57,12 @@ app-op-billing {
 
 
 app-op-billing{
+
+    .add-btn {
+        background-color: blue !important;
+        color: white !important;
+        font-size: 16px;
+      }
    
     .mat-data-table.mat-form-field-appearance-legacy .mat-form-field-infix{
         padding: 0.4375em 0px 0.4375em 5px !important;

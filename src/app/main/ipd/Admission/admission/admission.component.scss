@@ -37,8 +37,6 @@ app-admission{
  overflow: hidden;
  text-overflow: ellipsis; 
  overflow: hidden !important;
- display: inline-block;
- margin-top: 7px;
  
  
  justify-content:left; 
@@ -65,8 +63,7 @@ app-admission{
      overflow: hidden;
      text-overflow: ellipsis; 
      overflow: hidden !important;
-     display: inline-block;
-     margin-top: 7px;
+   
      
     justify-content:center; 
 }
@@ -79,22 +76,21 @@ app-admission{
      overflow: hidden;
      text-overflow: ellipsis; 
      overflow: hidden !important;
-     display: inline-block;
-     margin-top: 7px;
+   
    justify-content:center; 
 }
 .mat-column-IPNo {
-    width: 70px;
-    max-width:70px;
-    min-width: 70px;
+    width: 90px;
+    max-width:90px;
+    min-width: 90px;
     text-align:center;
     justify-content:center; 
 }
 
 .mat-column-PatientType {
-    width: 80px;
-    max-width:80px;
-    min-width:80px;
+    width: 90px;
+    max-width:90px;
+    min-width:90px;
     text-align:center;
     justify-content:center; 
 }
@@ -108,25 +104,22 @@ app-admission{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
+ 
    
    justify-content:center; 
 }
 
 
 .mat-column-TariffName{
-    width:80px;
-    max-width:80px;
-    min-width:80px;
+    width:100px;
+    max-width:100px;
+    min-width:100px;
     text-align: left;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-    
+ 
    justify-content:center; 
 }
 .mat-column-ClassName{
@@ -138,8 +131,6 @@ app-admission{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
   
    justify-content:left; 
 }
@@ -160,8 +151,7 @@ app-admission{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
+  
    justify-content:left; 
 }
 .mat-column-RelativeName{
@@ -173,10 +163,7 @@ app-admission{
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
-    margin-top: 7px;
-  
-   justify-content:left; 
+       justify-content:left; 
 }
 
 .mat-icon-button {

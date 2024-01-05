@@ -242,7 +242,7 @@ export class OPBillingComponent implements OnInit {
       BillRemark: [''],
       FinalAmt: ['', Validators.required],
       cashpay: ['1'],
-      CashCounterId: ['', Validators.required]
+      CashCounterId:['']// ['', Validators.required]
       // TotalAmount: [Validators.pattern("^[0-9]*$")],
     });
   }
@@ -271,7 +271,7 @@ export class OPBillingComponent implements OnInit {
     var m_data = {
       SrvcName: `${this.registeredForm.get('SrvcName').value}%`,
       TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId: this.selectedAdvanceObj.ClassId
+      ClassId: this.selectedAdvanceObj.ClassId || 1
     };
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._opappointmentService.getBillingServiceList(m_data).subscribe(data => {
@@ -373,11 +373,11 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
-    InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-      InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
     InsertBillUpdateBillNoObj['IsSettled'] = 0;
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -390,7 +390,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId;
+    InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
     InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
@@ -443,7 +443,7 @@ export class OPBillingComponent implements OnInit {
 
     let PatientHeaderObj = {};
 
-    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
@@ -546,17 +546,17 @@ export class OPBillingComponent implements OnInit {
       let Paymentobj = {};
       Paymentobj['BillNo'] = 0;
       Paymentobj['ReceiptNo'] = "";
-      Paymentobj['PaymentDate'] = this.dateTimeObj.date;
-      Paymentobj['PaymentTime'] = this.dateTimeObj.time;
+      Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['PaymentTime'] =  this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',
       Paymentobj['CashPayAmount'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['ChequePayAmount'] = 0;
       Paymentobj['ChequeNo'] = 0;
       Paymentobj['BankName'] = "";
-      Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+      Paymentobj['ChequeDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['CardPayAmount'] = 0;
       Paymentobj['CardNo'] = 0;
       Paymentobj['CardBankName'] = "";
-      Paymentobj['CardDate'] = this.dateTimeObj.date;
+      Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['AdvanceUsedAmount'] = 0;
       Paymentobj['AdvanceId'] = 0;
       Paymentobj['RefundId'] = 0;
@@ -565,15 +565,15 @@ export class OPBillingComponent implements OnInit {
       Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
         Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+      Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['CashCounterId'] = 0;
       Paymentobj['NEFTPayAmount'] = 0;
       Paymentobj['NEFTNo'] = 0;
       Paymentobj['NEFTBankMaster'] = "";
-      Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+      Paymentobj['NEFTDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
-      Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+      Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 
@@ -635,7 +635,7 @@ export class OPBillingComponent implements OnInit {
           ClassId: this.selectedAdvanceObj.ClassId || 0,
           DoctorId: this.DoctornewId,// (this.registeredForm.get("DoctorID").value.DoctorName).toString() || '',
           DoctorName: this.ChargesDoctorname,
-          ChargesDate: this.dateTimeObj.date,
+          ChargesDate:  this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
           IsPathology: this.b_isPath,
           IsRadiology: this.b_isRad,
           ClassName: this.selectedAdvanceObj.ClassName || '',
@@ -690,7 +690,7 @@ export class OPBillingComponent implements OnInit {
     if (this.b_ChargeDiscPer) {
       this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.b_ChargeDiscPer)) / 100;
       this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
-      this.registeredForm.get('ChargeDiscAmount').disable();
+      // this.registeredForm.get('ChargeDiscAmount').disable();
     }
   }
   // Charges Wise Disc Amount 
@@ -963,6 +963,7 @@ export class OPBillingComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
+    debugger
     if (event.which === 13) {
       this.disper.nativeElement.focus();
       // this.calculateTotalAmt()
@@ -971,13 +972,14 @@ export class OPBillingComponent implements OnInit {
   public onEnterdiscper(event): void {
     debugger
     if (event.which === 13) {
-      // this.discamt.nativeElement.focus();
-      this.addbutton.focus();
+      this.discamt.nativeElement.focus();
+      // this.addbutton.focus();
     }
   }
 
   public onEnterdiscAmount(event): void {
     if (event.which === 13) {
+      this.add=true;
       this.addbutton.focus();
     }
   }
