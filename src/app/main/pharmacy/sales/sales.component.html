@@ -136,7 +136,7 @@
                                                     <!-- <div> -->
                                                         <!-- <span style="color: black;font-weight: bold;color: black;padding-bottom:100px;"> -->
                                                             <app-common-date [screenFrom]="screenFromString" style="float:right;padding-bottom:50px;"
-                                                              (dateTimeEventEmitter)="getDateTime($event)" [isAutoChangeTime]="true"></app-common-date>
+                                                              (dateTimeEventEmitter)="getDateTime($event)" ></app-common-date>
                                                           <!-- </span> -->
                                       
                                                     <!-- </div> -->
@@ -358,7 +358,7 @@
                                                             (click)="_salesService.IndentSearchGroup.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                                     </span>
                                                     <mat-autocomplete #auto="matAutocomplete"
-                                                        [displayWith]="getOptionText"
+                                                        [displayWith]="getOptionText" class="sale-auto-complete"
                                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                                         <mat-option *ngFor="let option of filteredOptions"
                                                             [value]="option">

@@ -131,5 +131,8 @@ export class SalesService {
   public InsertWhatsappSms(emp){
     return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
   }
+  // public getDelDrat(query) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  // }
 
 }

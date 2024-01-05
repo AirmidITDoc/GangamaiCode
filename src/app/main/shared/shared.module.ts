@@ -19,9 +19,12 @@ import { ToasterService } from './services/toaster.service';
 import { PaymentModeComponent } from './componets/payment-mode/payment-mode.component';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { OnlinePaymentService } from './services/online-payment.service';
+import { ImageCropComponent } from './componets/image-crop/image-crop.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatSliderModule } from '@angular/material/slider';  
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -34,7 +37,9 @@ import { OnlinePaymentService } from './services/online-payment.service';
     MatCardModule,
     MatTabsModule,
     MatSnackBarModule,
-    FuseSharedModule
+    FuseSharedModule,
+    ImageCropperModule,
+    MatSliderModule
   ],
   providers: [
     ExcelDownloadService,
