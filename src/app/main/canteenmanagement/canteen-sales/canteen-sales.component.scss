@@ -1,8 +1,11 @@
 .table1{
+  height: 480px;
+  min-height: 480px;
+  max-height: 480px;
     .mat-column-ItemName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 230px;
+        max-width: 230px;
+        min-width: 230px;
         text-align: left;
         white-space: nowrap; 
         overflow: hidden;
@@ -26,13 +29,72 @@
       }  
 }
 .table2{
-    height: 300px;
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;
+
+    .mat-column-ItemName {
+      width: 250px;
+      max-width: 250px;
+      min-width: 250px;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 20px;
+      justify-content:left; 
+    }
+     .mat-column-Qty {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }
+    .mat-column-Price {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }  
+    .mat-column-Amount {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    } 
+}
+.table3{
+  height: 550px;
+  min-height: 550px;
+  max-height: 550px;
+
+  .mat-column-WardName {
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+    display: inline-block;
+    margin-top: 20px;
+    justify-content:left; 
+  }
+   .mat-column-Date {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
 }
 
 .table4{
-  height: 320px;
-  min-height: 320px;
-  max-height: 320px;
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
   width: 100%;
   .mat-column-CustomerName {
       width: 250px;
@@ -78,4 +140,38 @@
       min-width: 170px;
       text-align: left;
     } 
+}
+.table5{
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+  width: 100%;
+  .mat-column-ItemName {
+      width: 250px;
+      max-width: 250px;
+      min-width: 250px;
+      text-align: left;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      overflow: hidden !important;
+      display: inline-block;
+      margin-top: 20px;
+      justify-content:left; 
+      margin-right: 15px;
+    }
+    
+    .mat-column-Qty {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    } 
+    .mat-column-NetAmount {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    } 
+    
 }

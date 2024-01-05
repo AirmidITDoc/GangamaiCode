@@ -45,4 +45,10 @@ export class CanteenmanagementService {
   public getBillList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_CanteenBillList",Param);
   }
+  public getBillDetList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=RptCateenRepPrint",Param);
+  }
+  public getNursingBillList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
+  }
 }
