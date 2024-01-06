@@ -2479,6 +2479,9 @@ debugger
       Swal.fire("Please enter Qty!!")
       this.tblCalucation(contact,contact.Qty)
     }
+
+   
+
     // this.DiscOld=contact.DiscPer;
     this.ItemFormreset();
   }
