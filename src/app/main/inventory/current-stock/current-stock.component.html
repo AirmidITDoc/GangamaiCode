@@ -675,7 +675,9 @@
     </mat-tab>
 
 </mat-tab-group>
-
+<!-- 
+<div class="loading" *ngIf="_loaderShow">Loading</div>
+<i class="fa fa-spinner fa-spin fa-1x"></i> -->
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #ItemWiseStockTemplate>
 
     <div style="text-align: center;margin-bottom: 10px;">
@@ -695,7 +697,9 @@
             Item Wise Sales</h3>
     </div><br>
 
-
+    <div style="margin-top:2px;">
+        <div style="font-weight: bold;font-size:15px;margin-left:10px;padding:5px;">From Date : {{FromDate}} -- To Date :{{Todate}}</div>
+    </div>
 
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
@@ -738,3 +742,4 @@
         </tbody>
     </table>
 </div>
+<!-- </div> -->

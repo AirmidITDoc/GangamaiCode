@@ -142,6 +142,8 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   addChargList(row) {
+    debugger
+
     this.chargeslist.push(
       {
         ItemID: row.ItemID,
@@ -153,12 +155,14 @@ export class CanteenSalesComponent implements OnInit {
     this.sIsLoading = '';
      console.log(this.chargeslist);
     this.dsItemDetTable2.data = this.chargeslist;
+    // this.dsItemDetTable2.data['Qty']=1; 
   }
+
+
  RQty:any=0;
 totalAmt:any=0;
 
   calculateTotalAmt(contact,Qty) {
-
     debugger
       this.RQty = parseInt(Qty);
       const total = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);

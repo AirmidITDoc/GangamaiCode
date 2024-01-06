@@ -65,7 +65,7 @@
                                 </mat-select>
                             </mat-form-field>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
+                        <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ItemName</mat-label>
                                 <mat-select formControlName="ItemID" name="ItemID" >
                                     <mat-option></mat-option>
@@ -73,25 +73,9 @@
                                         {{m.ItemName}}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field> -->
- 
+                            </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Item Name</mat-label>
-                                <mat-select formControlName="ItemID" placeholder="search Item"  #singleSelect>
-                                  <mat-option>
-                                    <ngx-mat-select-search [formControl]="ItemNameFilterCtrl" [placeholderLabel]="'Search'"
-                                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                  </mat-option>
-                                  <mat-option *ngFor="let element of filteredItem | async" [value]="element">
-                                     {{element.ItemName }}
-                                  </mat-option>
-            
-                                </mat-select>
-            
-                              </mat-form-field>
 
-                            
                             <div style="margin-top: 10px;">
                                 <button mat-raised-button class="clearbutton" matTooltip="close">
                                     <mat-icon class="cleariconbutton">close</mat-icon>

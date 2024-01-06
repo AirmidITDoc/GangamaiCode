@@ -42,7 +42,7 @@ export class ItemMovemnentComponent implements OnInit {
   StoreList: any = []; 
   sIsLoading: string = '';
   isLoading = true;
-  isItemIdSelected: boolean = false;
+
 
  
   dsItemMovement = new MatTableDataSource<ItemMovementList>();
@@ -87,6 +87,8 @@ export class ItemMovemnentComponent implements OnInit {
   }
 
   getItemMovementList() {
+
+    debugger
     this.sIsLoading = 'loading-data';
     var vdata = {
 
@@ -94,7 +96,7 @@ export class ItemMovemnentComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "FromStoreID": this._ItemMovemnentService.ItemSearchGroup.get('StoreId').value.storeid || 1,
-      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0
+      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || this.ItemId
     }
     console.log(vdata);
     this._ItemMovemnentService.getItemMovementList(vdata).subscribe(data => {
@@ -143,7 +145,13 @@ export class ItemMovemnentComponent implements OnInit {
       
     });
   }
- 
+  // getFormStoreList() {
+  //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
+  //     this.FormStore = data;
+  //     // console.log(this.FormStore);
+      
+  //   });
+  // }
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId

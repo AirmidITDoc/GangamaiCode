@@ -569,7 +569,7 @@ validateadhaarcard( input: any){
       var m_data = {
         "opdRegistrationSave": {
           "RegID": 0,
-          "RegDate": this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',// this.dateTimeObj.date,//
+          "RegDate": this.dateTimeObj.date || '01/01/1900',// this.dateTimeObj.date,//
           "RegTime": this.datePipe.transform(this.currentDate,'hh:mm:ss'),// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
@@ -598,6 +598,7 @@ validateadhaarcard( input: any){
           "isSeniorCitizen":0,
           "Aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
           "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
+          "Photo":''//
         }
       }
       console.log(m_data);
@@ -639,11 +640,12 @@ validateadhaarcard( input: any){
           "CityId": this.personalFormGroup.get('CityId').value.CityId,
           "MaritalStatusId":this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
           "IsCharity":false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-          // "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
+         
           // "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
           // "isSeniorCitizen":0,
           "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
           "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
+           "Photo":''// this.file.name || '',
         }
       }
       this._registerService.regUpdate(m_data1).subscribe(response => {

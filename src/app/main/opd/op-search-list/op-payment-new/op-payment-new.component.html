@@ -206,10 +206,28 @@
                                     <input matInput formControlName="referenceNo1">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%" *ngIf="UpiFlag1">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName1">
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag2">
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                      formControlName="bankName1" [matAutocomplete]="autoBank1" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoBank1="matAutocomplete" [displayWith]="getOptionTextBank1">
+                                      <mat-option *ngFor="let option of filteredOptionsBank1 | async" [value]="option">
+                                        {{option.BankName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
@@ -262,7 +280,7 @@
                                     </mat-error>
                                 </mat-form-field> -->
 
-                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag">
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag2">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                       formControlName="bankName2" [matAutocomplete]="autoBank2" required>
@@ -338,7 +356,7 @@
                                 </mat-form-field> -->
 
 
-                                <mat-form-field appearance="outline"  fxFlex="16%">
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag3">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                       formControlName="bankName3" [matAutocomplete]="autoBank3" required>
@@ -410,7 +428,7 @@
                                     </mat-error>
                                 </mat-form-field> -->
 
-                                <mat-form-field appearance="outline"  fxFlex="16%">
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag4">
                                     <mat-label>Bank Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
                                       formControlName="bankName4" [matAutocomplete]="autoBank4" required>
@@ -473,13 +491,33 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Bank Name</mat-label>
                                     <input matInput formControlName="bankName5">
                                     <mat-error *ngIf="patientDetailsFormGrp.get('bankName5').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                
+                                <mat-form-field appearance="outline"  fxFlex="16%" *ngIf="UpiFlag5">
+                                    <mat-label>Bank Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select BankName" matInput
+                                      formControlName="bankName5" [matAutocomplete]="autoBank5" required>
+                                    <span matSuffix style="display: flex;">
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName5').setValue(''); isBank5elected = false;">close</mat-icon>
+                                      <mat-icon class="mat-icon-close"
+                                        (click)="patientDetailsFormGrp.get('bankName5').setValue(''); isBank5elected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoBank5="matAutocomplete" [displayWith]="getOptionTextBank5">
+                                      <mat-option *ngFor="let option of filteredOptionsBank5 | async" [value]="option">
+                                        {{option.BankName}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+
+
 
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Registration Date</mat-label>
