@@ -32,7 +32,10 @@ export class OpPaymentNewComponent implements OnInit {
   };
 
   PatientHeaderObj: any;
-  UpiFlag:boolean=true;
+  UpiFlag1:boolean=true;UpiFlag2:boolean=true;
+  UpiFlag3:boolean=true;
+  UpiFlag4:boolean=true;
+  UpiFlag5:boolean=true;
   selectedPaymnet1: string = '';
   selectedPaymnet2: string = '';
   selectedPaymnet3: string = '';
@@ -51,9 +54,11 @@ export class OpPaymentNewComponent implements OnInit {
   screenFromString = 'payment-form';
   paidAmt: number;
   balanceAmt: number =0;
+  BankNameList1: any = [];
   BankNameList2: any = [];
   BankNameList3: any = [];
   BankNameList4: any = [];
+  BankNameList5: any = [];
   //latest
   advanceData: any = {};
   billNo: any;
@@ -69,6 +74,10 @@ export class OpPaymentNewComponent implements OnInit {
   neftNo: any;
   paytmAmt: any;
   
+    
+  filteredOptionsBank1: Observable<string[]>;
+  optionsBank1: any[] = [];
+  isBank1elected1: boolean = false;
   filteredOptionsBank2: Observable<string[]>;
   optionsBank2: any[] = [];
   isBank1elected2: boolean = false;
@@ -78,6 +87,13 @@ export class OpPaymentNewComponent implements OnInit {
   filteredOptionsBank4: Observable<string[]>;
   optionsBank4: any[] = [];
   isBank1elected4: boolean = false;
+
+    
+  filteredOptionsBank5: Observable<string[]>;
+  optionsBank5: any[] = [];
+  isBank1elected5: boolean = false;
+
+
   IsCreditflag: boolean = false;
   isSaveDisabled: boolean = false;
 
@@ -187,9 +203,12 @@ export class OpPaymentNewComponent implements OnInit {
     this.Paymentobj['TransactionType'] = 4;
     }
     this.onAddClick('cash');
+
+    this.getBankNameList1();
     this.getBankNameList2();
     this.getBankNameList3();
     this.getBankNameList4();
+    this.getBankNameList5();
   }
 
   getDateTime(dateTimeObj) {
@@ -294,6 +313,14 @@ export class OpPaymentNewComponent implements OnInit {
     // }
   }
  
+  private _filterBank1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
+       return this.optionsBank1.filter(option => option.BankName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
   private _filterBank2(value: any): string[] {
     if (value) {
       const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
@@ -319,6 +346,28 @@ export class OpPaymentNewComponent implements OnInit {
     }
 
   }
+
+       
+  private _filterBank5(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
+       return this.optionsBank5.filter(option => option.BankName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getBankNameList1() {
+    this.opService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList1 = data;
+      this.optionsBank1 = this.BankNameList1.slice();
+      this.filteredOptionsBank1 = this.patientDetailsFormGrp.get('bankName1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterBank1(value) : this.BankNameList1.slice()),
+      );
+      
+    });
+  }
+
   getBankNameList2() {
     this.opService.getBankMasterCombo().subscribe(data => {
       this.BankNameList2 = data;
@@ -355,7 +404,22 @@ export class OpPaymentNewComponent implements OnInit {
     });
   }
 
+  
+  getBankNameList5() {
+    this.opService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList5 = data;
+      this.optionsBank4 = this.BankNameList5.slice();
+      this.filteredOptionsBank5 = this.patientDetailsFormGrp.get('bankName5').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterBank4(value) : this.BankNameList5.slice()),
+      );
+      
+    });
+  }
 
+  getOptionTextBank1(option){
+    return option && option.BankName ? option.BankName : '';
+  }
   getOptionTextBank2(option){
     return option && option.BankName ? option.BankName : '';
   }
@@ -363,6 +427,9 @@ export class OpPaymentNewComponent implements OnInit {
     return option && option.BankName ? option.BankName : '';
   }
   getOptionTextBank4(option){
+    return option && option.BankName ? option.BankName : '';
+  }
+  getOptionTextBank5(option){
     return option && option.BankName ? option.BankName : '';
   }
 
@@ -398,11 +465,46 @@ export class OpPaymentNewComponent implements OnInit {
   onPaymentChange(rowId: number, value: string) {
     debugger
 
-    if(rowId==2){
-      this.UpiFlag=false;
-      this.patientDetailsFormGrp.get('bankName2').clearValidators();
-      this.patientDetailsFormGrp.get('bankName2').setValue('');
+    if(value=='upi'){
+    
+    
+      if((rowId==1 && value=='upi')){
+        this.UpiFlag1=false;   this.UpiFlag2=true;   this.UpiFlag3=true;   this.UpiFlag4=true;
+
+        this.patientDetailsFormGrp.get('bankName1').clearValidators();
+        this.patientDetailsFormGrp.get('bankName1').setValue('');
+      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+      }
+      if((rowId==2 && value=='upi')){
+        this.UpiFlag2=false;  this.UpiFlag1=true;   this.UpiFlag3=true;   this.UpiFlag4=true;
+        this.patientDetailsFormGrp.get('bankName2').clearValidators();
+        this.patientDetailsFormGrp.get('bankName2').setValue('');
+        this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+        }
+        if((rowId==3 && value=='upi')){
+          this.UpiFlag3=false;this.UpiFlag1=true;   this.UpiFlag2=true;   this.UpiFlag4=true;
+          this.patientDetailsFormGrp.get('bankName3').clearValidators();
+          this.patientDetailsFormGrp.get('bankName3').setValue('');
+          this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+          }
+          if((rowId==4 && value=='upi')){
+            this.UpiFlag4=false;this.UpiFlag1=true;   this.UpiFlag2=true;   this.UpiFlag3=true;
+            this.patientDetailsFormGrp.get('bankName4').clearValidators();
+            this.patientDetailsFormGrp.get('bankName4').setValue('');
+            this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+            }
+            if((rowId==5 && value=='upi')){
+              this.UpiFlag5=false;this.UpiFlag1=true;   this.UpiFlag2=true;   this.UpiFlag4=true;
+              this.patientDetailsFormGrp.get('bankName5').clearValidators();
+              this.patientDetailsFormGrp.get('bankName5').setValue('');
+              this.patientDetailsFormGrp.get('referenceNo5').setValidators([Validators.required]);
+              }
+            
     }
+    // else if(value !='upi'){
+    //   this.UpiFlag=true;
+    // }
+
     switch (rowId) {
       case 1:
         this.paymentArr2 = this.opService.getPaymentArr();
@@ -821,39 +923,39 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getChequeObj(type: string) {
-    // debugger
+    debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName;
+      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
+      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName || '';
       this.Paymentobj['ChequeDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount2;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo2").value || 0;
+      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName || "";
       this.Paymentobj['ChequeDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount3;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo3").value || 0;
+      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName || '';
       this.Paymentobj['ChequeDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount4;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo4").value || 0;
+      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName || "";
       this.Paymentobj['ChequeDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount5;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
+      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo5").value || 0;
+      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName || '';
       this.Paymentobj['ChequeDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
@@ -866,36 +968,36 @@ export class OpPaymentNewComponent implements OnInit {
     // debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value;
+      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount2;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo2").value || 0;
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount3;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo3").value || 0;
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount4;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo4").value || 0;
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount5;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
+      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo5").value || 0;
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
@@ -906,36 +1008,36 @@ export class OpPaymentNewComponent implements OnInit {
   getNeftObj(type: string) {
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
+      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount2;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo2").value || 0;
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount3;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo3").value || 0;
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount4;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo4").value || 0;
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount5;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
+      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo5").value || 0 ;
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
@@ -947,35 +1049,35 @@ export class OpPaymentNewComponent implements OnInit {
     debugger
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount1;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
+      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
       // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
       this.Paymentobj['PayTMDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount2;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
+      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo2").value || 0;
       // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value;
       this.Paymentobj['PayTMDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount3;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
+      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo3").value || 0;
       // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value;
       this.Paymentobj['PayTMDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount4;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
+      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo4").value || 0;
       // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value;
       this.Paymentobj['PayTMDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
     if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount5;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
+      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo5").value || 0;
       // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
       this.Paymentobj['PayTMDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
