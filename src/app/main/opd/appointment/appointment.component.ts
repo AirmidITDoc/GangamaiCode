@@ -282,12 +282,38 @@ export class AppointmentComponent implements OnInit {
     this.getVisitList();
 
   }
+
+
   onImageChange(event) {
+let Imgflag ="";
+   
     if (!event.target.files.length) return;
     const file = event.target.files[0];
+
+    debugger
     this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
-      (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64)
+      
+      (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
+        Imgflag=event.base64
+        )
+      
     );
+
+
+    debugger
+   
+    if (Imgflag !=" ") {
+      let filesAmount = event.target.files.length;
+      // for (let i = 0; i < filesAmount; i++) {
+        // this.imgArr.push(file.name);
+        this.images.push({ url: file, name: file.name, Id: 0 });
+      this.imgDataSource.data = this.images;
+      this.imageForm.patchValue({
+        imgFileSource: this.images
+      });
+      // }
+      this.attachment.nativeElement.value = '';
+    }
   }
   ngOnInit(): void {
 
@@ -1204,8 +1230,8 @@ export class AppointmentComponent implements OnInit {
       let tokenNumberWithDoctorWiseInsert = {};
       debugger
       registrationSave['regID'] = 0;
-      registrationSave['regDate'] =this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
-      registrationSave['regTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss'),
+      registrationSave['regDate'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      registrationSave['regTime'] = this.dateTimeObj.time,
       registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationSave['firstName'] = this.registerObj.FirstName;
       registrationSave['middleName'] = this.registerObj.MiddleName || '';
@@ -1232,13 +1258,13 @@ export class AppointmentComponent implements OnInit {
       registrationSave['Aadharcardno'] = this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
       registrationSave['Pancardno'] = this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-
+      registrationSave['Photo']=''
       submissionObj['registrationSave'] = registrationSave;
 
       visitSave['VisitId'] = 0;
       visitSave['RegID'] = 0;
-      visitSave['VisitDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
-      visitSave['VisitTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss'),
+      visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      visitSave['VisitTime'] = this.dateTimeObj.time,
 
       visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
@@ -1251,14 +1277,14 @@ export class AppointmentComponent implements OnInit {
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitSave['IsCancelled'] = 0;
       visitSave['IsCancelledBy'] = 0;
-      visitSave['IsCancelledDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
+      visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
       visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
-      visitSave['FollowupDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
       visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
 
         submissionObj['visitSave'] = visitSave;
@@ -1314,13 +1340,14 @@ export class AppointmentComponent implements OnInit {
       registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
       registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
       registrationUpdate['isCharity'] = false;
-
+      registrationUpdate['Photo']=''
+      
       submissionObj['registrationUpdate'] = registrationUpdate;
       // visit detail
       visitUpdate['VisitId'] = 0;
       visitUpdate['RegID'] = this.registerObj.RegId;
-      visitUpdate['VisitDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
-      visitUpdate['VisitTime'] = this.datePipe.transform(this.currentDate,'hh:mm:ss'),
+      visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      visitUpdate['VisitTime'] = this.dateTimeObj.time,
       visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
@@ -1332,14 +1359,14 @@ export class AppointmentComponent implements OnInit {
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitUpdate['IsCancelled'] = 0;
       visitUpdate['IsCancelledBy'] = 0;
-      visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',
+      visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
       visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitUpdate['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitUpdate['PatientOldNew'] = this.Patientnewold;
       visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
         visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
-      visitUpdate['FollowupDate'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
 
       submissionObj['visitUpdate'] = visitUpdate;
 
@@ -1733,6 +1760,8 @@ export class AppointmentComponent implements OnInit {
 
 
   onImageFileChange(events: any) {
+
+    debugger
     this.images = [];
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
