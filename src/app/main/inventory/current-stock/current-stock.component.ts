@@ -55,8 +55,8 @@ export class CurrentStockComponent implements OnInit {
   isLoading = true;
   Store1List:any=[];
   screenFromString = 'admission-form';
-
- 
+  FromDate:any;
+  Todate:any;
   
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
@@ -180,6 +180,8 @@ export class CurrentStockComponent implements OnInit {
   reportPrintObjTax: ItemWiseStockList;
   subscriptionArr: Subscription[] = [];
  
+
+  _loaderShow:boolean = true;
   getPrint() {
 
     var vdata = {
@@ -187,6 +189,10 @@ export class CurrentStockComponent implements OnInit {
       "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
      }
+
+     this.FromDate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd");
+     this.Todate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd");
+
     console.log(vdata);
     this._CurrentStockService.getItemWiseStockListPrint(vdata).subscribe(data => {
       this.reportPrintObjList = data as ItemWiseStockList[];
@@ -195,9 +201,10 @@ export class CurrentStockComponent implements OnInit {
 
         setTimeout(() => {
           this.print3();
+          this._loaderShow = false;
         }, 1000);
     })
-
+   
   }    
     
     print3() {

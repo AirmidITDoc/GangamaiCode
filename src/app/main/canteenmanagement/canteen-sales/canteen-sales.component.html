@@ -414,12 +414,8 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker1">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
-<<<<<<< HEAD
-                                        <input matEndDate formControlName="enddate" placeholder="End date">
-=======
                                         <input matEndDate formControlName="enddate" placeholder="End date"
                                             (dateChange)="getBillList()">
->>>>>>> 223f7cc8c3e79ce49abdc3d1c9f150c2d10ef636
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker1></mat-date-range-picker>
@@ -458,11 +454,7 @@
                                         <div>
                                             <div matColumnDef="loading"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-<<<<<<< HEAD
-                                                class="backgroundBlur">
-=======
                                                 class="backgroundBlur" style="height: 300px;">
->>>>>>> 223f7cc8c3e79ce49abdc3d1c9f150c2d10ef636
                                                 <div class="spinner-border text-danger"></div>
 
                                             </div>
@@ -536,13 +528,8 @@
                                                     *matHeaderRowDef="displayedBillListColumns; sticky: true">
                                                 </mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedBillListColumns;"
-<<<<<<< HEAD
-                                                    class="contact"
-                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-=======
                                                     class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="getBillDetList(contact)"></mat-row>
->>>>>>> 223f7cc8c3e79ce49abdc3d1c9f150c2d10ef636
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                 </mat-footer-row>
