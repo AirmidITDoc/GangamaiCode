@@ -64,37 +64,42 @@
                                             <mat-form-field appearance="outline" style="margin-left: 2%;">
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker2">
-                                                    <input matStartDate formControlName="start" placeholder="Start date">
-                                                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getNursingBillList()">
+                                                    <input matStartDate formControlName="start"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="end" placeholder="End date"
+                                                        (dateChange)="getNursingBillList()">
                                                 </mat-date-range-input>
-                                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker2"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker2></mat-date-range-picker>
                                             </mat-form-field>
 
 
                                             <button mat-raised-button class="searchButton" style="margin-left: 150px;
                                             margin-bottom: 20px;" matTooltip="search">
-                                                <mat-icon class="searchiconbutton" (click)="getNursingBillList()">search</mat-icon>
+                                                <mat-icon class="searchiconbutton"
+                                                    (click)="getNursingBillList()">search</mat-icon>
                                             </button>
                                         </mat-card>
                                     </div>
                                     <div fxLayout="row" style="margin-top: 10px;">
                                         <!-- <mat-card style="width: 37%;height: 520px; padding: 10px;"> -->
-                                            <div style="width: 33%;height: 520px;">
+                                        <div style="width: 33%;height: 520px;">
                                             <div fxLayout="column">
                                                 <mat-card fxFlex="100%" style="padding: 5px;margin-bottom: 5px;">
-                                                <mat-form-field appearance="outline" fxFlex="100%" >
-                                                    <input type="text" name="ItemID" formControlName="ItemID" [(ngModel)]="Itemsearch"
-                                                        placeholder="Item Name" (keyup)="applyFilter()" matInput >
-                                                    <span matSuffix style="display: flex;">
-                                                        <mat-icon class="mat-icon-close"
-                                                            (click)="clearSearch()">close</mat-icon>
-                                                        <mat-icon class="mat-icon-close"
-                                                            (click)="_CanteenmanagementService.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                                    </span>
-                                                </mat-form-field> 
-                                                
-                                            </mat-card>
+                                                    <mat-form-field appearance="outline" fxFlex="100%">
+                                                        <input type="text" name="ItemID" formControlName="ItemID"
+                                                            [(ngModel)]="Itemsearch" placeholder="Item Name"
+                                                            (keyup)="applyFilter()" matInput>
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="clearSearch()">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="_CanteenmanagementService.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                                        </span>
+                                                    </mat-form-field>
+
+                                                </mat-card>
 
                                                 <mat-table #table1 class="table1" matSort [dataSource]="dsItemTable1"
                                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
@@ -135,7 +140,7 @@
                                                         </mat-header-cell>
                                                     </ng-container>
 
-                                                  
+
 
 
                                                     <mat-header-row class="accent"
@@ -153,15 +158,15 @@
 
                                                 </mat-table>
                                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                                showFirstLastButtons>
-                                                 </mat-paginator>
+                                                    showFirstLastButtons>
+                                                </mat-paginator>
                                             </div>
                                         </div>
                                         <!-- </mat-card> -->
 
                                         <div style="width: 41%;padding: 0px 10px 0 10px;">
                                             <div>
-                                                 
+
                                                 <mat-table #table2 class="table2" matSort [dataSource]="dsItemDetTable2"
                                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -204,15 +209,11 @@
                                                     </ng-container> -->
 
                                                     <ng-container matColumnDef="Qty">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            fxShow.gt-sm>Qty
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            <mat-form-field appearance="legacy">
-                                                                <input matInput [(ngModel)]="contact.Qty"
-                                                                    (keyup)="calculateTotalAmt(contact,contact.Qty)"
-                                                                    #Qty type="number">
-                                                            </mat-form-field>
+                                                        <mat-cell *matCellDef="let contact" >
+                                                            <input matInput [(ngModel)]="contact.Qty" #Qty type="number"
+                                                            (keyup)="calculateTotal(contact,contact.Qty)" >
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -252,8 +253,8 @@
 
                                                 </mat-table>
                                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                                showFirstLastButtons>
-                                                 </mat-paginator>
+                                                    showFirstLastButtons>
+                                                </mat-paginator>
 
 
                                             </div>
@@ -301,8 +302,8 @@
 
 
                                         <!-- <mat-card style="width: 35%;height: 500px; padding: 10px;"> -->
-                                            <div style="width: 35%;">
-                                                <div matColumnDef="loading"
+                                        <div style="width: 35%;">
+                                            <div matColumnDef="loading"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                                 class="backgroundBlur" style="height: 300px;">
                                                 <div class="spinner-border text-danger"></div>
@@ -354,11 +355,11 @@
                                                 </mat-footer-row>
 
                                             </mat-table>
-                                            
+
                                             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                                 showFirstLastButtons>
                                             </mat-paginator>
-                                          </div>
+                                        </div>
 
 
 
@@ -545,7 +546,7 @@
                                         </div>
 
                                         <div>
-                                             
+
                                             <mat-table class="table5" matSort [dataSource]="dsBillDetailList"
                                                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
 

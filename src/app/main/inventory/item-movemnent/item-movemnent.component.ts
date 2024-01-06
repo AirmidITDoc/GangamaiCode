@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { ReplaySubject, Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-movemnent',
@@ -39,9 +42,8 @@ export class ItemMovemnentComponent implements OnInit {
   StoreList: any = []; 
   sIsLoading: string = '';
   isLoading = true;
-  filteredOptions: any;
-  ItemId:any;
-  isItemIdSelected: boolean = false;
+
+
  
   dsItemMovement = new MatTableDataSource<ItemMovementList>();
 
@@ -57,6 +59,10 @@ export class ItemMovemnentComponent implements OnInit {
  
   ) { }
 
+  public ItemNameFilterCtrl: FormControl = new FormControl();
+  public filteredItem: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
+
   ngOnInit(): void {
     this.getTOStoreList();
     // this.getItemMovement();
@@ -64,7 +70,11 @@ export class ItemMovemnentComponent implements OnInit {
      this.gePharStoreList();
     //  this.getFormStoreList();
      
-     
+    this.ItemNameFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterItem();
+    });
   }
   
   toggleSidebar(name): void {
@@ -86,7 +96,7 @@ export class ItemMovemnentComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "FromStoreID": this._ItemMovemnentService.ItemSearchGroup.get('StoreId').value.storeid || 1,
-      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || this.ItemId
+      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0
     }
     console.log(vdata);
     this._ItemMovemnentService.getItemMovementList(vdata).subscribe(data => {
@@ -101,44 +111,40 @@ export class ItemMovemnentComponent implements OnInit {
     });
   }
  
-  
-
-
   getTOStoreList() {
     this._ItemMovemnentService.getToStoreFromList().subscribe(data => {
       this.Store1List = data;
       // console.log(this.Store1List);
-      // this._ItemMovemnentService.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-    });
+     });
+  }
+
+  private filterItem() {
+    if (!this.ItemList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.ItemNameFilterCtrl.value;
+    if (!search) {
+      this.filteredItem.next(this.ItemList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredItem.next(
+      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   getItemListto() {
     this._ItemMovemnentService.getItemFormList().subscribe(data => {
       this.ItemList = data;
+      this.filteredItem.next(this.ItemList.slice());
       console.log(this.ItemList);
       
     });
   }
-
-  getOptionText(option) {
-    // this.ItemId = option.ItemId;
-    if (!option) return '';
-    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  }
-
-  
-  getSelectedObj(obj) {
-    debugger
-    // this.registerObj = obj;
-    // this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemId;
-    // this.BalanceQty = obj.BalanceQty;
-    // this.LandedRate = obj.LandedRate;
-    // if (this.BalanceQty > 0) {
-    //   this.getBatch();
-    // }
-  }
-
   // getFormStoreList() {
   //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
   //     this.FormStore = data;
@@ -146,16 +152,6 @@ export class ItemMovemnentComponent implements OnInit {
       
   //   });
   // }
-
-
-  getPharItemList() {
-   
-      this._ItemMovemnentService.getItemFormList().subscribe(data => {
-        this.filteredOptions = data;
-      
-      });
-    
-  }
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -167,6 +163,7 @@ export class ItemMovemnentComponent implements OnInit {
       this._ItemMovemnentService.ItemSearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+  
 }
 
 
