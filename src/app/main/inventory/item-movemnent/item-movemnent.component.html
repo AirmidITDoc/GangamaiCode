@@ -65,7 +65,7 @@
                                 </mat-select>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
+                        <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ItemName</mat-label>
                                 <mat-select formControlName="ItemID" name="ItemID" >
                                     <mat-option></mat-option>
@@ -73,8 +73,28 @@
                                         {{m.ItemName}}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field> 
 
+
+
+                            <!-- <mat-form-field appearance="outline">
+                            <input type="text" name="ItemID" formControlName="ItemID"
+                                placeholder="Item Name (enter 2 char) " matInput [matAutocomplete]="auto"
+                                (input)="getItemListto()">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                class="sale-auto-complete" (optionSelected)='getSelectedObj($event.option.value)'>
+                                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                    <span>{{option.ItemName}}</span>
+                                    </mat-option>
+                            </mat-autocomplete>
+                           
+                        </mat-form-field> -->
 
                             <div style="margin-top: 10px;">
                                 <button mat-raised-button class="clearbutton" matTooltip="close">

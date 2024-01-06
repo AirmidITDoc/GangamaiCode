@@ -115,7 +115,9 @@ export class CanteenSalesComponent implements OnInit {
   // }
 
   getItemDetailList(row) {
-    console.log(row);
+
+    
+    
     this.sIsLoading = 'save';
     this.dsItemDetTable2.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
@@ -132,18 +134,25 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   addChargList(row) {
+    debugger
+
     this.chargeslist.push(
       {
         ItemID: row.ItemID,
         ItemName: row.ItemName,
-        Price: row.price || 0
+        Price: row.price || 0,
+        Qty: row.Qty || 1
       });
     this.sIsLoading = '';
      console.log(this.chargeslist);
     this.dsItemDetTable2.data = this.chargeslist;
+    // this.dsItemDetTable2.data['Qty']=1; 
   }
+
+
  RQty:any=0;
   calculateTotalAmt(contact,Qty) {
+    debugger
       this.RQty = parseInt(Qty);
       const total = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);
        contact.Amount = total;
@@ -200,12 +209,14 @@ export class ItemTable1List {
   ItemName:string;
   Code: Number;
   Price:number;
+  Qty:number;
  
   constructor(ItemTable1List) {
     {
       this.Code = ItemTable1List.Code || 0;
       this.Price = ItemTable1List.Price || 0;
       this.ItemName = ItemTable1List.ItemName || "";
+      this.Qty = ItemTable1List.Qty || "";
     }
   }
 }
