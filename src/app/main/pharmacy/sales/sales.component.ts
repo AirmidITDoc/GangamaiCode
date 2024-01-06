@@ -2490,7 +2490,7 @@ debugger
       contact.IGSTAmt = 0;
       contact.PurchaseRate = this.PurchaseRate,
       contact.PurTotAmt = this.PurTotAmt,
-      contact.MarginAmt = 0;
+      contact.MarginAmt = 0
     }
 
    

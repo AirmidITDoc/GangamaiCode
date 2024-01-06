@@ -515,7 +515,7 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number">
+                                            <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number" autocomplete="off">
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container>
@@ -723,7 +723,7 @@
                                     <div>
                                         <mat-form-field appearance="outline" style="width: 180px;">
                                             <mat-label>Net Amount</mat-label>
-                                            <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt" readonly>
+                                            <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt" readonly required>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 180px;">

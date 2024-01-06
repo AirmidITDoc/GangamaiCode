@@ -502,12 +502,18 @@ export class SalesReturnComponent implements OnInit {
   }
 
   onSave() {
+    debugger
+    if(this.FinalTotalAmount !=0  && this.FinalTotalAmount !=null && this.FinalTotalAmount !='NaN' && this.selectedssaleDetailList.data.length > 0 ){
     if (this.PaymentType=='Paid') {
       this.onCashOnlinePaySave()
     }
     else if (this.PaymentType=='Credit') {
       this.onCreditpaySave()
     }
+  }
+  else{
+    Swal.fire("Chk Return Amount and Item List !")
+  }
   }
 
   onCreditpaySave() {
