@@ -799,8 +799,8 @@ export class OpPaymentNewComponent implements OnInit {
   
     this.Paymentobj['BillNo'] = this.PatientHeaderObj.billNo;
     this.Paymentobj['ReceiptNo'] = '';
-    this.Paymentobj['PaymentDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') ||this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') ||this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+    this.Paymentobj['PaymentDate'] =  this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+    this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
     // if (this.patientDetailsFormGrp.get("paymentType1").value == "cash") {
     //   Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
     // } else {
