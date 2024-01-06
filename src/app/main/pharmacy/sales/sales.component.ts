@@ -2476,9 +2476,24 @@ debugger
     }
     else {
       Swal.fire("Please enter Qty!!")
+      
+      contact.GSTAmount =0;
+      contact.TotalMRP = 0
+      contact.DiscAmt = 0,
+      contact.NetAmt = 0;
+      contact.RoundNetAmt = 0;
+      contact.StockId = this.StockId,
+      contact.VatAmount = 0;
+      contact.LandedRateandedTotal = 0;
+      contact.CGSTAmt = 0;
+      contact.SGSTAmt = 0;
+      contact.IGSTAmt = 0;
+      contact.PurchaseRate = this.PurchaseRate,
+      contact.PurTotAmt = this.PurTotAmt,
+      contact.MarginAmt = 0;
     }
 
-    this.getDiscountCellCal(contact,contact.DiscPer)
+   
 
     // this.DiscOld=contact.DiscPer;
     this.ItemFormreset();
