@@ -2446,7 +2446,7 @@ debugger
 
   getCellCalculation(contact, Qty) {
     debugger
-    if (contact.Qty !== 0 || contact.Qty == '') {
+    if (contact.Qty != 0 && contact.Qty != null) {
       console.log(contact.Qty);
       this.BalChkList = [];
       this.StoreId = this._loggedService.currentUserValue.user.storeId
@@ -2512,7 +2512,7 @@ debugger
           contact.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
           contact.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);  //this.TotalMRP || 0,
           contact.DiscAmt = DiscAmt || 0,
-          contact.NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
+          contact.NetAmt =NetAmt,// (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
           contact.RoundNetAmt = Math.round(NetAmt),
           contact.StockId = this.StockId,
           contact.VatAmount = this.GSTAmount,
