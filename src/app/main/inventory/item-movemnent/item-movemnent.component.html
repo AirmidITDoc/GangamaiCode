@@ -65,7 +65,7 @@
                                 </mat-select>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ItemName</mat-label>
                                 <mat-select formControlName="ItemID" name="ItemID" >
                                     <mat-option></mat-option>
@@ -73,9 +73,25 @@
                                         {{m.ItemName}}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field> -->
+ 
 
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Item Name</mat-label>
+                                <mat-select formControlName="ItemID" placeholder="search Item"  #singleSelect>
+                                  <mat-option>
+                                    <ngx-mat-select-search [formControl]="ItemNameFilterCtrl" [placeholderLabel]="'Search'"
+                                      [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                  </mat-option>
+                                  <mat-option *ngFor="let element of filteredItem | async" [value]="element">
+                                     {{element.ItemName }}
+                                  </mat-option>
+            
+                                </mat-select>
+            
+                              </mat-form-field>
 
+                            
                             <div style="margin-top: 10px;">
                                 <button mat-raised-button class="clearbutton" matTooltip="close">
                                     <mat-icon class="cleariconbutton">close</mat-icon>
@@ -113,7 +129,7 @@
                                     <div class="spinner-border text-danger"></div>
 
                                 </div>
-                                <mat-table class="table1" matSort [dataSource]="dsItemMovement"
+                                <mat-table class="table" matSort [dataSource]="dsItemMovement"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="No">
@@ -184,7 +200,7 @@
 
                                     <ng-container matColumnDef="IQty">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            I Qty </mat-header-cell>
+                                            Issue Qty </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.IssueQty}}
                                         </mat-cell>

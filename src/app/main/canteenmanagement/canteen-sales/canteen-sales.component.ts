@@ -147,7 +147,8 @@ export class CanteenSalesComponent implements OnInit {
         ItemID: row.ItemID,
         ItemName: row.ItemName,
         Price: row.price || 0,
-        Qty: row.Qty || 1
+        Qty: row.Qty || 1,
+        Amount : 0
       });
     this.sIsLoading = '';
      console.log(this.chargeslist);
@@ -191,6 +192,12 @@ totalAmt:any=0;
    
     
   // }
+  calculateTotal(contact,Qty) {
+    contact.Amount = contact.Price * contact.Qty;
+    console.log(contact.Price);
+      console.log(contact.Qty);
+      //console.log(total);
+  }
  
 
 

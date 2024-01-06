@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { ReplaySubject, Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-movemnent',
@@ -39,7 +42,7 @@ export class ItemMovemnentComponent implements OnInit {
   StoreList: any = []; 
   sIsLoading: string = '';
   isLoading = true;
-
+  isItemIdSelected: boolean = false;
 
  
   dsItemMovement = new MatTableDataSource<ItemMovementList>();
@@ -56,6 +59,10 @@ export class ItemMovemnentComponent implements OnInit {
  
   ) { }
 
+  public ItemNameFilterCtrl: FormControl = new FormControl();
+  public filteredItem: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
+
   ngOnInit(): void {
     this.getTOStoreList();
     // this.getItemMovement();
@@ -63,7 +70,11 @@ export class ItemMovemnentComponent implements OnInit {
      this.gePharStoreList();
     //  this.getFormStoreList();
      
-     
+    this.ItemNameFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterItem();
+    });
   }
   
   toggleSidebar(name): void {
@@ -98,31 +109,41 @@ export class ItemMovemnentComponent implements OnInit {
     });
   }
  
-  
-
-
   getTOStoreList() {
     this._ItemMovemnentService.getToStoreFromList().subscribe(data => {
       this.Store1List = data;
       // console.log(this.Store1List);
-      // this._ItemMovemnentService.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
-    });
+     });
+  }
+
+  private filterItem() {
+    if (!this.ItemList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.ItemNameFilterCtrl.value;
+    if (!search) {
+      this.filteredItem.next(this.ItemList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredItem.next(
+      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   getItemListto() {
     this._ItemMovemnentService.getItemFormList().subscribe(data => {
       this.ItemList = data;
+      this.filteredItem.next(this.ItemList.slice());
       console.log(this.ItemList);
       
     });
   }
-  // getFormStoreList() {
-  //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
-  //     this.FormStore = data;
-  //     // console.log(this.FormStore);
-      
-  //   });
-  // }
+ 
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -134,6 +155,7 @@ export class ItemMovemnentComponent implements OnInit {
       this._ItemMovemnentService.ItemSearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+  
 }
 
 

@@ -185,9 +185,10 @@ export class CurrentStockComponent implements OnInit {
     var vdata = {
       "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0     
      }
     console.log(vdata);
+ //   this.Fromdate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") 
     this._CurrentStockService.getItemWiseStockListPrint(vdata).subscribe(data => {
       this.reportPrintObjList = data as ItemWiseStockList[];
     
@@ -236,6 +237,7 @@ export class CurrentStockComponent implements OnInit {
   
       popupWin.document.close();
     }
+  
   
 }
  
