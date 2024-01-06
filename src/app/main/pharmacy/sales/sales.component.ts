@@ -2473,24 +2473,19 @@ debugger
         (error) => {
           Swal.fire("No Item Found!!")
         });
+        this.getDiscountCellCal(contact,contact.DiscPer)
     }
     else {
       Swal.fire("Please enter Qty!!")
+      this.tblCalucation(contact,contact.Qty)
     }
-
-    this.getDiscountCellCal(contact,contact.DiscPer)
-
     // this.DiscOld=contact.DiscPer;
     this.ItemFormreset();
   }
 
   tblCalucation(contact,Qty){
-
-    debugger
     let TotalMRP;
-
-
-      this.RQty = parseInt(contact.Qty);
+      this.RQty = parseInt(contact.Qty) || 1;
       if (this.RQty && contact.UnitMRP) {
         TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
         let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
