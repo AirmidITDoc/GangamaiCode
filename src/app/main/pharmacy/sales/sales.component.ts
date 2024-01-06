@@ -1877,9 +1877,9 @@ loadingarry:any=[];
   onCashOnlinePaySave() {
     
     let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    // console.log(CurrDate)
+    
     let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
-    // console.log(dateobj)
+    
     if(CurrDate == dateobj){
     
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
@@ -1978,27 +1978,7 @@ loadingarry:any=[];
     cal_GSTAmount_Sales['salesID'] = 0;
 
     let PaymentInsertobj = {};
-    // if (this.ItemSubform.get('CashPay').value == 'Other') {
-    //   this.getCashObj('cash');
-    //   this.getChequeObj('cheque');
-    //   this.getCardObj('card');
-    //   this.getNeftObj('neft');
-    //   this.getUpiObj('upi');
-
-    //   PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-    //   PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-    //   PaymentInsertobj['AdvanceUsedAmount'] = 0;
-    //   PaymentInsertobj['AdvanceId'] = 0;
-    //   PaymentInsertobj['RefundId'] = 0;
-    //   PaymentInsertobj['TransactionType'] = 4;
-    //   PaymentInsertobj['Remark'] = ""
-    //   PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    //   PaymentInsertobj['IsCancelled'] = 0;
-    //   PaymentInsertobj['IsCancelledBy'] = 0;
-    //   PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
-    //   PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
-    //   PaymentInsertobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-    // } else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
+   
       PaymentInsertobj['BillNo'] = 0,
       PaymentInsertobj['ReceiptNo'] = '',
       PaymentInsertobj['PaymentDate'] =   this.dateTimeObj.date;
@@ -2029,39 +2009,7 @@ loadingarry:any=[];
       PaymentInsertobj['PayTMAmount'] = 0,
       PaymentInsertobj['PayTMTranNo'] = '',
       PaymentInsertobj['PayTMDate'] = '01/01/1900'
-    // } else if (this.ItemSubform.get('CashPay').value == 'Online') {
-    //   // let Paymentobj = {};
-    //   PaymentInsertobj['BillNo'] = 0,
-    //   PaymentInsertobj['ReceiptNo'] = '',
-    //   PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-    //   PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-    //   PaymentInsertobj['CashPayAmount'] = 0;
-    //   PaymentInsertobj['ChequePayAmount'] = 0,
-    //   PaymentInsertobj['ChequeNo'] = 0,
-    //   PaymentInsertobj['BankName'] = '',
-    //   PaymentInsertobj['ChequeDate'] = '01/01/1900',
-    //   PaymentInsertobj['CardPayAmount'] = 0,
-    //   PaymentInsertobj['CardNo'] = '',
-    //   PaymentInsertobj['CardBankName'] = '',
-    //   PaymentInsertobj['CardDate'] = '01/01/1900',
-    //   PaymentInsertobj['AdvanceUsedAmount'] = 0;
-    //   PaymentInsertobj['AdvanceId'] = 0;
-    //   PaymentInsertobj['RefundId'] = 0;
-    //   PaymentInsertobj['TransactionType'] = 4;
-    //   PaymentInsertobj['Remark'] = '',
-    //   PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    //   PaymentInsertobj['IsCancelled'] = 0;
-    //   PaymentInsertobj['IsCancelledBy'] = 0;
-    //   PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-    //   PaymentInsertobj['OPD_IPD_Type'] = 3;
-    //   PaymentInsertobj['NEFTPayAmount'] = 0;
-    //   PaymentInsertobj['NEFTNo'] = '',
-    //   PaymentInsertobj['NEFTBankMaster'] = '',
-    //   PaymentInsertobj['NEFTDate'] = "01/01/1900",
-    //   PaymentInsertobj['PayTMAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt,
-    //   PaymentInsertobj['PayTMTranNo'] = this.ItemSubform.get('referanceNo').value || 0,
-    //   PaymentInsertobj['PayTMDate'] = this.dateTimeObj.date;
-    // }
+   
 
     let submitData = {
       "salesInsert": SalesInsert,
@@ -2419,7 +2367,7 @@ loadingarry:any=[];
   }
 
   getDiscountCellCal(contact,DiscPer){
-
+debugger
 // let DiscOld=DiscPer;
     let DiscAmt;
     let TotalMRP=contact.TotalMRP;
@@ -2497,7 +2445,7 @@ loadingarry:any=[];
 
 
   getCellCalculation(contact, Qty) {
-    
+    debugger
     if (contact.Qty !== 0 || contact.Qty == '') {
       console.log(contact.Qty);
       this.BalChkList = [];
@@ -2530,21 +2478,23 @@ loadingarry:any=[];
       Swal.fire("Please enter Qty!!")
     }
 
-    this.DiscOld=contact.DiscPer;
+    this.getDiscountCellCal(contact,contact.DiscPer)
+
+    // this.DiscOld=contact.DiscPer;
     this.ItemFormreset();
   }
 
   tblCalucation(contact,Qty){
 
-    
+    debugger
     let TotalMRP;
 
 
       this.RQty = parseInt(contact.Qty);
       if (this.RQty && contact.UnitMRP) {
         TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
-        this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-        let v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+        let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+        let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
         this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
         let NetAmt 
         let DiscAmt
@@ -2561,12 +2511,12 @@ loadingarry:any=[];
 
           contact.GSTAmount = (((contact.UnitMRP) * (contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
           contact.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);  //this.TotalMRP || 0,
-          contact.DiscAmt = this.DiscAmt || 0,
+          contact.DiscAmt = DiscAmt || 0,
           contact.NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
           contact.RoundNetAmt = Math.round(NetAmt),
           contact.StockId = this.StockId,
           contact.VatAmount = this.GSTAmount,
-          contact.LandedRateandedTotal = this.LandedRateandedTotal,
+          contact.LandedRateandedTotal = LandedRateandedTotal,
           contact.CGSTAmt = this.CGSTAmt,
           contact.SGSTAmt = this.SGSTAmt,
           contact.IGSTAmt = this.IGSTAmt,
