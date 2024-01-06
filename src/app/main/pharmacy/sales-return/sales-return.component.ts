@@ -502,7 +502,6 @@ export class SalesReturnComponent implements OnInit {
   }
 
   onSave() {
-    debugger
     if(this.FinalTotalAmount !=0  && this.FinalTotalAmount !=null && this.FinalTotalAmount !='NaN' && this.selectedssaleDetailList.data.length > 0 ){
     if (this.PaymentType=='Paid') {
       this.onCashOnlinePaySave()
@@ -633,7 +632,7 @@ export class SalesReturnComponent implements OnInit {
   onCashOnlinePaySave() {
 
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] =   this.dateTimeObj.date;
+    salesReturnHeader['Date'] = this.dateTimeObj.date;
     salesReturnHeader['Time'] = this.dateTimeObj.time;
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
@@ -761,7 +760,7 @@ export class SalesReturnComponent implements OnInit {
         PaymentInsertobj['AdvanceUsedAmount'] = 0;
         PaymentInsertobj['AdvanceId'] = 0;
         PaymentInsertobj['RefundId'] = 0;
-        PaymentInsertobj['TransactionType'] = 4;
+        PaymentInsertobj['TransactionType'] = 5;
         PaymentInsertobj['Remark'] = '',
         PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
         PaymentInsertobj['IsCancelled'] = 0;
