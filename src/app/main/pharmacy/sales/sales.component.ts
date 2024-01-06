@@ -300,6 +300,7 @@ showTable: boolean = false
   RegId: any = '';
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
+  newDateTimeObj: any = {};
   constructor(
     public _salesService: SalesService,
     public _matDialog: MatDialog,
@@ -351,8 +352,6 @@ showTable: boolean = false
     this.getBankNameList3();
     this.getBankNameList4();
     this.getDraftorderList();
-
-
   }
 
  
@@ -1876,20 +1875,24 @@ loadingarry:any=[];
 
   onCashOnlinePaySave() {
     
-    let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+    // let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
     
-    let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
+    // let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
     
-    if(CurrDate == dateobj){
-    
+    // if(CurrDate == dateobj){
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
+    console.log(this.newDateTimeObj);
+
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
     if (this.ItemSubform.get('ConcessionId').value)
       ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
     let SalesInsert = {};
-    SalesInsert['Date'] = this.dateTimeObj.date;
-    SalesInsert['time'] = this.dateTimeObj.time;
+    SalesInsert['Date'] = this.newDateTimeObj.date;
+    SalesInsert['time'] = this.newDateTimeObj.time;
 
     if (this.ItemSubform.get('PatientType').value == 'External') {
       SalesInsert['oP_IP_Type'] = 2;
@@ -1981,8 +1984,8 @@ loadingarry:any=[];
    
       PaymentInsertobj['BillNo'] = 0,
       PaymentInsertobj['ReceiptNo'] = '',
-      PaymentInsertobj['PaymentDate'] =   this.dateTimeObj.date;
-      PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
+      PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
+      PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time; //  this.dateTimeObj.time;
       PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
       PaymentInsertobj['ChequePayAmount'] = 0,
       PaymentInsertobj['ChequeNo'] = 0,
@@ -2052,11 +2055,10 @@ loadingarry:any=[];
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
-    }
+    // }
   }
   onSavePayOption() {
 
- 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] =  this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -2073,10 +2075,10 @@ loadingarry:any=[];
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      let dateobj=this.datePipe.transform( result.submitDataPay.ipPaymentInsert.PaymentDate, 'MM/dd/yyyy')
+      // let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+      // let dateobj=this.datePipe.transform( result.submitDataPay.ipPaymentInsert.PaymentDate, 'MM/dd/yyyy')
       
-      if(CurrDate == dateobj){
+      // if(CurrDate == dateobj){
     //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
     // {
       if (result?.IsSubmitFlag == true) {
@@ -2092,9 +2094,13 @@ loadingarry:any=[];
           if (this.ItemSubform.get('ConcessionId').value)
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
+            let nowDate = new Date();
+            let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
+
           let SalesInsert = {};
-          SalesInsert['Date'] =  this.dateTimeObj.date;
-          SalesInsert['time'] = this.dateTimeObj.time;
+          SalesInsert['Date'] =  this.newDateTimeObj.date;
+          SalesInsert['time'] = this.newDateTimeObj.time;
 
           if (this.ItemSubform.get('PatientType').value == 'External') {
             SalesInsert['oP_IP_Type'] = 2;
@@ -2231,7 +2237,7 @@ loadingarry:any=[];
         }
       }
     
-    }
+    // }
       // else{
       //   Swal.fire("Plzc hk Payment Date !");
       // }
