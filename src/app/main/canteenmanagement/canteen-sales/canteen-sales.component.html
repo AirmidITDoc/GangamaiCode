@@ -167,94 +167,62 @@
                                         <div style="width: 41%;padding: 0px 10px 0 10px;">
                                             <div>
 
-                                                <mat-table #table2 class="table2" matSort [dataSource]="dsItemDetTable2"
-                                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                              
+                                                <mat-table class="table2" matSort [dataSource]="dsItemDetTable2"
+                                                [@animateStagger]="{value:'100'}" style="overflow:auto;">
+                
+                                              
+                                                <ng-container matColumnDef="ItemName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ItemName}}
+                                                    </mat-cell>
+                                                </ng-container>
+                
+                                                <ng-container matColumnDef="Price">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Price}}
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                    <ng-container matColumnDef="ItemName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            ItemName </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.ItemName}}
-                                                        </mat-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="Price">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            Price</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.Price }}
-                                                        </mat-cell>
-                                                    </ng-container>
-
-
-
-                                                    <!-- <ng-container matColumnDef="Qty">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            Qty</mat-header-ceppearance="legacy">
-                                                                <input matInput [(ngModel)]="contact.Qty"
-                                                                    placeholder="Enter Qty"
-                                                                    (keyup)="calculateTotalAmt(contact)"
-                                                                    #Qty type="number">
-                                                            </mat-form-fll>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            <mat-form-field aield>
-                                                        </mat-cell>
-                                                    </ng-container> -->
-                                                    <!-- <ng-container matColumnDef="Qty">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            Qty</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.Qty }}
-                                                        </mat-cell>
-                                                    </ng-container> -->
-
-                                                    <ng-container matColumnDef="Qty">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" >
-                                                            <input matInput [(ngModel)]="contact.Qty" #Qty type="number"
-                                                            (keyup)="calculateTotal(contact,contact.Qty)" >
-                                                        </mat-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="Amount">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            Amount</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.Amount}}
-                                                        </mat-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="loading">
-                                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                                            style="display: none;">
-                                                        </mat-header-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="noData">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            no data found...
-                                                        </mat-footer-cell>
-                                                    </ng-container>
-
-
-                                                    <mat-header-row class="accent"
-                                                        *matHeaderRowDef="displayedColumns1; sticky: true">
-                                                    </mat-header-row>
-                                                    <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                        appHighlight></mat-row>
-                                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                    </mat-footer-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                        [ngClass]="{'hide':!(dsItemDetTable2!=null && dsItemDetTable2.data.length==0)}">
-                                                    </mat-footer-row>
-
-                                                </mat-table>
-                                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                                    showFirstLastButtons>
-                                                </mat-paginator>
+                                                <!-- <ng-container matColumnDef="Qty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Qty}}
+                                                    </mat-cell>
+                                                </ng-container> -->
+                                                
+                                                <ng-container matColumnDef="Qty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy" formControlName="Qty">
+                                                            <input matInput [(ngModel)]="contact.Qty" (keyup)="calculateTotal(contact,contact.Qty)"  type="number">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                </ng-container>
+                
+                                                <ng-container matColumnDef="Amount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Amount
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Amount}}
+                                                    </mat-cell>
+                                                </ng-container>
+                
+                                               
+                
+                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns1;"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                               
+                                              
+                                            </mat-table>
 
 
                                             </div>

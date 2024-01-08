@@ -162,6 +162,7 @@ export class SalesComponent implements OnInit {
 DraftID:any;
   DiffNetRoundAmt:any=0;
   roundoffAmt: any;
+  Functionflag=0;
 
   patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
@@ -1144,21 +1145,22 @@ showTable: boolean = false
 
 // to handel functio keys
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 117) {
+    // f10
+    if (event.keyCode === 121) {
         this.Formreset();
     }
-
-    if (event.keyCode === 115) {
+  // f8
+    if (event.keyCode === 119) {
       this. onSave();
   }
-  
-if (event.keyCode === 114) {
-  
+    // f9
+if (event.keyCode === 120) {
+  this.Functionflag=1
   this. onSave();
   
-  if(this.GSalesNo !=0){
-  this. getWhatsappshare();
-  }
+  // if(this.GSalesNo !=0){
+  // this. getWhatsappshare();
+  // }
 }
 
 }
@@ -1166,6 +1168,7 @@ if (event.keyCode === 114) {
 
 loadingarry:any=[];
   getWhatsappshare() {
+    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 0,
@@ -2029,8 +2032,14 @@ loadingarry:any=[];
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        debugger
         this.GSalesNo=response;
         this.getPrint3(response);
+        if( this.GSalesNo !=0){
+          if(this.Functionflag ==1){
+            this. getWhatsappshare();
+            }
+          }
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
@@ -2204,6 +2213,11 @@ loadingarry:any=[];
               });
               this.GSalesNo=response;
               this.getPrint3(response);
+              if( this.GSalesNo !=0){
+                if(this.Functionflag ==1){
+                  this. getWhatsappshare();
+                  }
+                }
               this.Itemchargeslist = [];
               this._matDialog.closeAll();
 
@@ -2658,6 +2672,11 @@ debugger
           if (result.isConfirmed) {
             this.GSalesNo=response;
             this.getPrint3(response);
+            if( this.GSalesNo !=0){
+              if(this.Functionflag ==1){
+                this. getWhatsappshare();
+                }
+              }
             this.Itemchargeslist = [];
             this._matDialog.closeAll();
           }

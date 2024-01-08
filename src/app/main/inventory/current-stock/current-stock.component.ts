@@ -61,7 +61,7 @@ export class CurrentStockComponent implements OnInit {
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
   dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
-
+  printflag:boolean=false;
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -183,7 +183,7 @@ export class CurrentStockComponent implements OnInit {
 
   _loaderShow:boolean = true;
   getPrint() {
-
+    this.printflag = true;
     var vdata = {
       "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -202,10 +202,10 @@ export class CurrentStockComponent implements OnInit {
 
         setTimeout(() => {
           this.print3();
-          this._loaderShow = false;
+         
         }, 1000);
     })
-   
+    this.printflag = false;
   }    
     
     print3() {

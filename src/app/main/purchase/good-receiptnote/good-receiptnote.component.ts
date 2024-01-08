@@ -801,7 +801,7 @@ debugger
       console.log(element);
 
       let grnDetailSaveObj = {};
-      grnDetailSaveObj['grnDetID'] = 0;
+    //  grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemID;
       grnDetailSaveObj['uomId'] = element.UOMId;
