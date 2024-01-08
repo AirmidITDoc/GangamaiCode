@@ -2263,78 +2263,6 @@ loadingarry:any=[];
     );
   }
 
-  getTemplateTax2() {
-    // 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
-    this._salesService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
-      // ;
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        // console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
-        // <div style="display:flex;width:60px;margin-left:20px;">
-        //     <div>`+ i + `</div> 
-        // </div>
-
-        var strabc = `<hr style="border-color:white" >
-      <div style="display:flex;margin:8px 0">
-      <div style="display:flex;width:20px;margin-left:20px;">
-          <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-      </div>
-    
-      <div style="display:flex;width:90px;text-align:center;">
-      <div>`+ objreportPrint.HSNcode + `</div> 
-      </div>
-      <div style="display:flex;width:90px;text-align:center;">
-      <div>`+ objreportPrint.ManufShortName + `</div> 
-      </div>
-      <div style="display:flex;width:240px;text-align:left;margin-left:10px;">
-          <div>`+ objreportPrint.ItemName + `</div> 
-      </div>
-       <div style="display:flex;width:60px;text-align:left;">
-          <div>`+ objreportPrint.Qty + `</div> 
-      </div>
-      <div style="display:flex;width:90px;text-align:center;">
-      <div>`+ objreportPrint.BatchNo + `</div> 
-       </div>
-      <div style="display:flex;width:90px;text-align:left;margin-left:10px;">
-      <div>`+ this.datePipe.transform(objreportPrint.BatchExpDate, 'dd/MM/yyyy') + `</div> 
-      </div>
-      <div style="display:flex;width:80px;text-align:left;margin-left:20px;">
-      <div>`+ objreportPrint.UnitMRP + `</div> 
-      </div>
-      <div style="display:flex;width:100px;margin-left:10px;text-align:left;">
-          <div>`+ '₹' + objreportPrint.TotalAmount.toFixed(2) + `</div> 
-      </div>
-      </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      
-      setTimeout(() => {
-        this.print3();
-      }, 1000);
-    });
-
-
-  }
-
   print3() {
     let popupWin, printContents;
 
@@ -2414,44 +2342,7 @@ debugger
 
   }
 
-
-  // ValidationOfBalanceQty(contact) {
-  //   if (contact.Qty !== 0 || contact.Qty == '') {
-  //     console.log(contact.Qty);
-  //     this.BalChkList = [];
-  //     this.StoreId = this._loggedService.currentUserValue.user.storeId
-  //     let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-  //     // console.log(SelectQuery);
-  //     this._salesService.getchargesList(SelectQuery).subscribe(data => {
-  //       this.BalChkList = data;
-  //       // console.log(this.BalChkList);
-  //       if (this.BalChkList.length > 0) {
-  //         if (this.BalChkList[0].BalanceQty >= contact.Qty) {
-  //           // this.QtyBalchk = 1;
-  //           // console.log('222222')
-  //           this.tblCalucation(contact,contact.Qty)
-  //         }
-  //         else {
-  //           // this.QtyBalchk = 1;
-  //           Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
-  //           contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-  //           // console.log('222222  : ' + contact.Qty)
-  //           this.tblCalucation(contact,contact.Qty)
-  //         }
-  //       }
-  //     },
-  //       (error) => {
-  //         Swal.fire("No Item Found!!")
-  //       });
-  //   }
-  //   else {
-  //     Swal.fire("Please enter Qty!!")
-  //   }
-  // }
-
-
   getCellCalculation(contact, Qty) {
-    debugger
     if (contact.Qty != 0 && contact.Qty != null) {
       console.log(contact.Qty);
       this.BalChkList = [];
