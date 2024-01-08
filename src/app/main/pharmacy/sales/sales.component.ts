@@ -2177,8 +2177,7 @@ loadingarry:any=[];
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
             updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-              updateCurStkSales['stkID'] = element.StockId;
-
+            updateCurStkSales['stkID'] = element.StockId;
             updateCurStkSalestarr.push(updateCurStkSales);
           });
 
