@@ -1189,6 +1189,8 @@ export class ItemNameList {
   WOVatAmount: any;
   GrandTotalAmount:any;
   taxID: number;
+  HandlingCharges:number;
+  TransportCharges:number;
   
 
   /**
@@ -1235,7 +1237,8 @@ export class ItemNameList {
       this.WOTotalAmount = ItemNameList.WOTotalAmount || '';
       this.WoNetAmount = ItemNameList.WoNetAmount || '';
       this.WOVatAmount = ItemNameList.WOVatAmount || '';
-
+      this.HandlingCharges = ItemNameList.HandlingCharges || 0;
+      this.TransportCharges = ItemNameList.TransportCharges || 0;
     }
   }
 }

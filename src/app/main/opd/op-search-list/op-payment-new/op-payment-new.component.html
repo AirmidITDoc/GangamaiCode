@@ -203,7 +203,7 @@
                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo1">
+                                    <input matInput formControlName="referenceNo1" required>
                                 </mat-form-field>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex="16%" *ngIf="UpiFlag1">
@@ -266,7 +266,7 @@
                             <ng-container *ngIf="selectedPaymnet2 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo2">
+                                    <input matInput formControlName="referenceNo2" required>
                                     <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo2').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
@@ -333,7 +333,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="16%">
                                 <mat-label class="form-field-labels">Amount</mat-label>
-                                <input matInput formControlName="amount3" (keyup)="getBalanceAmt()" [(ngModel)]="amount3">
+                                <input matInput formControlName="amount3" (keyup)="getBalanceAmt()" [(ngModel)]="amount3" required>
                                 <mat-error *ngIf="patientDetailsFormGrp.get('amount3').hasError('required')">
                                     Required field cannot be left blank
                                 </mat-error>
@@ -414,7 +414,7 @@
                             <ng-container *ngIf="selectedPaymnet4 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo4">
+                                    <input matInput formControlName="referenceNo4" required>
                                     <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo4').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
@@ -485,7 +485,7 @@
                             <ng-container *ngIf="selectedPaymnet5 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label class="form-field-labels">Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo5">
+                                    <input matInput formControlName="referenceNo5" required>
                                     <mat-error *ngIf="patientDetailsFormGrp.get('referenceNo5').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>

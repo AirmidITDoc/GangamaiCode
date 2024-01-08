@@ -563,9 +563,9 @@ debugger
     updatePurchaseOrderHeaderObj['totCGSTAmt'] = 0;//this.GSTAmount || 0;
     updatePurchaseOrderHeaderObj['totSGSTAmt'] =  0;
     updatePurchaseOrderHeaderObj['totIGSTAmt'] = 0;
-    updatePurchaseOrderHeaderObj['transportChanges'] = 0;
-    updatePurchaseOrderHeaderObj['handlingCharges'] = 0;
-    updatePurchaseOrderHeaderObj['freightCharges'] = 0;
+    updatePurchaseOrderHeaderObj['transportChanges'] =  this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
+    updatePurchaseOrderHeaderObj['handlingCharges'] =  this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
+    updatePurchaseOrderHeaderObj['freightCharges'] =  this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     updatePurchaseOrderHeaderObj['purchaseId'] = this.registerObj.PurchaseID;
 
     
@@ -661,9 +661,9 @@ debugger
     purchaseHeaderInsertObj['totCGSTAmt'] = 0;
     purchaseHeaderInsertObj['totSGSTAmt'] = 0;
     purchaseHeaderInsertObj['totIGSTAmt'] = 0;
-    purchaseHeaderInsertObj['transportChanges'] = 0;
-    purchaseHeaderInsertObj['handlingCharges'] = 0;
-    purchaseHeaderInsertObj['freightCharges'] = 0;
+    purchaseHeaderInsertObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
+    purchaseHeaderInsertObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
+    purchaseHeaderInsertObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     purchaseHeaderInsertObj['purchaseId'] = 0;
 
     let InsertpurchaseDetailObj = [];
@@ -1051,11 +1051,13 @@ debugger
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
-  @ViewChild('Warranty') Warranty: ElementRef;
+  
   @ViewChild('Schedule') Schedule: MatSelect;
-
-  @ViewChild('OtherTax') OtherTax: ElementRef;
   @ViewChild('Remark') Remark: ElementRef;
+  @ViewChild('Warranty') Warranty: ElementRef;
+  @ViewChild('OtherTax') OtherTax: ElementRef;
+  @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
+  @ViewChild('TransportCharges') TransportCharges: ElementRef;
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
@@ -1148,6 +1150,18 @@ debugger
       // }, 300);
     }
   }
+  public onEnterHandlingcharge(event): void {
+    if (event.which === 13) {
+      this.TransportCharges.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
+    }
+  } 
+   public onEnterTransportcharge(event): void {
+    if (event.which === 13) {
+      this.Freight1.nativeElement.focus();
+      // if (this.DeliveryDate) this.DeliveryDate.focus();
+    }
+  }
   public onEnterFreight(event): void {
     if (event.which === 13) {
       this.Remark.nativeElement.focus();
@@ -1167,32 +1181,20 @@ debugger
       this.OtherTax.nativeElement.focus();
     }
   }
-
-  public onEnterSchedule(event): void {
-    if (event.which === 13) {
-      //if (this.Schedule) this.Schedule.focus();
-      this.OtherTax.nativeElement.focus();
-    }
-  }
-
   public onEnterOtherTax(event): void {
     if (event.which === 13) {
-      if (this.OtherTax) this.Schedule.focus();
+      this.OtherTax.nativeElement.focus();
      // this.Remark.nativeElement.focus();
     }
   }
+  // public onEnterSchedule(event): void {
+  //   if (event.which === 13) {
+  //     //if (this.Schedule) this.Schedule.focus();
+  //     this.OtherTax.nativeElement.focus();
+  //   }
+  // }
 
-
-
- 
-
-
-
-
-
-
- 
-
+  
   onEdit(contact){
 
     console.log(contact)
