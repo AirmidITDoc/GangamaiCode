@@ -16,6 +16,7 @@ export class DashboardService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      StoreId:''
     });
   }
 
@@ -46,7 +47,12 @@ export class DashboardService {
   public getPharDashboardPeichart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
-
+  public getBarchartData() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_pharlast3MonthSalesSummaryDashboard", {})
+  }
+  public getPharmStoreList() {
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_PharStoreName", {})
+  }
 
 }
 
