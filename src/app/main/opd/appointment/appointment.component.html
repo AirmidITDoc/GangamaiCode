@@ -885,7 +885,18 @@
       <ng-template mat-tab-label>
         Document Upload
       </ng-template>
-
+      <div class="row mt-3 d-flex justify-content-center">
+        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8">
+          <div class="upload-file d-flex justify-content-center align-items-center">
+            <img class="responsive" [src]="sanitizeImagePreview" *ngIf="sanitizeImagePreview" />
+            <input #fileInput type="file" accept="image/*" (change)="onImageChange($event)" />
+            <div class="d-flex flex-column justify-content-center align-items-center upload-file-zone" *ngIf="!sanitizeImagePreview">
+              <span class="lla-no-pic-grey lla-no-pic"> </span>
+              <span class="upload-text coms-m-t-5">Add Picture</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div fxLayout="column" class="upload-body">
 
         <form [formGroup]="personalFormGroup">
@@ -954,11 +965,12 @@
                 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column"
                   fxLayout.lt-md="column">
                   <!-- <label class="file-lable" (click)="showOptions = true;">Upload Image</label> -->
+                  <!-- "onImageFileChange($event)" -->
                   <div class="upload-option-div">
                     <div class="img-container">
                       <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple name="file"
-                        id="file" class="inputfile" (change)="onImageFileChange($event)" style="margin-right: 10px;" />
-
+                        id="file" class="inputfile" (change)="onImageChange($event)" style="margin-right: 10px;" />
+                        
                       <label class="file-lable1" for="file">
                         <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
                         Browse
@@ -973,7 +985,7 @@
                     </div>
                   </div>
                   <div>
-                    <button class="upload-btn" [disabled]="images.length == 0" (click)="onSubmitImgFiles()">Upload
+                    <button class="upload-btn" [disabled]="imgDataSource.data.length == 0" (click)="onSubmitImgFiles()">Upload
                       Images</button>
                   </div>
                 </div>

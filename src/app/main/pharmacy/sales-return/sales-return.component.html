@@ -515,7 +515,7 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number">
+                                            <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number" autocomplete="off">
                                         </mat-form-field>
                                     </mat-cell>
                                 </ng-container>
@@ -723,7 +723,7 @@
                                     <div>
                                         <mat-form-field appearance="outline" style="width: 180px;">
                                             <mat-label>Net Amount</mat-label>
-                                            <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt" readonly>
+                                            <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt" readonly required>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 180px;">
@@ -735,11 +735,11 @@
                                         <mat-form-field appearance="outline" style="width: 180px;">
                                             <mat-label>Return Amount</mat-label>
                                             <input matInput formControlName="ReturnAmt" [(ngModel)]="FinalTotalAmount"
-                                                readonly>
+                                                readonly required>
                                         </mat-form-field>
 
                                         <button class="next-btn" (click)="onSave()" style="margin-left:200px;"
-                                            [disabled]="FinalReturnform.invalid">Save</button>
+                                            [disabled]="FinalReturnform.invalid || selectedssaleDetailList.data.length == 0">Save</button>
                                         <button class="footer-btn" (click)="onClose()">Reset</button>
                                     </div>
                                 </div>

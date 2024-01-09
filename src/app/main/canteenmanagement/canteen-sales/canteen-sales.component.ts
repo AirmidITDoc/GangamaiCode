@@ -128,43 +128,46 @@ export class CanteenSalesComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     this.sIsLoading = 'save';
     this.dsItemDetTable2.data = [];
-    if (this.chargeslist && this.chargeslist.length > 0) {
-      let duplicateItem = this.chargeslist.filter((con, index) => con.ItemID === row.ItemID);
-      if (duplicateItem && duplicateItem.length == 0) {
-        this.addChargList(row);
-        return;
-      }
-      this.sIsLoading = '';
-      this.dsItemDetTable2.data = this.chargeslist;
-    } else if (this.chargeslist && this.chargeslist.length == 0) {
+    // if (this.chargeslist && this.chargeslist.length > 0) {
+    //   let duplicateItem = this.chargeslist.filter((con, index) => con.ItemID === row.ItemID);
+    //   if (duplicateItem && duplicateItem.length == 0) {
+    //     this.addChargList(row);
+    //     return;
+    //   }
+    //   this.sIsLoading = '';
+    //   this.dsItemDetTable2.data = this.chargeslist;
+    // } else if (this.chargeslist && this.chargeslist.length == 0) {
       this.addChargList(row);
-    }
+    // }
   }
 
   addChargList(row) {
+    debugger
+    
     this.chargeslist.push(
       {
-        ItemID: row.ItemID,
+        // ItemID: row.ItemID,
         ItemName: row.ItemName,
         Price: row.price || 0,
-        Qty: row.Qty || 1
+        Qty:1,
+        Amount : 0
       });
     this.sIsLoading = '';
      console.log(this.chargeslist);
     this.dsItemDetTable2.data = this.chargeslist;
+   
   }
+
+
  RQty:any=0;
 totalAmt:any=0;
 
   calculateTotalAmt(contact,Qty) {
-
     debugger
       this.RQty = parseInt(Qty);
       const total = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);
        contact.Amount = total;
-      console.log(contact.Price);
-      console.log(this.RQty);
-      console.log(total);
+    
     }
   // // getCGSTAmt(element) {
   // //   let CGSTAmt;
@@ -191,6 +194,12 @@ totalAmt:any=0;
    
     
   // }
+  calculateTotal(contact,Qty) {
+    contact.Amount = contact.Price * contact.Qty;
+    console.log(contact.Price);
+      console.log(contact.Qty);
+      //console.log(total);
+  }
  
 
 
@@ -275,7 +284,7 @@ export class ItemTable1List {
 export class ItemDetTable2List {
  
   ItemName:string;
-  Qty: Number;
+  Qty: any;
   Price:number;
   Amount:number;
  

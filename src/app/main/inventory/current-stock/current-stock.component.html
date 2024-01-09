@@ -455,7 +455,7 @@
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumnsDayWise;"
                                                 class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                               appHighlight></mat-row>
+                                                appHighlight></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                             </mat-footer-row>
@@ -522,8 +522,10 @@
                                         <mat-form-field appearance="outline" style="margin-left: 2%;">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start1" placeholder="Start date" required>
-                                                <input matEndDate formControlName="end1" placeholder="End date" required>
+                                                <input matStartDate formControlName="start1" placeholder="Start date"
+                                                    required>
+                                                <input matEndDate formControlName="end1" placeholder="End date"
+                                                    required>
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -551,10 +553,14 @@
                                                 (click)="getItemWiseStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>&nbsp;&nbsp;&nbsp;
-                                            <button mat-raised-button matTooltip="Print"
+                                            <!-- <button mat-raised-button matTooltip="Print"
                                                 style="font-weight: bold;font-size: medium;" (click)="getPrint()"
                                                 [disabled]="_CurrentStockService.ItemWiseFrom.invalid">Print
-                                            </button>
+                                            </button> -->
+
+                                            <button class="next-btn" (click)="getPrint()"
+                                            style="margin-right: 8px; width: 80px;border-radius: 16px;"
+                                            [disabled]="printflag">Print</button>
 
                                         </div>
 
@@ -675,7 +681,9 @@
     </mat-tab>
 
 </mat-tab-group>
-
+<!-- 
+<div class="loading" *ngIf="_loaderShow">Loading</div>
+<i class="fa fa-spinner fa-spin fa-1x"></i> -->
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #ItemWiseStockTemplate>
 
     <div style="text-align: center;margin-bottom: 10px;">
@@ -695,7 +703,10 @@
             Item Wise Sales</h3>
     </div><br>
 
-
+    <div style="margin-top:2px;">
+        <div style="font-weight: bold;font-size:15px;margin-left:10px;padding:5px;">From Date : {{FromDate}} -- To Date
+            :{{Todate}}</div>
+    </div>
 
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
@@ -711,30 +722,39 @@
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
                     Package</td>
+
+                <td
+                    style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
+                    Date</td>
+
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
                     Received Qty</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Sales Qty</td>
+                    Issue To Dept. Qty</td>
                 <td
                     style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;">
-                    Current BalQty</td>
+                    Bal Qty</td>
             </tr>
             <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
                 <td style="border: 1px solid black;vertical-align: top;  text-align: right;
                 padding: 10px;height: 20px;">{{indx + 1}}</td>
                 <td style="border: 1px solid black;vertical-align: top; 
                 padding: 10px;height: 20px;">{{item?.ItemName}}</td>
-                <td style="border: 1px solid black;vertical-align: top;text-align: right;
+                <td style="border: 1px solid black;vertical-align: top;text-align: center;
                 padding: 10px;height: 20px;">{{item?.ConversionFactor}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                 <td style="border: 1px solid black;vertical-align: top; 
+                 padding: 10px;height: 20px;">{{item?.Date}}</td>
+               
+                <td style="border: 1px solid black;vertical-align: top; text-align: center;
                 padding: 10px;height: 20px;">{{item?.Received_Qty}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                <td style="border: 1px solid black;vertical-align: top; text-align: center;
                 padding: 10px;height: 20px;">{{item?.Sales_Qty}}</td>
-                <td style="border: 1px solid black;vertical-align: top; text-align: right;
+                <td style="border: 1px solid black;vertical-align: top; text-align: center;
                 padding: 10px;height: 20px;">{{item?.Current_BalQty}}</td>
             </tr>
         </tbody>
     </table>
 </div>
+<!-- </div> -->

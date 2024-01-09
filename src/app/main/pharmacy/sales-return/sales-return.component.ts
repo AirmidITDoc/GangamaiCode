@@ -30,7 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SalesReturnComponent implements OnInit {
   isLoadingStr: string = '';
   isLoading: String = '';
-
+  newDateTimeObj: any = {};
   @ViewChild('billSalesReturn') billSalesReturn:ElementRef;
   vStoreName: any;
 
@@ -490,30 +490,37 @@ export class SalesReturnComponent implements OnInit {
 
       });
       
-      this.selectedssaleDetailList.data = this.Itemselectedlist;
-      
-
+    this.selectedssaleDetailList.data = this.Itemselectedlist;
     this.OP_IP_Id = contact.OP_IP_ID;
     this.SalesDetId = contact.SalesDetId;
-    
   }
   onclickrow(contact) {
     Swal.fire("Row selected :" + contact)
   }
 
   onSave() {
-    if (this.PaymentType=='Paid') {
-      this.onCashOnlinePaySave()
+    if (this.FinalTotalAmount != 0 && this.FinalTotalAmount != null && this.FinalTotalAmount != 'NaN' && this.selectedssaleDetailList.data.length > 0) {
+      if (this.PaymentType == 'Paid') {
+        this.onCashOnlinePaySave()
+      }
+      else if (this.PaymentType == 'Credit') {
+        this.onCreditpaySave()
+      }
     }
-    else if (this.PaymentType=='Credit') {
-      this.onCreditpaySave()
+    else {
+      Swal.fire("Chk Return Amount and Item List !")
     }
   }
 
   onCreditpaySave() {
+
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
+
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] =  this.dateTimeObj.date;
-    salesReturnHeader['Time'] = this.dateTimeObj.time;
+    salesReturnHeader['Date'] = this.newDateTimeObj.date; 
+    salesReturnHeader['Time'] = this.newDateTimeObj.time;
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
     salesReturnHeader['OP_IP_Type'] = 2;
@@ -625,10 +632,13 @@ export class SalesReturnComponent implements OnInit {
   }
 
   onCashOnlinePaySave() {
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
 
     let salesReturnHeader = {};
-    salesReturnHeader['Date'] =   this.dateTimeObj.date;
-    salesReturnHeader['Time'] = this.dateTimeObj.time;
+    salesReturnHeader['Date'] = this.newDateTimeObj.date;
+    salesReturnHeader['Time'] = this.newDateTimeObj.time;
     salesReturnHeader['SalesId'] = this.SalesID;
     salesReturnHeader['OP_IP_ID'] = this.OP_IP_Id;
     salesReturnHeader['OP_IP_Type'] = 2;
@@ -711,38 +721,15 @@ export class SalesReturnComponent implements OnInit {
     // if (this._SalesReturnService.IndentSearchGroup.get('CashPay').value == 'Other') {
       let PatientHeaderObj = {};
 
-      PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      PatientHeaderObj['Date'] = this.newDateTimeObj.date; ;
       PatientHeaderObj['PatientName'] = this.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] = 2,// this.reportPrintObj.RegNo;
       PatientHeaderObj['NetPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
 
-
-      // let PaymentInsertobj = {};
-      // if (this.ItemSubform.get('CashPay').value == 'Other') {
-      //   this.getCashObj('cash');
-      //   this.getChequeObj('cheque');
-      //   this.getCardObj('card');
-      //   this.getNeftObj('neft');
-      //   this.getUpiObj('upi');
-  
-      //   PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-      //   PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
-      //   PaymentInsertobj['AdvanceUsedAmount'] = 0;
-      //   PaymentInsertobj['AdvanceId'] = 0;
-      //   PaymentInsertobj['RefundId'] = 0;
-      //   PaymentInsertobj['TransactionType'] = 4;
-      //   PaymentInsertobj['Remark'] = ""
-      //   PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      //   PaymentInsertobj['IsCancelled'] = 0;
-      //   PaymentInsertobj['IsCancelledBy'] = 0;
-      //   PaymentInsertobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
-      //   PaymentInsertobj['PaidAmt'] = this.patientDetailsFormGrp.get('paidAmountController').value;
-      //   PaymentInsertobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-      // } else if (this.ItemSubform.get('CashPay').value == 'CashPay') {
         PaymentInsertobj['BillNo'] = 0,
         PaymentInsertobj['ReceiptNo'] = '',
-        PaymentInsertobj['PaymentDate'] =   this.dateTimeObj.date;
-        PaymentInsertobj['PaymentTime'] = this.dateTimeObj.time;
+        PaymentInsertobj['PaymentDate'] =   this.newDateTimeObj.date; ;
+        PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time;
         PaymentInsertobj['CashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value || 0;
         PaymentInsertobj['ChequePayAmount'] = 0,
         PaymentInsertobj['ChequeNo'] = 0,
@@ -755,7 +742,7 @@ export class SalesReturnComponent implements OnInit {
         PaymentInsertobj['AdvanceUsedAmount'] = 0;
         PaymentInsertobj['AdvanceId'] = 0;
         PaymentInsertobj['RefundId'] = 0;
-        PaymentInsertobj['TransactionType'] = 4;
+        PaymentInsertobj['TransactionType'] = 5;
         PaymentInsertobj['Remark'] = '',
         PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
         PaymentInsertobj['IsCancelled'] = 0;
@@ -769,31 +756,6 @@ export class SalesReturnComponent implements OnInit {
         PaymentInsertobj['PayTMAmount'] = 0,
         PaymentInsertobj['PayTMTranNo'] = '',
         PaymentInsertobj['PayTMDate'] = '01/01/1900'
-    //   PaymentInsertobj['BillNo'] = 0,
-    //  // PaymentInsertobj['ReceiptNo'] = '',
-    //   PaymentInsertobj['PaymentDate'] = this.dateTimeObj.date;
-    //   PaymentInsertobj['PaymentTime'] =  this.dateTimeObj.time; //this.datePipe.transform(this.currentDate, 'hh:mm:ss'); 
-    //   PaymentInsertobj['CardPayAmount'] = 0,
-    //   PaymentInsertobj['CardNo'] = '',
-    //   PaymentInsertobj['CardBankName'] = '',
-    //   PaymentInsertobj['CardDate'] = "01/01/1900";
-    //   PaymentInsertobj['AdvanceUsedAmount'] = 0;
-    //   PaymentInsertobj['AdvanceId'] = 0;
-    //   PaymentInsertobj['RefundId'] = 0;
-    //   PaymentInsertobj['TransactionType'] = 5;
-    //   PaymentInsertobj['Remark'] = '',
-    //   PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    //   PaymentInsertobj['IsCancelled'] = 0;
-    //   PaymentInsertobj['IsCancelledBy'] = 0;
-    //   PaymentInsertobj['IsCancelledDate'] = "01/01/1900";
-    //   PaymentInsertobj['OPD_IPD_Type'] = 3;
-    //   PaymentInsertobj['NEFTPayAmount'] = 0,
-    //   PaymentInsertobj['NEFTNo'] = '',
-    //   PaymentInsertobj['NEFTBankMaster'] = '',
-    //   PaymentInsertobj['NEFTDate'] ="01/01/1900";
-    //   PaymentInsertobj['PayTMAmount'] = 0,
-    //   PaymentInsertobj['PayTMTranNo'] = '',
-    //   PaymentInsertobj['PayTMDate'] = "01/01/1900";
 
     let submitData = {
       "salesReturnHeader": salesReturnHeader,
