@@ -138,11 +138,15 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             style="color: white;">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"> 
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
                                             <button mat-icon-button matTooltip="View Image" > 
                                                 <mat-icon> insert_photo</mat-icon>
                                             </button>
                                         </mat-cell>
+                                        
                                        
                                     </ng-container>
 
@@ -160,8 +164,7 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onclickrow(contact)"
-                                        (click)="getIndentList(contact)" appHighlight></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"   appHighlight></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>

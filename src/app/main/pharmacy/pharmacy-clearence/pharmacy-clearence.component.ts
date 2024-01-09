@@ -39,7 +39,7 @@ export class PharmacyClearenceComponent implements OnInit {
   screenFromString = 'admission-form';
 
   
-  dsIssueTracker = new MatTableDataSource<_IssueTrackerList>();
+  dsIssueTracker = new MatTableDataSource<IssueTrackerList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -69,7 +69,7 @@ export class PharmacyClearenceComponent implements OnInit {
   getIssuTrackerList() {
     this.sIsLoading = 'loading-data';
      this._IssueTracker.getIssuTrackerList().subscribe(data => {
-     this.dsIssueTracker.data = data as _IssueTrackerList[];
+     this.dsIssueTracker.data = data as IssueTrackerList[];
      console.log(this.dsIssueTracker.data)
      this.dsIssueTracker.sort = this.sort;
      this.dsIssueTracker.paginator = this.paginator;
@@ -93,9 +93,24 @@ export class PharmacyClearenceComponent implements OnInit {
     });
   }
 
+  onEdit(contact) {
+    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
+      {
+        maxWidth: "75vw",
+        height: '70%',
+        width: '100%',
+        data: {
+          Obj: contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+
 }
 
-export class _IssueTrackerList {
+export class IssueTrackerList {
  // IssueTrackerId: Number;
   IssueRaisedDate: number;
   IssueRaisedTime:number;
@@ -104,23 +119,24 @@ export class _IssueTrackerList {
   UploadImagePath: any;
   ImageName:any;
   IssueStatus:any;
-  IssueAssigned: any;
+  IssueAssigned: any
   AddedBy:any;
   AddedDatetime:any;
-   
-  constructor(_IssueTrackerList) {
+  IssueRaised:any;
+  constructor(IssueTrackerList) {
     {
       //this.IssueTrackerId = _IssueTrackerList.IssueTrackerId || 0;
-      this.IssueRaisedDate = _IssueTrackerList.IssueRaisedDate || 0;
-      this.IssueRaisedTime = _IssueTrackerList.IssueRaisedTime || 0;
-      this.IssueSummary = _IssueTrackerList.IssueSummary || "";
-      this.IssueDescription = _IssueTrackerList.IssueDescription || "";
-      this.UploadImagePath = _IssueTrackerList.UploadImagePath || "";
-      this.ImageName = _IssueTrackerList.ImageName || "";
-      this.IssueStatus = _IssueTrackerList.IssueStatus || "";
-      this.IssueAssigned = _IssueTrackerList.IssueAssigned || "";
-      this.AddedBy = _IssueTrackerList.AddedBy || 0;
-      this.AddedDatetime = _IssueTrackerList.AddedDatetime || 0;
+      this.IssueRaisedDate = IssueTrackerList.IssueRaisedDate || 0;
+      this.IssueRaisedTime = IssueTrackerList.IssueRaisedTime || 0;
+      this.IssueSummary = IssueTrackerList.IssueSummary || "";
+      this.IssueDescription = IssueTrackerList.IssueDescription || "";
+      this.UploadImagePath = IssueTrackerList.UploadImagePath || "";
+      this.ImageName = IssueTrackerList.ImageName || "";
+      this.IssueStatus = IssueTrackerList.IssueStatus || "";
+      this.IssueAssigned = IssueTrackerList.IssueAssigned || "";
+      this.AddedBy = IssueTrackerList.AddedBy || 0;
+      this.AddedDatetime = IssueTrackerList.AddedDatetime || 0;
+      this.IssueRaised = IssueTrackerList.IssueRaised || '';
     }
   }
 }

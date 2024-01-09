@@ -36,13 +36,15 @@
 
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Image Name</mat-label>
-                                            <input name="ImageName" formControlName="ImageName" matInput required>
+                                            <input name="ImageName" formControlName="ImageName" matInput 
+                                            [(ngModel)]="registerObj.ImageName"  (keydown)="onEnterImageName($event)" required>
 
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Image Path</mat-label>
-                                            <input name="ImagePath" formControlName="ImagePath" matInput required>
+                                            <input name="ImagePath" formControlName="ImagePath" matInput 
+                                            [(ngModel)]="registerObj.UploadImagePath" (keydown)="onEnterImagePath($event)" required>
 
                                         </mat-form-field>&nbsp;&nbsp;
                                         <!-- <mat-form-field appearance="outline" fxFlex>
@@ -69,7 +71,7 @@
                                     <div fxlayout="row">
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Issue Status</mat-label>
-                                            <mat-select formControlName="IssueStatus" name="IssueStatus" required>
+                                            <mat-select formControlName="IssueStatus" name="IssueStatus" required (keydown)="onEnterIssueStatus($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of IssueStatusList" [value]="m">
                                                     {{m.name}}
@@ -79,13 +81,14 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Issue Raised</mat-label>
-                                            <input name="IssueRaised" formControlName="IssueRaised" matInput required>
+                                            <input name="IssueRaised" formControlName="IssueRaised" matInput 
+                                            [(ngModel)]="registerObj.IssueRaised" (keydown)="onEnterIssueRaised($event)" required>
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Issue Assigned</mat-label>
                                             <input name="IssueAssigned" formControlName="IssueAssigned" matInput
-                                                required>
+                                            [(ngModel)]="registerObj.IssueAssigned" (keydown)="onEnterIssueAssigned($event)" required>
 
                                         </mat-form-field>
                                     </div>
@@ -96,15 +99,15 @@
 
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Issue Summary</mat-label>
-                                            <input name="IssueSummary" formControlName="IssueSummary" matInput required
-                                                style="height: 145px;">
+                                            <textarea name="IssueSummary" formControlName="IssueSummary" matInput required
+                                            [(ngModel)]="registerObj.IssueSummary"  (keydown)="onEnterIssueSummary($event)" style="height: 145px;"></textarea>
 
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Issue Description</mat-label>
-                                            <input name="IssueDescription" formControlName="IssueDescription" matInput
-                                                style="height: 145px;" required>
+                                            <textarea name="IssueDescription" formControlName="IssueDescription" matInput
+                                            [(ngModel)]="registerObj.IssueDescription" (keydown)="onEnterIssueStatus($event)"  style="height: 145px;" required></textarea>
 
                                         </mat-form-field>
                                     </div>

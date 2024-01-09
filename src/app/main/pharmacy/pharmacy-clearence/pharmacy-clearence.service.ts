@@ -38,6 +38,13 @@ export class PharmacyClearenceService {
   public getIssuTrackerList(){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",{});
   }
+   
+  public InsertIssueTracker(Param){
+    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+  }
+  public UpdateIssueTracker(Param){
+    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+  }
 
  
   
