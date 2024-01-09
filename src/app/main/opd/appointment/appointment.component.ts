@@ -1230,9 +1230,9 @@ export class AppointmentComponent implements OnInit {
       let tokenNumberWithDoctorWiseInsert = {};
       debugger
       registrationSave['regID'] = 0;
-      registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        registrationSave['regTime'] = this.dateTimeObj.time,
-        registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationSave['regDate'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      registrationSave['regTime'] = this.dateTimeObj.time,
+      registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationSave['firstName'] = this.registerObj.FirstName;
       registrationSave['middleName'] = this.registerObj.MiddleName || '';
       registrationSave['lastName'] = this.registerObj.LastName;
@@ -1269,7 +1269,7 @@ export class AppointmentComponent implements OnInit {
       visitSave['VisitId'] = 0;
       visitSave['RegID'] = 0;
       visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        visitSave['VisitTime'] = this.dateTimeObj.time,
+      visitSave['VisitTime'] = this.dateTimeObj.time,
 
         visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
@@ -1290,7 +1290,7 @@ export class AppointmentComponent implements OnInit {
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-        visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+      visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
 
         submissionObj['visitSave'] = visitSave;
 
@@ -1358,8 +1358,8 @@ export class AppointmentComponent implements OnInit {
       visitUpdate['VisitId'] = 0;
       visitUpdate['RegID'] = this.registerObj.RegId;
       visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        visitUpdate['VisitTime'] = this.dateTimeObj.time,
-        visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitUpdate['VisitTime'] = this.dateTimeObj.time,
+      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
