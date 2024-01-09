@@ -82,9 +82,15 @@ export class BrowsSalesBillService {
     return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
   }
 
-  public InsertWhatsappSms(emp){
-    return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
+  public InsertWhatsappSales(emp){
+    return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
   }
+
+  public InsertWhatsappSalesReturn(emp){
+    return this._httpClient.post("WhatsappEmail/WhatsappSalesReturnSave", emp);
+  }
+
+  
 
 
   public getSalesReturnPrint(emp) {

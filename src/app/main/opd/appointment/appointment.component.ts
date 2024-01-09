@@ -1318,20 +1318,23 @@ let Imgflag ="";
 
       let tokenNumberWithDoctorWiseUpdate = {};
       debugger
-      registrationUpdate['regId'] = this.registerObj.RegId;
-      registrationUpdate['PrefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+
+      registrationUpdate['regID'] = this.registerObj.RegId;
+      registrationUpdate['regDate'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      registrationUpdate['regTime'] = this.dateTimeObj.time,
+      registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationUpdate['firstName'] = this.registerObj.FirstName;
       registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
       registrationUpdate['lastName'] = this.registerObj.LastName;
-      registrationUpdate['address'] = this.registerObj.Address;
-      registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId;
+      registrationUpdate['address'] = this.registerObj.Address || '';
+      registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
       registrationUpdate['pinNo'] = '';
-      registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"); //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-      registrationUpdate['age'] = this.registerObj.AgeYear || 0; //this.registerObj.Age;
+      registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
+      registrationUpdate['age'] = this.registerObj.AgeYear;
       registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
       registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
-      registrationUpdate['updatedBy'] = this.accountService.currentUserValue.user.id;
+      registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
       registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
       registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
       registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
@@ -1340,7 +1343,14 @@ let Imgflag ="";
       registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
       registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
       registrationUpdate['isCharity'] = false;
+      registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+      registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+      registrationUpdate['Aadharcardno'] = "",//this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationUpdate['Pancardno'] =  this.personalFormGroup.get('PanCardNo').value || '';
+      registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationUpdate['Photo']=''
+
+
       
       submissionObj['registrationUpdate'] = registrationUpdate;
       // visit detail
@@ -1374,7 +1384,7 @@ let Imgflag ="";
       tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
       submissionObj['tokenNumberWithDoctorWiseUpdate'] = tokenNumberWithDoctorWiseUpdate;
 
-
+      console.log(submissionObj);
       this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
