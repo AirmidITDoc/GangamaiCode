@@ -163,7 +163,7 @@ export class IPAdvanceComponent implements OnInit {
 
       let advanceHeaderObj = {};
       advanceHeaderObj['AdvanceId'] = '0';
-      advanceHeaderObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900'
+      advanceHeaderObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
       advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegId,
       advanceHeaderObj['OPD_IPD_Type'] = 1;
       advanceHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
@@ -177,7 +177,7 @@ export class IPAdvanceComponent implements OnInit {
 
       let AdvanceDetObj = {};
       AdvanceDetObj['AdvanceDetailID'] = '0';
-      AdvanceDetObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900'
+      AdvanceDetObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
       AdvanceDetObj['Time'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = 0;
       AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId,
@@ -196,7 +196,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
 
       let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900'
+      PatientHeaderObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
@@ -245,8 +245,8 @@ export class IPAdvanceComponent implements OnInit {
    
       let AdvanceDetObj = {};
       AdvanceDetObj['AdvanceDetailID'] = '0';
-      AdvanceDetObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900'
-      AdvanceDetObj['Time'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900'
+      AdvanceDetObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
+      AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
       AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
@@ -269,7 +269,7 @@ export class IPAdvanceComponent implements OnInit {
 
       let PatientHeaderObj = {};
 
-      PatientHeaderObj['Date'] = this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900'
+      PatientHeaderObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;

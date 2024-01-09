@@ -1,85 +1,106 @@
- .table1{
+ .table{
+   height: 700px;
+   min-height: 700px;
+   max-height: 700px;
+   width: 100%;
+
+   .mat-column-No {
+     width: 80px;
+     max-width: 80px;
+     min-width: 80px;
+     align-items: left;
+   }
+
+   .mat-column-Date {
+     width: 100px;
+     max-width: 100px;
+     min-width: 100px;
+     align-items: left;
+   }
+
+   .mat-column-TransactionType {
+     width: 150px;
+     max-width: 150px;
+     min-width: 150px;
+     text-align: left;
+     justify-content: left;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     overflow: hidden !important;
+     display: inline-flex;
+     display: inline;
+     margin-right: 10px;
+     margin-top: 20px;
+   }
+
+   .mat-column-FromStoreName {
+     width: 180px;
+     max-width: 180px;
+     min-width: 180px;
+     text-align: left;
+     justify-content: left;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     overflow: hidden !important;
+     display: inline-flex;
+     display: inline;
+     margin-right: 10px;
+     margin-top: 20px;
+   }
+
+   .mat-column-DocNo {
+     width: 80px;
+     max-width: 80px;
+     min-width: 80px;
+     align-items: left;
+   }
+
+   .mat-column-ItemName {
+     width: 250px;
+     max-width: 250px;
+     min-width: 250px;
+     text-align: left;
+     justify-content: left;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     overflow: hidden !important;
+     display: inline-flex;
+     display: inline;
+     margin-right: 10px;
+     margin-top: 20px;
+   }
+
+   .mat-column-BatchNO {
+     width: 120px;
+     max-width: 120px;
+     min-width: 100px;
+     align-items: left;
+   }
+
+   .mat-column-RQty {
+     width: 75px;
+     max-width: 75px;
+     min-width: 75px;
+     align-items: left;
+   }
+
+   .mat-column-IQty {
+     width: 100px;
+     max-width: 100px;
+     min-width: 100px;
+     align-items: left;
+   }
+
+   .mat-column-BalQty {
+     width: 100px;
+     max-width: 100px;
+     min-width: 100px;
+     align-items: left;
+   }
+
   
-  .mat-column-No {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    align-items: left;
-}
-.mat-column-Date {
-  width: 100px;
-  max-width: 100px;
-  min-width: 100px;
-  align-items: left;
-}
-
-.mat-column-TransactionType {
-  width: 150px;
-  max-width: 150px;
-  min-width: 150px;
-  align-items: left;
-  white-space: nowrap;
-  overflow: hidden;
-   text-overflow: ellipsis;
-   overflow: hidden !important;
-  justify-content: left;
-  padding-right: 5px;
-}
-
-.mat-column-FromStoreName {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    align-items: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow: hidden !important;
-    justify-content: left;
-}
-.mat-column-DocNo {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    align-items: left;
-}
-.mat-column-ItemName {
-   width: 280px;
-   max-width: 280px;
-   min-width: 280px;
-    align-items: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow: hidden !important;
-    justify-content: left;
-}
-.mat-column-BatchNO {
-  width: 120px;
-  max-width: 120px;
-  min-width: 100px;
-  align-items: left;
-}
-.mat-column-RQty {
-  width: 75px;
-  max-width: 75px;
-  min-width: 75px;
-  align-items: left;
-}
-.mat-column-IQty {
-  width: 75px;
-  max-width: 75px;
-  min-width: 75px;
-  align-items: left;
-}
-.mat-column-BalQty {
-  width: 100px;
-  max-width: 100px;
-  min-width: 100px;
-  align-items: left;
-}
-  height: 650px;
-  max-height: 650px;
-  min-height: 650px;
 
  }

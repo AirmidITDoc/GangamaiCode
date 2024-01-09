@@ -301,7 +301,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Total Amount</mat-label>
-                                                <input matInput [(ngModel)]="TotalAmount" required name="TotalAmount"
+                                                <input matInput [(ngModel)]="TotalAmount" required name="TotalAmount" type="number"
                                                     formControlName="TotalAmount" id="TotalAmount" readonly>
                                             </mat-form-field>
 
@@ -318,7 +318,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>Dis Amount </mat-label>
-                                                <input matInput [(ngModel)]="DisAmount" name="DisAmount"
+                                                <input matInput [(ngModel)]="DisAmount" name="DisAmount" type="number"
                                                     (keyup)="calculateDiscAmount()" formControlName="DisAmount"
                                                     readonly>
                                             </mat-form-field>&nbsp;
@@ -334,7 +334,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>CGST Amount</mat-label>
-                                                <input matInput [(ngModel)]="CGSTAmount" required name="CGSTAmount"
+                                                <input matInput [(ngModel)]="CGSTAmount" required name="CGSTAmount" type="number"
                                                     formControlName="CGSTAmount" id="CGSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
@@ -348,7 +348,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>SGST Amount</mat-label>
-                                                <input matInput [(ngModel)]="SGSTAmount" required name="SGSTAmount"
+                                                <input matInput [(ngModel)]="SGSTAmount" required name="SGSTAmount" type="number"
                                                     formControlName="SGSTAmount" id="SGSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
@@ -362,7 +362,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>IGST Amount</mat-label>
-                                                <input matInput [(ngModel)]="IGSTAmount" name="IGSTAmount"
+                                                <input matInput [(ngModel)]="IGSTAmount" name="IGSTAmount" type="number"
                                                     formControlName="IGSTAmount" id="IGSTAmount" (keyup)="TotalGSTAmount()" readonly>
                                             </mat-form-field>&nbsp;
 
@@ -376,14 +376,14 @@
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>GST Amount</mat-label>
-                                                <input matInput [(ngModel)]="GSTAmount" required name="GSTAmount"
+                                                <input matInput [(ngModel)]="GSTAmount" required name="GSTAmount" type="number"
                                                     formControlName="GSTAmount" id="GSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>Net Amount</mat-label>
-                                                <input matInput [(ngModel)]="NetAmount" name="NetAmount" required
+                                                <input matInput [(ngModel)]="NetAmount" name="NetAmount" required type="number"
                                                     formControlName="NetAmount" id="NetAmount" readonly>
                                             </mat-form-field>&nbsp;
 
@@ -722,7 +722,7 @@
                                     <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Disc Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="DiscAmount"
-                                            [(ngModel)]="FinalDisAmount" #DiscAmount
+                                            [(ngModel)]="FinalDisAmount" #DiscAmount type="number"
                                             [(ngModel)]="registerObj.TotalDiscAmount"
                                             (keydown)="onEnterDiscAmount($event)">
                                     </mat-form-field>
@@ -732,12 +732,12 @@
                                         <input matInput placeholder="Placeholder" formControlName="VatAmount"
                                             [(ngModel)]="FinalVatAmount" #VatAmount
                                             [(ngModel)]="registerObj.totalVATAmount"
-                                            (keydown)="onEnterVatAmount($event)">
+                                            (keydown)="onEnterVatAmount($event)" type="number">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Net Pay Amt</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="NetPayamt"
+                                        <input matInput placeholder="Placeholder" formControlName="NetPayamt" type="number"
                                             [(ngModel)]="NetPayamount" #NetPayamt (keydown)="onEnterNetPayamt($event)">
                                     </mat-form-field>
 
