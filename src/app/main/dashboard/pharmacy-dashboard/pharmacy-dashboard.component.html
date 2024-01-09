@@ -14,21 +14,35 @@
                     Pharmacy Dashboard
                 </span>
             </div>
-            <mat-card class="h-80  p-2" fxLayout="row" fxFlex="270px" style=" color: black;">
-
-                <form [formGroup]="_DashboardService.UseFrom">
-                    <mat-form-field appearance="outline" class="p-2.5" fxFlex="250px">
-                        <mat-label style="color: black;">Enter a date range</mat-label>
+            <form [formGroup]="_DashboardService.UseFrom"  >
+                
+                <!-- <mat-card class="h-80  p-2 accent" fxLayout="row" fxFlex="270px" style=" color: black;padding: 10px;"> -->
+                   
+                    <mat-form-field appearance="outline" fxFlex="270px">
+                        <mat-label style="color: white;">Select Store</mat-label>
+                        <mat-select formControlName="StoreId" name="StoreId">
+                            <mat-option></mat-option>
+                            <mat-option  *ngFor="let m of PharmStoreList" [value]="m">
+                                {{m.StoreName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>&nbsp;&nbsp;
+                <!-- </mat-card>&nbsp;&nbsp; -->
+ 
+                <!-- <mat-card class="h-80  p-2 accent" fxLayout="row" fxFlex="270px" style=" color: black;padding: 10px;"> -->
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label >Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate formControlName="start" style="color: black;" placeholder="Start date">
-                            <input matEndDate formControlName="end" placeholder="End date" style="color: black;"
+                            <input matStartDate formControlName="start"  placeholder="Start date">
+                            <input matEndDate formControlName="end" placeholder="End date" 
                                 (dateChange)="getPharDashboardSalesSummary()" (dateChange)="fetchChartData()">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-                </form>
-            </mat-card>
+
+                <!-- </mat-card> -->
+            </form>
 
 
         </div>
@@ -87,12 +101,12 @@
                         <table class="table1" fxFlex="100%" style="border-collapse: collapse;">
                             <tbody>
                                 <tr style="font-size:12px;">
-                                    <td colspan="4"
+                                    <td colspan="5"
                                         style="background-color: rgb(37, 174, 192); font-weight:bold;text-align:left;padding:10px;font-size: 18px;color: white;">
                                         Statistics</td>
                                 </tr>
                                 <tr style="font-size:12px;">
-                                    <td colspan="2"
+                                    <td colspan="3"
                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
                                         Collection</td>
                                     <td colspan="2"
@@ -100,7 +114,7 @@
                                         {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td>
                                 </tr>
                                 <tr style="font-size:12px;">
-                                    <td colspan="2"
+                                    <td colspan="3"
                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
                                         Refund</td>
                                     <td colspan="2"
@@ -108,7 +122,7 @@
                                         {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td>
                                 </tr>
                                 <tr style="font-size:12px; background-color:#2a6392;color: white;">
-                                    <td colspan="2"
+                                    <td colspan="3"
                                         style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
                                         Net</td>
                                     <td colspan="2"
@@ -123,6 +137,8 @@
                                     <td style="font-weight:bold;text-align:left;padding:10px;">
                                         StoreName</td>
                                     <td style="font-weight:bold;text-align:left;padding:10px;">
+                                        BillCount</td>
+                                    <td style="font-weight:bold;text-align:left;padding:10px;">
                                         Collection Amount</td>
                                     <td style="font-weight:bold;text-align:left;padding:10px;">
                                         Refund Amount</td>
@@ -134,6 +150,8 @@
 
                                     <td style="padding: 10px;background-color: lightgray;
                                     text-align: left;color: black;" class="StoreName">{{item?.StoreName}}</td>
+                                    <td style="padding: 10px;background-color: lightgray;
+                                     text-align: right;color: black;" class="StoreName">{{item?.BillCount}}</td>
                                     <td style="padding: 10px;background-color: lightgray;
                                     text-align: right;color: black;">{{item?.CollectionAmount | number:'1.2-2' }}</td>
                                     <td style="padding: 10px;background-color: lightgray;
@@ -151,7 +169,7 @@
 
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card >
+                <mat-card>
                     <mat-card-content>
                         <div fxLayout="column" fxLayoutAlign="space-between">
                             <span style="font-size: 30px; font-weight:400px;margin-bottom: 25px;">Stores
@@ -198,10 +216,16 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" style="height: 100px;">
-                        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                            [chartType]="'line'">
-                        </canvas>
+                        <!-- <canvas id="BarChart" style="width: 100%;"></canvas> -->
+
+                        <div class="chart-wrapper" fxFlex style="height: 300px;">
+                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                                [chartType]="barChartType">
+                            </canvas>
+                        </div>
                     </div>
+
 
                 </mat-card>
             </div>

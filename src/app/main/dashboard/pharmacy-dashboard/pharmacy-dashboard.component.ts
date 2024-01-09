@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { Label } from 'ng2-charts';
@@ -49,6 +49,7 @@ export class PharmacyDashboardComponent implements OnInit {
   pieChartData2:any;
   labelData:any[]=[];
   PiechartData5:any[]=[];
+  PharmStoreList:any=[];
 
   dsPharmacyDashboard = new MatTableDataSource<PharDashSummary>();
   maindata: any;
@@ -63,6 +64,9 @@ export class PharmacyDashboardComponent implements OnInit {
    this.getPharDashboardSalesSummary();
    this.fetchChartData();
    this.RenderChart(this.labeldata,this.PiechartData5);
+   this.getBarchartData();
+   this.getPharmStoreList();
+   //this.BarChart(this.BarlabelData,this.BarchartData);
   }
 
 
@@ -111,8 +115,85 @@ export class PharmacyDashboardComponent implements OnInit {
 
     }
   };
+  BarChartData:any;
+  BarlabelData:any[]=[];
+  BarchartData:any[]=[];
+  BardataList:any=[];
+
+  getBarchartData() {
+      this._DashboardService.getBarchartData().subscribe(data => {
+        this.BardataList = data;
+      console.log(this.BardataList);
+       if(this.BarChartData != null){
+        this.BarChartData.forEach((element) => {
+          this.BarlabelData.push(element.StoreName);
+          this.BarchartData.push(element.NetSalesAmount);
+        }); 
+       // this.BarChart(this.BarlabelData,this.BarchartData);
+       } this.sIsLoading = '';
+      console.log(this.PiechartData5);
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+   
+  }
  
+
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  barChartLabels: Label[] = ['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+  barChartPlugins = [];
+
+  barChartData: ChartDataSets[] = [
+    { data: [45, 37, 60, 70, 46, 100], label:'jan' },
+    { data: [45, 37, 60, 70, 46, 33], label: 'Dec' },
+    { data: [45, 34, 61, 70, 46, 40], label: 'Nov' }
+  ];
+
+
+  
+  // BarChart(BarlabelData:any,BarchartData:any){
+          
+  //   const Barchart = new Chart('BarChart', {
+  //     type: 'bar',
+  //     data: {
+  //       labels:BarlabelData ,//['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'],
+  //       datasets: [
+  //         { data: BarchartData, label:'jan' },
+  //         { data: BarchartData, label: 'Dec' },
+  //         { data: BarchartData, label: 'Nov' },
+  //       ],
+     
+       
+  //     },
+  //     options: {  responsive: true,
+  //       plugins: {
+  //         legend: true,
+          
+  //         tooltip: {
+  //           enabled: true,
+  //         },
+  //         backgroundColor: [
+            
+  //         ],
+  //       },
+  //     },
+  //   })
+    
+  // }
+
+
+
+
+
+
  
+ //Pei chart 
   fetchChartData() {
     this.sIsLoading = 'loading-data';
     var m_data = {
@@ -155,6 +236,7 @@ export class PharmacyDashboardComponent implements OnInit {
               '#9966FF',
             ],
             data: PiechartData5,
+            
           },
         ],
        
@@ -216,6 +298,13 @@ export class PharmacyDashboardComponent implements OnInit {
     TotalNetAmt = contact.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
    // this.IGSTFinalAmount = IGSTAmt;
     return TotalNetAmt;
+  }
+
+  getPharmStoreList() {
+    this._DashboardService.getPharmStoreList().subscribe(data => {
+      this.PharmStoreList = data;
+     // console.log(this.PharmStoreList);
+    });
   }
 
 }
