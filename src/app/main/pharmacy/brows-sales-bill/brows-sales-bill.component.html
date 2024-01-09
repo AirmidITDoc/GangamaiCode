@@ -154,25 +154,18 @@
                                                             (click)="viewSalesPdf(contact)">
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                     <button mat-icon-button matTooltip="Send Bill On WhatsApp"
                                                             (click)="getWhatsappshare(contact)">
                                                             <img width="100" height="20px"
                                                                 src="assets/images/logos/WhatsApp.png">
+                                                    </button> 
 
-                                                             
-                                                        </button>
-                                                        <span class="material-icons">whatsapp</span>
-                                                        <!-- <button type="submit" (click)="getWhatsappshare(contact)"
-                                                            [disabled]="IsLoading" #id1
-                                                            style="background-color: rgb(18, 202, 119);border-radius: 15px;border-color: aliceblue;">
-                                                           
-                                                            <img width="20" height="30" *ngIf="IsLoading"
-                                                                src="assets/images/spinner.gif">
-                                                           
-                                                            WhatsApp
-                                                        </button> -->
-                                                        <!-- <mat-spinner *ngIf="isDeleting" [diameter]="25" ></mat-spinner>
-                                                        <button *ngIf="!isDeleting" mat-raised-button (click)="deleteRecord(data.id)">Delete</button> -->
+                                                    <!-- <button mat-icon-button matTooltip="Send Bill On Xls" (click)="expPrint(contact,'Excel')"
+                                                        matTooltip="Export To Excel">
+                                                        <img width="100" height="20px" src="assets/images/logos/xls.png">
+                                                    </button> -->
+
+                                                    
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -480,7 +473,7 @@
                                             <mat-form-field appearance="outline" style="margin-left: 2%;">
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
-                                                    <input matStartDate formControlName="startdate1"
+                                                    <input matStartDate formControlName="startdate1" (dateChange)="getSalesReturnList()"
                                                         placeholder="Start date">
                                                     <input matEndDate formControlName="enddate1" placeholder="End date">
                                                 </mat-date-range-input>
@@ -572,10 +565,12 @@
                                                         </button>
 
                                                         <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                            (click)="getWhatsappshare(contact)">
-                                                            <img width="100" height="30"
-                                                                src="assets/images/logos/WhatsApp.jpg">
-                                                        </button>
+                                                        (click)="getWhatsappshare(row)">
+                                                        <img width="100" height="20px"
+                                                            src="assets/images/logos/WhatsApp.png">
+
+                                                         
+                                                    </button>
 
                                                     </mat-cell>
                                                 </ng-container>

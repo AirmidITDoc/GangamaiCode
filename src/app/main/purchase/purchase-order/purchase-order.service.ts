@@ -81,8 +81,8 @@ export class PurchaseOrderService {
   getPurchaseOrderFinalForm() {
     return this._formBuilder.group({
 
-      // PaymentTerm: [''],
-      DeliveryDate: [new Date()],
+      TransportCharges: [''],
+      HandlingCharges: [''],
       Freight: [''],
       Warranty: [''],
       Schedule: [''],

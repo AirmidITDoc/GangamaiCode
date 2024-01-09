@@ -165,7 +165,7 @@
                                       
 
 
-                                        <app-common-date [screenFrom]="screenFromString"
+                                        <app-common-date [screenFrom]="screenFromString" 
                                             (dateTimeEventEmitter)="getDateTime($event)">
                                         </app-common-date>
                                     </div>
@@ -518,12 +518,19 @@
                                     <mat-radio-button value="false" class="mr-sm-12">After Disc &
                                         Tax</mat-radio-button>
                                 </mat-radio-group> -->
+
                                 <mat-form-field appearance="outline" fxFlex="8%">
-                                    <mat-label>DeliveryDate</mat-label>
-                                    <input name="DeliveryDate" matInput [matDatepicker]="picker1" 
-                                     formControlName="DeliveryDate" #DeliveryDate>
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
+                                    <mat-label>Handling Charges</mat-label>
+                                    <input matInput   #HandlingCharges  
+                                        [(ngModel)]="registerObj.HandlingCharges" type="text"
+                                        formControlName="HandlingCharges" (keydown)="onEnterHandlingcharge($event)">
+                                </mat-form-field>&nbsp;&nbsp;
+
+                                <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-label>Transport Charges</mat-label>
+                                    <input matInput   #TransportCharges  
+                                        [(ngModel)]="registerObj.TransportCharges" type="text"
+                                        formControlName="TransportCharges" (keydown)="onEnterTransportcharge($event)">
                                 </mat-form-field>&nbsp;&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
@@ -552,7 +559,13 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="10%">
+                                <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-label>Other Tax</mat-label>
+                                    <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax
+                                    [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Schedule </mat-label>
                                     <mat-select formControlName="Schedule" name="Schedule" #Schedule required
                                         [(ngModel)]="registerObj.Schedule" (keydown)="onEnterSchedule($event)">
@@ -564,13 +577,25 @@
                                     *ngIf="_PurchaseOrder.FinalPurchaseform.get('Schedule').hasError('required')">
                                     Required field cannot be left blank
                                 </mat-error>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>Schedule </mat-label>
+                                    <mat-select formControlName="Schedule" name="Schedule"  #Schedule required 
+                                    [(ngModel)]="registerObj.Schedule" >
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of DeliveryDateList" [value]="m">
+                                            {{m.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                    *ngIf="_PurchaseOrder.FinalPurchaseform.get('Schedule').hasError('required')">
+                                    Required field cannot be left blank
+                                  </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="8%">
-                                    <mat-label>Other Tax</mat-label>
-                                    <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax
-                                    [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
-                                </mat-form-field>
+
+                             
 
                                 <div layout="row" layout-xs="column">
                                     <div  style="margin-top: 10px;" >
