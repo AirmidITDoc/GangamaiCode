@@ -1232,7 +1232,7 @@ export class AdmissionComponent implements OnInit {
       regInsert['middleName'] = this.registerObj.MiddleName || '';
       regInsert['lastName'] = this.registerObj.LastName || '';
       regInsert['address'] = this.registerObj.Address || '';
-      regInsert['city'] = this.personalFormGroup.get('CityId').value.CityName;
+      regInsert['city'] = this.personalFormGroup.get('CityId').value.CityId;
       regInsert['PinNo'] = '';
       regInsert['dateOfBirth'] = this.registerObj.DateofBirth;
       regInsert['age'] = this.registerObj.AgeYear;//this.registerObj.Age;
@@ -1254,6 +1254,7 @@ export class AdmissionComponent implements OnInit {
       regInsert['IsSeniorCitizen'] = 1;//this.personalFormGroup.get('IsSeniorCitizen').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
       regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
+      regInsert['Photo']=''
 
       submissionObj['regInsert'] = regInsert;
 
@@ -1374,8 +1375,11 @@ debugger
       admissionInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
       admissionInsert['IsOpToIPConv'] = 0;
       admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
+      admissionInsert['admissionType']=0;
       admissionInsert['admissionInsert'] = admissionInsert;
       admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+
+      submissionObj['admissionInsert'] = admissionInsert;
 
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {

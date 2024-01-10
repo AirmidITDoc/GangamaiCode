@@ -141,7 +141,7 @@
                                             <mat-table class="Table1" matSort [dataSource]="dssaleList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                                <ng-container matColumnDef="action" stickyEnd>
+                                                <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -155,7 +155,7 @@
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
                                                      <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                            (click)="getWhatsappshare(contact)">
+                                                            (click)="getWhatsappshareSales(contact)">
                                                             <img width="100" height="20px"
                                                                 src="assets/images/logos/WhatsApp.png">
                                                     </button> 
@@ -170,7 +170,7 @@
                                                 </ng-container>
 
 
-                                                <ng-container matColumnDef="payment" sticky>
+                                                <ng-container matColumnDef="payment">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
                                                     </mat-header-cell>
@@ -185,7 +185,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="Date" sticky>
+                                                <ng-container matColumnDef="Date">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -193,7 +193,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="SalesNo" sticky>
+                                                <ng-container matColumnDef="SalesNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                         fxShow.gt-sm>SalesNo
                                                     </mat-header-cell>
@@ -203,7 +203,7 @@
                                                 </ng-container>
 
 
-                                                <ng-container matColumnDef="RegNo" sticky>
+                                                <ng-container matColumnDef="RegNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                         fxShow.gt-sm>RegNo
                                                     </mat-header-cell>
@@ -213,7 +213,7 @@
                                                 </ng-container>
 
 
-                                                <ng-container matColumnDef="PatientName" sticky>
+                                                <ng-container matColumnDef="PatientName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Patient Name
                                                     </mat-header-cell>
@@ -223,7 +223,7 @@
                                                 </ng-container>
 
 
-                                                <ng-container matColumnDef="NetAmt" sticky>
+                                                <ng-container matColumnDef="NetAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Net Amt
                                                     </mat-header-cell>
@@ -233,7 +233,7 @@
                                                 </ng-container>
 
 
-                                                <ng-container matColumnDef="BalAmt" sticky>
+                                                <ng-container matColumnDef="BalAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Bal Amt
                                                     </mat-header-cell>
@@ -242,7 +242,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PaidAmt" sticky>
+                                                <ng-container matColumnDef="PaidAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Paid Amt
                                                     </mat-header-cell>
@@ -251,7 +251,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PaidType" sticky>
+                                                <ng-container matColumnDef="PaidType">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Paid Type
                                                     </mat-header-cell>
@@ -260,7 +260,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="IPNo" sticky>
+                                                <ng-container matColumnDef="IPNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         IPNo
                                                     </mat-header-cell>
@@ -271,7 +271,7 @@
 
 
                                                 <mat-header-row class="accent"
-                                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                    *matHeaderRowDef="displayedColumns;"></mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                                     class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="onSelect(contact)">
@@ -565,7 +565,7 @@
                                                         </button>
 
                                                         <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                        (click)="getWhatsappshare(row)">
+                                                        (click)="getWhatsappshareSalesReturn(row)">
                                                         <img width="100" height="20px"
                                                             src="assets/images/logos/WhatsApp.png">
 

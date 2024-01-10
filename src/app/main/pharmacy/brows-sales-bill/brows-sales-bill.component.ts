@@ -375,7 +375,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
-      this.getWhatsappshare(this.rowid);
+      this.getWhatsappshareSales(this.rowid);
     }
   }
 
@@ -989,15 +989,8 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   loadingarry: any = [];
-  getWhatsappshare(el) {
-    debugger
-    // el.button.disbled=true;
-    // el.button.img.hidde=false;
-    // this.IsLoading=true;
-    // setTimeout(() => {
-    //   this.IsLoading=false;
-    // }, 4000);
-
+  getWhatsappshareSales(el) {
+    
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
@@ -1006,7 +999,8 @@ export class BrowsSalesBillComponent implements OnInit {
         "smsType": 'WhatsApp',
         "smsFlag": 0,
         "smsDate": this.currentDate,
-        "tranNo": el.SalesNo,
+        "tranNo": el.SalesId,
+        "PatientType":2,//el.PatientType,
         "templateId": 0,
         "smSurl": "info@gmail.com",
         "filePath": this.Filepath || '',
@@ -1015,7 +1009,7 @@ export class BrowsSalesBillComponent implements OnInit {
       }
     }
     console.log(m_data);
-    this._BrowsSalesBillService.InsertWhatsappSms(m_data).subscribe(response => {
+    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -1031,6 +1025,44 @@ export class BrowsSalesBillComponent implements OnInit {
     this.IsLoading = false;
     el.button.disbled = false;
   }
+
+  getWhatsappshareSalesReturn(el) {
+    
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'WhatsApp',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.SalesReturnId,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+
+      }
+    }
+    console.log(m_data);
+    this._BrowsSalesBillService.InsertWhatsappSalesReturn(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    el.button.disbled = false;
+  }
+
 
   expPrint(el, xls) {
     debugger
