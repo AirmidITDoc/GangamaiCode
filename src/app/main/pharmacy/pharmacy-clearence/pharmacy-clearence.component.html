@@ -37,7 +37,7 @@
                             <div style="width: 100%;">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
+                                    <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
                                 </div>
 
                                  <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
@@ -146,8 +146,6 @@
                                                 <mat-icon> insert_photo</mat-icon>
                                             </button>
                                         </mat-cell>
-                                        
-                                       
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">

@@ -7,6 +7,10 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IssueTrackerList } from '../pharmacy-clearence.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { ImageViewComponent } from '../image-view/image-view.component';
 
 @Component({
   selector: 'app-new-issue-tracker',
@@ -17,25 +21,53 @@ import { IssueTrackerList } from '../pharmacy-clearence.component';
 })
 export class NewIssueTrackerComponent implements OnInit {
   registerObj = new IssueTrackerList({});
+  screenFromString = 'issuedate-form';
+  dateTimeObj: any;
+  sIsLoading: string = '';
+  isLoading = true;
+  images: any[] = [];
+  sanitizeImagePreview;
+  @ViewChild('attachments') attachment: any;
+  imageForm = new FormGroup({
+    imageFile: new FormControl('', [Validators.required]),
+    imgFileSource: new FormControl('', [Validators.required])
+  });
+
   IssueStatusList = [
-    {  IssueStatusId: 1, name: "Working" },
-    {  IssueStatusId: 2, name: "Open" },
-    {  IssueStatusId: 3, name: "Close" },
+    {  Id: 1, name: "Working" },
+    {  Id: 2, name: "Open" },
+    {  Id: 3, name: "Close" },
   ];
    
-  
+
+  imgDataSource = new MatTableDataSource<any>();
   constructor(
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewIssueTrackerComponent>,
+    public dialogRefs: MatDialogRef<ImageViewComponent>,
+   // public dialog: MatDialogRef<ImageDialogComponent>,
     public toastr : ToastrService,
     public _IssueTracker: PharmacyClearenceService,
+    private _loggedService: AuthenticationService,
 
   ) { }
 
   ngOnInit(): void {
+    if (this.data.NewIssueTracker==2) {
     this.registerObj = this.data.Obj;
+    this.setDropdownObjs();
+    }
+  }
+  
+  setDropdownObjs() {
+    const toSelectIssueStatus = this.IssueStatusList.find(c => c.Id == this.registerObj.IssueStatusId);
+    this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
+  }
+
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
   onClose() {
     this.dialogRef.close();
@@ -49,23 +81,87 @@ export class NewIssueTrackerComponent implements OnInit {
   handleFileInput(files: FileList) {
     const file = files.item(0);
     this.selectedImages.push(file);
+    console.log(this.selectedImages)
+  } 
+  
+  onImageChange(event) {
+    let Imgflag = "";
+
+    if (!event.target.files.length) return;
+    const file = event.target.files[0];
+
+    debugger
+    this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
+
+      (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
+        Imgflag = event.base64
+      )
+    );
+
+    debugger
+
+    if (Imgflag != " ") {
+      let filesAmount = event.target.files.length;
+      // for (let i = 0; i < filesAmount; i++) {
+      // this.imgArr.push(file.name);
+      this.images.push({ url: file, name: file.name, Id: 0 });
+      this.imgDataSource.data = this.images;
+      this.imageForm.patchValue({
+        imgFileSource: this.images
+      });
+      // }
+      this.attachment.nativeElement.value = '';
+    }
+  } 
+  onViewImage(ele: any, type: string) {
+
+    let fileType;
+    if (ele) {
+
+      const dialogRefs = this._matDialog.open(ImageViewComponent,
+        {
+          width: '900px',
+          height: '900px',
+          data: {
+            docData: type == 'img' ? ele : ele.doc,
+            type: type == 'img' ? "image" : ele.type
+          }
+        }
+      );
+      dialogRefs.afterClosed().subscribe(result => {
+      });
+    }
+  }
+
+
+
+  
+  OnSave(){
+    if(this.data.NewIssueTracker==1)
+    {
+      this.OnSavenew();
+    }else if(this.data.NewIssueTracker==2){
+      this.OnSaveEdit()
+    }
   }
  
-
-  Onsave(){
-    let IssueTrackerInsertObj = {};
-    IssueTrackerInsertObj['IssueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
-    IssueTrackerInsertObj['IssueDescription'] =  this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
-    IssueTrackerInsertObj['IssueStatus'] =  this._IssueTracker.userFormGroup.get('IssueStatus').value || '';
-    IssueTrackerInsertObj['ImageName'] =  this._IssueTracker.userFormGroup.get('ImageName').value || '';
-    IssueTrackerInsertObj['ImagePath'] =  this._IssueTracker.userFormGroup.get('ImagePath').value || '';
-    IssueTrackerInsertObj['ImageUpload'] = this._IssueTracker.userFormGroup.get('ImageUpload').value || '';
-    IssueTrackerInsertObj['IssueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value || '';
-    IssueTrackerInsertObj['IssueAssigned'] =  this._IssueTracker.userFormGroup.get('IssueAssigned').value || '';
+  OnSavenew(){
+    this.sIsLoading = 'loading-data';
+    let insertIssueTracker = {};
+    insertIssueTracker['issueRaisedDate'] =  this.dateTimeObj.date; 
+    insertIssueTracker['issueRaisedTime'] =   this.dateTimeObj.time; 
+    insertIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
+    insertIssueTracker['issueDescription'] =  this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
+    insertIssueTracker['uploadImagePath'] =  this._IssueTracker.userFormGroup.get('ImagePath').value || '';
+    insertIssueTracker['imageName'] =  this._IssueTracker.userFormGroup.get('ImageName').value || '';
+    insertIssueTracker['issueStatus'] =  this._IssueTracker.userFormGroup.get('IssueStatus').value.name || '';
+    insertIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value || '';
+    insertIssueTracker['issueAssigned'] =  this._IssueTracker.userFormGroup.get('IssueAssigned').value || '';
+    insertIssueTracker['addedby'] = this._loggedService.currentUserValue.user.id || 0;
   
 
   let submitData = {
-    "IssueTrackerInsertObj": IssueTrackerInsertObj,
+    "insertIssueTracker": insertIssueTracker,
   };
   console.log(submitData);
   this._IssueTracker.InsertIssueTracker(submitData).subscribe(response => {
@@ -87,26 +183,37 @@ export class NewIssueTrackerComponent implements OnInit {
    });
  });
 }
+ 
+OnSaveEdit(){
+  this.sIsLoading = 'loading-data';
+  let updateIssueTracker = {};
+  updateIssueTracker['operation'] =  "";
+  updateIssueTracker['issueTrackerId'] =  this.registerObj.IssueTrackerId; 
+  updateIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
+  updateIssueTracker['issueDescription'] =  this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
+  updateIssueTracker['uploadImagePath'] =  this._IssueTracker.userFormGroup.get('ImagePath').value || '';
+  updateIssueTracker['imageName'] =  this._IssueTracker.userFormGroup.get('ImageName').value || '';
+  updateIssueTracker['issueStatus'] =  this._IssueTracker.userFormGroup.get('IssueStatus').value.name || '';
+  updateIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value || '';
+  updateIssueTracker['issueAssigned'] =  this._IssueTracker.userFormGroup.get('IssueAssigned').value || '';
+  updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.user.id || 0;
 
-OnEdit(){
-  let IssueTrackerUpdateObj = {};
-  IssueTrackerUpdateObj['IssueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
-  IssueTrackerUpdateObj['IssueDescription'] =  this._IssueTracker.userFormGroup.get('IssueDescription').value || '';
-  IssueTrackerUpdateObj['IssueStatus'] =  this._IssueTracker.userFormGroup.get('IssueStatus').value || '';
-  IssueTrackerUpdateObj['ImageName'] =  this._IssueTracker.userFormGroup.get('ImageName').value || '';
-  IssueTrackerUpdateObj['ImagePath'] =  this._IssueTracker.userFormGroup.get('ImagePath').value || '';
-  IssueTrackerUpdateObj['ImageUpload'] = this._IssueTracker.userFormGroup.get('ImageUpload').value || '';
-  IssueTrackerUpdateObj['IssueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value || '';
-  IssueTrackerUpdateObj['IssueAssigned'] =  this._IssueTracker.userFormGroup.get('IssueAssigned').value || '';
+  let updateIssueTrackerStatus = {};
+  updateIssueTracker['operation'] = '' ;
+  updateIssueTracker['issueTrackerId'] = this.registerObj.IssueTrackerId; ;
+  updateIssueTracker['issueStatus'] =  this._IssueTracker.userFormGroup.get('IssueStatus').value.name || '';
+  updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.user.id || 0;
 
 
 let submitData = {
-  "IssueTrackerUpdateObj": IssueTrackerUpdateObj,
+  "updateIssueTracker": updateIssueTracker,
+  "updateIssueTrackerStatus":updateIssueTrackerStatus
 };
+
 console.log(submitData);
 this._IssueTracker.UpdateIssueTracker(submitData).subscribe(response => {
   if (response) {
-    this.toastr.success('Record Saved Successfully.', 'Updated !', {
+    this.toastr.success('Record Updated Successfully.', 'Updated !', {
       toastClass: 'tostr-tost custom-toast-success',
     }); this._matDialog.closeAll();
    

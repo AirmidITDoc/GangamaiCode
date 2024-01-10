@@ -84,9 +84,9 @@ export class PurchaseOrderService {
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
-      Warranty: [''],
+      Worrenty: [''],
       Schedule: [''],
-      OtherTax: [''],
+      roundVal: [''],
       Remark: [''],
     });
 

@@ -269,10 +269,10 @@ export class PurchaseOrderComponent implements OnInit {
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-   // console.log(Param);
+    // console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-    // console.log(this.dsPurchaseOrder);
+      //console.log(this.dsPurchaseOrder);
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -292,35 +292,72 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseItemList.sort = this.sort;
       this.dsPurchaseItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      //console.log(this.dsPurchaseItemList);
+      console.log(this.dsPurchaseItemList);
     },
       error => {
         this.sIsLoading = '';
       });
   }
-  msg:any;
-  onVerify(row) {
-    var Param = {
-      "update_POVerify_Status": {
-      "purchaseID": row.PurchaseID,
-      "isVerified": true,
-      "isVerifiedId":1 //this._PurchaseOrder.PurchaseSearchGroup.get('Status').value, 
-    }
+  msg: any;
+
+  "update_POVerify_Status": {
+    "purchaseID": 0,
+    "isVerified": true,
+    "isVerifiedId": 0
   }
-    console.log(Param)
-    this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
-      this.msg = data;
-      if(data){
-        this.toastr.success('Record Verified Successfully.', 'Verified !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        }); 
-      }
-       else {
-        this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
+  // onVerify(row) {
+  //   var Param = {
+  //     "update_POVerify_Status": {
+  //     "purchaseID": row.PurchaseID,
+  //     "isVerified": true,
+  //     "isVerifiedId":1 //this._PurchaseOrder.PurchaseSearchGroup.get('Status').value, 
+  //   }
+  // }
+  //   console.log(Param)
+  //   this._PurchaseOrder.getVerifyPurchaseOrdert(Param).subscribe(data => {
+  //     console.log(data)
+  //     if(data){
+  //       this.toastr.success('Record Verified Successfully.', 'Verified !', {
+  //         toastClass: 'tostr-tost custom-toast-success',
+  //       }); 
+  //     }
+  //      else {
+  //       this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
+  //         toastClass: 'tostr-tost custom-toast-error',
+  //       });
+  //     }
+  //     });
+  // }
+  onVerify(row) {
+
+
+    let update_POVerify_Status = {};
+    update_POVerify_Status['purchaseID'] = row.PurchaseID;
+    update_POVerify_Status['isVerified'] = true;
+    update_POVerify_Status['isVerifiedId'] = 1;
+
+    let submitData = {
+      "update_POVerify_Status": update_POVerify_Status,
+    };
+    console.log(submitData);
+    this._PurchaseOrder.getVerifyPurchaseOrdert(submitData).subscribe(response => {
+    //   if (response) {
+    //     this.toastr.success('Record Verified Successfully.', 'Verified !', {
+    //       toastClass: 'tostr-tost custom-toast-success',
+    //     });
+
+    //   } else {
+    //     this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
+    //       toastClass: 'tostr-tost custom-toast-error',
+    //     });
+    //   }
+    //   // this.isLoading = '';
+    },
+    success => {
+      this.toastr.success('Record Verified Successfully.', 'Verified !', {
+        toastClass: 'tostr-tost custom-toast-success',
       });
+    });
   }
 
 
@@ -764,7 +801,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this._PurchaseOrder.getFromStoreSearchList(data).subscribe(data => {
       this.FromStoreList = data;
-     // console.log(data)
+      // console.log(data)
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
@@ -1033,13 +1070,13 @@ export class PurchaseOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
-    
+
   }
- 
+
   onEdit(contact) {
     this.chkNewGRN = 2;
     console.log(contact)
-   this.advanceDataStored.storage = new SearchInforObj(contact);
+    this.advanceDataStored.storage = new SearchInforObj(contact);
     // this._PurchaseOrder.populateForm();
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
       {
@@ -1088,7 +1125,7 @@ export class PurchaseOrderComponent implements OnInit {
         //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
         //   console.log(this.TotalQty)
 
-       // console.log(this.reportPrintObjList);
+        // console.log(this.reportPrintObjList);
 
         setTimeout(() => {
           this.print3();
@@ -1175,23 +1212,24 @@ export class ItemNameList {
   DeliveryDate: any;
   ModeOfPayment: any;
   TaxNatureId: any;
-  Status3Id:any;
+  Status3Id: any;
   Warranty: any;
   Remark: any;
   Schedule: any;
   OtherTax: any;
   WorkId: any;
   Remarks: any;
-  Worrenty:any;
+  Worrenty: any;
   WODiscAmount: any;
   WOTotalAmount: any;
   WoNetAmount: any;
   WOVatAmount: any;
-  GrandTotalAmount:any;
+  GrandTotalAmount: any;
   taxID: number;
-  HandlingCharges:number;
-  TransportCharges:number;
-  
+  transportChanges: any;
+  handlingCharges: any;
+  tranProcessId: number;
+  roundVal: any;
 
   /**
    * Constructor
@@ -1227,18 +1265,18 @@ export class ItemNameList {
       this.DeliveryDate = ItemNameList.DeliveryDate || '';
       this.ModeOfPayment = ItemNameList.ModeOfPayment || '';
       this.TaxNatureId = ItemNameList.TaxNatureId || 0;
-      this.Status3Id = ItemNameList.Status3Id ||  0;
-      this.Warranty = ItemNameList.Warranty || '';
+      this.Status3Id = ItemNameList.Status3Id || 0;
+      this.Worrenty = ItemNameList.Worrenty || '';
       this.Remark = ItemNameList.Remark || '';
       this.Schedule = ItemNameList.Schedule || '';
-      this.OtherTax = ItemNameList.OtherTax || '';
-      this.WorkId = ItemNameList.WorkId || '';
-      this.WODiscAmount = ItemNameList.WODiscAmount || '';
-      this.WOTotalAmount = ItemNameList.WOTotalAmount || '';
-      this.WoNetAmount = ItemNameList.WoNetAmount || '';
-      this.WOVatAmount = ItemNameList.WOVatAmount || '';
-      this.HandlingCharges = ItemNameList.HandlingCharges || 0;
-      this.TransportCharges = ItemNameList.TransportCharges || 0;
+      this.roundVal = ItemNameList.roundVal || 0;
+      this.WorkId = ItemNameList.WorkId || 0;
+      this.WODiscAmount = ItemNameList.WODiscAmount || 0;
+      this.WOTotalAmount = ItemNameList.WOTotalAmount || 0;
+      this.WoNetAmount = ItemNameList.WoNetAmount || 0;
+      this.WOVatAmount = ItemNameList.WOVatAmount || 0;
+      this.handlingCharges = ItemNameList.handlingCharges || 0;
+      this.transportChanges = ItemNameList.transportChanges || 0;
     }
   }
 }
@@ -1292,7 +1330,7 @@ export class PurchaseOrder {
   CGSTPer: any;
   SGSTPer: any;
   IGSTPer: any;
-  GrandTotalAmount:number;
+  GrandTotalAmount: number;
   VatAmount: any;
   CGSTAmt: any;
   SGSTAmt: any;

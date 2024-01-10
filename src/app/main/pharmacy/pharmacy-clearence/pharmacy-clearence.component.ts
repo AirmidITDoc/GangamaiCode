@@ -79,13 +79,17 @@ export class PharmacyClearenceComponent implements OnInit {
        this.sIsLoading = '';
      });
  }
-
+NewIssueTracker:any;
   OpenPopUp(){
+    this.NewIssueTracker = 1;
     const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
       {
         maxWidth: "75vw",
         height: '70%',
         width: '100%',
+        data:{
+          NewIssueTracker: this.NewIssueTracker
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -94,6 +98,7 @@ export class PharmacyClearenceComponent implements OnInit {
   }
 
   onEdit(contact) {
+    this.NewIssueTracker = 2;
     const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
       {
         maxWidth: "75vw",
@@ -101,12 +106,14 @@ export class PharmacyClearenceComponent implements OnInit {
         width: '100%',
         data: {
           Obj: contact,
+          NewIssueTracker: this.NewIssueTracker
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
+  
 
 }
 
@@ -123,6 +130,8 @@ export class IssueTrackerList {
   AddedBy:any;
   AddedDatetime:any;
   IssueRaised:any;
+  IssueTrackerId:any
+  IssueStatusId:any;
   constructor(IssueTrackerList) {
     {
       //this.IssueTrackerId = _IssueTrackerList.IssueTrackerId || 0;
@@ -137,6 +146,8 @@ export class IssueTrackerList {
       this.AddedBy = IssueTrackerList.AddedBy || 0;
       this.AddedDatetime = IssueTrackerList.AddedDatetime || 0;
       this.IssueRaised = IssueTrackerList.IssueRaised || '';
+      this.IssueTrackerId = IssueTrackerList.IssueTrackerId || 0;
+      this.IssueStatusId = IssueTrackerList.IssueStatusId || 0;
     }
   }
 }

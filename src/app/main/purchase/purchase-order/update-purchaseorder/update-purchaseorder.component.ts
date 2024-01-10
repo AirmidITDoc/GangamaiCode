@@ -138,8 +138,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
   ];
 
   Status3List = [
-    { id: 1, name: "GST Before Disc" },
-    { id: 2, name: "GST After Disc" }
+    { tranProcessId: 1, name: "GST Before Disc" },
+    { tranProcessId: 2, name: "GST After Disc" },
   ];
 
 DeliveryDateList = [
@@ -229,15 +229,17 @@ PaymentList = [
     const toSelectPaymentTerm = this.PaymentList.find(c => c.id == this.registerObj.PaymentTermId);
     this._PurchaseOrder.userFormGroup.get('PaymentTerm').setValue(toSelectPaymentTerm);
 
-
     const toSelect = this.PaymentModeList.find(c => c.id == this.registerObj.ModeOfPayment);
     this._PurchaseOrder.userFormGroup.get('PaymentMode').setValue(toSelect);
 
     const toSelectTaxNature = this.TaxNatureList.find(c => c.id == this.registerObj.TaxNatureId);
     this._PurchaseOrder.userFormGroup.get('TaxNature').setValue(toSelectTaxNature);
 
-    const toSelectStatus3 = this.Status3List.find(c => c.id == this.registerObj.Status3Id);
-    this._PurchaseOrder.userFormGroup.get('Status3').setValue(toSelectStatus3);
+    const toSelecttranProcessId = this.Status3List.find(c => c.tranProcessId == this.registerObj.tranProcessId);
+    this._PurchaseOrder.userFormGroup.get('Status3').setValue(toSelecttranProcessId);
+
+    const toSelectSchedule = this.DeliveryDateList.find(c => c.id == this.registerObj.Schedule);
+    this._PurchaseOrder.FinalPurchaseform.get('Schedule').setValue(toSelectSchedule);
 
     
     // this.Status3List(this.userFormGroup.get('TaxNature').value.id);
@@ -554,24 +556,18 @@ debugger
     updatePurchaseOrderHeaderObj['isVerified'] = false;
     updatePurchaseOrderHeaderObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     updatePurchaseOrderHeaderObj['taxID'] = 0;
-    
     updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
     updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.userFormGroup.get('PaymentTerm').value.id || '';
     updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.userFormGroup.get('PaymentMode').value.id || '';
-    updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
-    updatePurchaseOrderHeaderObj['roundVal'] = 0;
+    updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
+    updatePurchaseOrderHeaderObj['roundVal'] = this._PurchaseOrder.FinalPurchaseform.get('roundVal').value || 0;
     updatePurchaseOrderHeaderObj['totCGSTAmt'] = 0;//this.GSTAmount || 0;
     updatePurchaseOrderHeaderObj['totSGSTAmt'] =  0;
     updatePurchaseOrderHeaderObj['totIGSTAmt'] = 0;
-    updatePurchaseOrderHeaderObj['transportChanges'] =  this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
-    updatePurchaseOrderHeaderObj['handlingCharges'] =  this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
-    updatePurchaseOrderHeaderObj['freightCharges'] =  this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
+    updatePurchaseOrderHeaderObj['transportChanges'] = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value || 0;
+    updatePurchaseOrderHeaderObj['handlingCharges'] = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value || 0;
+    updatePurchaseOrderHeaderObj['freightCharges'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
     updatePurchaseOrderHeaderObj['purchaseId'] = this.registerObj.PurchaseID;
-
-    
-    let delete_PurchaseDetailsObj = {};
-    delete_PurchaseDetailsObj['purchaseID'] =this.registerObj.PurchaseID;
-
    
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
@@ -597,8 +593,12 @@ debugger
       purchaseDetailInsertObj['igstAmt'] = 0;
       
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-    });
 
+
+    });
+  
+    let delete_PurchaseDetailsObj = {};
+    delete_PurchaseDetailsObj['purchaseID'] =this.registerObj.PurchaseID;
 
     let submitData = {
       "updatePurchaseOrderHeader": updatePurchaseOrderHeaderObj,
@@ -656,8 +656,8 @@ debugger
     purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
     purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.userFormGroup.get('PaymentTerm').value.id || '';
     purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.userFormGroup.get('PaymentMode').value.id || '';
-    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Warranty').value || 0;
-    purchaseHeaderInsertObj['roundVal'] = 0;
+    purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
+    purchaseHeaderInsertObj['roundVal'] = this._PurchaseOrder.FinalPurchaseform.get('roundVal').value || 0;
     purchaseHeaderInsertObj['totCGSTAmt'] = 0;
     purchaseHeaderInsertObj['totSGSTAmt'] = 0;
     purchaseHeaderInsertObj['totIGSTAmt'] = 0;
@@ -1024,12 +1024,6 @@ debugger
     }
   }
 
-
-
-
-
-
-
   @ViewChild('SupplierId') SupplierId: MatSelect;
   @ViewChild('Freight1') Freight1: ElementRef;
 
@@ -1054,9 +1048,9 @@ debugger
   
   @ViewChild('Schedule') Schedule: MatSelect;
   @ViewChild('Remark') Remark: ElementRef;
-  @ViewChild('Warranty') Warranty: ElementRef;
+  @ViewChild('Worrenty') Worrenty: ElementRef;
+  @ViewChild('roundVal') roundVal: ElementRef;
   @ViewChild('OtherTax') OtherTax: ElementRef;
-  @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
   @ViewChild('TransportCharges') TransportCharges: ElementRef;
 
   public onEnterSupplier(event): void {
@@ -1170,20 +1164,19 @@ debugger
   }
   public onEnterRemark(event): void {
     if (event.which === 13) {
-      this.Warranty.nativeElement.focus();
+      this.Worrenty.nativeElement.focus();
       // if (this.DeliveryDate) this.DeliveryDate.focus();
     }
   }
-  public onEnterWarranty(event): void {
+  public onEnterWorrenty(event): void {
     if (event.which === 13) {
-
       //if (this.Warranty) this.Warranty.focus();
-      this.OtherTax.nativeElement.focus();
+      this.roundVal.nativeElement.focus();
     }
   }
-  public onEnterOtherTax(event): void {
+  public onEnterroundVal(event): void {
     if (event.which === 13) {
-      this.OtherTax.nativeElement.focus();
+      this.roundVal.nativeElement.focus();
      // this.Remark.nativeElement.focus();
     }
   }

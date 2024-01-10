@@ -24,7 +24,7 @@ export class PharmacyClearenceService {
       IssueStatus:'',
       ImageName:'',
       ImagePath:'',
-      ImageUpload:'',
+      imageFile:'',
       IssueRaised:'',
       IssueAssigned:'',
 
@@ -40,10 +40,10 @@ export class PharmacyClearenceService {
   }
    
   public InsertIssueTracker(Param){
-    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+    return this._httpClient.post("InventoryTransaction/IssueTrackerSave", Param)
   }
   public UpdateIssueTracker(Param){
-    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+    return this._httpClient.post("InventoryTransaction/IssueTrackerUpdate", Param)
   }
 
  

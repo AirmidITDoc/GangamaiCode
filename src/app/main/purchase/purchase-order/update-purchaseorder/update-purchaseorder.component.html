@@ -3,16 +3,21 @@
 
         <mat-toolbar matDialogTitle class="mat-accent m-0">
             <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">menu </mat-icon>
+
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box </mat-icon>
+
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="color: white;">
+                    style="color: white;font-weight: bold;">
                     Purchase Order List
                     <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                        style="margin-left: 1450px;">
+                        style="margin-left: 1380px;">
                         <mat-icon>close</mat-icon>
                     </button>
                 </span>
-
-
             </mat-toolbar-row>
         </mat-toolbar>
 
@@ -78,15 +83,15 @@
                                                     {{option.SupplierName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                         <mat-error
-                                            *ngIf="_PurchaseOrder.userFormGroup.get('SupplierId').hasError('required')">
-                                            Required field cannot be left blank
-                                         </mat-error>
+                                            <mat-error
+                                                *ngIf="_PurchaseOrder.userFormGroup.get('SupplierId').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select PaymentTerm --</mat-label>
-                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm" 
+                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm"
                                                 (keydown)="onEnterPaymentTerm($event)" #Paymentterm>
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of PaymentList" [value]="m">
@@ -94,9 +99,9 @@
                                                 </mat-option>
                                             </mat-select>
                                             <mat-error
-                                            *ngIf="_PurchaseOrder.userFormGroup.get('PaymentTerm').hasError('required')">
-                                            Required field cannot be left blank
-                                          </mat-error>
+                                                *ngIf="_PurchaseOrder.userFormGroup.get('PaymentTerm').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 13%;">
@@ -109,14 +114,14 @@
                                                 </mat-option>
                                             </mat-select>
                                             <mat-error
-                                            *ngIf="_PurchaseOrder.userFormGroup.get('PaymentMode').hasError('required')">
-                                            Required field cannot be left blank
-                                          </mat-error>
+                                                *ngIf="_PurchaseOrder.userFormGroup.get('PaymentMode').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select TaxNature --</mat-label>
-                                            <mat-select formControlName="TaxNature" name="TaxNature"  
+                                            <mat-select formControlName="TaxNature" name="TaxNature"
                                                 (keydown)="onEnterTaxNature($event)" #TaxNature1>
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of TaxNatureList" [value]="m">
@@ -124,29 +129,25 @@
                                                 </mat-option>
                                             </mat-select>
                                             <mat-error
-                                            *ngIf="_PurchaseOrder.userFormGroup.get('TaxNature').hasError('required')">
-                                            Required field cannot be left blank
-                                          </mat-error>
+                                                *ngIf="_PurchaseOrder.userFormGroup.get('TaxNature').hasError('required')">
+                                                Required field cannot be left blank
+                                            </mat-error>
                                         </mat-form-field>
-
-                                        
+ 
                                         <mat-form-field appearance="outline" style="width: 13%;">
                                             <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3" required 
+                                            <mat-select formControlName="Status3" name="Status3" required
                                                 (selectionChange)="onChangeDiscountMode($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Status3List" [value]="m">
                                                     {{m.name}}
                                                 </mat-option>
                                             </mat-select>
-                                            <mat-error
-                                            *ngIf="_PurchaseOrder.userFormGroup.get('Status3').hasError('required')">
-                                            Required field cannot be left blank
-                                          </mat-error>
-                                        </mat-form-field>
+
+                                        </mat-form-field>&nbsp;&nbsp;
 
 
-                                      
+
 
                                         <!-- <mat-form-field appearance="outline" style="width: 25%;">
                                             <mat-label>DeliveryDate</mat-label>
@@ -162,10 +163,10 @@
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>&nbsp;&nbsp; -->
 
-                                      
 
 
-                                        <app-common-date [screenFrom]="screenFromString" 
+
+                                        <app-common-date [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)">
                                         </app-common-date>
                                     </div>
@@ -173,7 +174,7 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
 
-                                       
+
 
 
                                         <!-- <mat-form-field class="section-dropdown" style="width: 25%;border-style: groove;">
@@ -186,14 +187,14 @@
                                         </mat-select>
                                       </mat-form-field> -->
 
-                                     
-                                       
 
 
 
-                                        
 
-                                        
+
+
+
+
                                     </div>
                                 </form>
                             </div>
@@ -231,7 +232,8 @@
                                         <mat-form-field appearance="outline" style="width:50%;margin-left:20px;">
                                             <input type="text" name="ItemName" formControlName="ItemName" #itemid
                                                 placeholder="Item Name (enter 2 char) " matInput [(ngModel)]="ItemNames"
-                                                [matAutocomplete]="auto" (input)="getPharItemList()"  (keydown)="onEnterItemName($event)">
+                                                [matAutocomplete]="auto" (input)="getPharItemList()"
+                                                (keydown)="onEnterItemName($event)">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_PurchaseOrder.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -253,7 +255,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>UOM</mat-label>
-                                            <input matInput [(ngModel)]="UOM" name="UOM" 
+                                            <input matInput [(ngModel)]="UOM" name="UOM"
                                                 [disabled]="disableSelect.value" formControlName="UOM" placeholder="UOM"
                                                 id="UOM" type="number" (keydown)="onEnterunit($event)" required>
                                         </mat-form-field>&nbsp;
@@ -262,8 +264,8 @@
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="Qty" name="Qty" #qty required type="number"
                                                 (keyup)="calculateTotalAmount()" (keydown)="onEnterQty($event)"
-                                                formControlName="Qty" id="Qty"  required>
-                                                <mat-error
+                                                formControlName="Qty" id="Qty" required>
+                                            <mat-error
                                                 *ngIf="_PurchaseOrder.userFormGroup.get('Qty').hasError('required')">
                                                 Required field cannot be left blank
                                             </mat-error>
@@ -277,7 +279,7 @@
                                                 (keydown)="onEnterRate($event)" #rate type="number"
                                                 formControlName="Rate" (keyup)="calculateTotalAmount()" required
                                                 id="Rate">
-                                                <mat-error
+                                            <mat-error
                                                 *ngIf="_PurchaseOrder.userFormGroup.get('Rate').hasError('required')">
                                                 Required field cannot be left blank
                                             </mat-error>
@@ -286,7 +288,7 @@
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput [(ngModel)]="TotalAmount" name="TotalAmount" readonly
-                                             formControlName="TotalAmount"   >
+                                                formControlName="TotalAmount">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -298,7 +300,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>Disc Amt</mat-label>
-                                            <input matInput [(ngModel)]="DiscAmt" name="DiscAmount"  
+                                            <input matInput [(ngModel)]="DiscAmt" name="DiscAmount"
                                                 (keyup)="calculateDiscAmount()" formControlName="DiscAmount" readonly>
                                         </mat-form-field>&nbsp;
 
@@ -311,7 +313,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>GST Amt</mat-label>
-                                            <input matInput [(ngModel)]="GSTAmt" name="GSTAmount"   
+                                            <input matInput [(ngModel)]="GSTAmt" name="GSTAmount"
                                                 formControlName="GSTAmount">
                                         </mat-form-field>&nbsp;
 
@@ -336,7 +338,8 @@
 
                                         <div matTooltip="Select Item name to enable this button!!">
                                             <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                class="add-btn" [disabled]="_PurchaseOrder.userFormGroup.invalid" (click)="onAdd($event)">
+                                                class="add-btn" [disabled]="_PurchaseOrder.userFormGroup.invalid"
+                                                (click)="onAdd($event)">
                                                 <mat-icon> add </mat-icon>
                                                 Add
                                             </button>
@@ -359,8 +362,7 @@
                                         </div>
 
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
-                                            [@animateStagger]="{value:'50'}"
-                                            style="overflow:auto;">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                             <ng-container matColumnDef="Action">
                                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
@@ -521,49 +523,45 @@
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Handling Charges</mat-label>
-                                    <input matInput   #HandlingCharges  
-                                        [(ngModel)]="registerObj.HandlingCharges" type="text"
-                                        formControlName="HandlingCharges" (keydown)="onEnterHandlingcharge($event)">
-                                </mat-form-field>&nbsp;&nbsp;
+                                    <input matInput #HandlingCharges [(ngModel)]="registerObj.handlingCharges"
+                                        type="text" formControlName="HandlingCharges"
+                                        (keydown)="onEnterHandlingcharge($event)">
+                                </mat-form-field>&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Transport Charges</mat-label>
-                                    <input matInput   #TransportCharges  
-                                        [(ngModel)]="registerObj.TransportCharges" type="text"
-                                        formControlName="TransportCharges" (keydown)="onEnterTransportcharge($event)">
-                                </mat-form-field>&nbsp;&nbsp;
+                                    <input matInput #TransportCharges [(ngModel)]="registerObj.transportChanges"
+                                        type="text" formControlName="TransportCharges"
+                                        (keydown)="onEnterTransportcharge($event)">
+                                </mat-form-field>&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Freight</mat-label>
                                     <input matInput placeholder="Freight" #Freight1
-                                        [(ngModel)]="registerObj.FreightAmount" type="text"
-                                        formControlName="Freight" (keydown)="onEnterFreight($event)">
-                                </mat-form-field>&nbsp;&nbsp;
+                                        [(ngModel)]="registerObj.FreightAmount" type="text" formControlName="Freight"
+                                        (keydown)="onEnterFreight($event)">
+                                </mat-form-field>&nbsp;
 
-                                <mat-form-field appearance="outline" fxFlex="10%">
+                                <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Remark</mat-label>
                                     <input matInput placeholder="Remark" formControlName="Remark" #Remark
-                                        [(ngModel)]="registerObj.Remarks" >
-                                </mat-form-field>&nbsp;&nbsp;
+                                        [(ngModel)]="registerObj.Remarks">
+                                </mat-form-field>&nbsp;
 
-                               
 
-                                <mat-form-field appearance="outline" fxFlex="8%">
-                                    <mat-label>Guarantee/ Warranty</mat-label>
-                                    <input matInput placeholder="Guarantee/ Warranty" #Warranty required
-                                        [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWarranty($event)"
-                                        formControlName="Warranty">
-                                        <mat-error
-                                        *ngIf="_PurchaseOrder.FinalPurchaseform.get('Warranty').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
-                                    <mat-label>Other Tax</mat-label>
-                                    <input matInput placeholder="Other Tax" formControlName="OtherTax" #OtherTax
-                                    [(ngModel)]="registerObj.OtherTax" (keydown)="onEnterOtherTax($event)">
-                                </mat-form-field>
+                                    <mat-label>Guarantee/ Worrenty</mat-label>
+                                    <input matInput placeholder="Guarantee/Worrenty" #Worrenty required
+                                        [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWorrenty($event)"
+                                        formControlName="Worrenty">
+                                </mat-form-field>&nbsp;
+
+                                <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-label>Rounding Amt</mat-label>
+                                    <input matInput placeholder="roundVal" formControlName="roundVal" #roundVal
+                                    [(ngModel)]="registerObj.roundVal" (keydown)="onEnterroundVal($event)">
+                                </mat-form-field>&nbsp;
 
                                 <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Schedule </mat-label>
@@ -581,67 +579,70 @@
 
                                 <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Schedule </mat-label>
-                                    <mat-select formControlName="Schedule" name="Schedule"  #Schedule required 
-                                    [(ngModel)]="registerObj.Schedule" >
+                                    <mat-select formControlName="Schedule" name="Schedule" #Schedule required
+                                        [(ngModel)]="registerObj.Schedule">
                                         <mat-option></mat-option>
                                         <mat-option *ngFor="let m of DeliveryDateList" [value]="m">
                                             {{m.name}}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error
-                                    *ngIf="_PurchaseOrder.FinalPurchaseform.get('Schedule').hasError('required')">
-                                    Required field cannot be left blank
-                                  </mat-error>
+                                        *ngIf="_PurchaseOrder.FinalPurchaseform.get('Schedule').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
                                 </mat-form-field>
 
 
-                             
+
 
                                 <div layout="row" layout-xs="column">
-                                    <div  style="margin-top: 10px;" >
+                                    <div style="margin-top: 10px;">
+
                                         <span class="net-amt-mat-label"
-                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width:100px;">Total
-                                        Amount: </span>&nbsp;
-                                    <span class="net-amt-value"
-                                        style="margin-left:15px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalAmt(dsItemNameList.data)
-                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    
+                                            style="font-weight:bold;margin-left:15px;padding-top: 10px;width: 100px;">Total
+                                            Disc Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:1px;font-weight:bolder;color: blue;padding-top: 10px;width: 220px;">{{getTotalDisc(dsItemNameList.data)
+                                            | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                                         <span class="net-amt-mat-label"
-                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
-                                        Disc Amt:
-                                    </span>&nbsp;
-                                    <span class="net-amt-value"
-                                        style="margin-left:10px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalDisc(dsItemNameList.data)
-                                        | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            style="font-weight:bold;margin-left:10px;padding-top: 10px;width:100px;">Total
+                                            Amount: </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:5px;font-weight:bolder;color: blue;padding-top: 10px;width: 200px;">{{getTotalAmt(dsItemNameList.data)
+                                            | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </div>
-                                    <div  style="margin-top: 10px;">
+                                    <div style="margin-top: 10px;">
                                         <span class="net-amt-mat-label"
-                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
-                                        GST Amt:
-                                    </span>&nbsp;
-                                    <span class="net-amt-value"
-                                        style="margin-left:10px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalGST(dsItemNameList.data)
-                                        |
-                                        currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    
-                                    <span class="net-amt-mat-label"
-                                        style="font-weight:bold;margin-left:20px;padding-top: 10px;width: 100px;">Total
-                                        Net Amt:
-                                    </span>&nbsp;
-                                    <span class="net-amt-value"
-                                        style="margin-left:15px;font-weight:bolder;color: blue;padding-top: 10px;width: 180px;">{{getTotalNet(dsItemNameList.data)
-                                        |
-                                        currency:'INR' }}</span>
+                                            style="font-weight:bold;margin-left:15px;padding-top: 10px;width: 100px;">Total
+                                            GST Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:1px;font-weight:bolder;color: blue;padding-top: 10px;width: 220px;">{{getTotalGST(dsItemNameList.data)
+                                            |
+                                            currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <span class="net-amt-mat-label"
+                                            style="font-weight:bold;margin-left:10px;padding-top: 10px;width: 100px;">Total
+                                            Net Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:7px;font-weight:bolder;color: blue;padding-top: 10px;width: 220px;">{{getTotalNet(dsItemNameList.data)
+                                            |
+                                            currency:'INR' }}</span>
                                     </div>
                                 </div>
 
-                                <div class="net-amt" >
-                                    <button  class="next-btn" style="border-radius: 16px;margin-left: 35px; margin-top: 15px;"
-                                    [disabled]="_PurchaseOrder.FinalPurchaseform.invalid"  (click)="OnSave()">Save</button>
+                                <div class="net-amt">
+                                    <button class="next-btn"
+                                        style="border-radius: 16px;margin-left: 35px; margin-top: 15px;"
+                                        [disabled]="_PurchaseOrder.FinalPurchaseform.invalid"
+                                        (click)="OnSave()">Save</button>
                                     <button class="footer-btn" style="border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                 </div>
-    
+
 
                             </div>
 
@@ -691,7 +692,7 @@
                                
                             </div> -->
                         </form>
-                                <!-- [disabled]="_PurchaseOrder.FinalPurchaseform.invalid" -->
+                        <!-- [disabled]="_PurchaseOrder.FinalPurchaseform.invalid" -->
 
                     </div>
                 </div>

@@ -29,7 +29,7 @@
 
                         <div fxlayout="row">
                             <form [formGroup]="_IssueTracker.userFormGroup">
-
+                                
                                 <mat-card
                                     style="width: 100%;height:140px;padding: 8px;background-color: white; margin-top: 10px;">
                                     <div fxlayout="row">
@@ -37,14 +37,14 @@
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Image Name</mat-label>
                                             <input name="ImageName" formControlName="ImageName" matInput 
-                                            [(ngModel)]="registerObj.ImageName"  (keydown)="onEnterImageName($event)" required>
+                                            [(ngModel)]="registerObj.ImageName"  (keydown)="onEnterImageName($event)">
 
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Image Path</mat-label>
                                             <input name="ImagePath" formControlName="ImagePath" matInput 
-                                            [(ngModel)]="registerObj.UploadImagePath" (keydown)="onEnterImagePath($event)" required>
+                                            [(ngModel)]="registerObj.UploadImagePath" (keydown)="onEnterImagePath($event)" >
 
                                         </mat-form-field>&nbsp;&nbsp;
                                         <!-- <mat-form-field appearance="outline" fxFlex>
@@ -54,16 +54,22 @@
                                         <!-- <div appearance="outline" style="margin-top: 15px;">
                                         <input type="file" (change)="handleImageUpload($event)" >
                                        </div> -->
-
+                                      
+                                     
                                        <div class="img-container" >
-                                        <input formControlName="ImageUpload" type="file" #attachments accept="image/*" multiple name="file"
-                                          id="file" class="inputfile" (change)="handleFileInput($event.target.files)" style="margin-right: 10px;" />
+                                        <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple name="file"
+                                       id="file" class="inputfile" (change)="onImageChange($event)" style="margin-right: 10px;" />
                   
                                         <label class="file-lable1" for="file">
                                           <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
                                           Browse
                                         </label>
                                       </div>
+                                      <button mat-raised-button style="border-radius: 30px;"><mat-icon>visibility</mat-icon>
+                                         View</button>&nbsp;
+                                    
+                                      <app-common-date [screenFrom]="screenFromString"
+                                      (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                                        
 
                                     </div>
@@ -113,11 +119,11 @@
                                     </div>
                                 </mat-card>
                                 <div class="footer-navigation-container" fxLayout.gt-xs="row">
-
+                                   
                                     <div style="margin-top: 10px; margin-right: 10px; ">
                                         <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
-                                        (click)="Onsave()" [disabled]="_IssueTracker.userFormGroup.invalid">Save</button>
-                                        <button class="footer-btn" id="btncancel" (click)="OnReset()">Close</button>
+                                         [disabled]="_IssueTracker.userFormGroup.invalid" (click)="OnSave()">Save</button>
+                                        <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
                                     </div>
                                 </div>   
 
