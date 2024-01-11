@@ -1,1 +1,166 @@
-<p>role-template-master works!</p>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{
+                        value: '*',
+                        params: { delay: '50ms', scale: '0.2' }
+                    }">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{
+                        value: '*',
+                        params: { delay: '100ms', x: '-25px' }
+                    }">
+                    Role Master
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+    </div>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="65%" fxFlex>
+                        <div fxlayout="row" style="
+                                background-color: white;
+                                padding: 5px 10px 5px 10px;
+                            ">
+                            <form [formGroup]="_RoleService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Role Name" autocomplete="off"
+                                            name="RoleNameSearch" formControlName="RoleNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%">
+                                <mat-table #table matSort [dataSource]="dsRoleMasterList"
+                                    [@animateStagger]="{ value: '50' }" style="overflow: auto">
+                                    <ng-container matColumnDef="RoleId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{ element.roleId }}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RoleName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Role Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{ element.roleName }}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                            Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row" style="color: black;">
+                                            <button mat-icon-button (click)="onEdit(row)">
+                                                <mat-icon title="Edit Menu">launch</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDeactive(row.roleId)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onPermission(row.roleId)" color="warn">
+                                                <mat-icon>accessibility</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="
+                                            displayedColumns;
+                                            sticky: true
+                                        ">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="
+                                            let row;
+                                            columns: displayedColumns
+                                        " class="element"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{ hide: dsRoleMasterList != null }">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{
+                                            hide: !(
+                                                dsRoleMasterList != null &&
+                                                dsRoleMasterList.data.length == 0
+                                            )
+                                        }"></mat-footer-row>
+                                </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white">
+                        <div fxlayout="row">
+                            <div class="dialog-content-wrapper">
+                                <div mat-dialog-content class="p-24 pb-0 m-0">
+                                    <form [formGroup]="_RoleService.myform">
+                                        <h3>
+                                            {{ (_RoleService.myform.controls.RoleId.value ? "Modify Role" : "New Role")
+                                            }}
+                                        </h3>
+                                        <input type="hidden" name="RoleId" formControlName="RoleId" />
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                                <mat-label>Role Name</mat-label>
+                                                <input name="RoleName" formControlName="RoleName" matInput required />
+                                                <mat-error>Please enter Role Name
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="button-row">
+                                        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                                            [disabled]="_RoleService.myform.invalid">
+                                            Save
+                                        </button>
+                                        <button mat-raised-button color="warn" (click)="onClear()">
+                                            Clear
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,13 +8,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class PharmacyClearenceService {
 
   userFormGroup: FormGroup;
-
+  MyFrom: FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.CreateNewIssueFrom(); 
+    this.userFormGroup = this.CreateNewIssueFrom();
+    this.MyFrom = this.createmyFrom(); 
   }
 
   CreateNewIssueFrom() {
@@ -24,7 +25,7 @@ export class PharmacyClearenceService {
       IssueStatus:'',
       ImageName:'',
       ImagePath:'',
-      ImageUpload:'',
+      imageFile:'',
       IssueRaised:'',
       IssueAssigned:'',
 
@@ -32,20 +33,26 @@ export class PharmacyClearenceService {
       end: [(new Date()).toISOString()],
     });
   }
-  
-   
- 
-  public getIssuTrackerList(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",{});
+
+  createmyFrom() {
+    return this._formBuilder.group({
+      IssueStatus:'',
+      IssueAssigned:'',
+
+    });
   }
-   
+  public getIssuTrackerList(Params){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",Params);
+  }
   public InsertIssueTracker(Param){
-    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+    return this._httpClient.post("InventoryTransaction/IssueTrackerSave", Param)
   }
   public UpdateIssueTracker(Param){
-    return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
+    return this._httpClient.post("InventoryTransaction/IssueTrackerUpdate", Param)
   }
-
+  public getConstantsList(Params){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Params);
+  }
  
   
 }

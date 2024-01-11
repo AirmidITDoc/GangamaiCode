@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PharmacyClearenceComponent } from '../pharmacy-clearence/pharmacy-clearence.component';
 import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
+import { ImageViewComponent } from './image-view/image-view.component';
 
 const routes: Routes = [
   { 
@@ -48,6 +49,7 @@ const routes: Routes = [
   declarations: [
     PharmacyClearenceComponent,
     NewIssueTrackerComponent,
+    ImageViewComponent,
     
     
     

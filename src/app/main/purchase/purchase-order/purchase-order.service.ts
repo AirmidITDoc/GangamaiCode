@@ -12,6 +12,8 @@ export class PurchaseOrderService {
   PurchaseOrderForm: FormGroup;
   FinalPurchaseform: FormGroup;
   PurchaseStoreform: FormGroup;
+  StoreFormGroup:FormGroup;
+  
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
@@ -19,7 +21,7 @@ export class PurchaseOrderService {
     this.userFormGroup = this.getPurchaseOrderForm();
     this.PurchaseSearchGroup = this.PurchaseSearchFrom();
     this.FinalPurchaseform = this.getPurchaseOrderFinalForm();
-    // this.PurchaseStoreform=this.PurchaseStoreFrom();
+     this.StoreFormGroup=this.createStoreFrom();
   }
 
   PurchaseSearchFrom() {
@@ -37,19 +39,11 @@ export class PurchaseOrderService {
     });
   }
 
-  // PurchaseStoreFrom() {
-  //   return this._formBuilder.group({
-  //     purchaseId:[''],
-  //     Freight:[''],
-  //     FromStoreId:[''],
-  //     start: [new Date().toISOString()],
-  //     Status3:[''],
-  //     SupplierId:[''],
-  //     PaymentMode:[''],
-  //     PaymentTerm:[''],
-  //     TaxNature:[''],
-  //   });
-  // }
+  createStoreFrom() {
+    return this._formBuilder.group({
+      FromStoreId:[''],
+    });
+  }
 
   getPurchaseOrderForm() {
     return this._formBuilder.group({
@@ -67,12 +61,9 @@ export class PurchaseOrderService {
       MRP: [''],
       Specification: [''],
       purchaseId: [''],
-      FromStoreId: [''],
+     // FromStoreId: [''],
       Status3: [''],
       SupplierId: [''],
-      PaymentMode: [''],
-      PaymentTerm: [''],
-      TaxNature: [''],
 
     });
 
@@ -84,10 +75,11 @@ export class PurchaseOrderService {
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
-      Warranty: [''],
-      Schedule: [''],
-      OtherTax: [''],
+      Worrenty: [''],
+      roundVal: [''],
       Remark: [''],
+      PaymentMode: [''],
+      PaymentTerm: [''],
     });
 
   }
@@ -97,6 +89,34 @@ export class PurchaseOrderService {
 
     });
   }
+
+  public getPaymentTermList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_termsofpaymentMaster", {});
+  }
+  public getModeOfPaymentList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_modeofpaymentForcombo", {});
+  }
+  public getGSTtypeList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
+  }
+  public getSupplierSearchList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName", {});
+  }
+  public getLoggedStoreList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+  }
+  public getPurchaseOrderDetail(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForPurchasepdate", Param);
+  }
+  public getItemList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
+  }
+
+
+
+
+
+
 
   public getPurchaseOrder(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PurchaseOrderList_by_Name", Param);
@@ -110,17 +130,13 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
   }
 
-  public getLoggedStoreList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
-  }
+ 
 
   public getFromStoreSearchList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
 
-  public getSupplierSearchList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName", {});
-  }
+ 
 
   public getItemNameList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
@@ -130,9 +146,7 @@ export class PurchaseOrderService {
     return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
   }
 
-  public getItemList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
-  }
+ 
   public PurchaseUpdate(Param) {
     return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
   }
@@ -145,9 +159,7 @@ export class PurchaseOrderService {
   }
 
 
-  public getPurchaseOrderDetail(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForPurchasepdate", Param);
-  }
+ 
   public getPrintPurchaseOrdert(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
   }
