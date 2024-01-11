@@ -7,17 +7,15 @@
         [imageFile]="data.file"
         [autoCrop]="false"
         [transform]="transform"
-        [resizeToWidth]="300"
-        [resizeToHeight]="350"
-        [cropperStaticWidth]="300"
-        [cropperStaticHeight]="350"
-        [cropperMaxWidth]="300"
+        [resizeToWidth]="600"
+        [resizeToHeight]="550"
+        [cropperMinWidth]="300"
       ></image-cropper>
     </div>
   </div>
 </div>
 
-<div mat-dialog-actions class="d-flex justify-content-center">
+<!-- <div mat-dialog-actions class="d-flex justify-content-center">
   <mat-slider
     class="zoom-slider"
     [min]="max * -1"
@@ -26,7 +24,7 @@
     [value]="zoom"
     (input)="onSliderChange($event.value)"
   ></mat-slider>
-</div>
+</div> -->
 
 <div mat-dialog-actions class="d-flex justify-content-end">
   <button mat-button class="dnet-button-wizard-back" (click)="onClose()">Close</button>
