@@ -25,19 +25,20 @@ export class PharmacyClearenceComponent implements OnInit {
     'IssueSummary',
     'IssueDescription',
     'UploadImagePath',
-    'ImageName',
+   // 'ImageName',
     'IssueStatus',
     'IssueAssigned',
     'AddedBy',
     'AddedDatetime',
     'Action'
   ];
- 
+  
   sIsLoading: string = '';
   isLoading = true;
   Store1List:any=[];
   screenFromString = 'admission-form';
-
+  ConstanyTypeList:any=[];
+  ConstanyAssignedList:any=[];
   
   dsIssueTracker = new MatTableDataSource<IssueTrackerList>();
 
@@ -53,7 +54,10 @@ export class PharmacyClearenceComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIssuTrackerList();
+    this.getIssueStatusList();
+    this.getIssueAssignedList();
   }
+  
   
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -67,8 +71,17 @@ export class PharmacyClearenceComponent implements OnInit {
   }
 
   getIssuTrackerList() {
+// let vstatus=this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%';
+// let vassigned=this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%';
+// console.log(vassigned)
+// console.log(vstatus)
+    var vdata={
+      'IssueStatus':this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
+      'IssueAssigned':this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
+    }
+console.log(vdata)
     this.sIsLoading = 'loading-data';
-     this._IssueTracker.getIssuTrackerList().subscribe(data => {
+     this._IssueTracker.getIssuTrackerList(vdata).subscribe(data => {
      this.dsIssueTracker.data = data as IssueTrackerList[];
      console.log(this.dsIssueTracker.data)
      this.dsIssueTracker.sort = this.sort;
@@ -79,38 +92,56 @@ export class PharmacyClearenceComponent implements OnInit {
        this.sIsLoading = '';
      });
  }
-NewIssueTracker:any;
+ getIssueStatusList(){
+  var vdata={
+    'ConstanyType':'ISSUE_STATUS',
+  }
+   this._IssueTracker.getConstantsList(vdata).subscribe(data => {
+   this.ConstanyTypeList=data
+   console.log(this.ConstanyTypeList)
+ });
+ }
+ getIssueAssignedList(){
+  var vdata={
+    'ConstanyType':'ISSUE_ASSIGNED',
+  }
+   this._IssueTracker.getConstantsList(vdata).subscribe(data => {
+   this.ConstanyAssignedList=data
+   console.log(this.ConstanyAssignedList)
+ });
+ }
+ 
+
+ 
+ 
   OpenPopUp(){
-    this.NewIssueTracker = 1;
     const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
       {
         maxWidth: "75vw",
-        height: '70%',
+        height: '72%',
         width: '100%',
-        data:{
-          NewIssueTracker: this.NewIssueTracker
-        }
+        
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-       
+      this.getIssuTrackerList();
     });
   }
 
   onEdit(contact) {
-    this.NewIssueTracker = 2;
     const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
       {
         maxWidth: "75vw",
-        height: '70%',
+        height: '72%',
         width: '100%',
         data: {
           Obj: contact,
-          NewIssueTracker: this.NewIssueTracker
+         
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getIssuTrackerList();
     });
   }
   

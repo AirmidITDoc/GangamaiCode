@@ -19,11 +19,8 @@
     </mat-toolbar>
 
 
-
-
-
-
-
+    
+    
     <div class="content">
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
@@ -32,9 +29,39 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <form [formGroup]="_IssueTracker.MyFrom">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                                <div fxFlex.gt-sm="100%" fxFlex style="margin-left: 8px;">
+
+                                    <mat-form-field appearance="outline" fxFlex="20%" style="margin-left: 8px;">
+                                        <mat-label>Issue Status</mat-label>
+                                        <mat-select formControlName="IssueStatus" name="IssueStatus" required>
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of ConstanyTypeList" [value]="m">
+                                                {{m.Name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>&nbsp;&nbsp;
+
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Issue Assigned</mat-label>
+                                        <mat-select formControlName="IssueAssigned" name="IssueAssigned" required>
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of ConstanyAssignedList" [value]="m">
+                                                {{m.Name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>&nbsp;&nbsp;
+                                    <button mat-raised-button style="margin-top: 10px;" (click)="getIssuTrackerList()"><mat-icon>search</mat-icon> Search</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
@@ -89,17 +116,20 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Upload ImagePath </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-icon>visibility</mat-icon>
+                                            {{contact.ImageName}}
                                             {{contact.UploadImagePath}}
+                                           
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ImageName">
+                                    <!-- <ng-container matColumnDef="ImageName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Image Name </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.ImageName}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IssueStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -142,9 +172,7 @@
                                             <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"> 
                                                 <mat-icon>edit</mat-icon>
                                             </button>
-                                            <button mat-icon-button matTooltip="View Image" > 
-                                                <mat-icon> insert_photo</mat-icon>
-                                            </button>
+                                            
                                         </mat-cell>
                                     </ng-container>
 
