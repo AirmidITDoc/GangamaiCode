@@ -1,313 +1,363 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{_itemService.myform.controls.ItemID.value?"Modify Item Master":"New
-                Item Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
-</div>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
 
-<form [formGroup]="_itemService.myform" noValidate>
+  <mat-toolbar matDialogTitle class="mat-accent m-0">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <!-- <h3>Registration </h3> -->
+      <h3>New Item Master </h3>
+      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div>
+
     <div>
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-
+      <form [formGroup]="_itemService.myform" noValidate>
+        <div style="padding: 20px;">
+          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" matInput required>
-                <mat-error>Please enter HSNcode </mat-error>
+              <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" matInput type="number"  required #HSN
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,20);" (keydown)="onEnterHsn($event)">
+              <mat-error>Please enter HSNcode </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ItemName" formControlName="ItemName"
-                    [ngClass]="{ 'is-invalid': submitted && f.ItemName.errors }" placeholder="Enter Item Name" matInput
-                    required>
-                <span class="error" *ngIf="f.ItemName.invalid && f.ItemName.touched">ItemName is required Enter only
-                    Alphabets</span>
+              <input name="ItemName" formControlName="ItemName" #Itemname
+              placeholder="Enter Item Name" matInput  (keydown)="onEnterItemName($event)"
+                required>
+              <span class="error" *ngIf="f.ItemName.invalid && f.ItemName.touched">ItemName is required Enter only
+                Alphabets</span>
+            </mat-form-field>
+
+           
+<!--             
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <mat-select placeholder="Select ItemColorcode" name="ItemColorcode" formControlName="ItemColorcode" #singleSelect>
+                <mat-option *ngFor="let M of CurrencycmbList" [value]="M.CurrencyId" >
+                  {{ M.CurrencyName}}
+                </mat-option>
+              </mat-select>
+              <mat-error>Select UnitofMeasurementName</mat-error>
+            </mat-form-field> -->
+
+
+
+          </div>
+
+          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>ItemType Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select ItemTypeID" matInput
+                formControlName="ItemTypeID" [matAutocomplete]="autoItemTypeID" required #ItemType (keydown)="onEnterItemType($event)">
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoItemTypeID="matAutocomplete" [displayWith]="getOptionTextItemtype">
+                <mat-option *ngFor="let option of filteredItemType | async" [value]="option">
+                  {{option.ItemTypeName}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
 
 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>ItemType Name</mat-label>
-                <mat-select formControlName="ItemTypeID" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="itemFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredItem | async" [value]="element">
-                        {{element.ItemTypeName}}
-                    </mat-option>
-                </mat-select>
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>ItemCategory Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select ItemCategoryId" matInput
+                formControlName="ItemCategoryId" [matAutocomplete]="autoItemCategoryId" required #ItemCatageory (keydown)="onEnterItemCategory($event)">
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoItemCategoryId="matAutocomplete" [displayWith]="getOptionTextItemcategory">
+                <mat-option *ngFor="let option of filteredItemcategory | async" [value]="option">
+                  {{option.ItemCategoryName}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
 
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>ItemCategory Name</mat-label>
-                <mat-select formControlName="ItemCategoryId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="itemcategoryFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredItemcategory | async" [value]="element">
-                        {{element.ItemCategoryName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </div>
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>ItemGeneric Name</mat-label>
-                <mat-select formControlName="ItemGenericNameId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="itemgenericFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredItemgeneric | async" [value]="element">
-                        {{element.ItemGenericName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>ItemClassName</mat-label>
-                <mat-select formControlName="ItemClassId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="itemclassFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredItemclass | async" [value]="element">
-                        {{element.ItemClassName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>UnitofMeasurement Name</mat-label>
-                <mat-select formControlName="PurchaseUOMId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="unitofmeasurementFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredUnitofmeasurement | async" [value]="element">
-                        {{element.UnitofMeasurementName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-select placeholder="Select StockUOMId" name="StockUOMId" formControlName="StockUOMId"
-                    #singleSelect>
-                    <mat-option *ngFor="let M of ItemUomcmbList" [value]="M.PurchaseUOMId">
-                        {{ M.UnitofMeasurementName }}
-                    </mat-option>
-                </mat-select>
-                <mat-error>Select UnitofMeasurementName</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>Currency Name</mat-label>
-                <mat-select formControlName="CurrencyId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="currencyFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredCurrency | async" [value]="element">
-                        {{element.CurrencyName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ConversionFactor" placeholder="Enter Conversion Factor"
-                    [ngClass]="{ 'is-invalid': submitted && f.ConversionFactor.errors }"
-                    formControlName="ConversionFactor" matInput>
-                <span class="error" *ngIf="f.ConversionFactor.invalid && f.ConversionFactor.touched">ConversionFactor is
-                    required Enter only Digits</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="CGST" placeholder="Enter CGST" [ngClass]="{ 'is-invalid': submitted && f.CGST.errors }"
-                    formControlName="CGST" matInput>
-                <span class="error" *ngIf="f.CGST.invalid && f.CGST.touched">CGST is required Enter only Number</span>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="SGST" placeholder="Enter SGST" [ngClass]="{ 'is-invalid': submitted && f.SGST.errors }"
-                    formControlName="SGST" matInput>
-                <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
-            </mat-form-field>
-
-        </div>
-
-        <div>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="IGST" placeholder="Enter IGST" [ngClass]="{ 'is-invalid': submitted && f.IGST.errors }"
-                    formControlName="IGST" matInput>
-                <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="TaxPer" placeholder="TaxPer %" formControlName="TaxPer"
-                    [ngClass]="{ 'is-invalid': submitted && f.TaxPer.errors }" matInput>
-                <span class="error" *ngIf="f.TaxPer.invalid && f.TaxPer.touched">TaxPer is required Enter only
-                    Number</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty"
-                    [ngClass]="{ 'is-invalid': submitted && f.MinQty.errors }" matInput>
-                <span class="error" *ngIf="f.MinQty.invalid && f.MinQty.touched">MinQty is required Enter only
-                    Number</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="MaxQty" placeholder="Enter MaxQty" formControlName="MaxQty"
-                    [ngClass]="{ 'is-invalid': submitted && f.MaxQty.errors }" matInput>
-                <span class="error" *ngIf="f.MaxQty.invalid && f.MaxQty.touched">MaxQty is required Enter only
-                    Number</span>
-            </mat-form-field>
-        </div>
-
-        <div>
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder"
-                    [ngClass]="{ 'is-invalid': submitted && f.ReOrder.errors }" matInput>
-                <span class="error" *ngIf="f.ReOrder.invalid && f.ReOrder.touched">ReOrder is required Enter only
-                    Number</span>
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>ItemGeneric Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select ItemGenericNameId" matInput
+                formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId" required #ItemGeneric (keydown)="onEnterItemGeneric($event)">
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoItemGenericNameId="matAutocomplete" [displayWith]="getOptionTextGenericname">
+                <mat-option *ngFor="let option of filteredItemgeneric | async" [value]="option">
+                  {{option.ItemGenericName}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
 
 
 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>Manufacture Name</mat-label>
-                <mat-select formControlName="ManufId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="manufactureFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredManufacture | async" [value]="element">
-                        {{element.ManufName}}
-                    </mat-option>
-                </mat-select>
+
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>ItemClass Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select ItemClassId" matInput #ItemClass
+                formControlName="ItemClassId" [matAutocomplete]="autoItemClassId" required (keydown)="onEnterItemClass($event)">
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemClassId').setValue(''); isClassSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ItemClassId').setValue(''); isClassSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoItemClassId="matAutocomplete" [displayWith]="getOptionTextClass">
+                <mat-option *ngFor="let option of filteredItemclass | async" [value]="option">
+                  {{option.ItemClassName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+
+          </div>
+
+          <div>
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>UnitofMeasurement Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select PurchaseUOMId" matInput
+                formControlName="PurchaseUOMId" [matAutocomplete]="autoPurchaseUOMId" (keydown)="onEnterPurchaseUOMId($event)" #PurchaseUOMId>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('PurchaseUOMId').setValue(''); isStoreSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoPurchaseUOMId="matAutocomplete" [displayWith]="getOptionTextPurchaseUMO">
+                <mat-option *ngFor="let option of filteredUnitofmeasurement | async" [value]="option">
+                  {{option.UnitOfMeasurementName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-select placeholder="Select StockUOMId" name="StockUOMId" formControlName="StockUOMId"
+                        #singleSelect>
+                        <mat-option *ngFor="let M of ItemUomcmbList" [value]="M.UnitOfMeasurementId">
+                            {{ M.UnitOfMeasurementName }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Select UnitOfMeasurementName</mat-error>
+                </mat-form-field> -->
+
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>Stock UMOID </mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
+                formControlName="StockUOMId" [matAutocomplete]="autoStockUOMId" (keydown)="onEnterStockUOMId($event)" #StockUOMId>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('StockUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('StockUOMId').setValue(''); isStoreSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoStockUOMId="matAutocomplete" [displayWith]="getOptionTextStockUOMId">
+                <mat-option *ngFor="let option of filteredStockUOMId | async" [value]="option">
+                  {{option.UnitOfMeasurementName}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>Store Name</mat-label>
-                <mat-select formControlName="StoreId" placeholder="Bank" #singleSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="storeFilterCtrl" [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let element of filteredStore | async" [value]="element">
-                        {{element.StoreName}}
-                    </mat-option>
-                </mat-select>
+              <mat-select placeholder="Select CurrencyId" name="CurrencyId" formControlName="CurrencyId" #singleSelect (keydown)="onEnterCurrencyId($event)" #CurrencyId>
+                <mat-option *ngFor="let M of CurrencycmbList" [value]="M.CurrencyId">
+                  {{ M.CurrencyName}}
+                </mat-option>
+              </mat-select>
+              <mat-error>Select CurrencyName</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <input name="ProdLocation" placeholder="Enter ProdLocation"
-                    [ngClass]="{ 'is-invalid': submitted && f.ItemName.errors }" formControlName="ProdLocation"
-                    matInput>
+              <input name="ConversionFactor" placeholder="Enter ConversionFactor" (keydown)="onEnterConversionFactor($event)" #ConversionFactor
+                formControlName="ConversionFactor"
+                matInput type="number"   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);" type="number">
 
-                <mat-error>Please enter ProdLocation </mat-error>
+              <mat-error>Please enter ConversionFactor </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="CGST" placeholder="Enter CGST" [ngClass]="{ 'is-invalid': submitted && f.CGST.errors }"
+                formControlName="CGST" matInput type="number" (keydown)="onEnterCGST($event)" #CGST
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.CGST.invalid && f.CGST.touched">CGST is required Enter only Number</span>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="SGST" placeholder="Enter SGST" [ngClass]="{ 'is-invalid': submitted && f.SGST.errors }"
+                formControlName="SGST" matInput type="number" (keydown)="onEnterSGST($event)" #SGST
+                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="IGST" placeholder="Enter IGST" [ngClass]="{ 'is-invalid': submitted && f.IGST.errors }"
+                formControlName="IGST" matInput type="number" (keydown)="onEnterIGST($event)" #IGST
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
             </mat-form-field>
 
-        </div>
+          </div>
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <div class="child-1" fxFlex="1 0 auto">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsBatchRequired" formControlName="IsBatchRequired"
-                        value='true'>
-                        IsBatchRequired</mat-radio-button>
-                </section>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsScheduleX" formControlName="IsScheduleX"
-                        value='true'>
-                        IsScheduleX</mat-radio-button>
-                </section>
-            </div>
+          <div>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty" matInput type="number"
+              (keydown)="onEnterMinQty($event)" #MinQty
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.MinQty.invalid && f.MinQty.touched">MinQty is required Enter only
+                Number</span>
+            </mat-form-field>
 
-            <div class="child-2" fxFlex="1 0 auto">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsHighRisk" formControlName="IsHighRisk"
-                        value='true'>IsHighRisk
-                    </mat-radio-button>
-                </section>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsLASA" formControlName="IsLASA" value='true'>IsLASA
-                    </mat-radio-button>
-                </section>
-                &nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="MaxQty" placeholder="Enter MaxQty" formControlName="MaxQty" matInput type="number"
+              (keydown)="onEnterMaxQty($event)" #MaxQty
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.MaxQty.invalid && f.MaxQty.touched">MaxQty is required Enter only
+                Number</span>
+            </mat-form-field>
 
-            </div>
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder" type="number" 
+              (keydown)="onEnterReOrder($event)" #ReOrder matInput
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.ReOrder.invalid && f.ReOrder.touched">ReOrder is required Enter only
+                Number</span>
+            </mat-form-field>
+          </div>
 
-            <div class="child-3" fxFlex="1 1 auto">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsScheduleH" formControlName="IsScheduleH"
-                        value='true'>
-                        IsScheduleH</mat-radio-button>
-                </section>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsNursingFlag" formControlName="IsNursingFlag"
-                        value='true'>
-                        IsNursingFlag</mat-radio-button>
-                </section>
-            </div>
-            <div class="child-4" fxFlex="1 1 auto">
-
-                &nbsp;&nbsp;&nbsp;
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsH1Drug" formControlName="IsH1Drug"
-                        value='true'>IsH1Drug
-                    </mat-radio-button>
-                </section>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                <section class="example-section">
-                    <mat-radio-button class="example-margin" name="IsEmgerency" formControlName="IsEmgerency"
-                        value='true'>IsEmgerency
-                    </mat-radio-button>
-                </section>
-
-            </div>
+          <div>
 
 
-        </div>
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>Drug TYpe</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
+                formControlName="DrugType" [matAutocomplete]="autoDrugType" required (keydown)="onEnterDrugType($event)" #DrugType>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('DrugType').setValue(''); isDugtypeSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('DrugType').setValue(''); isDugtypeSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoDrugType="matAutocomplete" [displayWith]="getOptionTextDrugtype">
+                <mat-option *ngFor="let option of filteredOptionsDrugtype | async" [value]="option">
+                  {{option.DrugTypeName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
 
 
-        <div>
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>Manufacture Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select ManufId" matInput (keydown)="onEnterManufId($event)" #ManufId
+                formControlName="ManufId" [matAutocomplete]="autoManufId" required>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ManufId').setValue(''); isManuSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('ManufId').setValue(''); isManuSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoManufId="matAutocomplete" [displayWith]="getOptionTextManu">
+                <mat-option *ngFor="let option of filteredOptionsManu | async" [value]="option">
+                  {{option.ManufName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>Company Name </mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput (keydown)="onEnterCompany($event)" #Company
+                formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
+                <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
+                  {{option.CompanyName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)" #Storagee
+                formControlName="Storagelocation"
+                matInput type="text">
+
+              <mat-error>Please enter ProdLocation </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc
+               formControlName="MaxDisc" (keyup)="Chkdisc()"
+                matInput type="number"   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+              <mat-error>Please enter MaxDisc </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <!-- <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+              <mat-label>Store Name</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
+                formControlName="StoreId" [matAutocomplete]="autoStoreId" required>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
+                <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
+                  {{option.StoreName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <mat-select placeholder="Select StoreName" #Store (keydown)="onEnterStorename($event)"  formControlName="StoreId" multiple>
+                  <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
+                      {{M.StoreName}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+
+
+
+
+          </div>
+          <!-- <div>
             <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
                 <mat-radio-button value='true' class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
             </mat-radio-group>
+        </div> -->
+
         </div>
-
+      </form>
     </div>
-</form>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+      <div class="button-row">
+        <button class="footer-btn" (click)="onClose()">Close</button>
+        <button class="next-btn" color="accent" type="submit" #addbutton (click)="onSubmit()" style="border-radius: 16px;"
+          [disabled]=!save>Save</button>
 
-<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-    <div class="button-row">
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-            [disabled]="_itemService.myform.invalid">Save</button>
-        <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+          <!-- <button mat-raised-button #addbutton class="next-btn" [disabled]="!save" (click)="onSubmit()">
+         Save
+      </button> -->
 
+      </div>
     </div>
-</div>
+  </div>
