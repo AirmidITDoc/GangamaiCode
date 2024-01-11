@@ -81,6 +81,9 @@
                                             <button mat-icon-button (click)="onDeactive(row.roleId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
+                                            <button mat-icon-button (click)="onPermission(row.roleId)" color="warn">
+                                                <mat-icon>accessibility</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -104,10 +107,7 @@
                                     <mat-row *matRowDef="
                                             let row;
                                             columns: displayedColumns
-                                        " class="element" [@animate]="{
-                                            value: '*',
-                                            params: { y: '100%' }
-                                        }"></mat-row>
+                                        " class="element"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{ hide: dsRoleMasterList != null }">
                                     </mat-footer-row>

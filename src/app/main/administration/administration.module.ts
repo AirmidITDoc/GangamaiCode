@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { RolePermissionComponent } from './role-permission/role-permission.component';
  
    
  
@@ -59,7 +60,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [   ],
+  declarations: [  RolePermissionComponent ],
   imports: [
     RouterModule.forChild(appRoutes),
   ]
