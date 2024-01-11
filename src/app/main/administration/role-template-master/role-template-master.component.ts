@@ -49,12 +49,7 @@ export class RoleTemplateMasterComponent implements OnInit {
     this.getRoleMasterList();
   }
   getRoleMasterList() {
-    var Param = {
-      PrefixName:
-        this._RoleService.myformSearch.get("RoleNameSearch").value.trim() + "%" || "%",
-    };
-    // console.log(Param)
-    this._RoleService.getRoleMasterList(Param).subscribe((Menu) => {
+    this._RoleService.getRoleMasterList((this._RoleService.myformSearch.get("RoleNameSearch")?.value??"")).subscribe((Menu) => {
       this.dsRoleMasterList.data = Menu as unknown as RoleMaster[];
       this.dsRoleMasterList.sort = this.sort;
       this.dsRoleMasterList.paginator = this.paginator;

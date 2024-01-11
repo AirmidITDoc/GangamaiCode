@@ -34,7 +34,7 @@ export class RoleTemplateService {
     }
     // get Perfix Master list
     public getRoleMasterList(Param) {
-        return this._httpClient.get("Role/get-roles", Param);
+        return this._httpClient.get("Role/get-roles?RoleName="+Param);
     }
     // Insert Perfix Master
     public insertRoleMaster(Param) {
