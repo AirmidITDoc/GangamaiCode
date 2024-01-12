@@ -58,6 +58,9 @@ export class SupplierFormMasterComponent implements OnInit {
     isMdeofpaymentSelected: boolean = false;
     msg: any;
     msmflag:boolean=false;
+    CityId:any;
+
+
     private _onDestroy = new Subject<void>();
 
     constructor(
@@ -84,14 +87,55 @@ export class SupplierFormMasterComponent implements OnInit {
             // this.RegId= this.registerObj.RegId;
             //   this.isDisabled=true
             //   this.Prefix=this.data.registerObj.PrefixID;
-            //  this.setDropdownObjs1();
+            
+          this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
+          this.registerObj.Phone=this.data.registerObj.Phone.trim();
+          this.CityId=this.data.registerObj.CityId;
+          this.setDropdownObjs1();
           }
+
     }
 
 
 
     
+  setDropdownObjs1() {
+    debugger
+
+   
+    //  const toSelect = this.CitycmbList.find(c => c.CityId == this.registerObj.CityId);
+     this._supplierService.myform.get('CityId').setValue(this.CityId);
  
+    //  const toSelectSuup = this.SuppliertypecmbList.find(c => c.ConstantId == this.registerObj.Sup);
+    //  this._supplierService.myform.get('SupplierType').setValue(toSelectSuup);
+ 
+    //  const toSelectState = this.StatecmbList.find(c => c.StateId == this.registerObj.StateId);
+    //  this._supplierService.myform.get('StateId').setValue(toSelectState);
+ 
+    //  const toSelectCountry= this.CountrycmbList.find(c => c.CountryId == this.registerObj.CountryId);
+    //  this._supplierService.myform.get('CountryId').setValue(toSelectCountry);
+ 
+    //  const toSelectpaymode = this.PaymentmodecmbList.find(c => c.id == this.registerObj.ModeOfPayment);
+    //  this._supplierService.myform.get('ModeOfPayment').setValue(toSelectpaymode);
+ 
+   
+   
+    //  const toSelectBank = this.PaymenttermcmbList.find(c => c.Id == this.registerObj.TermOfPayment);
+    //  this._supplierService.myform.get('TermOfPayment').setValue(toSelectBank);
+ 
+    //  const toSelectBankname= this.BankNameList1.find(c => c.BankId == this.registerObj.BankId);
+    //  this._supplierService.myform.get('BankName').setValue(toSelectBankname);
+ 
+    //  const toSelectStore = this.PaymentmodecmbList.find(c => c.StoreId == this.registerObj.StoreId);
+    //  this._supplierService.myform.get('StoreId').setValue(toSelectStore);
+ 
+     
+    //  this.onChangeCityList(this._supplierService.myform.get('CityId').value);
+     
+     this._supplierService.myform.updateValueAndValidity();
+     this.dialogRef.close();
+     
+   }
     get f() {
         return this._supplierService.myform.controls;
     }
@@ -140,7 +184,14 @@ export class SupplierFormMasterComponent implements OnInit {
       );
 
     });
-  
+    // debugger
+    // if (this.data) {
+    //   const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
+    //   this._supplierService.myform.get('CityId').setValue(ddValue);
+    //   this.onChangeCityList(this.data.registerObj.CityId)
+    // }
+
+   
 
   }
  
@@ -662,15 +713,23 @@ if (event.which === 13) {
   if (this.Store) this.Store.focus();
 }
 }
-
+save:boolean=false;
 public onEnterStore(event): void {
+  debugger
   if (event.which === 13) {
-     this.MSM.nativeElement.focus();
+    //  this.MSM.nativeElement.focus();
+     this.save=true;
   }
   }
+ 
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
   // public onEnterIfsc(event): void {
   // if (event.which === 13) {
-  //   this.Store.nativeElement.focus();
+  //   if (event.which === 13) {
+  //     this.save=true;
+  // this.addbutton.focus();
+  // }
   // }
   // }
   
