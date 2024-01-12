@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SupplierMaster } from "./supplier-master.component";
 
 @Injectable({
     providedIn: "root",
@@ -8,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class SupplierMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-
+    registerObj = new SupplierMaster({});
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
@@ -28,6 +29,7 @@ export class SupplierMasterService {
                 ],
             ],
             ContactPerson: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+
             Address: [""],
             CityId: ["", Validators.required],
             CityName: [""],
@@ -36,41 +38,44 @@ export class SupplierMasterService {
             CountryId: ["", Validators.required],
             CountryName: [""],
             CreditPeriod: [""],
-            Mobile: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
-            Phone: [
-                "",
-                [
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
-                ],
-            ],
+            Mobile:['', [Validators.required, Validators.pattern("^[0-9]*$"),
+            Validators.minLength(10),
+            Validators.maxLength(10),]],
+            Phone:['', [Validators.required, Validators.pattern("^[0-9]*$"),
+            Validators.minLength(10),
+            Validators.maxLength(10),]],
             Fax: ["", Validators.maxLength(10)],
             Email: [
                 "",
                 Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
             ],
-            ModeOfPayment: ["", Validators.pattern("[0-9]+")],
-            TermOfPayment: ["", Validators.pattern("[0-9]+")],
+            ModeOfPayment: [""],// Validators.pattern("[0-9]+")],
+            TermOfPayment: [""],// Validators.pattern("[0-9]+")],
             TaxNature: ["", Validators.pattern("[0-9]+")],
             CurrencyId: ["", Validators.pattern("[0-9]+")],
             Octroi: ["", Validators.pattern("[0-9]+")],
             Freight: ["", Validators.pattern("[0-9]+")],
-            GSTNo: [""], //Validators.pattern("[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$")],
-            PanNo: [""], //Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
+            GSTNo: ["", [Validators.minLength(15),
+            Validators.maxLength(15)],], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
+            PanNo: ["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
             StoreId: ["", Validators.required],
             StoreName: [""],
             AddedBy: [""],
             IsDeleted: ["false"],
             UpdatedBy: [""],
+            SupplierType:[""],
+            LicNo:[""],
+            ExpDate:[{ value: this.registerObj.ExpDate }],
+            DlNo:[""],
+            MsmNo:[""],
+            MSMNo:[""],
+            Apprval:[""],
+            Pincode:[""],
+            Taluka:[""],
+            BankName:[""],
+            BankNo:[""],
+            BanlBranch:[""],
+            IFSCcode:[""]
         });
     }
 
@@ -106,10 +111,9 @@ export class SupplierMasterService {
         );
     }
 
-    public getStateMasterCombo() {
+    public getStateMasterCombo(data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo",
-            {}
+            "Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",data
         );
     }
 
@@ -153,9 +157,33 @@ export class SupplierMasterService {
         );
     }
 
+    public getModeofpaymentMasterCombo(){
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_modeofpaymentForcombo",
+            { }
+        );
+    }
+
+    public getBankMasterCombo() {
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+      }
+    public getTermofpaymentMasterCombo(){
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_termsofpaymentMaster",
+            { }
+        );
+    }
+
     public deleteAssignSupplierToStore(param) {
         return this._httpClient.post("Inventory/SupplierUpdate", param);
     }
+
+    public getSuppliertypeList(m) {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Rtrv_Constants ",m
+        );
+    }
+
 
     populateForm(param) {
         this.myform.patchValue(param);

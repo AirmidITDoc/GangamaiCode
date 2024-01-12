@@ -72,6 +72,12 @@ export class ItemMasterService {
             IsDeleted: ["false"],
             action: [""],
             StoreId: ["", Validators.required],
+            Storagelocation:[""],
+            CompanyId:[""],
+            DrugType:[""],
+            ItemColorcode:[""],
+            MaxDisc:[""]
+            // Verify:[""]
         });
     }
 
@@ -88,7 +94,7 @@ export class ItemMasterService {
 
     public getItemMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ItemMaster_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
             param
         );
     }
@@ -130,10 +136,18 @@ export class ItemMasterService {
 
     public getunitofMeasurementMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_UnitofMeasurementMaster",
+            "Generic/GetByProc?procName=Retrieve_PurchaseUOMForCombo",
             {}
         );
     }
+
+    public getStockUMOMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_StockUOMForCombo",
+            {}
+        );
+    }
+
 
     public getManufactureMasterCombo() {
         return this._httpClient.post(
@@ -176,4 +190,13 @@ export class ItemMasterService {
     populateForm(param) {
         this.myform.patchValue(param);
     }
+      //company Combobox List
+  public getCompanyCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemCompanyMasterForCombo", {})
+  }
+  public getDrugTypeCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
+  }
+
+  
 }

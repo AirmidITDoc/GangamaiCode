@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { RoleTemplateService } from "./role-template.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { RolePermissionComponent } from "../role-permission/role-permission.component";
 
 @Component({
   selector: 'app-role-template-master',
@@ -17,6 +18,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class RoleTemplateMasterComponent implements OnInit {
   msg: any;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  DialogRef: MatDialogRef<RolePermissionComponent>;
   displayedColumns: string[] = [
     "RoleId",
     "RoleName",
@@ -70,13 +72,13 @@ export class RoleTemplateMasterComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });
           } else {
-            this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+            this.toastr.error('Role not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
             });
           }
           this.getRoleMasterList();
         }, error => {
-          this.toastr.error('Prefix Data not saved !, Please check API error..', 'Error !', {
+          this.toastr.error('Role not saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
@@ -97,14 +99,14 @@ export class RoleTemplateMasterComponent implements OnInit {
             this.getRoleMasterList();
           } else {
             error => {
-              this.toastr.error('Prefix Data not updated !, Please check  error..', 'Error !', {
+              this.toastr.error('Role not updated !, Please check  error..', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
               });
             }
           }
           this.getRoleMasterList();
         }, error => {
-          this.toastr.error('Prefix Data not updated !, Please check API error..', 'Error !', {
+          this.toastr.error('Role not updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         });
@@ -116,6 +118,24 @@ export class RoleTemplateMasterComponent implements OnInit {
   onClear() {
     this._RoleService.myform.reset({ IsActive: "true" });
     this._RoleService.initializeFormGroup();
+  }
+  onPermission(RoleId){
+    const dialogRef = this._matDialog.open(RolePermissionComponent,
+      {
+        maxWidth: "95vw",
+          height: '550px',
+          width: '100%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+    //this. getregistrationList();
+    });
+    // this.DialogRef = this._matDialog.open(
+    //   RolePermissionComponent,
+    //   {
+    //     disableClose: false,
+    //   }
+    // );
+    
   }
 
   onDeactive(RoleId) {
@@ -129,7 +149,7 @@ export class RoleTemplateMasterComponent implements OnInit {
       "Are you sure you want to deactive?";
     this.confirmDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        let Query = "Update RoleTemplateMaster set IsActive=0 where RoleId=" + RoleId;
+        let Query = "Update RoleMaster set IsActive=0 where RoleId=" + RoleId;
         this._RoleService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
         this.getRoleMasterList();
       }
@@ -148,11 +168,6 @@ export class RoleTemplateMasterComponent implements OnInit {
 export class RoleMaster {
   RoleId: number;
   RoleName: string;
-  /**
-   * Constructor
-   *
-   * @param PrefixMaster
-   */
   constructor(RoleMaster) {
     {
       this.RoleId = RoleMaster.RoleId || 0;

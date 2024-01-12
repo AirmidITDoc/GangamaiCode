@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 import { ItemMasterService } from "../item-master.service";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ItemMasterComponent } from "../item-master.component";
-import { takeUntil } from "rxjs/operators";
+import { map, startWith, takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { MatSelect } from "@angular/material/select";
 
 @Component({
     selector: "app-item-form-master",
@@ -18,57 +20,73 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ItemFormMasterComponent implements OnInit {
     submitted = false;
-
+    CompanyList: any = [];
     ItemTypecmbList: any = [];
     ItemClasscmbList: any = [];
     ItemCategorycmbList: any = [];
     ItemGenericcmbList: any = [];
     ItemUomcmbList: any = [];
+    StockUomcmbList: any = [];
     ManufacurecmbList: any = [];
     StorecmbList: any = [];
     CurrencycmbList: any = [];
+    DrugList: any = [];
+    
 
-    // /Item filter
-    public itemFilterCtrl: FormControl = new FormControl();
-    public filteredItem: ReplaySubject<any> = new ReplaySubject<any>(1);
+    // new changes?    filteredOptionsDoc: Observable<string[]>;
+    filteredOptionsManu: Observable<string[]>;
+    filteredOptionsStore: Observable<string[]>;
+    filteredItemType: Observable<string[]>;
+    filteredItemcategory: Observable<string[]>;
+    filteredItemgeneric: Observable<string[]>;
+    filteredItemclass: Observable<string[]>;
+    filteredUnitofmeasurement: Observable<string[]>;
+    filteredStockUOMId: Observable<string[]>;
+    filteredOptionsCompany: Observable<string[]>;
+    filteredOptionsStockUMO: Observable<string[]>;
+    filteredOptionsSubCompany: Observable<string[]>;
+    filteredOptionsDrugtype: Observable<string[]>;
 
-    //itemcategory filter
-    public itemcategoryFilterCtrl: FormControl = new FormControl();
-    public filteredItemcategory: ReplaySubject<any> = new ReplaySubject<any>(1);
+    isDrugSelected: boolean = false;
+    isManuSelected: boolean = false;
+    isStoreSelected: boolean = false;
+    isItemTypeSelected: boolean = false;
+    isItemCategoryIdSelected: boolean = false;
+    isItemGenericNameIdSelected: boolean = false;
+    isClassSelected: boolean = false;
+    isPurchaseUOMIdSelected: boolean = false;
+    isPurposeSelected: boolean = false;
+    isCompanySelected: boolean = false;
+    isDugtypeSelected: boolean = false;
 
-    // /Itemgeneric filter
-    public itemgenericFilterCtrl: FormControl = new FormControl();
-    public filteredItemgeneric: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //itemclass filter
-    public itemclassFilterCtrl: FormControl = new FormControl();
-    public filteredItemclass: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    // /Unitofmeasurement filter
-    public unitofmeasurementFilterCtrl: FormControl = new FormControl();
-    public filteredUnitofmeasurement: ReplaySubject<any> =
-        new ReplaySubject<any>(1);
-
+    optionsStockumo: any[] = [];
+    optionsDrugType: any[] = [];
+    optionsCompany: any[] = [];
+    optionsManu: any[] = [];
+    optionsStore: any[] = [];
+    optionsItemType: any[] = [];
+    optionsGenericname: any[] = [];
+    optionsClass: any[] = [];
+    optionsCategory: any[] = [];
+    optionsPurchaseumi: any[] = [];
+    otionsPStockUMO: any[] = [];
+  
+  
     //currency filter
     public currencyFilterCtrl: FormControl = new FormControl();
     public filteredCurrency: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    //manufaturing filter
-    public manufactureFilterCtrl: FormControl = new FormControl();
-    public filteredManufacture: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //manufaturing filter
-    public storeFilterCtrl: FormControl = new FormControl();
-    public filteredStore: ReplaySubject<any> = new ReplaySubject<any>(1);
-
+  
     private _onDestroy = new Subject<void>();
     msg: any;
 
     constructor(
         public _itemService: ItemMasterService,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
+        private _loggedService: AuthenticationService,
+        public _matDialog: MatDialog,
         public dialogRef: MatDialogRef<ItemMasterComponent>
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getitemtypeNameMasterCombo();
@@ -77,116 +95,169 @@ export class ItemFormMasterComponent implements OnInit {
         this.getitemcategoryNameMasterCombo();
         this.getitemgenericNameMasterCombo();
         this.getitemunitofmeasureMasterCombo();
-        //   this.getStockUOMIDdMasterombo();
+          this.getStockUOMIDdMasterombo();
         this.getStoreNameMasterCombo();
         this.getManufactureNameMasterCombo();
         this.getCurrencyNameMasterCombo();
+        this.getCompanyList();
+        this.getDrugTypeList();
 
-        this.itemFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterItem();
-            });
-
-        this.itemclassFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterItemclass();
-            });
-
-        this.itemgenericFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterItemgeneric();
-            });
-
-        this.itemcategoryFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterItemcategory();
-            });
-
-        this.unitofmeasurementFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterUnitofmeasurement();
-            });
-
-        this.currencyFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCurrency();
-            });
-
-        this.manufactureFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterManufacture();
-            });
-
-        this.storeFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterStore();
-            });
+      
     }
 
     get f() {
         return this._itemService.myform.controls;
     }
 
-    getitemtypeNameMasterCombo() {
-        // this._itemService.getitemtypeMasterCombo().subscribe(data =>this.ItemTypecmbList =data);
+    // getitemtypeNameMasterCombo() {
+    //     // this._itemService.getitemtypeMasterCombo().subscribe(data =>this.ItemTypecmbList =data);
 
-        this._itemService.getitemtypeMasterCombo().subscribe((data) => {
+    //     this._itemService.getitemtypeMasterCombo().subscribe((data) => {
+    //         this.ItemTypecmbList = data;
+    //         this._itemService.myform
+    //             .get("ItemTypeID")
+    //             .setValue(this.ItemTypecmbList[0]);
+    //     });
+    // }
+
+    getitemtypeNameMasterCombo() {
+
+        this._itemService.getitemtypeMasterCombo().subscribe(data => {
             this.ItemTypecmbList = data;
-            this._itemService.myform
-                .get("ItemTypeID")
-                .setValue(this.ItemTypecmbList[0]);
+            this.ItemTypecmbList = this.ItemTypecmbList.slice();
+            this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
+            );
+
         });
+
     }
+
+
+
+    // getitemclassNameMasterCombo() {
+    //     // this._itemService.getitemclassMasterCombo().subscribe(data =>this.ItemClasscmbList =data);
+
+    //     this._itemService.getitemclassMasterCombo().subscribe((data) => {
+    //         this.ItemClasscmbList = data;
+    //         this._itemService.myform
+    //             .get("ItemClassId")
+    //             .setValue(this.ItemClasscmbList[0]);
+    //     });
+    // }
 
     getitemclassNameMasterCombo() {
-        // this._itemService.getitemclassMasterCombo().subscribe(data =>this.ItemClasscmbList =data);
 
-        this._itemService.getitemclassMasterCombo().subscribe((data) => {
+        this._itemService.getitemclassMasterCombo().subscribe(data => {
             this.ItemClasscmbList = data;
-            this._itemService.myform
-                .get("ItemClassId")
-                .setValue(this.ItemClasscmbList[0]);
+            this.ItemClasscmbList = this.ItemClasscmbList.slice();
+            this.filteredItemclass = this._itemService.myform.get('ItemClassId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
+            );
+
         });
+
     }
+
+
+    // getitemcategoryNameMasterCombo() {
+    //     // this._itemService.getitemcategoryMasterCombo().subscribe(data =>this.ItemCategorycmbList =data);
+
+    //     this._itemService.getitemcategoryMasterCombo().subscribe((data) => {
+    //         this.ItemCategorycmbList = data;
+    //         this._itemService.myform
+    //             .get("ItemCategoryId")
+    //             .setValue(this.ItemCategorycmbList[0]);
+    //     });
+    // }
+
 
     getitemcategoryNameMasterCombo() {
-        // this._itemService.getitemcategoryMasterCombo().subscribe(data =>this.ItemCategorycmbList =data);
 
-        this._itemService.getitemcategoryMasterCombo().subscribe((data) => {
+        this._itemService.getitemcategoryMasterCombo().subscribe(data => {
             this.ItemCategorycmbList = data;
-            this._itemService.myform
-                .get("ItemCategoryId")
-                .setValue(this.ItemCategorycmbList[0]);
+            this.ItemCategorycmbList = this.ItemCategorycmbList.slice();
+            this.filteredItemcategory = this._itemService.myform.get('ItemCategoryId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
+            );
+
         });
+
     }
+
+
+   Chkdisc(){
+    let Disc= parseFloat(this._itemService.myform.get("MaxDisc").value)
+    if(Disc >10){
+        Swal.fire("Enter Discount Less than 10 !")
+        this._itemService.myform.get("MaxDisc").setValue(0);
+    }
+
+   }
 
     getitemgenericNameMasterCombo() {
-        // this._itemService.getitemgenericMasterCombo().subscribe(data =>this.ItemGenericcmbList =data);
 
-        this._itemService.getitemgenericMasterCombo().subscribe((data) => {
+        this._itemService.getitemgenericMasterCombo().subscribe(data => {
             this.ItemGenericcmbList = data;
-            this._itemService.myform
-                .get("ItemGenericNameId")
-                .setValue(this.ItemGenericcmbList[0]);
+            this.ItemGenericcmbList = this.ItemGenericcmbList.slice();
+            this.filteredItemgeneric = this._itemService.myform.get('ItemGenericNameId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
+            );
+
         });
+
     }
 
-    getitemunitofmeasureMasterCombo() {
-        // this._itemService.getunitofMeasurementMasterCombo().subscribe(data =>this.ItemUomcmbList =data);
+   
+  getCompanyList() {
+    this._itemService.getCompanyCombo().subscribe(data => {
+      this.CompanyList = data;
+      this.optionsCompany = this.CompanyList.slice();
+      this.filteredOptionsCompany = this._itemService.myform.get('CompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+      );
 
-        this._itemService.getunitofMeasurementMasterCombo().subscribe((data) => {
-                this.ItemUomcmbList = data;
-                console.log(this.ItemUomcmbList);
-                this._itemService.myform.get("PurchaseUOMId").setValue(this.ItemUomcmbList[0]);
-            });
+    });
+  }
+  private _filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
+    getitemunitofmeasureMasterCombo() {
+
+        this._itemService.getunitofMeasurementMasterCombo().subscribe(data => {
+            this.ItemUomcmbList = data;
+            this.ItemUomcmbList = this.ItemUomcmbList.slice();
+            this.filteredUnitofmeasurement= this._itemService.myform.get('PurchaseUOMId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
+            );
+
+        });
+
+    }
+
+    getStockUOMIDdMasterombo() {
+
+        this._itemService.getStockUMOMasterCombo().subscribe(data => {
+            this.StockUomcmbList = data;
+            this.StockUomcmbList = this.StockUomcmbList.slice();
+            this.filteredStockUOMId= this._itemService.myform.get('StockUOMId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
+            );
+
+        });
+
     }
 
     getCurrencyNameMasterCombo() {
@@ -199,108 +270,367 @@ export class ItemFormMasterComponent implements OnInit {
         });
     }
 
-    getManufactureNameMasterCombo() {
-        // this._itemService.getManufactureMasterCombo().subscribe(data =>this.ManufacurecmbList =data);
-        this._itemService.getManufactureMasterCombo().subscribe((data) => {
-            this.ManufacurecmbList = data;
-            this._itemService.myform
-                .get("ManufId")
-                .setValue(this.ManufacurecmbList[0]);
-        });
+    private _filterManu(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ManufName ? value.ManufName.toLowerCase() : value.toLowerCase();
+
+            return this.optionsManu.filter(option => option.ManufName.toLowerCase().includes(filterValue));
+        }
+
     }
+
+    private _filterStore(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    
+    private _filterItemtype (value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase();
+
+            return this.optionsItemType.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    private _filterClass(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsClass.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+
+    
+    private _filterCategory(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
+
+            return this.optionsCategory.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    private _filterGenericname(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsGenericname.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    
+
+    private _filterUnitofmeasurement(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsPurchaseumi.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+        }
+
+    }
+    private _filterStockUMO(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsStockumo.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    
+    private _filterDrugType(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsDrugType.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    
+
+    getDrugTypeList() {
+
+        this._itemService.getDrugTypeCombo().subscribe(data => {
+            this.DrugList = data;
+            this.DrugList = this.DrugList.slice();
+            this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
+            );
+
+        });
+
+    }
+
+    getManufactureNameMasterCombo() {
+
+        this._itemService.getManufactureMasterCombo().subscribe(data => {
+            this.ManufacurecmbList = data;
+            this.ManufacurecmbList = this.ManufacurecmbList.slice();
+            this.filteredOptionsManu = this._itemService.myform.get('ManufId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
+            );
+
+        });
+
+    }
+
+    getDrugTypeCombo() {
+
+        this._itemService.getDrugTypeCombo
+        ().subscribe(data => {
+            this.DrugList = data;
+            this.DrugList = this.DrugList.slice();
+            this.filteredOptionsManu = this._itemService.myform.get('DrugType').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
+            );
+
+        });
+
+    }
+
 
     getStoreNameMasterCombo() {
-        // this._itemService.getStoreMasterCombo().subscribe(data =>this.getStoreMasterCombo =data);
-        this._itemService.getStoreMasterCombo().subscribe((data) => {
+
+        this._itemService.getStoreMasterCombo().subscribe(data => {
             this.StorecmbList = data;
-            this._itemService.myform
-                .get("StoreId")
-                .setValue(this.StorecmbList[0]);
+            this.StorecmbList = this.StorecmbList.slice();
+            this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+            );
+
         });
+
     }
 
-    private filterItem() {
-        if (!this.ItemTypecmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.itemFilterCtrl.value;
-        if (!search) {
-            this.filteredItem.next(this.ItemTypecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredItem.next(
-            this.ItemTypecmbList.filter(
-                (bank) => bank.ItemTypeName.toLowerCase().indexOf(search) > -1
-            )
-        );
+
+    getOptionTextManu(option) {
+        return option && option.ManufName ? option.ManufName : '';
+
     }
 
-    private filterItemclass() {
-        if (!this.ItemClasscmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.itemclassFilterCtrl.value;
-        if (!search) {
-            this.filteredItemclass.next(this.ItemClasscmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredItemclass.next(
-            this.ItemClasscmbList.filter(
-                (bank) => bank.ItemClassName.toLowerCase().indexOf(search) > -1
-            )
-        );
+    getOptionTextStore(option) {
+
+        return option && option.StoreName ? option.StoreName : '';
+
     }
 
-    private filterItemgeneric() {
-        if (!this.ItemGenericcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.itemgenericFilterCtrl.value;
-        if (!search) {
-            this.filteredItemgeneric.next(this.ItemGenericcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredItemgeneric.next(
-            this.ItemGenericcmbList.filter(
-                (bank) =>
-                    bank.ItemGenericName.toLowerCase().indexOf(search) > -1
-            )
-        );
+    getOptionTextItemtype(option) {
+        return option && option.ItemTypeName ? option.ItemTypeName : '';
+
     }
 
-    private filterUnitofmeasurement() {
-        if (!this.ItemUomcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.unitofmeasurementFilterCtrl.value;
-        if (!search) {
-            this.filteredUnitofmeasurement.next(this.ItemUomcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredUnitofmeasurement.next(
-            this.ItemUomcmbList.filter(
-                (bank) =>
-                    bank.UnitofMeasurementName.toLowerCase().indexOf(search) >
-                    -1
-            )
-        );
+    getOptionTextItemcategory(option) {
+
+        return option && option.ItemCategoryName ? option.ItemCategoryName : '';
+
     }
+
+    getOptionTextGenericname(option) {
+        return option && option.ItemGenericName ? option.ItemGenericName : '';
+
+    }
+
+    getOptionTextClass(option) {
+
+        return option && option.ItemClassName ? option.ItemClassName : '';
+
+    }
+    getOptionTextPurchaseUMO(option) {
+        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
+
+    }
+
+    getOptionTextStockUOMId(option) {
+        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
+
+    }
+
+    getOptionTextDrugtype(option) {
+
+        return option && option.DrugTypeName ? option.DrugTypeName : '';
+
+    }
+
+    getOptionTextCompany(option) {
+
+        return option && option.CompanyName ? option.CompanyName : '';
+
+    }
+
+     @ViewChild('HSN') HSN: ElementRef;
+  @ViewChild('Itemname') Itemname: ElementRef;
+  @ViewChild('ItemType') ItemType: ElementRef;
+  @ViewChild('ItemCatageory') ItemCatageory: ElementRef;
+  @ViewChild('ItemGeneric') ItemGeneric: ElementRef;
+
+  @ViewChild('ItemClass') ItemClass: ElementRef;
+  @ViewChild('PurchaseUOMId') PurchaseUOMId: ElementRef;
+  @ViewChild('StockUOMId') StockUOMId: ElementRef;
+  
+  @ViewChild('CurrencyId') CurrencyId: MatSelect;
+  @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
+
+  @ViewChild('CGST') CGST: ElementRef;
+  @ViewChild('SGST') SGST: ElementRef;
+  @ViewChild('IGST') IGST: ElementRef;
+  @ViewChild('MinQty') MinQty: ElementRef;
+  @ViewChild('MaxQty') MaxQty: ElementRef;
+
+  @ViewChild('ReOrder') ReOrder: ElementRef;
+  @ViewChild('DrugType') DrugType: ElementRef;
+  @ViewChild('ManufId') ManufId: ElementRef;
+  @ViewChild('Company') Company: ElementRef;
+  @ViewChild('Storagee') Storagee: ElementRef;
+  @ViewChild('Maxdisc') Maxdisc: ElementRef;
+  @ViewChild('Store') Store: MatSelect;
+  
+
+  public onEnterHsn(event): void {
+    if (event.which === 13) {
+      this.Itemname.nativeElement.focus();
+     
+    }
+  }
+  public onEnterItemName(event): void {
+    
+    if (event.which === 13) {
+      this.ItemType.nativeElement.focus();
+    }
+  }
+
+  public onEnterItemType(event): void {
+    if (event.which === 13) {
+       this.ItemCatageory.nativeElement.focus();
+    }
+  }
+  public onEnterItemCategory(event): void {
+    if (event.which === 13) {
+      this.ItemGeneric.nativeElement.focus();
+    }
+  }
+
+  public onEnterItemGeneric(event): void {
+    if (event.which === 13) {
+       this.ItemClass.nativeElement.focus();
+    }
+  }
+  public onEnterItemClass(event): void {
+    if (event.which === 13) {
+      this.PurchaseUOMId.nativeElement.focus();
+    }
+  }
+
+
+  public onEnterPurchaseUOMId(event): void {
+    if (event.which === 13) {
+       this.StockUOMId.nativeElement.focus();
+    }
+  }
+  public onEnterStockUOMId(event): void {
+    if (event.which === 13) {
+            if (this.CurrencyId) this.CurrencyId.focus();
+    }
+  }
+
+  public onEnterCurrencyId(event): void {
+    if (event.which === 13) {
+       this.ConversionFactor.nativeElement.focus();
+    }
+  }
+  public onEnterConversionFactor(event): void {
+    if (event.which === 13) {
+      this.CGST.nativeElement.focus();
+    }
+  }
+
+  public onEnterCGST(event): void {
+    if (event.which === 13) {
+      this.SGST.nativeElement.focus();
+    }
+  }
+
+  public onEnterSGST(event): void {
+    if (event.which === 13) {
+       this.IGST.nativeElement.focus();
+    }
+  }
+  public onEnterIGST(event): void {
+    if (event.which === 13) {
+      this.MinQty.nativeElement.focus();
+    }
+  }
+
+  public onEnterMinQty(event): void {
+    if (event.which === 13) {
+      this.MaxQty.nativeElement.focus();
+    }
+  }
+
+  public onEnterMaxQty(event): void {
+    if (event.which === 13) {
+       this.ReOrder.nativeElement.focus();
+    }
+  }
+  public onEnterReOrder(event): void {
+    if (event.which === 13) {
+      this.DrugType.nativeElement.focus();
+    }
+  }
+
+  public onEnterDrugType(event): void {
+    if (event.which === 13) {
+      this.ManufId.nativeElement.focus();
+    }
+  }
+
+  public onEnterManufId(event): void {
+    if (event.which === 13) {
+       this.Company.nativeElement.focus();
+    }
+  }
+  public onEnterCompany(event): void {
+    if (event.which === 13) {
+      this.Storagee.nativeElement.focus();
+    }
+  }
+
+
+  
+  public onEnterStorage(event): void {
+    if (event.which === 13) {
+       this.Maxdisc.nativeElement.focus();
+    }
+  }
+  public onEnterMaxdisc(event): void {
+    if (event.which === 13) {
+      
+      if (this.Store) this.Store.focus();
+    }
+  }
+save:boolean=false;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  onEnterStorename(event): void {
+    debugger
+    if (event.which === 13) {
+        this.save=true;
+    this.addbutton.focus();
+    }
+  }
+
 
     private filterCurrency() {
         if (!this.CurrencycmbList) {
@@ -322,75 +652,16 @@ export class ItemFormMasterComponent implements OnInit {
         );
     }
 
-    private filterItemcategory() {
-        if (!this.ItemCategorycmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.itemcategoryFilterCtrl.value;
-        if (!search) {
-            this.filteredItemcategory.next(this.ItemCategorycmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredItemcategory.next(
-            this.ItemCategorycmbList.filter(
-                (bank) =>
-                    bank.ItemCategoryName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    private filterManufacture() {
-        if (!this.ManufacurecmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.manufactureFilterCtrl.value;
-        if (!search) {
-            this.filteredManufacture.next(this.ManufacurecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredManufacture.next(
-            this.ManufacurecmbList.filter(
-                (bank) => bank.ManufName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    private filterStore() {
-        if (!this.StorecmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.storeFilterCtrl.value;
-        if (!search) {
-            this.filteredStore.next(this.StorecmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredStore.next(
-            this.StorecmbList.filter(
-                (bank) => bank.StoreName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
+ 
     onSubmit() {
-        if (this._itemService.myform.valid) {
+        debugger
+        // if (this._itemService.myform.valid) {
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value) {
                 var data = {
                     storeId:
-                        this._itemService.myform.get("StoreId").value.Storeid,
+                        this._loggedService.currentUserValue.user.storeId,
                     itemId: 0,
                 };
                 data2.push(data);
@@ -403,122 +674,48 @@ export class ItemFormMasterComponent implements OnInit {
                         //     this._itemService.myform
                         //         .get("ItemShortName")
                         //         .value.trim() || "%",
-                        itemName:
-                            this._itemService.myform
-                                .get("ItemName")
-                                .value.trim() || "%",
-                        itemTypeId:
-                            this._itemService.myform.get("ItemTypeID").value
-                                .ItemTypeId,
-                        itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId").value
-                                .ItemCategoryId,
-                        itemGenericNameId: 0,
-                        //    ||this._itemService.myform.get("ItemGenericNameId")
-                        //         .value.ItemGenericName,
-                        itemClassId:
-                            this._itemService.myform.get("ItemClassId").value
-                                .ItemClassId,
-                        purchaseUOMId: 0,
-                        // || this._itemService.myform.get("PurchaseUOMId").value
-                        //     .UnitofMeasurementName ,
-                        stockUOMId:
-                            this._itemService.myform.get("StockUOMId").value ||
-                            "0",
-                        conversionFactor:
-                            this._itemService.myform
-                                .get("ConversionFactor")
-                                .value.trim() || "%",
-                        currencyId:
-                            this._itemService.myform.get("CurrencyId").value
-                                .CurrencyId || "0",
-                        taxPer:
-                            this._itemService.myform.get("TaxPer").value || "0",
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsDeleted").value
-                            )
-                        ),
+                        itemName:this._itemService.myform.get("ItemName").value || "%",
+                        itemTypeId:this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
+                        itemCategoryId:this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
+                        itemGenericNameId:this._itemService.myform.get("ItemGenericNameId").value || 0,
+                        itemClassId:this._itemService.myform.get("ItemClassId").value.ItemClassId,
+                        purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId||0,
+                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId ||"0",
+                        conversionFactor:this._itemService.myform.get("ConversionFactor").value || "%",
+                        currencyId:this._itemService.myform.get("CurrencyId").value.CurrencyId,
+                        taxPer:this._itemService.myform.get("TaxPer").value || 0,
+                        isDeleted: Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
                         addedBy: 1,
-                        isBatchRequired: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsBatchRequired")
-                                    .value
-                            )
-                        ),
-                        minQty:
-                            this._itemService.myform.get("MinQty").value || "0",
-                        maxQty:
-                            this._itemService.myform.get("MaxQty").value || "0",
-                        reorder:
-                            this._itemService.myform.get("ReOrder").value ||
-                            "0",
+                        isBatchRequired: Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
+                        minQty:this._itemService.myform.get("MinQty").value || 0,
+                        maxQty:this._itemService.myform.get("MaxQty").value || 0,
+                        reorder:this._itemService.myform.get("ReOrder").value || 0,
                         // isNursingFlag: Boolean(
                         //     JSON.parse(
                         //         this._itemService.myform.get("IsNursingFlag")
                         //             .value
                         //     )
                         // ),
-                        hsNcode:
-                            this._itemService.myform
-                                .get("HSNcode")
-                                .value.trim() || "%",
+                        hsNcode:this._itemService.myform.get("HSNcode").value|| "%",
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
-                        manufId:
-                            this._itemService.myform.get("ManufId").value
-                                .ManufId || "0",
-                        isNarcotic: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsNarcotic").value
-                            )
-                        ),
+                        manufId:this._itemService.myform.get("ManufId").value.ManufId || "0",
+                        // isNarcotic: Boolean(JSON.parse(this._itemService.myform.get("IsNarcotic").value)),
 
-                        prodLocation:
-                            this._itemService.myform
-                                .get("ProdLocation")
-                                .value.trim() || "%",
-                        isH1Drug: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsH1Drug").value
-                            )
-                        ),
-                        isScheduleH: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsScheduleH")
-                                    .value
-                            )
-                        ),
-                        isHighRisk: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsHighRisk").value
-                            )
-                        ),
-                        isScheduleX: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsScheduleX")
-                                    .value
-                            )
-                        ),
-                        isLASA: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsLASA").value
-                            )
-                        ),
-                        isEmgerency: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsEmgerency")
-                                    .value
-                            )
-                        ),
+                        prodLocation:this._itemService.myform.get("ProdLocation").value|| "%",
+                        // isH1Drug: Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
+                        // isScheduleH: Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
+                        // isHighRisk: Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
+                        // isScheduleX: Boolean(JSON.parse(this._itemService.myform.get("IsScheduleX").value)),
+                        // isLASA: Boolean(JSON.parse(this._itemService.myform.get("IsLASA").value)),
+                        // isEmgerency: Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
 
-                        drugType: 0,
-                        drugTypeName: "0",
-                        itemCompnayId: 0,
+                        drugType:this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
+                        drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
+                        itemCompnayId: this._itemService.myform.get("CompanyId").value.CompanyId || "0",
                         isCreatedBy: "01/01/1900",
-                        itemID:
-                            this._itemService.myform.get("ItemID").value || 0,
+                        itemId:this._itemService.myform.get("ItemID").value || 0,
                     },
                     insertAssignItemToStore: data2,
                 };
@@ -530,7 +727,7 @@ export class ItemFormMasterComponent implements OnInit {
                     if (data) {
                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
                             toastClass: 'tostr-tost custom-toast-success',
-                          });
+                        });
                         // Swal.fire(
                         //     "Saved !",
                         //     "Record saved Successfully !",
@@ -542,20 +739,20 @@ export class ItemFormMasterComponent implements OnInit {
                     } else {
                         this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
-                          });
+                        });
                     }
-                },error => {
+                }, error => {
                     this.toastr.error('Item-Form not Saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                });
             } else {
                 var data3 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value
                 //     .Storeid) {
                 var data4 = {
                     storeId:
-                        this._itemService.myform.get("StoreId").value.Storeid,
+                        this._loggedService.currentUserValue.user.storeId,
                     itemId: this._itemService.myform.get("ItemID").value,
                 };
                 data3.push(data4);
@@ -564,123 +761,46 @@ export class ItemFormMasterComponent implements OnInit {
 
                 var m_dataUpdate = {
                     updateItemMaster: {
-                        itemID: this._itemService.myform.get("ItemID").value,
+                        itemId: this._itemService.myform.get("ItemID").value,
 
                         // itemShortName:
                         //     this._itemService.myform
                         //         .get("ItemShortName")
                         //         .value.trim() || "%",
-                        itemName:
-                            this._itemService.myform
-                                .get("ItemName")
-                                .value.trim() || "%",
-                        itemTypeID:
-                            this._itemService.myform.get("ItemTypeID").value
-                                .ItemTypeId,
-                        itemCategoryId:
-                            this._itemService.myform.get("ItemCategoryId").value
-                                .ItemCategoryId,
-                        itemGenericNameId: 0,
-                        // ||this._itemService.myform.get("ItemGenericNameId")
-                        //     .value.ItemGenericName,
-                        itemClassId:
-                            this._itemService.myform.get("ItemClassId").value
-                                .ItemClassId,
-                        purchaseUOMId: 0,
-                        // ||this._itemService.myform.get("PurchaseUOMId").value
+                        itemName:this._itemService.myform.get("ItemName").value || "%",
+                        itemTypeID:this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
+                        itemCategoryId:this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
+                        itemGenericNameId:this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId,
+                        itemClassId:this._itemService.myform.get("ItemClassId").value.ItemClassId,
+                        purchaseUOMId:this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId,
                         //         .UnitofMeasurementName
-                        stockUOMId:
-                            this._itemService.myform.get("StockUOMId").value ||
-                            "0",
-                        conversionFactor:
-                            this._itemService.myform
-                                .get("ConversionFactor")
-                                .value.trim() || "0",
-                        currencyId:
-                            this._itemService.myform.get("CurrencyId").value
-                                .CurrencyId || "0",
-                        taxPer:
-                            this._itemService.myform.get("TaxPer").value || "0",
-                        isBatchRequired: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsBatchRequired")
-                                    .value
-                            )
-                        ),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsDeleted").value
-                            )
-                        ),
+                        stockUOMId:this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId ||"0",
+                        conversionFactor:this._itemService.myform.get("ConversionFactor").value || "0",
+                        currencyId:this._itemService.myform.get("CurrencyId").value.CurrencyId || "0",
+                        taxPer:this._itemService.myform.get("TaxPer").value || "0",
+                        isBatchRequired: Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
+                        isDeleted: Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
                         upDatedBy: 1, // this.accountService.currentUserValue.user.id,
 
-                        minQty:
-                            this._itemService.myform.get("MinQty").value || "0",
-                        maxQty:
-                            this._itemService.myform.get("MaxQty").value || "0",
-                        reorder:
-                            this._itemService.myform.get("ReOrder").value ||
-                            "0",
-                        isNursingFlag: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsNursingFlag")
-                                    .value
-                            )
-                        ),
-                        hsNcode:
-                            this._itemService.myform
-                                .get("HSNcode")
-                                .value.trim() || "%",
+                        minQty:this._itemService.myform.get("MinQty").value || "0",
+                        maxQty:this._itemService.myform.get("MaxQty").value || "0",
+                        reorder:this._itemService.myform.get("ReOrder").value ||"0",
+                        isNursingFlag: Boolean(JSON.parse(this._itemService.myform.get("IsNursingFlag").value)),
+                        hsNcode:this._itemService.myform.get("HSNcode")|| "%",
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
-                        isNarcotic: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsNarcotic").value
-                            )
-                        ),
-                        manufId:
-                            this._itemService.myform.get("ManufId").value
-                                .ManufId || "0",
-                        prodLocation:
-                            this._itemService.myform
-                                .get("ProdLocation")
-                                .value.trim() || "%",
-                        isH1Drug: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsH1Drug").value
-                            )
-                        ),
-                        isScheduleH: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsScheduleH")
-                                    .value
-                            )
-                        ),
-                        isHighRisk: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsHighRisk").value
-                            )
-                        ),
-                        isScheduleX: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsScheduleX")
-                                    .value
-                            )
-                        ),
-                        isLASA: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsLASA").value
-                            )
-                        ),
-                        isEmgerency: Boolean(
-                            JSON.parse(
-                                this._itemService.myform.get("IsEmgerency")
-                                    .value
-                            )
-                        ),
-                        drugType: 0,
-                        drugTypeName: "0",
+                        isNarcotic: Boolean(JSON.parse(this._itemService.myform.get("IsNarcotic").value)),
+                        manufId:this._itemService.myform.get("ManufId").value.ManufId || "0",
+                        // prodLocation:this._itemService.myform.get("ProdLocation").value || "%",
+                        // isH1Drug: Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
+                        // isScheduleH: Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
+                        // isHighRisk: Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
+                        // isScheduleX: Boolean(JSON.parse(this._itemService.myform.get("IsScheduleX").value)                        ),
+                        // isLASA: Boolean(JSON.parse(this._itemService.myform.get("IsLASA").value)),
+                        // isEmgerency: Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
+                        drugType:this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
+                        drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
                         itemCompnayId: 0,
                         isUpdatedBy: "01/01/1900",
                     },
@@ -697,7 +817,7 @@ export class ItemFormMasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             // Swal.fire(
                             //     "Updated !",
                             //     "Record updated Successfully !",
@@ -709,16 +829,16 @@ export class ItemFormMasterComponent implements OnInit {
                         } else {
                             this.toastr.error('Item-Form Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                    },error => {
+                    }, error => {
                         this.toastr.error('Item-Form not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClose();
-        }
+        // }
     }
 
     onEdit(row) {

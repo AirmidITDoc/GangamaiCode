@@ -43,7 +43,7 @@
                                         <input matInput placeholder="Search --> Supplier Name" autocomplete="off"
                                             name="SupplierNameSearch" formControlName="SupplierNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>

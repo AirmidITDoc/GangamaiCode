@@ -1,0 +1,91 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar"
+  style="height: 530px !important;">
+  <div class="center" fusePerfectScrollbar style="overflow: auto;">
+  
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+      <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- <h3>Registration </h3> -->
+        <h3>Role Permission</h3>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
+      <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
+        <div fxlayout="row">
+            <div style="width: 100%">
+                <mat-table #table matSort [dataSource]="dsPermissionList"
+                    style="overflow: auto">
+                    <ng-container matColumnDef="Id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            {{ element.parent }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="LinkName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Menu Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            {{ element.linkName }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="IsView">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            View?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            <mat-checkbox [checked] style="margin-right: 2px;font-size: 12px;" formControlName="IsView">View
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="IsAdd">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Add?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            <mat-checkbox [checked] style="margin-right: 2px;font-size: 12px;" formControlName="Status">Add
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="IsEdit">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Edit?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            <mat-checkbox [checked] style="margin-right: 2px;font-size: 12px;" formControlName="IsEdit">Edit
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="IsDelete">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Delete?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            <mat-checkbox [checked] style="margin-right: 2px;font-size: 12px;" formControlName="IsDelete">Delete
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns;sticky: true">
+                    </mat-header-row>
+                    <mat-row *matRowDef="let row;columns: displayedColumns" class="element" 
+                    [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
+                    
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
