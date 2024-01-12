@@ -73,6 +73,20 @@ export class SupplierFormMasterComponent implements OnInit {
     }
 
     ngOnInit(): void {
+      
+      if(this.data){
+        debugger
+          this.registerObj=this.data.registerObj;
+          // this.RegId= this.registerObj.RegId;
+          //   this.isDisabled=true
+          //   this.Prefix=this.data.registerObj.PrefixID;
+          
+        this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
+        this.registerObj.Phone=this.data.registerObj.Phone.trim();
+        this.CityId=this.data.registerObj.CityId;
+        // this.setDropdownObjs1();
+        }
+
         this.getSupplierTypeMasterList();
         this.getModeofpaymentCombobox();
         this.getTermofpaymentCombobox();
@@ -81,18 +95,7 @@ export class SupplierFormMasterComponent implements OnInit {
         this.getCityNameCombobox();
         this.getStoreNameCombobox();
 
-        if(this.data){
-          debugger
-            this.registerObj=this.data.registerObj;
-            // this.RegId= this.registerObj.RegId;
-            //   this.isDisabled=true
-            //   this.Prefix=this.data.registerObj.PrefixID;
-            
-          this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
-          this.registerObj.Phone=this.data.registerObj.Phone.trim();
-          this.CityId=this.data.registerObj.CityId;
-          this.setDropdownObjs1();
-          }
+        
 
     }
 
@@ -184,15 +187,14 @@ export class SupplierFormMasterComponent implements OnInit {
       );
 
     });
-    // debugger
-    // if (this.data) {
-    //   const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
-    //   this._supplierService.myform.get('CityId').setValue(ddValue);
-    //   this.onChangeCityList(this.data.registerObj.CityId)
-    // }
+    debugger
+    if (this.data) {
+      const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
+      this._supplierService.myform.get('CityId').setValue(ddValue);
+      this.onChangeCityList(this.data.registerObj.CityId)
+    }
 
    
-
   }
  
   

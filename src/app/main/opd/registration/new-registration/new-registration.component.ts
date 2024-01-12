@@ -138,23 +138,6 @@ isDisabled: boolean = false;
     this.getDoctor2List();
     
    
-    // this.religionFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterReligion();
-    //   });
-
-    // this.maritalstatusFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterMaritalstatus();
-    //   });
-
-    // this.areaFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() => {
-    //     this.filterArea();
-    //   });
 
       if(this.data){
       debugger

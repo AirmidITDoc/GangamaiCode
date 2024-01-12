@@ -470,14 +470,7 @@ export class AppointmentComponent implements OnInit {
 
   }
 
-  private _filterCompany(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-    }
-
-  }
+c
 
   private _filterCity(value: any): string[] {
     if (value) {
@@ -803,7 +796,7 @@ export class AppointmentComponent implements OnInit {
       this.optionsCompany = this.CompanyList.slice();
       this.filteredOptionsCompany = this.VisitFormGroup.get('CompanyId').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+        map(value => value ? this.filterCompany(value) : this.CompanyList.slice()),
       );
 
     });

@@ -27,13 +27,11 @@ export class ItemMasterService {
             //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
             //     ],
             // ],
-            ItemName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
+            ItemName:['', [
+                Validators.required,
+                Validators.pattern("^[a-zA-Z._ -]+$"),
+                Validators.maxLength(200),
+              ]],
             ItemTypeID: ["", Validators.required],
             ItemTypeName: [""],
             ItemCategoryId: ["", Validators.required],

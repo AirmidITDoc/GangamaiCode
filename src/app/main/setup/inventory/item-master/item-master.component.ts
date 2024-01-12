@@ -55,13 +55,13 @@ export class ItemMasterComponent implements OnInit {
         "AddedByName",
         "IsNursingFlag",
         "IsBatchRequired",
-        "IsNarcotic",
-        "IsH1Drug",
-        "IsScheduleH",
-        "IsHighRisk",
-        "IsScheduleX",
-        "IsLASA",
-        "IsEmgerency",
+        // "IsNarcotic",
+        // "IsH1Drug",
+        // "IsScheduleH",
+        // "IsHighRisk",
+        // "IsScheduleX",
+        // "IsLASA",
+        // "IsEmgerency",
         "IsDeleted",
         "action",
     ];
@@ -97,7 +97,7 @@ export class ItemMasterComponent implements OnInit {
 
     getItemMasterList() {
         var m_data = {
-            ItemName:this._itemService.myformSearch.get("ItemNameSearch").value.trim() + "%" || "%",
+            ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
             StoreID: this._loggedService.currentUserValue.user.storeId
         };
         this._itemService.getItemMasterList(m_data).subscribe(
@@ -115,14 +115,14 @@ export class ItemMasterComponent implements OnInit {
         var m_data = {
             ItemID: row.ItemID,
             //  ItemShortName: row.ItemShortName.trim(),
-            ItemName: row.ItemName.trim(),
+            ItemName: row.ItemName,
             ItemTypeID: row.ItemTypeID,
             ItemCategoryId: row.ItemCategoryId,
             ItemGenericNameId: row.ItemGenericNameId,
             ItemClassId: row.ItemClassId,
             PurchaseUOMId: row.PurchaseUOMId,
             StockUOMId: row.StockUOMId,
-            ConversionFactor: row.ConversionFactor.trim(),
+            ConversionFactor: row.ConversionFactor,
             CurrencyId: row.CurrencyId,
             TaxPer: row.TaxPer,
             IsDeleted: JSON.stringify(row.IsDeleted),
@@ -132,13 +132,13 @@ export class ItemMasterComponent implements OnInit {
             MaxQty: row.MaxQty,
             ReOrder: row.ReOrder,
             IsNursingFlag: JSON.stringify(row.IsNursingFlag),
-            HSNcode: row.HSNcode.trim(),
+            HSNcode: row.HSNcode,
             CGST: row.CGST,
             SGST: row.SGST,
             IGST: row.IGST,
             IsNarcotic: JSON.stringify(row.IsNarcotic),
             ManufId: row.ManufId,
-            ProdLocation: row.ProdLocation.trim(),
+            ProdLocation: row.ProdLocation,
             IsH1Drug: JSON.stringify(row.IsH1Drug),
             IsScheduleH: JSON.stringify(row.IsScheduleH),
             IsHighRisk: JSON.stringify(row.IsHighRisk),
@@ -151,10 +151,13 @@ export class ItemMasterComponent implements OnInit {
         this._itemService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "100vw",
-            maxHeight: "90vh",
+            maxWidth: "95vw",
+            maxHeight: "110vh",
             width: "100%",
             height: "100%",
+            data : {
+                registerObj : row,
+              }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -165,8 +168,8 @@ export class ItemMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "100vw",
-            maxHeight: "100vh",
+            maxWidth: "95vw",
+            maxHeight: "110vh",
             width: "100%",
             height: "100%",
         });
@@ -212,6 +215,8 @@ export class ItemMaster {
     IsEmgerency: boolean;
     AddedByName: string;
     IsDeletedSearch: number;
+    MaxDisc:any;
+    Storagelocation:any;
     /**
      * Constructor
      *
@@ -252,6 +257,8 @@ export class ItemMaster {
             this.IsEmgerency = ItemMaster.IsEmgerency || "false";
             this.AddedByName = ItemMaster.AddedByName || "";
             this.IsDeletedSearch = ItemMaster.IsDeletedSearch || "";
+            this.MaxDisc=ItemMaster.MaxDisc || 0
+            this.Storagelocation=ItemMaster.Storagelocation ||""
         }
     }
 }
