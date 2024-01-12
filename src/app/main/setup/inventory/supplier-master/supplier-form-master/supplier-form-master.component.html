@@ -76,7 +76,7 @@
                     <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
                       [(ngModel)]="registerObj.Mobile" #mobile
                       (keydown)="onEntermobile($event)" required="required" #mobile
-                      (keydown)="onEntermobile($event)"
+                    
                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                       type="number" value="Mobile.length">
                     <mat-error class="error"

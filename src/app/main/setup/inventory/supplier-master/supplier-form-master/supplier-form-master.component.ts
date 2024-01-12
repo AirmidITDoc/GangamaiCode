@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatDialogRef } from "@angular/material/dialog";
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { map, startWith, takeUntil } from "rxjs/operators";
 import { SupplierMaster, SupplierMasterComponent } from "../supplier-master.component";
 import { SupplierMasterService } from "../supplier-master.service";
@@ -53,9 +53,9 @@ export class SupplierFormMasterComponent implements OnInit {
 
     isCitySelected: boolean = false;
     isBank1elected : boolean = false;
-    isTermofpaymentS : boolean = false;
-    isSuppliertypeSele: boolean = false;
-    isMdeofpaymentSe: boolean = false;
+    isTermofpaymentSelected : boolean = false;
+    isSuppliertypeSelected: boolean = false;
+    isMdeofpaymentSelected: boolean = false;
     msg: any;
     msmflag:boolean=false;
     private _onDestroy = new Subject<void>();
@@ -63,8 +63,11 @@ export class SupplierFormMasterComponent implements OnInit {
     constructor(
         public _supplierService: SupplierMasterService,
         public toastr : ToastrService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
-    ) {}
+    ) {
+      
+    }
 
     ngOnInit(): void {
         this.getSupplierTypeMasterList();
@@ -75,9 +78,20 @@ export class SupplierFormMasterComponent implements OnInit {
         this.getCityNameCombobox();
         this.getStoreNameCombobox();
 
-      
+        if(this.data){
+          debugger
+            this.registerObj=this.data.registerObj;
+            // this.RegId= this.registerObj.RegId;
+            //   this.isDisabled=true
+            //   this.Prefix=this.data.registerObj.PrefixID;
+            //  this.setDropdownObjs1();
+          }
     }
 
+
+
+    
+ 
     get f() {
         return this._supplierService.myform.controls;
     }
@@ -126,6 +140,7 @@ export class SupplierFormMasterComponent implements OnInit {
       );
 
     });
+  
 
   }
  
@@ -445,7 +460,7 @@ debugger
 
     onChangeCityList(CityObj) {
         if (CityObj) {
-          this._supplierService.getStateList(CityObj.CityId).subscribe((data: any) => {
+          this._supplierService.getStateList(2).subscribe((data: any) => {
             this.StatecmbList = data;
             this.selectedState = this.StatecmbList[0].StateName;
             // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
@@ -473,8 +488,10 @@ debugger
    
     onChangeMsm(event) {
       debugger
+      if(event.checked==true)
       this.msmflag=true;
-     
+     else
+     this.msmflag=false;
     }
 
 
