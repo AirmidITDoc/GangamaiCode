@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,13 +10,15 @@ import { fuseAnimations } from "@fuse/animations";
 @Component({
   selector: 'app-role-permission',
   templateUrl: './role-permission.component.html',
-  styleUrls: ['./role-permission.component.scss']
+  styleUrls: ['./role-permission.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class RolePermissionComponent implements OnInit {
   displayedColumns: string[] = [
     "Id",
     "LinkName",
-    "action"
+    "IsAdd","IsEdit","IsDelete","IsView"
   ];
 
   isLoading: String = '';
@@ -36,7 +38,7 @@ export class RolePermissionComponent implements OnInit {
   getPermissionList() {
     this._RoleService.getPermissionList().subscribe((Menu) => {
       debugger
-      this.dsPermissionList.data = Menu as unknown as MenuMaster[];
+      this.dsPermissionList = new MatTableDataSource<MenuMaster>(Menu as MenuMaster[]);
       this.dsPermissionList.sort = this.sort;
       this.dsPermissionList.paginator = this.paginator;
     });
@@ -48,7 +50,7 @@ export class RolePermissionComponent implements OnInit {
 
 }
 export class MenuMaster {
-  RoleId: number;
+  Id: number;
   LinkName: string;
   /**
    * Constructor
@@ -57,7 +59,7 @@ export class MenuMaster {
    */
   constructor(MenuMaster) {
     {
-      this.RoleId = MenuMaster.RoleId || 0;
+      this.Id = MenuMaster.Id || 0;
       this.LinkName = MenuMaster.LinkName || "";
     }
   }
