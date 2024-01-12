@@ -27,6 +27,7 @@ import { MatListModule } from "@angular/material/list";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatBadgeModule } from "@angular/material/badge";
 import { FormsModule } from "@angular/forms";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 const routes: Routes = [
     {
@@ -65,6 +66,7 @@ const routes: Routes = [
         MatListModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
+        MatAutocompleteModule,
         MatSelectModule,
     ],
     providers: [ItemMasterComponent],

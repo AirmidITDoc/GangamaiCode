@@ -152,8 +152,8 @@ export class SupplierMasterComponent implements OnInit {
         this._supplierService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "50vh",
+            maxWidth: "95vw",
+            maxHeight: "120vh",
             width: "100%",
             height: "100%",
         });
@@ -166,8 +166,8 @@ export class SupplierMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "50vh",
+            maxWidth: "95vw",
+            maxHeight: "120vh",
             width: "100%",
             height: "100%",
         });
@@ -201,7 +201,8 @@ export class SupplierMaster {
     UpdatedBy: Number;
     GSTNo: String;
     PanNo: String;
-
+    ExpDate:Date;
+    currentDate = new Date();
     IsDeletedSearch: number;
     /**
      * Constructor
@@ -232,7 +233,7 @@ export class SupplierMaster {
             this.UpdatedBy = SupplierMaster.UpdatedBy || "";
             this.GSTNo = SupplierMaster.GSTNo || "";
             this.PanNo = SupplierMaster.PanNo || "";
-
+            this.ExpDate= SupplierMaster.ExpDate ||this.currentDate;
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
         }
     }

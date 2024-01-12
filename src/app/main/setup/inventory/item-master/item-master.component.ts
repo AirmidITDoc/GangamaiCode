@@ -7,6 +7,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-item-master",
@@ -69,9 +70,9 @@ export class ItemMasterComponent implements OnInit {
 
     constructor(
         public _itemService: ItemMasterService,
-
+        private _loggedService: AuthenticationService,
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getItemMasterList();
@@ -96,11 +97,8 @@ export class ItemMasterComponent implements OnInit {
 
     getItemMasterList() {
         var m_data = {
-            ItemName:
-                this._itemService.myformSearch
-                    .get("ItemNameSearch")
-                    .value.trim() + "%" || "%",
-            StoreID: 1,
+            ItemName:this._itemService.myformSearch.get("ItemNameSearch").value.trim() + "%" || "%",
+            StoreID: this._loggedService.currentUserValue.user.storeId
         };
         this._itemService.getItemMasterList(m_data).subscribe(
             (Menu) => {
@@ -153,8 +151,8 @@ export class ItemMasterComponent implements OnInit {
         this._itemService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "75vh",
+            maxWidth: "100vw",
+            maxHeight: "90vh",
             width: "100%",
             height: "100%",
         });
@@ -167,8 +165,8 @@ export class ItemMasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "75vh",
+            maxWidth: "100vw",
+            maxHeight: "100vh",
             width: "100%",
             height: "100%",
         });
