@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 
 const appRoutes: Routes = [
@@ -62,7 +63,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,
-    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule
+    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule
   ]
 })
 export class AdministrationModule { }

@@ -22,7 +22,7 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                         </mat-header-cell>
                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            {{ element.id }}
+                            {{ element.parent }}
                         </mat-cell>
                     </ng-container>
 
@@ -71,31 +71,13 @@
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="loading">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            loading data...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
+                    
 
                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns;sticky: true">
                     </mat-header-row>
                     <mat-row *matRowDef="let row;columns: displayedColumns" class="element" 
                     [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{ hide: dsPermissionList != null }">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{
-                            hide: !(
-                                dsPermissionList != null &&
-                                dsPermissionList.data.length == 0
-                            )
-                        }"></mat-footer-row>
+                    
                 </mat-table>
                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                     showFirstLastButtons>
