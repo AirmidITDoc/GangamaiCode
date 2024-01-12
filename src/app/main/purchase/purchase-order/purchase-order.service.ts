@@ -13,6 +13,7 @@ export class PurchaseOrderService {
   FinalPurchaseform: FormGroup;
   PurchaseStoreform: FormGroup;
   StoreFormGroup:FormGroup;
+  PurchaseOrderHeader:FormGroup;
   
   constructor(
     public _httpClient: HttpClient,
@@ -22,6 +23,7 @@ export class PurchaseOrderService {
     this.PurchaseSearchGroup = this.PurchaseSearchFrom();
     this.FinalPurchaseform = this.getPurchaseOrderFinalForm();
      this.StoreFormGroup=this.createStoreFrom();
+     this.PurchaseOrderHeader=this.createHeaderFrom();
   }
 
   PurchaseSearchFrom() {
@@ -41,18 +43,32 @@ export class PurchaseOrderService {
 
   createStoreFrom() {
     return this._formBuilder.group({
-      FromStoreId:[''],
+      StoreId:['']
     });
+  }
+  createHeaderFrom(){
+    return this._formBuilder.group({
+      Status3: [''],
+      SupplierId: [''],
+      SupplierID:'',
+      Address:'',
+      Mobile:'',
+      Contact:'',
+      GSTNo:'',
+      Email:''
+    })
   }
 
   getPurchaseOrderForm() {
     return this._formBuilder.group({
 
       ItemName: [''],
+      ConversionFactor: [''],
       Qty: [''],
       UOM: [''],
       Rate: [''],
       TotalAmount: [''],
+      HSNcode:'',
       Dis: [''],
       DiscAmount: [''],
       GSTPer: [''],
@@ -61,10 +77,6 @@ export class PurchaseOrderService {
       MRP: [''],
       Specification: [''],
       purchaseId: [''],
-     // FromStoreId: [''],
-      Status3: [''],
-      SupplierId: [''],
-
     });
 
   }
@@ -100,7 +112,7 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
   }
   public getSupplierSearchList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName", {});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", {});
   }
   public getLoggedStoreList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
@@ -111,61 +123,51 @@ export class PurchaseOrderService {
   public getItemList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
   }
-
-
-
-
-
-
-
   public getPurchaseOrder(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PurchaseOrderList_by_Name", Param);
   }
-
   public getPurchaseItemList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PurchaseItemList", Param);
   }
-
-  public getToStoreSearchList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
-  }
-
- 
-
   public getFromStoreSearchList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
-
- 
-
-  public getItemNameList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
-  }
-
   public InsertPurchaseSave(Param) {
-    return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
-  }
-
- 
-  public PurchaseUpdate(Param) {
-    return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
-  }
-
-  public PurchaseInsert(Param) {
     return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
   }
   public InsertPurchaseUpdate(Param) {
     return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
   }
-
-
- 
   public getPrintPurchaseOrdert(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPurchaseOrder", Param);
   }
   public getVerifyPurchaseOrdert(Param) {
     return this._httpClient.post("Pharmacy/VerifyPurchaseOrder", Param)
   }
+  
+  public getItemNameList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
+  }
+
+
+
+
+  // public getToStoreSearchList() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
+  // }
+
+  // public PurchaseUpdate(Param) {
+  //   return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)
+  // }
+
+  // public PurchaseInsert(Param) {
+  //   return this._httpClient.post("Pharmacy/InsertPurchaseOrder", Param)
+  // }
+ 
+
+
+ 
+
 
   
   populateForm(employee) {
@@ -173,5 +175,4 @@ export class PurchaseOrderService {
   }
 }
 
-
-// Rtrv_Purchasedetail_BuPurchaseId
+ 
