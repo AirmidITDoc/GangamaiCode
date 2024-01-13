@@ -94,7 +94,7 @@ export class BrowseRefundListComponent implements OnInit {
     this._BrowseOPDReturnsService.myFilterform.get('RegNo').reset();
 
   }
-
+  
   getBrowseOPDReturnList() {
     this.sIsLoading = 'loading-data';
     var D_data = {
@@ -102,10 +102,10 @@ export class BrowseRefundListComponent implements OnInit {
       "L_Name": this._BrowseOPDReturnsService.myFilterform.get("LastName").value + '%' || '%',
       "From_Dt": this.datePipe.transform(this._BrowseOPDReturnsService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._BrowseOPDReturnsService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Reg_No": this._BrowseOPDReturnsService.myFilterform.get("RegNo").value || 0,
+      "Reg_No": this._BrowseOPDReturnsService.myFilterform.get("RegNo").value || 0
 
     }
-
+debugger
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       console.log(D_data);

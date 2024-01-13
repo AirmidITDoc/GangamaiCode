@@ -521,6 +521,8 @@
                       </mat-form-field>
 
 
+                      
+
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Age (Y)</mat-label>
                         <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
@@ -863,8 +865,8 @@
                 </mat-expansion-panel>
               </mat-accordion>
               <div style="float: right;">
-
-                <button class="next-btn" color="accent" (click)="nextClicked(VisitFormGroup)"
+                <!-- (click)="nextClicked(VisitFormGroup)" -->
+                <button class="next-btn" color="accent" (click)="OnSaveAppointmentwithoutphoto()"
                   [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;">
                   <span style="display: flex;justify-content: center;">
                     <span style="margin-left: 6px;">Save</span>

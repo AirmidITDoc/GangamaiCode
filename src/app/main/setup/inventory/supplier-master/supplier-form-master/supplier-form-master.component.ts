@@ -69,10 +69,26 @@ export class SupplierFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) {
-      
+      this.getSupplierTypeMasterList();
+      this.getModeofpaymentCombobox();
+      this.getTermofpaymentCombobox();
+      this.getCountryNameCombobox();
+      this.getBankNameList1();
+      this.getCityNameCombobox();
+      this.getStoreNameCombobox();
     }
 
     ngOnInit(): void {
+      
+      
+      this.getSupplierTypeMasterList();
+      this.getModeofpaymentCombobox();
+      this.getTermofpaymentCombobox();
+      this.getCountryNameCombobox();
+      this.getBankNameList1();
+      this.getCityNameCombobox();
+      this.getStoreNameCombobox();
+
       
       if(this.data){
         debugger
@@ -87,15 +103,6 @@ export class SupplierFormMasterComponent implements OnInit {
         // this.setDropdownObjs1();
         }
 
-        this.getSupplierTypeMasterList();
-        this.getModeofpaymentCombobox();
-        this.getTermofpaymentCombobox();
-        this.getCountryNameCombobox();
-        this.getBankNameList1();
-        this.getCityNameCombobox();
-        this.getStoreNameCombobox();
-
-        
 
     }
 
@@ -106,7 +113,7 @@ export class SupplierFormMasterComponent implements OnInit {
     debugger
 
    
-    //  const toSelect = this.CitycmbList.find(c => c.CityId == this.registerObj.CityId);
+      const toSelect = this.CitycmbList.find(c => c.CityId == this.registerObj.CityId);
      this._supplierService.myform.get('CityId').setValue(this.CityId);
  
     //  const toSelectSuup = this.SuppliertypecmbList.find(c => c.ConstantId == this.registerObj.Sup);
@@ -177,9 +184,10 @@ export class SupplierFormMasterComponent implements OnInit {
       
 
     getCityNameCombobox() {
-
+      debugger
     this._supplierService.getCityMasterCombo().subscribe(data => {
       this.CitycmbList = data;
+      console.log(this.CitycmbList)
       this.optionsCity = this.CitycmbList.slice();
       this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
         startWith(''),
@@ -188,13 +196,15 @@ export class SupplierFormMasterComponent implements OnInit {
 
     });
     debugger
+
     if (this.data) {
+      console.log(this.CitycmbList)
       const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
       this._supplierService.myform.get('CityId').setValue(ddValue);
       this.onChangeCityList(this.data.registerObj.CityId)
     }
 
-   
+    console.log(this.CitycmbList)
   }
  
   

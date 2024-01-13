@@ -390,7 +390,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
+    InsertBillUpdateBillNoObj['CashCounterId'] = 2,// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
     InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
@@ -978,6 +978,7 @@ export class OPBillingComponent implements OnInit {
   }
 
   public onEnterdiscAmount(event): void {
+    debugger
     if (event.which === 13) {
       this.add=true;
       this.addbutton.focus();
