@@ -570,7 +570,7 @@ c
       Validators.minLength(10),
       Validators.maxLength(10),]],
       AadharCardNo: [''],
-      PanCardNo: '',
+      PanCardNo: ["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',

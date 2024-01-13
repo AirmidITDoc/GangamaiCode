@@ -560,13 +560,14 @@
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Pan Card No</mat-label>
                         <input name="PanCardNo" formControlName="PanCardNo" placeholder="PanCardNo Number" matInput
-                          [(ngModel)]="registerObj.PanCardNo" value="987665868800" maxlength="12" #pan
+                          [(ngModel)]="registerObj.PanCardNo"  #pan
                           (keydown)="onEnterpan($event)">
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12
                           digits Pan Card No is required</mat-error>
                       </mat-form-field>
 
+                    
                       <!-- </div> -->
 
                       <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
