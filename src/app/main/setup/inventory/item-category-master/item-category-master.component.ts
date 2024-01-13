@@ -117,26 +117,16 @@ export class ItemCategoryMasterComponent implements OnInit {
     }
 
     onSubmit() {
+        debugger
         if (this._itemcategoryService.myform.valid) {
             if (!this._itemcategoryService.myform.get("ItemCategoryId").value) {
                 var m_data = {
                     insertItemCategoryMaster: {
-                        itemCategoryName: this._itemcategoryService.myform
-                            .get("ItemCategoryName")
-                            .value.trim(),
-
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemcategoryService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        itemCategoryName: this._itemcategoryService.myform.get("ItemCategoryName").value.trim(),
+                        isDeleted: Boolean(JSON.parse(this._itemcategoryService.myform.get("IsDeleted").value)),
                         addedBy: 1,
                         updatedBy: 1,
-                        itemTypeId:
-                            this._itemcategoryService.myform.get("ItemTypeID")
-                                .value.ItemTypeId,
+                        itemTypeId:this._itemcategoryService.myform.get("ItemTypeID").value.ItemTypeId,
                     },
                 };
                 console.log(m_data);
@@ -172,24 +162,11 @@ export class ItemCategoryMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateItemCategoryMaster: {
-                        itemCategoryId:
-                            this._itemcategoryService.myform.get(
-                                "ItemCategoryId"
-                            ).value,
-                        itemCategoryName: this._itemcategoryService.myform
-                            .get("ItemCategoryName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._itemcategoryService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        itemCategoryId:this._itemcategoryService.myform.get("ItemCategoryId").value,
+                        itemCategoryName: this._itemcategoryService.myform.get("ItemCategoryName").value.trim(),
+                        isDeleted: Boolean(JSON.parse(this._itemcategoryService.myform.get("IsDeleted").value)),
                         updatedBy: 1,
-                        itemTypeId:
-                            this._itemcategoryService.myform.get("ItemTypeID")
-                                .value.ItemTypeId,
+                        itemTypeId:this._itemcategoryService.myform.get("ItemTypeID").value.ItemTypeId,
                     },
                 };
 

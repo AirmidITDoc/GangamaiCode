@@ -21,14 +21,16 @@ export class SupplierMasterService {
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
             SupplierId: [""],
-            SupplierName: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
-            ],
-            ContactPerson: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+            SupplierName:['', [
+                Validators.required,
+                Validators.pattern("^[a-zA-Z ]*$"),
+                Validators.maxLength(200),
+              ]],
+            ContactPerson:['', [
+                Validators.required,
+                Validators.pattern("^[a-zA-Z._ -]+$"),
+                Validators.maxLength(100),
+              ]],
 
             Address: [""],
             CityId: ["", Validators.required],

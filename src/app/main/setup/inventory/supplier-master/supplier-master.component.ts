@@ -83,7 +83,7 @@ export class SupplierMasterComponent implements OnInit {
             SupplierName:
                 this._supplierService.myformSearch
                     .get("SupplierNameSearch")
-                    .value.trim() + "%" || "%",
+                    .value + "%" || "%",
             StoreID: 0,
         };
         console.log(m_data);
@@ -126,17 +126,17 @@ export class SupplierMasterComponent implements OnInit {
     onEdit(row) {
         var m_data = {
             SupplierId: row.SupplierId,
-            SupplierName: row.SupplierName.trim(),
-            ContactPerson: row.ContactPerson.trim(),
-            Address: row.Address.trim(),
+            SupplierName: row.SupplierName,
+            ContactPerson: row.ContactPerson,
+            Address: row.Address,
             CityId: row.CityId,
             StateId: row.StateId,
             CountryId: row.CountryId,
-            CreditPeriod: row.CreditPeriod.trim(),
+            CreditPeriod: row.CreditPeriod,
             Mobile: row.Mobile.trim(),
-            Phone: row.Phone.trim(),
-            Fax: row.Fax.trim(),
-            Email: row.Email.trim(),
+            Phone: row.Phone,
+            Fax: row.Fax,
+            Email: row.Email,
             ModeOfPayment: row.ModeOfPayment,
             TermOfPayment: row.TermOfPayment,
             TaxNature: row.TaxNature,
@@ -144,18 +144,21 @@ export class SupplierMasterComponent implements OnInit {
             Octroi: row.Octroi,
             Freight: row.Freight,
             IsDeleted: JSON.stringify(row.IsDeleted),
-            GSTNo: row.GSTNo.trim(),
-            PanNo: row.PanNo.trim(),
+            GSTNo: row.GSTNo,
+            PanNo: row.PanNo,
             UpdatedBy: row.UpdatedBy,
         };
-        console.log(m_data);
-        this._supplierService.populateForm(m_data);
+        console.log(row);
+        this._supplierService.populateForm(row);
 
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "95vw",
             maxHeight: "120vh",
             width: "100%",
             height: "100%",
+            data : {
+                registerObj : row,
+              }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -204,6 +207,11 @@ export class SupplierMaster {
     ExpDate:Date;
     currentDate = new Date();
     IsDeletedSearch: number;
+    BankId:any;
+    BankNo:any;
+    Bankbranch:any;
+    Ifsccode:any;
+    StoreId:any;
     /**
      * Constructor
      *
@@ -235,10 +243,16 @@ export class SupplierMaster {
             this.PanNo = SupplierMaster.PanNo || "";
             this.ExpDate= SupplierMaster.ExpDate ||this.currentDate;
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
+
+            this.BankId = SupplierMaster.BankId || "";
+            this.BankNo = SupplierMaster.BankNo || "";
+            this.Bankbranch= SupplierMaster.Bankbranch ||"";
+            this.Ifsccode = SupplierMaster.Ifsccode || "";
+            this.StoreId=SupplierMaster.StoreId||0;
         }
     }
 }
-
+SupplierMaster
 export class StoreMaster {
     StoreId: number;
     SupplierId: number;
