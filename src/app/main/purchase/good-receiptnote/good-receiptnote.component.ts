@@ -99,7 +99,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     "ConversionFactor",
     "VatPercentage",
     "DiscPercentage",
-    "LandedRate",
+    //"LandedRate",
     "NetAmount",
     "TotalQty",
 
@@ -500,8 +500,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      this._GRNService.GRNFirstForm.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._GRNService.GRNFirstForm.get('StoreId').value.StoreName;
+      this._GRNService.GRNStoreForm.get('StoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._GRNService.GRNStoreForm.get('StoreId').value.StoreName;
     });
   }
 
@@ -526,7 +526,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 debugger
     var m_data = {
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
-      "StoreId": this._GRNService.GRNFirstForm.get('StoreId').value.storeid || 0
+      "StoreId": this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0
     }
     if (this._GRNService.userFormGroup.get('ItemName').value.length >= 1) {
       this._GRNService.getItemNameList(m_data).subscribe(data => {
@@ -766,7 +766,7 @@ debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    grnSaveObj['storeId'] = this._GRNService.GRNFirstForm.get('StoreId').value.storeid || 0;
+    grnSaveObj['storeId'] = this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0;
     grnSaveObj['supplierID'] = this._GRNService.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
     grnSaveObj['invoiceNo'] = this._GRNService.GRNFirstForm.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0,//this._GRNService.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
@@ -1181,18 +1181,16 @@ msg:any;
     this._GRNService.getVerifyGRN(Param).subscribe(data => {
       this.msg = data;
       console.log(this.msg);
-      if(data){
+      // if(data){
+      //   this.toastr.success('Record Verified Successfully.', 'Verified !', {
+      //     toastClass: 'tostr-tost custom-toast-success',
+      //   }); 
+      // }
+      } ,success => {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-       
-      }
-     
-      } ,error => {
-        this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
+      });this.getGRNList();
   }
 
   onScroll() {
@@ -1348,12 +1346,14 @@ export class ItemNameList {
   VatAmount: number;
   VatPercentage: number;
   id: number;
-  tranProcessId: number;
+  ConstantId: number;
   discPercentage: number;
   discAmount: number;
   DiscPercentage: number;
   DiscAmount: number;
-
+  PaymentType:any;
+  GRNType:any;
+  DateOfInvoice:any;
   /**
    * Constructor
    *
@@ -1372,7 +1372,7 @@ export class ItemNameList {
       this.MRP = ItemNameList.MRP || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Disc = ItemNameList.Disc || 0;
+      this.Disc = ItemNameList.Disc  ;
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
