@@ -1354,6 +1354,8 @@ export class ItemNameList {
   PaymentType:any;
   GRNType:any;
   DateOfInvoice:any;
+  EwalBillDate:Date;
+  CurrentDate=new Date();
   /**
    * Constructor
    *
@@ -1404,6 +1406,7 @@ export class ItemNameList {
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
+      this.EwalBillDate=ItemNameList.EwalBillDate || this.CurrentDate;
     }
   }
 }

@@ -1,25 +1,31 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar">
-    <div class="center" fusePerfectScrollbar style="overflow: auto;">
+<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
 
-        <mat-toolbar matDialogTitle class="mat-accent m-0">
-            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-icon class="logo-icon mr-12" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">menu </mat-icon>
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
 
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="color: white;">
-                    Update GRN List
-                    <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                        style="margin-left: 1400px;">
-                        <mat-icon>close</mat-icon>
-                    </button>
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon> -->
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="font-size: 20px;width: 70%; font-weight: 400;">
+                Update GRN 
+            </span>
+
+            <div fxLayout="column" fxLayout.gt-xs="row">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                    style="border-color: red;"></app-common-date>
+                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
+                    (click)="onClose()">
+                    close
                 </span>
+            </div>
+        </div>
 
+    </div>
 
-            </mat-toolbar-row>
-        </mat-toolbar>
 
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -51,7 +57,7 @@
                                         <div>
                                             <form [formGroup]="_GRNList.GRNFirstForm" style=" overflow:hidden;padding: 0px 0px 0px 0px;">
                                                 <mat-form-field appearance="outline" fxFlex="18%">
-                                                    <mat-label>Supplier Name</mat-label>
+                                                    <mat-label>Supplier Name | Code</mat-label>
                                                     <input matAutocompletePosition="below" type="text" [(ngModel)]="registerObj.SupplierId"
                                                         (keydown)="onEnterSupplier($event)" placeholder="Select Supplier" matInput
                                                         formControlName="SupplierId" [matAutocomplete]="autoSupllier">
@@ -63,7 +69,7 @@
                                                     </span>
                                                     <mat-autocomplete #autoSupllier="matAutocomplete" [displayWith]="getOptionTextSupplier">
                                                         <mat-option *ngFor="let option of filteredoptionsSupplier | async" [value]="option">
-                                                            {{option.SupplierName}}
+                                                            {{option.SupplierName}} || {{option.SupplierId}} 
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                 </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -124,8 +130,7 @@
                                                 </mat-form-field>&nbsp;
                                     
                                                 <span style="color: black;font-weight: bold;color: black;">
-                                                    <app-common-date [screenFrom]="screenFromString"
-                                                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                                                  
                                                 </span>
                                             </form>
                                         </div>
@@ -233,7 +238,7 @@
                                             <mat-form-field appearance="outline" fxFlex="7%">
                                                 <mat-label>MRP</mat-label>
                                                 <input matInput [(ngModel)]="MRP" name="MRP" type="number"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                                     formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp required>
                                             </mat-form-field>
 
@@ -241,7 +246,7 @@
                                                 <mat-label>Rate </mat-label>
                                                 <input matInput [(ngModel)]="Rate" name="Rate" type="number"
                                                     (keyup)="calculateTotalAmount()" formControlName="Rate" id="Rate"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                                     (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"  #rate required>
                                             </mat-form-field>
 
@@ -598,12 +603,11 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                                    <!-- <span class="net-amt-mat-label"
-                                    style="font-weight:bold;margin-left:20px;padding-bottom: 15px;">GST Amt:
+                                    <span class="net-amt-mat-label"
+                                    style="font-weight:bold;margin-left:20px;padding-bottom: 15px;">No Of Item:
                                     </span>&nbsp;
                                 <span class="net-amt-value"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getGSTAmt(dsItemNameList.data)
-                                    | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp; -->
+                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{dsItemNameList.data.length}}</span>&nbsp;&nbsp;&nbsp;
 
                                     <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">CGST Amt:
                                     </span>&nbsp;
@@ -652,14 +656,14 @@
                                             (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Debit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="DebitAmount"
                                             #DebitAmount [(ngModel)]="registerObj.DebitNote" type="number"
                                             (keydown)="onEnterDebitAmount($event)" (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Credit Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="CreditAmount"
                                             #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
@@ -667,7 +671,7 @@
                                             (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Total Amount</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="TotalAmt"
                                             [(ngModel)]="vTotalFinalAmount" #DiscAmount type="number"
@@ -675,7 +679,7 @@
                                             (keydown)="onEnterDiscAmount($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Disc Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="DiscAmount"
                                             [(ngModel)]="FinalDisAmount" #DiscAmount type="number"
@@ -683,7 +687,7 @@
                                             (keydown)="onEnterDiscAmount($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>GST Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="VatAmount"
                                             [(ngModel)]="FinalVatAmount" #VatAmount
@@ -691,14 +695,14 @@
                                             (keydown)="onEnterVatAmount($event)" type="number">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Net Pay Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="NetPayamt"
                                             type="number" readonly [(ngModel)]="NetPayamount" #NetPayamt
                                             (keydown)="onEnterNetPayamt($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Other Charges</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="OtherCharges"
                                             #OtherCharges [(ngModel)]="registerObj.OtherCharge"
@@ -706,13 +710,28 @@
                                             (keydown.enter)="focusNextService()">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Rounding Amt</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                            #RoundingAmt [(ngModel)]="registerObj.RoundingAmt"
+                                            #RoundingAmt [(ngModel)]="RoundAmt"
                                             (keydown.enter)="focusNextService()">
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+                                    <mat-form-field appearance="outline" fxFlex="6%">
+                                        <mat-label> Eway BillNo</mat-label>
+                                        <input matInput placeholder="Placeholder" formControlName="EwayBillNo"
+                                            #EwayBillNo>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>EwayBill date</mat-label>
+                                        <input name="EwalBillDate" matInput [matDatepicker]="picker9" formControllName="EwalBillDate"
+                                        [(ngModel)]="registerObj.EwalBillDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker9></mat-datepicker>
+                
+                                      </mat-form-field>
+                
                                     <button class="next-btn" style="border-radius: 14px;height:2%" (click)="OnSave()"
                                         [disabled]="_GRNList.GRNFinalForm.invalid">Save</button>
                                     <button class="footer-btn" style="border-radius: 14px;height:2%"
@@ -735,4 +754,4 @@
         </div>
 
     </div>
-</div>
+<!-- </div> -->

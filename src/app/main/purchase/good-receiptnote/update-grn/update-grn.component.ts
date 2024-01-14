@@ -85,6 +85,7 @@ minDate=Date;
   IGSTFinalAmount: any;
   vTotalFinalAmount: any;
   GSTTypeList:any=[];
+  RoundAmt:any=0;
 
   dsGRNList = new MatTableDataSource<GRNList>();
 
@@ -215,7 +216,7 @@ minDate=Date;
     ctrlValue.year(normalizedMonthAndYear.year());
     if (ctrlValue && ctrlValue > currentDate) {
       // Swal.fire(" Please choose valid Date");
-      this.date.setValue('');
+      this.date.setValue(this.date.value);
     }
     console.log( this.datePipe.transform(this.date.value, "yyyy-MM"));
    
@@ -298,12 +299,15 @@ minDate=Date;
     // this.dsItemNameList.data = this.chargeslist
     // this._GRNList.userFormGroup.reset();
     // this.add=false;
-    // this.itemname.nativeElement.focus();
+   
    // console.log(this.chargeslist);
     this.dsItemNameList.data = this.chargeslist
     this._GRNList.userFormGroup.reset();
     //this.ItemID.nativeElement.focus();
     this.add=false; 
+    this.date.setValue(new Date());
+    this.NetAmount=0;
+     this.itemname.nativeElement.focus();
   }
 
   
@@ -352,7 +356,8 @@ minDate=Date;
       this.NetAmount = this.TotalAmount;
    //Discount calculation
    this.DisAmount = (( parseFloat(this.TotalAmount) * this.Disc) / 100).toFixed(2);
-   let totalamt=this.TotalAmount - this._GRNList.userFormGroup.get('DisAmount').value
+   let totalamt=this.TotalAmount - this._GRNList.userFormGroup.get('DisAmount').value;
+   this.NetAmount=totalamt;
    //GST Calculation
     this.calculateGSTAmount();
     }
@@ -471,6 +476,7 @@ minDate=Date;
     FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.FinalNetAmount = (FinalNetAmount).toFixed(2);
     this.NetPayamount = this.FinalNetAmount;
+    this.RoundAmt=Math.round(this.FinalNetAmount);
 
     return TotalAmt;
   }
