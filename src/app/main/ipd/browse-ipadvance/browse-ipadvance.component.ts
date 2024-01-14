@@ -29,7 +29,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
   sIsLoading:any;
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
-  @Input() dataArray: any; 
+  // @Input() dataArray: any; 
 
   displayedColumns = [
     'RegNo',
@@ -45,6 +45,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     'buttons'
   ];
   dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+  dataArray = new MatTableDataSource<IpdAdvanceBrowseModel>();
 
   reportPrintObj: IpdAdvanceBrowseModel;
   subscriptionArr: Subscription[] = [];
@@ -96,20 +97,20 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   onShow_IpdAdvance(){
-    
+    debugger
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+      "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
+      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
-      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
+      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0
     }
    
-    // (D_data);
+    console.log(D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
-        this.dataArray = Visit;
-    
+        this.dataArray.data = Visit as IpdAdvanceBrowseModel[];
+        console.log(this.dataArray.data )
       });
   }
 

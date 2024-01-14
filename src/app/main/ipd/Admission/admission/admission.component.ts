@@ -351,7 +351,7 @@ export class AdmissionComponent implements OnInit {
       PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       MobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       AadharCardNo: [''],
-      Pancardno: '',
+      Pancardno:["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -1264,7 +1264,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
       admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionNewInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0 ;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
@@ -1313,8 +1313,11 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAddmissionPrint(response);
-              this._matDialog.closeAll();
-
+              // this._matDialog.closeAll();
+              this.personalFormGroup.reset();
+              this.hospitalFormGroup.reset();
+              this.wardFormGroup.reset();
+              this.otherFormGroup.reset();
             }
           });
         } else {
@@ -1337,7 +1340,7 @@ debugger
       admissionInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
-    //  admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionInsert['hospitalID'] = 1;//this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID ? this.hospitalFormGroup.get('refDoctorId').value.DoctorID : 0;
 
@@ -1376,8 +1379,8 @@ debugger
       admissionInsert['IsOpToIPConv'] = 0;
       admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       admissionInsert['admissionType']=0;
-      admissionInsert['admissionInsert'] = admissionInsert;
-      admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+      // admissionInsert['admissionInsert'] = admissionInsert;
+      // admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
 
       submissionObj['admissionInsert'] = admissionInsert;
 
@@ -1388,6 +1391,10 @@ debugger
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
+              this.personalFormGroup.reset();
+              this.hospitalFormGroup.reset();
+              this.wardFormGroup.reset();
+              this.otherFormGroup.reset();
               this.getAddmissionPrint(response);
             }
           });
@@ -1453,9 +1460,9 @@ debugger
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": "0",
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '%',
     }
-  
+  console.log(D_data)
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {

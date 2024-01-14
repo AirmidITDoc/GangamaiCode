@@ -284,7 +284,7 @@ export class IPBillingComponent implements OnInit {
       Remark: [''],
       GenerateBill: [1],
       FinalAmount: 0,
-      CashCounterId: ['', Validators.required]
+      CashCounterId:['']// ['', Validators.required]
     });
   }
 
@@ -707,7 +707,7 @@ export class IPBillingComponent implements OnInit {
         InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
         // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
-        InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
+        InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
         let Billdetsarr = [];
 
         this.dataSource.data.forEach((element) => {
@@ -836,7 +836,7 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['TaxPer'] = 0;
           InsertBillUpdateBillNoObj['TaxAmount'] = 0;
           InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
-          InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId;
+          InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId;
 
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
           const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);

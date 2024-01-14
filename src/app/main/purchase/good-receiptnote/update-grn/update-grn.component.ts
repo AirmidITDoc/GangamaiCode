@@ -68,7 +68,7 @@ export class UpdateGRNComponent implements OnInit {
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
 PaymentType:any;
-
+minDate=Date;
   StoreList: any = [];
   StoreName: any;
   ItemID: any;
@@ -207,12 +207,14 @@ PaymentType:any;
   date = new FormControl(moment());
 
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+
+    debugger
     const ctrlValue = this.date.value;
     const currentDate = new Date();
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     if (ctrlValue && ctrlValue > currentDate) {
-      Swal.fire(" Please choose valid Date");
+      // Swal.fire(" Please choose valid Date");
       this.date.setValue('');
     }
     console.log( this.datePipe.transform(this.date.value, "yyyy-MM"));

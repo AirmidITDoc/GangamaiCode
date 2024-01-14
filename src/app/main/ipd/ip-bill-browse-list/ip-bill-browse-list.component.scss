@@ -80,17 +80,16 @@ app-ip-bill-browse-list{
         // overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
-        display: inline-block;
-        margin-top: 7px; 
+       
         justify-content:left; 
     }
     
     .mat-column-TotalAmt, .mat-column-ConcessionAmt ,.mat-column-NetPayableAmt,
     .mat-column-CashPay,.mat-column-CardPay, .mat-column-PayTMPay,
     .mat-column-NEFTPay,.mat-column-ChequePay,.mat-column-AdvPay,.mat-icon-action {
-        width:100px;
-        max-width:100px;
-        min-width:100px;
+        width:120px;
+        max-width:120px;
+        min-width:120px;
         text-align: center;
         justify-content:center;
     }

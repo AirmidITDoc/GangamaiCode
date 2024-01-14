@@ -596,8 +596,8 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Phone Number</mat-label>
                     <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput
-                      [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" maxlength="10" type="number" #phone (keydown)="onEnterphone($event)"
-                      value="9876658688">
+                      [(ngModel)]="registerObj.PhoneNo"  type="number" #phone (keydown)="onEnterphone($event)"
+                      value="9876658688"    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                     <mat-error class="error"
                       *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
                       number is required
@@ -607,8 +607,8 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Mobile Number</mat-label>
                     <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required  #mobile (keydown)="onEntermobile($event)"
-                      [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" maxlength="10"
-                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
+                      [(ngModel)]="registerObj.MobileNo"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                       required="required" type="number" value="9876658688">
                     <mat-error class="error"
                       *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10

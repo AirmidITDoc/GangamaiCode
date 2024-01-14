@@ -31,22 +31,21 @@ app-ipd-paymentreceipt {
     min-width: 250px;
     text-align: left;
     white-space: nowrap; 
-    overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-block;
+ 
     justify-content:left; 
 }
 .mat-column-TotalAmt {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 130px;
+    max-width: 130px;
+    min-width: 130px;
     justify-content:center;
 }
 .mat-column-BalanceAmt {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
      justify-content:center;
 }
 
@@ -70,9 +69,9 @@ app-ipd-paymentreceipt {
     justify-content:center;
 }
 .mat-column-ChequePayAmount{
-    width: 90px;
-    max-width:90px;
-    min-width:90px;
+    width: 110px;
+    max-width:110px;
+    min-width:110px;
     // text-align: center;
     justify-content:center;
 }
@@ -83,9 +82,9 @@ app-ipd-paymentreceipt {
     justify-content:center;
 }
 .mat-column-AdvanceUsedAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
+    width: 130px;
+    max-width:130px;
+    min-width:130px;
     justify-content:center;
 }
 
@@ -107,16 +106,16 @@ app-ipd-paymentreceipt {
 }
 
 .mat-column-PaidAmount{
-    width: 90px;
-    max-width:90px;
-    min-width:90px;
+    width: 120px;
+    max-width:120px;
+    min-width:120px;
     // text-align: center;
     justify-content:center;
 }
 .mat-column-NEFTPayAmount{
-    width: 100px;
-    max-width:100px;
-    min-width:100px;
+    width: 120px;
+    max-width:120px;
+    min-width:120px;
     // text-align: center;
     justify-content:center;
 }

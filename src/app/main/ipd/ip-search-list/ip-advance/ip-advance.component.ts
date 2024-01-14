@@ -162,7 +162,7 @@ export class IPAdvanceComponent implements OnInit {
       this.isLoading = 'submit';
 
       let advanceHeaderObj = {};
-      advanceHeaderObj['AdvanceId'] = '0';
+      advanceHeaderObj['AdvanceId'] = 0;
       advanceHeaderObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
       advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegId,
       advanceHeaderObj['OPD_IPD_Type'] = 1;
@@ -181,10 +181,11 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['Time'] = this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = 0;
       AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId,
+      AdvanceDetObj['transactionID'] = 2;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;
-      AdvanceDetObj['AdvanceUsedAmount'] = 0;
+      AdvanceDetObj['usedAmount'] = 0;
       AdvanceDetObj['BalanceAmount'] = this.advanceAmount;
       AdvanceDetObj['RefundAmount'] = 0;
       AdvanceDetObj['ReasonOfAdvanceId'] = 0;
@@ -193,7 +194,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
-      AdvanceDetObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
+      // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.dateTimeObj.date|| '01/01/1900'
@@ -201,8 +202,8 @@ export class IPAdvanceComponent implements OnInit {
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
 
-      const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
-      const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
+      // const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
+      // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
 
       const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
@@ -218,8 +219,8 @@ export class IPAdvanceComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========');
         let submitData = {
-          "advanceHeaderInsert": advanceHeaderInsert,
-          "advanceDetailInsert": advanceDetailInsert,
+          "advanceHeaderInsert": advanceHeaderObj,
+          "advanceDetailInsert": AdvanceDetObj,
           "ipPaymentInsert": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -229,7 +230,7 @@ export class IPAdvanceComponent implements OnInit {
             Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this.getPrint(response);
-                // this._matDialog.closeAll();
+                this._matDialog.closeAll();
               }
             });
           } else {
@@ -249,6 +250,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
       AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId;
+      AdvanceDetObj['transactionID'] = 2;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       AdvanceDetObj['AdvanceAmount'] = this.advanceAmount;
@@ -261,7 +263,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['IsCancelledBy'] = 0;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
-      AdvanceDetObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
+     // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
 
       let advanceHeaderObj = {};
       advanceHeaderObj['AdvanceId'] = this.vAdvanceId;
@@ -303,7 +305,7 @@ export class IPAdvanceComponent implements OnInit {
             Swal.fire('Congratulations !', 'IP Advance data Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this.getAdvanceList();
-                // this._matDialog.closeAll();
+                this._matDialog.closeAll();
                 // console.log(response);
                 this.getPrint(response);
               }

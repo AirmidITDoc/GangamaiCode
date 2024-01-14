@@ -125,9 +125,9 @@ getBrowseIPDPaymentReceiptList() {
     "L_Name": this._BrowseIPDPaymentReceiptService.myFilterform.get("LastName").value + '%' || "%",
     "From_Dt": this.datePipe.transform(this._BrowseIPDPaymentReceiptService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
     "To_Dt": this.datePipe.transform(this._BrowseIPDPaymentReceiptService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
-    "Reg_No": this._BrowseIPDPaymentReceiptService.myFilterform.get("RegNo").value || "0",
-    "PBillNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("PBillNo").value || '%',
-    "ReceiptNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("ReceiptNo").value || '%',
+    "Reg_No": this._BrowseIPDPaymentReceiptService.myFilterform.get("RegNo").value || 0,
+    "PBillNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("PBillNo").value || 0,
+    "ReceiptNo": this._BrowseIPDPaymentReceiptService.myFilterform.get("ReceiptNo").value || 0,
 
   }
   console.log(D_data);
