@@ -969,7 +969,7 @@ export class OpPaymentNewComponent implements OnInit {
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
       this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value || '';
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
@@ -1009,7 +1009,7 @@ export class OpPaymentNewComponent implements OnInit {
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
       this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value || '';
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }

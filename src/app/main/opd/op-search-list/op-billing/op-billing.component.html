@@ -88,7 +88,7 @@
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty" #qty
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
-                                                    (keydown)="onEnterqty($event)" id="qty">
+                                                    (keydown)="onEnterqty($event)">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
                                                     Qty is required</mat-error>
@@ -497,14 +497,14 @@
                                                     formControlName="BillRemark" placeholder="Remark" matInput>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 250px;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 250px;">
                                                 <mat-label>Cash Counter</mat-label>
                                                 <mat-select formControlName="CashCounterId">
                                                     <mat-option *ngFor="let m of CashCounterList" [value]="m">
                                                         {{m.CashCounterName}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
                                         </div>
                                     </div>
