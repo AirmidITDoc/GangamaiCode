@@ -125,6 +125,9 @@ export class RoleTemplateMasterComponent implements OnInit {
         maxWidth: "95vw",
           height: '550px',
           width: '100%',
+          data : {
+            RoleId : RoleId,
+          }
       });
     dialogRef.afterClosed().subscribe(result => {
     //this. getregistrationList();
