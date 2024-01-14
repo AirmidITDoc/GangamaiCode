@@ -19,6 +19,7 @@ export class ImageViewComponent implements OnInit {
   docType;
   docViewType: any;
   sStatus: any = '';
+  place;
   public errors: WebcamInitError[] = [];
 
   private trigger: Subject<any> = new Subject();
@@ -31,6 +32,7 @@ export class ImageViewComponent implements OnInit {
     // public safe: SafePipesPipe
     
   ) {
+    this.place=data.place;
     if (data.type == "image") {
       this.docData = data.docData;
       this.docType = "image";
