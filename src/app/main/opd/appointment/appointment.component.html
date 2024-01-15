@@ -957,7 +957,7 @@
               <!-- "onImageFileChange($event)" -->
               <div class="upload-option-div">
                 <div class="img-container">
-                  <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple name="file"
+                  <input formControlName="imageFile" type="file" #attachments accept="image/*,application/pdf" multiple name="file"
                     id="file" class="inputfile" (change)="onImageFileChange($event)" style="margin-right: 10px;" />
 
                   <label class="file-lable1" for="file">
@@ -965,7 +965,7 @@
                     Browse
                   </label>
 
-                  <label class="file-lable1" (click)="openCamera('camera')">
+                  <label class="file-lable1" (click)="openCamera('camera','doc')">
                     <mat-icon style="margin-right: 15px; font-size: 30px;">camera_enhance</mat-icon>
                     Capture
                   </label>
