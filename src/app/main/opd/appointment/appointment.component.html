@@ -975,8 +975,7 @@
               </div>
               <div>
                 <button class="upload-btn" [disabled]="imgDataSource.data.length == 0"
-                  (click)="onSubmitImgFiles()">Upload
-                  Images</button>
+                  (click)="onSubmitImgFiles()">Upload Image/Pdf</button>
               </div>
             </div>
           </div>
@@ -998,7 +997,7 @@
                   Document Path
                 </mat-header-cell>
                 <mat-cell *matCellDef="let contact">
-                  <img [src]="contact.url" width="100px" height="50px" (click)="onViewImage(contact.url, 'img')"
+                  <img [src]="contact.url" style="width: 80px;height: 40px;margin: 3px;" (click)="onViewImage(contact.url, 'img')"
                     *ngIf="!contact.name.endsWith('.pdf');else content" />
                   <ng-template #content>
                     <button mat-icon-button (click)="viewPdf(contact)" color="warn">
