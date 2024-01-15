@@ -118,8 +118,7 @@ export class LoginComponent implements OnInit {
         
         this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
                 (data) => {
-                    // console.log(data);
-                    this.authenticationService.getNavigationData();
+                    this.authenticationService.getNavigationData(data.user.roleId);
                     // console.log(this.configService.getConfigParam());
                     this.router.navigate([this.returnUrl]);
                 },

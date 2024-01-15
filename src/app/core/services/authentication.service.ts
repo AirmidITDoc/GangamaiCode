@@ -76,12 +76,11 @@ export class AuthenticationService {
     }
 
 
-    getNavigationData() {
-        if (this._fuseNavigationService.getNavigation("main1")) {
-            console.log("already exist")
-            return;
-        }
-        return this.http.get(`login/get-menus`).subscribe((data: any[]) => {
+    getNavigationData(roleId) {
+        // if (this._fuseNavigationService.getNavigation("main1")) {
+        //     return;
+        // }
+        return this.http.get(`login/get-menus?RoleId=` + roleId).subscribe((data: any[]) => {
             this.navigation = data;
             try {
                 this._fuseNavigationService.unregister('main1');

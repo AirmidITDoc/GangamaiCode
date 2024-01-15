@@ -58,12 +58,12 @@ export class AppComponent implements OnInit, OnDestroy {
         this.url = this.router.url;
         // console.log('this.url==', this.url);
         if (this.url !== '/auth/login') {
-          alert('You are being timed out due to inactivity. Please Log-In again.');
-          this.dialogRef ? this.dialogRef.closeAll() : '';
-          this.router.navigate(['auth/login'], { replaceUrl: true });
-        //   this.logoutService();
+            alert('You are being timed out due to inactivity. Please Log-In again.');
+            this.dialogRef ? this.dialogRef.closeAll() : '';
+            this.router.navigate(['auth/login'], { replaceUrl: true });
+            //   this.logoutService();
         }
-      }).start();
+    }).start();
 
     constructor(
         @Inject(DOCUMENT) private document: any,
@@ -82,15 +82,15 @@ export class AppComponent implements OnInit, OnDestroy {
         private globalEvent$: SpinnerService,
         private ngxSpinner$: SpinnerService,
         private router: Router,
-        
+
     ) {
         this.onlineEvent = fromEvent(window, 'online');
         this.offlineEvent = fromEvent(window, 'offline');
-        
-         // Prevent browser back button
-         this.authService.preventBackButton();
-        
-         // Get default navigation
+
+        // Prevent browser back button
+        this.authService.preventBackButton();
+
+        // Get default navigation
         this.navigation = navigation;
 
         // Register the navigation to the service
@@ -162,13 +162,13 @@ export class AppComponent implements OnInit, OnDestroy {
      */
     async ngOnInit(): Promise<void> {
 
-           //check connection
+        //check connection
         this.subscriptions.push(this.onlineEvent.subscribe(e => {
             this.isOffLine = false;
         }));
-  
+
         this.subscriptions.push(this.offlineEvent.subscribe(e => {
-            this.isOffLine = true;  
+            this.isOffLine = true;
         }));
 
         // Subscribe to config changes
@@ -197,17 +197,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
+        var user = JSON.parse(localStorage.getItem("currentUser"));
+        if (user?.user?.roleId ?? 0 > 0)
+            await this.authService.getNavigationData(user.user.roleId);
 
-            await this.authService.getNavigationData();
-
-            this.globalEvent$.spinner.subscribe(x => {
-                if (x.toUpperCase() == 'SHOW') {
-                    this.ngxSpinner$.show();
-                }
-                else if (x.toUpperCase() == 'HIDE') {
-                    this.ngxSpinner$.hide();
-                }
-            });
+        this.globalEvent$.spinner.subscribe(x => {
+            if (x.toUpperCase() == 'SHOW') {
+                this.ngxSpinner$.show();
+            }
+            else if (x.toUpperCase() == 'HIDE') {
+                this.ngxSpinner$.hide();
+            }
+        });
     }
 
     /**
