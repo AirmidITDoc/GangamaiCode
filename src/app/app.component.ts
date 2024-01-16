@@ -38,6 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
     offlineEvent: Observable<Event>;
     subscriptions: Subscription[] = [];
     isLoading: boolean = true;
+    configSettingParam: any=[];
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -151,6 +152,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this.ConfigSettingParam();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -231,6 +234,16 @@ export class AppComponent implements OnInit, OnDestroy {
      */
     toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
+    }
+
+    ConfigSettingParam(){
+        // debugger;
+        this.http
+        .post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {}).subscribe(data =>{
+        this.configSettingParam = data;
+        this.configService.setCongiParam(this.configSettingParam[0]);
+        console.log(this.configSettingParam);
+        });
     }
 }
 

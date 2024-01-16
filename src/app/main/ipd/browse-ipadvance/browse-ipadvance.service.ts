@@ -40,4 +40,8 @@ export class BrowseIPAdvanceService {
   public getIPAdvanceReceipt(AdvanceDetailID){
     return this._httpClient.get("InPatient/view-IP-AdvanceReceipt="+AdvanceDetailID);
   }
+
+  public getViewAdvanceReceipt(AdvanceDetailID){
+    return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+  }
 }

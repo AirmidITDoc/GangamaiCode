@@ -173,6 +173,11 @@ public documentuploadInsert(employee){
   return this._httpClient.post("InPatient/DocAttachment", employee);
 }
 
+
+public getVisitedList(employee) {
+  //  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_OpVisitDetailsList",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=M_VisitDetail",employee)
+  }
   
 public documentdownloadInsert(employee){
   return this._httpClient.post("File/UploadFile", employee);
