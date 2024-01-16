@@ -1,0 +1,73 @@
+<div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
+
+    <!-- APP TITLE -->
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
+            Visit Details Pop Up :
+
+        </span>
+
+
+        <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+</div>
+<div>
+    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
+        style="overflow:auto;margin-top: 10px;" class="mat-elevation-z8 sale-table">
+
+        <ng-container matColumnDef="VisitId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                VisitId </mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                {{element.VisitId}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="VisitTime" style="background-color: rgb(157, 164, 164);">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                VisitDate
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                {{element.VisitTime | date:'shortDate'}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="DocName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                DoctorName </mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                {{element.DocName }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                loading data...
+            </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                no data found...
+            </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
+        </mat-header-row>
+        <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+            [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)" tabindex="999"
+            (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
+            (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)" (keyup.enter)="selectedRow(selectedRowIndex, '')"
+            id="ele-{{row.position}}"></mat-row>
+
+        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
+        </mat-footer-row>
+        <mat-footer-row *matFooterRowDef="['noData']"
+            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+        </mat-footer-row>
+    </mat-table>
+</div>

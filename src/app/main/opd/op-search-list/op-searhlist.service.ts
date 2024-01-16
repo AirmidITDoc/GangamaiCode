@@ -465,6 +465,12 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
 
+  
+
+  public getOpBillReceipt(BillNo){
+    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo=" + BillNo);
+  }
+
   getPaymentArr() {
     return [
       {value: 'cash', viewValue: 'Cash'},

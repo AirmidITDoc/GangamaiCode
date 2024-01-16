@@ -19,6 +19,7 @@ import * as converter from 'number-to-words';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -230,6 +231,7 @@ export class IPAdvanceComponent implements OnInit {
             Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this.getPrint(response);
+                
                 this._matDialog.closeAll();
               }
             });
@@ -306,8 +308,8 @@ export class IPAdvanceComponent implements OnInit {
               if (result.isConfirmed) {
                 this.getAdvanceList();
                 this._matDialog.closeAll();
-                // console.log(response);
-                this.getPrint(response);
+                this.viewgetAdvanceReceiptReportPdf(response);
+                // this.getPrint(response);
               }
             });
           } else {
@@ -384,6 +386,27 @@ getPrint(el) {
 
     })
   );
+}
+
+
+  
+
+viewgetAdvanceReceiptReportPdf(AdvanceDetailID) {
+    
+  this._IpSearchListService.getViewAdvanceReceipt(
+    AdvanceDetailID
+    ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Advance Viewer"
+        }
+      });
+  });
 }
 
 print() {

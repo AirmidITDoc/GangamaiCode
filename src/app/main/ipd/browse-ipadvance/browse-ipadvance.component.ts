@@ -118,7 +118,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
     
   }
 
- 
+  
+
   convertToWord(e) {
     
     return converter.toWords(e);
@@ -137,6 +138,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
   return value;
 }
+
+
 
 
   getPrint(el) {

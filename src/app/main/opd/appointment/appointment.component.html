@@ -13,16 +13,22 @@
       <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
         Appointment List
       </span>
+    
     </div>
 
     <div fxLayout="row" fxLayoutGap="5px" style="margin-left:2% !important; ">
+      <app-common-date [screenFrom]="screenFromString" style="float:right"
+      (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
       <button mat-raised-button (click)="newappointment()"
-        style="background-color: aliceblue;color: brown;margin-left:2% !important">New Appointment
+        style="background-color: aliceblue;color: brown;margin-left:8% !important">New Appointment
 
       </button>
     </div>
 
   </mat-toolbar>
+  <!-- <mat-drawer-container class="example-container">
+    <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;"> -->
+
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -125,12 +131,12 @@
                   <div fxlayout="row">
                     <div style="width: 100%;">
                       <div style="margin-bottom: 10px;">
-                        <button mat-raised-button (click)="exportReportExcel()"
+                        <!-- <button mat-raised-button (click)="exportReportExcel()"
                           style="background-color: #8e67e0;color: white; margin-right: 15px;">Export Table(Excel)
                         </button>
                         <button mat-raised-button (click)="exportReportPdf()"
                           style="background-color: #8e67e0;color: white;">Export Table(PDF)
-                        </button>
+                        </button> -->
                       </div>
                       <mat-table #table matSort table="table1" [dataSource]="dataSource" id="app-table"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
@@ -365,9 +371,9 @@
                   </mat-form-field> -->
 
 
-                  <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
+                  <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;" *ngIf="Regflag">
                     <input type="text" name="RegId" formControlName="RegId" placeholder="Item Name (enter 2 char) "
-                      matInput [matAutocomplete]="auto" (input)="getSearchList()">
+                      matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
                     <span matSuffix style="display: flex;">
                       <mat-icon class="mat-icon-close"
                         (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -409,8 +415,7 @@
                     </mat-error>
                   </mat-form-field>
 
-                  <app-common-date [screenFrom]="screenFromString" style="float:right"
-                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                 
                 </div>
 
 
@@ -590,7 +595,7 @@
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Area Name</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Area" matInput
-                          formControlName="AreaId" [matAutocomplete]="autoArea" required #area
+                          formControlName="AreaId" [matAutocomplete]="autoArea"  #area
                           (keydown)="onEnterarea($event)">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
@@ -654,7 +659,7 @@
                         <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput required
                           [(ngModel)]="registerObj.MobileNo" minlength="10" maxlength="10" required="required" #mobile
                           (keydown)="onEntermobile($event)"
-                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 11);"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                           type="number" value="MobileNo.length">
                         <mat-error class="error"
                           *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
@@ -792,7 +797,7 @@
                       <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Department</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                          #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                          #dept (keydown)="onEnterdept($event)" formControlName="Departmentid" 
                           [matAutocomplete]="autoDep" required>
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
@@ -1045,11 +1050,67 @@
       <!-- </div> -->
     </mat-tab>
   </mat-tab-group>
+    <!-- </mat-drawer> -->
+  <!-- </mat-drawer-container> -->
 </div>
 
-TempDesign
-<div>
-  Strheader
-  <div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span
-      style="font-weight:700">OPD PAYMENT RECEIPT</span></div>
-</div>
+
+<!-- <mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end"
+    style="height: 530px !important;margin-top: 120px !important;margin-right: 40px;font-size: medium;">
+    <mat-card>
+        <div>
+          <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
+          style="overflow:auto;margin-top: 10px;" class="mat-elevation-z8 sale-table">
+  
+          <ng-container matColumnDef="VisitId">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                  VisitId </mat-header-cell>
+              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  {{element.VisitId}} </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="VisitTime" style="background-color: rgb(157, 164, 164);">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                  VisitDate
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  {{element.VisitTime | date:'shortDate'}}
+              </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="DocName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                  DoctorName </mat-header-cell>
+              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  {{element.DocName }} </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                  loading data...
+              </mat-footer-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                  no data found...
+              </mat-footer-cell>
+          </ng-container>
+  
+          <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
+          </mat-header-row>
+          <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+              [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)" tabindex="999"
+              (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
+              (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)" (keyup.enter)="selectedRow(selectedRowIndex, '')"
+              id="ele-{{row.position}}"></mat-row>
+  
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
+          </mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']"
+              [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+          </mat-footer-row>
+      </mat-table>
+        </div>
+    </mat-card>
+</mat-drawer> -->
