@@ -35,12 +35,15 @@ export class GoodReceiptnoteService {
   getGRNfirstForm() {
     return this._formBuilder.group({
       SupplierId:[''],
+      Contact:'',
+      Mobile:'',
       InvoiceNo:[''],
       DateOfInvoice:[(new Date())],
       GateEntryNo:[''],
       GRNType:['true'],
       Status3:['',Validators.required],
-      PaymentType:['true']
+      PaymentType:['true'],
+      PaymentDate:[(new Date())]
  });
   }
 
@@ -122,9 +125,9 @@ export class GoodReceiptnoteService {
     });
   }
 
-  // public getGRNItemList(Param) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
-  // }
+  public getLastThreeItemInfo(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
+  }
   public getGSTtypeList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
   }
@@ -150,7 +153,7 @@ export class GoodReceiptnoteService {
   }
   
   public getSupplierSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",{});
   }
 
     public getItemNameList(Param){

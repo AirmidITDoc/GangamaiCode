@@ -23,33 +23,33 @@ import { MatDatepicker } from '@angular/material/datepicker';
 
 const moment = _rollupMoment || _moment;
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM//YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+// export const MY_FORMATS = {
+//   parse: {
+//     dateInput: 'MM/YYYY',
+//   },
+//   display: {
+//     dateInput: 'MM//YYYY',
+//     monthYearLabel: 'MMM YYYY',
+//     dateA11yLabel: 'LL',
+//     monthYearA11yLabel: 'MMMM YYYY',
+//   },
+// };
 @Component({
   selector: 'app-update-grn',
   templateUrl: './update-grn.component.html',
   styleUrls: ['./update-grn.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-  providers: [
+  // providers: [
 
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
+  //   {
+  //     provide: DateAdapter,
+  //     useClass: MomentDateAdapter,
+  //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+  //   },
 
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ],
+  //   { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  // ],
 })
 export class UpdateGRNComponent implements OnInit {
   
@@ -76,10 +76,10 @@ minDate=Date;
   GSTPer: any;
   Specification: any;
   VatAmount: any;
-  FinalNetAmount: any;
-  FinalDisAmount: any;
-  FinalVatAmount:any;
-  NetPayamount: any;
+  vFinalNetAmount: any;
+  vFinalDisAmount: any;
+  vFinalVatAmount:any;
+  vNetPayamount: any;
   CGSTFinalAmount: any;
   SGSTFinalAmount: any;
   IGSTFinalAmount: any;
@@ -93,6 +93,7 @@ minDate=Date;
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
+  dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
 
 
   displayedColumns2 = [
@@ -121,6 +122,16 @@ minDate=Date;
     'NetAmount',
     'buttons',
   ];
+
+  displayedColumns3 =[
+    'ItemId',
+    'SupplierName',
+    'ReceiveQty',
+    'FreeQty',
+    'MRP',
+    'Rate',
+    'VatPercentage'
+  ]
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -167,6 +178,9 @@ minDate=Date;
   CGSTAmt: any;
   SGSTAmt: any;
   ConversionFactor: any;
+  vMobile:any;
+  vContact:any;
+  vDiffNetRoundAmt:any;
 
 
   constructor(
@@ -202,8 +216,7 @@ minDate=Date;
     this.getSupplierSearchCombo();
     this.gePharStoreList();
     this.getGSTtypeList();
-
-
+    this.getLastThreeItemInfo();
   }
   date = new FormControl(moment());
 
@@ -307,7 +320,7 @@ minDate=Date;
     this.add=false; 
     this.date.setValue(new Date());
     this.NetAmount=0;
-     this.itemname.nativeElement.focus();
+    // this.itemname.nativeElement.focus();
   }
 
   
@@ -460,25 +473,39 @@ minDate=Date;
   }
 
   getTotalAmt(element) {
-    let TotalAmt;
-    TotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
-    this.vTotalFinalAmount = TotalAmt;
+    // let TotalAmt;
+    // TotalAmt = element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+    // this.vTotalFinalAmount = (TotalAmt).toFixed(2);
 
-    let FinalDisAmount
-    this.FinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+    // let FinalDisAmount
+    // FinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0));
+    // this.vFinalDisAmount = FinalDisAmount.toFixed(2);
 
-    let FinalVatAmount
-    this.FinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+    // let FinalVatAmount
+    // FinalVatAmount= (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0));
+    // this.vFinalVatAmount = FinalVatAmount.toFixed(2);
+
     
+    // let FinalNetAmount;
+    // FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+     
+    // FinalNetAmount = Math.round(FinalNetAmount).toFixed(2);
+    // this.vFinalNetAmount = roundamt;
 
-    
-    let FinalNetAmount;
-    FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    this.FinalNetAmount = (FinalNetAmount).toFixed(2);
-    this.NetPayamount = this.FinalNetAmount;
-    this.RoundAmt=Math.round(this.FinalNetAmount);
+    // let Finalroundamt;
+    // Finalroundamt = ((FinalNetAmount) - (roundamt)) ;
+    // this.vFinalRoundAmt = Finalroundamt;
+   
 
-    return TotalAmt;
+      
+    this.vFinalNetAmount= (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+    this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+    this.vDiffNetRoundAmt  = Math.round(this.vFinalNetAmount).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+   
+    //this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2);
+    return this.vFinalNetAmount;
   }
 
   calculateGSTType(event) {
@@ -546,7 +573,7 @@ minDate=Date;
     
     this._GRNList.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-     //console.log(data);
+     console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -560,6 +587,11 @@ minDate=Date;
       }
     });
   }
+ 
+  getSelectedSupplierObj(obj) {
+    this.vMobile = obj.Mobile;
+    this.vContact = obj.ContactPerson;
+}
 
   // getSelectedObj(obj) {
   //   //debugger
@@ -601,13 +633,10 @@ minDate=Date;
       this.MRP = obj.UnitMRP ||0;
       this.Specification = obj.Specification;
     // }
-    this.batchno.nativeElement.focus();
+    //this.itemname.nativeElement.focus();
+    this.getLastThreeItemInfo();
+  
   }
-
- 
-
-
-
 
   private _filterStore(value: any): string[] {
     if (value) {
@@ -641,7 +670,7 @@ minDate=Date;
     //if (this._GRNList.userFormGroup.get('ItemName').value.length >= 1) {
       this._GRNList.getItemNameList(m_data).subscribe(data => {
         this.filteredOptions = data;
-       // console.log( this.filteredOptions )
+      console.log( this.filteredOptions )
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -680,23 +709,23 @@ minDate=Date;
     });
   }
 
-  getItemNameList() {
-    var Param = {
+  // getItemNameList() {
+  //   var Param = {
 
-      "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
-      "StoreId": this._GRNList.GRNStoreForm.get("StoreId").value.storeid || 0
-    }
-    //console.log(Param);
-    this._GRNList.getItemNameList(Param).subscribe(data => {
-      this.filteredOptions = data;
-      //console.log(this.filteredOptions)
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
+  //     "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
+  //     "StoreId": this._GRNList.GRNStoreForm.get("StoreId").value.storeid || 0
+  //   }
+  //   //console.log(Param);
+  //   this._GRNList.getItemNameList(Param).subscribe(data => {
+  //     this.filteredOptions = data;
+  //     //console.log(this.filteredOptions)
+  //     if (this.filteredOptions.length == 0) {
+  //       this.noOptionFound = true;
+  //     } else {
+  //       this.noOptionFound = false;
+  //     }
+  //   });
+  // }
   onClear() {
   }
   focusNextService() {
@@ -763,9 +792,9 @@ minDate=Date;
         grnSaveObj['cash_CreditType'] =  this._GRNList.GRNFirstForm.get('PaymentType').value;
         grnSaveObj['grnType'] = this._GRNList.GRNFirstForm.get('GRNType').value;
         grnSaveObj['totalAmount'] = this.vTotalFinalAmount || 0;
-        grnSaveObj['totalDiscAmount'] = this.FinalDisAmount || 0;
-        grnSaveObj['totalVATAmount'] = this.FinalVatAmount ||0;
-        grnSaveObj['netAmount'] = this.FinalNetAmount || 0;
+        grnSaveObj['totalDiscAmount'] = this.vFinalDisAmount || 0;
+        grnSaveObj['totalVATAmount'] = this.vFinalVatAmount ||0;
+        grnSaveObj['netAmount'] = this.vFinalNetAmount || 0;
         grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
         grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
         grnSaveObj['isVerified'] = false;
@@ -781,7 +810,7 @@ minDate=Date;
         grnSaveObj['totIGSTAmt'] =  this.IGSTAmt || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
         grnSaveObj['tranProcessId'] = this._GRNList.GRNFirstForm.get('Status3').value.tranProcessId || 0;
         grnSaveObj['tranProcessMode'] = this._GRNList.GRNFirstForm.get('Status3').value.name ||  '';
-        grnSaveObj['BillDiscAmt'] = this.FinalDisAmount || 0;
+        grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
         grnSaveObj['grnid'] = 0;
     
         let SavegrnDetailObj = [];
@@ -888,9 +917,9 @@ minDate=Date;
     updateGRNHeaderObj['cash_CreditType'] =  this._GRNList.GRNFirstForm.get('PaymentType').value;
     updateGRNHeaderObj['grnType'] = this._GRNList.GRNFirstForm.get('GRNType').value;
     updateGRNHeaderObj['totalAmount'] = this.vTotalFinalAmount;
-    updateGRNHeaderObj['totalDiscAmount'] = this.FinalDisAmount;
-    updateGRNHeaderObj['totalVATAmount'] = this.FinalVatAmount;
-    updateGRNHeaderObj['netAmount'] = this.FinalNetAmount;
+    updateGRNHeaderObj['totalDiscAmount'] = this.vFinalDisAmount;
+    updateGRNHeaderObj['totalVATAmount'] = this.vFinalVatAmount;
+    updateGRNHeaderObj['netAmount'] = this.vFinalNetAmount;
     updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
     updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
     //updateGRNHeaderObj['isVerified'] = false;
@@ -906,7 +935,7 @@ minDate=Date;
     updateGRNHeaderObj['totIGSTAmt'] = this.IGSTAmt || 0;
     updateGRNHeaderObj['tranProcessId'] =this._GRNList.GRNFirstForm.get('Status3').value.tranProcessId || 0;
     updateGRNHeaderObj['tranProcessMode'] =  this._GRNList.GRNFirstForm.get('Status3').value.name ||  '';
-    updateGRNHeaderObj['billDiscAmt'] = this.FinalDisAmount || 0;
+    updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
 
     let SavegrnDetailObj = [];
@@ -1198,6 +1227,17 @@ minDate=Date;
     }
   }
 
+
+  getLastThreeItemInfo(){
+    var vdata={
+      'ItemId': this._GRNList.userFormGroup.get('ItemName').value.ItemID || 0,
+    }
+    this._GRNList.getLastThreeItemInfo(vdata).subscribe(data =>{
+     this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
+     console.log(this.dsLastThreeItemList.data)
+  });
+  }
+
   onEdit(contact) {
 
     // console.log(contact)
@@ -1255,4 +1295,32 @@ minDate=Date;
   onScroll() {
   }
 }
+export class LastThreeItemList {
+  ItemID:any;
+  ItemName: string;
+  BatchNo: number;
+  BatchExpDate: number;
+  ReceiveQty: number;
+  FreeQty: number;
+  MRP: number;
+  Rate: number;
+  TotalAmount: number;
+  ConversionFactor: number;
+  VatPercentage: number;
+ 
+  constructor(LastThreeItemList) {
+    {
+
+      this.ItemID = LastThreeItemList.ItemID || 0;
+      this.ItemName = LastThreeItemList.ItemName || "";
+      this.BatchNo = LastThreeItemList.BatchNo || 0;
+      this.BatchExpDate = LastThreeItemList.BatchExpDate || 0;
+      this.ReceiveQty = LastThreeItemList.ReceiveQty || 0;
+      this.FreeQty = LastThreeItemList.FreeQty || 0;
+      this.MRP = LastThreeItemList.MRP || 0;
+
+    }
+  }
+}
+ 
 
