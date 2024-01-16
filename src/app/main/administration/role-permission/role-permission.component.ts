@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation, Injectable } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,7 +7,90 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from "@fuse/animations";
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { BehaviorSubject, of as observableOf } from 'rxjs';
 
+export class FileNode {
+  children?: FileNode[];
+  title: string;
+  url?: any;
+}
+
+const TREE_DATA: FileNode[] = [{
+  "filename": "Applications",
+  "children": [{
+    "filename": "Calendar",
+    "type": "app"
+  }, {
+    "filename": "Chrome",
+    "type": "app"
+  }, {
+    "filename": "Webstorm",
+    "type": "app"
+  }]
+}, {
+  "filename": "Documents",
+  "children": [{
+    "filename": "angular",
+    "children": [{
+      "filename": "src",
+      "children": [{
+        "filename": "compiler",
+        "type": "ts"
+      }, {
+        "filename": "core",
+        "type": "ts"
+      }]
+    }]
+  },
+  {
+    "filename": "material2",
+    "children": [{
+      "filename": "src",
+      "children": [{
+        "filename": "button",
+        "type": "ts"
+      }, {
+        "filename": "checkbox",
+        "type": "ts"
+      }, {
+        "filename": "input",
+        "type": "ts"
+      }]
+    }]
+  }
+  ]
+}, {
+  "filename": "Downloads",
+  "children": [{
+    "filename": "October",
+    "type": "pdf"
+  }, {
+    "filename": "November",
+    "type": "pdf"
+  }, {
+    "filename": "Tutorial",
+    "type": "html"
+  }]
+}, {
+  "filename": "Pictures",
+  "children": [{
+    "filename": "Photo Booth Library",
+    "children": [{
+      "filename": "Contents",
+      "type": "dir"
+    }, {
+      "filename": "Pictures",
+      "type": "dir"
+    }]
+  }, {
+    "filename": "Sun",
+    "type": "png"
+  }, {
+    "filename": "Woods",
+    "type": "jpg"
+  }]
+}];
 @Component({
   selector: 'app-role-permission',
   templateUrl: './role-permission.component.html',
@@ -16,6 +99,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   animations: fuseAnimations
 })
 export class RolePermissionComponent implements OnInit {
+  nestedTreeControl: NestedTreeControl<FileNode>;
+  nestedDataSource: FileNode[];
   displayedColumns: string[] = [
     "Id",
     "LinkName", "IsView",
@@ -33,11 +118,25 @@ export class RolePermissionComponent implements OnInit {
     public toastr: ToastrService, public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<RolePermissionComponent>,
-  ) { }
+  ) {
+    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
+    //this.nestedDataSource = TREE_DATA;
+    this._RoleService.getmenus(1).subscribe((Menu) => {
+      this.nestedDataSource=Menu as FileNode[];
+    });
+  }
+
+  hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
+
+  private _getChildren = (node: FileNode) => observableOf(node.children);
 
   ngOnInit(): void {
     if (this.data) {
       this.getPermissionList(this.data.RoleId);
+      setTimeout(() => {
+        
+      this.nestedTreeControl.expandAll();
+      }, 2000);
     }
   }
   getPermissionList(RoleId: number) {

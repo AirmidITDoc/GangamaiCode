@@ -49,6 +49,9 @@ export class RoleTemplateService {
     public savePermission(Param) {
         return this._httpClient.post("Role/save-permission", Param);
     }
+    public getmenus(Param) {
+        return this._httpClient.get("Login/get-menus?RoleId="+Param);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }
