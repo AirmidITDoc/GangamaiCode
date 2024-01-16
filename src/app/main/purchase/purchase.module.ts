@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { DeliverychallanComponent } from './deliverychallan/deliverychallan.component';
  
 
 
@@ -90,7 +91,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [ ],
+  declarations: [ DeliverychallanComponent],
   imports: [
     RouterModule.forChild(appRoutes),
   ]
