@@ -15,8 +15,8 @@
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row">
-                <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                    style="border-color: red;"></app-common-date> -->
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                    style="border-color: red;"></app-common-date>
                 <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
                     (click)="onClose()">
                     close
@@ -116,7 +116,7 @@
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>InvoiceDate</mat-label>
                                             <input name="DateOfInvoice" matInput [matDatepicker]="picker"
-                                                formControlName="DateOfInvoice" #DateOfInvoice>
+                                                formControlName="DateOfInvoice" [(ngModel)]="registerObj.DateOfInvoice">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>&nbsp;
@@ -125,7 +125,7 @@
                                             <mat-label>Invoice No</mat-label>
                                             <input matInput placeholder="Placeholder"
                                                 [(ngModel)]="registerObj.InvoiceNo" formControlName="InvoiceNo"
-                                                #GateEntryNo1 (keydown)="onEnterInvoiceNo($event)">
+                                                #InvoiceNo (keydown)="onEnterInvoiceNo($event)">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="7%">
@@ -137,7 +137,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>-Select GST Type-</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3" required
+                                            <mat-select formControlName="GSTType" name="GSTType" required
                                                 (selectionChange)="calculateGSTType($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of GSTTypeList" [value]="m">
@@ -148,10 +148,12 @@
                                         </mat-form-field>&nbsp;
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>PaymentDueDate</mat-label>
-                                            <input matInput [matDatepicker]="picker1" formControlName="PaymentDate">
+                                            <input name="PaymentDate" matInput [matDatepicker]="picker1"
+                                                formControlName="PaymentDate" [(ngModel)]="registerObj.PaymentDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>&nbsp;
+
 
                                     </form>
 
@@ -215,7 +217,7 @@
                                                 (keydown)="onEnterBatchNo($event)" required>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="7%">
                                             <mat-label>Month/Year</mat-label>
                                             <input matInput [matDatepicker]="dp" [formControl]="date" min="minDate"
                                                 (keydown)="onEnterExpDate($event)" #expdate required>
@@ -225,15 +227,17 @@
                                                 (monthSelected)="setMonthAndYear($event, dp)"
                                                 panelClass="example-month-picker">
                                             </mat-datepicker>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Exp date</mat-label>
-                                                <input name="ExpDate" matInput min="minDate"  [matDatepicker]="picker1" formControllName="ExpDate"
-                                                (keydown)="onEnterExpDate($event)" #expdate required>
-                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                             </mat-form-field>  -->
+
+                                        <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>Exp date</mat-label>
+                                            <input name="ExpDate" matInput min="minDate" [matDatepicker]="picker7"
+                                                [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate
+                                                required>
+                                            <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker7></mat-datepicker>
+                                        </mat-form-field>
 
 
 
@@ -241,7 +245,7 @@
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="Qty" name="Qty" required
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                (keyup)="calculateTotalAmount()" formControlName="Qty" type="number"
+                                                (keyup)="calculateTotalamt()" formControlName="Qty" type="number"
                                                 id="Qty" (keydown)="onEnterQty($event)" #qty>
                                         </mat-form-field>
 
@@ -264,7 +268,7 @@
                                         <mat-form-field appearance="outline" fxFlex="7%">
                                             <mat-label>Rate </mat-label>
                                             <input matInput [(ngModel)]="Rate" name="Rate" type="number"
-                                                (keyup)="calculateTotalAmount()" formControlName="Rate" id="Rate"
+                                                (keyup)="calculateTotalamt()" formControlName="Rate" id="Rate"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                                 (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"
                                                 #rate required>
@@ -327,7 +331,7 @@
                                             <mat-label>IGST</mat-label>
                                             <input matInput [(ngModel)]="IGST" name="IGST" type="number"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                (keyup)="calculateGSTAmount()" required formControlName="IGST" id="IGST"
+                                                (keyup)="calculateGSTAmount()" formControlName="IGST" id="IGST"
                                                 (keydown)="onEnterIGST($event)" #igst>
                                         </mat-form-field>&nbsp;
 
@@ -358,14 +362,15 @@
                                                 type="number" formControlName="NetAmount" id="NetAmount" readonly>
                                         </mat-form-field>&nbsp;
 
-                                        <div matTooltip="Select All Value to enable this button!!">
+                                        <div matTooltip="Select All Value to enable this button!!"
+                                            [matTooltipDisabled]="!_GRNList.userFormGroup.invalid"
+                                            [matTooltipPosition]="'above'">
                                             <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                (click)="onAdd($event)" [disabled]="_GRNList.userFormGroup.invalid"
+                                                (click)="onAdd($event)" [disabled]="!add"
                                                 style="background-color: blue; color: white; width: 70px;margin-left: 20px; ">
                                                 <mat-icon> add </mat-icon> &nbsp;Add
                                             </button>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
@@ -645,7 +650,7 @@
                                 <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
                                     Amount:
                                 </span>&nbsp;
-                                <span class="net-amt-value"
+                                <span class="net-amt-value" 
                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalAmt(dsItemNameList.data)
                                     |
                                     currency:'INR' }}</span>
@@ -702,8 +707,9 @@
                                 <mat-form-field appearance="outline" fxFlex="6%">
                                     <mat-label>GST Amt</mat-label>
                                     <input matInput placeholder="Placeholder" formControlName="VatAmount"
-                                        [(ngModel)]="vFinalVatAmount" #VatAmount [(ngModel)]="registerObj.totalVATAmount"
-                                        readonly (keydown)="onEnterVatAmount($event)" type="number">
+                                        [(ngModel)]="vFinalVatAmount" #VatAmount
+                                        [(ngModel)]="registerObj.totalVATAmount" readonly
+                                        (keydown)="onEnterVatAmount($event)" type="number">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="6%">
@@ -818,7 +824,7 @@
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact"
                                             [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                       
+
                                         <mat-footer-row *matFooterRowDef="['noData']"
                                             [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
                                         </mat-footer-row>

@@ -165,18 +165,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   renderer: any;
   GST: any = 0;
   GSTAmount: any = 0;
-
-
-
-
-
-  Status3List = [
-    { id: 1, name: "GST Before Disc" },
-    { id: 2, name: "GST After Disc" },
-    { id: 3, name: "GST On Pur +FreeQty" },
-    { id: 4, name: "GST OnMRP" },
-    { id: 5, name: "GST After 2Disc" }
-  ];
   GSTAmt: any;
   DiscAmt: any;
   tab: number = 3;
@@ -210,32 +198,6 @@ export class GoodReceiptnoteComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-
-  // getSelectedObj(obj) {
-
-  //   this.ItemName = obj.ItemName;
-  //   this.UOM = obj.UOM;
-  //   this.HSNCode = obj.HSNCode;
-  //   this.BatchNo = obj.BatchNo; 
-  //   this.ExpDate = obj.ExpDate;
-  //   this.Qty = obj.Qty;
-  //   this.FreeQty = obj.FreeQty;
-  //   this.MRP = obj.MRP;
-  //   this.Rate = obj.Rate;
-  //   this.TotalAmount = obj.TotalAmount;
-  //   this.Disc = obj.Disc;
-  //   this.DisAmount = obj.DisAmount;
-  //   this.GST = obj.GST;
-  //   this.GSTAmount = obj.GSTAmount;
-  //   this.CGST = obj.CGST;
-  //   this.CGSTAmount = obj.CGSTAmount;
-  //   this.SGST = obj.SGST;
-  //   this.SGSTAmount = obj.SGSTAmount;
-  //   this.IGST = obj.IGST;
-  //   this.IGSTAmount = obj.IGSTAmount;
-  //   this.NetAmount = obj.NetAmount;
-
-  // }
 
   onAdd() {
     debugger
@@ -310,10 +272,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
   getGRNList() {
 
-   
-    // this.sIsLoading = 'loading-data';
-   // console.log(this._GRNService.GRNSearchGroup.get('ToStoreId').value)
-    //debugger
     var Param = {
 
       "ToStoreId": this.accountService.currentUserValue.user.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
@@ -347,8 +305,6 @@ export class GoodReceiptnoteComponent implements OnInit {
 
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
       this.NetAmount = this.TotalAmount;
-      // Swal.fire(this.NetAmount)
-      // this.calculatePersc();
     }
   }
 
@@ -1119,6 +1075,7 @@ debugger
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getGRNList();
     });
   }
 
@@ -1353,9 +1310,11 @@ export class ItemNameList {
   DiscAmount: number;
   PaymentType:any;
   GRNType:any;
-  DateOfInvoice:any;
+  DateOfInvoice:Date;
   EwalBillDate:Date;
+  PaymentDate:Date;
   CurrentDate=new Date();
+  
   /**
    * Constructor
    *
@@ -1406,7 +1365,10 @@ export class ItemNameList {
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
+      this.ConstantId = ItemNameList.ConstantId || 0;
       this.EwalBillDate=ItemNameList.EwalBillDate || this.CurrentDate;
+      this.PaymentDate=ItemNameList.PaymentDate || this.CurrentDate;
+      this.DateOfInvoice=ItemNameList.DateOfInvoice || this.CurrentDate;
     }
   }
 }
