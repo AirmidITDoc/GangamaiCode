@@ -26,6 +26,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RFC_2822 } from 'moment';
 import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-admission',
@@ -1480,6 +1481,31 @@ debugger
 
 
   }
+
+  
+
+
+  getAdmittedPatientListview() {
+    
+    this._AdmissionService.getAdmittedPatientListView(
+     
+      this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      0,0,
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission List  Viewer"
+          }
+        });
+    });
+  }
+
   // AdmissionNewComponent
   addNewAdmission() {
     const dialogRef = this._matDialog.open(RegAdmissionComponent,

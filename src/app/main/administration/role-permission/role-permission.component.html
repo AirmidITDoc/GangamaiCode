@@ -83,6 +83,23 @@
                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                         </mat-paginator>
                     </div>
+                    <cdk-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl">
+                        <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+                          <button mat-icon-button disabled></button>
+                          <mat-checkbox class="checklist-leaf-node" >{{node.title}}</mat-checkbox>
+                        </cdk-nested-tree-node>
+                        <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild" class="example-tree-node">
+                          <button mat-icon-button [attr.aria-label]="'toggle ' + node.title" cdkTreeNodeToggle>
+                            <mat-icon class="mat-icon-rtl-mirror">
+                              {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                          </button>
+                          <mat-checkbox class="checklist-leaf-node" >{{node.title}}</mat-checkbox>
+                          <div [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+                            <ng-container cdkTreeNodeOutlet></ng-container>
+                          </div>
+                        </cdk-nested-tree-node>
+                      </cdk-tree>
                 </div>
             </div>
             <div class="footer-navigation-container" fxLayout.gt-xs="row">

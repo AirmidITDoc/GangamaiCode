@@ -57,6 +57,9 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
    public InsertIPCreditBillingPayment(emp){
     return this._httpClient.post("InPatient/IPBillingCreditInsert", emp);
    }
-
+   public getIpFinalBillReceipt(BillNo){
+    return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
+  }
+  
  
 }

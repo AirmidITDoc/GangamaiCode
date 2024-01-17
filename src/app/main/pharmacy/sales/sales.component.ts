@@ -1830,28 +1830,9 @@ loadingarry:any=[];
 
 
   onSave() {
-
-    // Swal.fire({
-    //   title: 'Do You want to Delete Draft Entry !',
-    //   // showDenyButton: true,
-    //   showCancelButton: true,
-    //   confirmButtonText: 'OK',
-
-    // }).then((result) => {
-
-    //   if (result.isConfirmed) {
-    //     this.DeleteDraft();
-     
-
-
-    
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
-    // this.onCheckBalQty();
-
-    // if (this.QtyBalchk == 1) {
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
       && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
-      // this.snackBarService.showErrorSnackBar('Please select Patient Type', 'Done');
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -1866,23 +1847,11 @@ loadingarry:any=[];
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
-
-//  }
-
-    // });
-    // }
-
-
   }
 
 
   onCashOnlinePaySave() {
     
-    // let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-    
-    // let dateobj=this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')
-    
-    // if(CurrDate == dateobj){
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };

@@ -449,4 +449,12 @@ public getOPPatient(employee) {
 
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
 }
+
+
+
+public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
+  
+    return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+  }
+
 }

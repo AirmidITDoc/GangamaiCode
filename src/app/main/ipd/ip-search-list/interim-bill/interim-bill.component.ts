@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -243,7 +244,8 @@ export class InterimBillComponent implements OnInit {
               Swal.fire('Congratulations !', 'Interim data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                //   let m=response;
-                  this.getIPIntreimBillPrint(response);
+               this.viewgetInterimBillReportPdf(response);
+                  // this.getIPIntreimBillPrint(response);
                   this._matDialog.closeAll();
                 }
               });
@@ -256,6 +258,28 @@ export class InterimBillComponent implements OnInit {
     });
  
   }
+
+
+  
+  
+  viewgetInterimBillReportPdf(BillNo) {
+    
+    this._IpSearchListService.getIpInterimBillReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Ip Interim Bill  Viewer"
+          }
+        });
+    });
+  }
+
 
 
   getDateTime(dateTimeObj) {

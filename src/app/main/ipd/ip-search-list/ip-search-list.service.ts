@@ -921,6 +921,25 @@ public getprescriptionList(employee) {
    
 }
 
+
+
+public getViewAdvanceReceipt(AdvanceDetailID){
+  return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+}
+
+public getIpFinalBillReceipt(BillNo){
+  return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
+}
+
+public getIpDraftBillReceipt(BillNo){
+  return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?BillNo=" + BillNo);
+}
+
+public getIpInterimBillReceipt(BillNo){
+  return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo);
+}
+
+
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

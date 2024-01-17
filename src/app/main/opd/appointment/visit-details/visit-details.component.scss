@@ -1,0 +1,69 @@
+.sale-table{
+    height: 300px!important;
+}
+
+.highlight{
+    background: #e1f5fe;
+}
+
+.mat-table {
+    .mat-row {
+        cursor: pointer;
+        // &:hover {
+        //     background: white !important;
+        // }
+    }
+    .mat-header-cell {
+        color: white !important;
+    }
+}
+
+app-visit-details{
+    .mat-header-row {
+    width:700;
+    min-width: 700px;
+    min-height: 30px;
+    background-color: blue;
+  }
+
+  .mat-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 700px;
+    min-height: 30px;
+   
+  }
+
+ 
+  .mat-column-VisitId {
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
+    text-align: left;
+  }
+
+  .mat-column-VisitTime {
+    width: 160px;
+    max-width: 160px;
+    min-width: 160px;
+    text-align: left;
+  }
+  
+  .mat-column-DocName {
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    text-align: left;
+  }
+ 
+  
+  .mat-header-cell {
+    color: white !important;
+  }
+
+// .table-row:selected {
+
+//   background-color: rebeccapurple;
+// }
+
+}
