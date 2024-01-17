@@ -9,6 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { CdkTableModule } from '@angular/cdk/table';
 
 
 const appRoutes: Routes = [
@@ -63,7 +65,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,
-    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule
+    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule,CdkTreeModule,CdkTableModule
   ]
 })
 export class AdministrationModule { }

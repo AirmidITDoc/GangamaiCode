@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation, Injectable } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from "@fuse/animations";
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { BehaviorSubject, of as observableOf } from 'rxjs';
+
+export class FileNode {
+  children?: FileNode[];
+  title: string;
+  url?: any;
+}
 
 @Component({
   selector: 'app-role-permission',
@@ -16,6 +24,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   animations: fuseAnimations
 })
 export class RolePermissionComponent implements OnInit {
+  nestedTreeControl: NestedTreeControl<FileNode>;
+  nestedDataSource: FileNode[];
   displayedColumns: string[] = [
     "Id",
     "LinkName", "IsView",
@@ -33,11 +43,25 @@ export class RolePermissionComponent implements OnInit {
     public toastr: ToastrService, public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<RolePermissionComponent>,
-  ) { }
+  ) {
+    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
+    //this.nestedDataSource = TREE_DATA;
+    this._RoleService.getmenus(1).subscribe((Menu) => {
+      this.nestedDataSource=Menu as FileNode[];
+    });
+  }
+
+  hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
+
+  private _getChildren = (node: FileNode) => observableOf(node.children);
 
   ngOnInit(): void {
     if (this.data) {
       this.getPermissionList(this.data.RoleId);
+      setTimeout(() => {
+        
+      this.nestedTreeControl.expandAll();
+      }, 2000);
     }
   }
   getPermissionList(RoleId: number) {
