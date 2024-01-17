@@ -266,40 +266,40 @@ export class OpPaymentNewComponent implements OnInit {
       this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
 
-      this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
 
 
-      this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
 
 
-      this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else {
       this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
 
-      this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
 
-      this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
 
-      this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
 
-      this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
@@ -554,7 +554,7 @@ export class OpPaymentNewComponent implements OnInit {
         let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
         this.paymentArr5.splice(element3, 1);
 
-        this.setFirstRowValidators(value);
+        // this.setFirstRowValidators(value);
         break;
 
       case 2:
