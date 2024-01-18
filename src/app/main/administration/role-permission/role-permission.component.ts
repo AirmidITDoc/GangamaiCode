@@ -19,6 +19,7 @@ export class FileNode {
   isEdit?:boolean;
   isDelete?:boolean;
   menuId?:number;
+  id?:number;
 }
 
 @Component({
