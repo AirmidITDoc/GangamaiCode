@@ -30,6 +30,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
   // @Input() dataArray: any; 
+  SpinLoading:boolean=false;
+  AdList:boolean=false;
 
   displayedColumns = [
     'RegNo',
@@ -198,10 +200,14 @@ export class BrowseIPAdvanceComponent implements OnInit {
   
 viewgetIPAdvanceReportPdf(contact) {
 
+  setTimeout(() => {
+    this.SpinLoading =true;
+   this.AdList=true;
+   
   this._advanceService.getIPAdvanceReceipt(
  contact.AdvanceDetailID
   ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
+    const matDialog = this._matDialog.open(PdfviewerComponent,
       {
         maxWidth: "85vw",
         height: '750px',
@@ -211,9 +217,14 @@ viewgetIPAdvanceReportPdf(contact) {
           title: "Pharma Sales Summary Viewer"
         }
       });
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.SpinLoading = false;
+      });
   });
+ 
+  },100)
 }
-
 
   getViewAdvance(contact)
 {

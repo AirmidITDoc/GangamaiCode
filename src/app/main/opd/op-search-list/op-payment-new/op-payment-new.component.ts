@@ -114,6 +114,7 @@ export class OpPaymentNewComponent implements OnInit {
 
     if (this.data.FromName == "Advance") {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1= parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);

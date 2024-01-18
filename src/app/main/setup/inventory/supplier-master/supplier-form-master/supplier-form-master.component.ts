@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
 import { MatSelect } from "@angular/material/select";
+import { size } from "lodash";
 
 @Component({
     selector: "app-supplier-form-master",
@@ -93,10 +94,7 @@ export class SupplierFormMasterComponent implements OnInit {
       if(this.data){
         debugger
           this.registerObj=this.data.registerObj;
-          // this.RegId= this.registerObj.RegId;
-          //   this.isDisabled=true
-          //   this.Prefix=this.data.registerObj.PrefixID;
-          
+          this.getCityNameCombobox();
         this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
         this.registerObj.Phone=this.data.registerObj.Phone.trim();
         this.CityId=this.data.registerObj.CityId;
@@ -112,21 +110,26 @@ export class SupplierFormMasterComponent implements OnInit {
   setDropdownObjs1() {
     debugger
 
+    // for(var i=0; i < this.CitycmbList;i++){
+    //     if(this.CitycmbList[i].CityId==this.CityId)
+    //     console.log(i);
+    //     this._supplierService.myform.get('CityId').setValue(i);
+    // }
    
       const toSelect = this.CitycmbList.find(c => c.CityId == this.registerObj.CityId);
      this._supplierService.myform.get('CityId').setValue(this.CityId);
  
-    //  const toSelectSuup = this.SuppliertypecmbList.find(c => c.ConstantId == this.registerObj.Sup);
-    //  this._supplierService.myform.get('SupplierType').setValue(toSelectSuup);
+     const toSelectSuup = this.SuppliertypecmbList.find(c => c.ConstantId == this.registerObj.SupplierId);
+     this._supplierService.myform.get('SupplierType').setValue(toSelectSuup);
  
-    //  const toSelectState = this.StatecmbList.find(c => c.StateId == this.registerObj.StateId);
-    //  this._supplierService.myform.get('StateId').setValue(toSelectState);
+     const toSelectMode = this.PaymentmodecmbList.find(c => c.id == this.registerObj.ModeOfPayment);
+     this._supplierService.myform.get('ModeOfPayment').setValue(toSelectMode);
  
-    //  const toSelectCountry= this.CountrycmbList.find(c => c.CountryId == this.registerObj.CountryId);
-    //  this._supplierService.myform.get('CountryId').setValue(toSelectCountry);
+     const toSelectterm= this.PaymenttermcmbList.find(c => c.Id == this.registerObj.TermOfPayment);
+     this._supplierService.myform.get('TermOfPayment').setValue(toSelectterm);
  
-    //  const toSelectpaymode = this.PaymentmodecmbList.find(c => c.id == this.registerObj.ModeOfPayment);
-    //  this._supplierService.myform.get('ModeOfPayment').setValue(toSelectpaymode);
+     const toSelectBank = this.BankNameList1.find(c => c.BankId == this.registerObj.BankId);
+     this._supplierService.myform.get('BankName').setValue(toSelectBank);
  
    
    
@@ -195,15 +198,17 @@ export class SupplierFormMasterComponent implements OnInit {
       );
 
     });
+    this._supplierService.myform.updateValueAndValidity();
     debugger
 
-    if (this.data) {
-      console.log(this.CitycmbList)
-      const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
-      this._supplierService.myform.get('CityId').setValue(ddValue);
-      this.onChangeCityList(this.data.registerObj.CityId)
-    }
-
+    // if (this.data) {
+    //   console.log(this.CitycmbList)
+    //   const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
+    //   this._supplierService.myform.get('CityId').setValue(ddValue);
+    //   this.onChangeCityList(this.data.registerObj.CityId)
+    //   this._supplierService.myform.updateValueAndValidity();
+    // }
+    // this._supplierService.myform.updateValueAndValidity();
     console.log(this.CitycmbList)
   }
  
@@ -281,8 +286,7 @@ var m = {
 
   getOptionTextModeopayment(option) {
     return option && option.ModeOfPayment ? option.ModeOfPayment : '';
-    // return option && option.ModeOfPayment ? option.ModeOfPayment : '';
-
+    
   }
 
 
@@ -353,7 +357,8 @@ var m = {
 
   
     onSubmit() {
-        if (this._supplierService.myform.valid) {
+      debugger
+        // if (this._supplierService.myform.valid) {
             if (!this._supplierService.myform.get("SupplierId").value) {
                 var data2 = [];
                 for (var val of this._supplierService.myform.get("StoreId")
@@ -365,7 +370,7 @@ var m = {
                     data2.push(data);
                 }
                 console.log(data2);
-debugger
+
                 var m_data = {
                     insertSupplierMaster: {
                         supplierName: this._supplierService.myform.get("SupplierName").value,
@@ -497,7 +502,7 @@ debugger
                      });
             }
             this.onClose();
-        }
+        // }
     }
 
 
@@ -723,6 +728,7 @@ public onEnterIfsc(event): void {
 if (event.which === 13) {
   
   if (this.Store) this.Store.focus();
+  this.save=true;
 }
 }
 save:boolean=false;
@@ -730,7 +736,7 @@ public onEnterStore(event): void {
   debugger
   if (event.which === 13) {
     //  this.MSM.nativeElement.focus();
-     this.save=true;
+     
   }
   }
  
@@ -746,36 +752,7 @@ public onEnterStore(event): void {
   // }
   
 
-    // onEdit(row) {
-    //     var m_data = {
-    //         SupplierId: row.SupplierId,
-    //         SupplierName: row.SupplierName,
-    //         ContactPerson: row.ContactPerson,
-    //         Address: row.Address.trim(),
-    //         CityId: row.CityId,
-    //         StateId: row.StateId,
-    //         CountryId: row.CountryId,
-    //         CreditPeriod: row.CreditPeriod.trim(),
-    //         Mobile: row.Mobile.trim(),
-    //         Phone: row.Phone.trim(),
-    //         Fax: row.Fax.trim(),
-    //         Email: row.Email.trim(),
-    //         ModeOfPayment: row.ModeOfPayment,
-    //         TermOfPayment: row.TermOfPayment,
-    //         TaxNature: row.TaxNature,
-    //         CurrencyId: row.CurrencyId,
-    //         Octroi: row.Octroi,
-    //         Freight: row.Freight,
-    //         IsDeleted: JSON.stringify(row.IsDeleted),
-    //         GSTNo: row.GSTNo.trim(),
-    //         PanNo: row.PanNo.trim(),
-    //         UpdatedBy: row.UpdatedBy,
-    //     };
-
-    //     console.log(row);
-    //     this._supplierService.populateForm(m_data);
-    // }
-
+   
     onClear() {
         this._supplierService.myform.reset();
     }

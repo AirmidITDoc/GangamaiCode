@@ -61,7 +61,8 @@ export class BrowsSalesBillComponent implements OnInit {
   UTRNO: any;
   rowid: any = [];
   TotalAmt: any = 0;
-
+  SpinLoading:boolean=false;
+  AdList:boolean=false;
   displayedColumns: string[] = [
     'action',
     //  'action1',
@@ -432,7 +433,9 @@ export class BrowsSalesBillComponent implements OnInit {
     );
   }
   viewSalesPdf(el) {
-
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
     this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -444,13 +447,20 @@ export class BrowsSalesBillComponent implements OnInit {
             title: "Pharma sales bill viewer"
           }
         });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
     });
-
-
+   
+    },100);
   }
 
   ViewSalesRetPdf(el) {
     debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
     this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId, el.OP_IP_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -462,7 +472,13 @@ export class BrowsSalesBillComponent implements OnInit {
             title: "Pharma sales bill viewer"
           }
         });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
     });
+   
+    },100);
   }
 
   getPrint3(el) {

@@ -246,6 +246,8 @@ export class NewRequestforlabComponent implements OnInit {
       ipPathOrRadiRequestInsertArray['isCancelledBy']  = 0;
       ipPathOrRadiRequestInsertArray['isCancelledDate']  = this.dateTimeObj.date;
       ipPathOrRadiRequestInsertArray['isCancelledTime']  = this.dateTimeObj.time;
+      ipPathOrRadiRequestInsertArray['IsOnFileTest']  = 1;
+      ipPathOrRadiRequestInsertArray['RequestId ']  = 0
      
 
       submissionObj['ipPathOrRadiRequestInsert'] = ipPathOrRadiRequestInsertArray;
@@ -256,6 +258,7 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
         ipPathOrRadiRequestLabRequestInsert['price']=element.Price;
         ipPathOrRadiRequestLabRequestInsert['isStatus']= false;
+        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest']  = 1;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
     });
     submissionObj['ipPathOrRadiRequestLabRequestInsert'] = ipPathOrRadiRequestLabRequestInsertArray;

@@ -86,7 +86,7 @@ minDate=Date;
   vTotalFinalAmount: any;
   GSTTypeList:any=[];
   RoundAmt:any=0;
-
+  newDateTimeObj: any = {};
   dsGRNList = new MatTableDataSource<GRNList>();
 
   dsGrnItemList = new MatTableDataSource<GrnItemList>();
@@ -779,10 +779,12 @@ minDate=Date;
   }
 
   OnSavenew() {
-    //console.log(this.supplierID)
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     debugger
         let grnSaveObj = {};
-        grnSaveObj['grnDate'] = this.dateTimeObj.date;
+        grnSaveObj['grnDate'] = this.newDateTimeObj.date; 
         grnSaveObj['grnTime'] = this.dateTimeObj.time;
         grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
         grnSaveObj['supplierID'] = this._GRNList.GRNFirstForm.get('SupplierId').value.SupplierId || this.SupplierId;
@@ -800,7 +802,7 @@ minDate=Date;
         grnSaveObj['isVerified'] = false;
         grnSaveObj['isClosed'] = false;
         grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-        grnSaveObj['invDate'] = this.dateTimeObj.date;
+        grnSaveObj['invDate'] = this.newDateTimeObj.date; 
         grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
         grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
         grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
@@ -810,6 +812,8 @@ minDate=Date;
         grnSaveObj['totIGSTAmt'] =  this.IGSTAmt || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
         grnSaveObj['tranProcessId'] = this._GRNList.GRNFirstForm.get('Status3').value.tranProcessId || 0;
         grnSaveObj['tranProcessMode'] = this._GRNList.GRNFirstForm.get('Status3').value.name ||  '';
+        grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
+        grnSaveObj['EwayBillDate'] = 0;
         grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
         grnSaveObj['grnid'] = 0;
     
@@ -905,9 +909,13 @@ minDate=Date;
     
 
   OnSaveEdit() {
+
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     
     let updateGRNHeaderObj = {};
-    updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
+    updateGRNHeaderObj['grnDate'] = this.newDateTimeObj.date; 
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
     updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     updateGRNHeaderObj['supplierID'] = this._GRNList.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
@@ -925,7 +933,7 @@ minDate=Date;
     //updateGRNHeaderObj['isVerified'] = false;
     updateGRNHeaderObj['isClosed'] = false;
     updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
+    updateGRNHeaderObj['invDate'] = this.newDateTimeObj.date; 
     updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;

@@ -53,6 +53,9 @@ export class BrowseOPBillComponent implements OnInit {
   value = 123;
   BrowseOPDBillsList: any;
   msg: any;
+  SpinLoading:boolean=false;
+  AdList:boolean=false;
+
 
   isLoading = true;
 
@@ -301,11 +304,13 @@ onShow(event: MouseEvent) {
 
 
 viewgetOPBillReportPdf(contact) {
-
+  setTimeout(() => {
+    this.SpinLoading =true;
+   this.AdList=true;
   this._BrowseOPDBillsService.getOpBillReceipt(
  contact.BillNo
   ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
+    const matDialog = this._matDialog.open(PdfviewerComponent,
       {
         maxWidth: "85vw",
         height: '750px',
@@ -315,8 +320,16 @@ viewgetOPBillReportPdf(contact) {
           title: "Pharma Sales Summary Viewer"
         }
       });
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.SpinLoading = false;
+      });
   });
+ 
+  },100);
 }
+
+
 onClear() {
   this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
   this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');

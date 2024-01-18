@@ -2,6 +2,22 @@
 
 app-browse-ipadvance{
 
+    .loading-spinner {
+        font-size: 50px;
+        color: #0e4758;
+    }
+
+    .loading-overlay {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      
+      .container {
+        width: 100%;
+      }  
+      
 .active-icon {
     border-radius: 50%;
 }

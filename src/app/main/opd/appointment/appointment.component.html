@@ -26,9 +26,7 @@
     </div>
 
   </mat-toolbar>
-  <!-- <mat-drawer-container class="example-container">
-    <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;"> -->
-
+ 
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -326,6 +324,8 @@
       <ng-template mat-tab-label>
         New Appointment
       </ng-template>
+ <!-- <mat-drawer-container class="example-container"> -->
+    <!-- <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;"> -->
 
       <!-- <mat-card-content style="width: 100%" fusePerfectScrollbar> -->
       <div fxLayout="column">
@@ -336,6 +336,10 @@
             class="newappointment-body">
 
             <form [formGroup]="searchFormGroup">
+              <!-- <span class="material-icons" (click)="drawer1.toggle()"
+              style="cursor: pointer;color: #6b6565;">
+              notifications_none -->
+          <!-- </span> -->
               <div fxLayout="row" fxLayoutAlign="space-between" class="appointment-header">
 
                 <div class="redio-container">
@@ -348,31 +352,10 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="18px" fxLayoutAlign="center center">
-                  <!-- <mat-form-field appearance="outline" disabled="isRegSearchDisabled">
-                    <mat-label>RegNo / First Name / Last Name / Mobile No </mat-label>
-                    <input type="text" name="RegId" formControlName="RegId" matInput [matAutocomplete]="auto"
-                      (input)="getSearchList()">
-                    <span matSuffix style="display: flex;">
-                      <mat-icon class="mat-icon-close"
-                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                      <mat-icon class="mat-icon-close"
-                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                    </span>
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                      (optionSelected)='getSelectedObj($event.option.value)'>
-                      <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                        {{option.MobileNo}}
-                      </mat-option>
-                    </mat-autocomplete>
-                    <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
-                      Required field cannot be left blank
-                    </mat-error>
-                  </mat-form-field> -->
-
+                
 
                   <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;" *ngIf="Regflag">
-                    <input type="text" name="RegId" formControlName="RegId" placeholder="Item Name (enter 2 char) "
+                    <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) "
                       matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
                     <span matSuffix style="display: flex;">
                       <mat-icon class="mat-icon-close"
@@ -392,8 +375,9 @@
                     </mat-error> -->
                   </mat-form-field>
 
-
-                  <mat-form-field appearance="outline" disabled="isRegSearchDisabled">
+                  
+                  <!-- -->
+                  <mat-form-field appearance="outline" *ngIf="isRegSearchDisabled" >
                     <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
                     <input type="text" name="RegId" formControlName="RegId" matInput [matAutocomplete]="auto"
                       (input)="getPhoneAppointmentList()">
@@ -404,7 +388,7 @@
                         (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                     </span>
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                      (optionSelected)='getSelectedObj($event.option.value)'>
+                      (optionSelected)='getSelectedObjPhone($event.option.value)'>
                       <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                         {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
                         {{option.MobileNo}}
@@ -422,18 +406,87 @@
               </div>
             </form>
 
-            <div class="personal-panel">
+
+<!-- //visit Details -->
+            <!-- <div class="personal-panel" *ngIf="VisitFlagDisp">
+              <mat-accordion multi>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Visit Information
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
+                        style="overflow:auto;margin-top: 10px;height: 100px !important;" class="mat-elevation-z8 sale-table">
+                
+                        <ng-container matColumnDef="VisitId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                VisitId </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.VisitId}} </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="VisitTime" style="background-color: rgb(157, 164, 164);">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                VisitDate
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.VisitTime | date:'shortDate'}}
+                            </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="DocName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                DoctorName </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.DocName }} </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+                
+                        <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+                            (click)="getVisitRecord(row)"></mat-row>
+                
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                        </mat-footer-row>
+                    </mat-table>
+                </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div> -->
+            
+            
+            
+                <div class="personal-panel">
               <mat-accordion multi>
                 <mat-expansion-panel expanded>
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Personal Information
+                      <span style="font-size: medium;color: rgb(2, 54, 63);float: right;"> {{RegOrPhoneflag}}</span>
+                  
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <form [formGroup]="personalFormGroup">
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
-
-                      <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                   
+                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-label>Prefix</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
                           (keydown)="onEnterprefix($event)" formControlName="PrefixID" [matAutocomplete]="autoPrefix"
@@ -891,7 +944,8 @@
         </div>
       </div>
       <!-- </mat-card-content> -->
-
+    <!-- </mat-drawer> -->
+ <!-- </mat-drawer-container> -->
     </mat-tab>
 
     <mat-tab>
@@ -901,36 +955,7 @@
       <div fxLayout="column" class="upload-body">
 
         <form [formGroup]="personalFormGroup">
-          <div fxLayout="row" style="width: 100%;">
-
-            <!-- <mat-form-field appearance="outline" style="width: 25%;">
-              <mat-label>RegNo / First Name / Last Name / Mobile No </mat-label>
-              <input type="text" name="RegId" formControlName="RegId" matInput [matAutocomplete]="auto1"
-                (input)="getSearchDocuploadPatientList()">
-              <span matSuffix style="display: flex;">
-                <mat-icon class="mat-icon-close"
-                  (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                <mat-icon class="mat-icon-close"
-                  (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-              </span>
-              <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getPatientOptionText"
-                (optionSelected)='getPatientSelectedObj($event.option.value)'>
-                <mat-option *ngFor="let option of PatientDocfilteredOptions" [value]="option">
-                  {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                  {{option.MobileNo}}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-error *ngIf="personalFormGroup.get('RegId').hasError('required')">
-                Required field cannot be left blank
-              </mat-error>
-            </mat-form-field> -->
-
-            <!-- </div> -->
-
-          </div>
-
-
-
+         
           <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
             <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) " matInput
               [matAutocomplete]="auto1" (input)="getSearchDocuploadPatientList()">
@@ -1055,6 +1080,7 @@
 </div>
 
 
+
 <!-- <mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end"
     style="height: 530px !important;margin-top: 120px !important;margin-right: 40px;font-size: medium;">
     <mat-card>
@@ -1099,12 +1125,7 @@
   
           <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
           </mat-header-row>
-          <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-              [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)" tabindex="999"
-              (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
-              (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)" (keyup.enter)="selectedRow(selectedRowIndex, '')"
-              id="ele-{{row.position}}"></mat-row>
-  
+            <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
           <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
           </mat-footer-row>
           <mat-footer-row *matFooterRowDef="['noData']"
@@ -1114,3 +1135,4 @@
         </div>
     </mat-card>
 </mat-drawer> -->
+

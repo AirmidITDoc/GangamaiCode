@@ -125,7 +125,7 @@ export class IPRefundofBillComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-  constructor(public _IpSearchListService: IPRefundofBillComponent,
+  constructor(
     public _IPRefundService: IPRefundService,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
@@ -161,7 +161,7 @@ export class IPRefundofBillComponent implements OnInit {
 
     this.refundBillForm();
     this.getRefundofBillIPDList();
-    // this.getAdmittedDoctorCombo();
+    // this.getAdmittedDoctorList();
     this.getServiceListCombobox();
     // this.getBilldetailList();
     
@@ -244,10 +244,10 @@ export class IPRefundofBillComponent implements OnInit {
 //   getBilldetailList() {
 //     debugger;
 //     var m_data = {
-//       "BillNo": 1212,//this._IpSearchListService.myRefundAdvanceForm.get("BillNo").value || 0,
+//       "BillNo": 1212,//this._IPRefundService.myRefundAdvanceForm.get("BillNo").value || 0,
 //     }
 //     // this.isLoadingStr = 'loading';
-//     this._IpSearchListService.getRefundofBillList(m_data).subscribe(Visit => {
+//     this._IPRefundService.getRefundofBillList(m_data).subscribe(Visit => {
 //       this.dataSource.data = Visit as InsertRefundDetail[];
 //       this.dataSource.sort = this.sort;
 //       this.dataSource.paginator = this.paginator;
@@ -437,7 +437,7 @@ export class IPRefundofBillComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] = 10,//this._IPRefundService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
 
     // let DocShareGroupwiseObj = {};
@@ -454,7 +454,7 @@ export class IPRefundofBillComponent implements OnInit {
         height: '540px',
         width: '100%',
         data: {
-          // patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
+          // patientName: this._IPRefundService.myShowAdvanceForm.get("PatientName").value,
           advanceObj: PatientHeaderObj, //this.advanceAmount
           FromName: "Advance-Refund",
         }
@@ -497,7 +497,7 @@ Swal.fire("Refund Amount is More than RefundBalance")
   }
 
 onClose() {
-  // this._IpSearchListService.myRefundBillForm.reset();
+  // this._IPRefundService.myRefundBillForm.reset();
   // this._matDialog.closeAll();//
   this.dialogRef.close();
 }
@@ -508,8 +508,8 @@ getBillingClassCombo(){
     this.myserviceForm.get('BillingClassId').setValue(this.BillingClassCmbList[0]);
   });
 }
-getAdmittedDoctorCombo(){
-  this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+getAdmittedDoctorList(){
+  this._IPRefundService.getAdmittedDoctorCombo().subscribe(data => {
     this.doctorNameCmbList = data
   });
 }
@@ -623,7 +623,7 @@ convertToWord(e){
  
   getTemplate() {
     // let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=5';
-    // this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
+    // this._IPRefundService.getTemplate(query).subscribe((resData: any) => {
     //   this.printTemplate = resData[0].TempDesign;
     //   let keysArray = ['HospitalName','HospAddress','Phone','PBillNo','RegNo','RefundNo','RefundAmount','NetPayableAmt','RefundDate','PaymentDate','PatientName','AgeDay','AgeMonth','Age','GenderName','Remark','AddedBy']; // resData[0].TempKeys;
     //     for (let i = 0; i < keysArray.length; i++) {
