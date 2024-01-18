@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { DeliverychallanComponent } from './deliverychallan/deliverychallan.component';
- 
+  
 
 
 const appRoutes: Routes = [
@@ -85,13 +84,15 @@ const appRoutes: Routes = [
 
 {
     path: "grnreturnnew",
-     loadChildren: () => import("./grn-return-new/grn-return-new.module").then((m) => m.GrnReturnNewModule),
+     //loadChildren: () => import("./grn-return-new/grn-return-new.module").then((m) => m.GrnReturnNewModule),
+     loadChildren: () => import("./deliverychallan/deliverychallan.module").then((m) => m.DeliverychallanModule),
+
 },
 ];
 
 
 @NgModule({
-  declarations: [ DeliverychallanComponent],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(appRoutes),
   ]

@@ -14,6 +14,12 @@ export class FileNode {
   children?: FileNode[];
   title: string;
   url?: any;
+  isView?:boolean;
+  isAdd?:boolean;
+  isEdit?:boolean;
+  isDelete?:boolean;
+  menuId?:number;
+  id?:number;
 }
 
 @Component({
@@ -84,6 +90,37 @@ export class RolePermissionComponent implements OnInit {
     }
     else if (type == 'delete') {
       lstItem.isDelete = $event.checked;
+    }
+  }
+  updatePermission(obj,type,$event){
+    let lstItem = this.nestedDataSource.find(x => x.id == obj.id);
+    if (type == 'view') {
+      lstItem.isView = $event.checked;
+      if((lstItem?.children?.length??0)>0){
+        for(let i=0;i<lstItem.children.length;i++)
+        lstItem.children[i].isView=$event.checked;
+      }
+    }
+    else if (type == 'add') {
+      lstItem.isAdd = $event.checked;
+      if((lstItem?.children?.length??0)>0){
+        for(let i=0;i<lstItem.children.length;i++)
+        lstItem.children[i].isAdd=$event.checked;
+      }
+    }
+    else if (type == 'edit') {
+      lstItem.isEdit = $event.checked;
+      if((lstItem?.children?.length??0)>0){
+        for(let i=0;i<lstItem.children.length;i++)
+        lstItem.children[i].isEdit=$event.checked;
+      }
+    }
+    else if (type == 'delete') {
+      lstItem.isDelete = $event.checked;
+      if((lstItem?.children?.length??0)>0){
+        for(let i=0;i<lstItem.children.length;i++)
+        lstItem.children[i].isDelete=$event.checked;
+      }
     }
   }
 

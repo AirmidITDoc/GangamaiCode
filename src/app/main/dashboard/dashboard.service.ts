@@ -45,7 +45,7 @@ export class DashboardService {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
   public getPharDashboardPeichart(params) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
+    return this._httpClient.post("Dashboard/get-pie-chart-date?procName=m_pharPayModeColSummaryDashboard", params)
   }
   public getBarchartData() {
     return this._httpClient.post("Generic/GetByProc?procName=m_pharlast3MonthSalesSummaryDashboard", {})

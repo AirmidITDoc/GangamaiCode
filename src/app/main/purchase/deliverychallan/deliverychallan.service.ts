@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GoodReceiptnoteService {
+export class DeliverychallanService {
   GRNStoreForm: FormGroup;
   GRNFirstForm:FormGroup;
   userFormGroup: FormGroup;
@@ -38,12 +38,12 @@ export class GoodReceiptnoteService {
       Contact:'',
       Mobile:'',
       InvoiceNo:[''],
-      DateOfInvoice:[new Date()],
+      DateOfInvoice:[(new Date())],
       GateEntryNo:[''],
       GRNType:['true'],
       GSTType:[''],
       PaymentType:['true'],
-      PaymentDate:[new Date()]
+      PaymentDate:[(new Date())]
  });
   }
 
@@ -90,16 +90,6 @@ export class GoodReceiptnoteService {
       IGST:[''],
       IGSTAmount:[''],
       NetAmount:[''],
-      SupplierId:[''],
-      Contact:'',
-      Mobile:'',
-      InvoiceNo:[''],
-      DateOfInvoice:[new Date()],
-      GateEntryNo:[''],
-      GRNType:['true'],
-      GSTType:[''],
-      PaymentType:['true'],
-      PaymentDate:[new Date()]
       
       
     });
@@ -135,6 +125,7 @@ export class GoodReceiptnoteService {
       
     });
   }
+
   public getLastThreeItemInfo(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
   }
@@ -190,6 +181,3 @@ export class GoodReceiptnoteService {
 
 }
 
-
-//  Rtrv_ItemDetailsForPurchasepdate
-// Rtrv_ItemDetailsForGRNUpdate

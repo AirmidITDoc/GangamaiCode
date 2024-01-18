@@ -112,29 +112,6 @@
                                                             </mat-autocomplete>
                                                         </mat-form-field>
 
-                                                        <!-- <mat-form-field appearance="outline" fxFlex="25%">
-                                                            <mat-label>Item Name</mat-label>
-                                                            <input matAutocompletePosition="below" type="text" (keyup)="getGRNList()"
-                                                                placeholder="Select Item Name" matInput
-                                                                formControlName="ItemName"
-                                                                  (keydown.enter)="focusNextService()"
-                                                                [matAutocomplete]="autoItemName" required >
-                                                            <span matSuffix style="display: flex;">
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="_GRNService.GRNSearchGroup.get('ItemName').setValue(''); isItemNameSelected = false;">close</mat-icon>
-                                                                <mat-icon class="mat-icon-close"
-                                                                    (click)="_GRNService.GRNSearchGroup.get('ItemName').setValue(''); isItemNameSelected = false;">search</mat-icon>
-                                                            </span>
-                                                            <mat-autocomplete #autoItemName="matAutocomplete"
-                                                                [displayWith]="getOptionTextItemName">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredoptionsItemName | async"
-                                                                    [value]="option">
-                                                                    {{option.ItemName}} | BalQty {{option.Qty}}
-                                                                </mat-option>
-                                                            </mat-autocomplete>
-                                                        </mat-form-field> -->
-
                                                         <mat-radio-group name="Status1" formControlName="Status1" fxFlex="30%" value="0" 
                                                         style="padding-top: 12px;">
                                                         <mat-label >Status:</mat-label>&nbsp;
@@ -143,31 +120,6 @@
                                                             <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getGRNList()">Pending
                                                                 </mat-radio-button>
                                                         </mat-radio-group>
-
-
-                                                        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                            <mat-radio-group name="Verify" formControlName="Verify" value="0" >
-                                                                <mat-label class="example-margin">Status:</mat-label>&nbsp;&nbsp;
-                                                                <mat-radio-button value="0" class="mr-sm-12"
-                                                                [checked]="isChecked"  fxFlex>All</mat-radio-button>
-                                                                <mat-radio-button value="1" class="mr-sm-12"
-                                                                    fxFlex>Pending</mat-radio-button>
-                                                                <mat-radio-button value="2" class="mr-sm-12"
-                                                                    fxFlex>Close</mat-radio-button>
-                                                            </mat-radio-group>
-                                                        </div><br> -->
-<!-- 
-                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                            <mat-radio-group name="Status1" formControlName="Status1" value="0">
-                                                                <mat-label class="example-margin">Status:</mat-label>&nbsp;
-                                                                <mat-radio-button value="0" class="mr-sm-12"
-                                                                [checked]="isChecked"  fxFlex>All</mat-radio-button>
-                                                                <mat-radio-button value="1" class="mr-sm-12"
-                                                                    fxFlex>Pending</mat-radio-button>
-                                                                <mat-radio-button value="2" class="mr-sm-12"
-                                                                    fxFlex>Close</mat-radio-button>
-                                                            </mat-radio-group>
-                                                        </div> -->
 
                                                         <div style="margin-top: 10px;">
                                                             <button mat-raised-button (click)="onClear()"
