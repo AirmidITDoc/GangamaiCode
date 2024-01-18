@@ -86,7 +86,15 @@
                     <cdk-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl">
                         <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
                           <button mat-icon-button disabled></button>
-                          <mat-checkbox class="checklist-leaf-node" >{{node.title}}</mat-checkbox>
+                          <mat-label>{{node.title}}</mat-label>
+                          <table style="width: 70%;display: inline-block;vertical-align: middle;">
+                            <tr>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'view',$event)" [checked]="node.isView">View</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="node.isAdd">Add</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'edit',$event)" [checked]="node.isEdit">Edit</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'delete',$event)" [checked]="node.isDelete">Delete</mat-checkbox></th>
+                            </tr>
+                          </table>
                         </cdk-nested-tree-node>
                         <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild" class="example-tree-node">
                           <button mat-icon-button [attr.aria-label]="'toggle ' + node.title" cdkTreeNodeToggle>
@@ -94,7 +102,15 @@
                               {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                             </mat-icon>
                           </button>
-                          <mat-checkbox class="checklist-leaf-node" >{{node.title}}</mat-checkbox>
+                          <mat-label>{{node.title}}</mat-label>
+                          <table style="width: 70%;display: inline-block;vertical-align: middle;">
+                            <tr>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'view',$event)" [checked]="node.isView">View</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="node.isAdd">Add</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'edit',$event)" [checked]="node.isEdit">Edit</mat-checkbox></th>
+                                <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'delete',$event)" [checked]="node.isDelete">Delete</mat-checkbox></th>
+                            </tr>
+                          </table>
                           <div [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
                             <ng-container cdkTreeNodeOutlet></ng-container>
                           </div>
