@@ -38,12 +38,12 @@ export class GoodReceiptnoteService {
       Contact:'',
       Mobile:'',
       InvoiceNo:[''],
-      DateOfInvoice:[(new Date())],
+      DateOfInvoice:[new Date()],
       GateEntryNo:[''],
       GRNType:['true'],
       GSTType:[''],
       PaymentType:['true'],
-      PaymentDate:[(new Date())]
+      PaymentDate:[new Date()]
  });
   }
 
@@ -90,6 +90,16 @@ export class GoodReceiptnoteService {
       IGST:[''],
       IGSTAmount:[''],
       NetAmount:[''],
+      SupplierId:[''],
+      Contact:'',
+      Mobile:'',
+      InvoiceNo:[''],
+      DateOfInvoice:[new Date()],
+      GateEntryNo:[''],
+      GRNType:['true'],
+      GSTType:[''],
+      PaymentType:['true'],
+      PaymentDate:[new Date()]
       
       
     });
@@ -125,7 +135,6 @@ export class GoodReceiptnoteService {
       
     });
   }
-
   public getLastThreeItemInfo(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
   }

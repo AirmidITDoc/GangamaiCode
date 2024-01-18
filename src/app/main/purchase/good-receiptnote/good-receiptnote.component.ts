@@ -1063,6 +1063,7 @@ debugger
 
   onEdit(contact) {
     this.chkNewGRN=2;
+    console.log(contact);
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -1075,7 +1076,7 @@ debugger
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getGRNList();
+      //this.getGRNList();
     });
   }
 
@@ -1285,7 +1286,8 @@ export class ItemNameList {
   DebitNote: any;
   CreditNote: any;
   RoundingAmt: any;
-  InvDate: any;
+  InvDate: Date;
+  PaymentDate: Date;
   TotalDiscAmount: any;
   ReceivedBy: any;
   Remark: any;
@@ -1310,10 +1312,12 @@ export class ItemNameList {
   DiscAmount: number;
   PaymentType:any;
   GRNType:any;
-  DateOfInvoice:Date;
+  DateOfInvoice:any;
   EwalBillDate:Date;
-  PaymentDate:Date;
   CurrentDate=new Date();
+  Tranprocessmode:any;
+  Cash_CreditType:any;
+  tranProcessMode:any;
   
   /**
    * Constructor
@@ -1359,16 +1363,16 @@ export class ItemNameList {
       this.DebitNote = ItemNameList.DebitNote || 0;
       this.CreditNote = ItemNameList.CreditNote || 0;
       this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-      this.InvDate = ItemNameList.InvDate || 0;
+      this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
       this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
       this.totalVATAmount = ItemNameList.totalVATAmount || 0;
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
-      this.ConstantId = ItemNameList.ConstantId || 0;
+      this.Tranprocessmode = ItemNameList.Tranprocessmode || "";
       this.EwalBillDate=ItemNameList.EwalBillDate || this.CurrentDate;
-      this.PaymentDate=ItemNameList.PaymentDate || this.CurrentDate;
-      this.DateOfInvoice=ItemNameList.DateOfInvoice || this.CurrentDate;
+      this.PaymentDate=ItemNameList.PaymentDate ||  this.CurrentDate;
+      this.DateOfInvoice=ItemNameList.DateOfInvoice ||  this.CurrentDate;
     }
   }
 }

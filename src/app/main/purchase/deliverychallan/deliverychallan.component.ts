@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -10,11 +10,15 @@ import { Observable, Subscription } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { map, startWith } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-deliverychallan',
   templateUrl: './deliverychallan.component.html',
-  styleUrls: ['./deliverychallan.component.scss']
+  styleUrls: ['./deliverychallan.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+
 })
 export class DeliverychallanComponent implements OnInit {
   displayedColumns = [
@@ -54,34 +58,13 @@ export class DeliverychallanComponent implements OnInit {
 
   ];
 
-  displayedColumns2 = [
-    'Action',
-    'ItemName',
-    'UOM',
-    'HSNCode',
-    'BatchNo',
-    'ExpDate',
-    'Qty',
-    'FreeQty',
-    'MRP',
-    'Rate',
-    'TotalAmount',
-    'Disc',
-    'DisAmount',
-    'GST',
-    'GSTAmount',
-    'CGST',
-    'CGSTAmount',
-    'SGST',
-    'SGSTAmount',
-    'IGST',
-    'IGSTAmount',
-    'NetAmount',
-  ];
+ 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   filteredOptions: any;
+  isPaymentSelected:boolean = false;
+  isSupplierSelected:boolean = false;
   noOptionFound: boolean;
   ItemName: any;
   UOM: any = 0;
@@ -120,14 +103,14 @@ export class DeliverychallanComponent implements OnInit {
   selectedIndex = 0;
   sIsLoading:string ;
   SupplierList:any=[];
+  StoreList:any=[];
+  StoreName:any;
 
 
 
   dsGRNList = new MatTableDataSource<GRNList>();
 
-  //dsGrnItemList = new MatTableDataSource<GrnItemList>();
-
-  //dsItemNameList = new MatTableDataSource<ItemNameList>();
+  dsGrnItemList = new MatTableDataSource<GrnItemList>();
 
   constructor(
     public _DeliveryService: DeliverychallanService,
@@ -171,6 +154,24 @@ export class DeliverychallanComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
+  getGrnItemDetailList(Params) {
+    debugger
+    this.sIsLoading = 'loading-data';
+    var Param = {
+      "GrnId": Params.GRNID
+    }
+    this._DeliveryService.getGrnItemList(Param).subscribe(data => {
+      this.dsGrnItemList.data = data as GrnItemList[];
+      //console.log(data)
+      this.dsGrnItemList.sort = this.sort;
+      this.dsGrnItemList.paginator = this.paginator;
+      this.sIsLoading = '';
+       console.log(this.dsGrnItemList.data)
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
   
   getSupplierSearchCombo() {
 
@@ -183,6 +184,17 @@ export class DeliverychallanComponent implements OnInit {
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
 
+    });
+  }
+  getToStoreSearchCombo() {
+
+    var vdata = {
+      Id: this.accountService.currentUserValue.user.storeId
+    }
+    this._DeliveryService.getLoggedStoreList(vdata).subscribe(data => {
+      this.StoreList = data;
+      this._DeliveryService.GRNSearchGroup.get('ToStoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._DeliveryService.GRNSearchGroup.get('ToStoreId').value.StoreName;
     });
   }
   private _filterSupplier(value: any): any {
@@ -296,6 +308,8 @@ export class DeliverychallanComponent implements OnInit {
         });
       });this.getGRNList();
   }
+  onClear() {
+  }
 
 newDelivery(){
   // this.chkNewGRN=1;
@@ -355,6 +369,51 @@ export class GRNList {
       this.ReceivedBy = GRNList.ReceivedBy || 0;
       this.IsClosed = GRNList.IsClosed || 0;
       this.GSTNo = GRNList.GSTNo || 0;
+    }
+  }
+}
+export class GrnItemList {
+
+  ItemID:any;
+  ItemName: string;
+  BatchNo: number;
+  BatchExpDate: number;
+  ReceiveQty: number;
+  FreeQty: number;
+  MRP: number;
+  Rate: number;
+  TotalAmount: number;
+  ConversionFactor: number;
+  VatPercentage: number;
+  DiscPercentage: number;
+  LandedRate: number;
+  NetAmount: number;
+  TotalQty: number;
+
+  /**
+   * Constructor
+   *
+   * @param GrnItemList
+   */
+  constructor(GrnItemList) {
+    {
+
+      this.ItemID = GrnItemList.ItemID || 0;
+      this.ItemName = GrnItemList.ItemName || "";
+      this.BatchNo = GrnItemList.BatchNo || 0;
+      this.BatchExpDate = GrnItemList.BatchExpDate || 0;
+      this.ReceiveQty = GrnItemList.ReceiveQty || 0;
+      this.FreeQty = GrnItemList.FreeQty || 0;
+      this.MRP = GrnItemList.MRP || 0;
+      this.Rate = GrnItemList.Rate || 0;
+      this.TotalAmount = GrnItemList.TotalAmount || 0;
+      this.ConversionFactor = GrnItemList.ConversionFactor || 0;
+      this.VatPercentage = GrnItemList.VatPercentage || 0;
+      this.DiscPercentage = GrnItemList.DiscPercentage || 0;
+      this.LandedRate = GrnItemList.LandedRate || 0;
+      this.NetAmount = GrnItemList.NetAmount || 0;
+      this.TotalQty = GrnItemList.TotalQty || 0;
+
     }
   }
 }
