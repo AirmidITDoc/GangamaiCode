@@ -196,10 +196,10 @@
                                             formControlName="BatchNo" id="BatchNo" #batchno
                                             (keydown)="onEnterBatchNo($event)" required>
                                     </mat-form-field>&nbsp;
-
+                                    <!-- [max]="maxDate"  -->
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Exp date</mat-label>
-                                        <input name="ExpDate" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker7"
+                                        <input name="ExpDate" matInput [min]="minDate" [matDatepicker]="picker7"
                                             [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate
                                             required>
                                         <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>

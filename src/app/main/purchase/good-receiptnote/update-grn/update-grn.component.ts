@@ -765,10 +765,10 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
-    grnSaveObj['ewayBillDate'] = this._GRNList.GRNFinalForm.get('EwalBillDate').value || 0;
+    grnSaveObj['ewayBillDate'] = 22,//this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value,"yyyy-MM-dd") || '01/01/1099';
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
     grnSaveObj['grnid'] = 0;
-
+    
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
