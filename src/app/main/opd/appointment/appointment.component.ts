@@ -215,7 +215,7 @@ export class AppointmentComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
-
+  CompanyId:any=0;
   VisitId: any;
   FimeName: any;
 VisitFlag=0;
@@ -1384,7 +1384,7 @@ debugger
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       registrationSave['Aadharcardno'] = 0;//this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
-      registrationSave['Pancardno'] = this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationSave['Photo'] = '';
       // const base64 = this.sanitizeImagePreview;
@@ -1393,7 +1393,7 @@ debugger
       // const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
       // registrationSave["ImgFile"]=imageFile;
       submissionObj['RegistrationSave'] = registrationSave;
-
+debugger
       visitSave['VisitId'] = 0;
       visitSave['RegID'] = 0;
       visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -1405,7 +1405,7 @@ debugger
       visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitSave['CompanyId'] = this.CompanyId;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitSave['IsCancelled'] = false;
@@ -1493,7 +1493,7 @@ debugger
       registrationUpdate['Photo'] = ''
 
 
-
+      this.CompanyId=this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
       submissionObj['registrationUpdate'] = registrationUpdate;
       // visit detail
       visitUpdate['VisitId'] = 0;
@@ -1506,7 +1506,7 @@ debugger
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitUpdate['CompanyId'] = this.CompanyId;
       visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitUpdate['IsCancelled'] = 0;
@@ -1585,7 +1585,7 @@ debugger
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       registrationSave['Aadharcardno'] = 0; // this.personalFormGroup.get('Aadharcardno').value || '';
-      registrationSave['Pancardno'] = this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationSave['Photo'] = '';
       const base64 = this.sanitizeImagePreview;
@@ -1606,7 +1606,7 @@ debugger
       visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitSave['CompanyId'] = this.CompanyId;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitSave['IsCancelled'] = false;
@@ -1707,7 +1707,7 @@ debugger
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitUpdate['CompanyId'] = this.CompanyId;
       visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitUpdate['IsCancelled'] = 0;
@@ -2878,7 +2878,7 @@ export class RegInsert {
       this.PatientWeight = RegInsert.PatientWeight || "";
       this.AreaName = RegInsert.AreaName || "";
       this.AadharCardNo = RegInsert.AadharCardNo || "";
-      this.PanCardNo = RegInsert.PanCardNo || "";
+      this.PanCardNo = RegInsert.PanCardNo || '';
       this.AdmissionID = RegInsert.AdmissionID || 0;
       this.WardId = RegInsert.WardId || 0;
     }
