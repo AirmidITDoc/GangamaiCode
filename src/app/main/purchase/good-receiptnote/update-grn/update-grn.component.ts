@@ -764,6 +764,8 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['totIGSTAmt'] = this.IGSTAmt || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
     grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
+    grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
+    grnSaveObj['ewayBillDate'] = this._GRNList.GRNFinalForm.get('EwalBillDate').value || 0;
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
     grnSaveObj['grnid'] = 0;
 
@@ -773,7 +775,7 @@ export class UpdateGRNComponent implements OnInit {
       //console.log(element);
 
       let grnDetailSaveObj = {};
-      grnDetailSaveObj['grnDetID'] = 0;
+     // grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
       grnDetailSaveObj['uomId'] = element.UOMId || 0;
@@ -857,6 +859,7 @@ export class UpdateGRNComponent implements OnInit {
   OnSaveEdit() {
 
     let updateGRNHeaderObj = {};
+    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
     updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
@@ -872,7 +875,7 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
     updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
     updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-    updateGRNHeaderObj['isClosed'] = false;
+    //updateGRNHeaderObj['isClosed'] = false;
     updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
       updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
@@ -885,7 +888,6 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     updateGRNHeaderObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;
-    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
