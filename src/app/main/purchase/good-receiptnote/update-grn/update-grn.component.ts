@@ -68,7 +68,6 @@ export class UpdateGRNComponent implements OnInit {
   labelPosition: 'before' | 'after' = 'after';
   isItemIdSelected: boolean = false;
   PaymentType: any;
-  minDate = Date;
   StoreList: any = [];
   StoreName: any;
   ItemID: any;
@@ -223,7 +222,8 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   date = new FormControl(moment());
-
+  minDate = new Date();
+  maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
 
     debugger
@@ -253,11 +253,12 @@ export class UpdateGRNComponent implements OnInit {
        if (this.data) {
         const toSelectGSTType = this.GSTTypeList.find(c => c.Name == this.registerObj.Tranprocessmode);
         this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
-       console.log(toSelectGSTType);  
-       console.log(this.registerObj); 
+       //console.log(toSelectGSTType);  
+      // console.log(this.registerObj); 
        } 
     });
   }
+  
   getSupplierSearchCombo() {
 
     this._GRNList.getSupplierSearchList().subscribe(data => {
@@ -273,8 +274,9 @@ export class UpdateGRNComponent implements OnInit {
         const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
        // console.log(toSelectSUpplierId);
-        this.vMobile =toSelectSUpplierId.Mobile;
-        this.vContact =toSelectSUpplierId.ContactPerson;   
+        this.vMobile = toSelectSUpplierId.Mobile; 
+        this.vContact = toSelectSUpplierId.ContactPerson;   
+        console.log(toSelectSUpplierId.Mobile);
        }
     });
   }
@@ -388,14 +390,14 @@ export class UpdateGRNComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getOptionTextPayment(option) {
-    return option && option.StoreName ? option.StoreName : '';
+  // getOptionTextPayment(option) {
+  //   return option && option.StoreName ? option.StoreName : '';
 
-  }
+  // }
 
-  getSelectedObjSupp(obj) {
-    this.SupplierId = obj.SupplierId;
-  }
+  // getSelectedObjSupp(obj) {
+  //   this.SupplierId = obj.SupplierId;
+  // }
 
   getOptionTextSupplier(option) {
 
@@ -411,10 +413,10 @@ export class UpdateGRNComponent implements OnInit {
   }
 
 
-  getOptionTextItemName(option) {
-    return option && option.ItemName ? option.ItemName : '';
+  // getOptionTextItemName(option) {
+  //   return option && option.ItemName ? option.ItemName : '';
 
-  }
+  // }
 
   calculateTotalamt(){
     let Qty = this._GRNList.userFormGroup.get('Qty').value

@@ -186,7 +186,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.getToStoreSearchList();
     // this.getSupplierSearchList();
     this.getSupplierSearchCombo();
-    this.getFromStoreSearchList();
+   // this.getFromStoreSearchList();
     this.getToStoreSearchCombo();
     this.getSupplierSearchCombo();
     this.gePharStoreList();
@@ -588,17 +588,17 @@ debugger
     });
   }
 
-  getFromStoreSearchList() {
-    var data = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._GRNService.getFromStoreSearchList(data).subscribe(data => {
-      this.FromStoreList = data;
-      this._GRNService.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-    });
+  // getFromStoreSearchList() {
+  //   var data = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._GRNService.getFromStoreSearchList(data).subscribe(data => {
+  //     this.FromStoreList = data;
+  //     this._GRNService.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+  //   });
 
 
-  }
+  // }
 
   getItemNameList() {
     var Param = {

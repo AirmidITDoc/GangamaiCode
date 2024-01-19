@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { UpdatedeliveryComponent } from './updatedelivery/updatedelivery.component';
 
 @Component({
   selector: 'app-deliverychallan',
@@ -122,6 +123,14 @@ export class DeliverychallanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.getToStoreSearchList();
+    // this.getSupplierSearchList();
+    this.getSupplierSearchCombo();
+    // this.getFromStoreSearchList();
+    this.getToStoreSearchCombo();
+    this.getSupplierSearchCombo();
+    // this.gePharStoreList();
+    this.getGRNList();
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -310,22 +319,40 @@ export class DeliverychallanComponent implements OnInit {
   }
   onClear() {
   }
+  
+  onEdit(contact) {
+
+    // console.log(contact)
+
+    const dialogRef = this._matDialog.open(UpdatedeliveryComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+        data: {
+          Obj: contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 
 newDelivery(){
   // this.chkNewGRN=1;
-  //   const dialogRef = this._matDialog.open(UpdateGRNComponent,
-  //     {
-  //       maxWidth: "100%",
-  //       height: '95%',
-  //       width: '95%',
-  //       data: {
-  //         chkNewGRN:this.chkNewGRN
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //   });
-  //   this.getGRNList();
+    const dialogRef = this._matDialog.open(UpdatedeliveryComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+         width: '95%',
+        // data: {
+        //   chkNewGRN:this.chkNewGRN
+        // }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+    //this.getGRNList();
 }
 }
 export class GRNList {
@@ -414,6 +441,136 @@ export class GrnItemList {
       this.NetAmount = GrnItemList.NetAmount || 0;
       this.TotalQty = GrnItemList.TotalQty || 0;
 
+    }
+  }
+}
+export class ItemNameList {
+  // Action: string;
+  
+  ItemName: string;
+  UOMId: number;
+  HSNCode: number;
+  BatchNo: number;
+  ExpDate: number;
+  Qty: number;
+  FreeQty: number;
+  MRP: number;
+  Rate: number;
+  TotalAmount: number;
+  Disc: number;
+  DisAmount: number;
+  GSTNo: number;
+  GSTAmount: number;
+  CGST: number;
+  CGSTAmount: number;
+  SGST: number;
+  SGSTAmount: number;
+  IGST: number;
+  IGSTAmount: number;
+  NetAmount: number;
+  position: number;
+  ItemID: any;
+  ItemId:any;
+  VatPer: any;
+  VatAmt: any;
+  MRP_Strip: any;
+  GRNId: any;
+  GRNID: any;
+  InvoiceNo: any;
+  GateEntryNo: any;
+  SupplierId: any;
+  GrnNumber: any;
+  OtherCharge: any;
+  DebitNote: any;
+  CreditNote: any;
+  RoundingAmt: any;
+  InvDate: Date;
+  PaymentDate: Date;
+  TotalDiscAmount: any;
+  ReceivedBy: any;
+  Remark: any;
+  StoreId:any;
+  totalVATAmount:any;
+  ConversionFactor:any;
+  ReceiveQty: any;
+  CGSTAmt: number;
+  CGSTPer: number;
+  SGSTAmt: number;
+  SGSTPer: number;
+  IGSTPer: number;
+  IGSTAmt: number;
+  HSNcode: any;
+  VatAmount: number;
+  VatPercentage: number;
+  id: number;
+  ConstantId: number;
+  discPercentage: number;
+  discAmount: number;
+  DiscPercentage: number;
+  DiscAmount: number;
+  PaymentType:any;
+  GRNType:any;
+  DateOfInvoice:any;
+  EwalBillDate:Date;
+  CurrentDate=new Date();
+  Tranprocessmode:any;
+  Cash_CreditType:any;
+  tranProcessMode:any;
+  
+  /**
+   * Constructor
+   *
+   * @param ItemNameList
+   */
+  constructor(ItemNameList) {
+    {
+      
+      this.ItemName = ItemNameList.ItemName || "";
+      this.UOMId = ItemNameList.UOMId || 0;
+      this.HSNCode = ItemNameList.HSNCode || 0;
+      this.BatchNo = ItemNameList.BatchNo || 0;
+      this.ExpDate = ItemNameList.ExpDate || 0;
+      this.Qty = ItemNameList.Qty || 0;
+      this.FreeQty = ItemNameList.FreeQty || 0;
+      this.MRP = ItemNameList.MRP || 0;
+      this.Rate = ItemNameList.Rate || 0;
+      this.TotalAmount = ItemNameList.TotalAmount || 0;
+      this.Disc = ItemNameList.Disc  ;
+      this.DisAmount = ItemNameList.DisAmount || 0;
+      this.GSTNo = ItemNameList.GSTNo || 0;
+      this.GSTAmount = ItemNameList.GSTAmount || 0;
+      this.CGST = ItemNameList.CGST || 0;
+      this.CGSTAmount = ItemNameList.CGSTAmount || 0;
+      this.SGST = ItemNameList.SGST || 0;
+      this.SGSTAmount = ItemNameList.SGSTAmount || 0;
+      this.IGST = ItemNameList.IGST || 0;
+      this.IGSTAmount = ItemNameList.IGSTAmount || 0;
+      this.NetAmount = ItemNameList.NetAmount || 0;
+      this.ItemID = ItemNameList.ItemID || 0;
+      this.ItemId = ItemNameList.ItemId || 0;
+      this.VatPer = ItemNameList.VatPer || 0;
+      this.VatAmt = ItemNameList.VatAmt || 0;
+      this.MRP_Strip = ItemNameList.MRP_Strip || 0;
+      this.GRNId = ItemNameList.GRNId || 0;
+      this.GRNID = ItemNameList.GRNID || 0;
+      this.InvoiceNo = ItemNameList.InvoiceNo || 0;
+      this.GateEntryNo = ItemNameList.GateEntryNo || 0;
+      this.SupplierId = ItemNameList.SupplierId || 0;
+      this.GrnNumber = ItemNameList.GrnNumber || 0;
+      this.OtherCharge = ItemNameList.OtherCharge || 0;
+      this.DebitNote = ItemNameList.DebitNote || 0;
+      this.CreditNote = ItemNameList.CreditNote || 0;
+      this.RoundingAmt = ItemNameList.RoundingAmt || 0;
+      this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
+      this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
+      this.totalVATAmount = ItemNameList.totalVATAmount || 0;
+      this.ReceivedBy = ItemNameList.ReceivedBy || ''
+      this.Remark = ItemNameList.Remark || ''
+      this.StoreId = ItemNameList.StoreId || 0;
+      this.Tranprocessmode = ItemNameList.Tranprocessmode || "";
+      this.EwalBillDate=ItemNameList.EwalBillDate || this.CurrentDate;
+      this.PaymentDate=ItemNameList.PaymentDate ||  this.CurrentDate;
+      this.DateOfInvoice=ItemNameList.DateOfInvoice ||  this.CurrentDate;
     }
   }
 }

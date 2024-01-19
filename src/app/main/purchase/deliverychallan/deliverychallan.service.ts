@@ -19,7 +19,7 @@ export class DeliverychallanService {
     private _formBuilder: FormBuilder
   ) { 
     this.GRNStoreForm = this.createStoreFrom();
-    this.GRNFirstForm=this.getGRNfirstForm();
+    //this.GRNFirstForm=this.getGRNfirstForm();
     this.userFormGroup = this.getGRNForm();
     this.GRNSearchGroup= this.GRNSearchFrom();  
     this.GRNFinalForm=this.getGrnFinalformForm();
@@ -32,26 +32,26 @@ export class DeliverychallanService {
       StoreId:[''],
     })
   }
-  getGRNfirstForm() {
-    return this._formBuilder.group({
-      SupplierId:[''],
-      Contact:'',
-      Mobile:'',
-      InvoiceNo:[''],
-      DateOfInvoice:[(new Date())],
-      GateEntryNo:[''],
-      GRNType:['true'],
-      GSTType:[''],
-      PaymentType:['true'],
-      PaymentDate:[(new Date())]
- });
-  }
+//   getGRNfirstForm() {
+//     return this._formBuilder.group({
+//       SupplierId:[''],
+//       Contact:'',
+//       Mobile:'',
+//       InvoiceNo:[''],
+//       DateOfInvoice:[(new Date())],
+//       GateEntryNo:[''],
+//       GRNType:['true'],
+//       GSTType:[''],
+//       PaymentType:['true'],
+//       PaymentDate:[(new Date())]
+//  });
+//   }
 
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      FromStoreId:'',
-      StoreId:'',
+     // FromStoreId:'',
+     // StoreId:'',
       SupplierId:'',
       Status:0,
       Status1:['0'],
@@ -90,6 +90,16 @@ export class DeliverychallanService {
       IGST:[''],
       IGSTAmount:[''],
       NetAmount:[''],
+      SupplierId:[''],
+      Contact:'',
+      Mobile:'',
+      InvoiceNo:[''],
+      DateOfInvoice:[new Date()],
+      GateEntryNo:[''],
+      GRNType:['true'],
+      GSTType:[''],
+      PaymentType:['true'],
+      PaymentDate:[new Date()]
       
       
     });
@@ -97,7 +107,6 @@ export class DeliverychallanService {
 
   getGrnFinalformForm() {
     return this._formBuilder.group({
-      Status3:[''],
       Remark:[''],
       ReceivedBy:[''],
       DebitAmount:[''],
@@ -108,18 +117,6 @@ export class DeliverychallanService {
       NetPayamt:[''],
       OtherCharges:[''],
       RoundingAmt:[''],
-      // TotalAmount:[''],
-      // Disc:[''],
-      // DisAmount:[''],
-      // GST:[''],
-      // GSTAmount:[''],
-      // CGST:[''],
-      // CGSTAmount:[''],
-      // SGST:[''],
-      // SGSTAmount:[''],
-      // IGST:[''],
-      // IGSTAmount:[''],
-      // NetAmount:[''],
       EwayBillNo:[""],
       EwalBillDate:[new Date()]
       

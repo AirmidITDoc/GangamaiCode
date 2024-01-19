@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { DeliverychallanComponent } from './deliverychallan.component';
+import { UpdatedeliveryComponent } from './updatedelivery/updatedelivery.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,7 @@ const routes: Routes = [
 @NgModule({ 
   declarations: [
     DeliverychallanComponent,
+    UpdatedeliveryComponent,
 ],
   imports: [
     CommonModule,
