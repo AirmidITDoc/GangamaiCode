@@ -511,12 +511,12 @@ export class ItemNameList {
   PaymentType:any;
   GRNType:any;
   DateOfInvoice:any;
-  EwalBillDate:Date;
+  EwayBillDate:Date;
   CurrentDate=new Date();
   Tranprocessmode:any;
   Cash_CreditType:any;
   tranProcessMode:any;
-  
+  EwayBillNo:any;
   /**
    * Constructor
    *
@@ -567,8 +567,9 @@ export class ItemNameList {
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
+      this.EwayBillNo = ItemNameList.EwayBillNo || 0;
       this.Tranprocessmode = ItemNameList.Tranprocessmode || "";
-      this.EwalBillDate=ItemNameList.EwalBillDate || this.CurrentDate;
+      this.EwayBillDate=ItemNameList.EwayBillDate || this.CurrentDate;
       this.PaymentDate=ItemNameList.PaymentDate ||  this.CurrentDate;
       this.DateOfInvoice=ItemNameList.DateOfInvoice ||  this.CurrentDate;
     }

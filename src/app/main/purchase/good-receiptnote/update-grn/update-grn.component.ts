@@ -181,8 +181,7 @@ export class UpdateGRNComponent implements OnInit {
   vMobile: any;
   vContact: any;
   vDiffNetRoundAmt: any;
-  today: any;
-  sixMonthsAgo: any;
+  ItemId:any;
 
 
   constructor(
@@ -218,7 +217,7 @@ export class UpdateGRNComponent implements OnInit {
     this.getSupplierSearchCombo();
     this.gePharStoreList();
     this.getGSTtypeList();
-    this.getLastThreeItemInfo();
+   // this.getLastThreeItemInfo();
   }
 
   date = new FormControl(moment());
@@ -360,26 +359,28 @@ export class UpdateGRNComponent implements OnInit {
   }
   ItemReset(){
    this.ItemName= "";
+   this.ItemID = 0;
+   this.ItemId = 0;
    this.ConversionFactor = "";
    this.UOM = "";
    this.HSNCode= "";
    this.BatchNo= "";
-   this.Qty= "";
-   this.FreeQty= "";
-   this.MRP= "";
-   this.Rate= "";
-   this.TotalAmount= "";
-   this.Disc= "";
+   this.Qty= 0;
+   this.FreeQty= 0;
+   this.MRP= 0;
+   this.Rate=  0;
+   this.TotalAmount= 0;
+   this.Disc=  '';
    this.DisAmount= "";
-   this.GST= "";
-   this.GSTAmount= "";
-   this.CGST= "";
-   this.CGSTAmount = "";
-   this.SGST = "";
-   this.SGSTAmount= "";
-   this.IGST= "";
-   this.IGSTAmount= "";
-   this.NetAmount= "";
+   this.GST= 0;
+   this.GSTAmount= 0;
+   this.CGST=  0;
+   this.CGSTAmount =  0;
+   this.SGST =  0;
+   this.SGSTAmount=  0;
+   this.IGST=  0;
+   this.IGSTAmount=  0;
+   this.NetAmount=  0;
 
   }
 
@@ -390,14 +391,14 @@ export class UpdateGRNComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  // getOptionTextPayment(option) {
-  //   return option && option.StoreName ? option.StoreName : '';
+  getOptionTextPayment(option) {
+    return option && option.StoreName ? option.StoreName : '';
 
-  // }
+  }
 
-  // getSelectedObjSupp(obj) {
-  //   this.SupplierId = obj.SupplierId;
-  // }
+  getSelectedObjSupp(obj) {
+    this.SupplierId = obj.SupplierId;
+  }
 
   getOptionTextSupplier(option) {
 
@@ -550,7 +551,7 @@ export class UpdateGRNComponent implements OnInit {
     this.vFinalNetAmount= Math.round(FinalRoundAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
 
     this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2);
-    
+    return this.vTotalFinalAmount;
   }
 
   calculateGSTType(event) {
@@ -759,9 +760,9 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
     grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-    grnSaveObj['totCGSTAmt'] = this.CGSTAmt || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
-    grnSaveObj['totSGSTAmt'] = this.SGSTAmt || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
-    grnSaveObj['totIGSTAmt'] = this.IGSTAmt || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
+    grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
+    grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
+    grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
     grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
@@ -882,9 +883,9 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
     updateGRNHeaderObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTAmt || 0;
-    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTAmt || 0;
-    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTAmt || 0;
+    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
+    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
+    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
     updateGRNHeaderObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     updateGRNHeaderObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;

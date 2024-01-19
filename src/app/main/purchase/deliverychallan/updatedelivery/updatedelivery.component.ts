@@ -411,7 +411,8 @@ export class UpdatedeliveryComponent implements OnInit {
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     this.vFinalNetAmount= Math.round(FinalRoundAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
 
-    this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2); 
+    this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2);
+    return this.vTotalFinalAmount;
   }
   calculateGSTType(event) {
 
@@ -783,9 +784,9 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['creditNote'] = this.__DeliveryService.GRNFinalForm.get('CreditAmount').value || 0;
     grnSaveObj['otherCharge'] = this.__DeliveryService.GRNFinalForm.get('OtherCharges').value || 0;
     grnSaveObj['roundingAmt'] = this.__DeliveryService.GRNFinalForm.get('RoundingAmt').value || 0;
-    grnSaveObj['totCGSTAmt'] = this.CGSTAmt || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
-    grnSaveObj['totSGSTAmt'] = this.SGSTAmt || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
-    grnSaveObj['totIGSTAmt'] = this.IGSTAmt || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
+    grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
+    grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
+    grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
     grnSaveObj['tranProcessId'] = this.__DeliveryService.userFormGroup.get('GSTType').value.ConstantId || 0;
     grnSaveObj['tranProcessMode'] = this.__DeliveryService.userFormGroup.get('GSTType').value.Name || '';
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
@@ -903,9 +904,9 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['creditNote'] = this.__DeliveryService.GRNFinalForm.get('CreditAmount').value || 0;
     updateGRNHeaderObj['otherCharge'] = this.__DeliveryService.GRNFinalForm.get('OtherCharges').value || 0;
     updateGRNHeaderObj['roundingAmt'] = this.__DeliveryService.GRNFinalForm.get('RoundingAmt').value || 0;
-    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTAmt || 0;
-    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTAmt || 0;
-    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTAmt || 0;
+    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
+    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
+    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
     updateGRNHeaderObj['tranProcessId'] = this.__DeliveryService.userFormGroup.get('GSTType').value.ConstantId || 0;
     updateGRNHeaderObj['tranProcessMode'] = this.__DeliveryService.userFormGroup.get('GSTType').value.Name || '';
     updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;

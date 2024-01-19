@@ -97,10 +97,12 @@
                                                 </mat-radio-group>
                                             </div>
                                             <div>
-                                                <mat-radio-group aria-label="Select an option"  
-                                                    formControlName="PaymentType" (click)="PaymentTypeChk()">
-                                                    <mat-radio-button value="true" [(ngModel)]="registerObj.Cash_CreditType">Cash</mat-radio-button>
-                                                    <mat-radio-button value="false" [(ngModel)]="registerObj.Cash_CreditType">Credit</mat-radio-button>
+                                                <mat-radio-group  name="PaymentType"  value="true" formControlName="PaymentType" 
+                                                    (click)="PaymentTypeChk()">
+                                                    <mat-radio-button value="true"  class="mr-sm-12" [(ngModel)]="registerObj.Cash_CreditType">
+                                                        Cash</mat-radio-button>
+                                                    <mat-radio-button value="false"  class="mr-sm-12" [(ngModel)]="registerObj.Cash_CreditType">
+                                                        Credit</mat-radio-button>
                                                 </mat-radio-group>
                                             </div>
                                         </div>
@@ -1023,7 +1025,8 @@
                                 <mat-form-field appearance="outline" fxFlex="6%">
                                     <mat-label>Net Pay Amt</mat-label>
                                     <input matInput placeholder="Placeholder" formControlName="NetPayamt" type="number"
-                                        readonly [(ngModel)]="vFinalNetAmount" #NetPayamt
+                                        readonly [(ngModel)]="vFinalNetAmount" 
+                                        [(ngModel)]="registerObj.NetAmount" #NetPayamt
                                         (keydown)="onEnterNetPayamt($event)">
                                 </mat-form-field>
 
@@ -1037,18 +1040,20 @@
                                 <mat-form-field appearance="outline" fxFlex="6%">
                                     <mat-label>Rounding Amt</mat-label>
                                     <input matInput placeholder="Placeholder" formControlName="RoundingAmt" #RoundingAmt
-                                        [(ngModel)]="vDiffNetRoundAmt" (keydown.enter)="focusNextService()">
+                                        [(ngModel)]="vDiffNetRoundAmt" 
+                                        [(ngModel)]="registerObj.RoundingAmt" (keydown.enter)="focusNextService()">
                                 </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="6%">
                                     <mat-label> Eway BillNo</mat-label>
-                                    <input matInput placeholder="Placeholder" formControlName="EwayBillNo" #EwayBillNo>
+                                    <input matInput placeholder="Placeholder" formControlName="EwayBillNo" 
+                                    [(ngModel)]="registerObj.EwayBillNo" #EwayBillNo>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>EwayBill date</mat-label>
                                     <input name="EwalBillDate" matInput [matDatepicker]="picker9"
-                                        formControllName="EwalBillDate" [(ngModel)]="registerObj.EwalBillDate">
+                                        formControllName="EwalBillDate" [(ngModel)]="registerObj.EwayBillDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
                                     <mat-datepicker #picker9></mat-datepicker>
 
