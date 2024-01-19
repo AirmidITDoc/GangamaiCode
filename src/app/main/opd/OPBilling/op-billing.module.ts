@@ -1,4 +1,4 @@
-import { AppointmentComponent } from "./appointment.component";
+
 import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
@@ -18,7 +18,6 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { RouterModule, Routes } from "@angular/router";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { NewAppointmentComponent } from "./new-appointment/new-appointment.component";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDividerModule } from "@angular/material/divider";
@@ -33,40 +32,20 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatListModule } from "@angular/material/list";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { SharedModule } from "app/main/shared/shared.module";
-import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-consultant-doctor.component";
-import { EditRefraneDoctorComponent } from "./edit-refrane-doctor/edit-refrane-doctor.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { FeedbackComponent } from "./feedback/feedback.component";
-import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
-import { ImageViewComponent } from './image-view/image-view.component';
-import { CameraComponent } from './camera/camera.component';
-import { WebcamModule } from 'ngx-webcam';
-import { HeaderComponent } from "app/main/shared/componets/header/header.component";
-import { InfoheadDirective } from './infohead.directive';
+import { NewOPBillingComponent } from "./new-opbilling/new-opbilling.component";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav";
-import { VisitDetailsComponent } from './visit-details/visit-details.component';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-// import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { OpBillingService } from "./op-billing.service";
 
 const routes: Routes = [
     {
         path: "**",
-        component: AppointmentComponent,
+        component: NewOPBillingComponent,
     },
 ];
 @NgModule({
     declarations: [
-        AppointmentComponent,
-        NewAppointmentComponent,
-        EditConsultantDoctorComponent,
-        EditRefraneDoctorComponent,
-        FeedbackComponent,
-        PatientAppointmentComponent,
-        ImageViewComponent,
-        CameraComponent,
-        InfoheadDirective,
-        VisitDetailsComponent,
+      NewOPBillingComponent
         
     ],
     imports: [
@@ -90,7 +69,7 @@ const routes: Routes = [
         MatListModule,
         MatSlideToggleModule,
         MatDividerModule,
-        MatDialogModule,
+        // MatDialogModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         ReactiveFormsModule,
@@ -105,11 +84,15 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        WebcamModule,
+        // WebcamModule,
         ScrollingModule,
-        MatSidenavModule 
+        // MatSidenavModule
+        
+        // MatDrawer
     ],
-    providers: [DatePipe],
-    entryComponents: [AppointmentComponent],
+    providers: [
+        OpBillingService,
+        DatePipe],
+    entryComponents: [NewOPBillingComponent],
 })
-export class appointmentModule {}
+export class OPBillingModule { }

@@ -22,7 +22,7 @@
 
         <div class="content-card">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <form [formGroup]="_IpSearchListService.myRefundBillForm" style="width: 100%;">
+                <form [formGroup]="_IPRefundService.myRefundBillForm" style="width: 100%;">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                             <!-- ================================ LABEL HEADER  -->
@@ -49,7 +49,7 @@
 
                                     <span class="label">Tariff Name : </span>
                                     <span class="data_input">{{selectedAdvanceObj.TariffName}}
-                                        <!-- {{_IpSearchListService.myShowDischargeSummaryForm.get("DOT").value}} -->
+                                        <!-- {{_IPRefundService.myShowDischargeSummaryForm.get("DOT").value}} -->
                                     </span>
 
                                     <app-common-date [screenFrom]="screenFromString"
@@ -245,7 +245,7 @@
 
                                             <div fxlayout="row"
                                                 style="background-color: white; padding: 2px;height:200px;">
-                                                <!-- <form [formGroup]="_IpSearchListService.myShowAdvanceForm"> -->
+                                                <!-- <form [formGroup]="_IPRefundService.myShowAdvanceForm"> -->
                                                 <div class="dialog-content-wrapper">
 
                                                     <!-- <mat-tab-group mat-align-tabs="start" class="tabs-group" mat-stretch-tabs> -->

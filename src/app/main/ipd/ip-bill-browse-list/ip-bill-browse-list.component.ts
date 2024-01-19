@@ -69,6 +69,8 @@ export class IPBillBrowseListComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   Groupname:any;
+  SpinLoading:boolean=false;
+  AdList:boolean=false;
 
 
   displayedColumns = [
@@ -530,7 +532,9 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
   viewgetBillReportPdf(BillNo) {
-    
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
     this._IpBillBrowseListService.getIpFinalBillReceipt(
     BillNo
       ).subscribe(res => {
@@ -541,12 +545,17 @@ export class IPBillBrowseListComponent implements OnInit {
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "Op Bill  Viewer"
+            title: "IP Bill  Viewer"
           }
         });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
     });
+   
+    },100);
   }
-
 
   // GET DATA FROM DATABASE 
   getPrint(el) {

@@ -1,6 +1,23 @@
 @import "src/@fuse/scss/fuse";
 
 app-admission{
+    .loading-spinner {
+        font-size: 50px;
+        color: #319fc0;
+    }
+
+    .loading-overlay {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      
+      .container {
+        width: 100%;
+      }      
+
+
 .mat-header-row {
     //width: 2530px;
     width: 100%;

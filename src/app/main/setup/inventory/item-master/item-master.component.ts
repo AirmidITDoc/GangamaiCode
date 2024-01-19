@@ -217,6 +217,7 @@ export class ItemMaster {
     IsDeletedSearch: number;
     MaxDisc:any;
     Storagelocation:any;
+    CompanyId:any;
     /**
      * Constructor
      *
@@ -259,6 +260,7 @@ export class ItemMaster {
             this.IsDeletedSearch = ItemMaster.IsDeletedSearch || "";
             this.MaxDisc=ItemMaster.MaxDisc || 0
             this.Storagelocation=ItemMaster.Storagelocation ||""
+            this.CompanyId=ItemMaster.CompanyId ||""
         }
     }
 }

@@ -58,6 +58,12 @@ export class DocData {
   animations: fuseAnimations,
 })
 export class AppointmentComponent implements OnInit {
+  // events: string[] = [];
+  // opened: boolean;
+
+  // shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+
+
   msg: any;
   sIsLoading: string = "";
   // isLoading = true;
@@ -132,7 +138,7 @@ export class AppointmentComponent implements OnInit {
   VisitFormGroup: FormGroup;
   searchFormGroup: FormGroup;
   registration: any;
-  isRegSearchDisabled: boolean = true;
+  isRegSearchDisabled: boolean = false;
   Regdisplay: boolean = false;
   newRegSelected: any = 'registration';
   dataArray = {};
@@ -213,6 +219,8 @@ export class AppointmentComponent implements OnInit {
   VisitId: any;
   FimeName: any;
 VisitFlag=0;
+
+VisitFlagDisp:boolean=false;
 DoctorId:any;
   @ViewChild('attachments') attachment: any;
 
@@ -300,30 +308,6 @@ private _Activatedroute: ActivatedRoute,
     console.log( this.configService.configParams.DepartmentId);
   }
 
-
-
-
-
-  getregisterList(){
-    debugger;
-    this.sIsLoading = 'loading';
-    var D_data = {
-    
-      "VisitId":159641// this.selectedAdvanceObj.VisitId,
-    }
-    console.log(D_data);
-    this.sIsLoading = 'loading-data';
-    this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as CasepaperVisitDetails[];
-
-      console.log(this.dataSource1.data);
-     
-      this.sIsLoading = '';
-
-     
-    })
-    
-  }
 
 
   AddList(m) {
@@ -743,7 +727,7 @@ private _Activatedroute: ActivatedRoute,
       this.personalFormGroup.reset();
       this.personalFormGroup.get('RegId').reset();
       this.searchFormGroup.get('RegId').disable();
-      // this.isRegSearchDisabled = false;
+      this.isRegSearchDisabled = false;
 
       this.personalFormGroup = this.createPesonalForm();
       this.personalFormGroup.markAllAsTouched();
@@ -751,10 +735,10 @@ private _Activatedroute: ActivatedRoute,
       this.VisitFormGroup.markAllAsTouched();
       // this.Regdisplay = false;
       // this.showtable = false;
-
+      this.Regflag=false;
 
     } else {
-      this.isRegSearchDisabled = false;
+      
       this.personalFormGroup.get('RegId').enable();
       this.personalFormGroup.reset();
       this.Patientnewold = 2;
@@ -764,6 +748,8 @@ private _Activatedroute: ActivatedRoute,
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       this.Regflag=true;
+      this.isRegSearchDisabled = true;
+
     }
 
     this.getHospitalList1();
@@ -1043,30 +1029,7 @@ debugger
       this.VisitFlag=1;
       this.DoctorId=result.DoctorId;
       // this.BatchNo = result.BatchNo;
-      // this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-      // this.MRP = result.UnitMRP;
-      // this.Qty = '';
-      // this.Bal = result.BalanceAmt;
-      // this.GSTPer = result.VatPercentage;
-
-      // this.TotalMRP = this.Qty * this.MRP;
-      // this.DiscAmt = 0;
-      // this.NetAmt = this.TotalMRP;
-      // this.BalanceQty = result.BalanceQty;
-      // this.ItemObj = result;
-
-      // this.VatPer = result.VatPercentage;
-      // // console.log(this.VatPer);
-      // this.CgstPer = result.CGSTPer;
-      // this.SgstPer = result.SGSTPer;
-      // this.IgstPer = result.IGSTPer;
-
-      // this.VatAmount = result.VatPercentage;
-      // this.StockId = result.StockId
-      // this.StoreId = result.StoreId;
-      // this.LandedRate = result.LandedRate;
-      // this.PurchaseRate = result.PurchaseRate;
-      // this.UnitMRP = result.UnitMRP;
+     
 debugger
       const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
       this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
@@ -1104,31 +1067,11 @@ debugger
 
   }
 
-  //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
-  public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
-  public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
-  public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  // //purpose filter
-  // public purposeFilterCtrl: FormControl = new FormControl();
-  // public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
-
 
   //hospital filter
   public hospitalFilterCtrl: FormControl = new FormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
 
@@ -1341,8 +1284,22 @@ debugger
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
+  RegOrPhoneflag='';
+  getSelectedObjPhone(obj){
+    this.RegOrPhoneflag='Entry From Phone Appointment'
+    this.registerObj = obj;
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.RegId;
+
+    // this.setDropdownObjs();
+
+    // this.getVistDetailsList();
+    this.getVisitDetails();
+    this.VisitFlagDisp=true;
+  }
 
   getSelectedObj(obj) {
+    this.RegOrPhoneflag='Entry from Registration';
     obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeDay.trim();
     obj.AgeYear = obj.AgeYear.trim();
@@ -1352,8 +1309,9 @@ debugger
 
     this.setDropdownObjs();
 
-    // this.getregisterList();
+    // this.getVistDetailsList();
     this.getVisitDetails();
+    this.VisitFlagDisp=true;
   }
   setDropdownObjs() {
 
@@ -2715,8 +2673,39 @@ debugger
 
 
 
-}
+  
 
+
+
+  getVistDetailsList(){
+    debugger;
+    this.sIsLoading = 'loading';
+    var D_data = {
+    
+      "VisitId":159641// this.selectedAdvanceObj.VisitId,
+    }
+    console.log(D_data);
+    this.sIsLoading = 'loading-data';
+    this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
+      this.dataSource1.data = Visit as CasepaperVisitDetails[];
+
+      console.log(this.dataSource1.data);
+     
+      this.sIsLoading = '';
+
+     
+    })
+    
+  }
+  departmentId:any;
+  DosctorId:any;
+  getVisitRecord(row){
+  this.departmentId= row.DepartmentId;
+  this.DosctorId=row.DoctorId;
+  Swal.fire(this.departmentId,this.DoctorId)
+  this.VisitFlagDisp=false;
+}
+}
 
 export class DocumentUpload {
   DocumentName: any;

@@ -158,10 +158,14 @@
 
 
                                     <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="width: 50px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
                                         (click)="getPrint()">
                                         Show
                                     </button>
+
+                                    <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                        Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                    </span>
 
                                     <!-- <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="width: 400px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 400px;"

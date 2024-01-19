@@ -190,7 +190,7 @@ DoctorId:any=0;
     
     if (this.data) {
 
-      this.registerObj = this.data.registerObj;
+      this.registerObj = this.data.PatObj;
       this.DoctorId=this.data.registerObj.DoctorId;
       // console.log(this.registerObj);
 

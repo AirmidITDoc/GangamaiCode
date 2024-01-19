@@ -1,46 +1,36 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatAccordion } from '@angular/material/expansion';
-import { MatDrawer } from '@angular/material/sidenav';
+import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
+import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
-import { SearchInforObj, ChargesList } from '../opd-search-list/opd-search-list.component';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { OPSearhlistService } from '../op-searhlist.service';
+import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { debounceTime, exhaustMap, filter, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
-import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
-import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
-import * as converter from 'number-to-words';
-import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
+import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
+import { IpPaymentInsert } from '../../op-search-list/op-advance-payment/op-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../appointment/appointment.component';
-
-type NewType = Observable<any[]>;
-export class ILookup {
-  BalanceQty: number;
-  ItemID: number;
-  ItemName: string;
-  UOM: string;
-  UnitofMeasurementId: number;
-}
+import { takeUntil } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-op-billing',
-  templateUrl: './op-billing.component.html',
-  styleUrls: ['./op-billing.component.scss'],
+  selector: 'app-new-opbilling',
+  templateUrl: './new-opbilling.component.html',
+  styleUrls: ['./new-opbilling.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
-})
-export class OPBillingComponent implements OnInit {
 
+})
+export class NewOPBillingComponent implements OnInit {
+
+ 
   saveclick: boolean = false;
   hasSelectedContacts: boolean;
 
@@ -63,7 +53,8 @@ export class OPBillingComponent implements OnInit {
   Consessionres: boolean = false;
 
   displayedColumns = [
-    'ChargesDate',
+    // 'ChargesDate',
+    'action',
     'ServiceName',
     'Price',
     'Qty',
@@ -73,8 +64,8 @@ export class OPBillingComponent implements OnInit {
     'NetAmount',
     'ChargeDoctorName',
     'ClassName',
-    'ChargesAddedName',
-    'action'
+    'ChargesAddedName'
+   
   ];
 
   tableColumns = [
@@ -176,7 +167,7 @@ export class OPBillingComponent implements OnInit {
     private renderer: Renderer2,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-    private dialogRef: MatDialogRef<OPBillingComponent>,
+    // private dialogRef: MatDialogRef<NewOPBillingComponent>,
     public _httpClient: HttpClient,
     private formBuilder: FormBuilder) { }
 
@@ -283,7 +274,7 @@ export class OPBillingComponent implements OnInit {
     var m_data = {
       SrvcName: `${this.registeredForm.get('SrvcName').value}%`,
       TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId: this.selectedAdvanceObj.ClassId || 1
+      ClassId:1,// this.selectedAdvanceObj.ClassId || 1
     };
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
@@ -297,6 +288,14 @@ export class OPBillingComponent implements OnInit {
       // });
     }
   }
+
+  getOptionText1(option) {
+    // if (!option)
+    //   return '';
+    // return option.ServiceName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+
+  }
+
 
   getOptionText(option) {
     if (!option)
@@ -456,7 +455,7 @@ export class OPBillingComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
@@ -504,7 +503,7 @@ export class OPBillingComponent implements OnInit {
                 if (result.isConfirmed) {
                   let m = response;
                   this.viewgetBillReportPdf(m);
-                  this._matDialog.closeAll();
+                  // this._matDialog.closeAll();
                 }
               });
             } else {
@@ -542,7 +541,7 @@ export class OPBillingComponent implements OnInit {
                     if (result.isConfirmed) {
                       let m = response;
                       this.viewgetBillReportPdf(response);
-                      this._matDialog.closeAll();
+                      // this._matDialog.closeAll();
                     }
                   });
                 } else {
@@ -609,7 +608,7 @@ export class OPBillingComponent implements OnInit {
               let m = response;
               this.viewgetBillReportPdf(response);
               // this.getPrint(m);
-              this._matDialog.closeAll();
+              // this._matDialog.closeAll();
             }
           });
         } else {
@@ -645,13 +644,13 @@ export class OPBillingComponent implements OnInit {
           ConcessionPercentage: this.v_ChargeDiscPer || 0,
           DiscAmt: this.b_ChargeDisAmount || 0,
           NetAmount: this.b_netAmount || 0,
-          ClassId: this.selectedAdvanceObj.ClassId || 0,
+          ClassId:1,//this.selectedAdvanceObj.ClassId || 0,
           DoctorId: this.DoctornewId,// (this.registeredForm.get("DoctorID").value.DoctorName).toString() || '',
           DoctorName: this.ChargesDoctorname,
           ChargesDate:  this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
           IsPathology: this.b_isPath,
           IsRadiology: this.b_isRad,
-          ClassName: this.selectedAdvanceObj.ClassName || '',
+          ClassName:'c1',// this.selectedAdvanceObj.ClassName || '',
           ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
 
         });
@@ -895,7 +894,7 @@ export class OPBillingComponent implements OnInit {
 
   convertToWord(e) {
 
-    return converter.toWords(e);
+    // return converter.toWords(e);
   }
 
 
@@ -942,7 +941,9 @@ export class OPBillingComponent implements OnInit {
   }
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
+    this.registeredForm.reset();
+    this.dataSource.data=[];
   }
 
   showNewPaymnet() {
@@ -1027,16 +1028,19 @@ export class OPBillingComponent implements OnInit {
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
   registerObj = new RegInsert({});
-  PatientName:any;RegId:any;
+  PatientName:any ="";
+  RegId:any;
   searchFormGroup: FormGroup;
-
+  Regflag: boolean = false;
+  RegDate:any;
+  City:any;
   getSearchList() {
 
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
 
-    this._oPSearhlistService.getRegistrationList(m_data).subscribe(data => {
+    this._oPSearhlistService.getRegisteredList(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -1050,9 +1054,10 @@ export class OPBillingComponent implements OnInit {
   getSelectedObj1(obj) {
    
     this.registerObj = obj;
-    this.PatientName = obj.PatientName;
+    this.PatientName = obj.FirstName + " "+ obj.MiddleName+ " "+ obj.LastName;
     this.RegId = obj.RegId;
-
+    this.City=obj.City;
+    this.RegDate=this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     // this.setDropdownObjs();
 
     // this.getregisterList();
@@ -1449,9 +1454,3 @@ export class Post {
 function takeWhileInclusive(arg0: (p: any) => boolean): import("rxjs").OperatorFunction<unknown, unknown> {
   throw new Error('Function not implemented.');
 }
-// select * from Bill order by 1 desc
-// select * from BillDetails order by 1 desc
-// select * from lvwBill order by 1 desc
-// select * from AddCharges where ChargesId=21
-// select * from ServiceMaster where ServiceId=21
-// exec rptBillPrint 611755

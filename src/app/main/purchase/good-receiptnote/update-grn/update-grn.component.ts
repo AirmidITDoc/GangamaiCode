@@ -84,9 +84,9 @@ export class UpdateGRNComponent implements OnInit {
   SGSTFinalAmount: any;
   IGSTFinalAmount: any;
   vTotalFinalAmount: any;
-  GSTTypeList: any = [];
-  RoundAmt: any = 0;
-
+  GSTTypeList:any=[];
+  RoundAmt:any=0;
+  newDateTimeObj: any = {};
   dsGRNList = new MatTableDataSource<GRNList>();
 
   dsGrnItemList = new MatTableDataSource<GrnItemList>();
@@ -729,7 +729,9 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   OnSavenew() {
-    //console.log(this.supplierID)
+    let nowDate = new Date();
+    let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+    this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;

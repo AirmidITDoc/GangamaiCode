@@ -42,7 +42,8 @@ export class AdmissionComponent implements OnInit {
   reportPrintObj: Admission;
   searchFormGroup: FormGroup;
   isLoadings = false;
-
+  SpinLoading:boolean=false;
+  
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Admission[] = [];
@@ -127,7 +128,7 @@ export class AdmissionComponent implements OnInit {
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   DoctorId: any = 0;
-
+  AdList:boolean=false;
   options = [];
   optionsPrefix: any[] = [];
   optionsDep: any[] = [];
@@ -231,7 +232,7 @@ export class AdmissionComponent implements OnInit {
   filteredDoctor: any;
   dialogRef: any;
   isLoading: string;
-
+  Regflag: boolean = false;
   constructor(public _AdmissionService: AdmissionService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
@@ -788,6 +789,7 @@ export class AdmissionComponent implements OnInit {
 
   onChangeReg(event) {
     if (event.value == 'registration') {
+      this.Regflag=false;
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
@@ -817,7 +819,7 @@ export class AdmissionComponent implements OnInit {
 
     } else {
       this.Regdisplay = true;
-
+      this.Regflag=true;
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
 
@@ -1486,14 +1488,17 @@ debugger
 
 
   getAdmittedPatientListview() {
-    
+    debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
     this._AdmissionService.getAdmittedPatientListView(
      
       this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       0,0,
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
+      const matDialog = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "85vw",
           height: '750px',
@@ -1503,7 +1508,18 @@ debugger
             title: "Admission List  Viewer"
           }
         });
+
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
     });
+   
+    },100);
+
+   
+
+   
   }
 
   // AdmissionNewComponent
@@ -1550,7 +1566,7 @@ debugger
           this.sIsLoading = '';
         });
 
-      const dialogRef = this._matDialog.open(NewAdmissionComponent,
+      const dialogRef = this._matDialog.open(RegAdmissionComponent,
         {
           maxWidth: '95vw',
 

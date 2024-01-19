@@ -1,0 +1,552 @@
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; ">
+    <!-- <div class="col-md-12" style="padding:10px;" *ngIf="selectedView == 'Dropdown'"> -->
+    <div class="container" style="width: 100%;">
+        <div style="width: 100%;">
+            <!-- <div fxFlex> -->
+            <div fxLayout="row" fxLayoutAlign="start center" class="accent"
+                style="width:100% ; height:37px;color: white;">
+
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+                    <button mat-icon-button class="sidebar-toggle mr-12">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+
+                    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
+                        style="width: 98%;font-size: 16px;">
+                        OPD BILLING 
+                    </span>
+
+                    <div fxLayout="row" style="float: right; margin-right: 5px;">
+                        <span style="margin-right: 40px;color: aliceblue;font-weight: bold;">
+                            <app-common-date [screenFrom]="screenFromString"
+                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        </span>
+                        <!-- <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+                            close
+                        </span> -->
+                    </div>
+                </div>
+            </div>
+
+          
+            <mat-card-content style="width: 100%;margin-right: 5px;">
+                <div fxLayout="column">
+                    <mat-card style="background-color: rgb(202, 223, 223);height:80px !important">
+                        <form [formGroup]="searchFormGroup">
+                        <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;">
+                            <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
+                              matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                            <span matSuffix style="display: flex;">
+                              <mat-icon class="mat-icon-close"
+                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                              <mat-icon class="mat-icon-close"
+                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                              (optionSelected)='getSelectedObj1($event.option.value)'>
+                              <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                {{option.MobileNo}}
+                              </mat-option>
+                            </mat-autocomplete>
+                            <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
+                              Required field cannot be left blank
+                            </mat-error> -->
+                          </mat-form-field>
+
+                          <span style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient Name :{{PatientName}} <span style="margin-left: 10px;">RegId :{{RegId}}</span><span style="margin-left: 10px;">RegDate :{{RegDate}}</span><span style="margin-left: 10px;">City :{{City}}</span></span>
+                        </form>
+                    </mat-card>
+
+                </div>
+                <div fxLayout="column">
+
+                    <div class="content-card"
+                        style="width:100%;  margin-top: 2px; float: right;background-color: white; margin-right: 10px;margin-left: 10px;">
+                        <div fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="3px">
+                            <div fxlayout="row" style=" padding: 3px 3px 3px 1px; margin-right: 5px;">
+                                <!-- ================================ LABEL HEADER  -->
+                               
+                                <mat-card fxFlex.gt-sm="100%" fxFlex
+                                    style="padding: 0 5px; height: fit-content; background-color: white;">
+                                    &nbsp;
+                                    <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm>
+
+                                        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+
+                                            <mat-form-field appearance="outline" style="width:400px;" #myInput>
+                                                <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
+                                                    placeholder="Service Name" matInput [matAutocomplete]="auto"
+                                                    (keydown)="onEnterservice($event)"
+                                                    (input)="getServiceListCombobox()" required id="myInput">
+
+                                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                                    showPanel="true" (optionsScroll)="onScroll()"
+                                                    (optionSelected)='getSelectedObj($event.option.value)'
+                                                    style="width: 500px;">
+                                                    <mat-option *ngFor="let option of filteredOptions" [value]="option"
+                                                        style="width: 500px;">
+                                                        {{option.ServiceName}} | Price {{option.Price}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <mat-hint>
+                                                    <span *ngIf="noOptionFound" style="color: #f44336;">No data
+                                                        Found</span>
+                                                </mat-hint>
+                                                <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
+                                                    Required field cannot be left blank
+                                                </mat-error>
+                                            </mat-form-field>
+
+
+                                            <mat-form-field appearance="outline" #Price style="width:100px;">
+                                                <mat-label>Price</mat-label>
+                                                <input matInput [(ngModel)]="b_price" name="bPrice" #price
+                                                    formControlName="price" required type="number" id="Price"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
+                                                    Price is required</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width:100px;">
+                                                <mat-label>Qty</mat-label>
+                                                <input matInput [(ngModel)]="b_qty" name="bQty" #qty
+                                                    (keyup)="calculateTotalAmt()" formControlName="qty" required
+                                                    (keydown)="onEnterqty($event)">
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
+                                                    Qty is required</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width:100px;">
+                                                <mat-label>TotalAmt</mat-label>
+                                                <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
+                                                    formControlName="ChargeTotalAmount" required>
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('ChargeTotalAmount').invalid && registeredForm.get('ChargeTotalAmount').touched">
+                                                    TotalAmount is required</mat-error>
+                                            </mat-form-field>
+
+                                            <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
+                                                <mat-form-field appearance="outline" fxFlex id="DoctorID">
+                                                    <mat-label>Doctor Name</mat-label>
+                                                    <mat-select formControlName="DoctorID" placeholder="Bank" #DoctorId
+                                                        #singleSelect>
+                                                        <mat-option>
+                                                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"
+                                                                [placeholderLabel]="'Search'"
+                                                                [noEntriesFoundLabel]="'No matching found'">
+                                                            </ngx-mat-select-search>
+                                                        </mat-option>
+                                                        <mat-option *ngFor="let element of filteredDoctor | async"
+                                                            [value]="element">
+                                                            {{element.DoctorName}}
+                                                        </mat-option>
+                                                        <mat-hint>Plz Select Doctor Name</mat-hint>
+                                                        <mat-error
+                                                            *ngIf="registeredForm.get('DoctorID').hasError('required')">
+                                                            Required field cannot be left blank
+                                                        </mat-error>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <mat-form-field appearance="outline" style="width:100px;">
+                                                <mat-label>Disc %</mat-label>
+                                                <input matInput [(ngModel)]="v_ChargeDiscPer" name="v_ChargeDiscPer"
+                                                    #disper (keyup)="calculatePersc()" formControlName="ChargeDiscPer"
+                                                    type="number" (keydown)="onEnterdiscper($event)">
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('ChargeDiscPer').invalid && registeredForm.get('ChargeDiscPer').touched">
+                                                    Percentage is Number</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width:100px;">
+                                                <mat-label>Disc Amt</mat-label>
+                                                <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount"
+                                                    #discamt formControlName="ChargeDiscAmount" type="number"
+                                                    (keyup)="calculatechargesDiscamt()"
+                                                    (keydown)="onEnterdiscAmount($event)" id="DiscAmt">
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('ChargeDiscAmount').invalid && registeredForm.get('ChargeDiscAmount').touched">
+                                                    Discount Amount Schod me Less than Tptal Amount TotalAmount is
+                                                    required</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width:100px;">
+                                                <mat-label>NetAmount</mat-label>
+                                                <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly
+                                                    formControlName="netAmount" required>
+                                                <mat-error
+                                                    *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
+                                                    NetAmount is required</mat-error>
+                                            </mat-form-field>
+
+                                            <div matTooltip="Select doctor name to enable this button!!"
+                                                [matTooltipDisabled]="!registeredForm.invalid"
+                                                [matTooltipPosition]="'above'">
+                                                <!-- <button mat-raised-button fxLayoutAlign="center center"
+                                                    (click)="onAddCharges()" [disabled]="registeredForm.invalid"
+                                                    style="background-color: blue; color: white; width: 70px;margin-left: 20px; "
+                                                    (keydown.enter)="focusNextService()">
+                                                    <mat-icon> add </mat-icon> &nbsp;Add
+                                                </button>-->
+                                                <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                                    class="add-btn" [disabled]="!add" (click)="onAddCharges()">
+                                                    <mat-icon> add </mat-icon>
+                                                    Add
+                                                </button>
+
+
+
+                                            </div>
+
+                                            
+                                        </div>
+                                    </form>
+                                </mat-card>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" style="width: 100%;">
+                        <div fxFlex="100" fxLayout="row" fxLayout.gt-xs="column"
+                            style="width:85%; ;margin-left: 1px; margin-right: 5px; margin-top: 7px;margin-left: 7px;">
+                            <mat-tab-group style="background-color: white;">
+
+                                <mat-tab>
+                                    <ng-template mat-tab-label
+                                        style="color: black; font-size: 17px bold; height: 100px; ">
+                                        <!-- <mat-icon class="example-tab-icon">thumb_up</mat-icon>&nbsp; -->
+                                        chargeslist
+                                    </ng-template>
+                                    <div>
+                                        <div class="col-md-12">
+                                            <!-- ================= Charges List Table ======================= -->
+                                            <mat-table #table matSort [dataSource]="dataSource"
+                                                [@animateStagger]="{value:'50'}" style="height:300px !important;overflow: auto;">
+                                                <!-- <ng-container matColumnDef="checkbox" sticky>
+                                style="overflow:auto; border: 1px solid;" class="mat-data-table">
+                                <ng-container matColumnDef="checkbox" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        <span class="material-icons" (click)="getChargesList()">
+                                            cached
+                                        </span>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        <mat-checkbox aria-label="Checked">
+                                         
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container> -->
+                                                <!-- <ng-container matColumnDef="checkbox">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <mat-checkbox aria-label="Checked"
+                                                            (change)="tableElementChecked($event, contact)">
+                                                        </mat-checkbox>
+                                                    </mat-cell>
+                                                </ng-container> -->
+                                                <!-- <ng-container matColumnDef="ChargesDate">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                        style="margin-right: 5px;">Date</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        {{contact.ChargesDate}}
+                                                    </mat-cell>
+                                                </ng-container> -->
+
+                                                <ng-container matColumnDef="action">
+                                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let row">
+                                                        <!-- <button mat-icon-button (click)="onEdit(row)">
+                                                            <mat-icon title="Edit Menu">launch</mat-icon>
+                                                        </button> -->
+                                                        <button mat-icon-button (click)="deleteTableRow(row)"
+                                                            color="warn">
+                                                            <mat-icon>delete_outline</mat-icon>
+                                                        </button>
+                                                        <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
+                                                    </mat-cell>
+                                                </ng-container>
+                                             
+                                                <ng-container matColumnDef="ServiceName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Service Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ServiceName}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Price">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Price
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Price | currency:'INR' }}
+                                                        <!-- <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="contact.Price" (keyup)="getTotalAmount(contact)">
+                                            <span matPrefix>₹</span>
+                                        </mat-form-field> -->
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Qty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Qty}}
+                                                        <!-- <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="contact.Qty" (keyup)="getTotalAmount(contact)">
+                                        </mat-form-field> -->
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="TotalAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Total Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.TotalAmt | currency:'INR' }}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="DiscPer">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
+                                                        %
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ConcessionPercentage}}
+                                                        <!-- <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="contact.ConcessionPercentage" (keyup)="getDiscAmount(contact)">
+                                        </mat-form-field> -->
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="DiscAmt">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
+                                                        Amt
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <!-- <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="contact.DiscAmt" (keyup)="getDiscValue(contact)">
+                                            <span matPrefix>₹</span>
+                                        </mat-form-field> -->
+                                                        {{contact.DiscAmt | currency:'INR' }}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="NetAmount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        NetAmount
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.NetAmount | currency:'INR' }}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <!-- <ng-container matColumnDef="DoctorId">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                       Charge DoctorId
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.DoctorId}}
+                                                    </mat-cell>
+                                                </ng-container> -->
+
+                                                <ng-container matColumnDef="ChargeDoctorName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        ChargeDoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.DoctorName}}
+                                                    </mat-cell>
+
+                                                </ng-container>
+                                                <ng-container matColumnDef="ClassName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        ClassName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ClassName}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="ChargesAddedName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        AddedBy
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ChargesAddedName}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                              
+
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        <!-- <mat-spinner  class="spinner" [diameter]="35"
+                                            [color]="blue"></mat-spinner> -->
+                                                        <span>No Data Found</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="displayedColumns; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                    [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide':dataSource!=null}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+                                            <!-- ================= Charges List Footer Table ======================= -->
+                                            <div>
+                                                <!-- <div class="paginator-div">
+                                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                                        showFirstLastButtons>
+                                                    </mat-paginator>
+                                                    <span class="net-amt-label">Total:</span>&nbsp;<span
+                                                        class="net-amt-value">{{chargeslist.length}}</span>
+                                                </div> -->
+                                                <div>
+                                                 
+                                                    <!-- Disc Amount
+                                                    {{getDiscAmtSum(dataSource.data)}} -->
+                                                    <span class="net-amt-label"
+                                                    style="width: 200px;font-weight: bold;color: blue;">No of
+                                                    Services:</span><span class="net-amt-value"
+                                                    style="margin-right: 200px;">{{dataSource.data.length}}</span>
+                                                    <span class="net-amt-label" style="margin-left:480px;color: blue;">Net Amount:</span>&nbsp;<span
+                                                        class="net-amt-value">{{getNetAmtSum(dataSource.data)}}</span>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+
+
+
+                            </mat-tab-group>
+
+                        </div>
+
+
+
+
+                    </div>
+                    <div>
+                        <form [formGroup]="BillingForm">
+                            <div fxFlex="100" class="content py-16 pl-10 p-12" fxLayout="row" fxLayout.gt-xs="column"
+                                fusePerfectScrollbar style=" width:20%; float: right;  border-radius:4px; background-color: white;
+                        border:rgba(0,0,0,0.12) 1px solid; float: right;  padding: 1em; margin-top: 10px;">
+                                <div class="nav material2">
+
+                                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                                        <div>
+                                            <mat-form-field appearance="outline" class="Consession-field"
+                                                style="width: 200px;">
+                                                <mat-label>Total Amount</mat-label>
+                                                <input matInput [(ngModel)]="b_TotalChargesAmount"
+                                                    name="b_TotalChargesAmount" formControlName="TotallistAmount"
+                                                    readonly>
+                                                <mat-error
+                                                    *ngIf="BillingForm.get('TotallistAmount').invalid && BillingForm.get('TotallistAmount').touched">
+                                                    FinalAmt is required</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field class="Consession-field" appearance="outline"
+                                                style="width: 100px;">
+                                                <mat-label>Disc(%)</mat-label>
+                                                <input matInput [(ngModel)]="b_concessionDiscPer"
+                                                    formControlName="concesDiscPer" name="b_concessionDiscPer"
+                                                    (keyup)="calcDiscPersonTotal()" placeholder="0" type="number">
+                                                <mat-error
+                                                    *ngIf="BillingForm.get('concesDiscPer').invalid && BillingForm.get('concesDiscPer').touched">
+                                                    Percentage is Number</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field class="Consession-field" appearance="outline"
+                                                style="width: 100px;">
+                                                <mat-label>Disc Amt</mat-label>
+                                                <input matInput [(ngModel)]="b_concessionamt" name="b_Consessionamt"
+                                                    formControlName="concessionAmt" placeholder="0" type="number"
+                                                    (keyup)="calculateDiscamtfinal()">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" class="Consession-field"
+                                                style="width: 200px;">
+                                                <mat-label>Net Amount</mat-label>
+                                                <input matInput [(ngModel)]="TotalnetPaybleAmt" name="TotalnetPaybleAmt"
+                                                    formControlName="FinalAmt" readonly required>
+                                                <mat-error
+                                                    *ngIf="BillingForm.get('FinalAmt').invalid && BillingForm.get('FinalAmt').touched">
+                                                    FinalAmt is required</mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width: 250px;"
+                                                *ngIf="Consessionres">
+                                                <mat-label>Concession Reason Type</mat-label>
+                                                <mat-select formControlName="ConcessionId" [disabled]="Consession">
+                                                    <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
+                                                        {{Doc.ConcessionReason}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" style="width: 250px;">
+                                                <mat-label>Remark</mat-label>
+                                                <input name="Address" appearance="legacy" style="color: green;"
+                                                    formControlName="BillRemark" placeholder="Remark" matInput>
+                                            </mat-form-field>
+
+                                            <!-- <mat-form-field appearance="outline" style="width: 250px;">
+                                                <mat-label>Cash Counter</mat-label>
+                                                <mat-select formControlName="CashCounterId">
+                                                    <mat-option *ngFor="let m of CashCounterList" [value]="m">
+                                                        {{m.CashCounterName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field> -->
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div fxLayout="row" style="color: rgb(10, 81, 135);">
+                                    <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
+                                        style="font-weight: bold;">
+                                        Cash Payment
+                                    </mat-checkbox>
+                                    <!-- <button class="next-btn" (click)="onSaveOPBill2()" [disabled]="BillingForm.invalid"
+                                    style="border-radius: 16px;margin-left: 60%;">View Bill</button> -->
+                                    <button class="footer-btn" (click)="onClose()"
+                                    style="border-radius: 16px;margin-left:80%;">Reset</button>
+                                    <button class="next-btn" (click)="onSaveOPBill2()" [disabled]="BillingForm.invalid"
+                                        style="border-radius: 16px;margin-left:10px;">Save</button>
+                                   
+                                    <!-- <button class="next-btn" (click)="showNewPaymnet()"
+                                        style="border-radius: 16px;">Save</button> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </mat-card-content>
+            <!-- Final bill calculation -->
+
+
+        </div>

@@ -122,6 +122,11 @@ const appRoutes: Routes = [
             import("./main/pharmacy/pharmacy.module").then((m) => m.PharmacyModule),
     },
     {
+        path: "nursingstation",
+        loadChildren: () =>
+            import("./main/nursingstation/nursingstation.module").then((m) => m.NursingstationModule),
+    },
+    {
         path: "reports",
         loadChildren: () =>
             import("./main/reports/reports.module").then((m) => m.ReportsModule),
