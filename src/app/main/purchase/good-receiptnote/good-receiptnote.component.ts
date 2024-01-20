@@ -91,17 +91,17 @@ export class GoodReceiptnoteComponent implements OnInit {
     "ItemName",
     "BatchNo",
     "BatchExpDate",
+    "ConversionFactor",
     "ReceiveQty",
     "FreeQty",
+    "TotalQty",
     "MRP",
     "Rate",
     "TotalAmount",
-    "ConversionFactor",
     "VatPercentage",
     "DiscPercentage",
     //"LandedRate",
     "NetAmount",
-    "TotalQty",
 
   ];
 
@@ -280,12 +280,12 @@ export class GoodReceiptnoteComponent implements OnInit {
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
       "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-   console.log(Param);
+   //console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
-      console.log(this.dsGRNList);
+      //console.log(this.dsGRNList);
       this.sIsLoading = '';
     },
       error => {
@@ -428,17 +428,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   getToStoreSearchCombo() {
-    // this._GRNService.getToStoreSearchList().subscribe(data => {
-    //   this.ToStoreList = data;
-    //   console.log(data);
-    //   this.optionsToStore = this.ToStoreList.slice();
-    //   this.filteredoptionsToStore = this._GRNService.GRNSearchGroup.get('ToStoreId').valueChanges.pipe(
-    //     startWith(''),
-    //     map(value => value ? this._filterStore(value) : this.ToStoreList.slice()),
-    //   );
-
-    // });
-
     var vdata = {
       Id: this.accountService.currentUserValue.user.storeId
     }
@@ -551,7 +540,7 @@ debugger
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
-       console.log(this.dsGrnItemList.data)
+       //console.log(this.dsGrnItemList.data)
     },
       error => {
         this.sIsLoading = '';
@@ -563,14 +552,6 @@ debugger
   }
 
   getToStoreSearchList() {
-    // this._GRNService.getToStoreSearchList().subscribe(data => {
-    //   this.ToStoreList = data;
-
-    //   this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.StoreList[0]);
-    //   // this.StoreName = this._GRNService.GRNSearchGroup.get('ToStoreId').value.StoreName;
-    // });
-
-
     var vdata = {
       Id: this.accountService.currentUserValue.user.storeId
     }
@@ -588,17 +569,6 @@ debugger
     });
   }
 
-  // getFromStoreSearchList() {
-  //   var data = {
-  //     Id: this.accountService.currentUserValue.user.storeId
-  //   }
-  //   this._GRNService.getFromStoreSearchList(data).subscribe(data => {
-  //     this.FromStoreList = data;
-  //     this._GRNService.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-  //   });
-
-
-  // }
 
   getItemNameList() {
     var Param = {
@@ -609,7 +579,7 @@ debugger
    // console.log(Param);
     this._GRNService.getItemNameList(Param).subscribe(data => {
       this.filteredOptions = data;
-      console.log(this.filteredOptions)
+     // console.log(this.filteredOptions)
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -652,7 +622,7 @@ debugger
     var m_data = {
       "GRNID": el.GRNID
     }
-    console.log(m_data);
+   // console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
       // debugger
@@ -670,7 +640,7 @@ debugger
         //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
         //   console.log(this.TotalQty)
 
-        console.log(this.reportPrintObjList);
+        //console.log(this.reportPrintObjList);
 
         setTimeout(() => {
           this.print3();
@@ -754,7 +724,7 @@ debugger
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
-      console.log(element);
+      //console.log(element);
 
       let grnDetailSaveObj = {};
     //  grnDetailSaveObj['grnDetID'] = 0;
@@ -800,7 +770,7 @@ debugger
     let updateItemMasterGSTPerObjarray = [];
     this.dsItemNameList.data.forEach((element) => {
 
-      console.log(element);
+      //console.log(element);
 
       let updateItemMasterGSTPerObj = {};
       // updateItemMasterGSTPerObj['grnDetID'] = 0;
@@ -819,7 +789,7 @@ debugger
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
     };
 
-    console.log(submitData);
+    //console.log(submitData);
 
     this._GRNService.GRNSave(submitData).subscribe(response => {
       if (response) {
@@ -1076,7 +1046,7 @@ debugger
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      //this.getGRNList();
+      this.getGRNList();
     });
   }
 
@@ -1135,10 +1105,10 @@ msg:any;
       "isVerified": true, 
     }
   }
-    console.log(Param)
+    //console.log(Param)
     this._GRNService.getVerifyGRN(Param).subscribe(data => {
       this.msg = data;
-      console.log(this.msg);
+      //console.log(this.msg);
       // if(data){
       //   this.toastr.success('Record Verified Successfully.', 'Verified !', {
       //     toastClass: 'tostr-tost custom-toast-success',
@@ -1319,6 +1289,8 @@ export class ItemNameList {
   Cash_CreditType:any;
   tranProcessMode:any;
   EwayBillNo:any;
+  TotalQty:any;
+  
   /**
    * Constructor
    *
@@ -1369,6 +1341,7 @@ export class ItemNameList {
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
+      this.TotalQty = ItemNameList.TotalQty || 0;
       this.EwayBillNo = ItemNameList.EwayBillNo || 0;
       this.Tranprocessmode = ItemNameList.Tranprocessmode || "";
       this.EwayBillDate=ItemNameList.EwayBillDate || this.CurrentDate;

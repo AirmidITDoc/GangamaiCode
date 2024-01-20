@@ -217,7 +217,7 @@ export class DeliverychallanComponent implements OnInit {
     return option && option.SupplierName ? option.SupplierName : '';
 
   }
-  @ViewChild('GRNListTemplate') GRNListTemplate: ElementRef;
+  @ViewChild('DeliveryListTemplate') DeliveryListTemplate: ElementRef;
   reportPrintObjList: GRNList[] = [];
   printTemplate: any;
   reportPrintObj: GRNList;
@@ -273,7 +273,7 @@ export class DeliverychallanComponent implements OnInit {
           <title></title>
       </head>
     `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.GRNListTemplate.nativeElement.innerHTML}</body>
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.DeliveryListTemplate.nativeElement.innerHTML}</body>
     <script>
       var css = '@page { size: portrait; }',
       head = document.head || document.getElementsByTagName('head')[0],

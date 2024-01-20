@@ -86,25 +86,34 @@
                                         </mat-form-field>&nbsp;
                                 
                                 
-                                        <div layout="row" layout-xs="column">
-                                            <div>
-                                                <mat-radio-group name="GRNType" formControlName="GRNType" value="true">
+                                        <div fxLayout="column">
+                                            
+                                                <mat-radio-group name="GRNType" formControlName="GRNType" value="ture" >
                                                     <mat-radio-button value="true" style="margin-bottom: 8px;" [(ngModel)]="registerObj.GRNType"
-                                                        [checked]="isChecked" class="mr-sm-12">Direct
+                                                         >Direct
                                                         Purchase</mat-radio-button>
-                                                    <mat-radio-button value="false" class="mr-sm-12" [(ngModel)]="registerObj.GRNType">
+                                                    <mat-radio-button value="false"   [(ngModel)]="registerObj.GRNType">
                                                         Purchase Orders</mat-radio-button>
                                                 </mat-radio-group>
-                                            </div>
-                                            <div>
-                                                <mat-radio-group  name="PaymentType"  value="true" formControlName="PaymentType" 
-                                                    (click)="PaymentTypeChk()">
+                                            
+                                            
+                                                <mat-radio-group name="PaymentType" formControlName="PaymentType" value="true">
+                                                    <mat-radio-button value="true"  [(ngModel)]="registerObj.Cash_CreditType"
+                                                         >Cash
+                                                        </mat-radio-button>
+                                                    <mat-radio-button value="false"   [(ngModel)]="registerObj.Cash_CreditType">
+                                                        Credit</mat-radio-button>
+                                                </mat-radio-group>
+                                            
+                                            <!-- <div>
+                                                <mat-radio-group  name="PaymentType"  value="true" formControlName="PaymentType" required
+                                                    (click)="PaymentTypeChk()" >
                                                     <mat-radio-button value="true"  class="mr-sm-12" [(ngModel)]="registerObj.Cash_CreditType">
                                                         Cash</mat-radio-button>
                                                     <mat-radio-button value="false"  class="mr-sm-12" [(ngModel)]="registerObj.Cash_CreditType">
                                                         Credit</mat-radio-button>
                                                 </mat-radio-group>
-                                            </div>
+                                            </div> -->
                                         </div>
                                 
                                         <mat-form-field appearance="outline" fxFlex="10%">
@@ -236,7 +245,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Rate </mat-label>
-                                        <input matInput [(ngModel)]="Rate" name="Rate" type="number"
+                                        <input matInput [(ngModel)]="Rate" name="Rate" type="number"  
                                             (keyup)="calculateTotalamt()" formControlName="Rate" id="Rate"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"
@@ -779,6 +788,14 @@
                                                 FreeQty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.FreeQty}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="TotalQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                TotalQty</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.TotalQty}}
                                             </mat-cell>
                                         </ng-container>
 
