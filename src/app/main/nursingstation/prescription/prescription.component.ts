@@ -66,7 +66,7 @@ export class PrescriptionComponent implements OnInit {
   //window
   Openpopup(){
     this.dialog.open(NewPrescriptionComponent,{
-      width:'80%',
+      width:'90%',
       height:'750px'
       
     })

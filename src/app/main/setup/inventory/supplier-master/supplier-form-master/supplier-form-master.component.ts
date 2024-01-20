@@ -38,7 +38,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
     optionsSubCompany: any[] = [];
     optionsStore: any[] = [];
-    optionsCity: any[] = [];
+    // optionsCity: any[] = [];
     optionsModeofpayment: any[] = [];
     optionsTermofpayment: any[] = [];
     optionsSuppliertype: any[] = [];
@@ -70,45 +70,38 @@ export class SupplierFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) {
-      this.getSupplierTypeMasterList();
-      this.getModeofpaymentCombobox();
-      this.getTermofpaymentCombobox();
-      this.getCountryNameCombobox();
-      this.getBankNameList1();
-      this.getCityNameCombobox();
-      this.getStoreNameCombobox();
+      // this.getSupplierTypeMasterList();
+      // this.getModeofpaymentCombobox();
+      // this.getTermofpaymentCombobox();
+      // this.getCountryNameCombobox();
+      // this.getBankNameList1();
+      // // this.getCityNameCombobox();
+      // this.getStoreNameCombobox();
     }
 
-    ngOnInit(): void {
-      
-      
-      this.getSupplierTypeMasterList();
-      this.getModeofpaymentCombobox();
-      this.getTermofpaymentCombobox();
-      this.getCountryNameCombobox();
-      this.getBankNameList1();
-      this.getCityNameCombobox();
-      this.getStoreNameCombobox();
-
-      
-      if(this.data){
-        debugger
-          this.registerObj=this.data.registerObj;
-          this.getCityNameCombobox();
-        this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
-        this.registerObj.Phone=this.data.registerObj.Phone.trim();
-        this.CityId=this.data.registerObj.CityId;
-        // this.setDropdownObjs1();
-        }
-
-
+  ngOnInit(): void {
+    this.getSupplierTypeMasterList();
+    this.getModeofpaymentCombobox();
+    this.getTermofpaymentCombobox();
+    this.getCountryNameCombobox();
+    this.getBankNameList1();
+    this.getCityNameCombobox();
+    // this.getStoreNameCombobox();
+    if (this.data) {
+      this.registerObj = this.data.registerObj;
+      // this.getCityNameCombobox();
+      this.registerObj.Mobile = this.data.registerObj.Mobile.trim();
+      this.registerObj.Phone = this.data.registerObj.Phone.trim();
+      this.CityId = this.data.registerObj.CityId;
+      // this.setDropdownObjs1();
     }
+    this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCity(value)),
+    );
+  }
 
-
-
-    
   setDropdownObjs1() {
-    debugger
 
     // for(var i=0; i < this.CitycmbList;i++){
     //     if(this.CitycmbList[i].CityId==this.CityId)
@@ -187,29 +180,17 @@ export class SupplierFormMasterComponent implements OnInit {
       
 
     getCityNameCombobox() {
-      debugger
+      
     this._supplierService.getCityMasterCombo().subscribe(data => {
       this.CitycmbList = data;
-      console.log(this.CitycmbList)
-      this.optionsCity = this.CitycmbList.slice();
-      this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.CitycmbList.slice()),
-      );
-
+      if (this.data) {
+        const ddValue = this.CitycmbList.filter(c => c.CityId == this.data.registerObj.CityId);
+        this._supplierService.myform.get('CityId').setValue(ddValue[0]);
+        this.onChangeCityList(this.data.registerObj.CityId)
+        this._supplierService.myform.updateValueAndValidity();
+        return;
+      } 
     });
-    this._supplierService.myform.updateValueAndValidity();
-    debugger
-
-    // if (this.data) {
-    //   console.log(this.CitycmbList)
-    //   const ddValue = this.CitycmbList.find(c => c.CityId == this.data.registerObj.CityId);
-    //   this._supplierService.myform.get('CityId').setValue(ddValue);
-    //   this.onChangeCityList(this.data.registerObj.CityId)
-    //   this._supplierService.myform.updateValueAndValidity();
-    // }
-    // this._supplierService.myform.updateValueAndValidity();
-    console.log(this.CitycmbList)
   }
  
   
@@ -217,7 +198,7 @@ export class SupplierFormMasterComponent implements OnInit {
     if (value) {
       const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
 
-      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+      return this.CitycmbList.filter(option => option.CityName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -357,7 +338,6 @@ var m = {
 
   
     onSubmit() {
-      debugger
         // if (this._supplierService.myform.valid) {
             if (!this._supplierService.myform.get("SupplierId").value) {
                 var data2 = [];

@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { Label } from 'ng2-charts';
 import Chart from 'chart.js';
 import { element } from 'protractor';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pharmacy-dashboard',
@@ -43,6 +44,7 @@ export class PharmacyDashboardComponent implements OnInit {
   Cheque: any = '22,241';
   
   sIsLoading: string = '';
+  isCollectionLoad: string = '';
   isLoading = true;
   PharmacyDashboard: PharDashSummary[] = [];
    
@@ -54,21 +56,17 @@ export class PharmacyDashboardComponent implements OnInit {
   dsPharmacyDashboard = new MatTableDataSource<PharDashSummary>();
   maindata: any;
   labeldata: any;
-  
 
-  constructor(
-    public _DashboardService : DashboardService,
-    public datePipe: DatePipe,
-    ) { }
-  ngOnInit(): void {
-   this.getPharDashboardSalesSummary();
-   this.fetchChartData();
-   //this.RenderChart(this.labeldata,this.PiechartData5);
-   this.getBarchartData();
-   this.getPharmStoreList();
-   //this.BarChart(this.BarlabelData,this.BarchartData);
-   this.fetchChartData();
-  }
+  staticOptions: any[] = [
+    {value: 'BillCount', viewValue: 'Bill Count'},
+    {value: 'CollectionAmount', viewValue: 'Collection Amount'}
+  ];
+  selectedStatic = this.staticOptions[0].value;
+  
+  // BarChartData:any;
+  // BarlabelData:any[]=[];
+  // BarchartData:any[]=[];
+  // BardataList:any=[];
 
 
   chartData: any[] = [
@@ -116,31 +114,6 @@ export class PharmacyDashboardComponent implements OnInit {
 
     }
   };
-  BarChartData:any;
-  BarlabelData:any[]=[];
-  BarchartData:any[]=[];
-  BardataList:any=[];
-
-  getBarchartData() {
-      this._DashboardService.getBarchartData().subscribe(data => {
-        this.BardataList = data;
-      console.log(this.BardataList);
-       if(this.BarChartData != null){
-        this.BarChartData.forEach((element) => {
-          this.BarlabelData.push(element.StoreName);
-          this.BarchartData.push(element.NetSalesAmount);
-        }); 
-       // this.BarChart(this.BarlabelData,this.BarchartData);
-       } this.sIsLoading = '';
-      console.log(this.PiechartData5);
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-   
-  }
- 
-
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -156,8 +129,121 @@ export class PharmacyDashboardComponent implements OnInit {
     { data: [45, 34, 61, 70, 46, 40], label: 'Nov' }
   ];
 
+  threeMonSalesData: ChartDataSets[] = [];
+  threeMonSalesLabels: any[] = [];
 
-  
+  threeMonCollectionData: ChartDataSets[] = [];
+  threeMonCollectionLabels: any[] = [];
+
+  pharCustStockData: any[] = [];
+  pharCustStockLabels: any[] = [];
+
+  constructor(
+    public _DashboardService : DashboardService,
+    public datePipe: DatePipe,
+    ) { }
+  ngOnInit(): void {
+   this.getPharDashboardSalesSummary();
+  //  this.fetchChartData();
+   this.getThreeMonSalesSumData();
+   this.getThreeMonCollSumData();
+   this.getPharmStoreList();
+   this.getPharStockValueSumData();
+   this.getPharPayModeColSumData();
+   //this.BarChart(this.BarlabelData,this.BarchartData);
+  }
+
+  getThreeMonSalesSumData() {
+    let req = { StoreId: 0};
+    this._DashboardService.getThreeMonSumData('m_pharlast3MonthSalesSummaryDashboard', req).subscribe((respo: any) => {
+      if(respo && respo.length > 0) {
+        let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
+        // console.log(labelNames);
+        let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
+        // console.log(salesMonth);
+        let data = [];
+        salesMonth.forEach((month) => {
+          let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
+            map((ele: any) => ele.NetSalesAmount)
+          data.push({
+              data: monthWiseData,
+              label: month
+            }
+          )
+          console.log(monthWiseData);
+        });
+        console.log(data);
+        this.threeMonSalesData = data;
+        // [
+        //   { data: [50, 67, 50, 35, 66, 100], label:'Jan' },
+        //   { data: [65, 57, 40, 40, 56, 53], label: 'Dec' },
+        //   { data: [35, 34, 61, 50, 36, 60], label: 'Nov' }
+        // ];
+        this.threeMonSalesLabels = labelNames; //['assApple', 'Banasna', 'Kiwissfruit', 'Bluddeberry', 'Oradnge', 'Grafgpes'];
+      }
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+
+  getThreeMonCollSumData() {
+    this.isCollectionLoad = 'pharCollectionChartLoading';
+    let req = { StoreId: 0 };
+    this._DashboardService.getThreeMonSumData('m_pharlast3MonthCollectionSummaryDashboard ', req).subscribe((respo: any) => {
+      if (respo && respo.length > 0) {
+        this.isCollectionLoad = 'pharCollectionChartLoaded';
+        let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
+        // console.log(labelNames);
+        let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
+        // console.log(salesMonth);
+        let data = [];
+        salesMonth.forEach((month) => {
+          let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
+            map((ele: any) => ele.NetCollectionAmount)
+          data.push({
+            data: monthWiseData,
+            label: month
+          })
+          console.log(monthWiseData);
+        });
+        this.threeMonCollectionData = data;
+        this.threeMonCollectionLabels = labelNames;
+      }
+    },
+      error => {
+        this.isCollectionLoad = '';
+      });
+  }
+
+  getPharStockValueSumData() {
+    this.isCollectionLoad = 'pharStockLoading';
+    let req = { StoreId: 10016 };
+    this._DashboardService.getPharStockColSumData('m_pharCurStockValueSummaryDashboard ', req).subscribe((respo: any) => {
+      if (respo && respo.length > 0) {
+        this.isCollectionLoad = 'pharStockLoaded';
+        respo.forEach((element) => {
+          this.pharCustStockLabels.push(element.StoreName);
+          this.pharCustStockData.push(element.CurValueWithMRP);
+        }); 
+      }
+    }, error => {
+        this.sIsLoading = 'no';
+      });
+  }
+
+  getPharPayModeColSumData() {
+    //bar chart pending
+    let req = { StoreId: 10035};
+    this._DashboardService.getPharStockColSumData('m_pharPayModeColSummaryDashboard ', req).subscribe(data => {
+      // this.BardataList = data;
+      console.log(data);
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
   // BarChart(BarlabelData:any,BarchartData:any){
           
   //   const Barchart = new Chart('BarChart', {
@@ -219,7 +305,7 @@ export class PharmacyDashboardComponent implements OnInit {
  
   public doughnutChart: any;
  //Pei chart 
-  fetchChartData() {
+  /* fetchChartData() {
     this.sIsLoading = 'loading-data';
     var m_data = {
       "FromDate":this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '12/25/2023' ,
@@ -245,11 +331,9 @@ export class PharmacyDashboardComponent implements OnInit {
           this.sIsLoading = '';
         });
    
-  }
+  } */
 
   RenderChart(labelData:any,PiechartData5:any){
-     
-           
     const mychart = new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
@@ -292,22 +376,34 @@ export class PharmacyDashboardComponent implements OnInit {
 
   
   getPharDashboardSalesSummary() {
-    this.sIsLoading = 'loading-data';
+    if(this._DashboardService.UseFrom.get("end").value == null) {
+      return;
+    }
+    this.sIsLoading = 'pharSumChartLoading';
     var vdata = {
      "FromDate":this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '12/25/2023' ,
      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
-     }
-   console.log(vdata);
-      this._DashboardService.getPharDashboardSalesSummary(vdata).subscribe(data => {
-      this.dsPharmacyDashboard.data = data as PharDashSummary[];
-      this.PharmacyDashboard = data as PharDashSummary[];
-       
-     console.log(this.dsPharmacyDashboard.data)
-     this.sIsLoading = '';
+    }
+    this._DashboardService.getPharDashboardSalesSummary(vdata).subscribe((res: any) => {
+      if(res && res.length > 0) {
+        this.dsPharmacyDashboard.data = res as PharDashSummary[];
+        this.PharmacyDashboard = res as PharDashSummary[];  
+        // console.log(this.dsPharmacyDashboard.data)
+        this.labelData = [];
+        this.PiechartData5 = [];
+        res.forEach((element) => {
+          this.labelData.push(element.StoreName);
+          this.PiechartData5.push(element.CollectionAmount);
+        }); 
+        this.sIsLoading = 'pharSumChartLoaded';
+        // this.RenderChart(this.labelData,this.PiechartData5);
+      } else {
+        this.sIsLoading = 'noPharSumData';
+      }
     },
-      error => {
-        this.sIsLoading = '';
-      });
+    error => {
+      this.sIsLoading = 'pharSumChartError';
+    });
   }
   getTotalCollectionAmt(contact) {
     let TotalCollectionAmt=0;
@@ -333,6 +429,10 @@ export class PharmacyDashboardComponent implements OnInit {
       this.PharmStoreList = data;
      // console.log(this.PharmStoreList);
     });
+  }
+
+  onChangeStatic(event) {
+    console.log(this.selectedStatic);
   }
 
 }

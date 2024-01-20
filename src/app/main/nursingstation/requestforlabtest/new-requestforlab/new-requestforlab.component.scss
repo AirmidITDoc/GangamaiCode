@@ -1,12 +1,10 @@
 .table1{
-    height: 435px;
-    max-height: 435px;
-    min-height: 400px;
-    overflow: scroll;
+    height: 300px;
+    max-height: 300px;
+    min-height: 300px;
+    overflow: auto;
 
-}
-.table2{
-    .mat-column-ServiceName2{
+    .mat-column-ServiceName{
         width: 350px;
         max-width: 350px;
         min-width: 350px;
@@ -17,10 +15,43 @@
         justify-content:left; 
 
     }
-    .mat-column-Price2{
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+    .mat-column-Price{
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left; 
+        justify-content:left; 
+
+    }
+
+    .mat-column-buttons {
+        // color: white !important;
+        width:70px;
+        max-width:70px;
+        min-width:70px;
+       
+        text-align: right;
+        justify-content:right; 
+        
+    }
+
+}
+.table2{
+    .mat-column-ServiceName{
+        width: 350px;
+        max-width: 350px;
+        min-width: 350px;
+        align-items: left; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
+        justify-content:left; 
+
+    }
+    .mat-column-Price{
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
         align-items: left; 
         justify-content:left; 
 
@@ -28,7 +59,7 @@
     height: 300px;
     max-height: 300px;
     min-height: 300px;
-    overflow:  scroll;
+    overflow:  auto;
      
 }
 

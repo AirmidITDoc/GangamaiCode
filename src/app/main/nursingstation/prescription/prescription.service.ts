@@ -54,7 +54,7 @@ export class PrescriptionService {
   }
 
   public getRegistrationList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientAdmittedListSearch", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
   public presciptionSave(employee) {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);

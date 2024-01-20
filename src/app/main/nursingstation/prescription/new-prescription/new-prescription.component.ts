@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrescriptionService } from '../prescription.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -8,6 +8,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-prescription',
@@ -68,7 +70,12 @@ export class NewPrescriptionComponent implements OnInit {
   matDialogRef: any;
   
 
-
+  filteredOptionsWard: Observable<string[]>;
+  optionsWard: any[] = [];
+  isWardselected: boolean = false;
+  filteredOptionsStore: Observable<string[]>;
+  optionsStore: any[] = [];
+  isStoreselected: boolean = false;
 
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
   datePipe: any;
@@ -162,11 +169,11 @@ export class NewPrescriptionComponent implements OnInit {
   getSelectedObj(obj) {
 
 
-    // debugger
+    debugger
     this.registerObj = obj;
     this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.RegId= obj.RegID;
-    this.vAdmissionID=obj.AdmissionID
+    this.RegId= obj.RegId;
+    this.vAdmissionID= obj.AdmissionID
     // console.log( this.PatientName)
     // this.setDropdownObjs();
     console.log(obj);
@@ -196,9 +203,10 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   getSearchItemList() {
+    debugger
     var m_data = {
-      "ItemName": `${this.myForm.get('ItemId').value}%`,
-      "StoreId": 2 // this.myForm.get('StoreId').value.storeid || 0
+      "ItemName": `${this.myForm.get('ItemId').value}%`
+      // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }
     if (this.myForm.get('ItemId').value.length >= 2) {
       this._PrescriptionService.getItemlist(m_data).subscribe(data => {
@@ -215,14 +223,14 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   getOptionItemText(option) {
-    this.ItemId = option.ItemID;
+    this.ItemId = option.ItemId;
     if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
   getSelectedObjItem(obj) {
     // this.registerObj = obj;
     this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemID;
+    this.ItemId = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
 
   }
@@ -240,7 +248,9 @@ export class NewPrescriptionComponent implements OnInit {
         Remark: this.vRemark || ''
       });
     this.dsPresList.data = this.PresItemlist
+    this.myForm.reset();
     console.log(this.dsPresList.data);
+    this.add=false;
   }
   
   deleteTableRow(event, element) {
@@ -267,22 +277,105 @@ export class NewPrescriptionComponent implements OnInit {
   //   })
   // }
 
+  // gePharStoreList() {
+  //   var vdata = {
+  //     Id: this._loggedService.currentUserValue.user.storeId
+  //   }
+  //   this._PrescriptionService.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.StoreList = data;
+  //     //this._PrescriptionService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+  //   });
+  // }
+  private _filterStore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+
+  }
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
     this._PrescriptionService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      //this._PrescriptionService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
+      this.optionsStore = this.StoreList.slice();
+      this.filteredOptionsStore = this.myForm.get('StoreId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWard(value) : this.StoreList.slice()),
+      );
+
     });
   }
 
+
+  private _filterWard(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
+      return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
+    }
+
+  }
   getWardList() {
     this._PrescriptionService.getWardList().subscribe(data => {
       this.WardList = data;
-      //console.log(this.WardList)
+      console.log(this.WardList )
+      this.optionsWard = this.WardList.slice();
+      this.filteredOptionsWard = this.myForm.get('WardName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterWard(value) : this.WardList.slice()),
+      );
+
     });
   }
+
+
+
+  getOptionTextWard(option) {
+    return option && option.RoomName ? option.RoomName : '';
+  }
+  getOptionTextStore(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  }
+
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('remark') remark: ElementRef;
+  
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  
+  
+  onEnterItem(event): void {
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+      // this.calculateTotalAmt()
+    }
+  }
+
+  public onEnterqty(event): void {
+    debugger
+    if (event.which === 13) {
+      this.remark.nativeElement.focus();
+      // this.calculateTotalAmt()
+    }
+  }
+  add:boolean=false;
+  public onEnterremark(event): void {
+    debugger
+    if (event.which === 13) {
+      // this.discamt.nativeElement.focus();
+      this.add=true;
+      this.addbutton.focus();
+    }
+  }
+
+  // public onEnterdiscAmount(event): void {
+  //   debugger
+  //   if (event.which === 13) {
+  //     this.add=true;
+  //     this.addbutton.focus();
+  //   }
+  // }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -296,18 +389,19 @@ export class NewPrescriptionComponent implements OnInit {
 
   //api integrate
   OnSavePrescription() {
+    // console.log(this.myForm.get('WardName').value.RoomId)
     this.isLoading = 'submit';
     let submissionObj = {};
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {};
     let deleteIP_Prescription = {};
     
-    deleteIP_Prescription['oP_IP_ID'] = this.vAdmissionID;
+    deleteIP_Prescription['oP_IP_ID'] = this.RegId;
 
     submissionObj['deleteIP_Prescription'] = deleteIP_Prescription;
 
     insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
-    insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;;
+    insertIP_MedicalRecordArray['admissionId'] = this.RegId;;
     insertIP_MedicalRecordArray['roundVisitDate'] = this.dateTimeObj.date;
     insertIP_MedicalRecordArray['roundVisitTime'] = this.dateTimeObj.time;
     insertIP_MedicalRecordArray['inHouseFlag'] = 0;
@@ -317,7 +411,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] =  this.vAdmissionID;;
+      insertIP_Prescription['oP_IP_ID'] =  this.RegId;;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;
@@ -332,11 +426,12 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-      insertIP_Prescription['wardID'] = this.myForm.get('WardName').value.RoomId || 0;
+     
+      insertIP_Prescription['wardID'] = 2;//this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
     submissionObj['insertIP_Prescription'] = insertIP_Prescriptionarray;
-
+    debugger
     console.log(submissionObj);
 
       this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
