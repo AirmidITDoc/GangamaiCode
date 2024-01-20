@@ -70,13 +70,13 @@ export class SupplierFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) {
-      this.getSupplierTypeMasterList();
-      this.getModeofpaymentCombobox();
-      this.getTermofpaymentCombobox();
-      this.getCountryNameCombobox();
-      this.getBankNameList1();
-      this.getCityNameCombobox();
-      this.getStoreNameCombobox();
+      // this.getSupplierTypeMasterList();
+      // this.getModeofpaymentCombobox();
+      // this.getTermofpaymentCombobox();
+      // this.getCountryNameCombobox();
+      // this.getBankNameList1();
+      // // this.getCityNameCombobox();
+      // this.getStoreNameCombobox();
     }
 
     ngOnInit(): void {
@@ -88,13 +88,13 @@ export class SupplierFormMasterComponent implements OnInit {
       this.getCountryNameCombobox();
       this.getBankNameList1();
       this.getCityNameCombobox();
-      this.getStoreNameCombobox();
+      // this.getStoreNameCombobox();
 
       
       if(this.data){
-        debugger
+        
           this.registerObj=this.data.registerObj;
-          this.getCityNameCombobox();
+          // this.getCityNameCombobox();
         this.registerObj.Mobile=this.data.registerObj.Mobile.trim();
         this.registerObj.Phone=this.data.registerObj.Phone.trim();
         this.CityId=this.data.registerObj.CityId;
@@ -187,10 +187,21 @@ export class SupplierFormMasterComponent implements OnInit {
       
 
     getCityNameCombobox() {
-      debugger
+      
     this._supplierService.getCityMasterCombo().subscribe(data => {
       this.CitycmbList = data;
       console.log(this.CitycmbList)
+      
+    if (this.data) {
+      console.log(this.CitycmbList)
+      const ddValue = this.CitycmbList.filter(c => c.CityId == this.data.registerObj.CityId);
+      console.log(ddValue[0]);
+      this._supplierService.myform.get('CityId').setValue(ddValue[0]);
+      this.onChangeCityList(this.data.registerObj.CityId)
+      this._supplierService.myform.updateValueAndValidity();
+      return
+    }
+    
       this.optionsCity = this.CitycmbList.slice();
       this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
         startWith(''),
@@ -199,7 +210,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
     });
     this._supplierService.myform.updateValueAndValidity();
-    debugger
+    
 
     // if (this.data) {
     //   console.log(this.CitycmbList)
@@ -209,7 +220,7 @@ export class SupplierFormMasterComponent implements OnInit {
     //   this._supplierService.myform.updateValueAndValidity();
     // }
     // this._supplierService.myform.updateValueAndValidity();
-    console.log(this.CitycmbList)
+    // console.log(this.CitycmbList)
   }
  
   
