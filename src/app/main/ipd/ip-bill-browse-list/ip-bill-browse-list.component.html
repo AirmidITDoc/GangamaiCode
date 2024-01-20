@@ -102,6 +102,10 @@
 
                                 </div>
 
+                                <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
+                                    Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                </span>
+
                             </div>
                         </form>
                     </div>
@@ -159,7 +163,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    
+
 
                                     <ng-container matColumnDef="BalanceAmt">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm

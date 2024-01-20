@@ -43,20 +43,21 @@ export class NewRequestforlabComponent implements OnInit {
  
   displayedVisitColumns: string[] = [
     'ServiceName',
-    'Price',
-    'buttons'
+    'Price'
+   
   ]
 
   displayedVisitColumns2: string[] = [
-    'ServiceName2',
-    'Price2'
+    'ServiceName',
+    'Price',
+    'buttons'
   ]
 
   searchFormGroup: FormGroup;
   myFormGroup: FormGroup;
 
   dstable1 = new MatTableDataSource<LabRequest>();
-  dsLabRequest2 = new MatTableDataSource<LabRequestList>();
+  dsLabRequest2 = new MatTableDataSource<LabRequest>();
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -73,7 +74,7 @@ export class NewRequestforlabComponent implements OnInit {
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm();
-    this.getServiceList();
+    this.getServiceListdata();
   }
 
   createMyForm():FormGroup {
@@ -166,21 +167,31 @@ export class NewRequestforlabComponent implements OnInit {
     }
   }
 
-  getServiceList(){
-    var vdata={
-      ServiceName: this.myFormGroup.get('ServiceName2').value +'%' || '%',
-      IsPathRad: this.myFormGroup.get('IsPathRad').value || 0,
-      ClassID:1,  
-      TraiffID:1
-    }
-    console.log(vdata);
-    this._RequestforlabtestService.getServiceList(vdata).subscribe(data =>{
-      this.dsLabRequest2.data = data as LabRequestList[];
-      this.dsLabRequest2.sort = this.sort;
-      this.dsLabRequest2.paginator = this.paginator;
-       console.log(this.dsLabRequest2.data);
-    })
+
+  
+  getServiceListdata() {
+    debugger
+    var Param = {
+      "ServiceName": 'c%',
+      "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
+      "ClassId":1,
+      "TariffId":1
   }
+    console.log(Param);
+    this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {
+      this.dsLabRequest2.data = data as LabRequest[];
+      // this.chargeslist = data as LabRequestList[];
+      this.dsLabRequest2.data = data as LabRequest[];
+     console.log(this.dsLabRequest2)
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+ 
+
+  getServiceListItem(){}
 
   onSaveEntry(row) {
     this.isLoading = 'save';
@@ -208,13 +219,15 @@ export class NewRequestforlabComponent implements OnInit {
         Price: row.Price || 0
       });
     this.isLoading = '';
-    // console.log(this.chargeslist);
+    console.log(this.chargeslist);
     this.dstable1.data = this.chargeslist;
     this.dstable1.sort = this.sort;
     this.dstable1.paginator = this.paginator;
   }
-  deleteTableRow(event, element) {
+
+  deleteTableRow(element) {
     // if (this.key == "Delete") {
+      this.chargeslist= this.dstable1.data ;
       let index = this.chargeslist.indexOf(element);
       if (index >= 0) {
         this.chargeslist.splice(index, 1);
@@ -246,16 +259,19 @@ export class NewRequestforlabComponent implements OnInit {
       ipPathOrRadiRequestInsertArray['isCancelledBy']  = 0;
       ipPathOrRadiRequestInsertArray['isCancelledDate']  = this.dateTimeObj.date;
       ipPathOrRadiRequestInsertArray['isCancelledTime']  = this.dateTimeObj.time;
+      ipPathOrRadiRequestInsertArray['IsOnFileTest']  = 1;
+      ipPathOrRadiRequestInsertArray['RequestId ']  = 0
      
 
       submissionObj['ipPathOrRadiRequestInsert'] = ipPathOrRadiRequestInsertArray;
 
-      this.dsLabRequest2.data.forEach((element) => {
+      this.dstable1.data.forEach((element) => {
         let ipPathOrRadiRequestLabRequestInsert = {};
         ipPathOrRadiRequestLabRequestInsert['requestId'] =0;
         ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
         ipPathOrRadiRequestLabRequestInsert['price']=element.Price;
         ipPathOrRadiRequestLabRequestInsert['isStatus']= false;
+        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest']  = 1;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
     });
     submissionObj['ipPathOrRadiRequestLabRequestInsert'] = ipPathOrRadiRequestLabRequestInsertArray;
@@ -264,7 +280,7 @@ export class NewRequestforlabComponent implements OnInit {
       console.log(response);
       if (response) {
         Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success').then((result) => {
-          if (result.isConfirmed) {
+          if (result) {
             this._matDialog.closeAll();
           }
         });
@@ -280,21 +296,11 @@ export class NewRequestforlabComponent implements OnInit {
 export class LabRequest {
   ServiceName: any;
   Price: number;
-
+  ServiceId: any;
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
+    this.ServiceId = LabRequest.ServiceId || 0;
   }
 }
 
-export class LabRequestList {
-  ServiceName2: any;
-  Price2: number;
-  ServiceId: any;
-  Price: any;
-
-  constructor(LabRequestList) {
-    this.ServiceName2 = LabRequestList.ServiceName2 || '';
-    this.Price2 = LabRequestList.Price2 || 0;
-  }
-}

@@ -181,7 +181,7 @@ export class OPRefundofBillComponent implements OnInit {
     debugger;
     
     var m_data = {
-      "RegNo": 207//this.selectedAdvanceObj.OPD_IPD_ID
+      "RegNo": this.selectedAdvanceObj.OPD_IPD_ID
             
     }
     

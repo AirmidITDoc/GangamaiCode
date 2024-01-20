@@ -130,7 +130,7 @@ onEdit(row){
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 
       {   maxWidth: "95vw",
-          height: '550px',
+          height: '650px',
           width: '100%',
            data : {
           registerObj : row,

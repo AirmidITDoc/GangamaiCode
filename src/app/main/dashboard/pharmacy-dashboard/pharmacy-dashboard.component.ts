@@ -276,29 +276,56 @@ export class PharmacyDashboardComponent implements OnInit {
 
 
 
-
+  getDoughnutChart(data) {
+    return new Chart('doughnutChart', {
+      type: 'doughnut',
+      data: data,
+      options: {
+        plugins: {
+          legend: true,
+          tooltip: {
+            enabled: true,
+          },
+          outlabels: {
+            text: '%l %p',
+            color: 'white',
+            stretch: 35,
+            font: {
+              resizable: true,
+              minSize: 12,
+              maxSize: 18,
+            },
+          },
+        },
+      },
+    })
+  }
 
 
  
+  public doughnutChart: any;
  //Pei chart 
   /* fetchChartData() {
     this.sIsLoading = 'loading-data';
     var m_data = {
       "FromDate":this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '12/25/2023' ,
-      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023',
+      "StoreId":this._DashboardService.UseFrom.get("StoreId").value.storeid||0
       } 
        // console.log(m_data);
       this._DashboardService.getPharDashboardPeichart(m_data).subscribe(data => {
-      this.pieChartData2 = data;
-      console.log(this.pieChartData2);
-       if(this.pieChartData2 != null){
-        this.pieChartData2.forEach((element) => {
-          this.labelData.push(element.StoreName);
-          this.PiechartData5.push(element.CollectionAmount);
-        }); 
-        this.RenderChart(this.labelData,this.PiechartData5);
-       } this.sIsLoading = '';
-       console.log(this.PiechartData5);
+        this.doughnutChart = this.getDoughnutChart(data);
+        this.sIsLoading = '';
+      // this.pieChartData2 = data;
+      // console.log(this.pieChartData2);
+      //  if(this.pieChartData2 != null){
+      //   this.pieChartData2.forEach((element) => {
+      //     this.labelData.push(element.StoreName);
+      //     this.PiechartData5.push(element.CollectionAmount);
+      //   }); 
+      //   this.RenderChart(this.labelData,this.PiechartData5);
+      //  } this.sIsLoading = '';
+      //  console.log(this.PiechartData5);
       },
         error => {
           this.sIsLoading = '';

@@ -44,6 +44,10 @@ import { WebcamModule } from 'ngx-webcam';
 import { HeaderComponent } from "app/main/shared/componets/header/header.component";
 import { InfoheadDirective } from './infohead.directive';
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav";
+import { VisitDetailsComponent } from './visit-details/visit-details.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+// import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
     {
@@ -62,6 +66,7 @@ const routes: Routes = [
         ImageViewComponent,
         CameraComponent,
         InfoheadDirective,
+        VisitDetailsComponent,
         
     ],
     imports: [
@@ -101,7 +106,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatListModule,
         WebcamModule,
-        ScrollingModule
+        ScrollingModule,
+        MatSidenavModule 
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],

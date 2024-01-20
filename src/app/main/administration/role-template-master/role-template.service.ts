@@ -36,8 +36,8 @@ export class RoleTemplateService {
     public getRoleMasterList(Param) {
         return this._httpClient.get("Role/get-roles?RoleName="+Param);
     }
-    public getPermissionList(){
-        return this._httpClient.get("Role/get-permissions");
+    public getPermissionList(RoleId){
+        return this._httpClient.get("Role/get-permissions?RoleId="+RoleId);
     }
     // Insert Perfix Master
     public insertRoleMaster(Param) {
@@ -45,6 +45,12 @@ export class RoleTemplateService {
     }
     public deactivateTheStatus(m_data) {
         return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data, {});
+    }
+    public savePermission(Param) {
+        return this._httpClient.post("Role/save-permission", Param);
+    }
+    public getmenus(Param) {
+        return this._httpClient.get("Login/get-menus?RoleId="+Param);
     }
     populateForm(param) {
         this.myform.patchValue(param);

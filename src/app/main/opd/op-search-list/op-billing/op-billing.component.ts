@@ -20,6 +20,8 @@ import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { RegInsert } from '../../appointment/appointment.component';
 
 type NewType = Observable<any[]>;
 export class ILookup {
@@ -105,7 +107,7 @@ export class OPBillingComponent implements OnInit {
   b_IsEditable = '';
   b_IsDocEditable = '';
   b_CreditedtoDoctor = 0;
-  b_ChargeDiscPer: any = 0;
+  v_ChargeDiscPer: any = 0;
   b_ChargeDisAmount: any = 0;
 
   totalamt = 0;
@@ -166,7 +168,7 @@ export class OPBillingComponent implements OnInit {
   constructor(
     private _fuseSidebarService: FuseSidebarService,
     private changeDetectorRefs: ChangeDetectorRef,
-    public _opappointmentService: OPSearhlistService,
+    public _oPSearhlistService: OPSearhlistService,
     public element: ElementRef<HTMLElement>,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
@@ -180,6 +182,7 @@ export class OPBillingComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.searchFormGroup = this.createSearchForm();
     this.BillingFooterForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -195,6 +198,15 @@ export class OPBillingComponent implements OnInit {
       .subscribe(() => {
         this.filterDoctor();
       });
+  }
+
+  createSearchForm() {
+    return this.formBuilder.group({
+      // regRadio: ['registration'],
+      // regRadio1: ['registration1'],
+
+      RegId: ['']
+    });
   }
 
 
@@ -274,7 +286,7 @@ export class OPBillingComponent implements OnInit {
       ClassId: this.selectedAdvanceObj.ClassId || 1
     };
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
-      this._opappointmentService.getBillingServiceList(m_data).subscribe(data => {
+      this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
         this.filteredOptions = data;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -390,7 +402,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['CashCounterId'] = this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
+    InsertBillUpdateBillNoObj['CashCounterId'] = 2,// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
     InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
@@ -486,12 +498,12 @@ export class OPBillingComponent implements OnInit {
             "opInsertPayment": result.submitDataPay.ipPaymentInsert
           };
           console.log(submitData);
-          this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
+          this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
             if (response) {
               Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   let m = response;
-                  this.getPrint(m);
+                  this.viewgetBillReportPdf(m);
                   this._matDialog.closeAll();
                 }
               });
@@ -524,12 +536,12 @@ export class OPBillingComponent implements OnInit {
                 "opCalDiscAmountBillcredit": opCalDiscAmountBill,
               };
               console.log(submitData);
-              this._opappointmentService.InsertOPBillingCredit(submitData).subscribe(response => {
+              this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
                 if (response) {
                   Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
                     if (result.isConfirmed) {
                       let m = response;
-                      this.getPrint(m);
+                      this.viewgetBillReportPdf(response);
                       this._matDialog.closeAll();
                     }
                   });
@@ -590,12 +602,13 @@ export class OPBillingComponent implements OnInit {
         "opInsertPayment": Paymentobj
       };
       console.log(submitData);
-      this._opappointmentService.InsertOPBilling(submitData).subscribe(response => {
+      this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('OP Bill with cash payment!', 'Bill Generated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               let m = response;
-              this.getPrint(m);
+              this.viewgetBillReportPdf(response);
+              // this.getPrint(m);
               this._matDialog.closeAll();
             }
           });
@@ -629,7 +642,7 @@ export class OPBillingComponent implements OnInit {
           Price: this.b_price || 0,
           Qty: this.b_qty || 0,
           TotalAmt: this.b_totalAmount || 0,
-          ConcessionPercentage: this.b_ChargeDiscPer || 0,
+          ConcessionPercentage: this.v_ChargeDiscPer || 0,
           DiscAmt: this.b_ChargeDisAmount || 0,
           NetAmount: this.b_netAmount || 0,
           ClassId: this.selectedAdvanceObj.ClassId || 0,
@@ -672,7 +685,7 @@ export class OPBillingComponent implements OnInit {
     this.registeredForm.get('ChargeDiscPer').reset(0);
     this.registeredForm.get('ChargeDiscAmount').reset(0);
     this.registeredForm.get('netAmount').reset(0);
-    this.b_ChargeDiscPer = 0;
+    this.v_ChargeDiscPer = 0;
     this.b_ChargeDisAmount = 0;
     // this.registeredForm.reset();
   }
@@ -687,8 +700,8 @@ export class OPBillingComponent implements OnInit {
 
   // Charges Wise Disc Percentage 
   calculatePersc() {
-    if (this.b_ChargeDiscPer) {
-      this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.b_ChargeDiscPer)) / 100;
+    if (this.v_ChargeDiscPer) {
+      this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.v_ChargeDiscPer)) / 100;
       this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
       // this.registeredForm.get('ChargeDiscAmount').disable();
     }
@@ -697,8 +710,8 @@ export class OPBillingComponent implements OnInit {
   calculatechargesDiscamt() {
     if (this.b_ChargeDisAmount) {
       this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
-      this.b_ChargeDiscPer = 0;
-      this.registeredForm.get('ChargeDiscPer').disable();
+      this.v_ChargeDiscPer = 0;
+      // this.registeredForm.get('ChargeDiscPer').disable();
     }
   }
 
@@ -781,20 +794,20 @@ export class OPBillingComponent implements OnInit {
 
 
   getAdmittedDoctorCombo() {
-    this._opappointmentService.getAdmittedDoctorCombo().subscribe(data => {
+    this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
       this.doctorNameCmbList = data;
       this.filteredDoctor.next(this.doctorNameCmbList.slice());
     })
   }
 
   getCashCounterComboList() {
-    this._opappointmentService.getCashcounterList().subscribe(data => {
+    this._oPSearhlistService.getCashcounterList().subscribe(data => {
       this.CashCounterList = data
     });
   }
 
   getConcessionReasonList() {
-    this._opappointmentService.getConcessionCombo().subscribe(data => {
+    this._oPSearhlistService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;
     })
   }
@@ -807,7 +820,7 @@ export class OPBillingComponent implements OnInit {
 
     let printContents; 
     this.subscriptionArr.push(
-      this._opappointmentService.getBillPrint(D_data).subscribe(res => {
+      this._oPSearhlistService.getBillPrint(D_data).subscribe(res => {
 
         this.reportPrintObjList = res as BrowseOPDBill[];
         console.log(this.reportPrintObjList);
@@ -820,7 +833,7 @@ export class OPBillingComponent implements OnInit {
   }
   getTemplate() {
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
-    this._opappointmentService.getTemplate(query).subscribe((resData: any) => {
+    this._oPSearhlistService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
       let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'PBillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
@@ -978,6 +991,7 @@ export class OPBillingComponent implements OnInit {
   }
 
   public onEnterdiscAmount(event): void {
+    debugger
     if (event.which === 13) {
       this.add=true;
       this.addbutton.focus();
@@ -988,6 +1002,61 @@ export class OPBillingComponent implements OnInit {
     if (event.which === 13) {
       // this.address.nativeElement.focus();
     }
+  }
+
+
+  viewgetBillReportPdf(BillNo) {
+    
+    this._oPSearhlistService.getOpBillReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Op Bill  Viewer"
+          }
+        });
+    });
+  }
+
+  // search code
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  registerObj = new RegInsert({});
+  PatientName:any;RegId:any;
+  searchFormGroup: FormGroup;
+
+  getSearchList() {
+
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+
+    this._oPSearhlistService.getRegistrationList(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
+  }
+
+  getSelectedObj1(obj) {
+   
+    this.registerObj = obj;
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.RegId;
+
+    // this.setDropdownObjs();
+
+    // this.getregisterList();
+    // this.getVisitDetails();
   }
 
 }

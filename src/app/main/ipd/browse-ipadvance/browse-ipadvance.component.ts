@@ -29,7 +29,9 @@ export class BrowseIPAdvanceComponent implements OnInit {
   sIsLoading:any;
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
-  @Input() dataArray: any; 
+  // @Input() dataArray: any; 
+  SpinLoading:boolean=false;
+  AdList:boolean=false;
 
   displayedColumns = [
     'RegNo',
@@ -45,6 +47,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     'buttons'
   ];
   dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+  dataArray = new MatTableDataSource<IpdAdvanceBrowseModel>();
 
   reportPrintObj: IpdAdvanceBrowseModel;
   subscriptionArr: Subscription[] = [];
@@ -96,20 +99,20 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
   onShow_IpdAdvance(){
-    
+    debugger
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+      "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
+      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
-      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0,
+      "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0
     }
    
-    // (D_data);
+    console.log(D_data);
     this._advanceService.getIpdAdvanceBrowseList(D_data).subscribe(Visit=> {
-        this.dataArray = Visit;
-    
+        this.dataArray.data = Visit as IpdAdvanceBrowseModel[];
+        console.log(this.dataArray.data )
       });
   }
 
@@ -117,7 +120,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
     
   }
 
- 
+  
+
   convertToWord(e) {
     
     return converter.toWords(e);
@@ -136,6 +140,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
   return value;
 }
+
+
 
 
   getPrint(el) {
@@ -194,10 +200,14 @@ export class BrowseIPAdvanceComponent implements OnInit {
   
 viewgetIPAdvanceReportPdf(contact) {
 
+  setTimeout(() => {
+    this.SpinLoading =true;
+   this.AdList=true;
+   
   this._advanceService.getIPAdvanceReceipt(
  contact.AdvanceDetailID
   ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
+    const matDialog = this._matDialog.open(PdfviewerComponent,
       {
         maxWidth: "85vw",
         height: '750px',
@@ -207,9 +217,14 @@ viewgetIPAdvanceReportPdf(contact) {
           title: "Pharma Sales Summary Viewer"
         }
       });
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.SpinLoading = false;
+      });
   });
+ 
+  },100)
 }
-
 
   getViewAdvance(contact)
 {

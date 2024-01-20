@@ -26,6 +26,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RFC_2822 } from 'moment';
 import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-admission',
@@ -41,7 +42,8 @@ export class AdmissionComponent implements OnInit {
   reportPrintObj: Admission;
   searchFormGroup: FormGroup;
   isLoadings = false;
-
+  SpinLoading:boolean=false;
+  
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: Admission[] = [];
@@ -126,7 +128,7 @@ export class AdmissionComponent implements OnInit {
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   DoctorId: any = 0;
-
+  AdList:boolean=false;
   options = [];
   optionsPrefix: any[] = [];
   optionsDep: any[] = [];
@@ -230,7 +232,7 @@ export class AdmissionComponent implements OnInit {
   filteredDoctor: any;
   dialogRef: any;
   isLoading: string;
-
+  Regflag: boolean = false;
   constructor(public _AdmissionService: AdmissionService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
@@ -351,7 +353,7 @@ export class AdmissionComponent implements OnInit {
       PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       MobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       AadharCardNo: [''],
-      Pancardno: '',
+      Pancardno:["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -787,6 +789,7 @@ export class AdmissionComponent implements OnInit {
 
   onChangeReg(event) {
     if (event.value == 'registration') {
+      this.Regflag=false;
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
@@ -816,7 +819,7 @@ export class AdmissionComponent implements OnInit {
 
     } else {
       this.Regdisplay = true;
-
+      this.Regflag=true;
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
 
@@ -1264,7 +1267,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
       admissionNewInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionNewInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionNewInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionNewInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0 ;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
@@ -1313,8 +1316,11 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAddmissionPrint(response);
-              this._matDialog.closeAll();
-
+              // this._matDialog.closeAll();
+              this.personalFormGroup.reset();
+              this.hospitalFormGroup.reset();
+              this.wardFormGroup.reset();
+              this.otherFormGroup.reset();
             }
           });
         } else {
@@ -1337,7 +1343,7 @@ debugger
       admissionInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
       admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
-    //  admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionInsert['hospitalID'] = 1;//this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
       admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
       admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID ? this.hospitalFormGroup.get('refDoctorId').value.DoctorID : 0;
 
@@ -1376,8 +1382,8 @@ debugger
       admissionInsert['IsOpToIPConv'] = 0;
       admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       admissionInsert['admissionType']=0;
-      admissionInsert['admissionInsert'] = admissionInsert;
-      admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+      // admissionInsert['admissionInsert'] = admissionInsert;
+      // admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
 
       submissionObj['admissionInsert'] = admissionInsert;
 
@@ -1388,6 +1394,10 @@ debugger
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
+              this.personalFormGroup.reset();
+              this.hospitalFormGroup.reset();
+              this.wardFormGroup.reset();
+              this.otherFormGroup.reset();
               this.getAddmissionPrint(response);
             }
           });
@@ -1453,9 +1463,9 @@ debugger
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": "0",
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '%',
     }
-  
+  console.log(D_data)
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {
@@ -1473,6 +1483,45 @@ debugger
 
 
   }
+
+  
+
+
+  getAdmittedPatientListview() {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
+    this._AdmissionService.getAdmittedPatientListView(
+     
+      this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      0,0,
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission List  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+
+   
+
+   
+  }
+
   // AdmissionNewComponent
   addNewAdmission() {
     const dialogRef = this._matDialog.open(RegAdmissionComponent,
@@ -1517,7 +1566,7 @@ debugger
           this.sIsLoading = '';
         });
 
-      const dialogRef = this._matDialog.open(NewAdmissionComponent,
+      const dialogRef = this._matDialog.open(RegAdmissionComponent,
         {
           maxWidth: '95vw',
 

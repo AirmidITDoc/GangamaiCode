@@ -99,7 +99,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     "ConversionFactor",
     "VatPercentage",
     "DiscPercentage",
-    "LandedRate",
+    //"LandedRate",
     "NetAmount",
     "TotalQty",
 
@@ -165,18 +165,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   renderer: any;
   GST: any = 0;
   GSTAmount: any = 0;
-
-
-
-
-
-  Status3List = [
-    { id: 1, name: "GST Before Disc" },
-    { id: 2, name: "GST After Disc" },
-    { id: 3, name: "GST On Pur +FreeQty" },
-    { id: 4, name: "GST OnMRP" },
-    { id: 5, name: "GST After 2Disc" }
-  ];
   GSTAmt: any;
   DiscAmt: any;
   tab: number = 3;
@@ -198,7 +186,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.getToStoreSearchList();
     // this.getSupplierSearchList();
     this.getSupplierSearchCombo();
-    this.getFromStoreSearchList();
+   // this.getFromStoreSearchList();
     this.getToStoreSearchCombo();
     this.getSupplierSearchCombo();
     this.gePharStoreList();
@@ -210,32 +198,6 @@ export class GoodReceiptnoteComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-
-  // getSelectedObj(obj) {
-
-  //   this.ItemName = obj.ItemName;
-  //   this.UOM = obj.UOM;
-  //   this.HSNCode = obj.HSNCode;
-  //   this.BatchNo = obj.BatchNo; 
-  //   this.ExpDate = obj.ExpDate;
-  //   this.Qty = obj.Qty;
-  //   this.FreeQty = obj.FreeQty;
-  //   this.MRP = obj.MRP;
-  //   this.Rate = obj.Rate;
-  //   this.TotalAmount = obj.TotalAmount;
-  //   this.Disc = obj.Disc;
-  //   this.DisAmount = obj.DisAmount;
-  //   this.GST = obj.GST;
-  //   this.GSTAmount = obj.GSTAmount;
-  //   this.CGST = obj.CGST;
-  //   this.CGSTAmount = obj.CGSTAmount;
-  //   this.SGST = obj.SGST;
-  //   this.SGSTAmount = obj.SGSTAmount;
-  //   this.IGST = obj.IGST;
-  //   this.IGSTAmount = obj.IGSTAmount;
-  //   this.NetAmount = obj.NetAmount;
-
-  // }
 
   onAdd() {
     debugger
@@ -310,10 +272,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
   getGRNList() {
 
-   
-    // this.sIsLoading = 'loading-data';
-   // console.log(this._GRNService.GRNSearchGroup.get('ToStoreId').value)
-    //debugger
     var Param = {
 
       "ToStoreId": this.accountService.currentUserValue.user.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
@@ -322,7 +280,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
       "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-   // console.log(Param);
+   console.log(Param);
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
@@ -347,8 +305,6 @@ export class GoodReceiptnoteComponent implements OnInit {
 
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
       this.NetAmount = this.TotalAmount;
-      // Swal.fire(this.NetAmount)
-      // this.calculatePersc();
     }
   }
 
@@ -500,8 +456,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      this._GRNService.GRNFirstForm.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._GRNService.GRNFirstForm.get('StoreId').value.StoreName;
+      this._GRNService.GRNStoreForm.get('StoreId').setValue(this.StoreList[0]);
+      this.StoreName = this._GRNService.GRNStoreForm.get('StoreId').value.StoreName;
     });
   }
 
@@ -526,7 +482,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 debugger
     var m_data = {
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
-      "StoreId": this._GRNService.GRNFirstForm.get('StoreId').value.storeid || 0
+      "StoreId": this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0
     }
     if (this._GRNService.userFormGroup.get('ItemName').value.length >= 1) {
       this._GRNService.getItemNameList(m_data).subscribe(data => {
@@ -632,17 +588,17 @@ debugger
     });
   }
 
-  getFromStoreSearchList() {
-    var data = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._GRNService.getFromStoreSearchList(data).subscribe(data => {
-      this.FromStoreList = data;
-      this._GRNService.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-    });
+  // getFromStoreSearchList() {
+  //   var data = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._GRNService.getFromStoreSearchList(data).subscribe(data => {
+  //     this.FromStoreList = data;
+  //     this._GRNService.GRNSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+  //   });
 
 
-  }
+  // }
 
   getItemNameList() {
     var Param = {
@@ -766,7 +722,7 @@ debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    grnSaveObj['storeId'] = this._GRNService.GRNFirstForm.get('StoreId').value.storeid || 0;
+    grnSaveObj['storeId'] = this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0;
     grnSaveObj['supplierID'] = this._GRNService.GRNFirstForm.get('SupplierId').value.SupplierId || 0;
     grnSaveObj['invoiceNo'] = this._GRNService.GRNFirstForm.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0,//this._GRNService.GRNFirstForm.get('Supplier_Id').value.SupplierId || 0;
@@ -1107,6 +1063,7 @@ debugger
 
   onEdit(contact) {
     this.chkNewGRN=2;
+    console.log(contact);
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -1119,6 +1076,7 @@ debugger
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      //this.getGRNList();
     });
   }
 
@@ -1181,18 +1139,16 @@ msg:any;
     this._GRNService.getVerifyGRN(Param).subscribe(data => {
       this.msg = data;
       console.log(this.msg);
-      if(data){
+      // if(data){
+      //   this.toastr.success('Record Verified Successfully.', 'Verified !', {
+      //     toastClass: 'tostr-tost custom-toast-success',
+      //   }); 
+      // }
+      } ,success => {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-       
-      }
-     
-      } ,error => {
-        this.toastr.error('Record Not Verified !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
+      });this.getGRNList();
   }
 
   onScroll() {
@@ -1330,7 +1286,8 @@ export class ItemNameList {
   DebitNote: any;
   CreditNote: any;
   RoundingAmt: any;
-  InvDate: any;
+  InvDate: Date;
+  PaymentDate: Date;
   TotalDiscAmount: any;
   ReceivedBy: any;
   Remark: any;
@@ -1348,12 +1305,20 @@ export class ItemNameList {
   VatAmount: number;
   VatPercentage: number;
   id: number;
-  tranProcessId: number;
+  ConstantId: number;
   discPercentage: number;
   discAmount: number;
   DiscPercentage: number;
   DiscAmount: number;
-
+  PaymentType:any;
+  GRNType:any;
+  DateOfInvoice:any;
+  EwayBillDate:Date;
+  CurrentDate=new Date();
+  Tranprocessmode:any;
+  Cash_CreditType:any;
+  tranProcessMode:any;
+  EwayBillNo:any;
   /**
    * Constructor
    *
@@ -1372,7 +1337,7 @@ export class ItemNameList {
       this.MRP = ItemNameList.MRP || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Disc = ItemNameList.Disc || 0;
+      this.Disc = ItemNameList.Disc  ;
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
@@ -1398,12 +1363,17 @@ export class ItemNameList {
       this.DebitNote = ItemNameList.DebitNote || 0;
       this.CreditNote = ItemNameList.CreditNote || 0;
       this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-      this.InvDate = ItemNameList.InvDate || 0;
+      this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
       this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
       this.totalVATAmount = ItemNameList.totalVATAmount || 0;
       this.ReceivedBy = ItemNameList.ReceivedBy || ''
       this.Remark = ItemNameList.Remark || ''
       this.StoreId = ItemNameList.StoreId || 0;
+      this.EwayBillNo = ItemNameList.EwayBillNo || 0;
+      this.Tranprocessmode = ItemNameList.Tranprocessmode || "";
+      this.EwayBillDate=ItemNameList.EwayBillDate || this.CurrentDate;
+      this.PaymentDate=ItemNameList.PaymentDate ||  this.CurrentDate;
+      this.DateOfInvoice=ItemNameList.DateOfInvoice ||  this.CurrentDate;
     }
   }
 }

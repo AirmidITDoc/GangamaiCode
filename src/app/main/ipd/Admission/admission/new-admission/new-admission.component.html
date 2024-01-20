@@ -45,7 +45,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>First Name</mat-label>
                     <input name="FirstName" formControlName="FirstName" placeholder="First Name"
-                      [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('FirstName').errors }" matInput
+                     matInput
                       required [(ngModel)]="registerObj.FirstName" onkeypress=" (event.charCode > 64 && 
                           event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
                     <mat-error class="error"
@@ -60,7 +60,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Middle Name</mat-label>
                     <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
-                      [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('MiddleName').errors }" matInput
+                      matInput
                       [(ngModel)]="registerObj.MiddleName" onkeypress=" (event.charCode > 64 && 
                           event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
                     <mat-error class="error"
@@ -72,7 +72,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Last Name</mat-label>
                     <input name="LastName" formControlName="LastName" placeholder="Last Name"
-                      [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('LastName').errors }" matInput
+                       matInput
                       required [(ngModel)]="registerObj.LastName" onkeypress=" (event.charCode > 64 && 
                           event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
                     <mat-error class="error"

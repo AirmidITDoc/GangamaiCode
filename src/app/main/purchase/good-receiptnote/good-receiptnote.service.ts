@@ -6,30 +6,52 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providedIn: 'root'
 })
 export class GoodReceiptnoteService {
-
+  GRNStoreForm: FormGroup;
+  GRNFirstForm:FormGroup;
   userFormGroup: FormGroup;
   GRNSearchGroup :FormGroup;
   GRNForm:FormGroup;
   GRNFinalForm:FormGroup;
-  GRNFirstForm:FormGroup;
+  
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
+    this.GRNStoreForm = this.createStoreFrom();
+    this.GRNFirstForm=this.getGRNfirstForm();
     this.userFormGroup = this.getGRNForm();
     this.GRNSearchGroup= this.GRNSearchFrom();  
     this.GRNFinalForm=this.getGrnFinalformForm();
-    this.GRNFirstForm=this.getGRNfirstForm();
+   
 
 
+  }
+  createStoreFrom(){
+    return this._formBuilder.group({
+      StoreId:[''],
+    })
+  }
+  getGRNfirstForm() {
+    return this._formBuilder.group({
+      SupplierId:[''],
+      Contact:'',
+      Mobile:'',
+      InvoiceNo:[''],
+      DateOfInvoice:[new Date()],
+      GateEntryNo:[''],
+      GRNType:['true'],
+      GSTType:[''],
+      PaymentType:['true'],
+      PaymentDate:[new Date()]
+ });
   }
 
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      FromStoreId:'',
-      StoreId:'',
+     // FromStoreId:'',
+     // StoreId:'',
       SupplierId:'',
       Status:0,
       Status1:['0'],
@@ -42,18 +64,7 @@ export class GoodReceiptnoteService {
     });
   }
 
-  getGRNfirstForm() {
-    return this._formBuilder.group({
-      SupplierId:[''],
-      StoreId:[''],
-      InvoiceNo:[''],
-      DateOfInvoice:[(new Date())],
-      GateEntryNo:[''],
-      GRNType:['true'],
-      Status3:['',Validators.required],
-      PaymentType:['true']
- });
-  }
+
   
   getGRNForm() {
     return this._formBuilder.group({
@@ -79,6 +90,17 @@ export class GoodReceiptnoteService {
       IGST:[''],
       IGSTAmount:[''],
       NetAmount:[''],
+      SupplierId:[''],
+      Contact:'',
+      Mobile:'',
+      InvoiceNo:[''],
+      DateOfInvoice:[new Date()],
+      GateEntryNo:[''],
+      GRNType:['true'],
+      GSTType:[''],
+      PaymentType:['true'],
+      PaymentDate:[new Date()]
+      
       
     });
   }
@@ -91,6 +113,7 @@ export class GoodReceiptnoteService {
       DebitAmount:[''],
       CreditAmount:['true'],
       DiscAmount:[''],
+      TotalAmt:[''],
       VatAmount:[''],
       NetPayamt:[''],
       OtherCharges:[''],
@@ -107,13 +130,17 @@ export class GoodReceiptnoteService {
       // IGST:[''],
       // IGSTAmount:[''],
       // NetAmount:[''],
+      EwayBillNo:[""],
+      EwalBillDate:[new Date()]
       
     });
   }
-
-  // public getGRNItemList(Param) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
-  // }
+  public getLastThreeItemInfo(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
+  }
+  public getGSTtypeList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
+  }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
   }
@@ -136,7 +163,7 @@ export class GoodReceiptnoteService {
   }
   
   public getSupplierSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",{});
   }
 
     public getItemNameList(Param){

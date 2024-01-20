@@ -172,7 +172,7 @@ export class IPSearchListComponent implements OnInit {
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value ||1,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 2,
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || '%',
       }
       console.log(D_data);
       setTimeout(() => {
@@ -201,7 +201,7 @@ export class IPSearchListComponent implements OnInit {
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || '%'
       }
       setTimeout(() => {
         this.isLoadingStr = 'loading';
@@ -387,7 +387,7 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
           maxWidth: "110vw",
-          height: '90%',
+          height: '99%',
           width: '95%',
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -483,7 +483,7 @@ export class IPSearchListComponent implements OnInit {
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
             maxWidth: "85vw",
-            height: '500px',
+            height: '600px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -522,7 +522,7 @@ export class IPSearchListComponent implements OnInit {
               {
 
                 maxWidth: "85vw",
-                height: '400px',
+                height: '600px',
                 width: '100%',
               });
             dialogRef.afterClosed().subscribe(result => {

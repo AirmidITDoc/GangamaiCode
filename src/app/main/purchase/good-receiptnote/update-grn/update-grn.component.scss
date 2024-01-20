@@ -173,7 +173,64 @@ app-update-grn {
     }
     }
   
-   
+    .table4{
+      height: 180px !important;
+      width: 100%;
+      border: lightgray;
+      .mat-column-ItemId{
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-SupplierName {
+        width: 190px;
+        max-width: 190px;
+        min-width: 190px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 10px;
+        margin-top: 20px;
+      }
+     
+      .mat-column-ReceiveQty {
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
+        text-align: left;
+      }
+      .mat-column-FreeQty {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+        text-align: left;
+      }
+      .mat-column-MRP {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-Rate {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-VatPercentage {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+  
+      }
+    }
   
     
 

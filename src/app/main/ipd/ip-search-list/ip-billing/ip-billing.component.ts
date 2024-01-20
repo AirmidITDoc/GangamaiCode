@@ -20,6 +20,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import * as converter from 'number-to-words';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -284,7 +285,7 @@ export class IPBillingComponent implements OnInit {
       Remark: [''],
       GenerateBill: [1],
       FinalAmount: 0,
-      CashCounterId: ['', Validators.required]
+      CashCounterId:['']// ['', Validators.required]
     });
   }
 
@@ -707,7 +708,7 @@ export class IPBillingComponent implements OnInit {
         InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
         // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
-        InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
+        InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
         let Billdetsarr = [];
 
         this.dataSource.data.forEach((element) => {
@@ -788,7 +789,8 @@ export class IPBillingComponent implements OnInit {
                 if (result.isConfirmed) {
 
                   this._matDialog.closeAll();
-                  this.getPrint(response);
+                  this.viewgetBillReportPdf(response);
+                  // this.getPrint(response);
                 }
               });
             } else {
@@ -836,7 +838,7 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['TaxPer'] = 0;
           InsertBillUpdateBillNoObj['TaxAmount'] = 0;
           InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
-          InsertBillUpdateBillNoObj['CashCounterId'] = this.Ipbillform.get('CashCounterId').value.CashCounterId;
+          InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId;
 
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
           const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -862,7 +864,9 @@ export class IPBillingComponent implements OnInit {
                 if (result.isConfirmed) {
 
                   this._matDialog.closeAll();
-                  this.getPrint(response);
+
+                  this.viewgetBillReportPdf(response);
+                  // this.getPrint(response);
                 }
               });
             } else {
@@ -927,7 +931,8 @@ export class IPBillingComponent implements OnInit {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.getPrintDraft(response);
+              this.viewgetDraftBillReportPdf(response);
+              // this.getPrintDraft(response);
             }
           });
         } else {
@@ -1188,9 +1193,47 @@ export class IPBillingComponent implements OnInit {
       })
     );
 
-
-
   }
+
+  viewgetBillReportPdf(BillNo) {
+    
+    this._IpSearchListService.getIpFinalBillReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Ip Bill  Viewer"
+          }
+        });
+    });
+  }
+
+  
+  viewgetDraftBillReportPdf(BillNo) {
+    
+    this._IpSearchListService.getIpDraftBillReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Draft Bill  Viewer"
+          }
+        });
+    });
+  }
+
+
+
 
   getPrintDraft(el) {
     var D_data = {

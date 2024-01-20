@@ -91,10 +91,7 @@ export class ItemFormMasterComponent implements OnInit {
         if(this.data){
             debugger
               this.registerObj=this.data.registerObj;
-            //   this.RegId= this.registerObj.RegId;
-                // this.isDisabled=true
-                // this.Prefix=this.data.registerObj.PrefixID;
-            //    this.setDropdownObjs1();
+               this.setDropdownObjs1();
             }
 
 
@@ -112,28 +109,47 @@ export class ItemFormMasterComponent implements OnInit {
         this.getDrugTypeList();
 
        
+        if(this.data){
+            debugger
+              this.registerObj=this.data.registerObj;
+                this.setDropdownObjs1();
+            }
     }
 
 
     
   setDropdownObjs1() {
+    
     debugger
     const toSelect = this.ItemTypecmbList.find(c => c.ItemTypeId == this.registerObj.ItemTypeID);
     this._itemService.myform.get('ItemTypeID').setValue(toSelect);
 
-    //  const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-    //  this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
+     const toSelectCat = this.ItemCategorycmbList.find(c => c.ItemCategoryId == this.registerObj.ItemCategoryId);
+     this._itemService.myform.get('ItemCategoryId').setValue(toSelectCat);
  
-    //  const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    //  this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
+     const toSelectGen = this.ItemGenericcmbList.find(c => c.ItemGenericNameId == this.registerObj.ItemGenericNameId);
+     this._itemService.myform.get('ItemGenericNameId').setValue(toSelectGen);
  
-    //  const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-    //  this.personalFormGroup.get('AreaId').setValue(toSelectArea);
+     const toSelectClass = this.ItemClasscmbList.find(c => c.ItemClassId == this.registerObj.ItemClassId);
+     this._itemService.myform.get('ItemClassId').setValue(toSelectClass);
  
-    //  const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    //  this.personalFormGroup.get('CityId').setValue(toSelectCity);
+     const toSelectUMI = this.ItemUomcmbList.find(c => c.PurchaseUOMId == this.registerObj.PurchaseUOMId);
+     this._itemService.myform.get('PurchaseUOMId').setValue(toSelectUMI);
+
+     const toSelectStock = this.ItemUomcmbList.find(c => c.StockUOMId == this.registerObj.StockUOMId);
+     this._itemService.myform.get('StockUOMId').setValue(toSelectStock);
  
-    //  this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+    //  const toSelectDrug = this.DrugList.find(c => c.ItemClassId == this.registerObj.);
+     this._itemService.myform.get('toSelectDrug').setValue(toSelectClass);
+ 
+     const toSelectManu = this.ManufacurecmbList.find(c => c.ManufId == this.registerObj.ManufId);
+     this._itemService.myform.get('ManufId').setValue(toSelectManu);
+ 
+  
+     const toSelectComp = this.CompanyList.find(c => c.CompanyId == this.registerObj);
+     this._itemService.myform.get('CompanyId').setValue(toSelectComp);
+  
+     //  this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
      
     //  this.onChangeCityList(this.personalFormGroup.get('CityId').value);
      
@@ -160,12 +176,12 @@ export class ItemFormMasterComponent implements OnInit {
 
         });
 
-        if(this.data){
-            debugger
-                 const toSelect = this.ItemTypecmbList.find(c => c.ItemTypeId == this.registerObj.ItemTypeID);
-                this._itemService.myform.get('ItemTypeID').setValue(toSelect);
+        // if(this.data){
+        //     debugger
+        //          const toSelect = this.ItemTypecmbList.find(c => c.ItemTypeId == this.registerObj.ItemTypeID);
+        //         this._itemService.myform.get('ItemTypeID').setValue(toSelect);
  
-        }
+        // }
 
     }
 

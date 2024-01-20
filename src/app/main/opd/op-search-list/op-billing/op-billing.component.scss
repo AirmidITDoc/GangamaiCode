@@ -63,7 +63,6 @@ app-op-billing{
         color: white !important;
         font-size: 16px;
       }
-   
     .mat-data-table.mat-form-field-appearance-legacy .mat-form-field-infix{
         padding: 0.4375em 0px 0.4375em 5px !important;
     }
@@ -676,9 +675,9 @@ padding-bottom: 2px;
     text-align:center;
 }
 .mat-column-ChargeDoctorName {
-    width:250px;
-    max-width:250px;
-    min-width:250px;
+    width:260px;
+    max-width:260px;
+    min-width:260px;
     // justify-content:center;
     text-align:center;
     white-space: nowrap; 
@@ -756,13 +755,12 @@ padding-bottom: 2px;
 
 button:disabled {
     color: white;
-   background-color: #7bd3ff  !important;
-   //background-color: #b7e6fd ;
-    border-radius: 2px;
-   // border: 1px solid #CCCCCC;
-   border: 1px solid  #b7e6fd ;
-}
-
+    background-color: #7bd3ff  !important;
+     //background-color: #b7e6fd ;
+     border-radius: 16px;
+    border: 1px solid  #b7e6fd ;
+     
+    }
 .footer-btn {
     width: 80px;
     font-size: 16px;

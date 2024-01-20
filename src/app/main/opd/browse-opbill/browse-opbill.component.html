@@ -26,67 +26,70 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar"
-        style="width:30%; border-radius:4px;
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar" style="width:30%; border-radius:4px;
         margin-left:12px; background-color: white;">
-                <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
-                    <!-- / USER -->
-                </div>
-                <!-- / SIDEBAR HEADER -->
-                <!-- SIDEBAR CONTENT -->
-                    <div class="nav material2">
+            <!-- SIDEBAR HEADER -->
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
+                <span class="h5" style="font-size: 17px;">Search Facility</span>
+                <!-- / USER -->
+            </div>
+            <!-- / SIDEBAR HEADER -->
+            <!-- SIDEBAR CONTENT -->
+            <div class="nav material2">
 
-                        <form [formGroup]="_BrowseOPDBillsService.myFilterform">
-                            <div fxLayout="column" fxLayoutAlign="start none">
+                <form [formGroup]="_BrowseOPDBillsService.myFilterform">
+                    <div fxLayout="column" fxLayoutAlign="start none">
 
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date"
-                                            (dateChange)="onShow($event)">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChange)="onShow($event)">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="start" placeholder="Start date"
+                                    (dateChange)="onShow($event)">
+                                <input matEndDate formControlName="end" placeholder="End date"
+                                    (dateChange)="onShow($event)">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Bill No</mat-label>
-                                    <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow($event)">
-                                </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Bill No</mat-label>
+                            <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow($event)">
+                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Reg No</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow($event)">
-                                </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Reg No</mat-label>
+                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow($event)">
+                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input name="FirstName" formControlName="FirstName" matInput
-                                        (keyup)="onShow($event)">
-                                </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>First Name</mat-label>
+                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="onShow($event)">
+                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
-                                </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Last Name</mat-label>
+                            <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
+                        </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                    <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
-                                      <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
-                                      Search
-                                    </button>
-                                    <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                      <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                      Clear
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+                            <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
+                                <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
+                                Search
+                            </button>
+                            <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
+                                <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                Clear
+                            </button>
+
+
+                        </div>
+                        <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
+                            Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                        </span>
                     </div>
+                </form>
+            </div>
         </fuse-sidebar>
         <!-- / SIDEBAR -->
         <!-- CENTER -->
@@ -103,7 +106,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
 
-                                <mat-table #table  table="table1" matSort [dataSource]="dataSource"
+                                <mat-table #table table="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
@@ -196,7 +199,7 @@
                                         </mat-cell>
                                     </ng-container>
                                     <!-- stickyEnd -->
-                                    <ng-container matColumnDef="action" >
+                                    <ng-container matColumnDef="action">
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
@@ -205,8 +208,10 @@
                                                 matTooltip="how_to_reg">
                                                 <mat-icon>how_to_reg</mat-icon>
                                             </button>
-                                            <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)" matTooltip="print">
+                                            <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)"
+                                                matTooltip="print">
                                                 <mat-icon>print</mat-icon>
+
                                             </button>
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')" matTooltip="email">
@@ -270,4 +275,3 @@
         }
     }
 </style> -->
-

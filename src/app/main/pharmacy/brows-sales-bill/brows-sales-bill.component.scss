@@ -1,3 +1,19 @@
+
+.loading-spinner {
+  font-size: 50px;
+  color: #319fc0;
+}
+
+.loading-overlay {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.container {
+  width: 100%;
+}  
 .Table1 {
   .mat-header-row {
     width: fit-content;

@@ -114,6 +114,7 @@ export class OpPaymentNewComponent implements OnInit {
 
     if (this.data.FromName == "Advance") {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1= parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
@@ -125,6 +126,7 @@ export class OpPaymentNewComponent implements OnInit {
 
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
+      this.amount1= parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
       this.PatientName = this.advanceData.PatientName;
@@ -264,11 +266,41 @@ export class OpPaymentNewComponent implements OnInit {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+
+      // this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+
+
+      // this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
+
+
+      // this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
+      // this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
       this.patientDetailsFormGrp.updateValueAndValidity();
     } else {
       this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
       this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
+
+      // this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
+
+      // this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+
+      // this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
+
+      // this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
+      // this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
       this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
@@ -522,6 +554,8 @@ export class OpPaymentNewComponent implements OnInit {
         this.paymentArr5 = this.opService.getPaymentArr();
         let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
         this.paymentArr5.splice(element3, 1);
+
+        // this.setFirstRowValidators(value);
         break;
 
       case 2:
@@ -642,6 +676,21 @@ export class OpPaymentNewComponent implements OnInit {
 
       let element4 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
       this.paymentArr5.splice(element4, 1);
+    }
+  }
+
+  setFirstRowValidators
+  (paymentOption: any) {
+    if (this.selectedPaymnet1 && this.selectedPaymnet1 == 'cash') {
+    //   this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+    //   this.patientDetailsFormGrp.get('bankName').setValidators([Validators.required]);
+    //   this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+    //   this.patientDetailsFormGrp.updateValueAndValidity();
+    // } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('bankName1').clearAsyncValidators();
+      this.patientDetailsFormGrp.get('regDate1').clearAsyncValidators();
+      this.patientDetailsFormGrp.updateValueAndValidity();
     }
   }
 
@@ -969,7 +1018,7 @@ export class OpPaymentNewComponent implements OnInit {
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
       this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value || '';
+      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName || '';
       this.Paymentobj['CardDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }
@@ -1009,7 +1058,7 @@ export class OpPaymentNewComponent implements OnInit {
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
       this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value || '';
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }

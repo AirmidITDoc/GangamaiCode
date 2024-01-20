@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -8,7 +8,7 @@ import { RegistrationService } from "../registration/registration.service";
 import { DatePipe, Time } from "@angular/common";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AppointmentSreviceService } from "./appointment-srevice.service";
 // import * as XLSX from 'xlsx';
 import Swal from "sweetalert2";
@@ -25,7 +25,7 @@ import { ImageViewComponent } from "./image-view/image-view.component";
 import { CameraComponent } from "./camera/camera.component";
 import { map, startWith, takeUntil } from "rxjs/operators";
 import { OPBillingComponent } from "../op-search-list/op-billing/op-billing.component";
-import { SearchInforObj } from "../op-search-list/opd-search-list/opd-search-list.component";
+import { ChargesList, SearchInforObj } from "../op-search-list/opd-search-list/opd-search-list.component";
 import { AdvanceDataStored } from "app/main/ipd/advance";
 import { OPIPPatientModel } from "../op-search-list/search-page/search-page.component";
 import { MatStepper } from "@angular/material/stepper";
@@ -38,6 +38,10 @@ import { AnyCnameRecord } from "dns";
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ImageCroppedEvent } from "ngx-image-cropper";
+import { VisitDetailsComponent } from "./visit-details/visit-details.component";
+import { ConfigService } from "app/core/services/config.service";
+import { MatDrawer } from "@angular/material/sidenav";
+import { MatAccordion } from "@angular/material/expansion";
 
 
 export class DocData {
@@ -54,6 +58,12 @@ export class DocData {
   animations: fuseAnimations,
 })
 export class AppointmentComponent implements OnInit {
+  // events: string[] = [];
+  // opened: boolean;
+
+  // shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+
+
   msg: any;
   sIsLoading: string = "";
   // isLoading = true;
@@ -73,8 +83,8 @@ export class AppointmentComponent implements OnInit {
 
   showtable: boolean = false;
 
-  showReg: boolean = false;
-
+  Regflag: boolean = false;
+  
   registerObj = new RegInsert({});
   registerObj1 = new RegInsert({});
   name = new FormControl('');
@@ -128,7 +138,7 @@ export class AppointmentComponent implements OnInit {
   VisitFormGroup: FormGroup;
   searchFormGroup: FormGroup;
   registration: any;
-  isRegSearchDisabled: boolean = true;
+  isRegSearchDisabled: boolean = false;
   Regdisplay: boolean = false;
   newRegSelected: any = 'registration';
   dataArray = {};
@@ -164,7 +174,7 @@ export class AppointmentComponent implements OnInit {
   docViewType: any;
   sStatus: any = '';
   // public errors: WebcamInitError[] = [];
-
+  minDate = new Date();
   private trigger: Subject<any> = new Subject();
   // public webcamImage!: WebcamImage;
   private nextWebcam: Subject<any> = new Subject();
@@ -205,10 +215,13 @@ export class AppointmentComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
-
+  CompanyId:any=0;
   VisitId: any;
   FimeName: any;
+VisitFlag=0;
 
+VisitFlagDisp:boolean=false;
+DoctorId:any;
   @ViewChild('attachments') attachment: any;
 
   imageForm = new FormGroup({
@@ -243,7 +256,17 @@ export class AppointmentComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<VisitMaster>();
+  dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
   menuActions: Array<string> = [];
+  tableColumns = [
+    
+    'VisitId',
+    'VisitTime',
+    'DocName'
+    
+  ];
+  @ViewChild('drawer') public drawer: MatDrawer;
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   displayedColumns1 = [
     'DocumentName',
@@ -270,21 +293,102 @@ export class AppointmentComponent implements OnInit {
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private _ActRoute: Router,
-
+    private configService: ConfigService,
     private _fuseSidebarService: FuseSidebarService,
     public _registrationService: RegistrationService,
     public matDialog: MatDialog,
 
     private advanceDataStored: AdvanceDataStored,
-    private reportDownloadService: ExcelDownloadService
-
+    private reportDownloadService: ExcelDownloadService,
+private _Activatedroute: ActivatedRoute,
+    private changeDetectorRefs: ChangeDetectorRef,
   ) {
     this.getVisitList();
+    this.configService.configParams.DepartmentId;
+    console.log( this.configService.configParams.DepartmentId);
+  }
 
+
+
+  AddList(m) {
+    // var m_data = {
+    //   "chargeID": 0,
+    //   "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+    //   "opD_IPD_Type": 1,
+    //   "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
+    //   "serviceId": m.ServiceId,
+    //   "price": m.price,// this.b_price,
+    //   "qty": m.qty || 1,// this.b_qty,
+    //   "totalAmt": 0,// this.b_totalAmount,
+    //   "concessionPercentage": 0,// this.formDiscPersc || 0,
+    //   "concessionAmount": 0,// this.b_disAmount || 0,
+    //   "netAmount": 0,// this.b_netAmount,
+    //   "doctorId": 0,// this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
+    //   "docPercentage": 0,
+    //   "docAmt": 0,
+    //   "hospitalAmt": 0,//this.b_netAmount,
+    //   "isGenerated": 0,
+    //   "addedBy": this.accountService.currentUserValue.user.id,
+    //   "isCancelled": 0,
+    //   "isCancelledBy": 0,
+    //   "isCancelledDate": "01/01/1900",
+    //   "isPathology": 0,//this.b_isPath,
+    //   "isRadiology": 1,//this.b_isRad,
+    //   "isPackage": 0,
+    //   "packageMainChargeID": 0,
+    //   "isSelfOrCompanyService": false,
+    //   "packageId": 0,
+    //   "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+    //   "classId": this.Serviceform.get("ClassId").value.ClassId
+    // }
+    // this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
+    //   if (data) {
+    //     Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
+    //     this.getChargesList();
+    //   }
+    // });
+    // this.onClearServiceAddList()
+
+     
+      // const toSelectDoc = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+      // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+  
+      // this.OnChangeDoctorList(m.DepartmentId);
+    this.isLoading = '';
   }
 
 
   onImageChange(event) {
+    let Imgflag = "";
+    if (!event.target.files.length) return;
+    const file = event.target.files[0];
+
+    debugger
+    this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
+
+      (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
+        Imgflag = event.base64
+      )
+
+    );
+
+
+    debugger
+
+    if (Imgflag != " ") {
+      let filesAmount = event.target.files.length;
+      // for (let i = 0; i < filesAmount; i++) {
+      // this.imgArr.push(file.name);
+      this.images.push({ url: file, name: file.name, Id: 0 });
+      this.imgDataSource.data = this.images;
+      this.imageForm.patchValue({
+        imgFileSource: this.images
+      });
+      // }
+      this.attachment.nativeElement.value = '';
+    }
+  }
+  onPhotoChange(event) {
     let Imgflag = "";
 
     if (!event.target.files.length) return;
@@ -356,7 +460,7 @@ export class AppointmentComponent implements OnInit {
     this.getDoctor2List();
     this.getPurposeList();
 
-    this.getSearchList();
+    // this.getSearchList();
     this.getSearchDocuploadPatientList();
 
     this.hospitalFilterCtrl.valueChanges
@@ -470,7 +574,7 @@ export class AppointmentComponent implements OnInit {
 
   }
 
-c
+  c
 
   private _filterCity(value: any): string[] {
     if (value) {
@@ -570,7 +674,7 @@ c
       Validators.minLength(10),
       Validators.maxLength(10),]],
       AadharCardNo: [''],
-      PanCardNo: '',
+      PanCardNo:["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -623,7 +727,7 @@ c
       this.personalFormGroup.reset();
       this.personalFormGroup.get('RegId').reset();
       this.searchFormGroup.get('RegId').disable();
-      // this.isRegSearchDisabled = false;
+      this.isRegSearchDisabled = false;
 
       this.personalFormGroup = this.createPesonalForm();
       this.personalFormGroup.markAllAsTouched();
@@ -631,10 +735,10 @@ c
       this.VisitFormGroup.markAllAsTouched();
       // this.Regdisplay = false;
       // this.showtable = false;
-
+      this.Regflag=false;
 
     } else {
-      this.isRegSearchDisabled = false;
+      
       this.personalFormGroup.get('RegId').enable();
       this.personalFormGroup.reset();
       this.Patientnewold = 2;
@@ -643,6 +747,8 @@ c
       this.personalFormGroup.markAllAsTouched();
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
+      this.Regflag=true;
+      this.isRegSearchDisabled = true;
 
     }
 
@@ -828,6 +934,11 @@ c
       );
 
     });
+debugger
+    if( this.configService.configParams.DepartmentId){
+      this.VisitFormGroup.get('Departmentid').setValue(this.configService.configParams.DepartmentId)
+      this.OnChangeDoctorList(this.configService.configParams)
+    }
   }
 
 
@@ -898,6 +1009,41 @@ c
   }
 
 
+  getVisitDetails() {
+    // this.Quantity.nativeElement.focus();
+    // setTimeout(() => this.Quantity.nativeElement.focus(), 1000);
+    const dialogRef = this._matDialog.open(VisitDetailsComponent,
+      {
+        maxWidth: "800px",
+        minWidth: '800px',
+        width: '800px',
+        height: '380px',
+        disableClose: true,
+        data: {
+          "VisitId": 159641
+          // "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.VisitFlag=1;
+      this.DoctorId=result.DoctorId;
+      // this.BatchNo = result.BatchNo;
+     
+debugger
+      const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
+      this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
+  
+      this.OnChangeDoctorList(result);
+      this.dept.nativeElement.focus();
+    });
+
+   
+    this.isLoading = '';
+    // this.Quantity.nativeElement.focus();
+  }
+
+
   // toggle sidebar
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -921,31 +1067,11 @@ c
 
   }
 
-  //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
-  public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
-  public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
-  public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  // //purpose filter
-  // public purposeFilterCtrl: FormControl = new FormControl();
-  // public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
-
 
   //hospital filter
   public hospitalFilterCtrl: FormControl = new FormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
 
@@ -1113,28 +1239,18 @@ c
         this.imgDataSource.data = this.images;
         this.imgDataSource.data.forEach((currentValue, index) => {
           if (currentValue.Id > 0) {
-            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
-              if (resFile.file)
-                currentValue.url = 'data:image/jpg;base64,' + resFile.file;
-            });
-          }
-        });
-      }
-    });
-    this.docs = [];
-    query = "SELECT * FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + VisitId + " AND OPD_IPD_Type=1";
-    this._AppointmentSreviceService.getuploadeddocumentsList(query).subscribe((resData: any) => {
-      if (resData.length > 0) {
-        for (let i = 0; i < resData.length; i++) {
-          this.docs.push({ url: "", name: resData[i].FileName, Id: resData[i].ID });
-        }
-        this.pdfDataSource.data = this.docs;
-        this.pdfDataSource.data.forEach((currentValue, index) => {
-          if (currentValue.Id > 0) {
-            this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
-              if (resFile.file)
-                currentValue.url = 'data:application/pdf;base64,' + resFile.file;
-            });
+            if (currentValue.name.endsWith('.pdf')) {
+              this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
+                if (resFile.file)
+                  currentValue.url = 'data:application/pdf;base64,' + resFile.file;
+              });
+            }
+            else {
+              this._AppointmentSreviceService.getfile(currentValue.Id).subscribe((resFile: any) => {
+                if (resFile.file)
+                  currentValue.url = 'data:image/jpg;base64,' + resFile.file;
+              });
+            }
           }
         });
       }
@@ -1168,8 +1284,22 @@ c
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
+  RegOrPhoneflag='';
+  getSelectedObjPhone(obj){
+    this.RegOrPhoneflag='Entry From Phone Appointment'
+    this.registerObj = obj;
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.RegId;
+
+    // this.setDropdownObjs();
+
+    // this.getVistDetailsList();
+    this.getVisitDetails();
+    this.VisitFlagDisp=true;
+  }
 
   getSelectedObj(obj) {
+    this.RegOrPhoneflag='Entry from Registration';
     obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeDay.trim();
     obj.AgeYear = obj.AgeYear.trim();
@@ -1178,6 +1308,10 @@ c
     this.RegId = obj.RegId;
 
     this.setDropdownObjs();
+
+    // this.getVistDetailsList();
+    this.getVisitDetails();
+    this.VisitFlagDisp=true;
   }
   setDropdownObjs() {
 
@@ -1212,8 +1346,9 @@ c
     }
   }
 
-  OnSaveAppointment() {
 
+  OnSaveAppointmentwithoutphoto() {
+    debugger
     if (this.searchFormGroup.get('regRadio').value == "registration") {
 
       this.isLoading = 'submit';
@@ -1223,9 +1358,9 @@ c
       let tokenNumberWithDoctorWiseInsert = {};
       debugger
       registrationSave['regID'] = 0;
-      registrationSave['regDate'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      registrationSave['regTime'] = this.dateTimeObj.time,
-      registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        registrationSave['regTime'] = this.dateTimeObj.time,
+        registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationSave['firstName'] = this.registerObj.FirstName;
       registrationSave['middleName'] = this.registerObj.MiddleName || '';
       registrationSave['lastName'] = this.registerObj.LastName;
@@ -1248,21 +1383,21 @@ c
       registrationSave['isCharity'] = false;
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      registrationSave['Aadharcardno'] = this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
-      registrationSave['Pancardno'] = this.registerObj.PanCardNo;// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['Aadharcardno'] = 0;//this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationSave['Photo'] = '';
-      const base64 = this.sanitizeImagePreview;
-      const imageName = 'name.png';
-      const imageBlob = this.dataURItoBlob(base64);
-      const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
-      registrationSave["ImgFile"]=imageFile;
+      // const base64 = this.sanitizeImagePreview;
+      // const imageName = 'name.png';
+      // const imageBlob = this.dataURItoBlob(base64);
+      // const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
+      // registrationSave["ImgFile"]=imageFile;
       submissionObj['RegistrationSave'] = registrationSave;
-
+debugger
       visitSave['VisitId'] = 0;
       visitSave['RegID'] = 0;
       visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      visitSave['VisitTime'] = this.dateTimeObj.time,
+        visitSave['VisitTime'] = this.dateTimeObj.time,
 
         visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
@@ -1270,7 +1405,7 @@ c
       visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitSave['CompanyId'] = this.CompanyId;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitSave['IsCancelled'] = false;
@@ -1281,9 +1416,9 @@ c
       visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-        visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
+        visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-      visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+        visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
 
         submissionObj['visitSave'] = visitSave;
 
@@ -1294,10 +1429,13 @@ c
 
       const formData = new FormData();
       //let finalData = { Files: data };
-      let finalData={OpdAppointmentParams:submissionObj};
-      this.CreateFormData(finalData, formData);
 
-      this._opappointmentService.appointregInsert(formData).subscribe(response => {
+
+      // comment for save without photo
+      // let finalData={OpdAppointmentParams:submissionObj};
+      // this.CreateFormData(finalData, formData);
+
+      this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
         if (response) {
           debugger
           Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
@@ -1324,9 +1462,9 @@ c
       debugger
 
       registrationUpdate['regID'] = this.registerObj.RegId;
-      registrationUpdate['regDate'] =this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      registrationUpdate['regTime'] = this.dateTimeObj.time,
-      registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        registrationUpdate['regTime'] = this.dateTimeObj.time,
+        registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationUpdate['firstName'] = this.registerObj.FirstName;
       registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
       registrationUpdate['lastName'] = this.registerObj.LastName;
@@ -1334,7 +1472,208 @@ c
       registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
       registrationUpdate['pinNo'] = '';
       registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-      registrationUpdate['age'] = this.registerObj.AgeYear;
+        registrationUpdate['age'] = this.registerObj.AgeYear;
+      registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
+      registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
+      registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
+      registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
+      registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
+      registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
+      registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
+      registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
+      registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
+      registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
+      registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+      registrationUpdate['isCharity'] = false;
+      registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+      registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+      registrationUpdate['Aadharcardno'] = 0,//this.personalFormGroup.get('Aadharcardno').value || '';
+        registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
+      registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
+      registrationUpdate['Photo'] = ''
+
+
+      this.CompanyId=this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
+      submissionObj['registrationUpdate'] = registrationUpdate;
+      // visit detail
+      visitUpdate['VisitId'] = 0;
+      visitUpdate['RegID'] = this.registerObj.RegId;
+      visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        visitUpdate['VisitTime'] = this.dateTimeObj.time,
+        visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+      visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+
+      visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
+      visitUpdate['CompanyId'] = this.CompanyId;
+      visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
+      visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
+        visitUpdate['IsCancelled'] = 0;
+      visitUpdate['IsCancelledBy'] = 0;
+      visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+
+        visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+      visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+      visitUpdate['PatientOldNew'] = this.Patientnewold;
+      visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
+        visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+      visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+
+        submissionObj['visitUpdate'] = visitUpdate;
+
+
+      tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
+      submissionObj['tokenNumberWithDoctorWiseUpdate'] = tokenNumberWithDoctorWiseUpdate;
+
+      console.log(submissionObj);
+      this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
+        if (response) {
+          Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this.getPrint(response);
+              this._matDialog.closeAll();
+            }
+            this.getVisitList();
+          });
+        } else {
+          Swal.fire('Error !', 'Appointment not Updated', 'error');
+        }
+        this.isLoading = '';
+      });
+
+    }
+
+    //Reset Page
+    this.onClose();
+  }
+
+  OnSaveAppointment() {
+    debugger
+    if (this.searchFormGroup.get('regRadio').value == "registration") {
+
+      this.isLoading = 'submit';
+      let submissionObj = {};
+      let registrationSave = {};
+      let visitSave = {};
+      let tokenNumberWithDoctorWiseInsert = {};
+      debugger
+      registrationSave['regID'] = 0;
+      registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        registrationSave['regTime'] = this.dateTimeObj.time,
+        registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationSave['firstName'] = this.registerObj.FirstName;
+      registrationSave['middleName'] = this.registerObj.MiddleName || '';
+      registrationSave['lastName'] = this.registerObj.LastName;
+      registrationSave['address'] = this.registerObj.Address || '';
+      registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
+      registrationSave['pinNo'] = '123';
+      registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
+        registrationSave['age'] = this.registerObj.AgeYear;
+      registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
+      registrationSave['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
+      registrationSave['mobileNo'] = this.registerObj.MobileNo || 0;
+      registrationSave['addedBy'] = this.accountService.currentUserValue.user.id;
+      registrationSave['ageYear'] = this.registerObj.AgeYear || 0;
+      registrationSave['ageMonth'] = this.registerObj.AgeMonth || 0;
+      registrationSave['ageDay'] = this.registerObj.AgeDay || 0;
+      registrationSave['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
+      registrationSave['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
+      registrationSave['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
+      registrationSave['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+      registrationSave['isCharity'] = false;
+      registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+      registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+      registrationSave['Aadharcardno'] = 0; // this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
+      registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
+      registrationSave['Photo'] = '';
+      const base64 = this.sanitizeImagePreview;
+      const imageName = 'name.png';
+      const imageBlob = this.dataURItoBlob(base64);
+      const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
+      registrationSave["ImgFile"] = imageFile;
+      submissionObj['RegistrationSave'] = registrationSave;
+
+      visitSave['VisitId'] = 0;
+      visitSave['RegID'] = 0;
+      visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        visitSave['VisitTime'] = this.dateTimeObj.time,
+
+        visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+      visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+
+      visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
+      visitSave['CompanyId'] = this.CompanyId;
+      visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
+      visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
+        visitSave['IsCancelled'] = false;
+      visitSave['IsCancelledBy'] = 0;
+      visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+
+        visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+      visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+      visitSave['PatientOldNew'] = this.Patientnewold;
+      visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
+        visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
+      visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+        visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+
+        submissionObj['visitSave'] = visitSave;
+
+      tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
+      submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
+      debugger
+      console.log(submissionObj)
+
+      const formData = new FormData();
+      //let finalData = { Files: data };
+
+
+      // comment for save without photo
+      let finalData = { OpdAppointmentParams: submissionObj };
+      this.CreateFormData(finalData, formData);
+
+      this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
+        if (response) {
+          debugger
+          Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
+            // if (result.isConfirmed) {
+            // this._matDialog.closeAll();
+            this.getPrint(result);
+            // this.getVisitList();
+            // }
+          });
+        } else {
+          Swal.fire('Error !', 'Appoinment not saved', 'error');
+        }
+        this.isLoading = '';
+      });
+    }
+    else {
+
+      this.isLoading = 'submit';
+      let submissionObj = {};
+      let registrationUpdate = {};
+      let visitUpdate = {};
+
+      let tokenNumberWithDoctorWiseUpdate = {};
+      debugger
+
+      registrationUpdate['regID'] = this.registerObj.RegId;
+      registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        registrationUpdate['regTime'] = this.dateTimeObj.time,
+        registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationUpdate['firstName'] = this.registerObj.FirstName;
+      registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
+      registrationUpdate['lastName'] = this.registerObj.LastName;
+      registrationUpdate['address'] = this.registerObj.Address || '';
+      registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
+      registrationUpdate['pinNo'] = '';
+      registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
+        registrationUpdate['age'] = this.registerObj.AgeYear;
       registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
       registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
@@ -1350,25 +1689,25 @@ c
       registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       registrationUpdate['Aadharcardno'] = "",//this.personalFormGroup.get('Aadharcardno').value || '';
-      registrationUpdate['Pancardno'] =  this.personalFormGroup.get('PanCardNo').value || '';
+        registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
       registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-      registrationUpdate['Photo']=''
+      registrationUpdate['Photo'] = ''
 
 
-      
+
       submissionObj['registrationUpdate'] = registrationUpdate;
       // visit detail
       visitUpdate['VisitId'] = 0;
       visitUpdate['RegID'] = this.registerObj.RegId;
       visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      visitUpdate['VisitTime'] = this.dateTimeObj.time,
-      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+        visitUpdate['VisitTime'] = this.dateTimeObj.time,
+        visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId ? this.VisitFormGroup.get('CompanyId').value.CompanyId : 0;
+      visitUpdate['CompanyId'] = this.CompanyId;
       visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitUpdate['IsCancelled'] = 0;
@@ -1376,10 +1715,10 @@ c
       visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
         visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-      visitUpdate['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+      visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitUpdate['PatientOldNew'] = this.Patientnewold;
       visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-        visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+        visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId ||0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
 
         submissionObj['visitUpdate'] = visitUpdate;
@@ -1776,7 +2115,6 @@ c
   onImageFileChange(events: any) {
 
     debugger
-    this.images = [];
     if (events.target.files && events.target.files[0]) {
       let filesAmount = events.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -1793,17 +2131,6 @@ c
       this.imgDataSource.data = this.images;
       this.imageForm.patchValue({
         imgFileSource: this.images
-      });
-    }
-    reader.readAsDataURL(f);
-  }
-  readDoc(f: File, name: string) {
-    var reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.docs.push({ url: event.target.result, name: name, Id: 0 });
-      this.pdfDataSource.data = this.docs;
-      this.docsForm.patchValue({
-        pdfDataSource: this.docs
       });
     }
     reader.readAsDataURL(f);
@@ -1826,12 +2153,22 @@ c
   onSubmitImgFiles() {
     let data: PatientDocument[] = [];
     for (let i = 0; i < this.imgDataSource.data.length; i++) {
-      let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
-        type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
-      });
-      data.push({
-        Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
-      });
+      if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
+        let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+          type: "'application/pdf'"
+        });
+        data.push({
+          Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+        });
+      }
+      else {
+        let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+          type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+        });
+        data.push({
+          Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+        });
+      }
     }
     const formData = new FormData();
     let finalData = { Files: data };
@@ -1848,18 +2185,6 @@ c
   imgArr: string[] = [];
   docArr: string[] = [];
 
-
-  onDocFileChange(events: any) {
-    this.docs = [];
-    if (events.target.files && events.target.files[0]) {
-      let filesAmount = events.target.files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        this.docArr.push(events.target.files[i].name);
-        this.readDoc(events.target.files[i], events.target.files[i].name);
-      }
-      this.attachment.nativeElement.value = '';
-    }
-  }
   viewPdf(data: any) {
     const dialogRef = this._matDialog.open(PdfviewerComponent,
       {
@@ -1871,25 +2196,6 @@ c
           title: "Appointment Document"
         }
       });
-  }
-  onSubmitDocFiles() {
-    let data: PatientDocument[] = [];
-    for (let i = 0; i < this.pdfDataSource.data.length; i++) {
-      let file = new File([this.dataURItoBlob(this.pdfDataSource.data[i].url)], this.pdfDataSource.data[i].name, {
-        type: "'application/pdf'"
-      });
-      data.push({
-        Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.pdfDataSource.data[i].name
-      });
-    }
-    const formData = new FormData();
-    let finalData = { Files: data };
-    this.CreateFormData(finalData, formData);
-    this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
-      if (data) {
-        Swal.fire("Document uploaded Successfully  ! ");
-      }
-    });
   }
   getHospitalList1() {
     this._opappointmentService.getHospitalCombo().subscribe(data => {
@@ -2001,19 +2307,33 @@ c
   }
 
   OnChangeDoctorList(departmentObj) {
-
+debugger
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-
         this.optionsDoc = this.DoctorList.slice();
         this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
       })
+      
+
+      if( this.VisitFlag==1 || this.configService.configParams.DepartmentId){
+        debugger
+        this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
+          data => {
+            this.DoctorList = data;
+          }) 
+        const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.DoctorId);
+        this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+      }
+
+     
   }
+
+
   CreateFormData(obj: any, formData: FormData, subKeyStr = '') {
     for (const i in obj) {
       const value = obj[i]; let subKeyStrTrans = i;
@@ -2035,7 +2355,7 @@ c
 
   //   CameraComponent
 
-  openCamera(type: string) {
+  openCamera(type: string, place: string) {
     let fileType;
     const dialogRef = this.matDialog.open(ImageViewComponent,
       {
@@ -2043,15 +2363,21 @@ c
         height: '550px',
         data: {
           docData: type == 'camera' ? 'camera' : '',
-          type: type == 'camera' ? 'camera' : ''
+          type: type == 'camera' ? 'camera' : '',
+          place: place
         }
       }
     );
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.imgArr.push(result.name);
-        this.images.push(result);
-        this.imgDataSource.data = this.images;
+        if (place == "photo") {
+          this.sanitizeImagePreview=result.url;
+        }
+        else {
+          this.imgArr.push(result.name);
+          this.images.push(result);
+          this.imgDataSource.data = this.images;
+        }
       }
     });
   }
@@ -2347,8 +2673,39 @@ c
 
 
 
-}
+  
 
+
+
+  getVistDetailsList(){
+    debugger;
+    this.sIsLoading = 'loading';
+    var D_data = {
+    
+      "VisitId":159641// this.selectedAdvanceObj.VisitId,
+    }
+    console.log(D_data);
+    this.sIsLoading = 'loading-data';
+    this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
+      this.dataSource1.data = Visit as CasepaperVisitDetails[];
+
+      console.log(this.dataSource1.data);
+     
+      this.sIsLoading = '';
+
+     
+    })
+    
+  }
+  departmentId:any;
+  DosctorId:any;
+  getVisitRecord(row){
+  this.departmentId= row.DepartmentId;
+  this.DosctorId=row.DoctorId;
+  Swal.fire(this.departmentId,this.DoctorId)
+  this.VisitFlagDisp=false;
+}
+}
 
 export class DocumentUpload {
   DocumentName: any;
@@ -2521,7 +2878,7 @@ export class RegInsert {
       this.PatientWeight = RegInsert.PatientWeight || "";
       this.AreaName = RegInsert.AreaName || "";
       this.AadharCardNo = RegInsert.AadharCardNo || "";
-      this.PanCardNo = RegInsert.PanCardNo || "";
+      this.PanCardNo = RegInsert.PanCardNo || '';
       this.AdmissionID = RegInsert.AdmissionID || 0;
       this.WardId = RegInsert.WardId || 0;
     }

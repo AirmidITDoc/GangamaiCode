@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
- 
+  
 
 
 const appRoutes: Routes = [
@@ -84,7 +84,9 @@ const appRoutes: Routes = [
 
 {
     path: "grnreturnnew",
-     loadChildren: () => import("./grn-return-new/grn-return-new.module").then((m) => m.GrnReturnNewModule),
+     //loadChildren: () => import("./grn-return-new/grn-return-new.module").then((m) => m.GrnReturnNewModule),
+     loadChildren: () => import("./deliverychallan/deliverychallan.module").then((m) => m.DeliverychallanModule),
+
 },
 ];
 

@@ -51,9 +51,9 @@
 
                                             <mat-form-field appearance="outline" style="width:400px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
-                                                    placeholder="Service Name" matInput [matAutocomplete]="auto"  (keydown)="onEnterservice($event)"
-                                                    (input)="getServiceListCombobox()" required
-                                                    id="myInput">
+                                                    placeholder="Service Name" matInput [matAutocomplete]="auto"
+                                                    (keydown)="onEnterservice($event)"
+                                                    (input)="getServiceListCombobox()" required id="myInput">
 
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
@@ -77,18 +77,18 @@
                                             <mat-form-field appearance="outline" #Price style="width:100px;">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice" #price
-                                                    formControlName="price" required
-                                                    type="number" id="Price">
+                                                    formControlName="price" required type="number" id="Price"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" >
+                                            <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="b_qty" name="bQty" #qty
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
-                                                    (keydown)="onEnterqty($event)" id="qty">
+                                                    (keydown)="onEnterqty($event)">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('qty').invalid && registeredForm.get('qty').touched">
                                                     Qty is required</mat-error>
@@ -127,20 +127,20 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" >
+                                            <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>Disc %</mat-label>
-                                                <input matInput [(ngModel)]="b_ChargeDiscPer" name="b_ChargeDiscPer" #disper 
-                                                    (keyup)="calculatePersc()" formControlName="ChargeDiscPer"
+                                                <input matInput [(ngModel)]="v_ChargeDiscPer" name="v_ChargeDiscPer"
+                                                    #disper (keyup)="calculatePersc()" formControlName="ChargeDiscPer"
                                                     type="number" (keydown)="onEnterdiscper($event)">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeDiscPer').invalid && registeredForm.get('ChargeDiscPer').touched">
                                                     Percentage is Number</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width:100px;" >
+                                            <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount" #discamt
-                                                    formControlName="ChargeDiscAmount" type="number"
+                                                <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount"
+                                                    #discamt formControlName="ChargeDiscAmount" type="number"
                                                     (keyup)="calculatechargesDiscamt()"
                                                     (keydown)="onEnterdiscAmount($event)" id="DiscAmt">
                                                 <mat-error
@@ -166,14 +166,14 @@
                                                     style="background-color: blue; color: white; width: 70px;margin-left: 20px; "
                                                     (keydown.enter)="focusNextService()">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
-                                                </button>
- -->
-
+                                                </button>-->
                                                 <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                class="add-btn" [disabled]="!add" (click)="onAddCharges()">
-                                                <mat-icon> add </mat-icon>
-                                                Add
-                                            </button>
+                                                    class="add-btn" [disabled]="!add" (click)="onAddCharges()">
+                                                    <mat-icon> add </mat-icon>
+                                                    Add
+                                                </button>
+
+
 
                                             </div>
 
@@ -410,11 +410,17 @@
                                                     <span class="net-amt-label">Total:</span>&nbsp;<span
                                                         class="net-amt-value">{{chargeslist.length}}</span>
                                                 </div> -->
-                                                <div class="net-amt">
-                                                    {{getDiscAmtSum(dataSource.data)}}
-                                                    <span class="net-amt-label">Net Amount:</span>&nbsp;<span
+                                                <div>
+                                                 
+                                                    <!-- Disc Amount
+                                                    {{getDiscAmtSum(dataSource.data)}} -->
+                                                    <span class="net-amt-label"
+                                                    style="width: 200px;font-weight: bold;">No of
+                                                    Services:</span><span class="net-amt-value"
+                                                    style="margin-right: 200px;">{{dataSource.data.length}}</span>
+                                                    <span class="net-amt-label" style="margin-left: 500px;">Net Amount:</span>&nbsp;<span
                                                         class="net-amt-value">{{getNetAmtSum(dataSource.data)}}</span>
-                                                    getDiscAmtSum
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -497,14 +503,14 @@
                                                     formControlName="BillRemark" placeholder="Remark" matInput>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 250px;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 250px;">
                                                 <mat-label>Cash Counter</mat-label>
                                                 <mat-select formControlName="CashCounterId">
                                                     <mat-option *ngFor="let m of CashCounterList" [value]="m">
                                                         {{m.CashCounterName}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
                                         </div>
                                     </div>
@@ -532,5 +538,3 @@
 
 
         </div>
-        
-     
