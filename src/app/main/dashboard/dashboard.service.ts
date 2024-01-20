@@ -44,14 +44,18 @@ export class DashboardService {
   public getPharDashboardSalesSummary(params) {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
-  public getPharDashboardPeichart(params) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
-  }
-  public getBarchartData() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_pharlast3MonthSalesSummaryDashboard", {})
+  // public getPharDashboardPeichart(params) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
+  // }
+  public getThreeMonSumData(api, params) {
+    return this._httpClient.post("Generic/GetByProc?procName="+api, params)
   }
   public getPharmStoreList() {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_PharStoreName", {})
+  }
+
+  public getPharStockColSumData(api, params) {
+    return this._httpClient.post("Generic/GetByProc?procName="+api, params)
   }
 
 }
