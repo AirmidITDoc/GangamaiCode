@@ -1,3 +1,7 @@
+.dashboard-container {
+  padding: 20px;
+  background-color: #ebe9e9;
+}
 .vertical-line {
     width: 1px;
     height: 40px;
@@ -85,8 +89,14 @@
   //     font-size: 18px;
   //   }
   // }
-  
-  
-  
-  
-   
+  .card-hearder {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .chart-card {
+    height: 430px;
+  }
