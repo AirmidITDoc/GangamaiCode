@@ -86,62 +86,46 @@ export class SupplierFormMasterComponent implements OnInit {
     this.getCountryNameCombobox();
     this.getBankNameList1();
     this.getCityNameCombobox();
-    // this.getStoreNameCombobox();
+    this.getStoreNameCombobox();
     if (this.data) {
       this.registerObj = this.data.registerObj;
-      // this.getCityNameCombobox();
+      console.log(this.registerObj);
       this.registerObj.Mobile = this.data.registerObj.Mobile.trim();
       this.registerObj.Phone = this.data.registerObj.Phone.trim();
-      this.CityId = this.data.registerObj.CityId;
+    
+    
+      // this.CityId = this.data.registerObj.CityId;
       // this.setDropdownObjs1();
     }
+    debugger
     this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterCity(value)),
+      
+    );
+
+    // this.filteredOptionsSuppliertype = this._supplierService.myform.get('SupplierType').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterSupplierType(value)),
+    // );
+
+    this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterModeofpayment(value)),
+    );
+
+    this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterTermofpayment(value)),
+    );
+
+    this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterBank1(value)),
     );
   }
 
-  setDropdownObjs1() {
 
-    // for(var i=0; i < this.CitycmbList;i++){
-    //     if(this.CitycmbList[i].CityId==this.CityId)
-    //     console.log(i);
-    //     this._supplierService.myform.get('CityId').setValue(i);
-    // }
-   
-      const toSelect = this.CitycmbList.find(c => c.CityId == this.registerObj.CityId);
-     this._supplierService.myform.get('CityId').setValue(this.CityId);
- 
-     const toSelectSuup = this.SuppliertypecmbList.find(c => c.ConstantId == this.registerObj.SupplierId);
-     this._supplierService.myform.get('SupplierType').setValue(toSelectSuup);
- 
-     const toSelectMode = this.PaymentmodecmbList.find(c => c.id == this.registerObj.ModeOfPayment);
-     this._supplierService.myform.get('ModeOfPayment').setValue(toSelectMode);
- 
-     const toSelectterm= this.PaymenttermcmbList.find(c => c.Id == this.registerObj.TermOfPayment);
-     this._supplierService.myform.get('TermOfPayment').setValue(toSelectterm);
- 
-     const toSelectBank = this.BankNameList1.find(c => c.BankId == this.registerObj.BankId);
-     this._supplierService.myform.get('BankName').setValue(toSelectBank);
- 
-   
-   
-    //  const toSelectBank = this.PaymenttermcmbList.find(c => c.Id == this.registerObj.TermOfPayment);
-    //  this._supplierService.myform.get('TermOfPayment').setValue(toSelectBank);
- 
-    //  const toSelectBankname= this.BankNameList1.find(c => c.BankId == this.registerObj.BankId);
-    //  this._supplierService.myform.get('BankName').setValue(toSelectBankname);
- 
-    //  const toSelectStore = this.PaymentmodecmbList.find(c => c.StoreId == this.registerObj.StoreId);
-    //  this._supplierService.myform.get('StoreId').setValue(toSelectStore);
- 
-     
-    //  this.onChangeCityList(this._supplierService.myform.get('CityId').value);
-     
-     this._supplierService.myform.updateValueAndValidity();
-     this.dialogRef.close();
-     
-   }
     get f() {
         return this._supplierService.myform.controls;
     }
@@ -165,6 +149,21 @@ export class SupplierFormMasterComponent implements OnInit {
         });
       }
 
+      // getBankNameList1() {
+      
+      //   this._supplierService.getBankMasterCombo().subscribe(data => {
+      //     this.BankNameList1 = data;
+      //     if (this.data) {
+      //       const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
+      //       this._supplierService.myform.get('BankName').setValue(ddValue[0]);
+      //      this._supplierService.myform.updateValueAndValidity();
+      //       return;
+      //     } 
+      //   });
+        
+      // }
+     
+
       getOptionTextBank1(option){
         return option && option.BankName ? option.BankName : '';
       }
@@ -186,11 +185,12 @@ export class SupplierFormMasterComponent implements OnInit {
       if (this.data) {
         const ddValue = this.CitycmbList.filter(c => c.CityId == this.data.registerObj.CityId);
         this._supplierService.myform.get('CityId').setValue(ddValue[0]);
-        this.onChangeCityList(this.data.registerObj.CityId)
+        this.onChangeCityList(ddValue[0])
         this._supplierService.myform.updateValueAndValidity();
         return;
       } 
     });
+    
   }
  
   
@@ -225,6 +225,23 @@ var m = {
   }
 
   
+  // getSupplierTypeMasterList() {
+  //   var m = {
+  //     "ConstanyType":"SUPPLIER_TYPE"
+  // }
+  // this._supplierService.getSuppliertypeList(m).subscribe(data => {
+  //   this.SuppliertypecmbList = data;
+  //     if (this.data) {
+  //       const ddValue = this.SuppliertypecmbList.filter(c => c.ConstantId == this.data.registerObj.SupplierType);
+  //       this._supplierService.myform.get('SupplierType').setValue(ddValue[0]);
+  //       // this.onChangeCityList(this.data.registerObj.CityId)
+  //       this._supplierService.myform.updateValueAndValidity();
+  //       return;
+  //     } 
+  //   });
+    
+  // }
+  
   private _filterSupplierType(value: any): string[] {
     if (value) {
       const filterValue = value && value.Name ? value.Name.toLowerCase() : value.toLowerCase();
@@ -234,6 +251,8 @@ var m = {
 
   }
 
+  
+
   getOptionTextSuppliertype(option) {
 
     return option && option.Name ? option.Name : '';
@@ -241,56 +260,86 @@ var m = {
   }
 
 
-  getModeofpaymentCombobox() {
+  // getModeofpaymentCombobox() {
 
+  //   this._supplierService.getModeofpaymentMasterCombo().subscribe(data => {
+  //     this.PaymentmodecmbList = data;
+  //     this.optionsModeofpayment= this.PaymentmodecmbList.slice();
+  //     this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterModeofpayment(value) : this.PaymentmodecmbList.slice()),
+  //     );
+
+  //   });
+
+  // }
+
+  getModeofpaymentCombobox() {
+      
     this._supplierService.getModeofpaymentMasterCombo().subscribe(data => {
       this.PaymentmodecmbList = data;
-      this.optionsModeofpayment= this.PaymentmodecmbList.slice();
-      this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterModeofpayment(value) : this.PaymentmodecmbList.slice()),
-      );
-
+      if (this.data) {
+        const ddValue = this.PaymentmodecmbList.filter(c => c.id == this.data.registerObj.ModeOfPayment);
+        this._supplierService.myform.get('ModeOfPayment').setValue(ddValue[0]);
+       this._supplierService.myform.updateValueAndValidity();
+        return;
+      } 
     });
-
+    
   }
+ 
 
   
   private _filterModeofpayment(value: any): string[] {
     if (value) {
       const filterValue = value && value.ModeOfPayment ? value.ModeOfPayment.toLowerCase() : value.toLowerCase();
 
-      return this.optionsModeofpayment.filter(option => option.ModeOfPayment.toLowerCase().includes(filterValue));
+      return this.PaymentmodecmbList.filter(option => option.ModeOfPayment.toLowerCase().includes(filterValue));
     }
 
   }
 
+  
   getOptionTextModeopayment(option) {
     return option && option.ModeOfPayment ? option.ModeOfPayment : '';
     
   }
 
 
-  getTermofpaymentCombobox() {
+  // getTermofpaymentCombobox() {
 
+  //   this._supplierService.getTermofpaymentMasterCombo().subscribe(data => {
+  //     this.PaymenttermcmbList = data;
+  //     this.optionsTermofpayment= this.PaymenttermcmbList.slice();
+  //     this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterTermofpayment(value) : this.PaymenttermcmbList.slice()),
+  //     );
+
+  //   });
+
+  // }
+
+  getTermofpaymentCombobox() {
+      
     this._supplierService.getTermofpaymentMasterCombo().subscribe(data => {
       this.PaymenttermcmbList = data;
-      this.optionsTermofpayment= this.PaymenttermcmbList.slice();
-      this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterTermofpayment(value) : this.PaymenttermcmbList.slice()),
-      );
-
+      if (this.data) {
+        const ddValue = this.PaymenttermcmbList.filter(c => c.Id == this.data.registerObj.TermOfPayment);
+        this._supplierService.myform.get('TermOfPayment').setValue(ddValue[0]);
+       this._supplierService.myform.updateValueAndValidity();
+        return;
+      } 
     });
-
+    
   }
-
+ 
   
   private _filterTermofpayment(value: any): string[] {
     if (value) {
       const filterValue = value && value.TermsOFPayment ? value.TermsOFPayment.toLowerCase() : value.toLowerCase();
 
-      return this.optionsTermofpayment.filter(option => option.TermsOFPayment.toLowerCase().includes(filterValue));
+      return this.PaymenttermcmbList.filter(option => option.TermsOFPayment.toLowerCase().includes(filterValue));
     }
 
   }
@@ -508,7 +557,7 @@ var m = {
 
     onChangeCityList(CityObj) {
         if (CityObj) {
-          this._supplierService.getStateList(2).subscribe((data: any) => {
+          this._supplierService.getStateList(CityObj.CityId).subscribe((data: any) => {
             this.StatecmbList = data;
             this.selectedState = this.StatecmbList[0].StateName;
             // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
