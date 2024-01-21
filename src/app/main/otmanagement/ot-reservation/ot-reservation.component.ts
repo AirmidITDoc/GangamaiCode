@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +8,17 @@ import { OTManagementServiceService } from '../ot-management-service.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import { ReplaySubject, Subject } from 'rxjs';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
+import { DatePipe } from '@angular/common';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-ot-reservation',
   templateUrl: './ot-reservation.component.html',
-  styleUrls: ['./ot-reservation.component.scss']
+  styleUrls: ['./ot-reservation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class OTReservationComponent implements OnInit {
 
@@ -80,7 +83,7 @@ export class OTReservationComponent implements OnInit {
     private accountService: AuthenticationService,
     // public dialogRef: MatDialogRef<OTReservationComponent>,
     private advanceDataStored: AdvanceDataStored,
-    // public datePipe: DatePipe
+    public datePipe: DatePipe,
     ) {
     // dialogRef.disableClose = true;
   }
@@ -109,9 +112,9 @@ export class OTReservationComponent implements OnInit {
     this.minDate = new Date();
     var D_data = {
 
-      // "FromDate":  '2019-06-18 00:00:00.000',//this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      // "ToDate":'2023-06-18 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
+      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
 
     }
     console.log(D_data);
@@ -154,9 +157,9 @@ export class OTReservationComponent implements OnInit {
     debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
-      // "FromDate":'2019-06-18 00:00:00.000',//this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      // "ToDate":'2019-06-18 00:00:00.000',// this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
+      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTReservationlist(m_data).subscribe(Visit => {
@@ -178,28 +181,28 @@ export class OTReservationComponent implements OnInit {
 
     // debugger;
 
-    // console.log(this.dataSource.data['OTTableID'])
-    // //  this.advanceDataStored.storage = new OTReservationDetail(m_data);
+    console.log(this.dataSource.data['OTTableID'])
+    //  this.advanceDataStored.storage = new OTReservationDetail(m_data);
 
-    // const dialogRef = this._matDialog.open(NewReservationComponent,
-    //   {
-    //     maxWidth: "80%",
-    //     height: '80%',
-    //     width: '100%',
+    const dialogRef = this._matDialog.open(NewReservationComponent,
+      {
+        maxWidth: "80%",
+        height: '95%',
+        width: '100%',
 
-    //   });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-    //     this.dataSource.data = Visit as OTReservationDetail[];
-    //     console.log(this.dataSource.data);
-    //     this.sIsLoading = '';
-    //     //  this.click = false;
-    //   },
-    //     error => {
-    //       this.sIsLoading = '';
-    //     });
-    // });
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
+        this.dataSource.data = Visit as OTReservationDetail[];
+        console.log(this.dataSource.data);
+        this.sIsLoading = '';
+        //  this.click = false;
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    });
     //  if(row) this.dialogRef.close(m_data);
   }
 

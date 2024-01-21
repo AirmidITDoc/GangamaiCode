@@ -44,7 +44,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis; 
                 overflow: hidden !important;
-                display: inline-block;
+                // display: inline-block;
                 min-height: 40px;
                 
                 &.mat-column-detail-button {
@@ -75,16 +75,16 @@ app-ot-reservation{
 
     }
 .mat-header-row {
-    width: 2460px;
-    max-width: 2460px;
-    min-width: 2460px;  
+    width: 3000px;
+    max-width: 3000px;
+    min-width: 3000px;  
     min-height: 35px;     
 }
 
 .mat-row {
-    width: 2460px;
-    max-width: 2460px;
-    min-width: 2460px;
+    width: 3000px;
+    max-width: 3000px;
+    min-width: 3000px;
     min-height: 35px;              
 }
 
@@ -141,16 +141,16 @@ app-ot-reservation{
 }
 
 .mat-column-OTTableName {
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: center;
 }
 
 .mat-column-SurgeonName {
-    width: 200px;
-    max-width: 200px;
-    min-width: 230px;
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
     text-align: center;
     white-space: nowrap; 
     overflow: hidden;
@@ -160,9 +160,9 @@ app-ot-reservation{
 
 }
     .mat-column-AnathesDrName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
         text-align: center;
         white-space: nowrap; 
         overflow: hidden;
@@ -172,9 +172,9 @@ app-ot-reservation{
     }
 
     .mat-column-AnathesDrName1 {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
         text-align: center;
         white-space: nowrap; 
         overflow: hidden;

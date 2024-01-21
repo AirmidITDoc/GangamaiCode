@@ -6,7 +6,7 @@
   
     <!-- Start Sider  -->
   
-    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style=" height:50px; justify-content: space-between;width: 100%;">
       <div fxLayout="row" fxLayoutAlign="start center">
         <!-- <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
             <mat-icon>menu</mat-icon>
@@ -15,16 +15,17 @@
           style="color: white;">account_box
         </mat-icon>
         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-          OT Reservation List
+          OT CathLab List
         </span>
       </div>
   
   
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon">
-        <button mat-raised-button (click)="addNewReservationg()" fxLayoutAlign="center center">
+        <button mat-raised-button (click)="addNewCathlabBooking()" fxLayoutAlign="center center">
           <mat-icon color="warn" title="Request New Test">how_to_reg</mat-icon>
         </button>
-    
+  
+  
       </div>
   
   
@@ -41,7 +42,7 @@
   
       <!-- SIDEBAR -->
       <fuse-sidebar name="app-main1" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top: 5px; background-color: white;height:100%;">
+        margin-left: 12px; margin-top: 5px; background-color: white;height:95%;">
         <div class="content">
           <div class="sidebar-content">
   
@@ -51,7 +52,7 @@
               <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                 <!-- USER -->
                 <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                <span class="h5" style="font-size: 17px;">Search Information</span>
+                <span class="h5" style="font-size: 17px;">Patient Information</span>
                 <!-- / USER -->
               </div>
               <!-- / SIDEBAR HEADER -->
@@ -64,7 +65,7 @@
                       <mat-form-field appearance="outline" style="margin-top: 5px;">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate formControlName="start" placeholder="Start date" dateChange="getOtreservationList()">
+                          <input matStartDate formControlName="start" placeholder="Start date">
                           <input matEndDate formControlName="end" placeholder="End date">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -73,7 +74,7 @@
   
                       <mat-form-field appearance="outline">
                         <mat-label>Search OTTableID</mat-label>
-                        <input name="OTTableID" formControlName="OTTableID" matInput keyup="getOtreservationList()">
+                        <input name="OTTableID" formControlName="OTTableID" matInput>
                         <!-- <span class="error" *ngIf="f.OTTableID.invalid && f.OTTableID.touched">Last Name is
                                         required Enter only Alphabets</span> -->
                       </mat-form-field>
@@ -84,7 +85,7 @@
                           </mat-icon>
                         </button>
                         <!-- [disabled]="click" -->
-                        <button mat-raised-button class="searchButton" (click)="getOtreservationList()">
+                        <button mat-raised-button class="searchButton" (click)="getCathLabBookingList()">
                           <mat-icon class="searchiconbutton" matTooltip="search">search
                           </mat-icon>
                         </button>
@@ -93,23 +94,23 @@
                     </div>
                   </form>
                 </div>
-                <div fxlayout="row" style="margin-top: 10px;background-color: white;">
+                <!-- <div fxlayout="row" style="margin-top: 10px;background-color: white;">
                   <div style="margin-top: 2px; padding: 5px;width: 50%;">
                     <span style="font-weight: bold;"> Help :</span>&nbsp;
                     <div>
                       <mat-icon
                         style="font-size: 50px;width: 10px !important; height:15px !important;border-radius:100% ;"
-                        class=" green-600 s-16">circle</mat-icon> &nbsp;Booking
+                        class=" green-600 s-16">circle</mat-icon> &nbsp;IsCancelled
                     </div>
                     <div>
                       <mat-icon
                         style="font-size: 50px;width: 10px !important; height:15px !important;border-radius:100% ;"
-                        class=" orange-600 s-16">circle</mat-icon>&nbsp;UnBooking
+                        class=" orange-600 s-16">circle</mat-icon>&nbsp;IsNotCancelled
                     </div>
   
                   </div>
   
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -147,7 +148,7 @@
   
                     </div>
                     <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                      style="overflow: auto;" class="table1">
+                      style="overflow: auto;">
   
                       <ng-container matColumnDef="RegNo">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md style=" margin-top: 8px; ">RegNo
@@ -245,23 +246,14 @@
                           {{contact.AnesthType}}
                         </mat-cell>
                       </ng-container>
-
-                      
-
-                      <ng-container matColumnDef="UnBooking" sticky>
-                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
-                          UnBooking</mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <mat-icon
-                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                *ngIf="contact.UnBooking=='1' " matTooltip="Booking"
-                                class=" orange-600 s-16 ">circle</mat-icon>
-                            <mat-icon
-                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                *ngIf="contact.UnBooking=='0' " matTooltip="UnBooking"
-                                class="green-600 s-16 ">circle</mat-icon>
+                      <ng-container matColumnDef="UnBooking">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                          UnBooking
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                          {{contact.UnBooking}}
                         </mat-cell>
-                    </ng-container>
+                      </ng-container>
   
                       <ng-container matColumnDef="AddedBy">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
@@ -351,4 +343,4 @@
   </div>
   
   <!--  --> 
-  .
+  

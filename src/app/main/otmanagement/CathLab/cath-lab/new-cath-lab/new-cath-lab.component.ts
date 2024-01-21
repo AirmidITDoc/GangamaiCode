@@ -1,28 +1,29 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { OTReservationDetail } from '../ot-reservation.component';
+import { CathLabBookingDetail } from '../cath-lab.component';
 import { ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../../ot-management-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { NotificationServiceService } from 'app/core/notification-service.service';
+import { OTManagementServiceService } from 'app/main/otmanagement/ot-management-service.service';
 import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
-import { OTNoteComponent } from '../../ot-note/ot-note.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-reservation',
-  templateUrl: './new-reservation.component.html',
-  styleUrls: ['./new-reservation.component.scss'],
+  selector: 'app-new-cath-lab',
+  templateUrl: './new-cath-lab.component.html',
+  styleUrls: ['./new-cath-lab.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class NewReservationComponent implements OnInit {
+export class NewCathLabComponent implements OnInit {
 
- 
+  
   personalFormGroup: FormGroup;
 
   submitted = false;
@@ -39,14 +40,15 @@ export class NewReservationComponent implements OnInit {
   OTtableList: any = [];
   Anesthestishdoclist1: any = [];
   Anesthestishdoclist2: any = [];
-  Today:Date =new Date();
+  Today: Date=new Date();
   registerObj = new OPIPPatientModel({});
+  registerObj1 = new CathLabBookingDetail({});
   isLoading: string = '';
   Prefix: any;
-  OPDate: any;
-  ID: any;
-  registerObj1 = new OTReservationDetail({});
-
+  
+  public value = new Date();
+  public dateValue1 : any;
+  dateValue: Date = new Date();
   IsPathRad: any;
   PatientName: any = '';
   OPIP: any = '';
@@ -58,7 +60,7 @@ export class NewReservationComponent implements OnInit {
   ipno: any = '';
   patienttype: any = '';
   Adm_Vit_ID: any = 0;
-  public dateValue: Date = new Date();
+  OPDate:any;
   options = [];
 
   // @Input() panelWidth: string | number;
@@ -106,26 +108,26 @@ export class NewReservationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
-    public _matDialog: MatDialog,
+    // public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<NewreservationComponent>,
-    // public datePipe: DatePipe,
+    // public dialogRef: MatDialogRef<NewCathLabComponent>,
+    public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
 
 
   ngOnInit(): void {
-    console.log(this.data)
+    
     this.personalFormGroup = this.createOtCathlabForm();
 
     if (this.data) {
 
       this.registerObj1 = this.data.PatObj;
-    
       console.log(this.registerObj1);
 
       this.setDropdownObjs1();
     }
+
 
     this.getSergeryList();
     this.getOttableList();
@@ -138,7 +140,7 @@ export class NewReservationComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
+
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.OPIP = this.selectedAdvanceObj.IP_OP_Number;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;
@@ -148,9 +150,9 @@ export class NewReservationComponent implements OnInit {
       this.Bedname = this.selectedAdvanceObj.Bedname;
       this.wardname = this.selectedAdvanceObj.WardId;
       this.Adm_Vit_ID = this.selectedAdvanceObj.OP_IP_ID;
+
     }
     console.log(this.selectedAdvanceObj);
-  
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -188,11 +190,10 @@ export class NewReservationComponent implements OnInit {
       element.click();
 
     }, 1000);
-
   }
 
   closeDialog() {
-    
+    console.log("closed")
     // this.dialogRef.close();
     // this.personalFormGroup.reset();
   }
@@ -232,11 +233,6 @@ export class NewReservationComponent implements OnInit {
     // const toSelect = this.SurgeryList.find(c => c.SurgeryId == this.registerObj1.SurgeryId);
     // this.personalFormGroup.get('SurgeryId').setValue(toSelect);
 
-    console.log(this.DoctorList);
-    console.log(this.OTtableList);
-    console.log(this.Anesthestishdoclist1);
-    console.log(this.Anesthestishdoclist2);
-
     const toSurgeonId1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.SurgeonId);
     this._OtManagementService.otreservationFormGroup.get('SurgeonId').setValue(toSurgeonId1);
 
@@ -256,6 +252,7 @@ export class NewReservationComponent implements OnInit {
 
   }
 
+
   // doctorone filter code  
   private filterDoctor() {
     if (!this.DoctorList) {
@@ -272,7 +269,7 @@ export class NewReservationComponent implements OnInit {
     }
     // filter
     this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
+      this.DoctorList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -380,12 +377,21 @@ export class NewReservationComponent implements OnInit {
 
 
   getOttableList() {
-    this._OtManagementService.getOTtableCombo().subscribe(data => { this.OTtableList = data; })
+    this._OtManagementService.getOTtableCombo().subscribe(data => {
+      this.OTtableList = data;
+      console.log(data);
+      this.OTtableList.next(this.OTtableList.slice());
+    })
   }
 
 
   getSergeryList() {
-    this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
+    this._OtManagementService.getSurgeryCombo().subscribe(data => {
+      this.SurgeryList = data;
+      console.log(data);
+      this.filteredDoctor.next(this.SurgeryList.slice());
+
+    })
   }
 
 
@@ -448,31 +454,6 @@ export class NewReservationComponent implements OnInit {
     })
   }
 
-Otnote(){
-
-  const dialogRef = this._matDialog.open(OTNoteComponent,
-      {
-        maxWidth: "85%",
-        height: "430px !important ", width: '100%',
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
-      });
-}
-
-OPreOPrativenote(){
-
-  // const dialogRef = this._matDialog.open(PrepostotnoteComponent,
-  //     {
-  //       maxWidth: "85%",
-  //       height: "530px !important ", width: '100%',
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // console.log('The dialog was closed - Insert Action', result);
-  //     });
-}
 
   searchPatientList() {
     // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
@@ -484,7 +465,6 @@ OPreOPrativenote(){
     // dialogRef.afterClosed().subscribe(result => {
     //   // console.log('The dialog was closed - Insert Action', result);
     //   if (result) {
-    //     console.log(result);
     //     this.registerObj = result as OPIPPatientModel;
     //     if (result) {
     //       this.PatientName = this.registerObj.PatientName;
@@ -506,101 +486,111 @@ OPreOPrativenote(){
     // this.dialogRef.close();
   }
 
+  getView() { }
+  
+ 
+
+
 
   onSubmit() {
     debugger;
-    let otBookingID = this.registerObj1.OTBookingID;
-
+    let OTCathLabBokingID = this.registerObj1.OTCathLabBokingID;
     this.isLoading = 'submit';
 
-    // if (this.Adm_Vit_ID) {
-      if (!otBookingID) {
-        var m_data = {
-          "otTableBookingDetailInsert": {
-            "OTBookingID": 0,// this._registerService.mySaveForm.get("RegId").value || "0",
-            "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-            "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-            "oP_IP_ID": this.Adm_Vit_ID,// this._OtManagementService.otreservationFormGroup.get('OP_IP_ID').value | 0,
-            "oP_IP_Type": 1,
-            "opDate":this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "opTime":this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-            "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-            "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-            "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
-            "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
-            "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
-            "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
-            "procedureId": 0,
-            "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
-            "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
-            "PatientName": this.PatientName || '',
-            "isAddedBy": this.accountService.currentUserValue.user.id || 0,
-            "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-            "isNormalOrFuture": 0
+    console.log()
+    // if(this.Adm_Vit_ID){
 
-          }
+    if (!OTCathLabBokingID) {
+      var m_data = {
+        "cathLabBookingDetailInsert": {
+          "OTCathLabBokingID": 0,
+          "tranDate": this.dateTimeObj.date,
+          "tranTime": this.dateTimeObj.time, 
+          "oP_IP_ID": this.Adm_Vit_ID || 0,
+          "oP_IP_Type": 1,
+          "opDate":this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opTime":this.dateTimeObj.time, // this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
+          "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
+          "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
+          "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
+          "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
+          "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
+          "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
+          "procedureId": 0,
+          "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
+          "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
+          "PatientName": this.PatientName || '',
+          "isAddedBy": this.accountService.currentUserValue.user.id || 0,
+          "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+          "isNormalOrFuture": 0
+
         }
-        console.log(m_data);
-        this._OtManagementService.ReservationInsert(m_data).subscribe(response => {
-          if (response) {
-            this._OtManagementService
-            Swal.fire('Congratulations !', 'OT Reservation  Data save Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._matDialog.closeAll();
-                //  this.addEmptyRow();
-
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Ot Reservation Data  not saved', 'error');
-          }
-
-        });
       }
-      else {
-        debugger;
-        var m_data1 = {
-          "otTableBookingDetailUpdate": {
-            "OTBookingID": otBookingID,
-            "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-            "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-            "opDate": this.dateTimeObj.date,// this.datePipe.transform(this.personalFormGroup.get('OPDate').value,"yyyy-Mm-dd") ,// this.dateTimeObj.date,//
-            "opTime": this.dateTimeObj.time,
-            "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-            "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-            "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-            "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
-            "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
-            "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
-            "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || 0,// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
-            "procedureId": 0,
-            "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
-            "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
-            "PatientName": this.PatientName || '',
-            "IsUpdatedBy": this.accountService.currentUserValue.user.id || 0,
-            "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-            
-
-          }
+      console.log(m_data);
+      this._OtManagementService.CathLabBookInsert(m_data).subscribe(response => {
+        if (response) {
+          Swal.fire('Congratulations !', 'OT CathLab  Data  save Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              // this._matDialog.closeAll();
+                              
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'OT CathLab  Data  not saved', 'error');
         }
-        console.log(m_data1);
-        this._OtManagementService.ReservationUpdate(m_data1).subscribe(response => {
-          if (response) {
-            Swal.fire('Congratulations !', 'Reservation Data Updated Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._matDialog.closeAll();
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Reservation Data  not saved', 'error');
-          }
 
-        });
+      });
+    }
+    else {
+      debugger;
+      var m_data1 = {
+        "cathLabBookingDetailUpdate": {
+          "OTCathLabBokingID": OTCathLabBokingID,
+          "tranDate": this.dateTimeObj.date,
+          "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+          "opDate": this.dateTimeObj.date,// this.datePipe.transform(this.personalFormGroup.get('OPDate').value,"yyyy-Mm-dd") ,// this.dateTimeObj.date,//
+          "opTime": this.dateTimeObj.time,
+          "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
+          "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
+          "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
+          "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
+          "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
+          "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
+          "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
+          "procedureId": 0,
+          "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
+          "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
+          "IsUpdatedBy": this.accountService.currentUserValue.user.id || 0,
+          "unBooking": false// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
+          
+
+        }
       }
+      console.log(m_data1);
+      this._OtManagementService.CathLabBookUpdate(m_data1).subscribe(response => {
+        if (response) {
+          Swal.fire('Congratulations !', 'OT CathLab Data Updated Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              // this._matDialog.closeAll();
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'OT CathLab Data  not saved', 'error');
+        }
+
+      });
     // }
+
+
+  }
   }
 
+  addEmptyRow(){}
+  // onClose() {
+
+  //    this.dialogRef.close();
+  // }
 
 
 

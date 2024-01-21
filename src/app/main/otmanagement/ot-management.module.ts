@@ -40,7 +40,8 @@ import { NewReservationComponent } from './ot-reservation/new-reservation/new-re
 import { OTReservationComponent } from './ot-reservation/ot-reservation.component';
 import { OTManagementServiceService } from './ot-management-service.service';
 import Swal from 'sweetalert2';
-import { OTNoteComponent } from './ot-note/ot-note.component';
+
+
 
 // otmanagement/listofreservation
 
@@ -51,15 +52,38 @@ const approutes : Routes =[
     import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
        
 },
+// {
+//   path: "endoscopylist",
+//   loadChildren: () =>
+//   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+     
+// },
 {
-  // path:"",
-  // loadChildren: () =>
-  //   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+  path: "otrequest",
+  loadChildren: () =>
+  import("./ot-request/ot-request.module").then((m) => m.OtRequestModule),
+     
+},
+{
+  path: "cathlablist",
+  loadChildren: () =>
+  import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
+     
+},
+{
+  path:"otnotes",
+  loadChildren: () =>
+    import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
+},
+{
+  path:"endoscopylist",
+  loadChildren: () =>
+  import("./Endoscopy/endoscopy/endoscopy.module").then((m) => m.EndoscopyModule),
 }
 ];
 
 @NgModule({
-  declarations: [OTNoteComponent],
+  declarations: [],
   imports: [
     MatCheckboxModule,
     MatDatepickerModule,

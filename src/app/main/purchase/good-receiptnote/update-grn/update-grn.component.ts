@@ -200,13 +200,13 @@ export class UpdateGRNComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.data.chkNewGRN == 2) {
-      // debugger
+      debugger
       this.registerObj = this.data.Obj;
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-
+      console.log(this.registerObj );
       this.getGRNItemDetailList(this.registerObj);
     }
 
@@ -253,7 +253,7 @@ export class UpdateGRNComponent implements OnInit {
         const toSelectGSTType = this.GSTTypeList.find(c => c.Name == this.registerObj.Tranprocessmode);
         this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
        //console.log(toSelectGSTType);  
-      // console.log(this.registerObj); 
+      console.log(this.registerObj); 
        } 
     });
   }

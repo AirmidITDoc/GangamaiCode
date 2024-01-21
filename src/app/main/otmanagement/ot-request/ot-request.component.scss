@@ -1,0 +1,292 @@
+.mat-form-field-wrapper {
+    padding-bottom: 0.34375em;
+}
+@import "src/@fuse/scss/fuse";
+
+.mat-row, .mat-footer-row {
+    min-height: 28px;
+    height: 35px;
+}
+
+:host {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+  
+    
+    .mat-table {
+       // height: 500px !important;
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+
+        .mat-column-checkbox {
+            flex: 0 1 64px;
+            padding-left: 18px;
+        }
+
+        .mat-column-avatar {
+            flex: 0 1 64px;
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+       
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+           
+            .mat-cell {
+                min-width: 0;
+                white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                overflow: hidden !important;
+                // display: inline-block;
+                min-height: 40px;
+                
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+           
+        }
+    }
+}
+.active-icon {
+    border-radius: 50%;
+}
+
+
+.active-icon {
+    border-radius: 50%;
+}
+
+app-ot-request{
+.mat-header-row {
+    width: 2460px;
+    max-width: 2460px;
+    min-width: 2460px;  
+    min-height: 35px;     
+}
+
+.mat-row {
+    width: 2460px;
+    max-width: 2460px;
+    min-width: 240px;
+    min-height: 35px;              
+}
+
+.mat-column-OTBookingId {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: center;
+    
+}
+
+.mat-column-RegNo {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: left;
+}
+
+
+.mat-column-PatientName {
+    width: 270px;
+    max-width: 270px;
+    min-width: 270px;
+    text-align: left;
+    // justify-content: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+   
+}
+
+
+.mat-column-GenderName {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+// .mat-column-OTbookingDate {
+//     width: 150px;
+//     max-width: 150px;
+//     min-width: 150px;
+//     text-align: center;
+//     // justify-content: left;
+// }
+
+.mat-column-OTbookingTime {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+.mat-column-RoomName {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: center;
+    // justify-content: center;
+}
+
+.mat-column-BedName {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: center;
+    // justify-content: left;
+}
+
+.mat-column-OP_IP_Id {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: center;
+    // justify-content: left;
+}
+
+
+
+.mat-column-AdmittingDoctor {
+    width: 240px;
+    max-width: 240px;
+    min-width: 240px;
+    text-align: center;
+    // justify-content: left;
+}
+
+.mat-column-SurgeonName {
+    width: 210px;
+    max-width: 210px;
+    min-width: 210px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+.mat-column-SurgeryCategoryName {
+    width: 160px;
+    max-width: 160px;
+    min-width: 160px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+
+.mat-column-SurgeryType {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+
+.mat-column-DepartmentName {
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+.mat-column-AddedBy {
+    width:90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+.mat-column-IsCancelledBy {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+
+.mat-column-IsCancelled {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: center;
+    // justify-content: center;
+}
+
+
+.menu-btn .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 28px;
+    height: 21px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+}
+
+.mat-column-buttons {
+    color: white !important;
+    width:70px;
+    max-width: 70px;
+    min-width: 70px;
+    text-align:left;
+    justify-content:left;
+}
+
+.mat-column-action {
+    // color: white !important;
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
+    min-height: 25px;     
+    text-align:left;
+    justify-content:left;
+}
+.make-gold {
+    background-color:violet;
+    
+}
+
+
+}

@@ -52,7 +52,6 @@ const routes:Routes = [
     CommonModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,

@@ -23,20 +23,22 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 // import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { OTReservationComponent } from "./ot-reservation.component";
-import { NewReservationComponent } from "./new-reservation/new-reservation.component";
-import { OTManagementServiceService } from "../ot-management-service.service";
+
 import { CommonModule, DatePipe } from "@angular/common";
+import { OTManagementServiceService } from "../ot-management-service.service";
+import { OTRequestComponent } from "./ot-request.component";
+import { NewRequestComponent } from "./new-request/new-request.component";
+
 
 const routes: Routes = [
     {
         path: "**",
-        component: OTReservationComponent,
+        component: OTRequestComponent,
     },
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent,NewReservationComponent],
+    declarations: [OTRequestComponent,NewRequestComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -54,7 +56,7 @@ const routes: Routes = [
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
-        MatSnackBarModule,
+        // MatSnackBarModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
@@ -63,10 +65,10 @@ const routes: Routes = [
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
-        NgxMatSelectSearchModule,
+        NgxMatSelectSearchModule
     ],
     providers: [DatePipe,OTManagementServiceService],
 
-    entryComponents: [OTReservationComponent],
+    entryComponents: [OTRequestComponent],
 })
-export class OTReservationModule { }
+export class OtRequestModule { }
