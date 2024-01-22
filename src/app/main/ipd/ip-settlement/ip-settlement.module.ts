@@ -90,7 +90,7 @@ const routes: Routes = [
   ],
   providers: [
     IPSettlementService,
-    // DatePipe,
+    DatePipe,
     ],
 entryComponents: [
   IPSettlementComponent

@@ -365,7 +365,7 @@
                       <mat-radio-button value="registrered">Registered</mat-radio-button>
                     </mat-radio-group>
 
-                    <mat-form-field appearance="outline" style="width:30%;margin-left:15px;" *ngIf="Regflag">
+                    <mat-form-field appearance="outline" style="width:20% !important;margin-left:15px;" *ngIf="Regflag">
                       <input type="text" name="RegId" formControlName="RegId"
                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto"
                         (input)="getSearchList()">

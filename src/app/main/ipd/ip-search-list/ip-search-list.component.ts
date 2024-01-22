@@ -421,7 +421,7 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
         {
           maxWidth: "110vw",
-          maxHeight: "90%", width: '100%', height: "100%"
+          maxHeight: "98%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
         

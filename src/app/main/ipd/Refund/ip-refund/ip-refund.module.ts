@@ -9,7 +9,7 @@ const appRoutes: Routes = [
   // {
   //     path: "iprefundofbill",
   
-  //     loadChildren: () =>import("../ip-s").then((m) => m.IpSearchListModule),
+  //     loadChildren: () =>import("../ip-refund/ip-refundof-bill/").then((m) => m.IpSearchListModule),
   
   // },
   //  {
@@ -25,7 +25,11 @@ const appRoutes: Routes = [
  {
     path: "browserefundofadvance",
   loadChildren: () => import("./ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
-},
+  },
+  {
+    path: "iprefundofadvance",
+    // loadChildren: () =>import("../ipd/ip-search-list/").then((m) => m.IpSearchListModule),
+  },
 ];
 
 @NgModule({
