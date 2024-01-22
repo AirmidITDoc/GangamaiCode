@@ -198,6 +198,8 @@ export class UpdateGRNComponent implements OnInit {
 
   ) { }
   @ViewChild('picker') datePickerElement = MatDatepicker;
+  Cahchecked:any;
+  Grntypechecked:any=0;
   ngOnInit(): void {
 
     if (this.data.chkNewGRN == 2) {
@@ -209,6 +211,18 @@ export class UpdateGRNComponent implements OnInit {
       this.StoreId = this.registerObj.StoreId;
       console.log(this.registerObj.Cash_CreditType);
       console.log(this.registerObj.GRNType);
+debugger
+      if(this.registerObj.Cash_CreditType)
+      this.Cahchecked=1;
+     if(!this.registerObj.Cash_CreditType)
+      this.Cahchecked=0;
+
+      if(this.registerObj.GRNType)
+        this.Grntypechecked=1;
+       if(!this.registerObj.GRNType)
+        this.Grntypechecked=0;
+
+      
 
       this.getGRNItemDetailList(this.registerObj);
     }
