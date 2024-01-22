@@ -218,7 +218,7 @@ TemplateDesc:any;
             if (response) {
               Swal.fire('Congratulations !', 'Nurse Note Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                 this._matDialog.closeAll();
+                //  this._matDialog.closeAll();
                  debugger;
                 //  this.getPrint();
                 }
