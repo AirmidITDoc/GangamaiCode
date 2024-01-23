@@ -260,16 +260,16 @@ export class AdmissionComponent implements OnInit {
     this.isAlive = true;
 
     this.personalFormGroup = this.createPesonalForm();
-    this.personalFormGroup.markAllAsTouched();
+    // this.personalFormGroup.markAllAsTouched();
 
     this.hospitalFormGroup = this.createHospitalForm();
-    this.hospitalFormGroup.markAllAsTouched();
+    // this.hospitalFormGroup.markAllAsTouched();
 
     this.wardFormGroup = this.wardForm();
-    this.wardFormGroup.markAllAsTouched();
+    // this.wardFormGroup.markAllAsTouched();
 
     this.otherFormGroup = this.otherForm();
-    this.otherFormGroup.markAllAsTouched()
+    // this.otherFormGroup.markAllAsTouched()
 
     this.searchFormGroup = this.createSearchForm();
 
