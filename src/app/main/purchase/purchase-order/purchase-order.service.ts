@@ -87,11 +87,13 @@ export class PurchaseOrderService {
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
+      OctriAmount:[''],
       Worrenty: [''],
       roundVal: [''],
       Remark: [''],
       PaymentMode: [''],
       PaymentTerm: [''],
+      
     });
 
   }
@@ -101,7 +103,9 @@ export class PurchaseOrderService {
 
     });
   }
-
+  public getLastThreeItemInfo(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
+  }
   public getPaymentTermList() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_termsofpaymentMaster", {});
   }

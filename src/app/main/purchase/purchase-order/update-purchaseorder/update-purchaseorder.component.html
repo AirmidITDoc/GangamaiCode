@@ -47,8 +47,8 @@
                                     <div fxLayout="row">
                                         <div>
                                             <form [formGroup]="_PurchaseOrder.StoreFormGroup"
-                                            style=" overflow:hidden;padding:  0px 2px 0px 5px;">
-                                             
+                                                style=" overflow:hidden;padding:  0px 2px 0px 5px;">
+
                                                 <mat-form-field appearance="outline" style="width: 140px;">
                                                     <mat-label>From Store</mat-label>
                                                     <mat-select formControlName="StoreId" name="StoreId">
@@ -208,19 +208,27 @@
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="Qty" name="Qty" #qty required type="text" (keyup)="calculateTotalAmt()"
-                                                (keydown)="onEnterQty($event)"
-                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                            <input matInput [(ngModel)]="Qty" name="Qty" #qty required type="text"
+                                                (keyup)="calculateTotalAmt()" (keydown)="onEnterQty($event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                                 formControlName="Qty" id="Qty" required>
-                                        
+
                                         </mat-form-field>&nbsp;
-                                        
+
+                                        <mat-form-field appearance="outline" fxFlex="5%">
+                                            <mat-label>MRP</mat-label>
+                                            <input matInput [(ngModel)]="MRP" name="MRP" #mrp required
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                                (keydown)="onEnterMRP($event)" formControlName="MRP" type="number">
+                                        </mat-form-field>&nbsp;
+
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Rate</mat-label>
-                                            <input matInput [(ngModel)]="Rate" name="Rate" (keydown)="onEnterRate($event)" #rate type="number"
-                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                            <input matInput [(ngModel)]="Rate" name="Rate"
+                                                (keydown)="onEnterRate($event)" #rate type="number" (keyup)="OnchekPurchaserateValidation()"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                                 formControlName="Rate" (keyup)="calculateTotalAmt()" required id="Rate">
-                                        
+
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
@@ -256,7 +264,7 @@
                                             <mat-label>GST Amt</mat-label>
                                             <input matInput [(ngModel)]="GSTAmt" name="GSTAmount"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                formControlName="GSTAmount"  readonly>
+                                                formControlName="GSTAmount" readonly>
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
@@ -264,14 +272,7 @@
                                             <input name="NetAmount" formControlName="NetAmount" matInput
                                                 formControlName="NetAmount" [(ngModel)]="NetAmount" readonly required>
                                         </mat-form-field>&nbsp;
-
-                                        <mat-form-field appearance="outline" fxFlex="5%">
-                                            <mat-label>MRP</mat-label>
-                                            <input matInput [(ngModel)]="MRP" name="MRP" #mrp
-                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                (keydown)="onEnterMRP($event)" formControlName="MRP" type="number">
-                                        </mat-form-field>&nbsp;
-
+                                       
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>Specification</mat-label>
                                             <input matInput placeholder="Specification" #specification
@@ -452,8 +453,209 @@
                         </div>
                         <hr>
 
-                        <form [formGroup]="_PurchaseOrder.FinalPurchaseform" style="padding: 6px 6px 5px 5px;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                        <form [formGroup]="_PurchaseOrder.FinalPurchaseform">
+
+
+                            <div fxLayout="row">
+                                <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
+                                    style="overflow:auto;width: 38%;">
+                                    <ng-container matColumnDef="ItemId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            ItemId</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ItemId}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SupplierName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SupplierName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SupplierName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReceiveQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            R_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ReceiveQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="FreeQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            F_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.FreeQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="MRP">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            MRP</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.MRP}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Rate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Rate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Rate}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="VatPercentage">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Vat</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.VatPercentage}}%
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns3; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+
+                                <div fxLayout="column" fxLayoutGap="6px" style="margin-left: 20px;width: 61%;margin-top: 8px;">
+                                    <div fxLayout="row" fxLayoutGap="6px">
+                                        <span class="net-amt-mat-label"
+                                            style="font-weight:bold;margin-left:20px;padding-bottom: 8px;">No Of Item:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{dsItemNameList.data.length}}</span>&nbsp;&nbsp;&nbsp;
+
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
+                                            Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalAmt(dsItemNameList.data)
+                                            | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Disc
+                                            Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalDisc(dsItemNameList.data)
+                                            |
+                                            currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">GST
+                                            Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalGST(dsItemNameList.data)
+                                            |
+                                            currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
+
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Net
+                                            Amt:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalNet(dsItemNameList.data)
+                                            |
+                                            currency:'INR' }}</span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Payment Term</mat-label>
+                                            <mat-select formControlName="PaymentTerm" name="PaymentTerm">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of PaymentTermsList" [value]="m">
+                                                    {{m.TermsOFPayment}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>-- Select PaymentMode --</mat-label>
+                                            <mat-select formControlName="PaymentMode" name="PaymentMode"
+                                                (keydown)="onEnterPaymentMode($event)" #PaymentMode>
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of ModeOfPaymentList" [value]="m">
+                                                    {{m.ModeOfPayment}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Handling Charges</mat-label>
+                                            <input matInput #HandlingCharges [(ngModel)]="registerObj.HandlingCharges"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                type="number" formControlName="HandlingCharges"
+                                                (keydown)="onEnterHandlingcharge($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Transport Charges</mat-label>
+                                            <input matInput #TransportCharges [(ngModel)]="registerObj.TransportChanges"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                type="number" formControlName="TransportCharges"
+                                                (keydown)="onEnterTransportcharge($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Freight</mat-label>
+                                            <input matInput placeholder="Freight" #Freight1
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                [(ngModel)]="registerObj.FreightAmount" type="number"
+                                                formControlName="Freight" (keydown)="onEnterFreight($event)">
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div fxLayout="row" fxLayoutGap="4px">
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Remark</mat-label>
+                                            <input matInput placeholder="Remark" formControlName="Remark" #Remark
+                                                [(ngModel)]="registerObj.Remarks" type="text" (keydown)="onEnterRemark($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>OctriAmount</mat-label>
+                                            <input matInput placeholder="Placeholder" formControlName="OctriAmount"
+                                                #OtherCharges [(ngModel)]="registerObj.OctriAmount"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                             (keydown)="onEnterOctriAmount($event)" >
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Guarantee/ Worrenty</mat-label>
+                                            <input matInput placeholder="Guarantee/Worrenty" #Worrenty required
+                                                [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWorrenty($event)"
+                                                formControlName="Worrenty" type="text">
+                                        </mat-form-field>
+
+                                        <div matTooltip="Select All Value to enable this button!!">
+                                            <button class="next-btn"
+                                                style="border-radius: 16px;margin-left: 100px; margin-top: 15px;"
+                                                [disabled]="_PurchaseOrder.FinalPurchaseform.invalid"
+                                                (click)="OnSave()">Save</button>
+                                            <button class="footer-btn" style="border-radius: 16px;"
+                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                        </div>
+
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+
+
+
+                            <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                                 <mat-form-field appearance="outline" fxFlex="7%">
                                     <mat-label>Remark</mat-label>
@@ -514,11 +716,11 @@
                                 </mat-form-field>&nbsp;
 
 
-                                <!-- <mat-form-field appearance="outline" fxFlex="8%">
+                                <mat-form-field appearance="outline" fxFlex="8%">
                                     <mat-label>Rounding Amt</mat-label>
                                     <input matInput placeholder="roundVal" formControlName="roundVal" #roundVal type="number"
                                         [(ngModel)]="registerObj.roundVal" (keydown)="onEnterroundVal($event)">
-                                </mat-form-field>&nbsp; -->
+                                </mat-form-field>&nbsp;
 
 
                                 <div layout="row" layout-xs="column">
@@ -570,7 +772,7 @@
                                 </div>
 
 
-                            </div>
+                            </div> -->
 
                         </form>
 

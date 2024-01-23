@@ -224,7 +224,7 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseItemList.sort = this.sort;
       this.dsPurchaseItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsPurchaseItemList);
+     // console.log(this.dsPurchaseItemList);
     },
       error => {
         this.sIsLoading = '';
@@ -239,7 +239,7 @@ export class PurchaseOrderComponent implements OnInit {
     let submitData = {
       "update_POVerify_Status": update_POVerify_Status,
     };
-    console.log(submitData);
+   // console.log(submitData);
     this._PurchaseOrder.getVerifyPurchaseOrdert(submitData).subscribe(response => {
     //   if (response) {
     //     this.toastr.success('Record Verified Successfully.', 'Verified !', {
@@ -503,7 +503,7 @@ export class ItemNameList {
   Warranty: any;
   Remark: any;
   Schedule: any;
-  OtherTax: any;
+  OctriAmount: any;
   WorkId: any;
   Remarks: any;
   Worrenty: any;
@@ -513,11 +513,12 @@ export class ItemNameList {
   WOVatAmount: any;
   GrandTotalAmount: any;
   taxID: number;
-  transportChanges: any;
-  handlingCharges: any;
+  TransportChanges: any;
+  HandlingCharges: any;
   ConstantId: number;
   roundVal: any;
-
+  DisAmount:any;
+  Mobile:any
   /**
    * Constructor
    *
@@ -563,8 +564,10 @@ export class ItemNameList {
       this.WOTotalAmount = ItemNameList.WOTotalAmount || 0;
       this.WoNetAmount = ItemNameList.WoNetAmount || 0;
       this.WOVatAmount = ItemNameList.WOVatAmount || 0;
-      this.handlingCharges = ItemNameList.handlingCharges || 0;
-      this.transportChanges = ItemNameList.transportChanges || 0;
+      this.OctriAmount = ItemNameList.OctriAmount || 0;
+      this.HandlingCharges = ItemNameList.HandlingCharges || 0;
+      this.TransportChanges = ItemNameList.TransportChanges || 0;
+      this.DisAmount = ItemNameList.DisAmount || 0;
     }
   }
 }
@@ -577,6 +580,8 @@ export class PurchaseItemList {
   StoreId: any;
   SupplierId: any;
   StoreName: any;
+  Remarks:any;
+  Mobile:any;
   /**
    * Constructor
    *

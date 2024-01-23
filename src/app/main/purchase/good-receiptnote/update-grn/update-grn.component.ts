@@ -183,6 +183,7 @@ export class UpdateGRNComponent implements OnInit {
   vContact: any;
   vDiffNetRoundAmt: any;
   ItemId:any;
+  vOtherCharges:any;
 
 
   constructor(
@@ -542,8 +543,6 @@ FinalTotalQty:any;
     //this.disc.nativeElement.focus();
   }
 
- 
-
 
   getCGSTAmt(element) {
     let CGSTAmt;
@@ -572,8 +571,12 @@ FinalTotalQty:any;
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     this.vFinalNetAmount= Math.round(FinalRoundAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
-
+    FinalRoundAmt= ((parseInt(this.vOtherCharges)) + FinalRoundAmt);
     this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2);
+  
+      let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharges").value ;
+    
+     
     return this.vTotalFinalAmount;
   }
 
@@ -1028,6 +1031,7 @@ FinalTotalQty:any;
   @ViewChild('NetPayamt') NetPayamt: ElementRef;
   @ViewChild('OtherCharges') OtherCharges: ElementRef;
   @ViewChild('RoundingAmt') RoundingAmt: ElementRef;
+  @ViewChild('EwayBillNo') EwayBillNo: ElementRef;
 
 
 
@@ -1174,11 +1178,20 @@ FinalTotalQty:any;
 
   public onEnterCreditAmount(event): void {
     if (event.which === 13) {
-      this.DiscAmount.nativeElement.focus();
+      this.EwayBillNo.nativeElement.focus();
+    }
+  }
+  public onEnterEwayBillNo(event): void {
+    if (event.which === 13) {
+      this.OtherCharges.nativeElement.focus();
     }
   }
 
-
+  public onEnterNetPayamt(event): void {
+    if (event.which === 13) {
+      this.OtherCharges.nativeElement.focus();
+    }
+  }
   public onEnterDiscAmount(event): void {
     if (event.which === 13) {
       this.GSTAmount.nativeElement.focus();
@@ -1191,11 +1204,7 @@ FinalTotalQty:any;
   }
 
 
-  public onEnterNetPayamt(event): void {
-    if (event.which === 13) {
-      this.OtherCharges.nativeElement.focus();
-    }
-  }
+ 
 
   public onEnterOtherCharges(event): void {
     if (event.which === 13) {

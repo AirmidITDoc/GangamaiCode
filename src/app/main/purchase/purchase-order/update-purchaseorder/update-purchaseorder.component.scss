@@ -1,7 +1,7 @@
 app-update-purchaseorder {
   
     .table3 {
-      height: 400px !important;
+      height: 300px !important;
       width: 100%;
 
       .mat-column-ItemName {
@@ -148,6 +148,65 @@ app-update-purchaseorder {
   
       
     }
+    .table4{
+      height: 180px !important;
+      width: 38%;
+      .mat-column-ItemId{
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+        margin-right: 5px;
+      }
+      .mat-column-SupplierName {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 10px;
+        margin-top: 20px;
+      }
+     
+      .mat-column-ReceiveQty {
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        text-align: left;
+      }
+      .mat-column-FreeQty {
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        text-align: left;
+      }
+      .mat-column-MRP {
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        text-align: left;
+      }
+      .mat-column-Rate {
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        text-align: left;
+      }
+      .mat-column-VatPercentage {
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
+        text-align: left;
+    
+      }
+    }
+  
 
     .next-btn {
       width: 80px;
