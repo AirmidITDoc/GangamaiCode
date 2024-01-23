@@ -302,7 +302,7 @@ export class NewPrescriptionComponent implements OnInit {
       this.optionsStore = this.StoreList.slice();
       this.filteredOptionsStore = this.myForm.get('StoreId').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterWard(value) : this.StoreList.slice()),
+        map(value => value ? this._filterStore(value) : this.StoreList.slice()),
       );
 
     });
@@ -332,6 +332,7 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   getOptionTextWard(option) {
+    debugger
     return option && option.RoomName ? option.RoomName : '';
   }
   getOptionTextStore(option) {
@@ -426,8 +427,8 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-     
-      insertIP_Prescription['wardID'] = 2;//this.myForm.get('WardName').value.RoomId || 0;
+     debugger
+      insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
     submissionObj['insertIP_Prescription'] = insertIP_Prescriptionarray;

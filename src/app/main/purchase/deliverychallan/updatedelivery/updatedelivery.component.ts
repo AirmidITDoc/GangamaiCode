@@ -739,21 +739,21 @@ export class UpdatedeliveryComponent implements OnInit {
     });
   }
   OnSave() {
-    if (!this.registerObj.GRNID) {
+    if (this.data.chkNewGRN == 1) {
       this.OnSavenew();
-    } else {
+    } else if (this.data.chkNewGRN == 2) {
       this.OnSaveEdit()
     }
   }
 
-  PaymentTypeChk() {
-    if (this.__DeliveryService.userFormGroup.get('PaymentType').value == 'Credit') {
-      this.PaymentType = false;
-    }
-    else if (this.__DeliveryService.userFormGroup.get('PaymentType').value == 'Cash') {
-      this.PaymentType = true;
-    }
-  }
+  // PaymentTypeChk() {
+  //   if (this.__DeliveryService.userFormGroup.get('PaymentType').value == 'Credit') {
+  //     this.PaymentType = false;
+  //   }
+  //   else if (this.__DeliveryService.userFormGroup.get('PaymentType').value == 'Cash') {
+  //     this.PaymentType = true;
+  //   }
+  // }
 
   OnSavenew() {
     let nowDate = new Date();
@@ -784,21 +784,23 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['creditNote'] = this.__DeliveryService.GRNFinalForm.get('CreditAmount').value || 0;
     grnSaveObj['otherCharge'] = this.__DeliveryService.GRNFinalForm.get('OtherCharges').value || 0;
     grnSaveObj['roundingAmt'] = this.__DeliveryService.GRNFinalForm.get('RoundingAmt').value || 0;
-    grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
-    grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
-    grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
+    grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
+    grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
+    grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
     grnSaveObj['tranProcessId'] = this.__DeliveryService.userFormGroup.get('GSTType').value.ConstantId || 0;
     grnSaveObj['tranProcessMode'] = this.__DeliveryService.userFormGroup.get('GSTType').value.Name || '';
+    grnSaveObj['ewayBillNo'] = this.__DeliveryService.GRNFinalForm.get('EwayBillNo').value || 0;
+    grnSaveObj['ewayBillDate'] =this.__DeliveryService.GRNFinalForm.get('EwalBillDate').value,"yyyy-MM-dd"  || '01/01/1099';
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
     grnSaveObj['grnid'] = 0;
-
+    
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
       //console.log(element);
 
       let grnDetailSaveObj = {};
-      grnDetailSaveObj['grnDetID'] = 0;
+     // grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
       grnDetailSaveObj['uomId'] = element.UOMId || 0;
@@ -882,6 +884,7 @@ export class UpdatedeliveryComponent implements OnInit {
   OnSaveEdit() {
 
     let updateGRNHeaderObj = {};
+    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
     updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
@@ -897,7 +900,7 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['netAmount'] = this.__DeliveryService.GRNFinalForm.get('NetPayamt').value || 0;
     updateGRNHeaderObj['remark'] = this.__DeliveryService.GRNFinalForm.get('Remark').value || '';
     updateGRNHeaderObj['receivedBy'] = this.__DeliveryService.GRNFinalForm.get('ReceivedBy').value || '';
-    updateGRNHeaderObj['isClosed'] = false;
+    //updateGRNHeaderObj['isClosed'] = false;
     updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
       updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['debitNote'] = this.__DeliveryService.GRNFinalForm.get('DebitAmount').value || 0;
@@ -910,7 +913,6 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['tranProcessId'] = this.__DeliveryService.userFormGroup.get('GSTType').value.ConstantId || 0;
     updateGRNHeaderObj['tranProcessMode'] = this.__DeliveryService.userFormGroup.get('GSTType').value.Name || '';
     updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;
-    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
@@ -978,6 +980,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this._matDialog.closeAll();
         this.OnReset()
       }
+
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',

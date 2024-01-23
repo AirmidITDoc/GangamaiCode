@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { OTReservationDetail } from '../ot-reservation.component';
@@ -11,11 +11,14 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { OTNoteComponent } from '../../ot-note/ot-note.component';
 import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-reservation',
   templateUrl: './new-reservation.component.html',
-  styleUrls: ['./new-reservation.component.scss']
+  styleUrls: ['./new-reservation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class NewReservationComponent implements OnInit {
 
@@ -510,7 +513,7 @@ OPreOPrativenote(){
 
     this.isLoading = 'submit';
 
-    if (this.Adm_Vit_ID) {
+    // if (this.Adm_Vit_ID) {
       if (!otBookingID) {
         var m_data = {
           "otTableBookingDetailInsert": {
@@ -595,7 +598,7 @@ OPreOPrativenote(){
 
         });
       }
-    }
+    // }
   }
 
 

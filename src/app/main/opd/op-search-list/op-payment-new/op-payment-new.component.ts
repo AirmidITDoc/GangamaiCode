@@ -136,7 +136,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.IsCreditflag=false
     }
     if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
-      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+      this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayAmount;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);

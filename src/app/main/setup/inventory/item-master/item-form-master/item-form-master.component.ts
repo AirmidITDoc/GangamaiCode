@@ -89,7 +89,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     ngOnInit(): void {
         if(this.data){
-            debugger
+            
               this.registerObj=this.data.registerObj;
                this.setDropdownObjs1();
             }
@@ -108,55 +108,64 @@ export class ItemFormMasterComponent implements OnInit {
         this.getCompanyList();
         this.getDrugTypeList();
 
-       
-        if(this.data){
-            debugger
-              this.registerObj=this.data.registerObj;
-                this.setDropdownObjs1();
-            }
+      
     }
 
-
+    
     
   setDropdownObjs1() {
+    this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
+    );
+
+    this.filteredOptionsManu = this._itemService.myform.get('ManufId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
+    );
+
+    this.filteredItemcategory = this._itemService.myform.get('ItemCategoryId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
+    );
+
+
+    this.filteredItemgeneric = this._itemService.myform.get('ItemGenericNameId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
+    );
+
+
+    this.filteredItemclass = this._itemService.myform.get('ItemClassId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
+    );
+
+    this.filteredUnitofmeasurement = this._itemService.myform.get('PurchaseUOMId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
+    );
+
+    this.filteredStockUOMId = this._itemService.myform.get('StockUOMId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
+    );
+
+    this.filteredCurrency = this._itemService.myform.get('CurrencyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSCurrency(value) : this.CurrencycmbList.slice()),
+    );
+
+    // this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
+    // );
     
-    debugger
-    const toSelect = this.ItemTypecmbList.find(c => c.ItemTypeId == this.registerObj.ItemTypeID);
-    this._itemService.myform.get('ItemTypeID').setValue(toSelect);
 
-     const toSelectCat = this.ItemCategorycmbList.find(c => c.ItemCategoryId == this.registerObj.ItemCategoryId);
-     this._itemService.myform.get('ItemCategoryId').setValue(toSelectCat);
- 
-     const toSelectGen = this.ItemGenericcmbList.find(c => c.ItemGenericNameId == this.registerObj.ItemGenericNameId);
-     this._itemService.myform.get('ItemGenericNameId').setValue(toSelectGen);
- 
-     const toSelectClass = this.ItemClasscmbList.find(c => c.ItemClassId == this.registerObj.ItemClassId);
-     this._itemService.myform.get('ItemClassId').setValue(toSelectClass);
- 
-     const toSelectUMI = this.ItemUomcmbList.find(c => c.PurchaseUOMId == this.registerObj.PurchaseUOMId);
-     this._itemService.myform.get('PurchaseUOMId').setValue(toSelectUMI);
-
-     const toSelectStock = this.ItemUomcmbList.find(c => c.StockUOMId == this.registerObj.StockUOMId);
-     this._itemService.myform.get('StockUOMId').setValue(toSelectStock);
- 
-    //  const toSelectDrug = this.DrugList.find(c => c.ItemClassId == this.registerObj.);
-     this._itemService.myform.get('toSelectDrug').setValue(toSelectClass);
- 
-     const toSelectManu = this.ManufacurecmbList.find(c => c.ManufId == this.registerObj.ManufId);
-     this._itemService.myform.get('ManufId').setValue(toSelectManu);
- 
-  
-     const toSelectComp = this.CompanyList.find(c => c.CompanyId == this.registerObj);
-     this._itemService.myform.get('CompanyId').setValue(toSelectComp);
-  
-     //  this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-     
-    //  this.onChangeCityList(this.personalFormGroup.get('CityId').value);
-     
-    //  this.personalFormGroup.updateValueAndValidity();
-     // this.dialogRef.close();
-     
    }
+   
+
+   
 
     get f() {
         return this._itemService.myform.controls;
@@ -164,38 +173,50 @@ export class ItemFormMasterComponent implements OnInit {
 
    
 
-    getitemtypeNameMasterCombo() {
+//     getitemtypeNameMasterCombo() {
+// 
+//         this._itemService.getitemtypeMasterCombo().subscribe(data => {
+//             this.ItemTypecmbList = data;
+//             this.ItemTypecmbList = this.ItemTypecmbList.slice();
+//             this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
+//                 startWith(''),
+//                 map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
+//             );
 
-        this._itemService.getitemtypeMasterCombo().subscribe(data => {
-            this.ItemTypecmbList = data;
-            this.ItemTypecmbList = this.ItemTypecmbList.slice();
-            this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
-            );
+//         });
 
-        });
 
-        // if(this.data){
-        //     debugger
-        //          const toSelect = this.ItemTypecmbList.find(c => c.ItemTypeId == this.registerObj.ItemTypeID);
-        //         this._itemService.myform.get('ItemTypeID').setValue(toSelect);
- 
-        // }
+//     }
 
-    }
+getitemtypeNameMasterCombo() {
 
+    this._itemService.getitemtypeMasterCombo().subscribe(data => {
+        this.ItemTypecmbList = data;
+        if (this.data) {
+            
+            const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
+            this._itemService.myform.get('ItemTypeID').setValue(ddValue[0]);
+
+            this._itemService.myform.updateValueAndValidity();
+            return;
+        }
+    });
+
+}
 
     getitemclassNameMasterCombo() {
 
+
         this._itemService.getitemclassMasterCombo().subscribe(data => {
             this.ItemClasscmbList = data;
-            this.ItemClasscmbList = this.ItemClasscmbList.slice();
-            this.filteredItemclass = this._itemService.myform.get('ItemClassId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.ItemClasscmbList.filter(c => c.ItemClassId == this.data.registerObj.ItemClassId);
+                this._itemService.myform.get('ItemClassId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
 
     }
@@ -205,14 +226,15 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getitemcategoryMasterCombo().subscribe(data => {
             this.ItemCategorycmbList = data;
-            this.ItemCategorycmbList = this.ItemCategorycmbList.slice();
-            this.filteredItemcategory = this._itemService.myform.get('ItemCategoryId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.ItemCategorycmbList.filter(c => c.ItemCategoryId == this.data.registerObj.ItemCategaryId);
+                this._itemService.myform.get('ItemCategoryId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
-
     }
 
 
@@ -226,15 +248,16 @@ export class ItemFormMasterComponent implements OnInit {
    }
 
     getitemgenericNameMasterCombo() {
-
         this._itemService.getitemgenericMasterCombo().subscribe(data => {
             this.ItemGenericcmbList = data;
-            this.ItemGenericcmbList = this.ItemGenericcmbList.slice();
-            this.filteredItemgeneric = this._itemService.myform.get('ItemGenericNameId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.ItemGenericcmbList.filter(c => c.ItemGenericNameId == this.data.registerObj.ItemGenericNameId);
+                this._itemService.myform.get('ItemGenericNameId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
 
     }
@@ -263,12 +286,14 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getunitofMeasurementMasterCombo().subscribe(data => {
             this.ItemUomcmbList = data;
-            this.ItemUomcmbList = this.ItemUomcmbList.slice();
-            this.filteredUnitofmeasurement= this._itemService.myform.get('PurchaseUOMId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.ItemUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.PurchaseUOMId);
+                this._itemService.myform.get('PurchaseUOMId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
 
     }
@@ -277,12 +302,14 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getStockUMOMasterCombo().subscribe(data => {
             this.StockUomcmbList = data;
-            this.StockUomcmbList = this.StockUomcmbList.slice();
-            this.filteredStockUOMId= this._itemService.myform.get('StockUOMId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.StockUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.StockUOMId);
+                this._itemService.myform.get('StockUOMId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
 
     }
@@ -291,12 +318,14 @@ export class ItemFormMasterComponent implements OnInit {
 
         this._itemService.getCurrencyMasterCombo().subscribe(data => {
             this.CurrencycmbList = data;
-            this.CurrencycmbList = this.CurrencycmbList.slice();
-            this.filteredCurrency= this._itemService.myform.get('CurrencyId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterSCurrency(value) : this.CurrencycmbList.slice()),
-            );
-
+            if (this.data) {
+                
+                const ddValue = this.CurrencycmbList.filter(c => c.CurrencyId == this.data.registerObj.CurrencyId);
+                this._itemService.myform.get('CurrencyId').setValue(ddValue[0]);
+    
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
 
     }
@@ -306,7 +335,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.CurrencyName ? value.CurrencyName.toLowerCase() : value.toLowerCase();
 
-            return this.otionsCurrency.filter(option => option.CurrencyName.toLowerCase().includes(filterValue));
+            return this.CurrencycmbList.filter(option => option.CurrencyName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -315,7 +344,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.ManufName ? value.ManufName.toLowerCase() : value.toLowerCase();
 
-            return this.optionsManu.filter(option => option.ManufName.toLowerCase().includes(filterValue));
+            return this.ManufacurecmbList.filter(option => option.ManufName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -343,7 +372,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsClass.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
+            return this.ItemClasscmbList.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -354,7 +383,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
 
-            return this.optionsCategory.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
+            return this.ItemCategorycmbList.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -363,7 +392,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsGenericname.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
+            return this.ItemGenericcmbList.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -374,7 +403,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsPurchaseumi.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+            return this.ItemUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -382,7 +411,7 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsStockumo.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+            return this.StockUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -408,39 +437,46 @@ export class ItemFormMasterComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
             );
-
+            // if (this.data) {
+            //     debugger
+            //     const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
+            //     this._itemService.myform.get('DrugType').setValue(ddValue[0]);
+    
+            //     this._itemService.myform.updateValueAndValidity();
+            //     return;
+            // }
         });
 
     }
 
     getManufactureNameMasterCombo() {
+    this._itemService.getManufactureMasterCombo().subscribe(data => {
+        this.ManufacurecmbList = data;
+        if (this.data) {
+            
+            const ddValue = this.ManufacurecmbList.filter(c => c.ManufId == this.data.registerObj.ManufId);
+            this._itemService.myform.get('ManufId').setValue(ddValue[0]);
 
-        this._itemService.getManufactureMasterCombo().subscribe(data => {
-            this.ManufacurecmbList = data;
-            this.ManufacurecmbList = this.ManufacurecmbList.slice();
-            this.filteredOptionsManu = this._itemService.myform.get('ManufId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
-            );
-
-        });
-
+            this._itemService.myform.updateValueAndValidity();
+            return;
+        }
+    });
     }
 
-    getDrugTypeCombo() {
+    // getDrugTypeCombo() {
 
-        this._itemService.getDrugTypeCombo
-        ().subscribe(data => {
-            this.DrugList = data;
-            this.DrugList = this.DrugList.slice();
-            this.filteredOptionsManu = this._itemService.myform.get('DrugType').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
-            );
+    //     this._itemService.getDrugTypeCombo
+    //     ().subscribe(data => {
+    //         this.DrugList = data;
+    //         this.DrugList = this.DrugList.slice();
+    //         this.filteredOptionsManu = this._itemService.myform.get('DrugType').valueChanges.pipe(
+    //             startWith(''),
+    //             map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
+    //         );
 
-        });
+    //     });
 
-    }
+    // }
 
 
     getStoreNameMasterCombo() {
@@ -666,24 +702,25 @@ export class ItemFormMasterComponent implements OnInit {
   }
   public onEnterMaxdisc(event): void {
     if (event.which === 13) {
-      
+        this.save=true;
+        this.addbutton.focus();
       if (this.Store) this.Store.focus();
     }
   }
 save:boolean=false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   onEnterStorename(event): void {
-    debugger
+    
     if (event.which === 13) {
         this.save=true;
-    this.addbutton.focus();
+   
     }
   }
 
 
  
     onSubmit() {
-        debugger
+        
         // if (this._itemService.myform.valid) {
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];

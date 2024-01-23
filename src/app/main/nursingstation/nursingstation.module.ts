@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { MaterialConsumptionPatientwiseComponent } from './Patientwisematerialconsumption/material-consumption-patientwise/material-consumption-patientwise.component';
+import { PatientRefVisitComponent } from './patient-ref-visit/patient-ref-visit.component';
   
 
 const approtes: Routes = [
@@ -31,10 +33,10 @@ const approtes: Routes = [
 // //   path:"dialysissms",
 // //   loadChildren: () => import("./dialysis-sms/dialysis-sms.module").then((m)=>m.DialysisSmsModule), 
 // // },
-// {
-//   path:"patientrefvisit",
-//   loadChildren: () => import("./patient-vist/patientvisit.module").then((m)=>m.PatientvisitModule), 
-// },
+{
+  path:"patientrefvisit",
+  loadChildren: () => import("./patient-ref-visit/patientrefvisit.module").then((m)=>m.PatientrefvisitModule), 
+},
 // {
 //   path:"multiplesms",
 //   loadChildren: () => import("./send-multiple-sms/send-multiple-sms.module").then((m)=>m.SendMultipleSmsModule), 
@@ -44,18 +46,18 @@ const approtes: Routes = [
 //   path: "pharmacysummary",
 //   loadChildren: () => import("./pahrmacy-summary/pharmacy-summary.module").then((m)=>m.PharmacySummaryModule), 
 // },
-// {
-//   path:"patientwisematerialconsumption",
-//   loadChildren: () => import("./patient-wise-materialconsumption/patientwise-material-consumption.module").then((m)=>m.PatientwiseMaterialConsumptionModule), 
-// },
-// {
-//   path:"doctornote",
-//   loadChildren: () => import("./doctor-note/doctor-note.module").then((m)=>m.DoctorNoteModule), 
-// },
-// {
-//   path:"nursingnote",
-//   loadChildren: () => import("./nursing-note/nursing-note.module").then((m)=>m.NursingNoteModule), 
-// },
+{
+  path:"patientwisematerialconsumption",
+  loadChildren: () => import("./Patientwisematerialconsumption/material-consumption.module").then((m)=>m.MaterialConsumptionModule), 
+},
+{
+  path:"doctornote",
+  loadChildren: () => import("./doctornote/doctornote/doctornote.module").then((m)=>m.DoctornoteModule), 
+},
+{
+  path:"nursingnote",
+  loadChildren: () => import("./nursingnote/nursingnote/nursingnote.module").then((m)=>m.NursingnoteModule), 
+},
 // {
 //   path: "doctornote",
 //   component:DoctorNoteComponent

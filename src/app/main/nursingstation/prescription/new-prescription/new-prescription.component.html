@@ -172,24 +172,19 @@
                         </mat-form-field> -->
 
 
-                        
+
                         <mat-form-field appearance="outline" fxFlex="20%" style="float: right;">
                             <mat-label>From Store Name</mat-label>
-                            <input matAutocompletePosition="below" type="text"
-                                placeholder="Select Store" matInput
-                                formControlName="StoreId"
-                                [matAutocomplete]="autoStore" required>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Store" matInput
+                                formControlName="StoreId" [matAutocomplete]="autoStore" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="myForm.get('StoreId').setValue(''); isStoreselected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="myForm.get('StoreId').setValue(''); isStoreselected = false;">search</mat-icon>
                             </span>
-                            <mat-autocomplete #autoStore="matAutocomplete"
-                                [displayWith]="getOptionTextStore">
-                                <mat-option
-                                    *ngFor="let option of filteredOptionsStore | async"
-                                    [value]="option">
+                            <mat-autocomplete #autoStore="matAutocomplete" [displayWith]="getOptionTextStore">
+                                <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
                                     {{option.StoreName}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -211,21 +206,16 @@
 
                         <mat-form-field appearance="outline" fxFlex="20%" style="float: right;">
                             <mat-label>Ward Name</mat-label>
-                            <input matAutocompletePosition="below" type="text"
-                                placeholder="Select WardName" matInput
-                                formControlName="WardName"
-                                [matAutocomplete]="autoward" required>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select WardName" matInput
+                                formControlName="WardName" [matAutocomplete]="autoward" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="myForm.get('WardName').setValue(''); isWardselected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="myForm.get('WardName').setValue(''); isWardselected = false;">search</mat-icon>
                             </span>
-                            <mat-autocomplete #autoward="matAutocomplete"
-                                [displayWith]="getOptionTextWard">
-                                <mat-option
-                                    *ngFor="let option of filteredOptionsWard | async"
-                                    [value]="option">
+                            <mat-autocomplete #autoward="matAutocomplete" [displayWith]="getOptionTextWard">
+                                <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option">
                                     {{option.RoomName}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -318,7 +308,8 @@
                     style=" padding-left: 10px; padding-top: 10px; height:90px">
                     <mat-card style="width: 100%">
 
-                        <mat-table class="table2" matSort [dataSource]="" [@animateStagger]="{value:'50'}" style="overflow: auto;height:200px !important">
+                        <mat-table class="table2" matSort [dataSource]="" [@animateStagger]="{value:'50'}"
+                            style="overflow: auto;height:200px !important">
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -353,7 +344,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                 <mat-card style="width:70%">
                     <mat-table class="table1" matSort [dataSource]="dsPresList" [@animateStagger]="{value:'50'}"
-                        style="height:280px !important;overflow: auto;" >
+                        style="height:280px !important;overflow: auto;">
 
                         <ng-container matColumnDef="ItemName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

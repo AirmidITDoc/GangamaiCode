@@ -3,7 +3,7 @@
 app-update-grn {
    
     .table3 {
-      height: 300px !important;
+      height: 275px !important;
     //  width: 100%;
 
       
@@ -64,6 +64,12 @@ app-update-grn {
     width: 70px;
     max-width: 70px;
     min-width: 70px;
+    text-align: left;
+  }
+  .mat-column-TotalQty {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align: left;
   }
   .mat-column-MRP {
@@ -159,34 +165,34 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:1900px;
-      max-width: 1900px;
-      min-width:1900px;
+      width:1950px;
+      max-width: 1950px;
+      min-width:1950px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 1900px;
-    min-width: 1900px;  
+    width: 1950px;
+    min-width: 1950px;  
     // min-height: 30px; 
     }
     }
   
     .table4{
       height: 180px !important;
-      width: 100%;
-      border: lightgray;
+      width: 32%;
       .mat-column-ItemId{
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: left;
+        margin-right: 5px;
       }
       .mat-column-SupplierName {
-        width: 190px;
-        max-width: 190px;
-        min-width: 190px;
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
         text-align: left;
         justify-content: left;
         white-space: nowrap;
@@ -200,35 +206,35 @@ app-update-grn {
       }
      
       .mat-column-ReceiveQty {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
         text-align: left;
       }
       .mat-column-FreeQty {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
         text-align: left;
       }
       .mat-column-MRP {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
         text-align: left;
       }
       .mat-column-Rate {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
         text-align: left;
       }
       .mat-column-VatPercentage {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width: 50px;
+        max-width: 50px;
+        min-width: 50px;
         text-align: left;
-  
+    
       }
     }
   

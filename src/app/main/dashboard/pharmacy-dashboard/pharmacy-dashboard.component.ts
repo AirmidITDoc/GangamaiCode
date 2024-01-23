@@ -58,8 +58,8 @@ export class PharmacyDashboardComponent implements OnInit {
   labeldata: any;
 
   staticOptions: any[] = [
-    {value: 'BillCount', viewValue: 'Bill Count'},
-    {value: 'CollectionAmount', viewValue: 'Collection Amount'}
+    {value: 'CollectionAmount', viewValue: 'Collection Amount'},
+    {value: 'BillCount', viewValue: 'Bill Count'}
   ];
   selectedStatic = this.staticOptions[0].value;
   
@@ -149,7 +149,9 @@ export class PharmacyDashboardComponent implements OnInit {
    this.getThreeMonCollSumData();
    this.getPharmStoreList();
    this.getPharStockValueSumData();
-   this.getPharPayModeColSumData();
+   //this.getPharPayModeColSumData();
+   this.fetchChartData();
+
    //this.BarChart(this.BarlabelData,this.BarchartData);
   }
 
@@ -277,6 +279,7 @@ export class PharmacyDashboardComponent implements OnInit {
 
 
   getDoughnutChart(data) {
+    debugger
     return new Chart('doughnutChart', {
       type: 'doughnut',
       data: data,
@@ -301,16 +304,20 @@ export class PharmacyDashboardComponent implements OnInit {
     })
   }
 
-
+onDateRangeChanged(){
+  this.fetchChartData();
+  this.getPharDashboardSalesSummary();
+}
  
   public doughnutChart: any;
  //Pei chart 
-  /* fetchChartData() {
+   fetchChartData() {
     this.sIsLoading = 'loading-data';
     var m_data = {
       "FromDate":this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") ||  '12/25/2023' ,
       "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023',
-      "StoreId":this._DashboardService.UseFrom.get("StoreId").value.storeid||0
+      "StoreId":this._DashboardService.UseFrom.get("StoreId").value.storeid||0,
+      "Mode":this.selectedStatic||'CollectionAmount'
       } 
        // console.log(m_data);
       this._DashboardService.getPharDashboardPeichart(m_data).subscribe(data => {
@@ -331,7 +338,7 @@ export class PharmacyDashboardComponent implements OnInit {
           this.sIsLoading = '';
         });
    
-  } */
+  } 
 
   RenderChart(labelData:any,PiechartData5:any){
     const mychart = new Chart('doughnutChart', {
@@ -432,7 +439,8 @@ export class PharmacyDashboardComponent implements OnInit {
   }
 
   onChangeStatic(event) {
-    console.log(this.selectedStatic);
+    this.selectedStatic=event.value;
+    this.fetchChartData();
   }
 
 }

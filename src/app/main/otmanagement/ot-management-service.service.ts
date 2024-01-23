@@ -110,8 +110,12 @@ export class OTManagementServiceService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
     
+  // public getDoctorMaster() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
+  // }
+
   public getDoctorMaster() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
   public getDoctorMaster1Combo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDoctorMasterForCombo", {})
@@ -159,4 +163,54 @@ export class OTManagementServiceService {
   public populateFormpersonal(employee){
     this.otreservationFormGroup.patchValue(employee);
   }
+
+
+
+
+
+  
+  public CathLabBookInsert(employee){
+    return this._httpClient.post("InPatient/CathLabBookingInsert", employee);
+  }
+  
+  public CathLabBookUpdate(employee){
+    return this._httpClient.post("InPatient/CathLabBookingUpdate", employee);
+  }
+
+  public getLabRequestList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabRequest_Nursing", employee)
+  }
+
+  
+
+  public getcathlabBooking(employee){
+    
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_OTCathLabBookingList", employee)
+
+  }
+  
+  public getEndoscopylist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_EndoscopyBookingList", employee)
+  }
+
+
+  public EndoscopyrequestInsert(employee){
+    return this._httpClient.post("InPatient/OTEndoscopyInsert", employee);
+  }
+
+  public EndoscopyrequestUpdate(employee){
+    return this._httpClient.post("InPatient/OTEndoscopyUpdate", employee);
+  }
+
+
+
+  
+  // public RequestInsert(employee){
+  //   return this._httpClient.post("InPatient/OTRequestInsert", employee);
+  // }
+
+  // public RequestUpdate(employee){
+  //   return this._httpClient.post("InPatient/OTBookingInsert", employee);
+  // }
+
 }

@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -27,6 +26,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { OTReservationComponent } from "./ot-reservation.component";
 import { NewReservationComponent } from "./new-reservation/new-reservation.component";
 import { OTManagementServiceService } from "../ot-management-service.service";
+import { CommonModule, DatePipe } from "@angular/common";
 
 const routes: Routes = [
     {
@@ -39,7 +39,7 @@ const routes: Routes = [
     declarations: [OTReservationComponent,NewReservationComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -65,7 +65,7 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
     ],
-    providers: [OTManagementServiceService],
+    providers: [DatePipe,OTManagementServiceService],
 
     entryComponents: [OTReservationComponent],
 })
