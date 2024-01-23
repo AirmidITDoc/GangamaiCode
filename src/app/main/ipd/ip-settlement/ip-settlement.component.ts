@@ -21,6 +21,7 @@ import { IPSettlementService } from './ip-settlement.service';
 import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment-withadvance.component';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import * as converter from 'number-to-words';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
 
 @Component({
@@ -92,7 +93,7 @@ export class IPSettlementComponent implements OnInit {
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     // @Inject(MAT_DIALOG_DATA) public data: any,
-    // public datePipe: DatePipe,
+    public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
     private router: Router) { }
@@ -186,7 +187,7 @@ export class IPSettlementComponent implements OnInit {
 
     this.sIsLoading = 'loading-data';
 
-    this.regId=199;
+    this.regId=95645;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
   
@@ -208,9 +209,9 @@ export class IPSettlementComponent implements OnInit {
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    this.regId=70845
+    this.regId=95645
     
-    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 40 and RegID= " + this.regId + " and BalanceAmt>0";
+    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
      this.dataSource1.data = Visit as CreditBilldetail[];

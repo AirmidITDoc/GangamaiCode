@@ -844,6 +844,17 @@ export class AppointmentComponent implements OnInit {
   }
   onEdit(row) {
     this.registerObj = row;
+    
+    const dialogRef = this._matDialog.open(EditRegistrationComponent,
+      {
+        maxWidth: "85vw",
+        height: "550px",
+        width: "100%",
+        data: {
+          registerObj: row,
+        },
+      }
+    );
     this.getSelectedObj(row);
   }
 
