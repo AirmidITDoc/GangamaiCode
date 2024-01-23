@@ -596,6 +596,8 @@ export class PurchaseItemList {
       this.StoreId = PurchaseItemList.StoreId || 0;
       this.SupplierId = PurchaseItemList.SupplierId || 0;
       this.StoreName = PurchaseItemList.StoreName || '';
+      this.Remarks = PurchaseItemList.Remarks || '';
+      this.Mobile = PurchaseItemList.Mobile || 0;
     }
   }
 }
@@ -629,6 +631,8 @@ export class PurchaseOrder {
   SGSTAmt: any;
   IGSTAmt: any;
   VatPer: any;
+  Remarks:any;
+  Mobile:any;
 
 
 
@@ -644,6 +648,8 @@ export class PurchaseOrder {
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
       this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";
+      this.Remarks = PurchaseOrder.Remarks || '';
+      this.Mobile = PurchaseOrder.Mobile || 0;
     }
   }
 }
