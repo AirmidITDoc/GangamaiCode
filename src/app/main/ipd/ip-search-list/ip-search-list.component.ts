@@ -454,8 +454,8 @@ export class IPSearchListComponent implements OnInit {
         const dialogRef = this._matDialog.open(IPBillingComponent,
           {
             maxWidth: "90%",
-            width:'90%',
-            height: '90%',   
+            width:'98%',
+            height: '99%',   
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -819,6 +819,7 @@ export class ChargesList {
   ClassName: string;
   ChargesAddedName: string;
   BalanceQty:any;
+  IsStatus:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -839,6 +840,7 @@ export class ChargesList {
     this.ClassName = ChargesList.ClassName || '';
     this.ChargesAddedName = ChargesList.ChargesAddedName || '';
     this.BalanceQty=ChargesList.BalanceQty || 0;
+    this.IsStatus=ChargesList.IsStatus || 0;
   }
 }
 export class AdvanceHeader {

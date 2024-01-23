@@ -751,6 +751,10 @@ public updateIPDDischargSummary(employee)
   public getIPRefundBILLBrowsePrint(RefundId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofBillPrint", RefundId)
   }    
+
+ public getseletclassMasterCombo(){
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName", {})
+  }
   
   populateForm(employee) {
     this.myShowAdvanceForm.patchValue(employee);
@@ -939,7 +943,13 @@ public getIpInterimBillReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo);
 }
 
+public getpreviousbilldetail(Id){
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info",Id);
+}
 
+public getAdvancedetail(Id){
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPAdvanceDetails",Id);
+}
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123
