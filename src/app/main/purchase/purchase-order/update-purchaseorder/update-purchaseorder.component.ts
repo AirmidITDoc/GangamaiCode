@@ -45,6 +45,15 @@ export class UpdatePurchaseorderComponent implements OnInit {
     'Specification',
     'Action',
   ];
+  displayedColumns3 = [
+    'ItemId',
+    'SupplierName',
+    'ReceiveQty',
+    'FreeQty',
+    'MRP',
+    'Rate',
+    'VatPercentage'
+  ]
 
   sIsLoading: string = '';
   isLoading = true;
@@ -141,10 +150,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
   GrandTotalAmount:any;
   UnitofMeasurementName:any;
   
+  
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
+  dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -245,6 +256,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   
     this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
+      //console.log(this.SupplierList);
        this.optionsupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseOrderHeader.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -254,7 +266,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       if (this.data) {
         const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.PurchaseOrderHeader.get('SupplierId').setValue(toSelectSUpplierId);
-        console.log(toSelectSUpplierId)
+       // console.log(toSelectSUpplierId)
         this.Address = toSelectSUpplierId.Address;
         this.Mobile = toSelectSUpplierId.Mobile;
         this.Contact = toSelectSUpplierId.ContactPerson;
@@ -315,7 +327,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         
 
       });
-     console.log(this.NetAmount);
+     //console.log(this.NetAmount);
     this.dsItemNameList.data = this.chargeslist;
     this.itemid.nativeElement.focus();
     this.add = false;
@@ -326,7 +338,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   deleteTableRow(element) {
 
     debugger
-    console.log(this.chargeslist)
+   // console.log(this.chargeslist)
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
@@ -336,7 +348,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
-    console.log(this.dsItemNameList.data)
+   // console.log(this.dsItemNameList.data)
     
   }
   getOptionText(option) {
@@ -376,7 +388,7 @@ debugger
      // if (this._PurchaseOrder.userFormGroup.get('ItemName').value.length >= 2) 
       this._PurchaseOrder.getItemList(m_data).subscribe(data => {
         this.filteredOptions = data;
-       console.log(this.filteredOptions);
+      // console.log(this.filteredOptions);
          if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -403,6 +415,16 @@ debugger
     this.GSTAmount = 0;
     this.MRP = obj.UnitMRP || 0;
     this.Specification = obj.Specification || '';
+    this.getLastThreeItemInfo();
+  }
+  getLastThreeItemInfo() {
+    var vdata = {
+      'ItemId': this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID || 0,
+    }
+    this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
+      this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
+      //console.log(this.dsLastThreeItemList.data)
+    });
   }
 
 
@@ -427,7 +449,7 @@ debugger
     updatePurchaseOrderHeaderObj['discAmount'] = this.DiscAmount;
     updatePurchaseOrderHeaderObj['taxAmount'] = 0;
     updatePurchaseOrderHeaderObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
-    updatePurchaseOrderHeaderObj['octriAmount'] = 0;
+    updatePurchaseOrderHeaderObj['octriAmount'] = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value || 0;
     updatePurchaseOrderHeaderObj['grandTotal'] = this.FinalNetAmount;
     updatePurchaseOrderHeaderObj['isclosed'] = false;
     updatePurchaseOrderHeaderObj['isVerified'] = false;
@@ -516,7 +538,7 @@ debugger
     purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
     purchaseHeaderInsertObj['taxAmount'] = 0;
     purchaseHeaderInsertObj['freightAmount'] = this._PurchaseOrder.FinalPurchaseform.get('Freight').value || 0;
-    purchaseHeaderInsertObj['octriAmount'] = 0;
+    purchaseHeaderInsertObj['octriAmount'] = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value || 0;
     purchaseHeaderInsertObj['grandTotal'] = this.FinalNetAmount;
     purchaseHeaderInsertObj['isclosed'] = false;
     purchaseHeaderInsertObj['isVerified'] = false;
@@ -587,6 +609,15 @@ debugger
      });
    });
  
+  }
+  OnchekPurchaserateValidation() {
+    let mrp = this._PurchaseOrder.userFormGroup.get('MRP').value
+    if (mrp <= this.Rate) {
+      Swal.fire("Enter Purchase Rate Less Than MRP");
+      this._PurchaseOrder.userFormGroup.get('Rate').setValue('');
+
+    }
+    //this.disc.nativeElement.focus();
   }
  
   calculateTotalAmt() {
@@ -768,8 +799,9 @@ debugger
   @ViewChild('Remark') Remark: ElementRef;
   @ViewChild('Worrenty') Worrenty: ElementRef;
   @ViewChild('roundVal') roundVal: ElementRef;
-  @ViewChild('OtherTax') OtherTax: ElementRef;
+  @ViewChild('OctriAmount') OctriAmount: ElementRef;
   @ViewChild('TransportCharges') TransportCharges: ElementRef;
+  @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
   @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
   @ViewChild('HSNcode') HSNcode: ElementRef;
 
@@ -821,6 +853,12 @@ debugger
   public onEnterQty(event): void {
     if (event.which === 13) {
       //if(this.Qty) this.Qty.focus();
+      this.mrp.nativeElement.focus();
+    }
+  }
+  public onEnterMRP(event): void {
+    if (event.which === 13) {
+      //if(this.MRP) this.MRP.focus();
       this.rate.nativeElement.focus();
     }
   }
@@ -845,15 +883,10 @@ debugger
   public onEnterGST(event): void {
     if (event.which === 13) {
     //  if(this.GSTPer) this.GSTPer.focus();
-      this.mrp.nativeElement.focus();
-    }
-  }
-  public onEnterMRP(event): void {
-    if (event.which === 13) {
-      //if(this.MRP) this.MRP.focus();
       this.specification.nativeElement.focus();
     }
   }
+ 
   public onEnterSpecification(event): void {
    // debugger
     if (event.which === 13) {
@@ -865,6 +898,8 @@ debugger
       // }, 300);
     }
   }
+
+ 
   public onEnterHandlingcharge(event): void {
     if (event.which === 13) {
       this.TransportCharges.nativeElement.focus();
@@ -879,26 +914,26 @@ debugger
   }
   public onEnterFreight(event): void {
     if (event.which === 13) {
-      this.Remark.nativeElement.focus();
+     this.Remark.nativeElement.focus();
       // if (this.DeliveryDate) this.DeliveryDate.focus();
     }
   }
   public onEnterRemark(event): void {
     if (event.which === 13) {
-      this.Worrenty.nativeElement.focus();
+      this.OctriAmount.nativeElement.focus();
       // if (this.DeliveryDate) this.DeliveryDate.focus();
+    }
+  }
+  public onEnterOctriAmount(event): void {
+    if (event.which === 13) {
+      this.Worrenty.nativeElement.focus();
+     // this.Remark.nativeElement.focus();
     }
   }
   public onEnterWorrenty(event): void {
     if (event.which === 13) {
       //if (this.Warranty) this.Warranty.focus();
-      this.roundVal.nativeElement.focus();
-    }
-  }
-  public onEnterroundVal(event): void {
-    if (event.which === 13) {
-      this.roundVal.nativeElement.focus();
-     // this.Remark.nativeElement.focus();
+      this.OctriAmount.nativeElement.focus();
     }
   }
  
@@ -927,5 +962,32 @@ debugger
 
 function elseif(GST: any) {
   throw new Error('Function not implemented.');
+}
+export class LastThreeItemList {
+  ItemID: any;
+  ItemName: string;
+  BatchNo: number;
+  BatchExpDate: number;
+  ReceiveQty: number;
+  FreeQty: number;
+  MRP: number;
+  Rate: number;
+  TotalAmount: number;
+  ConversionFactor: number;
+  VatPercentage: number;
+
+  constructor(LastThreeItemList) {
+    {
+
+      this.ItemID = LastThreeItemList.ItemID || 0;
+      this.ItemName = LastThreeItemList.ItemName || "";
+      this.BatchNo = LastThreeItemList.BatchNo || 0;
+      this.BatchExpDate = LastThreeItemList.BatchExpDate || 0;
+      this.ReceiveQty = LastThreeItemList.ReceiveQty || 0;
+      this.FreeQty = LastThreeItemList.FreeQty || 0;
+      this.MRP = LastThreeItemList.MRP || 0;
+
+    }
+  }
 }
 
