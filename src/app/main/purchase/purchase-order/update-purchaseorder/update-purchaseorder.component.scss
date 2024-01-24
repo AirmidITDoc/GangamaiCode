@@ -151,13 +151,7 @@ app-update-purchaseorder {
     .table4{
       height: 180px !important;
       width: 38%;
-      .mat-column-ItemId{
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
-        text-align: left;
-        margin-right: 5px;
-      }
+     
       .mat-column-SupplierName {
         width: 140px;
         max-width: 140px;
@@ -197,6 +191,18 @@ app-update-purchaseorder {
         max-width: 60px;
         min-width: 60px;
         text-align: left;
+      }
+      .mat-column-discpercentage{
+        width: 60px;
+        max-width: 60px;
+        min-width: 60px;
+        text-align: left;
+      }
+      .mat-column-DiscAmount{
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left
       }
       .mat-column-VatPercentage {
         width: 50px;
