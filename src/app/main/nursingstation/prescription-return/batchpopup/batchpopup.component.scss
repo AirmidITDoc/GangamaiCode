@@ -1,0 +1,95 @@
+.sale-table{
+    height: 300px!important;
+}
+
+.highlight{
+    background: #e1f5fe;
+}
+
+.mat-table {
+    .mat-row {
+        cursor: pointer;
+        // &:hover {
+        //     background: white !important;
+        // }
+    }
+    .mat-header-cell {
+        color: white !important;
+    }
+}
+
+app-sale-popup{
+    .mat-header-row {
+    width:200;
+    min-width: 700px;
+    min-height: 30px;
+    background-color: blue;
+  }
+
+  .mat-row {
+    width: 100%;
+    //max-width: 1600px;
+    min-width: 700px;
+    min-height: 30px;
+   
+  }
+
+ 
+  .mat-column-BatchNo {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+
+  .mat-column-BatchExpDate {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  
+  .mat-column-BalanceQty {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+ 
+  .mat-column-MRP {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+
+  .mat-column-PurPrice {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+
+  .mat-column-LandedRate {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+
+  .mat-column-ConversionFactor {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-header-cell {
+    color: white !important;
+  }
+
+// .table-row:selected {
+
+//   background-color: rebeccapurple;
+// }
+
+}

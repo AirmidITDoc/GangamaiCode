@@ -2,7 +2,7 @@
     <!-- HEADER -->
 
     <!-- Start Sider  -->
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -13,6 +13,13 @@
         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
             Prescription Return List
         </span>
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:230% !important; ">
+            <button mat-raised-button (click)="OpenNewPrescriptionret()" matTooltip="close"
+                style="background-color: aliceblue;color: brown;margin-left:2% !important"> Prescription Return
+
+            </button>
+        </div>
+        
         </div>
 
     </mat-toolbar>

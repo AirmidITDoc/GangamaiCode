@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { Subscription } from 'rxjs';
 
@@ -54,6 +54,7 @@ export class RequestforlabtestComponent implements OnInit {
   
   constructor(public _RequestforlabtestService:RequestforlabtestService,
     public datePipe: DatePipe,
+  
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog
     
@@ -102,10 +103,10 @@ export class RequestforlabtestComponent implements OnInit {
     })
   }
 
-  onSelect(Parama){
-    console.log(Parama.RequestId);
-    this.getRequestdetList(Parama.RequestId)
-  }
+  // onSelect(Parama){
+  //   console.log(Parama.RequestId);
+  //   this.getRequestdetList(Parama.RequestId)
+  // }
   
   reportPrintObjList: RequestList[] = [];
   printTemplate: any;

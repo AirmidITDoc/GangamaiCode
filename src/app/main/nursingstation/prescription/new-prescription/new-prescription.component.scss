@@ -39,26 +39,29 @@ app-new-prescription{
     .table1{
     .mat-header-row {
         width: 100%;
-        max-width:730px;
-        min-width: 730px;    
+        max-width:700px;
+        min-width: 700px;    
         min-height: 25px;     
     }
     
     
     .mat-row {
         width: 100%;
-        max-width:730px;
-        min-width:730px; 
+        max-width:700px;
+        min-width:700px; 
         min-height: 25px;            
     }
     
     // PatientData
     .mat-column-ItemName {
-        width:300px;
-        max-width:300px;
-        min-width:300px;
+        width:350px;
+        max-width:350px;
+        min-width:350px;
         text-align:left;
         justify-content: left;
+        white-space: nowrap; 
+        text-overflow: ellipsis; 
+        overflow: hidden !important;
     }
     
     .mat-column-Qty {
@@ -69,21 +72,20 @@ app-new-prescription{
     }
     
     .mat-column-Remark {
-        width:180px;
-        max-width:180px;
-        min-width:180px;
+        width:150px;
+        max-width:150px;
+        min-width:150px;
         text-align:left;
         white-space: nowrap; 
-        overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
     
     }
     .mat-column-buttons {
         // color: white !important;
-        width:90px;
-        max-width:90px;
-        min-width:90px;
+        width:70px;
+        max-width:70px;
+        min-width:70px;
        
         text-align: left;
         justify-content:left; 
@@ -93,16 +95,16 @@ app-new-prescription{
 .table2{
     .mat-header-row {
         width: 100%;
-        max-width:200px;
-        min-width: 200px;    
+        max-width:190px;
+        min-width: 190px;    
         min-height: 25px;     
     }
     
     
     .mat-row {
         width: 100%;
-        max-width:200px;
-        min-width:200px; 
+        max-width:190px;
+        min-width:190px; 
         min-height: 25px;            
     }
     
@@ -123,6 +125,23 @@ app-new-prescription{
     }
     
 }
+
+.add-btn {
+    background-color: blue !important;
+    color: white !important;
+    font-size: 16px;
+  }
+
+  button:disabled {
+    color: white;
+    background-color: #7bd3ff  !important;
+     //background-color: #b7e6fd ;
+     border-radius: 16px;
+    //  border-radius: 16px;
+     // border: 1px solid #CCCCCC;
+     border: 1px solid  #b7e6fd ;
+     
+    }
 }
 
 

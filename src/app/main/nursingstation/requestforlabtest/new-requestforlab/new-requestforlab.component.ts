@@ -43,7 +43,7 @@ export class NewRequestforlabComponent implements OnInit {
  
   displayedVisitColumns: string[] = [
     'ServiceName',
-    'Price'
+    // 'Price'
    
   ]
 
@@ -61,13 +61,13 @@ export class NewRequestforlabComponent implements OnInit {
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private _matDialog: any;
+  
   vAdmissionID: any;
   
   
  
   constructor(private _FormBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<NewRequestforlabComponent>,
+    private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     public _RequestforlabtestService: RequestforlabtestService,
     private _loggedService: AuthenticationService) { }
 
@@ -105,6 +105,22 @@ export class NewRequestforlabComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
+  // getSearchList() {
+  //   var m_data = {
+  //     "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
+  //   }
+  //   if (this.searchFormGroup.get('RegId').value.length >= 1) {
+  //     this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+  //       this.V_SearchRegList=this.filteredOptions;
+  //       console.log(this.V_SearchRegList)
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
+  //   }
 
 
 
@@ -113,7 +129,7 @@ export class NewRequestforlabComponent implements OnInit {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
     if (this.searchFormGroup.get('RegID').value.length >= 1) {
-      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
+      this._RequestforlabtestService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData);
         this.PatientListfilteredOptions = resData;
@@ -150,8 +166,8 @@ export class NewRequestforlabComponent implements OnInit {
   getSelectedObj(obj) {
     
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.RegId = obj.RegID;
+    this.PatientName = obj.FirstName + '' + obj.FirstName + '' +obj.LastName;
+    this.RegId = obj.RegId;
     this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;
    // console.log( this.PatientName)
@@ -242,6 +258,8 @@ export class NewRequestforlabComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  
+
   OnSaveLabRequest(){
 
     this.isLoading = 'submit';
@@ -281,11 +299,11 @@ export class NewRequestforlabComponent implements OnInit {
       if (response) {
         Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success').then((result) => {
           if (result) {
-            this._matDialog.closeAll();
+            this.dialogRef.close();
           }
         });
       } else {
-        Swal.fire('Error !', 'Prescription Not Updated', 'error');
+        Swal.fire('Error !', 'Lab Request Not Saved', 'error');
       }
       this.isLoading = '';
     });

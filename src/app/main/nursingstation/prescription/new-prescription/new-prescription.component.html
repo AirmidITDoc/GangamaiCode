@@ -10,6 +10,10 @@
                 New Prescription
             </span>
 
+            <app-common-date [screenFrom]="screenFromString" style="right: 100px;"
+                (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date>
+
             <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -23,7 +27,7 @@
         <div class="content-card" style="margin-bottom: 10px;">
 
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-
+                
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="background-color: white;
                          padding: 5px 5px 5px 5px;" fxLayoutGap="4px">
 
@@ -32,6 +36,7 @@
                     </mat-radio-group>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <div class="redio-container">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                         <mat-form-field appearance="outline" style="width:90%;margin-left:20px; margin-right: 400px;"
                             disabled="isRegSearchDisabled">
                             <input type="text" name="RegID" formControlName="RegID"
@@ -56,32 +61,17 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <!-- 
-                        <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;" *ngIf="Regflag">
-                            <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) "
-                              matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
-                            <span matSuffix style="display: flex;">
-                              <mat-icon class="mat-icon-close"
-                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                              <mat-icon class="mat-icon-close"
-                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                              (optionSelected)='getSelectedObj($event.option.value)'>
-                              <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                                {{option.MobileNo}}
-                              </mat-option>
-                            </mat-autocomplete>
-                          
-                          </mat-form-field> -->
+                    
+                          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                            <!-- <h2 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
+                            </h2> -->
+                            <span
+                            style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
+                            Name :{{PatientName}} <span style="margin-left: 100px;">RegId :{{RegId}}</span><span
+                                style="margin-left: 100px;">Admission Id :{{vAdmissionID}}</span></span>
+                        </div>
+                        </mat-card>
                     </div>
-
-
-                    ` <app-common-date [screenFrom]="screenFromString" style="right: 100px;"
-                        (dateTimeEventEmitter)="getDateTime($event)">
-                    </app-common-date>
-
 
                 </div>
 
@@ -93,12 +83,12 @@
         <div class="content-card" style="margin-bottom: 10px;">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
-                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                <mat-card fxFlex.gt-sm="97%" fxFlex style="padding: 0 9px; height: fit-content;">
 
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
                         <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
                         </h3>
-                    </div>
+                    </div> -->
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                         <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" 
@@ -116,10 +106,10 @@
                                 RegId is required
                             </mat-error>
                         </div> -->
-                        <span
+                        <!-- <span
                             style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
-                            Name :{{PatientName}} <span style="margin-left: 10px;">RegId :{{RegId}}</span><span
-                                style="margin-left: 10px;">Admission Id :{{vAdmissionID}}</span></span>
+                            Name :{{PatientName}} <span style="margin-left: 100px;">RegId :{{RegId}}</span><span
+                                style="margin-left: 100px;">Admission Id :{{vAdmissionID}}</span></span> -->
                         <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" 
                         formControlName="AdmissionID" required>
                         <div class="flex-item" style="width: 150px;">
@@ -171,9 +161,9 @@
                             </mat-select>
                         </mat-form-field> -->
 
-
-
-                        <mat-form-field appearance="outline" fxFlex="20%" style="float: right;">
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                        <mat-form-field appearance="outline"  style="margin-right: 50px;margin-left: 30px;width: 45%;">
                             <mat-label>From Store Name</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Store" matInput
                                 formControlName="StoreId" [matAutocomplete]="autoStore" required>
@@ -204,7 +194,7 @@
                         </mat-form-field>&nbsp;&nbsp; -->
 
 
-                        <mat-form-field appearance="outline" fxFlex="20%" style="float: right;">
+                        <mat-form-field appearance="outline" style="margin-right: 50px;margin-left: 50px;width: 45%;">
                             <mat-label>Ward Name</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select WardName" matInput
                                 formControlName="WardName" [matAutocomplete]="autoward" required>
@@ -214,7 +204,8 @@
                                 <mat-icon class="mat-icon-close"
                                     (click)="myForm.get('WardName').setValue(''); isWardselected = false;">search</mat-icon>
                             </span>
-                            <mat-autocomplete #autoward="matAutocomplete" [displayWith]="getOptionTextWard">
+                            <mat-autocomplete #autoward="matAutocomplete" [displayWith]="getOptionTextWard"
+                                (optionSelected)='getSelectedObjward($event.option.value)'>
                                 <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option">
                                     {{option.RoomName}}
                                 </mat-option>
@@ -237,7 +228,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
                 <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="width: 75%; padding: 0 9px;margin-top: 10px; height: fit-content;">
+                    style="width: 70%; padding: 0 9px;margin-top: 10px; height: fit-content;">
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
@@ -275,7 +266,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="20%">
+                        <mat-form-field appearance="outline" fxFlex="15%">
                             <mat-label>Qty</mat-label>
                             <input type="text" [(ngModel)]="vQty" name="Qty" (keydown)="onEnterqty($event)"
                                 formControlName="Qty" matInput required #qty>
@@ -293,10 +284,16 @@
                             </mat-error>
                         </mat-form-field>&nbsp;&nbsp;
 
-                        <div>
-                            <button mat-raised-button style="width:90px; height: 35px; margin-top: 5px;color: white;"
-                                color="accent" (click)="onAdd()" [disabled]="!add" addbutton> Add
+
+
+                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!myForm.invalid"
+                            [matTooltipPosition]="'above'">
+                            <button mat-raised-button fxLayoutAlign="center center" #addbutton class="add-btn"
+                                [disabled]="!add" (click)="onAdd()">
+                                <mat-icon> add </mat-icon>
+                                Add
                             </button>
+                            <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                         </div>
                     </div>
                 </mat-card>
@@ -304,12 +301,12 @@
 
 
                 <!-- Table 1 -->
-                <div fxFlex.gt-sm="30%" fxFlex fxLayoutGap="10px"
+                <div fxFlex.gt-sm="27%" fxFlex fxLayoutGap="10px"
                     style=" padding-left: 10px; padding-top: 10px; height:90px">
-                    <mat-card style="width: 100%">
+                    <mat-card style="width:90%">
 
-                        <mat-table class="table2" matSort [dataSource]="" [@animateStagger]="{value:'50'}"
-                            style="overflow: auto;height:200px !important">
+                        <mat-table class="table2" matSort [dataSource]="dsPrePresList" [@animateStagger]="{value:'50'}"
+                            style="overflow: auto;height:350px !important">
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

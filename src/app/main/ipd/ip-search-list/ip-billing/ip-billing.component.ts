@@ -23,6 +23,7 @@ import { PrintPreviewService } from 'app/main/shared/services/print-preview.serv
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
 
 @Component({
@@ -774,7 +775,8 @@ export class IPBillingComponent implements OnInit {
 
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
-      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      // IPAdvancePaymentComponent
+      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
         {
           maxWidth: "85vw",
           height: '740px',
