@@ -108,12 +108,13 @@ export class GoodReceiptnoteComponent implements OnInit {
   ];
 
   displayedColumns3 = [
-    'ItemId',
     'SupplierName',
     'ReceiveQty',
     'FreeQty',
     'MRP',
     'Rate',
+    'discpercentage',
+   // 'DiscAmount',
     'VatPercentage'
   ]
 
@@ -616,7 +617,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       for (let i = 0; i < 10; i++) {
         this.reportPrintObj = data[0] as GRNList;
         this.TotalAmt += data[i].TotalAmount
-        this.TotalQty += data[i].TotalQty
+        this.TotalQty += data[i].ReceiveQty
         this.TotalRate += data[i].Rate
         this.TOtalDiscPer += data[i].TotalDiscAmount
         this.TotalGSTAmt += data[i].TotalVATAmount
@@ -1148,6 +1149,12 @@ export class GRNList {
   ReceivedBy: any;
   IsClosed: any;
   GSTNo: any;
+  Remark:any;
+  Mobile:any;
+  Address:any;
+  Email:any;
+  Phone:any;
+  PONo:any;
 
   /**
    * Constructor
@@ -1172,6 +1179,7 @@ export class GRNList {
       this.ReceivedBy = GRNList.ReceivedBy || 0;
       this.IsClosed = GRNList.IsClosed || 0;
       this.GSTNo = GRNList.GSTNo || 0;
+      this.Remark = GRNList.Remark || "";
     }
   }
 }

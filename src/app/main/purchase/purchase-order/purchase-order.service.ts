@@ -77,6 +77,15 @@ export class PurchaseOrderService {
       MRP: [''],
       Specification: [''],
       purchaseId: [''],
+      Status3: [''],
+      SupplierId: [''],
+      SupplierID:'',
+      Address:'',
+      Mobile:'',
+      Contact:'',
+      GSTNo:'',
+      Email:''
+      
     });
 
   }

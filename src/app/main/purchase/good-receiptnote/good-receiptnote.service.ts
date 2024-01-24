@@ -96,9 +96,9 @@ export class GoodReceiptnoteService {
       InvoiceNo:[''],
       DateOfInvoice:[new Date()],
       GateEntryNo:[''],
-      GRNType:['true'],
+      GRNType:['1'],
       GSTType:[''],
-      PaymentType:['true'],
+      PaymentType:['1'],
       PaymentDate:[new Date()]
       
       

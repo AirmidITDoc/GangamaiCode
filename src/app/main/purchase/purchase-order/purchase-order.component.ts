@@ -519,6 +519,8 @@ export class ItemNameList {
   roundVal: any;
   DisAmount:any;
   Mobile:any
+  taxAmount:any;
+  GSTAmt:any;
   /**
    * Constructor
    *
@@ -568,6 +570,7 @@ export class ItemNameList {
       this.HandlingCharges = ItemNameList.HandlingCharges || 0;
       this.TransportChanges = ItemNameList.TransportChanges || 0;
       this.DisAmount = ItemNameList.DisAmount || 0;
+      this.taxAmount = ItemNameList.taxAmount || 0;
     }
   }
 }
@@ -633,7 +636,8 @@ export class PurchaseOrder {
   VatPer: any;
   Remarks:any;
   Mobile:any;
-
+  PaymentTermId:any;
+  ModeOfPayment: any;
 
 
 

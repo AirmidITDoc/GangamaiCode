@@ -504,79 +504,85 @@
                                     </div>
                                     <div>
                                         <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
-                                            style="overflow:auto;">
-                                            <ng-container matColumnDef="ItemId">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemId</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemId}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    style="overflow:auto;width:100%;">
+                                    <ng-container matColumnDef="SupplierName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SupplierName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SupplierName}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="SupplierName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    SupplierName</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.SupplierName}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    <ng-container matColumnDef="ReceiveQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            R_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ReceiveQty}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="ReceiveQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    R_Qty</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ReceiveQty}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    <ng-container matColumnDef="FreeQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            F_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.FreeQty}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="FreeQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    F_Qty</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.FreeQty}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    <ng-container matColumnDef="MRP">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            MRP</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.MRP}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="MRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    MRP</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    <ng-container matColumnDef="Rate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Rate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Rate}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="Rate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Rate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate}}
-                                                </mat-cell>
-                                            </ng-container>
+                                    <ng-container matColumnDef="discpercentage">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Disc</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.discpercentage}}%
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <ng-container matColumnDef="VatPercentage">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Vat</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.VatPercentage}}%
-                                                </mat-cell>
-                                            </ng-container>
+                                    <!-- <ng-container matColumnDef="DiscAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            DiscAmt</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.DiscAmount}}
+                                        </mat-cell>
+                                    </ng-container> -->
 
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    no data found...
-                                                </mat-footer-cell>
-                                            </ng-container>
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns3; sticky: true">
-                                            </mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                appHighlight></mat-row>
+                                    <ng-container matColumnDef="VatPercentage">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Vat</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.VatPercentage}}%
+                                        </mat-cell>
+                                    </ng-container>
 
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
-                                            </mat-footer-row>
-                                        </mat-table>
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns3; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
 
                                         <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                             showFirstLastButtons>
@@ -607,27 +613,27 @@
 <div hidden class="bill-template-wrapper" style="font-size: 30.25%;" #GRNListTemplate>
 
     <div style=" align-items: center; margin-bottom: 10px;text-align: center; ">
-        <div style="border: 1px solid black;width: 1000px;height: 50px; background-color: red;border-top-right-radius: 110px;
+        <div style="border: 1px solid black;width: 1000px;height: 50px;;border-top-right-radius: 110px;
         margin-top: 0px;border-top-left-radius: 110px;padding: 6px ;">
             <h2
-                style="text-transform: uppercase;font-weight: 1000;margin:0;text-align: center;color: white;padding-top: 6px;">
+                style="text-transform: uppercase;font-weight: 1000;margin:0;text-align: center;color: rgb(248, 197, 57);padding-top: 6px;">
                 jnanayogi shri siddeshwar
                 super speciality hospital
             </h2>
         </div>
         <div style="display: flex;">
             <div
-                style="border: 1px solid transparent;width: 700px;height: 50px; background-color: black;border-bottom-right-radius: 110px;">
+                style="border: 1px solid black;width: 700px;height: 50px;border-bottom-right-radius: 110px;">
                 <span
-                    style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;color: white;">(A
+                    style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;color: black;">(A
                     Unit of Shri
                     Siddeshwar Loka Kalyana Charitable
                     Trust)</span><br>
-                <span style="font-size:11px;font-weight: 500;text-align: center;color: white;">Survey No.10/4,
+                <span style="font-size:11px;font-weight: 500;text-align: center;color: black;">Survey No.10/4,
                     Near
                     S-Hyper Mart, Vijayapur
                     586 101 </span><br>
-                <span style="font-size: 11px;font-weight: 500;text-align: center;color: white;">Call
+                <span style="font-size: 11px;font-weight: 500;text-align: center;color: black;">Call
                     :-08352-249399 |
                     info@ jsshospitals.com
                     | www.jsshospitals.com
@@ -637,43 +643,59 @@
             <span style="font-size: 20px; text-transform: uppercase;font-weight: 500;margin-top: 20px;margin-left: 60px;
                 color:black">Good receipt note </span>
         </div>
-        <hr>
+        
 
     </div>
-    <table>
+    <table style="font-size:11px;">
         <tr>
-            <td> <span style="font-weight: 500;margin-right: 70px;">GRN No.</span>
-                <span style="font-size:11px; ">{{reportPrintObjList[0]?.GrnNumber}} </span>
+            <td>  <span style="font-weight: 500;margin-right: 20px;">Supplier Name</span>
             </td>
-            <td><span style="font-weight: 500;margin-right:34px;margin-left: 300px;">GRN Date</span>
-                <span style="font-size:11px;"> {{reportPrintObjList[0]?.GRNDate | date: 'dd/MM/yyyy'}} </span>
+           
+            <td colspan="4"> <span>{{reportPrintObjList[0]?.SupplierName}}</span>
+            </td>
+            
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">GRN Date</span> 
+            </td>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.GRNDate | date: 'dd/MM/yyyy'}} </span>
             </td>
         </tr>
 
         <tr>
-            <td><span style="font-weight: 500;margin-right: 25px;">Supplier Name</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.SupplierName}}</span>
+            <td>  <span style="font-weight: 500;margin-right: 20px;">Address</span>
             </td>
-            <td><span style="font-weight: 500;margin-right: 73px;margin-left: 300px;">Fax</span>
-                <span style="font-size:11px;"> </span>
+           
+            <td colspan="4"> <span>{{reportPrintObjList[0]?.Address}}</span>
+            </td>
+            
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">GRN No.</span> 
+            </td>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.GrnNumber}} </span>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>  <span style="font-weight: 500;margin-right: 20px;">Email Id</span>
+            </td>
+            
+            <td colspan="4"> <span>{{reportPrintObjList[0]?.Email}}</span>
+            </td>
+            
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">PONo</span> 
+            </td>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.PONo}} </span>
             </td>
         </tr>
 
         <tr>
-            <td><span style="font-weight: 500;margin-right: 75px;">Address</span>
-                <span style="font-size:11px;"> </span>
+            <td>  <span style="font-weight: 500;margin-right: 20px;">Mobile No.</span>
             </td>
-            <td><span style="font-weight: 500;margin-right: 38px;margin-left: 300px;">Email Id</span>
-                <span style="font-size:11px;"> </span>
+            <td colspan="4"> <span>{{reportPrintObjList[0]?.Mobile}}</span>
             </td>
-        </tr>
-
-        <tr>
-            <td><span style="font-weight: 500;margin-right: 75px;">GST No.</span>
-                <span style="font-size:11px;">{{reportPrintObjList[0]?.GSTNo}}</span>'
+            
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">Phone No</span> 
             </td>
-            <td><span style="font-weight: 500;margin-right: 25px;margin-left: 300px;">Phone No</span>
-                <span style="font-size:11px;"> </span>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.Phone}} </span>
             </td>
         </tr>
     </table>
@@ -686,33 +708,33 @@
         <tr style="font-size:15px;">
 
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px; 
-                 background-color: red; border-top-left-radius: 20px;color: white;">
+                 border-top-left-radius: 20px;color: black;">
                 Sr.No</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;
-                background-color: red;color: white;">
+                color: black;">
 
                 Item Name</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
+                color: black;">
                 Unit</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
+                color: black;">
                 Qty</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
+                color: black;">
                 Rate</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
+                color: black;">
                 Total Amount</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
-                Disc</td>
+                color: black;">
+                Disc Amount</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
-                GST </td>
+                color: black;">
+                GST Amount</td>
 
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-               background-color: red; border-top-right-radius: 20px;color: white;">
+               border-top-right-radius: 20px;color: black;">
                 Net Amount</td>
         </tr>
         <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:11px;">
@@ -723,7 +745,7 @@
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.UnitofMeasurementName}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.TotalQty}}</td>
+            padding: 15px;height: 20px;">{{item?.ReceiveQty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.Rate.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
@@ -740,20 +762,20 @@
         <tr style="height:20px;">
 
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;background-color: red;color: white;font-weight:bold;">Total</td>
+            padding: 15px;color: black;font-weight:bold;">Total</td>
 
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalQty}}</td>
+            padding: 15px;height: 20px;color: black;">{{TotalQty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalRate.toFixed(2)}}</td>
+            padding: 15px;height: 20px;color: black;">{{TotalRate.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalAmt.toFixed(2)}}</td>
+            padding: 15px;height: 20px;color: black;">{{TotalAmt.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TOtalDiscPer.toFixed(2)}}</td>
+            padding: 15px;height: 20px;color: black;">{{TOtalDiscPer.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalGSTAmt.toFixed(2)}}</td>
+            padding: 15px;height: 20px;color: black;">{{TotalGSTAmt.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalNetAmt.toFixed(2)}}</td>
+            padding: 15px;height: 20px;color: black;">{{TotalNetAmt.toFixed(2)}}</td>
 
         </tr>
         <tr style="height: 5px;">
@@ -782,21 +804,22 @@
             </td>
 
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;">Sub Total</td>
+            padding: 15px;text-align: left;">Total Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;text-align: right;">{{TotalNetAmt.toFixed(2)}}</td>
+            padding: 15px;height: 20px;text-align: right;">{{TotalAmt.toFixed(2)}}</td>
         </tr>
         <tr>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">Discount</td>
+             padding: 15px;text-align: left;">Discount Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;height: 20px;text-align: right;">{{TOtalDiscPer.toFixed(2)}}</td>
         </tr>
         <tr>
             <td colspan="5" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;">Remark</td>
+            padding: 15px;text-align: left;font-weight: 500;">Remark:-
+             {{reportPrintObjList[0]?.Remark}}</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">GST</td>
+             padding: 15px;text-align: left;">GST Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt.toFixed(2)}}</td>
         </tr>
@@ -805,9 +828,9 @@
             <td colspan="5" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
-             padding: 15px;background-color: red;color: white; ">Total</td>
+             padding: 15px;color: black; ">Grand Total Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
-             padding: 15px;height: 20px;background-color: red;color: white;border-bottom-right-radius: 20px;">
+             padding: 15px;height: 20px;color: black;border-bottom-right-radius: 20px;">
                 {{TotalNetAmt.toFixed(2)}}</td>
         </tr>
 
@@ -820,9 +843,9 @@
     </div><br>
 
 
-    <div style="border: 1px solid black;width: 1000px;height: 30px; background-color: red;border-bottom-right-radius: 110px;
+    <div style="border: 1px solid black;width: 1000px;height: 30px;border-bottom-right-radius: 110px;
     margin-top: 0px;border-bottom-left-radius: 110px;padding: 6px ;">
-        <div style="font-style: italic; opacity:1;text-align: center;font-size: 15px; margin-top: 8px; color: white;">
+        <div style="font-style: italic; opacity:1;text-align: center;font-size: 15px; margin-top: 8px; color: black;">
             This is Computer generated invoice hence doesn’t require signature
         </div>
     </div>

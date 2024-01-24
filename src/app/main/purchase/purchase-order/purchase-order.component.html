@@ -648,29 +648,9 @@
 
         </tr>
         <tr style="height: 5px;">
-            <td colspan="5" rowspan="2" style="border: 1px solid gray;
-           padding: 15px;text-align: left;vertical-align: top;">
-                <div style="font-weight: 400;margin-right: 20px;">Terms & Conditions </div>
-                <ul style="margin: 5px 0 0 0; font-size: 11px; padding-left: 17px; font-weight: 400;">
-                    <li>
-                        Exchange NOT accepted after 72 hrs. of Purchase, Bill is
-                        required for Exchange
-                    </li>
-                    <li>
-                        Insulin’s & Vaccines will not be taken back. Fridge Items
-                        will not be taken Back
-                    </li>
-                    <li>
-                        All disputes are subject to Vijayapura jurisdiction only
-                    </li>
-                    <li>
-                        Please check the medicines before leaving the medical
-                    </li>
-                    <li>
-                        Consult your Doctor before consuming the medicines.
-                    </li>
-                </ul>
-            </td>
+            <td colspan="5" style="border: 1px solid gray;
+           padding: 15px;text-align: left;vertical-align: top;">Terms Of Payment:-
+             <span>{{reportPrintObjList[0]?.PaymentTermId}}</span></td>
 
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;">Total Amount</td>
@@ -679,6 +659,9 @@
         </tr>
         <tr>
             <!-- <td colspan="7"></td> -->
+            <td colspan="5" style="border: 1px solid gray;
+            padding: 15px;text-align: left;vertical-align: top;">Payment Mode:-
+              <span>{{reportPrintObjList[0]?.ModeOfPayment}}</span></td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;">Discount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
@@ -687,7 +670,7 @@
         <tr>
             <td colspan="5" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;font-weight: 500;">Remark:- 
-            {{reportPrintObjList[0]?.Remarks}}</td>
+            <span>{{reportPrintObjList[0]?.Remarks}}</span></td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;">GST</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;

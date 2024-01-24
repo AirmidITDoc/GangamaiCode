@@ -124,12 +124,13 @@ export class UpdateGRNComponent implements OnInit {
   ];
 
   displayedColumns3 = [
-    'ItemId',
     'SupplierName',
     'ReceiveQty',
     'FreeQty',
     'MRP',
     'Rate',
+    'discpercentage',
+    'DiscAmount',
     'VatPercentage'
   ]
 
