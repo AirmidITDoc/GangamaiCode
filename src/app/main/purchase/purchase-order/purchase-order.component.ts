@@ -19,7 +19,8 @@ import { MatSelect } from '@angular/material/select';
 import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
 import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr'; 
+import { EmailComponent } from './email/email.component';
 
 
 
@@ -257,6 +258,7 @@ export class PurchaseOrderComponent implements OnInit {
       this.toastr.success('Record Verified Successfully.', 'Verified !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
+      this.getPurchaseOrderList();
     });
   }
 
@@ -329,16 +331,16 @@ export class PurchaseOrderComponent implements OnInit {
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
-  gePharStoreList() {
-    var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
-    }
-    this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
-      this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value;
-    });
-  }
+  // gePharStoreList() {
+  //   var vdata = {
+  //     Id: this.accountService.currentUserValue.user.storeId
+  //   }
+  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
+  //     this.StoreList = data;
+  //     this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
+  //     this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value;
+  //   });
+  // }
  
  
 
@@ -356,7 +358,20 @@ export class PurchaseOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
-
+    this.getPurchaseOrderList();
+  }
+  POEmail() {
+    this.chkNewGRN = 1;
+    const dialogRef = this._matDialog.open(EmailComponent,
+      {
+        maxWidth: "100%",
+        height: '55%',
+        width: '55%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+    this.getPurchaseOrderList();
   }
 
   onEdit(contact) {
@@ -377,6 +392,7 @@ export class PurchaseOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
+    this.getPurchaseOrderList();
   }
 
 

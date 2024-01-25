@@ -10,21 +10,21 @@ export class GoodReceiptnoteService {
   GRNFirstForm:FormGroup;
   userFormGroup: FormGroup;
   GRNSearchGroup :FormGroup;
-  GRNForm:FormGroup;
   GRNFinalForm:FormGroup;
-  
+  POFrom:FormGroup;
+  GRNEmailFrom : FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.GRNStoreForm = this.createStoreFrom();
-    this.GRNFirstForm=this.getGRNfirstForm();
+   // this.GRNFirstForm=this.getGRNfirstForm();
     this.userFormGroup = this.getGRNForm();
     this.GRNSearchGroup= this.GRNSearchFrom();  
     this.GRNFinalForm=this.getGrnFinalformForm();
-   
-
+    this.POFrom = this.CreatePOFrom();
+    this.GRNEmailFrom = this.createGRNEmailFrom();
 
   }
   createStoreFrom(){
@@ -32,20 +32,20 @@ export class GoodReceiptnoteService {
       StoreId:[''],
     })
   }
-  getGRNfirstForm() {
-    return this._formBuilder.group({
-      SupplierId:[''],
-      Contact:'',
-      Mobile:'',
-      InvoiceNo:[''],
-      DateOfInvoice:[new Date()],
-      GateEntryNo:[''],
-      GRNType:['true'],
-      GSTType:[''],
-      PaymentType:['true'],
-      PaymentDate:[new Date()]
- });
-  }
+//   getGRNfirstForm() {
+//     return this._formBuilder.group({
+//       SupplierId:[''],
+//       Contact:'',
+//       Mobile:'',
+//       InvoiceNo:[''],
+//       DateOfInvoice:[new Date()],
+//       GateEntryNo:[''],
+//       GRNType:['true'],
+//       GSTType:[''],
+//       PaymentType:['true'],
+//       PaymentDate:[new Date()]
+//  });
+//   }
 
   GRNSearchFrom() {
     return this._formBuilder.group({
@@ -63,9 +63,6 @@ export class GoodReceiptnoteService {
       
     });
   }
-
-
-  
   getGRNForm() {
     return this._formBuilder.group({
       ItemName:[''],
@@ -100,8 +97,6 @@ export class GoodReceiptnoteService {
       GSTType:[''],
       PaymentType:['1'],
       PaymentDate:[new Date()]
-      
-      
     });
   }
 
@@ -116,30 +111,40 @@ export class GoodReceiptnoteService {
       TotalAmt:[''],
       VatAmount:[''],
       NetPayamt:[''],
-      OtherCharges:[''],
+      OtherCharge:[''],
       RoundingAmt:[''],
-      // TotalAmount:[''],
-      // Disc:[''],
-      // DisAmount:[''],
-      // GST:[''],
-      // GSTAmount:[''],
-      // CGST:[''],
-      // CGSTAmount:[''],
-      // SGST:[''],
-      // SGSTAmount:[''],
-      // IGST:[''],
-      // IGSTAmount:[''],
-      // NetAmount:[''],
       EwayBillNo:[""],
       EwalBillDate:[new Date()]
       
     });
+  }
+  CreatePOFrom(){
+    return this._formBuilder.group({
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      StoreId:[''],
+      SupplierId:[''],
+      Status:['0'],
+      Verify:0,
+    })
+  }
+  createGRNEmailFrom(){
+    return this._formBuilder.group({
+      FromMailId: [''],
+      Password: [''],
+      ToMailId: [''],
+      Subject: [''],
+      Body: [''],
+    })
   }
   public getLastThreeItemInfo(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LastThreeItemInfo", Param);
   }
   public getGSTtypeList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
+  }
+  public getDirectPOList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DirectPOList_by_Name",Param);
   }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);

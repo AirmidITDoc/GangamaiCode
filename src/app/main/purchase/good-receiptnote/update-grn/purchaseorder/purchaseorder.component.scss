@@ -1,0 +1,45 @@
+.table1 {
+    height: 600px !important;
+  //  width: 100%;
+
+  
+.mat-column-PurchaseDate{
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }  
+  .mat-column-PurchaseNo{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+  }  
+ .mat-column-SupplierName {
+  width: 220px;
+  max-width: 220px;
+  min-width: 220px;
+  text-align: left;
+  justify-content: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  display: inline-flex;
+  display: inline;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+.mat-column-TotalAmount {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+}
+.mat-column-GrandTotal {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+}  
+  }

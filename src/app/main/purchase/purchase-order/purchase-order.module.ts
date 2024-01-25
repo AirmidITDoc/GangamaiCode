@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PurchaseOrderComponent } from './purchase-order.component';
 import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
+import { EmailComponent } from './email/email.component';
 
 
 
@@ -50,7 +51,7 @@ const routes: Routes = [
   declarations: [
     PurchaseOrderComponent,
     UpdatePurchaseorderComponent,
-    
+    EmailComponent
   ],
   imports: [
     CommonModule,

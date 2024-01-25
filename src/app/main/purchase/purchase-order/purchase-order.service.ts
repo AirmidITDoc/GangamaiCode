@@ -9,11 +9,10 @@ export class PurchaseOrderService {
 
   userFormGroup: FormGroup;
   PurchaseSearchGroup: FormGroup;
-  PurchaseOrderForm: FormGroup;
   FinalPurchaseform: FormGroup;
-  PurchaseStoreform: FormGroup;
   StoreFormGroup:FormGroup;
-  PurchaseOrderHeader:FormGroup;
+  POEmailFrom : FormGroup;
+  //PurchaseOrderHeader:FormGroup;
   
   constructor(
     public _httpClient: HttpClient,
@@ -23,7 +22,8 @@ export class PurchaseOrderService {
     this.PurchaseSearchGroup = this.PurchaseSearchFrom();
     this.FinalPurchaseform = this.getPurchaseOrderFinalForm();
      this.StoreFormGroup=this.createStoreFrom();
-     this.PurchaseOrderHeader=this.createHeaderFrom();
+     this.POEmailFrom = this.createPOEmailFrom();
+    // this.PurchaseOrderHeader=this.createHeaderFrom();
   }
 
   PurchaseSearchFrom() {
@@ -34,10 +34,7 @@ export class PurchaseOrderService {
       SupplierId: '',
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      Status:['0']
-
-
-      // ItemName:'',
+      Status:['0'],
     });
   }
 
@@ -46,18 +43,18 @@ export class PurchaseOrderService {
       StoreId:['']
     });
   }
-  createHeaderFrom(){
-    return this._formBuilder.group({
-      Status3: [''],
-      SupplierId: [''],
-      SupplierID:'',
-      Address:'',
-      Mobile:'',
-      Contact:'',
-      GSTNo:'',
-      Email:''
-    })
-  }
+  // createHeaderFrom(){
+  //   return this._formBuilder.group({
+  //     Status3: [''],
+  //     SupplierId: [''],
+  //     SupplierID:'',
+  //     Address:'',
+  //     Mobile:'',
+  //     Contact:'',
+  //     GSTNo:'',
+  //     Email:''
+  //   })
+  // }
 
   getPurchaseOrderForm() {
     return this._formBuilder.group({
@@ -104,7 +101,15 @@ export class PurchaseOrderService {
       PaymentTerm: [''],
       
     });
-
+  }
+  createPOEmailFrom(){
+    return this._formBuilder.group({
+      FromMailId: [''],
+      Password: [''],
+      ToMailId: [''],
+      Subject: [''],
+      Body: [''],
+    })
   }
 
   PurchaseOrder() {

@@ -20,6 +20,7 @@ import { FormControl } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -194,14 +195,15 @@ export class UpdateGRNComponent implements OnInit {
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UpdateGRNComponent>,
+    public _dialogRef: MatDialogRef<PurchaseorderComponent>,
     private accountService: AuthenticationService,
     private snackBarService: SnackBarService,
     public toastr: ToastrService,
 
   ) { }
   @ViewChild('picker') datePickerElement = MatDatepicker;
-  Cahchecked:any;
-  Grntypechecked:any=0;
+  Cahchecked:any=1;
+  Grntypechecked:any=1;
   ngOnInit(): void {
 
     if (this.data.chkNewGRN == 2) {
@@ -211,8 +213,8 @@ export class UpdateGRNComponent implements OnInit {
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-      console.log(this.registerObj.Cash_CreditType);
-      console.log(this.registerObj.GRNType);
+      console.log(this.registerObj);
+    //  console.log(this.registerObj);
 debugger
       if(this.registerObj.Cash_CreditType)
       this.Cahchecked=1;
@@ -567,15 +569,19 @@ FinalTotalQty:any;
   }
 
   getTotalAmt(element) {
+  
     let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+   
     this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-    this.vFinalNetAmount= Math.round(FinalRoundAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
-    FinalRoundAmt= ((parseInt(this.vOtherCharges)) + FinalRoundAmt);
-    this.vDiffNetRoundAmt= ((FinalRoundAmt) - parseFloat(this.vFinalNetAmount)).toFixed(2);
+    let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value ;
+    let FinalnetAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(Othercharge));
+    this.vFinalNetAmount= Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
+
+    this.vDiffNetRoundAmt= (parseFloat(this.vFinalNetAmount) - (FinalnetAmt) ).toFixed(2);
   
-      let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharges").value ;
+      //let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharges").value ;
     
      
     return this.vTotalFinalAmount;
@@ -785,7 +791,7 @@ FinalTotalQty:any;
     grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value  || 0;
     grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-    grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
+    grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
     grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
     grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
     grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
@@ -908,7 +914,7 @@ FinalTotalQty:any;
       updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-    updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharges').value || 0;
+    updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
     updateGRNHeaderObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
     updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
     updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
@@ -1030,7 +1036,7 @@ FinalTotalQty:any;
   @ViewChild('CreditAmount') CreditAmount: ElementRef;
   @ViewChild('DiscAmount') DiscAmount: ElementRef;
   @ViewChild('NetPayamt') NetPayamt: ElementRef;
-  @ViewChild('OtherCharges') OtherCharges: ElementRef;
+  @ViewChild('OtherCharge') OtherCharge: ElementRef;
   @ViewChild('RoundingAmt') RoundingAmt: ElementRef;
   @ViewChild('EwayBillNo') EwayBillNo: ElementRef;
 
@@ -1179,18 +1185,23 @@ FinalTotalQty:any;
 
   public onEnterCreditAmount(event): void {
     if (event.which === 13) {
+      this.OtherCharge.nativeElement.focus();
+    }
+  }
+  public onEnterOtherCharges(event): void {
+    if (event.which === 13) {
       this.EwayBillNo.nativeElement.focus();
     }
   }
   public onEnterEwayBillNo(event): void {
     if (event.which === 13) {
-      this.OtherCharges.nativeElement.focus();
+     // this.OtherCharge.nativeElement.focus();
     }
   }
 
   public onEnterNetPayamt(event): void {
     if (event.which === 13) {
-      this.OtherCharges.nativeElement.focus();
+      this.OtherCharge.nativeElement.focus();
     }
   }
   public onEnterDiscAmount(event): void {
@@ -1203,17 +1214,6 @@ FinalTotalQty:any;
       this.NetPayamt.nativeElement.focus();
     }
   }
-
-
- 
-
-  public onEnterOtherCharges(event): void {
-    if (event.which === 13) {
-      this.RoundingAmt.nativeElement.focus();
-    }
-  }
-
-
   getLastThreeItemInfo() {
     var vdata = {
       'ItemId': this._GRNList.userFormGroup.get('ItemName').value.ItemID || 0,
@@ -1225,9 +1225,7 @@ FinalTotalQty:any;
   }
 
   onEdit(contact) {
-
     // console.log(contact)
-
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -1279,6 +1277,18 @@ FinalTotalQty:any;
   }
 
   onScroll() {
+  }
+  PurchaseOrderList() {
+    const _dialogRef = this._matDialog.open(PurchaseorderComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+      _dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+    this.dialogRef.close();
   }
 }
 export class LastThreeItemList {

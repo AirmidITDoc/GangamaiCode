@@ -105,7 +105,7 @@
                                             <mat-radio-group [(ngModel)]="Grntypechecked" formControlName="GRNType">
                                                 <mat-radio-button [value]="1">Direct
                                                     Purchase</mat-radio-button>
-                                                <mat-radio-button [value]="0"> Purchase Orders</mat-radio-button>
+                                                <mat-radio-button [value]="0" (click)="PurchaseOrderList()"> Purchase Orders</mat-radio-button>
                                             </mat-radio-group>
 
 
@@ -738,14 +738,14 @@
                                             currency:'INR' }}</span>
                                     </div>
                                     <div fxLayout="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Remark</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
                                                 type="text" [(ngModel)]="registerObj.Remark"
                                                 (keydown)="onEnterRemark($event)" (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Received By</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="ReceivedBy"
                                                 type="text" #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
@@ -753,7 +753,7 @@
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Debit Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="DebitAmount"
                                                 #DebitAmount [(ngModel)]="registerObj.DebitNote" type="number"
@@ -761,7 +761,7 @@
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Credit Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="CreditAmount"
                                                 #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
@@ -769,14 +769,14 @@
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Other Charges</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="OtherCharges"
-                                                #OtherCharges [(ngModel)]="registerObj.OtherCharge" [(ngModel)]="vOtherCharges"
+                                            <input matInput placeholder="Placeholder" formControlName="OtherCharge"
+                                                #OtherCharge [(ngModel)]="registerObj.OtherCharge"
                                                 (keydown)="onEnterOtherCharges($event)" >
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="14%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label> Eway BillNo</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="EwayBillNo"
                                                 [(ngModel)]="registerObj.EwayBillNo"  (keydown)="onEnterEwayBillNo($event)" #EwayBillNo>
@@ -827,9 +827,9 @@
                                         <mat-form-field appearance="outline" fxFlex="14%">
                                             <mat-label>Rounding Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                                #RoundingAmt [(ngModel)]="vDiffNetRoundAmt"
+                                                #RoundingAmt [(ngModel)]="vDiffNetRoundAmt" readonly
                                                 [(ngModel)]="registerObj.RoundingAmt"
-                                                (keydown.enter)="focusNextService()">
+                                               >
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                                         <div matTooltip="Select All Value to enable this button!!">

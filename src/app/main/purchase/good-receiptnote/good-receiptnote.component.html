@@ -296,7 +296,7 @@
                                                         <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">
                                                             verified_user</mat-icon>
                                                     </button>
-                                                    <button mat-icon-button>
+                                                    <button mat-icon-button (click)="GRNEmail()">
                                                         <mat-icon *ngIf="row.IsVerified==0" [disabled]="row.disabled"
                                                             class="disabled-icon" title="Email Menu">mail</mat-icon>
                                                         <mat-icon *ngIf="row.IsVerified==1"
@@ -337,7 +337,7 @@
                                                 [ngClass]="{'hide':!(dsGRNList!=null && dsGRNList.data.length==0)}"></mat-footer-row>
                                         </mat-table>
 
-                                        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                        <mat-paginator [pageSizeOptions]="[15, 24, 35, 100]" [pageSize]="15"
                                             showFirstLastButtons>
                                         </mat-paginator>
                                     </div>

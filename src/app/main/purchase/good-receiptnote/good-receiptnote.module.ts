@@ -36,7 +36,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { GoodReceiptnoteComponent } from '../good-receiptnote/good-receiptnote.component';
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
-
+import { PurchaseorderComponent } from './update-grn/purchaseorder/purchaseorder.component';
+import { GrnemailComponent } from './grnemail/grnemail.component';
 const routes: Routes = [
   { 
       path: '**', 
@@ -48,8 +49,9 @@ const routes: Routes = [
   declarations: [
     GoodReceiptnoteComponent,
     UpdateGRNComponent,
-    
-    
+    PurchaseorderComponent,
+    GrnemailComponent,
+  
   ],
   imports: [
     CommonModule,
