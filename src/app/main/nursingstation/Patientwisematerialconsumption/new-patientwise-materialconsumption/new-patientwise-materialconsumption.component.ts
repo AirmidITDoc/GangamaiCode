@@ -489,7 +489,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
    
     // submissionObj['insertIP_MedicalRecord'] = insertIP_MedicalRecordArray;
 
-    this.dataSource.data.forEach((element) => {
+    // this.dataSource.data.forEach((element) => {
       let insertIP_Prescription = {};
       materialconsumptionInsert['materialConsumptionId'] = 0;
       materialconsumptionInsert['fromStoreId'] =this.accountService.currentUserValue.user.storeId;
@@ -502,9 +502,9 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
       materialconsumptionInsert['isAddBy'] = this.accountService.currentUserValue.user.id;
      debugger
      
-     materialconsumptionInsertarray.push(materialconsumptionInsert);
-    });
-    submissionObj['materialconsumptionInsert'] = materialconsumptionInsertarray;
+    //  materialconsumptionInsertarray.push(materialconsumptionInsert);
+    // });
+    submissionObj['materialconsumptionInsert'] = materialconsumptionInsert;
     debugger
     console.log(submissionObj);
 

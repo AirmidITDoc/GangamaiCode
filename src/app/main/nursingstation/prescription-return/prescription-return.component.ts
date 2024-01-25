@@ -1,18 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { PrescriptionReturnService } from './prescription-return.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { ViewEncapsulation } from '@angular/compiler/src/core';
 import { fuseAnimations } from '@fuse/animations';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
+import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-prescription-return',
   templateUrl: './prescription-return.component.html',
   styleUrls: ['./prescription-return.component.scss'],
-  
+  encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
 export class PrescriptionReturnComponent implements OnInit {
@@ -45,6 +46,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
   constructor(public _PrescriptionReturnService:PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
+    private dialog:MatDialog,
     public datePipe: DatePipe,
     ) { }
 
@@ -88,7 +90,14 @@ export class PrescriptionReturnComponent implements OnInit {
     this.getPreiscriptionretdetList(Parama.PresReId)
   }
 
-
+  //window
+  OpenNewPrescriptionret(){
+    this.dialog.open(NewPrescriptionreturnComponent,{
+      width:'90%',
+      height:'750px'
+      
+    })
+  }
 }
 
 export class PrescriptionretList{

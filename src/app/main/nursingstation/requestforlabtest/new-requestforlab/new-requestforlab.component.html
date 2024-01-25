@@ -140,8 +140,8 @@
                         </mat-form-field> -->
                         <span
                             style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
-                            Name :{{PatientName}} <span style="margin-left: 10px;">RegId :{{RegId}}</span><span
-                                style="margin-left: 10px;">Admission Id :{{vAdmissionID}}</span></span>
+                            Name :{{PatientName}} <span style="margin-left: 100px;">RegId :{{RegId}}</span><span
+                                style="margin-left: 100px;">Admission Id :{{vAdmissionID}}</span></span>
 
                     </div>
 
@@ -181,7 +181,7 @@
                             <mat-radio-button value="3">Other Services</mat-radio-button>
                         </mat-radio-group>
 
-                        <mat-form-field appearance="outline" style="width:80%;margin-left:15px;"
+                        <!-- <mat-form-field appearance="outline" style="width:80%;margin-left:15px;"
                             disabled="isServiceSearchDisabled">
                             <input type="text" name="ServiceName2" formControlName="ServiceId"
                                 placeholder="Service Name" (keyup)="getServiceListItem()" matInput>
@@ -196,7 +196,7 @@
                                 ServiceName is required
                             </mat-error>
 
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
                 </div>
             </form>
@@ -206,7 +206,7 @@
 
 
         <div class="content-card" style="padding: 20px 20px 0 20px;" fxLayout="row" fxLayoutGap="5px">
-            <div style="width: 50%;">
+            <div style="width:40%;">
                 <mat-card>
                     <mat-table #table matSort [dataSource]="dsLabRequest2" class="table1"
                         [@animateStagger]="{value:'50'}">
@@ -222,7 +222,7 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="Price">
+                        <!-- <ng-container matColumnDef="Price">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Price
                             </mat-header-cell>
@@ -230,7 +230,7 @@
                                 {{contact.Price | currency:'INR' }}
 
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
 
 
                        
@@ -262,7 +262,7 @@
                 </mat-card>
             </div>
             <!-- Table 1 -->
-            <div style="width: 50%;">
+            <div style="width: 60%;">
 
                 <mat-card>
 

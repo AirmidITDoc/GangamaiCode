@@ -149,12 +149,14 @@ Swal.fire("Row selected :" + contact)
 }
 
 export class IndentList {
+  ItemId:any;
   ItemName: string;
   Qty: number;
   IssQty:number;
   Bal:number;
   StoreId:any;
   StoreName:any;
+  BatchExpDate:any;
   /**
    * Constructor
    *
@@ -162,12 +164,14 @@ export class IndentList {
    */
   constructor(IndentList) {
     {
+      this.ItemId = IndentList.ItemId || 0;
       this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
       this.IssQty = IndentList.IssQty || 0;
       this.Bal = IndentList.Bal|| 0;
       this.StoreId = IndentList.StoreId || 0;
       this.StoreName =IndentList.StoreName || '';
+      this.BatchExpDate =IndentList.BatchExpDate || '';
     }
   }
 }

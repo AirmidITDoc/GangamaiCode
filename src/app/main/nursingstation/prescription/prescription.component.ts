@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { Subscription } from 'rxjs';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-prescription',
@@ -64,9 +65,9 @@ export class PrescriptionComponent implements OnInit {
   }
 
   //window
-  Openpopup(){
+  OpenNewPrescription(){
     this.dialog.open(NewPrescriptionComponent,{
-      width:'90%',
+      width:'98%',
       height:'750px'
       
     })
@@ -132,6 +133,9 @@ export class PrescriptionComponent implements OnInit {
       })
 
   }
+
+
+ 
   print3() {
     let popupWin, printContents;
    

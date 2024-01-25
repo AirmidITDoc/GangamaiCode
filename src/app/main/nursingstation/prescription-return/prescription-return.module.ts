@@ -36,6 +36,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
+import { BatchpopupComponent } from './batchpopup/batchpopup.component';
 
 const routes: Routes = [
   {
@@ -45,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PrescriptionReturnComponent],
+  declarations: [PrescriptionReturnComponent, NewPrescriptionreturnComponent, BatchpopupComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

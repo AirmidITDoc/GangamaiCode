@@ -1,0 +1,350 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Prescription Return
+                </span>
+               <!-- // <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
+
+                <app-common-date [screenFrom]="screenFromString" style="margin-left: 500px;"
+                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <!-- SEARCH -->
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SIDEBAR -->
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <!-- CONTENT -->
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="95%" fxFlex>
+
+                        <div class="center p-2 pb-56" fxFlexAlign="start center">
+
+                            <div class="content-card" style="border-radius:4px; ">
+                                <div class="nav material2">
+
+
+                                    <div fxLayout="column" fxLayoutAlign="start none">
+                                        <form [formGroup]="ItemSubform" style="padding: 6px 2px 5px 2px;">
+                                            <mat-card style="height: 100px;">
+                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                    fxLayoutAlign="space-between">
+                                                    <div style="padding-top:10px;">
+                                                        <mat-radio-group aria-label="Select an option"
+                                                            formControlName="PatientType" name="PatientType"
+                                                            style="margin-top: 12px;"
+                                                            (change)="onChangePatientType($event)"
+                                                            (blur)="onChangePatientType($event)">
+                                                            <mat-radio-button value="OP">OP</mat-radio-button>
+                                                            <mat-radio-button value="IP">IP</mat-radio-button>
+                                                            <mat-radio-button value="External"
+                                                                (checked)="true">External</mat-radio-button>
+                                                        </mat-radio-group>
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value != 'External'"
+                                                            style="width: 500px !important;">
+                                                            <input type="text" name="RegID" formControlName="RegID"
+                                                                placeholder="RegNo / First Name / Last Name / Mobile No"
+                                                                matInput [matAutocomplete]="auto1"
+                                                                (input)="getSearchList()">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                                [displayWith]="getOptionTextReg"
+                                                                (optionSelected)='getSelectedObjReg($event.option.value)'>
+                                                                <mat-option
+                                                                    *ngFor="let option of PatientListfilteredOptions"
+                                                                    [value]="option">
+                                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                                    {{option.MobileNo}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                            <mat-error
+                                                                *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
+                                                                Required field cannot be left blank
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value == 'External'"
+                                                            style="margin-right:10px;" fxFlex="12%">
+                                                            <mat-label>Mobile Number</mat-label>
+                                                            <input name="MobileNo" formControlName="MobileNo"
+                                                                placeholder="Mobile Number" matInput required
+                                                                [(ngModel)]="MobileNo" max="9999999999" min="1000000000"
+                                                                autocomplete="off" maxlength="10"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                                required="required" value="9876658688"
+                                                                (keydown.enter)="onEntermobileno($event)"
+                                                                (blur)="onEntermobileno($event)">
+                                                            <mat-error class="error"
+                                                                *ngIf="ItemSubform.get('MobileNo').invalid && ItemSubform.get('MobileNo').touched">10
+                                                                digits Mobile number is
+                                                                required</mat-error>
+                                                        </mat-form-field>
+
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                            <mat-label>Patient Name</mat-label>
+                                                            <input matInput placeholder="PatientName"
+                                                                formControlName="PatientName" [(ngModel)]="PatientName"
+                                                                required (keydown)="onEnterpatientname($event)"
+                                                                #patientname type="text">
+                                                        </mat-form-field>&nbsp;
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                            <mat-label>Doctor Name</mat-label>
+                                                            <input matInput placeholder="DoctorName"
+                                                                [(ngModel)]="DoctorName"
+                                                                (keydown)="onEnterDoctorname($event)" #doctorname
+                                                                formControlName="DoctorName">
+                                                        </mat-form-field>&nbsp;
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                                                            <mat-label>Address</mat-label>
+                                                            <input matInput placeholder="extAddress"
+                                                                [(ngModel)]="extAddress"
+                                                                (keydown)="onEnterAddress($event)" #address
+                                                                formControlName="extAddress">
+                                                        </mat-form-field>
+                                                    </div>
+                                                   
+
+                                                </div>
+                                              
+                                            </mat-card>
+                                        </form>
+                                        <!-- Item Search  Option  -->
+                                        <form [formGroup]="ItemSubform" style="padding: 6px 6px 5px 5px;"
+                                            fusePerfectScrollbar>
+                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px">
+
+                                                <mat-form-field appearance="outline" class="itemclass"
+                                                    style="width:70% !important;margin-left:20px;">
+                                                    <input type="text" name="ItemId" formControlName="ItemId" #itemid
+                                                        placeholder="Item Name (enter 2 char) " matInput
+                                                        [matAutocomplete]="auto" (input)="getPharItemList()">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="ItemSubform.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="ItemSubform.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #auto="matAutocomplete"
+                                                        [displayWith]="getOptionText" class="sale-auto-complete"
+                                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                                        <mat-option *ngFor="let option of filteredOptions"
+                                                            [value]="option">
+
+                                                            <span>{{option.ItemName}} | {{option.BalanceQty}} </span> |
+                                                            <small>MRP: {{option.UnitMRP}}</small>
+
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-error *ngIf="ItemSubform.get('ItemId').hasError('required')">
+                                                        Required field cannot be left blank
+                                                    </mat-error>
+                                                </mat-form-field>
+
+
+                                                <mat-form-field appearance="outline" fxFlex="15%">
+                                                    <mat-label>Batch No</mat-label>
+                                                    <input matInput placeholder="Placeholder" [(ngModel)]="BatchNo"
+                                                        formControlName="BatchNo" readonly >
+                                                </mat-form-field>
+                                                <!-- 
+                                                <mat-form-field appearance="outline" fxFlex="7%">
+                                                    <mat-label>Exp. Date</mat-label>
+                                                    <input matInput placeholder="Placeholder" formControlName="BatchExpDate" required
+                                                        [ngModel]="BatchExpDate" readonly>
+                                                </mat-form-field> -->
+
+
+                                                <mat-form-field appearance="outline" fxFlex="12%">
+                                                    <mat-label>Qty</mat-label>
+                                                    <input matInput #Quantity formControlName="Qty" required #qty
+                                                        autocomplete="off" [(ngModel)]="Qty"
+                                                        (keydown)="onEnterqty($event)" type="text" onlyNumber>
+                                                </mat-form-field>
+
+
+                                                <div matTooltip="Select  name to enable this button!!"
+                                                    [matTooltipDisabled]="!ItemSubform.invalid"
+                                                    [matTooltipPosition]="'above'">
+                                                    <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                                        class="add-btn" [disabled]="!add" (click)="onAdd()">
+                                                        <mat-icon> add </mat-icon>
+                                                        Add
+                                                    </button>
+                                                    <!-- [disabled]="ItemSubform.invalid" -->
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="example-sidenav-content" style="padding-left: 5px;">
+                                    <mat-card>
+
+                                        <mat-table #table matSort [dataSource]="saleSelectedDatasource"
+                                            [@animateStagger]="{value:'50'}"
+                                            style="overflow:auto; height: 300px !important;" class="mat-saletable">
+
+                                            <ng-container matColumnDef="ItemId">
+                                                <mat-header-cell *matHeaderCellDef
+                                                    mat-sort-header>ItemId</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    {{contact.ItemId}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="ItemName">
+                                                <mat-header-cell *matHeaderCellDef
+                                                    mat-sort-header>ItemName</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    {{contact.ItemName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="BatchNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Batch No
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.BatchNo}}
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="Qty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number"
+                                                            (keyup)="getCellCalculation(contact,contact.Qty)"
+                                                            (keypress)="keyPressAlphanumeric($event)" readonly>
+                                                    </mat-form-field>
+                                                </mat-cell>
+                                            </ng-container>
+
+
+
+                                            <ng-container matColumnDef="buttons" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="table-actions"
+                                                    >Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <ng-container class="actions">
+                                                        <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;">
+                                                            edit
+                                                        </span> -->
+                                                        <span class="material-icons"
+                                                            style="cursor: pointer;color: #5b5858;"
+                                                            (click)="deleteTableRow($event ,contact)">
+                                                            delete
+                                                        </span>
+                                                    </ng-container>
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                    <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                    </mat-spinner>
+                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
+                                                [ngClass]="{'row-yellow': QtyBalchk ==0}"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <!-- (click)="deleteTableRow($event,contact)"  -->
+                                            <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
+                                                 (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{'hide':saleSelectedDatasource!=null}">
+                                            </mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(saleSelectedDatasource!=null && saleSelectedDatasource.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table>
+
+                                        <div class="net-amt" style="margin-bottom: 10px;">
+                                            <span class="net-amt-label" style="width: 200px;font-weight: bold;">No of
+                                                Items:</span>&nbsp;<span class="net-amt-value"
+                                                style="margin-right: 200px;">{{saleSelectedDatasource.data.length}}</span>
+
+                                            <!-- <span class="net-amt-label"
+                                                style="width: 200px;font-weight: bold;margin-left:240px;">
+                                                NetAmount:</span>&nbsp;<span class="net-amt-value"
+                                                style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
+                                                | currency:'INR' }}</span> -->
+                                        </div>
+                                    </mat-card>
+
+                                    <div class="footer-navigation-container" fxLayout.gt-xs="row" style="float: right;">
+
+                                        <div style="margin-top: 20px; margin-right: 10px; ">
+                                            <button class="next-btn" color="accent"
+                                                style="border-radius: 16px; width: 80px;"
+                                                (click)="OnSavePrescriptionreturn()">Save</button>
+                                            <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>
