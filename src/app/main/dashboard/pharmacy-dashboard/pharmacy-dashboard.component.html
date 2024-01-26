@@ -66,76 +66,18 @@
                     <mat-card-content>
                         <mat-spinner *ngIf="sIsLoading === 'pharSumChartLoading'"></mat-spinner>
                         <div fxLayout="row" fxLayoutAlign="space-between">
-                            <canvas id="doughnutChart" style="width: 100%;"></canvas>
-                            <!-- <canvas baseChart [datasets]="PiechartData5" [labels]="labelData"
-                                [options]="pieChartOptions" legend="true"
-                                chartType="doughnut">
-                            </canvas> -->
-                            <!-- <table class="table1" fxFlex="100%" style="border-collapse: collapse;">
-                                <tbody>
-                                    <tr style="font-size:12px;">
-                                        <td colspan="5"
-                                            style="background-color: rgb(37, 174, 192); font-weight:bold;text-align:left;padding:10px;font-size: 18px;color: white;">
-                                            Statistics</td>
-                                    </tr>
-                                    <tr style="font-size:12px;">
-                                        <td colspan="3"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
-                                            Collection</td>
-                                        <td colspan="2"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;padding-left: 20px;">
-                                            {{getTotalCollectionAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td>
-                                    </tr>
-                                    <tr style="font-size:12px;">
-                                        <td colspan="3"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
-                                            Refund</td>
-                                        <td colspan="2"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;padding-left: 20px;">
-                                            {{getTotalRefunAmt(dsPharmacyDashboard.data) | currency:'INR'}}</td>
-                                    </tr>
-                                    <tr style="font-size:12px; background-color:#2a6392;color: white;">
-                                        <td colspan="3"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
-                                            Net</td>
-                                        <td colspan="2"
-                                            style="font-weight:bold;text-align:left;padding:10px;font-size: 16px;">
-                                            {{getTotalNetAmt(dsPharmacyDashboard.data) | currency:'INR' }}</td>
-                                    </tr>
-                                    <tr style="font-size:12px;">
-                                        <td colspan="4" style="background-color: white;text-align:left;padding:8px;">
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size:12px;background-color:#2a6392;color: white;font-size: 15px;">
-                                        <td style="font-weight:bold;text-align:left;padding:10px;">
-                                            StoreName</td>
-                                        <td style="font-weight:bold;text-align:left;padding:10px;">
-                                            BillCount</td>
-                                        <td style="font-weight:bold;text-align:left;padding:10px;">
-                                            Collection Amount</td>
-                                        <td style="font-weight:bold;text-align:left;padding:10px;">
-                                            Refund Amount</td>
-                                        <td style="font-weight:bold;text-align:left;padding:10px;">
-                                            Net Amount</td>
-                                    </tr><br>
-                                    <tr *ngFor="let item of PharmacyDashboard; let indx = index;" style="font-size:13px;
-                                    border: 1px solid black;">
-
-                                        <td style="padding: 10px;background-color: lightgray;
-                                        text-align: left;color: black;" class="StoreName">{{item?.StoreName}}</td>
-                                        <td style="padding: 10px;background-color: lightgray;
-                                        text-align: right;color: black;" class="StoreName">{{item?.BillCount}}</td>
-                                        <td style="padding: 10px;background-color: lightgray;
-                                        text-align: right;color: black;">{{item?.CollectionAmount | number:'1.2-2' }}</td>
-                                        <td style="padding: 10px;background-color: lightgray;
-                                        text-align: right;color: black;">{{item?.RefundAmount | number:'1.2-2'}}</td>
-                                        <td style="padding: 10px;background-color: lightgray;
-                                        text-align: right;color: black;">{{item?.NetAmount | number:'1.2-2'}}</td>
-                                    </tr><br>
-
-
-                                </tbody>
-                            </table> -->
+                            <!-- <canvas id="doughnutChart" style="width: 100%;"></canvas> -->
+                            <ngx-charts-pie-chart
+                            [view]="view"
+                            [scheme]="colorScheme"
+                            [results]="PaymentData"
+                            [gradient]="gradient"
+                            [legend]="showLegend"
+                            [legendPosition]="legendPosition"
+                            [labels]="showLabels"
+                            [doughnut]="isDoughnut"
+                            >
+                          </ngx-charts-pie-chart>     
                         </div> 
                         <div *ngIf="sIsLoading === 'noPharSumData'">
                             <h3>No Data</h3>

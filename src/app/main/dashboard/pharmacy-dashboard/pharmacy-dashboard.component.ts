@@ -19,7 +19,19 @@ import { filter, map } from 'rxjs/operators';
   
 })
 export class PharmacyDashboardComponent implements OnInit {
+  PaymentData: any[];
+  view: any[] = [700, 400];
 
+  // options
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+  legendPosition: string = 'below';
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
   displayedColumns = [
     'StoreName',
     'CollectionAmount',
@@ -276,40 +288,11 @@ export class PharmacyDashboardComponent implements OnInit {
     
   // }
 
-
-
-  getDoughnutChart(data) {
-    debugger
-    return new Chart('doughnutChart', {
-      type: 'doughnut',
-      data: data,
-      options: {
-        plugins: {
-          legend: true,
-          tooltip: {
-            enabled: true,
-          },
-          outlabels: {
-            text: '%l %p',
-            color: 'white',
-            stretch: 35,
-            font: {
-              resizable: true,
-              minSize: 12,
-              maxSize: 18,
-            },
-          },
-        },
-      },
-    })
-  }
-
 onDateRangeChanged(){
   this.fetchChartData();
   this.getPharDashboardSalesSummary();
 }
  
-  public doughnutChart: any;
  //Pei chart 
    fetchChartData() {
     this.sIsLoading = 'loading-data';
@@ -321,18 +304,9 @@ onDateRangeChanged(){
       } 
        // console.log(m_data);
       this._DashboardService.getPharDashboardPeichart(m_data).subscribe(data => {
-        this.doughnutChart = this.getDoughnutChart(data);
+        this.PaymentData = data["data"] as any[];
+        this.colorScheme.domain=data["colors"] as any[];
         this.sIsLoading = '';
-      // this.pieChartData2 = data;
-      // console.log(this.pieChartData2);
-      //  if(this.pieChartData2 != null){
-      //   this.pieChartData2.forEach((element) => {
-      //     this.labelData.push(element.StoreName);
-      //     this.PiechartData5.push(element.CollectionAmount);
-      //   }); 
-      //   this.RenderChart(this.labelData,this.PiechartData5);
-      //  } this.sIsLoading = '';
-      //  console.log(this.PiechartData5);
       },
         error => {
           this.sIsLoading = '';
@@ -340,46 +314,6 @@ onDateRangeChanged(){
    
   } 
 
-  RenderChart(labelData:any,PiechartData5:any){
-    const mychart = new Chart('doughnutChart', {
-      type: 'doughnut',
-      data: {
-        labels:labelData,
-        datasets: [
-          {
-            backgroundColor: [
-              '#FF3784',
-              '#36A2EB',
-              '#4BC0C0',
-              '#F77825',
-              '#9966FF',
-            ],
-            data: PiechartData5,
-            
-          },
-        ],
-       
-      },
-      options: {
-        plugins: {
-          legend: {
-            position: 'right',
-            align: 'end'
-          },
-          tooltip: {
-            enabled: true,
-          },
-          outlabels: {
-            text: '%l %p',
-            color: 'white',
-            stretch: 35,
-         
-          },
-        },
-      },
-    })
-    
-  }
 
   
   getPharDashboardSalesSummary() {
@@ -403,7 +337,6 @@ onDateRangeChanged(){
           this.PiechartData5.push(element.CollectionAmount);
         }); 
         this.sIsLoading = 'pharSumChartLoaded';
-        // this.RenderChart(this.labelData,this.PiechartData5);
       } else {
         this.sIsLoading = 'noPharSumData';
       }
