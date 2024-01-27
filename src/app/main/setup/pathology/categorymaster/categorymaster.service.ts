@@ -38,24 +38,18 @@ export class CategorymasterService {
     }
 
     public getCategoryMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathCategoryList_by_Name",
-            param
-        );
+        return this._httpClient.post( "Generic/GetByProc?procName=Rtrv_PathCategoryList_by_Name",param);
     }
 
     public insertPathologyCategoryMaster(param) {
-        return this._httpClient.post(
-            "PathologyMaster/PathologyCategoryMasterSave",
-            param
-        );
+        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterSave", param);
     }
 
     public updatePathologyCategoryMaster(param) {
-        return this._httpClient.post(
-            "PathologyMaster/PathologyCategoryMasterUpdate",
-            param
-        );
+        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterSave",param);
+    }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
     }
 
     populateForm(param) {

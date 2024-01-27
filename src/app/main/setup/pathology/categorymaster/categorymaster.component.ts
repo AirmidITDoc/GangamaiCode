@@ -6,6 +6,8 @@ import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-categorymaster",
@@ -15,11 +17,6 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class CategorymasterComponent implements OnInit {
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
     displayedColumns: string[] = [
         "CategoryId",
         "CategoryName",
@@ -27,15 +24,32 @@ export class CategorymasterComponent implements OnInit {
         "IsDeleted",
         "action",
     ];
+    msg: any;
 
     DSCategoryMasterList = new MatTableDataSource<CategoryMaster>();
-
-    constructor(public _categorymasterService: CategorymasterService,
-        public toastr : ToastrService,) {}
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    constructor(
+        public _categorymasterService: CategorymasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        ) { }
 
     ngOnInit(): void {
         this.getCategoryMasterList();
     }
+    getCategoryMasterList() {
+        var param = {
+            CategoryName:this._categorymasterService.myformSearch.get("CategoryNameSearch").value + "%" || "%",
+        };
+            this._categorymasterService.getCategoryMasterList(param).subscribe((Menu) => {
+            this.DSCategoryMasterList.data = Menu as CategoryMaster[];
+            this.DSCategoryMasterList.sort = this.sort;
+            this.DSCategoryMasterList.paginator = this.paginator;
+        });
+    }
+
     onSearch() {
         this.getCategoryMasterList();
     }
@@ -45,18 +59,10 @@ export class CategorymasterComponent implements OnInit {
             CategoryNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getCategoryMasterList();
     }
 
-    getCategoryMasterList() {
-        var param = { CategoryName: "%" };
-        this._categorymasterService
-            .getCategoryMasterList(param)
-            .subscribe((Menu) => {
-                this.DSCategoryMasterList.data = Menu as CategoryMaster[];
-                this.DSCategoryMasterList.sort = this.sort;
-                this.DSCategoryMasterList.paginator = this.paginator;
-            });
-    }
+   
 
     onClear() {
         this._categorymasterService.myform.reset({ IsDeleted: "false" });
@@ -68,49 +74,31 @@ export class CategorymasterComponent implements OnInit {
             if (!this._categorymasterService.myform.get("CategoryId").value) {
                 var m_data = {
                     insertPathologyCategoryMaster: {
-                        categoryName: this._categorymasterService.myform
-                            .get("CategoryName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._categorymasterService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        categoryName: this._categorymasterService.myform.get("CategoryName").value.trim(),
+                        isDeleted: Boolean(JSON.parse(this._categorymasterService.myform.get("IsDeleted").value)),
                         addedBy: 1,
                     },
                 };
-
-                this._categorymasterService
-                    .insertPathologyCategoryMaster(m_data)
+                    console.log(m_data)
+                this._categorymasterService.insertPathologyCategoryMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             this.getCategoryMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCategoryMasterList();
-                            //     }
-                            // });
                         } else {
                             this.toastr.error('Category Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
                         this.getCategoryMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Category not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             } else {
                 var m_dataUpdate = {
                     updatePathologyCategoryMaster: {
@@ -139,31 +127,46 @@ export class CategorymasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             this.getCategoryMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getCategoryMasterList();
-                            //     }
-                            // });
                         } else {
                             this.toastr.error('Category Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
                         this.getCategoryMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Category not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClear();
         }
+    }
+    onDeactive(CategoryId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" +
+                    CategoryId;
+                    
+                console.log(Query);
+                this._categorymasterService.deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                this.getCategoryMasterList();
+            }
+            this.confirmDialogRef = null;
+            this.getCategoryMasterList();
+        });
     }
     onEdit(row) {
         var m_data = {

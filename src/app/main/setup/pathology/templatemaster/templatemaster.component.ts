@@ -18,30 +18,30 @@ import { MatSort } from "@angular/material/sort";
     animations: fuseAnimations,
 })
 export class TemplatemasterComponent implements OnInit {
+    displayedColumns: string[] = [
+        "TemplateId",
+        "TemplateName",
+        "TemplateDesc",
+        "IsDeleted",
+        "AddedBy",
+        "UpdatedBy",
+        "action"
+    ];
+
     isLoadingResults = true;
     isLoading = true;
     isRateLimitReached = false;
     msg: any;
-    step = 0;
     Testcmblist: any = [];
 
-    setStep(index: number) {
-        this.step = index;
-    }
+   
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatAccordion) accordion: MatAccordion;
 
-    displayedColumns: string[] = [
-        "PTemplateId",
-        "TestName",
-        "TemplateId",
-        "action",
-    ];
-
     DSTemplateMasterList = new MatTableDataSource<TemplateMaster>();
-
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
         public _templateService: TemplatemasterService,
 
@@ -50,15 +50,28 @@ export class TemplatemasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.getTemplateMasterList();
-        this.getTestNameCombobox();
+        // this.getTestNameCombobox();
     }
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
+   
+    onSearch() {
+        this.getTemplateMasterList();
+    }
+    onSearchClear(){
+        this._templateService.myformSearch.reset({
+            TemplateNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+        this.getTemplateMasterList();  
+    }
     getTemplateMasterList() {
-        this._templateService.getTemplateMasterList().subscribe(
-            (Menu) => {
-                this.DSTemplateMasterList.data = Menu as TemplateMaster[];
+       var  vdata={
+            'TemplateName':this._templateService.myformSearch.get('TemplateNameSearch').value + "%" || "%",
+        }
+        this._templateService.getTemplateMasterList(vdata).subscribe(
+            (data) => {
+                this.DSTemplateMasterList.data = data as TemplateMaster[];
                 this.isLoading = false;
+                //console.log(this.DSTemplateMasterList)
                 this.DSTemplateMasterList.sort = this.sort;
                 this.DSTemplateMasterList.paginator = this.paginator;
             },
@@ -66,20 +79,18 @@ export class TemplatemasterComponent implements OnInit {
         );
     }
 
-    getTestNameCombobox() {
-        this._templateService
-            .getTestMasterCombo()
-            .subscribe((data) => (this.Testcmblist = data));
-    }
+    // getTestNameCombobox() {
+    //     this._templateService
+    //         .getTestMasterCombo()
+    //         .subscribe((data) => (this.Testcmblist = data));
+    // }
 
     onClear() {
         this._templateService.myform.reset();
         this._templateService.initializeFormGroup();
     }
 
-    onSearch() {
-        this.getTemplateMasterList();
-    }
+    
 
     onDeactive(PTemplateId) {
         this.confirmDialogRef = this._matDialog.open(
@@ -158,9 +169,12 @@ export class TemplatemasterComponent implements OnInit {
 }
 
 export class TemplateMaster {
-    PTemplateId: number;
-    TestId: number;
     TemplateId: number;
+    TemplateName: any;
+    TemplateDesc: any;
+    IsDeleted:any;
+    AddedBy:any;
+    UpdatedBy:any;
 
     /**
      * Constructor
@@ -169,9 +183,13 @@ export class TemplateMaster {
      */
     constructor(TemplateMaster) {
         {
-            this.PTemplateId = TemplateMaster.PTemplateId || "";
-            this.TestId = TemplateMaster.TestId || "";
-            this.TemplateId = TemplateMaster.TemplateId || "";
+            this.AddedBy = TemplateMaster.AddedBy || 0;
+            this.TemplateName = TemplateMaster.TemplateName || "";
+            this.TemplateDesc = TemplateMaster.TemplateDesc || "";
+            this.IsDeleted = TemplateMaster.IsDeleted || 0;
+            this.AddedBy = TemplateMaster.AddedBy || 0;
+            this.UpdatedBy = TemplateMaster.UpdatedBy || 0;
+            
         }
     }
 }
