@@ -7,12 +7,15 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class TemplatemasterService {
     myform: FormGroup;
-
+    myformSearch: FormGroup;
+    newTemplateFrom : FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createTemplateForm();
+        this.myformSearch = this.createSearchForm();
+        this.newTemplateFrom = this.createnewtemplte();
     }
 
     createTemplateForm(): FormGroup {
@@ -23,16 +26,28 @@ export class TemplatemasterService {
             TemplateId: [""],
         });
     }
+    
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            TemplateNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
+    createnewtemplte(){
+        return this._formBuilder.group({
+            TemplateId:[""],
+            TemplateName:[""],
+            TemplateDetails:[""],
+            IsDeleted:['false']
 
+        })
+    }
     initializeFormGroup() {
         this.createTemplateForm();
     }
 
-    public getTemplateMasterList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Rtrv_PathTemplateMaster_by_Name1",
-            {}
-        );
+    public getTemplateMasterList(param) {
+        return this._httpClient.post( "Generic/GetByProc?procName=Rtrv_TemplateMaster_by_Name",param );
     }
 
     // Deactive the status

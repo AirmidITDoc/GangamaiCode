@@ -39,10 +39,7 @@ export class UnitmasterService {
     }
 
     public getUnitMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathUnitMaster_by_Name",
-            param
-        );
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathUnitMasterList_by_Name", param );
     }
 
     public insertUnitMaster(param) {
@@ -51,6 +48,9 @@ export class UnitmasterService {
 
     public updateUnitMaster(param) {
         return this._httpClient.post("PathologyMaster/UnitUpdate", param);
+    }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
     }
 
     populateForm(param) {

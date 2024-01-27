@@ -1,48 +1,84 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{_templateService.myform.controls.TemplateId.value?"Modify Pathology Template Master":"New
-                Pathology Template Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
             </button>
-        </mat-toolbar-row>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{_templateService.myform.controls.TemplateId.value?"Modify Pathology Template Master":"New
+                Pathology Template Master"}}
+            </span>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+            style="margin-left: 770px;">
+                <mat-icon>close</mat-icon>
+              </button>
+
+        </div>
     </mat-toolbar>
-</div>
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_templateService.newTemplateFrom">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Template Name</mat-label>
+                                            <input matInput placeholder="Template Name" #TemplateName
+                                                formControlName="TemplateName" required>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Template Details</mat-label>
+                                            <textarea matInput placeholder="Template Details" #TemplateDetails
+                                                formControlName="TemplateDetails" required
+                                                style="height: 400px;"></textarea>
+                                        </mat-form-field>
+                                    </div>
 
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-    <form [formGroup]="_templateService.myform">
-        <input type="hidden" name="TemplateId" formControlName="TemplateId">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>Template Name</mat-label>
-                <input name="TemplateName" formControlName="TemplateName" matInput required>
-                <mat-error>Please enter Template Name </mat-error>
-            </mat-form-field>
-        </div>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="6px" style="margin-left: 630px;">
+                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+                                    
+                                    </mat-radio-group>
+                                    <button mat-raised-button  color="accent" 
+                                    style="width: 100px;height: 35px; ">Text Font</button>
+                                    <button mat-raised-button color="accent" m 
+                                    style="width: 100px;height: 35px;">Text Color</button>
+                                    <button mat-raised-button color="accent"  
+                                    style="width: 10px;height: 35px; ">B</button>
+                                    <button mat-raised-button color="accent"   
+                                    style="width: 10px;height: 35px; ">I</button>
+                                    <button mat-raised-button color="accent"  
+                                     style="width: 10px;height: 35px; ">U</button>
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <div class="editor">
-                <!-- <angular-editor name="editor" [placeholder]="'Enter text here...'"
-                    formControlName="TemplateDesc"></angular-editor> -->
 
+                                </div>
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="button-row">
+                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                            style="border-radius: 16px;width: 80px; height:40px;"
+                                            [disabled]="_templateService.newTemplateFrom.invalid">Save</button>
+                                        <button mat-raised-button color="warn" (click)="onClear()"
+                                            style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+
+                </div>
             </div>
-        </div>
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-
-            </mat-radio-group>
-        </div>
-    </form>
-
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-        <div class="button-row">
-            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                [disabled]="_templateService.myform.invalid">Save</button>
-            <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
         </div>
     </div>
 </div>
+ 

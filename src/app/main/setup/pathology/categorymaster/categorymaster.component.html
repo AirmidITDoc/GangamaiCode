@@ -1,48 +1,36 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
+
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Category Master
                 </span>
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
     <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                        <div fxlayout="row" style=" background-color: white;
+                         padding: 5px 10px 5px 10px;">
                             <form [formGroup]="_categorymasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Category Name" autocomplete="off"
                                             name="CategoryNameSearch" formControlName="CategoryNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -64,25 +52,29 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table #table matSort [dataSource]="DSCategoryMasterList"
+                                <mat-table #table class="table1" matSort [dataSource]="DSCategoryMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="CategoryId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.CategoryId}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.CategoryId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="CategoryName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header> Category Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CategoryName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.CategoryName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -102,7 +94,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
+                                                    title="Edit Menu">edit</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.CategoryId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
@@ -130,7 +122,7 @@
                                         [ngClass]="{'hide':!(DSCategoryMasterList!=null && DSCategoryMasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
@@ -164,9 +156,11 @@
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
                                 <div class="button-row">
-                                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                                    <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                        style="border-radius: 16px;"
                                         [disabled]="_categorymasterService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                                    <button mat-raised-button color="warn" (click)="onClear()"
+                                        style="border-radius: 16px;">Clear</button>
                                 </div>
                             </div>
                         </div>
@@ -174,9 +168,6 @@
 
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>
