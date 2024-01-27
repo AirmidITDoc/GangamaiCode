@@ -59,26 +59,36 @@ export class PharmacyDashboardComponent implements OnInit {
     xAxisLabel: 'Store',
     showYAxisLabel: true,
     yAxisLabel: 'Amount',
-    legendTitle:'Month',
+    legendTitle: 'Month',
     colorScheme: {
       domain: []
     },
     onSelect: null
   }
   fetchThreeMonSalesSumData() {
+    this.ThreeMonSalesConfig.data = [];
+    this.ThreeMonSalesConfig.multi = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
       "StoreId": this._DashboardService.UseFrom.get("StoreId").value.storeid || 0,
     }
     this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
-      this.ThreeMonSalesConfig.multi = data["data"] as any[];
+      if ((this._DashboardService.UseFrom.get("StoreId").value.storeid || 0) > 0) {
+        this.ThreeMonSalesConfig.data = data["data"] as any[];
+      }
+      else {
+        this.ThreeMonSalesConfig.multi = data["data"] as any[];
+      }
       this.ThreeMonSalesConfig.colorScheme.domain = data["colors"] as any[];
       this.sIsLoading = '';
     }, error => {
       this.sIsLoading = 'noPharSumData';
     });
   }
-
+  onChangeStore() {
+    this.fetchStaticData();
+    this.fetchThreeMonSalesSumData();
+  }
   displayedColumns = [
     'StoreName',
     'CollectionAmount',
