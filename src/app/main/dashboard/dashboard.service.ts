@@ -16,7 +16,7 @@ export class DashboardService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      StoreId:''
+      StoreId: ''
     });
   }
 
@@ -44,22 +44,25 @@ export class DashboardService {
   public getPharDashboardSalesSummary(params) {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
-  public getPharDashboardPeichart(params) {
-    return this._httpClient.post("Dashboard/get-pie-chart-date?procName=m_pharPayModeColSummaryDashboard", params)
+  public getPharDashboardPeichart(spname, params) {
+    return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
+  }
+  public getPharDashboardBarchart(spname, params) {
+    return this._httpClient.post("Dashboard/get-bar-chart-date?procName=" + spname, params)
   }
 
   // public getPharDashboardPeichart(params) {
   //   return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   // }
   public getThreeMonSumData(api, params) {
-    return this._httpClient.post("Generic/GetByProc?procName="+api, params)
+    return this._httpClient.post("Generic/GetByProc?procName=" + api, params)
   }
   public getPharmStoreList() {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_PharStoreName", {})
   }
 
   public getPharStockColSumData(api, params) {
-    return this._httpClient.post("Generic/GetByProc?procName="+api, params)
+    return this._httpClient.post("Generic/GetByProc?procName=" + api, params)
   }
 
 }

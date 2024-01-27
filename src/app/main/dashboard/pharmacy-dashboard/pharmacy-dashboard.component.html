@@ -14,32 +14,32 @@
                     Pharmacy Dashboard
                 </span>
             </div>
-            <form [formGroup]="_DashboardService.UseFrom"  >
-                
+            <form [formGroup]="_DashboardService.UseFrom">
+
                 <!-- <mat-card class="h-80  p-2 accent" fxLayout="row" fxFlex="270px" style=" color: black;padding: 10px;"> -->
-                   
-                    <mat-form-field appearance="outline" fxFlex="270px">
-                        <mat-label style="color: white;">Select Store</mat-label>
-                        <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="fetchChartData()">
-                            <mat-option></mat-option>
-                            <mat-option  *ngFor="let m of PharmStoreList" [value]="m" >
-                                {{m.StoreName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>&nbsp;&nbsp;
+
+                <mat-form-field appearance="outline" fxFlex="270px">
+                    <mat-label style="color: white;">Select Store</mat-label>
+                    <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="fetchStaticData()">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let m of PharmStoreList" [value]="m">
+                            {{m.StoreName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
                 <!-- </mat-card>&nbsp;&nbsp; -->
- 
+
                 <!-- <mat-card class="h-80  p-2 accent" fxLayout="row" fxFlex="270px" style=" color: black;padding: 10px;"> -->
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label >Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate formControlName="start" placeholder="Start date">
-                            <input matEndDate formControlName="end" placeholder="End date" 
-                                (dateChange)="onDateRangeChanged()">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date"
+                            (dateChange)="onDateRangeChanged()">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
 
                 <!-- </mat-card> -->
             </form>
@@ -55,33 +55,27 @@
                             <mat-card-title>Static</mat-card-title>
                             <mat-form-field>
                                 <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
-                                  <mat-option *ngFor="let option of staticOptions" [value]="option.value">
-                                    {{ option.viewValue }}
-                                  </mat-option>
+                                    <mat-option *ngFor="let option of staticOptions" [value]="option.value">
+                                        {{ option.viewValue }}
+                                    </mat-option>
                                 </mat-select>
-                              </mat-form-field>
+                            </mat-form-field>
                         </div>
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
-                        <mat-spinner *ngIf="sIsLoading === 'pharSumChartLoading'"></mat-spinner>
+                        <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
                         <div fxLayout="row" fxLayoutAlign="space-between">
-                            <!-- <canvas id="doughnutChart" style="width: 100%;"></canvas> -->
-                            <ngx-charts-pie-chart
-                            [view]="view"
-                            [scheme]="colorScheme"
-                            [results]="PaymentData"
-                            [gradient]="gradient"
-                            [legend]="showLegend"
-                            [legendPosition]="legendPosition"
-                            [labels]="showLabels"
-                            [doughnut]="isDoughnut"
-                            >
-                          </ngx-charts-pie-chart>     
-                        </div> 
+                            <ngx-charts-pie-chart [view]="StaticChartConfig.view"
+                                [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data"
+                                [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend"
+                                [legendPosition]="StaticChartConfig.legendPosition"
+                                [labels]="StaticChartConfig.showLabels" [doughnut]="StaticChartConfig.isDoughnut">
+                            </ngx-charts-pie-chart>
+                        </div>
                         <div *ngIf="sIsLoading === 'noPharSumData'">
                             <h3>No Data</h3>
-                        </div>   
+                        </div>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -102,11 +96,31 @@
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
-                        <div *ngIf="threeMonSalesData && threeMonSalesData.length > 0">
-                            <canvas baseChart [datasets]="threeMonSalesData" [labels]="threeMonSalesLabels"
+                        <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
+                            <!-- <canvas baseChart [datasets]="threeMonSalesData" [labels]="threeMonSalesLabels"
                                 [options]="barChartOptions" [legend]="barChartLegend"
                                 [chartType]="barChartType">
-                            </canvas>
+                            </canvas> -->
+                            <ngx-charts-bar-vertical-2d [view]="ThreeMonSalesConfig.view"
+                                [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi"
+                                [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis"
+                                [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend"
+                                [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel"
+                                [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel"
+                                [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
+                                [legendTitle]="ThreeMonSalesConfig.legendTitle"
+                                *ngIf="ThreeMonSalesConfig.multi.length>0">
+                            </ngx-charts-bar-vertical-2d>
+                            <ngx-charts-bar-vertical [view]="ThreeMonSalesConfig.view"
+                                [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data"
+                                [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis"
+                                [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend"
+                                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
+                                *ngIf="ThreeMonSalesConfig.data.length>0">
+                            </ngx-charts-bar-vertical>
                         </div>
                         <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
                     </mat-card-content>
@@ -129,13 +143,13 @@
                     <hr>
                     <mat-card-content>
                         <mat-spinner *ngIf="isCollectionLoad === 'pharCollectionChartLoading'"></mat-spinner>
-                        <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="isCollectionLoad === 'pharCollectionChartLoaded'">
+                        <div fxLayout="row" fxLayoutAlign="space-between"
+                            *ngIf="isCollectionLoad === 'pharCollectionChartLoaded'">
                             <canvas baseChart [datasets]="threeMonCollectionData" [labels]="threeMonCollectionLabels"
-                                [options]="barChartOptions" [legend]="barChartLegend"
-                                [chartType]="barChartType">
+                                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
                             </canvas>
                             <!-- <canvasjs-chart [options]="chartJsOptions"></canvasjs-chart> -->
-                        </div>    
+                        </div>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -155,8 +169,7 @@
                                 [chartType]="barChartType">
                             </canvas> -->
                             <canvas baseChart [datasets]="pharCustStockData" [labels]="pharCustStockLabels"
-                                [options]="pieChartOptions" legend="true"
-                                chartType="doughnut">
+                                [options]="pieChartOptions" legend="true" chartType="doughnut">
                             </canvas>
                         </div>
                     </mat-card-content>
